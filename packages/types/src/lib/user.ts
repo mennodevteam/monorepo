@@ -12,6 +12,9 @@ export class User {
   gender?: GenderType;
   birthDate: Date;
   marriageDate: Date;
+  businessId: string;
+  role: number;
+  extraInfo: any;
   instagram: string;
   localPhone: string;
   address: string;
@@ -21,7 +24,7 @@ export class User {
   clubId: string;
   token: string;
 
-  toString(user: User) {
+  fullName(user: User) {
     try {
       const arr = [];
       if (user.firstName) arr.push(user.firstName);

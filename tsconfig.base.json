@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "strictPropertyInitialization": false,
     "paths": {
-      "@menno/types": ["packages/types/src/index.ts"]
+      "@menno/types": ["packages/types/src/index.ts"],
+      "@menno/utils": ["packages/utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
