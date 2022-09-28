@@ -4,4 +4,5 @@ export class NewSmsDto {
   messages?: string[];
   templateId?: string;
   templateParams?: any;
+  sentAt?: Date;
 }
