@@ -14,6 +14,7 @@ export * from './filter-order.dto';
 export * from './filter-payment';
 export * from './filter-purchases.dto';
 export * from './filter-sms.dto';
+export * from './filter-smsTemplate.dto';
 export * from './gender-type.enum';
 export * from './jsonbin';
 export * from './manual-settlement.dto';
