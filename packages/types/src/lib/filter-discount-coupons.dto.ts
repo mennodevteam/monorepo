@@ -2,7 +2,7 @@ import { Club } from './club';
 import { Member } from './member';
 
 export class FilterDiscountCouponsDto {
-  clubId: Club;
+  clubId: string;
   isEnabled: boolean;
   memberId: Member;
 }

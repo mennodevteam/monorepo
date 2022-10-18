@@ -1,8 +1,9 @@
 import { Order } from './order';
+import { User } from './user';
 
 export class OrderReview {
   id: number;
-  userId: string;
+  user: User;
   rate: number;
   description: string;
   order: Order;

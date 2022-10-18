@@ -9,11 +9,12 @@ export class DeliveryArea {
   minPriceForFree?: number;
   polygon: [number, number][];
   status: Status;
+  shop: Shop;
 
   static isInWitchArea(
     areas: DeliveryArea[],
     point: [number, number]
-  ): DeliveryArea {
+  ): DeliveryArea | null {
     try {
       areas.sort((a, b) => a.price - b.price);
       for (const area of areas) {
@@ -31,13 +32,13 @@ export class DeliveryArea {
     const x = point[0],
       y = point[1];
     let inside = false;
-    for (var i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-      var xi = polygon[i][0],
+    for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+      const xi = polygon[i][0],
         yi = polygon[i][1];
-      var xj = polygon[j][0],
+      const xj = polygon[j][0],
         yj = polygon[j][1];
 
-      var intersect =
+      const intersect =
         yi > y != yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
       if (intersect) inside = !inside;
     }

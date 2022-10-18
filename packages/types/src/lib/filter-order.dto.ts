@@ -6,8 +6,10 @@ export class FilterOrderDto {
   fromDate?: Date;
   toDate?: Date;
   customerId?: string;
+  creatorId?: string;
   waiterId?: string;
   isPayed?: boolean;
+  isManual?: boolean;
   paymentType?: 'online' | 'cash' | 'clubWallet';
   states?: OrderState[];
   fillProductsAndCategory?: boolean;

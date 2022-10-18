@@ -10,6 +10,7 @@ export class OrderDto {
   state: OrderState;
   type: OrderType;
   isManual: boolean;
+  packOrderId?: string;
   manualDiscount?: number;
   manualCost?: number;
   isPayed: boolean;

@@ -1,3 +1,6 @@
+import { Shop } from './shop';
+import { ShopBankInfo } from './shop-bankInfo';
+
 export class ShopSettlement {
   id: number;
   amount: number;
@@ -8,6 +11,9 @@ export class ShopSettlement {
     firstName: string;
     lastName: string;
   };
+  trackingCode: string;
+  shop: Shop;
+  shopBankInfo: ShopBankInfo;
   isCompleted: boolean;
   settlementedAt: Date;
   createdAt: Date;

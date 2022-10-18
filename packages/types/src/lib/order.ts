@@ -5,16 +5,16 @@ import { OrderType } from './order-type.enum';
 import { Shop } from './shop';
 import { User } from './user';
 export interface OrderDetails {
-  customerPhone: string;
-  table: string;
-  address: string;
-  latitude: number;
-  longitude: number;
+  customerPhone?: string;
+  table?: string;
+  address?: string;
+  latitude?: number;
+  longitude?: number;
   deliveryAreaId?: number;
   discountCouponId?: string;
-  paymentType: 'online' | 'cash' | 'clubWallet';
-  posPayed: number[];
-  deletionReason: string;
+  paymentType?: 'online' | 'cash' | 'clubWallet';
+  posPayed?: number[];
+  deletionReason?: string;
   currency?: string;
   note?: string;
   itemChanges?: {
@@ -26,11 +26,10 @@ export interface OrderDetails {
 
 export class Order {
   id: string;
-  customerId?: string;
   customer: User;
   creator: User;
+  waiter: User;
   qNumber?: number;
-  creatorId?: string;
   mergeTo?: Order;
   mergeFrom?: string[];
   shop?: Shop;

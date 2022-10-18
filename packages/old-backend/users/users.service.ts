@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
 import { PersianNumberService } from '@menno/utils';
 import { ChangePasswordDto, User } from '@menno/types';
-import * as Kavenegar from 'kavenegar'
+import * as Kavenegar from 'kavenegar';
 
 let kavenegarApi;
 
@@ -107,14 +107,20 @@ export class UsersService {
 
   async changePassword(dto: ChangePasswordDto): Promise<void> {
     if (!dto.newPassword || dto.newPassword.length < 4) {
-      throw new HttpException('passwords is too short', HttpStatus.NOT_ACCEPTABLE);
+      throw new HttpException(
+        'passwords is too short',
+        HttpStatus.NOT_ACCEPTABLE
+      );
     }
     if (dto.newPassword != dto.newPasswordRepeat) {
       throw new HttpException('passwords are not same.', HttpStatus.CONFLICT);
     }
-    const user = await this.usersRepository.findOneBy({id: dto.id});
+    const user = await this.usersRepository.findOneBy({ id: dto.id });
     if (user.password != dto.prevPassword) {
-      throw new HttpException('prev password is not correct', HttpStatus.FORBIDDEN);
+      throw new HttpException(
+        'prev password is not correct',
+        HttpStatus.FORBIDDEN
+      );
     }
 
     user.password = dto.newPassword;

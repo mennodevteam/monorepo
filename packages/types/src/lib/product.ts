@@ -14,6 +14,7 @@ export class Product {
   category: ProductCategory;
   images?: string[];
   orderTypes: OrderType[];
+  packItems: string[];
   details: any;
   limitQuantity: boolean;
   stockItem: StockItem;

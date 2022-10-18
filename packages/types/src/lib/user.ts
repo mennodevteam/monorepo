@@ -24,7 +24,7 @@ export class User {
   clubId: string;
   token: string;
 
-  fullName(user: User) {
+  static fullName(user: User) {
     try {
       const arr = [];
       if (user.firstName) arr.push(user.firstName);
