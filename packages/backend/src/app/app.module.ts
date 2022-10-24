@@ -5,7 +5,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { User } from '@menno/types';
 
 @Module({
   imports: [
@@ -19,15 +18,10 @@ import { User } from '@menno/types';
       synchronize: true,
       autoLoadEntities: true,
     }),
-    // AuthModule,
-    // UsersModule,
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-}
-
-export function abcd() {
-  const x = new User();
-}
+export class AppModule {}
