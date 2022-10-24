@@ -1,6 +1,6 @@
-import { OrderType } from "../../orders/entities/order-type.enum";
-import { Shop } from "../../shops/entities/shop";
+import { OrderType } from "./order-type.enum";
 import { PrintType } from "./print-type.enum";
+import { Shop } from "./shop";
 
 export class PrintAction {
     id: string;
