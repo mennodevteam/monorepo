@@ -3,6 +3,7 @@ import { User } from '@menno/types';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { AuthPayload } from '../core/types/auth-payload';
+import { Role } from '../core/types/role.enum';
 
 @Injectable()
 export class AuthService {
@@ -25,6 +26,7 @@ export class AuthService {
     payload.id = user.id;
     payload.mobilePhone = user.mobilePhone;
     payload.username = user.username;
+    payload.role = Role.Panel;
     // payload.shopId
     
     return {
