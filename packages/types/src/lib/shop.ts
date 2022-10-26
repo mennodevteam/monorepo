@@ -1,5 +1,8 @@
+import { Club } from './club';
+import { Menu } from './menu';
 import { Region } from './region';
 import { ShopGroup } from './shop-group';
+import { SmsAccount } from './sms-account';
 
 export interface ShopTable {
   code: string;
@@ -31,10 +34,10 @@ export class Shop {
   phones: string[];
   images: string[];
   deliveryAccountId?: string;
-  smsAccountId?: string;
+  smsAccount?: SmsAccount;
   bankPortalId?: string;
-  menuId?: string;
-  clubId?: string;
+  menu?: Menu;
+  club?: Club;
   logo: string;
   connectionAt: Date;
   shopGroup?: ShopGroup;

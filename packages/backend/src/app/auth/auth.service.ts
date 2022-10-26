@@ -1,15 +1,19 @@
-import { Injectable } from '@nestjs/common';
-import { User } from '@menno/types';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Shop, User } from '@menno/types';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { AuthPayload } from '../core/types/auth-payload';
 import { Role } from '../core/types/role.enum';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    @InjectRepository(Shop)
+    private shopsRepo: Repository<Shop>
   ) {}
 
   async validateUser(username: string, pass: string): Promise<User> {
@@ -43,5 +47,14 @@ export class AuthService {
 
   async loginPanel(user: User) {
     return this.login(user, Role.Panel);
+  }
+
+  getPanelUserShop(user: AuthPayload, relations: string[] = []) {
+    if (!user.shopId)
+      throw new HttpException('user shop id is null', HttpStatus.NO_CONTENT);
+    return this.shopsRepo.findOne({
+      where: { id: user.shopId },
+      relations,
+    });
   }
 }
