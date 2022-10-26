@@ -21,19 +21,27 @@ export class AuthService {
     return null;
   }
 
-  async loginPanel(user: User) {
-    const payload = new AuthPayload();
-    payload.id = user.id;
-    payload.mobilePhone = user.mobilePhone;
-    payload.username = user.username;
-    payload.role = Role.Panel;
-    // payload.shopId
-    
-    return {
-      accessToken: this.jwtService.sign(payload, {
-        secret: process.env.JWT_ACCESS_SECRET,
-        expiresIn: '10s',
-      }),
+  private login(user: User, role: Role, expireTokenIn = '15d') {
+    const payload: AuthPayload = {
+      id: user.id,
+      mobilePhone: user.mobilePhone,
+      username: user.username,
+      role: role,
     };
+
+    user.token = this.jwtService.sign(payload, {
+      secret: process.env.JWT_ACCESS_SECRET,
+      expiresIn: expireTokenIn,
+    });
+
+    return user;
+  }
+
+  async loginApp(user: User) {
+    return this.login(user, Role.App, '90d');
+  }
+
+  async loginPanel(user: User) {
+    return this.login(user, Role.Panel);
   }
 }
