@@ -1,9 +1,9 @@
-import { Role } from "./role.enum";
+import { Role } from './role.enum';
 
 export class AuthPayload {
-    id: string;
-    username?: string;
-    mobilePhone?: string;
-    shopId?: string;
-    role: Role;
+  id: string;
+  username?: string;
+  mobilePhone?: string;
+  shopId?: string;
+  role: Role;
 }

@@ -52,15 +52,7 @@ export const ShopSchema = new EntitySchema<Shop>({
       type: String,
       nullable: true,
     },
-    smsAccountId: {
-      type: String,
-      nullable: true,
-    },
     bankPortalId: {
-      type: String,
-      nullable: true,
-    },
-    clubId: {
       type: String,
       nullable: true,
     },
@@ -84,11 +76,13 @@ export const ShopSchema = new EntitySchema<Shop>({
   },
   relations: {
     menu: {
+      cascade: ['insert'],
       type: 'many-to-one',
       target: 'Menu',
       nullable: true,
     },
     region: {
+      cascade: ['insert'],
       type: 'many-to-one',
       target: 'Region',
     },
@@ -97,6 +91,24 @@ export const ShopSchema = new EntitySchema<Shop>({
       target: 'ShopGroup',
       inverseSide: 'shops',
       nullable: true,
+    },
+    smsAccount: {
+      type: 'many-to-one',
+      target: 'SmsAccount',
+      cascade: ['insert'],
+      nullable: true,
+    },
+    club: {
+      cascade: ['insert'],
+      type: 'many-to-one',
+      target: 'Club',
+      nullable: true,
+    },
+    users: {
+      type: 'one-to-one',
+      target: 'ShopUser',
+      inverseSide: 'shop',
+      cascade: ['insert'],
     },
   },
 });

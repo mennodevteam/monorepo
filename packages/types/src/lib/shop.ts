@@ -2,7 +2,9 @@ import { Club } from './club';
 import { Menu } from './menu';
 import { Region } from './region';
 import { ShopGroup } from './shop-group';
+import { ShopUser } from './shop-user';
 import { SmsAccount } from './sms-account';
+import { User } from './user';
 
 export interface ShopTable {
   code: string;
@@ -42,6 +44,7 @@ export class Shop {
   connectionAt: Date;
   shopGroup?: ShopGroup;
   options: any;
+  users: ShopUser[];
   details: ShopDetails;
   createdAt: Date;
 
@@ -77,4 +80,9 @@ export class Shop {
       return true;
     }
   }
+
+  static isUsernameValid(username: string): boolean {
+    const regex = /^[a-zA-Z0-9_]{3,}$/.test(username);
+    return regex;
+}
 }

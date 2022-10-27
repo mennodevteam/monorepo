@@ -7,19 +7,8 @@ import { MenuCostSchema, MenuSchema, ProductCategorySchema, ProductSchema } from
 import { MenusService } from './menu.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-      MenuCostSchema,
-      MenuSchema,
-      ProductCategorySchema,
-      ProductSchema,
-    ]),
-  ],
+  imports: [TypeOrmModule.forFeature([MenuCostSchema, MenuSchema, ProductCategorySchema, ProductSchema])],
   providers: [MenusService],
-  controllers: [
-    MenusController,
-    ProductsController,
-    ProductCategoriesController,
-  ],
+  controllers: [MenusController, ProductsController, ProductCategoriesController],
 })
 export class MenusModule {}

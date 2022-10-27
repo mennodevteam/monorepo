@@ -5,13 +5,8 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { RegionSchema } from './schemas/region.schema';
 
 @Module({
-    imports: [
-        ScheduleModule.forRoot(),
-        TypeOrmModule.forFeature([
-            RegionSchema,
-        ]),
-    ],
-    providers: [],
-    controllers: [RegionsController]
+  imports: [ScheduleModule.forRoot(), TypeOrmModule.forFeature([RegionSchema])],
+  providers: [],
+  controllers: [RegionsController],
 })
 export class RegionsModule {}

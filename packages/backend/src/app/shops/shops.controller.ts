@@ -1,66 +1,47 @@
-import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
-import { CreateShopDto } from 'src/core/models/create-shop.dto';
-import { FilterShop } from './entities/filter-shop';
-import { Shop } from './entities/shop';
-import { ShopGroup } from './entities/shop-group';
+import { Shop, Sms } from '@menno/types';
+import { Body, Controller, Get, Param, Put } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { AuthService } from '../auth/auth.service';
+import { Roles } from '../auth/roles.decorator';
+import { LoginUser } from '../auth/user.decorator';
+import { AuthPayload } from '../core/types/auth-payload';
+import { Role } from '../core/types/role.enum';
 import { ShopsService } from './shops.service';
 
 @Controller('shops')
 export class ShopsController {
-    constructor(
-        private shopsService: ShopsService,
-    ) { }
+  constructor(
+    private auth: AuthService,
+    private shopsService: ShopsService,
+    @InjectRepository(Shop)
+    private shopsRepo: Repository<Shop>
+  ) {}
 
-    @MessagePattern('shops/findByUsernameOrCode')
-    findByUsernameOrCode(text: string): Promise<Shop> {
-        return this.shopsService.findByUsernameOrCode(text);
-    }
+  @Get()
+  @Roles(Role.Panel)
+  findOne(@LoginUser() user: AuthPayload): Promise<Shop> {
+    return this.auth.getPanelUserShop(user, ['region', 'shopGroup']);
+  }
 
-    @MessagePattern('shops/getUserShop')
-    getUserShop(userId: string): Promise<Shop> {
-        return this.shopsService.getUserShop(userId);
-    }
+  @Put()
+  @Roles(Role.Panel)
+  async edit(@Body() dto: Shop, @LoginUser() user: AuthPayload): Promise<Shop> {
+    dto.id = user.shopId;
+    return this.shopsService.save(dto);
+  }
 
-    @MessagePattern('shops/findShopGroupByCode')
-    findShopGroupByCode(code: string): Promise<ShopGroup> {
-        return this.shopsService.findShopGroupByCode(code);
-    }
+  @Get('sendLink/:mobile')
+  @Roles(Role.Panel)
+  async sendLink(@Param('mobile') mobile: string, @LoginUser() user: AuthPayload): Promise<Sms> {
+    return this.shopsService.sendShopLink(user.shopId, mobile);
+  }
 
-    @MessagePattern('shops/findOne')
-    findOne(shopId: string): Promise<Shop> {
-        return this.shopsService.findOne(shopId);
-    }
-
-    @MessagePattern('shops/save')
-    save(shop: Shop): Promise<Shop> {
-        return this.shopsService.save(shop);
-    }
-
-    @MessagePattern('shops/insert')
-    insert(createShopDto: CreateShopDto): Promise<Shop> {
-        return this.shopsService.insert(createShopDto);
-    }
-
-    @MessagePattern('shops/adminInsert')
-    adminInsert(createShopDto: CreateShopDto): Promise<Shop> {
-        return this.shopsService.privateInsert(createShopDto);
-    }
-
-    @MessagePattern('shops/sendLink')
-    sendShopLink(dto: { shopId: string, mobile: string }): Promise<void> {
-        return this.shopsService.sendShopLink(dto.shopId, dto.mobile);
-    }
-
-    @MessagePattern('shops/filter')
-    filter(@Payload() filterShop: FilterShop): Promise<any> {
-        return this.shopsService.filter(filterShop)
-    }
-
-    @MessagePattern('shops/findByMenuIds')
-    findByMenuId(menuIds: string[]): Promise<Shop[]> {
-        return this.shopsService.filterByMenuIds(menuIds);
-    }
-
-
+  @Get(':query')
+  findByUsernameOrCode(@Param('query') query: string): Promise<Shop> {
+    return this.shopsRepo.findOne({
+      where: [{ username: query }, { code: query }],
+      relations: ['region', 'shopGroup'],
+    });
+  }
 }

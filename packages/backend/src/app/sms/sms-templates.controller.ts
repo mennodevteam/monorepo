@@ -1,6 +1,5 @@
-import { NewSmsDto, SmsTemplate } from '@menno/types';
+import { SmsTemplate } from '@menno/types';
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
@@ -10,9 +9,8 @@ import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 import { Role } from '../core/types/role.enum';
 import { SmsTemplatesService } from './sms-templates.service';
-import { SmsService } from './sms.service';
 
-@Controller('sms-templates')
+@Controller('smsTemplates')
 export class SmsTemplatesController {
   constructor(
     private auth: AuthService,
@@ -23,13 +21,8 @@ export class SmsTemplatesController {
 
   @Post()
   @Roles(Role.Panel)
-  async save(
-    @Body() smsTemplate: SmsTemplate,
-    @LoginUser() user: AuthPayload
-  ): Promise<SmsTemplate> {
-    const { smsAccount } = await this.auth.getPanelUserShop(user, [
-      'smsAccount',
-    ]);
+  async save(@Body() smsTemplate: SmsTemplate, @LoginUser() user: AuthPayload): Promise<SmsTemplate> {
+    const { smsAccount } = await this.auth.getPanelUserShop(user, ['smsAccount']);
 
     if (smsAccount) {
       smsTemplate.account = smsAccount;
@@ -53,9 +46,7 @@ export class SmsTemplatesController {
 
   @Get()
   async filter(@LoginUser() user: AuthPayload): Promise<SmsTemplate[]> {
-    const { smsAccount } = await this.auth.getPanelUserShop(user, [
-      'smsAccount',
-    ]);
+    const { smsAccount } = await this.auth.getPanelUserShop(user, ['smsAccount']);
     return this.smsTemplatesRepo.find({
       where: {
         account: smsAccount,

@@ -6,7 +6,7 @@ import { Roles } from '../auth/roles.decorator';
 import { Role } from '../core/types/role.enum';
 import { MenusService } from './menu.service';
 
-@Controller('product-categories')
+@Controller('productCategories')
 @Roles(Role.Panel)
 export class ProductCategoriesController {
   constructor(

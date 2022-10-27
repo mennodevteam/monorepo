@@ -1,11 +1,11 @@
 import { MenuCost } from '@menno/types';
-import { Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Controller, Delete, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Roles } from '../auth/roles.decorator';
 import { Role } from '../core/types/role.enum';
 
-@Controller('menu-costs')
+@Controller('menuCosts')
 @Roles(Role.Panel)
 export class MenuCostsController {
   constructor(

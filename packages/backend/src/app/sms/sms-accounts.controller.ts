@@ -6,7 +6,7 @@ import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 import { Role } from '../core/types/role.enum';
 
-@Controller('sms-accounts')
+@Controller('smsAccounts')
 @Roles(Role.Panel)
 export class SmsAccountsController {
   constructor(private authService: AuthService) {}

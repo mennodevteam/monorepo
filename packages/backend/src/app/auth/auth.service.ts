@@ -50,8 +50,7 @@ export class AuthService {
   }
 
   getPanelUserShop(user: AuthPayload, relations: string[] = []) {
-    if (!user.shopId)
-      throw new HttpException('user shop id is null', HttpStatus.NO_CONTENT);
+    if (!user.shopId) throw new HttpException('user shop id is null', HttpStatus.NO_CONTENT);
     return this.shopsRepo.findOne({
       where: { id: user.shopId },
       relations,

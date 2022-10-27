@@ -1,24 +1,9 @@
-import {
-  FilterSmsDto,
-  NewSmsDto,
-  Sms,
-  SmsAccount,
-  SmsStatus,
-  SmsTemplate,
-} from '@menno/types';
+import { FilterSmsDto, NewSmsDto, Sms, SmsAccount, SmsStatus, SmsTemplate } from '@menno/types';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  Repository,
-  Between,
-  MoreThanOrEqual,
-  LessThanOrEqual,
-  Like,
-  MoreThan,
-  FindOptionsWhere,
-} from 'typeorm';
+import { Repository, Between, MoreThanOrEqual, LessThanOrEqual, Like, MoreThan, FindOptionsWhere } from 'typeorm';
 
 import * as Kavenegar from 'kavenegar';
 
@@ -45,10 +30,7 @@ export class SmsService {
         id: dto.accountId,
       });
       if (account.charge < dto.receptors.length * 20) {
-        throw new HttpException(
-          'not enough charge.',
-          HttpStatus.PAYMENT_REQUIRED
-        );
+        throw new HttpException('not enough charge.', HttpStatus.PAYMENT_REQUIRED);
       }
     }
 
@@ -60,9 +42,7 @@ export class SmsService {
 
         const kavenegarDto = {
           message: JSON.stringify(messages),
-          sender: JSON.stringify(
-            messages.map((x) => process.env.KAVENEGAR_SENDER_NUMBER)
-          ),
+          sender: JSON.stringify(messages.map((x) => process.env.KAVENEGAR_SENDER_NUMBER)),
           receptor: JSON.stringify(receptors),
           date: dto.sentAt ? new Date(dto.sentAt).valueOf() / 1000 : undefined,
         };
@@ -101,10 +81,7 @@ export class SmsService {
     console.log(dto);
     const account = await this.smsAccountsRepo.findOneBy({ id: dto.accountId });
     if (account.charge < dto.receptors.length * 20) {
-      throw new HttpException(
-        'not enough charge.',
-        HttpStatus.PAYMENT_REQUIRED
-      );
+      throw new HttpException('not enough charge.', HttpStatus.PAYMENT_REQUIRED);
     }
     const template = await this.smsTemplatesRepo.findOneBy({
       id: dto.templateId,
@@ -129,25 +106,11 @@ export class SmsService {
     return this.send(dto);
   }
 
-  async lookup(
-    accountId: string,
-    mobilePhone: string,
-    kavenagarTemplate: string,
-    tokens: string[]
-  ): Promise<Sms> {
-    console.log(
-      'start lookup',
-      accountId,
-      mobilePhone,
-      kavenagarTemplate,
-      tokens
-    );
+  async lookup(accountId: string, mobilePhone: string, kavenagarTemplate: string, tokens: string[]): Promise<Sms> {
+    console.log('start lookup', accountId, mobilePhone, kavenagarTemplate, tokens);
     const account = await this.smsAccountsRepo.findOneBy({ id: accountId });
     if (account.charge < 20) {
-      throw new HttpException(
-        'not enough charge.',
-        HttpStatus.PAYMENT_REQUIRED
-      );
+      throw new HttpException('not enough charge.', HttpStatus.PAYMENT_REQUIRED);
     }
     return new Promise((resolve, reject) => {
       kavenegarApi.VerifyLookup(
@@ -230,9 +193,7 @@ export class SmsService {
         if (status === 200) {
           const savedSms: Sms[] = [];
           for (const entry of response) {
-            const sms = groupedSms.find(
-              (x) => x.kavenegarId.toString() === entry.messageid.toString()
-            );
+            const sms = groupedSms.find((x) => x.kavenegarId.toString() === entry.messageid.toString());
             if (sms.statusDescription !== entry.statustext) {
               sms.status = this.getStatus(entry.status);
               sms.statusDescription = entry.statustext;

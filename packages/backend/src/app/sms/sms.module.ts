@@ -18,5 +18,6 @@ import { SmsTemplatesService } from './sms-templates.service';
   ],
   providers: [SmsService, SmsSubscriber, SmsTemplatesService],
   controllers: [SmsController, SmsAccountsController, SmsTemplatesController],
+  exports: [SmsService]
 })
 export class SmsModule {}

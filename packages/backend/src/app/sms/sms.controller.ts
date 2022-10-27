@@ -11,20 +11,12 @@ import { SmsService } from './sms.service';
 
 @Controller('sms')
 export class SmsController {
-  constructor(
-    private authService: AuthService,
-    private smsService: SmsService,
-  ) {}
+  constructor(private authService: AuthService, private smsService: SmsService) {}
 
   @Post('filter')
   @Roles(Role.Panel)
-  async filter(
-    @Body() filter: FilterSmsDto,
-    @LoginUser() user: AuthPayload
-  ): Promise<[Sms[], number]> {
-    const { smsAccount } = await this.authService.getPanelUserShop(user, [
-      'smsAccount',
-    ]);
+  async filter(@Body() filter: FilterSmsDto, @LoginUser() user: AuthPayload): Promise<[Sms[], number]> {
+    const { smsAccount } = await this.authService.getPanelUserShop(user, ['smsAccount']);
     filter.accountId = smsAccount.id;
     return this.smsService.filter(filter);
   }
