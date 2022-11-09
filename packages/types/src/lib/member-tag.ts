@@ -1,6 +1,6 @@
 import { Club } from './club';
 
-export class Tag {
+export class MemberTag {
   id: number;
   club: Club;
   title: string;

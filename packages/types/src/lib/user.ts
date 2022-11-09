@@ -1,4 +1,5 @@
 import { GenderType } from './gender-type.enum';
+import { Member } from './member';
 
 export class User {
   id: string;
@@ -23,6 +24,7 @@ export class User {
   shopId: string;
   clubId: string;
   token: string;
+  members: Member[];
 
   static fullName(user: User) {
     try {

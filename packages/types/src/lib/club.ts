@@ -1,4 +1,5 @@
 import { DiscountCoupon } from './discount-coupon';
+import { SmsAccount } from './sms-account';
 
 export interface ClubConfig {
   anniversary: {
@@ -19,5 +20,6 @@ export class Club {
   id: string;
   title: string;
   createdAt: Date;
+  smsAccount: SmsAccount;
   config: ClubConfig;
 }

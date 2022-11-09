@@ -87,4 +87,11 @@ export const UserSchema = new EntitySchema<User>({
       createDate: true,
     },
   },
+  relations: {
+    members: {
+      type: 'one-to-many',
+      target: 'Member',
+      inverseSide: 'user',
+    }
+  }
 });
