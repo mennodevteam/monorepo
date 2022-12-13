@@ -2,7 +2,7 @@ import { MemberTag } from '@menno/types';
 import { EntitySchema } from 'typeorm';
 
 export const MemberTagSchema = new EntitySchema<MemberTag>({
-  name: 'Tag',
+  name: 'MemberTag',
   target: MemberTag,
   columns: {
     id: {

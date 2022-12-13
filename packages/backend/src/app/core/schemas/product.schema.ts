@@ -47,11 +47,6 @@ export const ProductSchema = new EntitySchema<Product>({
       array: true,
       default: [],
     },
-    packItems: {
-      type: String,
-      array: true,
-      default: [],
-    },
     details: {
       type: 'simple-json',
       default: {},

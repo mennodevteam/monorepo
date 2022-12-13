@@ -56,10 +56,6 @@ export const ShopSchema = new EntitySchema<Shop>({
       type: String,
       nullable: true,
     },
-    deliveryAccountId: {
-      type: String,
-      nullable: true,
-    },
     phones: {
       type: String,
       array: true,

@@ -53,7 +53,7 @@ export const MemberSchema = new EntitySchema<Member>({
     },
     tags: {
       type: 'many-to-many',
-      target: 'Tag',
+      target: 'MemberTag',
       joinTable: true,
       cascade: ['insert'],
     },
@@ -66,7 +66,7 @@ export const MemberSchema = new EntitySchema<Member>({
   uniques: [
     {
       name: 'UNIQUE_USER_ID',
-      columns: ['userId', 'club'],
+      columns: ['user', 'club'],
     },
     {
       name: 'UNIQUE_PUBLIC_KEY',

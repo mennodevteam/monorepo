@@ -49,10 +49,6 @@ export const UserSchema = new EntitySchema<User>({
       type: String,
       nullable: true,
     },
-    businessId: {
-      type: 'uuid',
-      nullable: true,
-    },
     role: {
       type: Number,
       nullable: true,
