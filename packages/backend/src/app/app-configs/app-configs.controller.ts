@@ -1,20 +1,26 @@
+import { AppConfig } from '@menno/types';
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Controller()
 export class AppConfigsController {
-  constructor(private appConfigService: AppConfigService) {}
+  constructor(
+    @InjectRepository(AppConfig)
+    private repo: Repository<AppConfig>
+  ) {}
 
   @MessagePattern('appConfigs/find')
   find(shopId: string): Promise<AppConfig[]> {
-    return this.appConfigService.find(shopId);
+    return this.repo.findBy({ shop: { id: shopId } });
   }
   @MessagePattern('appConfigs/save')
   save(appConfig: AppConfig): Promise<AppConfig> {
-    return this.appConfigService.save(appConfig);
+    return this.repo.save(appConfig);
   }
   @MessagePattern('appConfigs/delete')
   delete(id: string): Promise<any> {
-    return this.appConfigService.delete(id);
+    return this.repo.delete(id);
   }
 }

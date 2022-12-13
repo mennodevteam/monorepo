@@ -1,8 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Shop, ShopUser, User } from '@menno/types';
+import { Shop, User } from '@menno/types';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { AuthPayload } from '../core/types/auth-payload';
+import { Role } from '../core/types/role.enum';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -11,8 +12,8 @@ export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-    @InjectRepository(ShopUser)
-    private shopUsersRepo: Repository<ShopUser>
+    @InjectRepository(Shop)
+    private shopsRepo: Repository<Shop>
   ) {}
 
   async validateUser(username: string, pass: string): Promise<User> {
@@ -24,11 +25,12 @@ export class AuthService {
     return null;
   }
 
-  login(user: User, expireTokenIn = '15d') {
+  private login(user: User, role: Role, expireTokenIn = '15d') {
     const payload: AuthPayload = {
       id: user.id,
       mobilePhone: user.mobilePhone,
       username: user.username,
+      role: role,
     };
 
     user.token = this.jwtService.sign(payload, {
@@ -39,8 +41,17 @@ export class AuthService {
     return user;
   }
 
-  async getUserShops(user: AuthPayload, relations: string[] = []) {
-    return this.shopUsersRepo.findOne({
+  async loginApp(user: User) {
+    return this.login(user, Role.App, '90d');
+  }
+
+  async loginPanel(user: User) {
+    return this.login(user, Role.Panel);
+  }
+
+  getPanelUserShop(user: AuthPayload, relations: string[] = []) {
+    if (!user.shopId) throw new HttpException('user shop id is null', HttpStatus.NO_CONTENT);
+    return this.shopsRepo.findOne({
       where: { id: user.shopId },
       relations,
     });

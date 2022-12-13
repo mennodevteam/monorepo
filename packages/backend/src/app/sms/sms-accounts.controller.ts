@@ -1,7 +1,7 @@
 import { SmsAccount } from '@menno/types';
 import { Controller, Get } from '@nestjs/common';
 import { AuthService } from '../auth/auth.service';
-import { Roles } from '../auth/roles.decorator';
+import { Roles } from '../auth/roles.decorators';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 import { Role } from '../core/types/role.enum';

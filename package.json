@@ -28,6 +28,7 @@
     "kavenegar": "^1.1.4",
     "ng2-charts": "^4.0.1",
     "ngx-image-cropper": "^6.3.0",
+    "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "pg": "^8.8.0",
