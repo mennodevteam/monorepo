@@ -1,5 +1,5 @@
 export class FilterMemberDto {
-  clubId: string;
+  clubId?: string;
   fromDate?: Date;
   wallet?: number
   toDate?: Date;

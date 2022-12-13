@@ -1,6 +1,0 @@
-<mat-dialog-content *ngIf="tables">
-    <button mat-stroked-button *ngFor="let t of tables" [mat-dialog-close]="t">
-        {{t.code}}
-        <span *ngIf="t.title"> ({{t.title}})</span>
-    </button>
-</mat-dialog-content>
