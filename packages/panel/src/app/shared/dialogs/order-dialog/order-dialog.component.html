@@ -1,0 +1,115 @@
+<mat-dialog-content *ngIf="order">
+    <section class="side form-theme">
+        <img fileImage [file]="order.member?.user?.avatar" [avatarPlaceholder]="true">
+        <span spacer></span>
+        <ng-container *ngIf="order.customer && order.customer.mobilePhone">
+            <h3> {{User.fullName(order.customer)}} </h3>
+            <p> {{order.customer?.mobilePhone}} </p>
+        </ng-container>
+        <h3 *ngIf="!order.customer || !order.customer.mobilePhone"> {{'app.unknown' | translate}} </h3>
+        <span style="flex: 1"></span>
+        <ng-container *ngIf="order.state === OrderState.Pending">
+            <button mat-flat-button color="warn" tabindex="-1">
+                {{ 'orderDialog.deny' | translate }}
+            </button>
+            <span spacer></span>
+            <button mat-button color="accent" tabindex="-1" (click)="accept()">
+                {{ 'orderDialog.accept' | translate }}
+            </button>
+            <span spacer></span>
+            <button mat-button color="accent" tabindex="-1" (click)="accept()">
+                {{ 'orderDialog.acceptAndPrint' | translate }}
+            </button>
+        </ng-container>
+    </section>
+    <section class="factor">
+        <header>
+            <p class="time">
+                {{order.createdAt | pdate}}
+            </p>
+            <p>
+                <span *ngIf="order.type === OrderType.DineIn">
+                    <i class="fas fa-coffee-togo"></i>
+                    {{ 'orderDialog.dineInType' | translate }}
+                </span>
+                <span *ngIf="order.type === OrderType.Delivery">
+                    <i class="fas fa-mug-hot"></i>
+                    {{ 'orderDialog.deliveryType' | translate }}
+                </span>
+                <span *ngIf="order.type === OrderType.Takeaway">
+                    <i class="fas fa-map-marker-alt"></i>
+                    {{ 'orderDialog.takeawayType' | translate }}
+                </span>
+            </p>
+            <p *ngIf="order.details?.address">
+                {{ 'orderDialog.address' | translate }}: {{ order.details.address }}
+            </p>
+            <p *ngIf="order.details?.table">
+                {{ 'orderDialog.table' | translate }}: {{ order.details.table }}
+            </p>
+        </header>
+        <mat-divider></mat-divider>
+        <table mat-table [dataSource]="order.items">
+            <ng-container matColumnDef="row">
+                <th mat-header-cell *matHeaderCellDef> {{ 'app.row' | translate}} </th>
+                <td mat-cell *matCellDef="let element; let i = index;">
+                    <span *ngIf="!element.isAbstract">
+                        {{ i + 1 }}
+                    </span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef style="width: 150px;"> {{ 'app.title' | translate}} </th>
+                <td mat-cell *matCellDef="let element;">
+                    {{element.title}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="quantity">
+                <th mat-header-cell *matHeaderCellDef style="width: 60px;"> {{ 'app.count' | translate}} </th>
+                <td mat-cell *matCellDef="let element;">
+                    <span *ngIf="!element.isAbstract">{{element.quantity}}</span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef style="width: 80px"> {{ 'app.fee' | translate}} </th>
+                <td mat-cell *matCellDef="let element;">
+                    <span class="ltr" style="display: inline-block;" *ngIf="!element.isAbstract">
+                        {{ element.price | number}}
+                    </span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="sum">
+                <th mat-header-cell *matHeaderCellDef style="width: 96px"> {{ 'app.sum' | translate}}</th>
+                <td mat-cell *matCellDef="let element;">
+                    <span class="ltr" style="display: inline-block;">
+                        {{ (element.price * element.quantity) | number}}
+                    </span>
+                    {{'' | menuCurrency}}
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <span style="flex: 1"></span>
+        <mat-divider></mat-divider>
+        <footer> 
+            <b class="total-price">
+                {{'orderDialog.total' | translate}}:
+                {{order.totalPrice | menuCurrency}}
+            </b>
+            <span spacer></span>
+            <span *ngIf="!order.isPayed" class="red">
+                *{{'orderDialog.notPayed' | translate}}
+            </span>
+            <span style="flex: 1"></span>
+            <span *ngIf="order.isPayed" class="green">
+                {{'orderDialog.isPayed' | translate}}
+            </span>
+            <button mat-button color="primary" *ngIf="!order.isPayed" [disabled]="settlementing" (click)="settlement()">
+                {{'orderDialog.settlement' | translate}}
+                <i class="fad fa-spinner-third fa-spin" *ngIf="settlementing"></i>
+            </button>
+        </footer>
+    </section>
+</mat-dialog-content>

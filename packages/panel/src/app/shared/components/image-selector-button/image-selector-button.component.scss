@@ -1,0 +1,39 @@
+@import 'theme';
+
+:host {
+  display: block;
+}
+
+.container {
+  border: $border;
+  border-style: dashed;
+  border-radius: 8px;
+  padding: 4px;
+  height: 100%;
+  cursor: pointer;
+  display: flex;
+
+  &__back {
+    flex: 1;
+    height: -webkit-fill-available;
+    width: -moz-available;
+    background-color: $gray-l2;
+    padding: 16px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    i {
+      color: $gray;
+    }
+  }
+}
+
+.radius {
+  border-radius: 50%;
+
+  .container__back {
+    border-radius: 50%;
+  }
+}

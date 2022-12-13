@@ -1,0 +1,21 @@
+<form (ngSubmit)="save()">
+    <h3 mat-dialog-title *ngIf="title">{{title}}</h3>
+    <mat-dialog-content>
+        <p *ngIf="description">
+            {{ description }}
+        </p>
+        <mat-form-field appearance="fill">
+            <mat-label *ngIf="label">{{ label }}</mat-label>
+            <input *ngIf="type != 'textarea'" matInput [type]="type || 'text'" [(ngModel)]="value"
+                [placeholder]="placeholder" [ngModelOptions]="{standalone: true}">
+            <textarea *ngIf="type == 'textarea'" matInput [(ngModel)]="value" [placeholder]="placeholder"
+                rows="{{rows}}" [ngModelOptions]="{standalone: true}"></textarea>
+            <mat-hint *ngIf="hint">{{hint}}</mat-hint>
+        </mat-form-field>
+    </mat-dialog-content>
+
+    <mat-dialog-actions>
+        <button mat-button type="submit" color="primary"> {{ okText || 'ثبت'}} </button>
+        <button mat-button type="button" [mat-dialog-close]="null"> {{ cancelText || 'انصراف'}} </button>
+    </mat-dialog-actions>
+</form>

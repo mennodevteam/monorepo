@@ -1,0 +1,70 @@
+@import 'theme';
+
+.container {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  background-color: $background;
+
+  .mat-card {
+    width: 800px;
+    max-width: 90vw;
+    padding: 0;
+    border: none;
+    overflow: hidden;
+
+    .mat-card-content {
+      display: flex;
+
+      .image {
+        width: 480px;
+        height: 85vh;
+        flex: none;
+        background: #F3E8C9 url(../../../assets/images/login.webp) center center/contain no-repeat;
+      }
+
+      .content {
+        flex: 1;
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        form {
+          width: fill-available;
+          width: -moz-fill-available;
+          width: -webkit-fill-available;
+          width: -moz-available;
+          display: flex;
+          flex-direction: column;
+
+          .mat-form-field {
+            margin: 8px 0;
+          }
+        }
+
+      }
+    }
+  }
+
+  // form {
+  //   max-width: 90vw;
+  //   width: 300px;
+
+  //   .mat-card-content {
+  //     display: flex;
+  //     flex-direction: column;
+  //   }
+  // }
+}
+
+#logo {
+  width: 96px;
+}
+
+.eye-icon {
+  cursor: pointer;
+  width: 24px;
+  text-align: center;
+}

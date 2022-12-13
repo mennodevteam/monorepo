@@ -1,0 +1,24 @@
+<mat-dialog-content>
+    <mat-nav-list>
+        <a mat-list-item (click)="dineIn = !dineIn">
+            <h3 matLine>{{'orderType.dineIn' | translate}}</h3>
+            <i *ngIf="!dineIn" class="fas fa-toggle-off red"></i>
+            <i *ngIf="dineIn" class="fas fa-toggle-on green"></i>
+        </a>
+        <a mat-list-item (click)="delivery = !delivery">
+            <h3 matLine>{{'orderType.delivery' | translate}}</h3>
+            <i *ngIf="!delivery" class="fas fa-toggle-off red"></i>
+            <i *ngIf="delivery" class="fas fa-toggle-on green"></i>
+        </a>
+        <a mat-list-item (click)="takeaway= !takeaway">
+            <h3 matLine>{{'orderType.takeaway' | translate}}</h3>
+            <i *ngIf="!takeaway" class="fas fa-toggle-off red"></i>
+            <i *ngIf="takeaway" class="fas fa-toggle-on green"></i>
+        </a>
+    </mat-nav-list>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-flat-button color="primary" (click)="save()">{{'app.ok' | translate}}</button>
+    <span spacer></span>
+    <button mat-button mat-dialog-close>{{'app.cancel' | translate}}</button>
+</mat-dialog-actions>

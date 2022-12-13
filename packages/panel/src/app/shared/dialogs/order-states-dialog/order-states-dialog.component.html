@@ -1,0 +1,40 @@
+<mat-dialog-content>
+    <mat-nav-list>
+        <a mat-list-item (click)="pending = !pending" *ngIf="!hidden || hidden.indexOf(OrderState.Pending) == -1"
+            [disabled]="disabled && disabled.indexOf(OrderState.Pending) > -1">
+            <h3 matLine>{{'app.orderState.pending' | translate}}</h3>
+            <i *ngIf="!pending" class="fas fa-toggle-off red"></i>
+            <i *ngIf="pending" class="fas fa-toggle-on green"></i>
+        </a>
+        <a mat-list-item (click)="processing = !processing"
+            *ngIf="!hidden || hidden.indexOf(OrderState.Processing) == -1"
+            [disabled]="disabled && disabled.indexOf(OrderState.Processing) > -1">
+            <h3 matLine>{{'app.orderState.processing' | translate}}</h3>
+            <i *ngIf="!processing" class="fas fa-toggle-off red"></i>
+            <i *ngIf="processing" class="fas fa-toggle-on green"></i>
+        </a>
+        <a mat-list-item (click)="shipping = !shipping" *ngIf="!hidden || hidden.indexOf(OrderState.Shipping) == -1"
+            [disabled]="disabled && disabled.indexOf(OrderState.Shipping) > -1">
+            <h3 matLine>{{'app.orderState.shipping' | translate}}</h3>
+            <i *ngIf="!shipping" class="fas fa-toggle-off red"></i>
+            <i *ngIf="shipping" class="fas fa-toggle-on green"></i>
+        </a>
+        <a mat-list-item (click)="ready = !ready" *ngIf="!hidden || hidden.indexOf(OrderState.Ready) == -1"
+            [disabled]="disabled && disabled.indexOf(OrderState.Ready) > -1">
+            <h3 matLine>{{'app.orderState.ready' | translate}}</h3>
+            <i *ngIf="!ready" class="fas fa-toggle-off red"></i>
+            <i *ngIf="ready" class="fas fa-toggle-on green"></i>
+        </a>
+        <a mat-list-item (click)="completed = !completed" *ngIf="!hidden || hidden.indexOf(OrderState.Completed) == -1"
+            [disabled]="disabled && disabled.indexOf(OrderState.Completed) > -1">
+            <h3 matLine>{{'app.orderState.completed' | translate}}</h3>
+            <i *ngIf="!completed" class="fas fa-toggle-off red"></i>
+            <i *ngIf="completed" class="fas fa-toggle-on green"></i>
+        </a>
+    </mat-nav-list>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-flat-button color="primary" (click)="save()">{{'app.ok' | translate}}</button>
+    <span spacer></span>
+    <button mat-button mat-dialog-close>{{'app.cancel' | translate}}</button>
+</mat-dialog-actions>

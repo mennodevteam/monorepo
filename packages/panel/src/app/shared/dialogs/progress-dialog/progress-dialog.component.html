@@ -1,0 +1,11 @@
+<h3 mat-dialog-title *ngIf="title">{{title}}</h3>
+
+<mat-dialog-content>
+  <p *ngIf="description">{{description}}</p>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</mat-dialog-content>
+
+<mat-dialog-actions *ngIf="okText || cancelText">
+  <button mat-button *ngIf="okText" [mat-dialog-close]="true" color="primary"> {{ okText }} </button>
+  <button mat-button *ngIf="cancelText" mat-dialog-close> {{ cancelText }} </button>
+</mat-dialog-actions>

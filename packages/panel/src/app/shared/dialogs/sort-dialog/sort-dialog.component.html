@@ -1,0 +1,27 @@
+<h2 mat-dialog-title> {{title}} </h2>
+
+<mat-dialog-content>
+  <mat-list dense>
+    <mat-list-item *ngFor="let item of items; let i = index; let last = last; let first = first;">
+      <p matLine>
+        <b> {{i + 1}}. </b>
+        {{ item.title }}
+      </p>
+      <button mat-icon-button [disabled]="last" (click)="down(i)">
+        <i class="fas fa-sort-down"></i>
+      </button>
+      <button mat-icon-button [disabled]="first" (click)="up(i)">
+        <i class="fas fa-sort-up"></i>
+      </button>
+      <mat-divider *ngIf="!last"></mat-divider>
+    </mat-list-item>
+  </mat-list>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button color="primary" (click)="save()">
+    {{ 'app.save' | translate }}  
+  </button>
+  <button mat-button mat-dialog-close>
+    {{ 'app.cancel' | translate }}  
+  </button>
+</mat-dialog-actions>
