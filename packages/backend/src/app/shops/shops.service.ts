@@ -81,7 +81,9 @@ export class ShopsService {
         const lastShopCode = allShops[0];
         console.log('lastShopCode');
         if (lastShopCode) dto.code = (Number(lastShopCode.code) + 1).toString();
-      } catch (error) {}
+      } catch (error) {
+        // do nothing
+      }
     }
 
     const shop = new Shop();

@@ -9,16 +9,10 @@ import { JwtAuthGuard } from './jwt-auth.guard';
 import { UsersModule } from '../users/users.module';
 import { AuthController } from './auth.controller';
 import { RolesGuard } from './roles.guard';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ShopSchema } from '../shops/schemas';
+import { SchemasModule } from '../core/schemas.module';
 
 @Module({
-  imports: [
-    PassportModule,
-    JwtModule.register({}),
-    UsersModule,
-    TypeOrmModule.forFeature([ShopSchema]),
-  ],
+  imports: [SchemasModule, PassportModule, JwtModule.register({}), UsersModule],
   providers: [
     AuthService,
     LocalStrategy,

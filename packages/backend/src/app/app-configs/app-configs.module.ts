@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppConfigSchema, ThemeSchema } from './schemas';
+import { SchemasModule } from '../core/schemas.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AppConfigSchema, ThemeSchema])],
+  imports: [SchemasModule],
 })
 export class AppConfigsModule {}
