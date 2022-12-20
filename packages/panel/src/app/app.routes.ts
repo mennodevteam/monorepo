@@ -17,9 +17,13 @@ export const appRoutes: Route[] = [
         path: '',
         canActivate: [ShopGuard],
         children: [
-          
-        ]
-      }
+          {
+            path: 'menu',
+            loadChildren: () => import('./pages/menu/menu.module').then((m) => m.MenuModule),
+          },
+          { path: '', redirectTo: 'menu', pathMatch: 'full' },
+        ],
+      },
     ],
   },
 ];
