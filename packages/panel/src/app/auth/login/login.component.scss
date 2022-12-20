@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+
+  form {
+    max-width: 90vw;
+    width: 300px;
+
+    .mat-card-content {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}

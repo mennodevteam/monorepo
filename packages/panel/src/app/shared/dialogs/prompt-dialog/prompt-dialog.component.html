@@ -1,0 +1,56 @@
+<form (ngSubmit)="save()">
+  <h3 mat-dialog-title *ngIf="title">{{ title }}</h3>
+  <mat-dialog-content>
+    <p *ngIf="description">
+      {{ description }}
+    </p>
+    <mat-form-field appearance="fill">
+      <mat-label *ngIf="label">{{ label }}</mat-label>
+      <input
+        *ngIf="['textarea', 'datepicker'].indexOf(type) === -1"
+        matInput
+        [type]="type || 'text'"
+        [(ngModel)]="value"
+        [placeholder]="placeholder"
+        [ngModelOptions]="{ standalone: true }"
+      />
+
+      <textarea
+        *ngIf="type == 'textarea'"
+        matInput
+        [(ngModel)]="value"
+        [placeholder]="placeholder"
+        rows="{{ rows }}"
+        [ngModelOptions]="{ standalone: true }"
+      ></textarea>
+
+      <input
+        *ngIf="type === 'datepicker'"
+        matInput
+        [(ngModel)]="value"
+        [placeholder]="placeholder"
+        [matDatepicker]="picker"
+        [ngModelOptions]="{ standalone: true }"
+        [max]="max"
+      />
+      <mat-datepicker-toggle
+        *ngIf="type === 'datepicker'"
+        matSuffix
+        [for]="picker"
+      >
+      </mat-datepicker-toggle>
+      <mat-datepicker [hidden]="type !== 'datepicker'" #picker></mat-datepicker>
+
+      <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-button type="submit" color="primary">
+      {{ okText || 'Ok' }}
+    </button>
+    <button mat-button type="button" [mat-dialog-close]="null">
+      {{ cancelText || 'Cancel' }}
+    </button>
+  </mat-dialog-actions>
+</form>

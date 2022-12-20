@@ -1,0 +1,19 @@
+<h3 mat-dialog-title *ngIf="title">{{ title }}</h3>
+<mat-dialog-content>
+  <p *ngIf="description">
+    {{ description }}
+  </p>
+  <mat-nav-list>
+    <a mat-list-item *ngFor="let item of items" [mat-dialog-close]="item.value">
+      <i *ngIf="item.iconClass" matListIcon class="{{ item.iconClass }}"></i>
+      <h3 matLine>{{ item.title }}</h3>
+      <p *ngIf="item.subtitle" matLine>{{ item.subtitle }}</p>
+    </a>
+  </mat-nav-list>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button type="button" [mat-dialog-close]="null">
+    {{ cancelText }}
+  </button>
+</mat-dialog-actions>

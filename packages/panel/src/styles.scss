@@ -1,0 +1,87 @@
+@use "@angular/material" as mat;
+@import "theme/theme.scss";
+@import "assets/fonts/fontawesome/scss/fontawesome.scss";
+@import "assets/fonts/fontawesome/scss/regular.scss";
+@import "assets/fonts/fontawesome/scss/brands.scss";
+@import "assets/fonts/fontawesome/scss/solid.scss";
+@import "assets/fonts/iransans/iransans.scss";
+
+$custom-typography: mat.define-typography-config(
+    $font-family: "IRANSans",
+);
+@include mat.core($custom-typography);
+@include mat.all-component-themes($app-theme);
+
+.form-theme {
+    @include mat.all-component-themes($form-theme);
+}
+
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: "IRANSans", Roboto, "Helvetica Neue", sans-serif;
+    background-color: $background-color;
+}
+
+.eng {
+    font-family: monospace !important;
+    direction: ltr;
+    text-align: start !important;
+}
+
+.ltr {
+    direction: ltr;
+    text-align: start !important;
+}
+
+.spacer,
+[spacer] {
+    display: inline-block;
+    padding: 8px;
+}
+
+.spacer-sm,
+[spacer-sm] {
+    display: inline-block;
+    padding: 4px;
+}
+
+.spacer-2x,
+[spacer-2x] {
+    display: inline-block;
+    padding: 16px;
+}
+
+.max-width {
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.mat-card {
+    border-radius: 12px !important;
+    box-shadow: none !important;
+    border: 1px solid $gray-color;
+}
+
+.mat-table tr.clickable {
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.03);
+    }
+}
+
+.mat-toolbar {
+    background-color: white;
+}
+
+.page-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    top: 64px;
+    border-bottom: 1px solid $gray-color;
+}

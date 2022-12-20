@@ -1,0 +1,42 @@
+@use "@angular/material" as mat;
+
+$app-primary: mat.define-palette(mat.$indigo-palette);
+$app-accent: mat.define-palette(mat.$deep-purple-palette);
+$app-warn: mat.define-palette(mat.$red-palette);
+
+$app-theme: mat.define-light-theme(
+    (
+        color: (
+            primary: $app-primary,
+            accent: $app-accent,
+            warn: $app-warn,
+        ),
+    )
+);
+
+$primary-color: map-get($app-primary, 500) !important;
+
+$accent-color: map-get($app-accent, 500) !important;
+
+$warn-color: map-get($app-warn, 500) !important;
+
+$gray-color: map-get(mat.$gray-palette, 400) !important;
+
+$yellow-color: #ffc107;
+$green-color: #4caf50;
+$background-color: #eeeeee;
+
+// form theme
+$form-primary: mat.define-palette(mat.$blue-palette);
+$form-accent: mat.define-palette(mat.$green-palette);
+$form-warn: mat.define-palette(mat.$red-palette);
+
+$form-theme: mat.define-light-theme(
+    (
+        color: (
+            primary: $form-primary,
+            accent: $form-accent,
+            warn: $form-warn,
+        ),
+    )
+);
