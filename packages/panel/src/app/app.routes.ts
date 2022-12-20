@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
+import { ShopGuard } from './core/guards/shop.guard';
 import { PagesComponent } from './pages/pages.component';
 
 export const appRoutes: Route[] = [
@@ -12,6 +13,13 @@ export const appRoutes: Route[] = [
     component: PagesComponent,
     canActivate: [AuthGuard],
     children: [
+      {
+        path: '',
+        canActivate: [ShopGuard],
+        children: [
+          
+        ]
+      }
     ],
   },
 ];

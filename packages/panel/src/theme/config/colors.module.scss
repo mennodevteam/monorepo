@@ -115,6 +115,42 @@
 .surface {
   background-color: var(--md-sys-color-surface) !important;
 }
+.surface-1 {
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: $color-primary;
+    opacity: 0.05;
+  }
+}
+.surface-2 {
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: $color-primary;
+    opacity: 0.08;
+  }
+}
+.surface-3 {
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: $color-primary;
+    opacity: 0.12;
+  }
+}
 .surface-text {
   color: var(--md-sys-color-surface) !important;
 }

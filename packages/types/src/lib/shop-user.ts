@@ -15,7 +15,7 @@ export enum UserAction {
   Setting = 'setting',
 }
 export class ShopUser {
-  userId: string;
+  id: string;
   shop: Shop;
   role: ShopUserRole;
   actions: UserAction[];

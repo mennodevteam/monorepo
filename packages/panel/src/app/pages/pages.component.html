@@ -1,16 +1,17 @@
-<mat-toolbar>
+<mat-toolbar class="primary on-primary-text">
   <button mat-icon-button>
-    <i class="fa-solid fa-bars fa-lg"></i>
+    <i class="fa-regular fa-bars"></i>
   </button>
+  <h1>{{ (shopService.shop | async)?.title }}</h1>
 </mat-toolbar>
 <mat-sidenav-container class="background on-background-text">
-  <mat-sidenav mode="side" opened class="background on-background-text">
+  <mat-sidenav mode="side" opened class="surface-2 on-surface-text">
     <mat-nav-list>
       <a mat-list-item *ngFor="let item of items">
-        <i *ngIf="item.icon" class="{{item.icon}}"></i>
-        <span matlisttitle
+        <i matListItemIcon *ngIf="item.icon" class="on-surface-text fa-solid {{ item.icon }}"></i>
+        <span class="on-surface-text" matListItemTitle>{{ item.title }}</span>
       </a>
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>Main content</mat-sidenav-content>
+  <mat-sidenav-content class="background on-background-text"> Main content </mat-sidenav-content>
 </mat-sidenav-container>

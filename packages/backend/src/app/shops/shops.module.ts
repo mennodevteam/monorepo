@@ -6,9 +6,10 @@ import { ShopsService } from './shops.service';
 import { SmsModule } from '../sms/sms.module';
 import { UsersModule } from '../users/users.module';
 import { SchemasModule } from '../core/schemas.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [SchemasModule, SmsModule, UsersModule],
+  imports: [SchemasModule, SmsModule, UsersModule, AuthModule],
   controllers: [ShopsController],
   providers: [ShopsService],
   exports: [ShopsService],

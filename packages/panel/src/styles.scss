@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "assets/fonts/iransans/iransans.scss";
-@import "theme2.scss";
+@import "theme1.scss";
 @import "theme";
 @import "assets/fonts/fontawesome/scss/fontawesome.scss";
 @import "assets/fonts/fontawesome/scss/regular.scss";
@@ -37,8 +37,8 @@ span[spacer-2x] {
 
 // material override
 .mat-toolbar {
-  background-color: $color-primary-container;
-  color: $color-on-primary-container;
+  background-color: $color-surface;
+  color: $color-on-surface;
 
   min-height: 64px;
   &-row {

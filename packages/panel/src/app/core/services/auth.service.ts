@@ -9,14 +9,14 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class AuthService {
-  private _user: BehaviorSubject<User | null>;
+  private user$: BehaviorSubject<User | null>;
 
   constructor(private http: HttpClient) {
     const _item: any =
       sessionStorage?.getItem(environment.localStorageUserKey) ||
       localStorage?.getItem(environment.localStorageUserKey);
 
-    this._user = new BehaviorSubject<User | null>(JSON.parse(_item));
+    this.user$ = new BehaviorSubject<User | null>(JSON.parse(_item));
   }
 
   login(username: string, password: string, saveLoginUser?: boolean) {
@@ -27,7 +27,7 @@ export class AuthService {
           localStorage.setItem(environment.localStorageUserKey, JSON.stringify(user));
         }
         sessionStorage.setItem(environment.localStorageUserKey, JSON.stringify(user));
-        this._user.next(user);
+        this.user$.next(user);
         return user;
       })
     );
@@ -37,15 +37,15 @@ export class AuthService {
     // remove user from local storage to log user out
     localStorage.removeItem(environment.localStorageUserKey);
     sessionStorage.removeItem(environment.localStorageUserKey);
-    this._user.next(null);
+    this.user$.next(null);
   }
 
   get user() {
-    return new Observable((fn) => this._user.subscribe(fn));
+    return new Observable((fn) => this.user$.subscribe(fn));
   }
 
   get instantUser() {
-    return this._user.value;
+    return this.user$.value;
   }
 
   async update(dto: User) {
@@ -55,7 +55,7 @@ export class AuthService {
         localStorage.setItem(environment.localStorageUserKey, JSON.stringify(user));
       }
       sessionStorage.setItem(environment.localStorageUserKey, JSON.stringify(user));
-      this._user.next(user);
+      this.user$.next(user);
     }
   }
 }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ShopService } from '../core/services/shop.service';
+import { ITEMS } from './sidebar.contant';
 
 @Component({
   selector: 'menno-pages',
@@ -6,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./pages.component.scss'],
 })
 export class PagesComponent implements OnInit {
-  constructor() {}
+  items = ITEMS;
+  constructor(
+    public shopService: ShopService,
+  ) {}
 
   ngOnInit(): void {}
 }

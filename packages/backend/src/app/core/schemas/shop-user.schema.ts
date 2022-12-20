@@ -5,9 +5,10 @@ export const ShopUserSchema = new EntitySchema<ShopUser>({
   name: 'ShopUser',
   target: ShopUser,
   columns: {
-    userId: {
-      type: 'uuid',
+    id: {
       primary: true,
+      type: 'uuid',
+      generated: 'uuid',
     },
     role: {
       type: 'enum',
@@ -22,6 +23,10 @@ export const ShopUserSchema = new EntitySchema<ShopUser>({
     },
   },
   relations: {
+    user: {
+      type: 'many-to-one',
+      target: 'User',
+    },
     shop: {
       type: 'many-to-one',
       target: 'Shop',
