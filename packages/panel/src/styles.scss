@@ -1,87 +1,62 @@
-@use "@angular/material" as mat;
-@import "theme/theme.scss";
+/* You can add global styles to this file, and also import other style files */
+@import "assets/fonts/iransans/iransans.scss";
+@import "theme2.scss";
+@import "theme";
 @import "assets/fonts/fontawesome/scss/fontawesome.scss";
 @import "assets/fonts/fontawesome/scss/regular.scss";
 @import "assets/fonts/fontawesome/scss/brands.scss";
 @import "assets/fonts/fontawesome/scss/solid.scss";
-@import "assets/fonts/iransans/iransans.scss";
-
-$custom-typography: mat.define-typography-config(
-    $font-family: "IRANSans",
-);
-@include mat.core($custom-typography);
-@include mat.all-component-themes($app-theme);
-
-.form-theme {
-    @include mat.all-component-themes($form-theme);
-}
 
 html,
 body {
-    height: 100%;
+  margin: 0;
+  padding: 0;
 }
+
 body {
-    margin: 0;
-    font-family: "IRANSans", Roboto, "Helvetica Neue", sans-serif;
-    background-color: $background-color;
-}
-
-.eng {
-    font-family: monospace !important;
-    direction: ltr;
-    text-align: start !important;
-}
-
-.ltr {
-    direction: ltr;
-    text-align: start !important;
+  font-family: "IRANSans";
+  background-color: $color-background;
+  color: $color-on-background;
 }
 
 .spacer,
-[spacer] {
-    display: inline-block;
-    padding: 8px;
-}
-
-.spacer-sm,
-[spacer-sm] {
-    display: inline-block;
-    padding: 4px;
+span[spacer] {
+  flex: none;
+  display: block;
+  width: 16px;
+  height: 16px;
 }
 
 .spacer-2x,
-[spacer-2x] {
-    display: inline-block;
-    padding: 16px;
+span[spacer-2x] {
+  flex: none;
+  display: block;
+  width: 32px;
+  height: 32px;
 }
 
-.max-width {
-    max-width: 1440px;
-    margin: 0 auto;
-}
-
-.mat-card {
-    border-radius: 12px !important;
-    box-shadow: none !important;
-    border: 1px solid $gray-color;
-}
-
-.mat-table tr.clickable {
-    cursor: pointer;
-
-    &:hover {
-        background-color: rgba(0, 0, 0, 0.03);
-    }
-}
-
+// material override
 .mat-toolbar {
-    background-color: white;
+  background-color: $color-primary-container;
+  color: $color-on-primary-container;
+
+  min-height: 64px;
+  &-row {
+    min-height: 64px;
+  }
 }
 
-.page-toolbar {
-    position: sticky;
-    top: 0;
-    z-index: 9999;
-    top: 64px;
-    border-bottom: 1px solid $gray-color;
+[mat-button],
+[mat-raised-button],
+[mat-flat-button] {
+  border-radius: 24px !important;
+}
+
+mat-card {
+  box-shadow: none !important;
+}
+
+[matListItemIcon] {
+  line-height: 24px;
+  text-align: center;
 }

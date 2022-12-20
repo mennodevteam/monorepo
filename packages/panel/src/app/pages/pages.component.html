@@ -1,1 +1,16 @@
-<p>pages works!</p>
+<mat-toolbar>
+  <button mat-icon-button>
+    <i class="fa-solid fa-bars fa-lg"></i>
+  </button>
+</mat-toolbar>
+<mat-sidenav-container class="background on-background-text">
+  <mat-sidenav mode="side" opened class="background on-background-text">
+    <mat-nav-list>
+      <a mat-list-item *ngFor="let item of items">
+        <i *ngIf="item.icon" class="{{item.icon}}"></i>
+        <span matlisttitle
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>Main content</mat-sidenav-content>
+</mat-sidenav-container>

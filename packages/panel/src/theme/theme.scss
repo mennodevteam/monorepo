@@ -1,42 +1,53 @@
 @use "@angular/material" as mat;
+@forward "./config/vars.scss";
 
-$app-primary: mat.define-palette(mat.$indigo-palette);
-$app-accent: mat.define-palette(mat.$deep-purple-palette);
-$app-warn: mat.define-palette(mat.$red-palette);
+@import "./config/vars.scss";
+@import "./config/colors.module.scss";
+@import "./config/palette.scss";
 
-$app-theme: mat.define-light-theme(
-    (
-        color: (
-            primary: $app-primary,
-            accent: $app-accent,
-            warn: $app-warn,
-        ),
-    )
+@import "./config/theme.light.scss";
+
+$app-primary-light: mat.define-palette($md-primary-palette, 400);
+$app-accent-light: mat.define-palette($md-accent-palette, 400);
+$app-warn-light: mat.define-palette($md-warn-palette, 400);
+
+$app-primary-dark: mat.define-palette($md-primary-palette, 800);
+$app-accent-dark: mat.define-palette($md-accent-palette, 800);
+$app-warn-dark: mat.define-palette($md-warn-palette, 800);
+
+$app-typography: mat.define-typography-config(
+  $font-family: "IRANSans",
 );
 
-$primary-color: map-get($app-primary, 500) !important;
-
-$accent-color: map-get($app-accent, 500) !important;
-
-$warn-color: map-get($app-warn, 500) !important;
-
-$gray-color: map-get(mat.$gray-palette, 400) !important;
-
-$yellow-color: #ffc107;
-$green-color: #4caf50;
-$background-color: #eeeeee;
-
-// form theme
-$form-primary: mat.define-palette(mat.$blue-palette);
-$form-accent: mat.define-palette(mat.$green-palette);
-$form-warn: mat.define-palette(mat.$red-palette);
-
-$form-theme: mat.define-light-theme(
-    (
-        color: (
-            primary: $form-primary,
-            accent: $form-accent,
-            warn: $form-warn,
-        ),
-    )
+$app-theme-light: mat.define-light-theme(
+  (
+    color: (
+      primary: $app-primary-light,
+      accent: $app-accent-light,
+      warn: $app-warn-light,
+    ),
+    typography: $app-typography,
+  )
 );
+
+$app-theme-dark: mat.define-dark-theme(
+  (
+    color: (
+      primary: $app-primary-dark,
+      accent: $app-accent-dark,
+      warn: $app-warn-dark,
+    ),
+    typography: $app-typography,
+  )
+);
+@include mat.core();
+
+@media (prefers-color-scheme: light) {
+  @import "./config/theme.light.scss";
+  @include mat.all-component-themes($app-theme-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  @import "./config/theme.dark.scss";
+  @include mat.all-component-colors($app-theme-dark);
+}
