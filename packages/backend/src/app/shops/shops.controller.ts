@@ -21,7 +21,7 @@ export class ShopsController {
   @Get()
   @Roles(Role.Panel)
   findOne(@LoginUser() user: AuthPayload): Promise<Shop> {
-    return this.auth.getPanelUserShop(user, ['region', 'shopGroup']);
+    return this.auth.getPanelUserShop(user, ['region', 'shopGroup', 'menu']);
   }
 
   @Put()

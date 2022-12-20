@@ -16,7 +16,7 @@
       />
 
       <textarea
-        *ngIf="type == 'textarea'"
+        *ngIf="type === 'textarea'"
         matInput
         [(ngModel)]="value"
         [placeholder]="placeholder"
@@ -33,11 +33,7 @@
         [ngModelOptions]="{ standalone: true }"
         [max]="max"
       />
-      <mat-datepicker-toggle
-        *ngIf="type === 'datepicker'"
-        matSuffix
-        [for]="picker"
-      >
+      <mat-datepicker-toggle *ngIf="type === 'datepicker'" matSuffix [for]="picker">
       </mat-datepicker-toggle>
       <mat-datepicker [hidden]="type !== 'datepicker'" #picker></mat-datepicker>
 
@@ -47,10 +43,10 @@
 
   <mat-dialog-actions>
     <button mat-button type="submit" color="primary">
-      {{ okText || 'Ok' }}
+      {{ okText || ('app.ok' | translate) }}
     </button>
     <button mat-button type="button" [mat-dialog-close]="null">
-      {{ cancelText || 'Cancel' }}
+      {{ cancelText || ('app.cancel' | translate) }}
     </button>
   </mat-dialog-actions>
 </form>

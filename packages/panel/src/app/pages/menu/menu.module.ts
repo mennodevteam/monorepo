@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MenuComponent } from './menu.component';
 import { RouterModule } from '@angular/router';
 import { menuRoutes } from './menu.routes';
+import { MenuPageComponent } from './menu-page/menu-page.component';
+import { MenuToolbarComponent } from './menu-page/menu-toolbar/menu-toolbar.component';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-  declarations: [MenuComponent],
-  imports: [CommonModule, RouterModule.forChild(menuRoutes)],
+  declarations: [MenuPageComponent, MenuToolbarComponent],
+  imports: [CommonModule, RouterModule.forChild(menuRoutes), SharedModule],
 })
 export class MenuModule {}

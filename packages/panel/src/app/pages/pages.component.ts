@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ShopService } from '../core/services/shop.service';
-import { ITEMS } from './sidebar.contant';
+import { ITEMS } from './sidebar.constant';
 
 @Component({
   selector: 'menno-pages',

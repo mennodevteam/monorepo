@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { LayoutModule } from '@angular/cdk/layout';
+import { TranslateModule } from '@ngx-translate/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -49,6 +50,7 @@ import { AlertDialogComponent } from './dialogs/alert-dialog/alert-dialog.compon
     FormsModule,
     ReactiveFormsModule,
     LayoutModule,
+    TranslateModule,
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
@@ -81,6 +83,7 @@ import { AlertDialogComponent } from './dialogs/alert-dialog/alert-dialog.compon
     PdatePipe,
     AlertDialogComponent,
     SelectDialogComponent,
+    TranslateModule,
 
     FormsModule,
     ReactiveFormsModule,

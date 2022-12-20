@@ -7,11 +7,11 @@ export type SidebarItem = {
 
 export const ITEMS: SidebarItem[] = [
   {
-    title: 'مدیریت منو',
+    title: 'menu',
     icon: 'fa-burger-fries'
   },
   {
-    title: 'سفارشات',
+    title: 'orders',
     icon: 'fa-utensils'
   },
 ]

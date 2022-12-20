@@ -35,6 +35,10 @@ span[spacer-2x] {
   height: 32px;
 }
 
+[flex] {
+  flex: 1;
+}
+
 // material override
 .mat-toolbar {
   background-color: $color-surface;

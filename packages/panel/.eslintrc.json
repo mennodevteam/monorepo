@@ -10,7 +10,7 @@
       ],
       "rules": {
         "@angular-eslint/directive-selector": [
-          "error",
+          "warning",
           {
             "type": "attribute",
             "prefix": "menno",
@@ -18,7 +18,7 @@
           }
         ],
         "@angular-eslint/component-selector": [
-          "error",
+          "warning",
           {
             "type": "element",
             "prefix": "menno",

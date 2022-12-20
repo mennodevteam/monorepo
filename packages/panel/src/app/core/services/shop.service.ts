@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Shop } from '@menno/types';
+import { Menu, Shop } from '@menno/types';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -10,10 +10,10 @@ export class ShopService {
   private shop$: BehaviorSubject<Shop | null>;
   constructor(private http: HttpClient) {
     this.shop$ = new BehaviorSubject<Shop | null>(null);
-    this.load();
+    this.loadShop();
   }
 
-  get value(): Shop | null {
+  get shopValue(): Shop | null {
     return this.shop$.getValue();
   }
 
@@ -21,7 +21,7 @@ export class ShopService {
     return this.shop$.asObservable();
   }
 
-  async load() {
+  async loadShop() {
     const shop = await this.http.get<Shop>('shops').toPromise();
     if (shop) {
       this.shop$.next({ ...this.shop, ...shop });
