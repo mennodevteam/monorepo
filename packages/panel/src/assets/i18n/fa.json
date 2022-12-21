@@ -14,7 +14,7 @@
     "addCategory": "ایجاد دسته‌بندی",
     "editCategory": "ویرایش دسته‌بندی",
     "deleteCategory": "حذف دسته‌بندی",
-    "addProduct": "ایجاد آیتم",
+    "addProduct": "افزودن آیتم",
     "categoryDialog": {
       "newTitle": "ایجاد دسته‌بندی جدید",
       "editTitle": "ویرایش {{value}}",

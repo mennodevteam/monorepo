@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { LayoutModule } from '@angular/cdk/layout';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -35,6 +35,7 @@ import { SanitizeUrlPipe } from './pipes/sanitize-url.pipe';
 import { PdatePipe } from './pipes/pdate.pipe';
 import { SelectDialogComponent } from './dialogs/select-dialog/select-dialog.component';
 import { AlertDialogComponent } from './dialogs/alert-dialog/alert-dialog.component';
+import { MenuCurrencyPipe } from './pipes/menu-currency.pipe';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { AlertDialogComponent } from './dialogs/alert-dialog/alert-dialog.compon
     AdvancedPromptDialogComponent,
     GoBackDirective,
     SanitizeUrlPipe,
+    MenuCurrencyPipe,
     PdatePipe,
     SelectDialogComponent,
     AlertDialogComponent,
@@ -82,6 +84,7 @@ import { AlertDialogComponent } from './dialogs/alert-dialog/alert-dialog.compon
     AdvancedPromptDialogComponent,
     GoBackDirective,
     SanitizeUrlPipe,
+    MenuCurrencyPipe,
     PdatePipe,
     AlertDialogComponent,
     SelectDialogComponent,
@@ -115,6 +118,6 @@ import { AlertDialogComponent } from './dialogs/alert-dialog/alert-dialog.compon
     MatChipsModule,
     MatRadioModule,
   ],
-  providers: [MatDatepickerModule, DatePipe],
+  providers: [MatDatepickerModule, DatePipe, DecimalPipe],
 })
 export class SharedModule {}

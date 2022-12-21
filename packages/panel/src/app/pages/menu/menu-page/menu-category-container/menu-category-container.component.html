@@ -1,35 +1,34 @@
 <mat-card>
-  <mat-card-header>
-    <mat-card-title>
-      <i *ngIf="category.faIcon" class="fa-solid fa-{{ category.faIcon }}"></i>
-      {{ category.title }}
-    </mat-card-title>
-    <mat-card-subtitle *ngIf="category.description"> {{ category.description }} </mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-actions>
-    <button
-      mat-stroked-button
-      color="primary"
-      routerLink="product"
-      [queryParams]="{ categoryId: category.id }"
-    >
-      {{ 'menu.addProduct' | translate }}
-    </button>
-    <span spacer-2x></span>
-    <button mat-button (click)="editCategory()">
-      <i class="fa-regular fa-pencil-alt"></i>
-      {{ 'menu.editCategory' | translate }}
-    </button>
-    <span spacer-2x></span>
-    <button mat-button (click)="deleteCategory()">
-      <i class="fa-regular fa-trash-alt"></i>
-      {{ 'menu.deleteCategory' | translate }}
-    </button>
-  </mat-card-actions>
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <h3 flex>
+        <i *ngIf="category.faIcon" class="fa-solid fa-{{ category.faIcon }}"></i>
+        {{ category.title }}
+      </h3>
+      <button mat-icon-button matTooltip="{{ 'menu.editCategory' | translate }}" (click)="editCategory()">
+        <i class="fa-regular fa-pencil-alt"></i>
+      </button>
+      <span spacer-2x></span>
+      <button mat-icon-button matTooltip="{{ 'menu.deleteCategory' | translate }}" (click)="deleteCategory()">
+        <i class="fa-regular fa-trash-alt"></i>
+      </button>
+    </mat-toolbar-row>
+    <mat-toolbar-row>
+      <div flex></div>
+      <button
+        mat-flat-button
+        color="primary"
+        routerLink="product"
+        [queryParams]="{ categoryId: category.id }"
+      >
+        {{ 'menu.addProduct' | translate }}
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
   <mat-divider></mat-divider>
   <mat-card-content>
-    <ng-container *ngIf="category.products?.length">
-      <products-table></products-table>
+    <ng-container *ngIf="category.products && category.products.length">
+      <products-table [products]="category.products"></products-table>
     </ng-container>
     <div *ngIf="!category.products?.length" class="empty-state">
       <i *ngIf="category.faIcon" empty-state-icon class="fa-solid fa-{{ category.faIcon }}"></i>
