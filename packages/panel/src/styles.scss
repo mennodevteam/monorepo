@@ -1,73 +1,286 @@
-/* You can add global styles to this file, and also import other style files */
 @import "assets/fonts/iransans/iransans.scss";
-@import "theme1.scss";
-@import "theme";
 @import "assets/fonts/fontawesome/scss/fontawesome.scss";
 @import "assets/fonts/fontawesome/scss/regular.scss";
 @import "assets/fonts/fontawesome/scss/brands.scss";
 @import "assets/fonts/fontawesome/scss/solid.scss";
 
+@import "theming-class.scss";
+@import "material-theming.scss";
+
+
+html[dir="rtl"] {
+  .mat-button-ripple {
+    position: absolute;
+  }
+
+  i.rtl-dir {
+    transform: scaleX(-1);
+  }
+}
+
 html,
 body {
-  margin: 0;
-  padding: 0;
+  min-height: 100vh;
 }
 
 body {
+  overflow-y: scroll;
+  margin: 0;
   font-family: "IRANSans";
-  background-color: $color-background;
-  color: $color-on-background;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
 }
 
 .spacer,
-span[spacer] {
-  flex: none;
-  display: block;
-  width: 16px;
-  height: 16px;
+*[spacer] {
+  display: inline-block;
+  padding: 4px;
+  flex: none !important;
 }
 
 .spacer-2x,
-span[spacer-2x] {
-  flex: none;
-  display: block;
-  width: 32px;
-  height: 32px;
+*[spacer-2x] {
+  display: inline-block;
+  padding: 8px;
+  flex: none !important;
+}
+
+.spacer-sm,
+*[spacer-sm] {
+  display: inline-block;
+  padding: 2px;
+  flex: none !important;
 }
 
 [flex] {
   flex: 1;
 }
 
-.page-toolbar {
-  position: sticky;
-  top: 0px;
-  z-index: 999;
+i {
+  vertical-align: middle;
 }
 
-// material override
-.mat-toolbar {
-  background-color: $color-surface;
-  color: $color-on-surface;
+.no-select {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Old versions of Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
 
-  min-height: 64px;
-  &-row {
-    min-height: 64px;
+.flat-scrollbar::-webkit-scrollbar-track,
+.flat-scrollbar *::-webkit-scrollbar-track {
+  -webkit-box-shadow: none;
+  background-color: transparent;
+}
+
+.flat-scrollbar::-webkit-scrollbar,
+.flat-scrollbar *::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: transparent;
+}
+
+.flat-scrollbar::-webkit-scrollbar-thumb,
+.flat-scrollbar *::-webkit-scrollbar-thumb {
+  background-color: $gray;
+  border-radius: 10px;
+}
+
+.mat-card {
+  &:not(.shadow) {
+    box-shadow: none !important;
+    border: $border;
+  }
+
+  border-radius: 8px !important;
+
+  .mat-toolbar {
+    margin: -16px !important;
+    width: -webkit-fill-available;
+    width: -moz-available;
+    border-radius: 8px 4px 0 0;
+    margin-bottom: 0 !important;
+    height: 48px;
+
+    h2,
+    h3,
+    h4,
+    h5 {
+      font-size: 16px;
+      flex: 1;
+    }
+  }
+
+  .mat-stroked-button {
+    border-radius: 40px;
+  }
+
+  .mat-card-title {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+  }
+
+  &.success {
+    color: $green;
+    border-color: $green;
+    background: rgba($green, 0.1);
+  }
+
+  &.info {
+    color: $blue;
+    border-color: $blue;
+    background: rgba($blue, 0.1);
+  }
+
+  &.warning {
+    color: darken($yellow, 15);
+    border-color: $yellow;
+    background: rgba($yellow, 0.1);
+  }
+
+  &.error {
+    color: $red;
+    border-color: $red;
+    background: rgba($red, 0.1);
+  }
+
+  &.key-value {
+    i.mat-card-avatar {
+      width: 55px;
+      height: 55px;
+      line-height: 55px;
+      text-align: center;
+      font-size: 32px;
+      color: $gray;
+    }
+
+    .mat-card-subtitle {
+      margin-bottom: 0;
+    }
   }
 }
 
-[mat-button],
-[mat-raised-button],
-[mat-flat-button] {
-  border-radius: 24px !important;
+.fa-gem {
+  color: #ff5722;
 }
 
-mat-card {
-  box-shadow: none !important;
-  background-color: $color-surface-variant !important;
+.mat-table {
+  tr {
+    &.clickable {
+      cursor: pointer;
+      transition: 0.1s;
+
+      &:hover {
+        background-color: rgba(black, 0.03);
+      }
+    }
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
 }
 
-[matListItemIcon] {
-  line-height: 24px;
-  text-align: center;
+@mixin colorizeSnackbar($background, $color, $icon) {
+  background-color: $background !important;
+  color: $color !important;
+  padding-right: 32px !important;
+  // border: 2px solid $color;
+
+  &::after {
+    font-family: "Font Awesome 5 Pro" !important;
+    content: $icon !important;
+    color: $color !important;
+    width: 24px !important;
+    height: 24px !important;
+    line-height: 24px !important;
+    text-align: center !important;
+    float: right !important;
+    font-weight: 600 !important;
+    display: inline-block !important;
+    margin-top: -24px !important;
+    transform: translate(24px, 2px) !important;
+  }
+
+  button {
+    color: $color !important;
+  }
+}
+
+snack-bar-container {
+  &.success {
+    @include colorizeSnackbar($green, white, "\f058");
+  }
+
+  &.info {
+    @include colorizeSnackbar($blue, white, "\f05a");
+  }
+
+  &.warning {
+    @include colorizeSnackbar($yellow, black, "\f06a");
+  }
+
+  &.error {
+    @include colorizeSnackbar($red, white, "\f071");
+  }
+}
+
+.content-toolbar {
+  position: sticky;
+  top: 64px;
+  z-index: 200;
+  border-bottom: $border;
+  background-color: white !important;
+
+  h2 {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+.ltr {
+  direction: ltr;
+  text-align: left !important;
+}
+
+.show-xs {
+  display: none !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .hide-xs {
+    display: none !important;
+  }
+
+  .show-xs {
+    display: block !important;
+  }
+}
+
+// leaflet override
+.leaflet-touch .leaflet-draw-actions a {
+  font-family: "IRANSans" !important;
+}
+
+.leaflet-tooltip {
+  font-family: "IRANSans" !important;
+}
+
+// raychat
+.raychat_main_button {
+  display: none !important;
 }

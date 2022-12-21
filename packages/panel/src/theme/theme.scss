@@ -1,53 +1,32 @@
 @use "@angular/material" as mat;
-@forward "./config/vars.scss";
 
-@import "./config/vars.scss";
-@import "./config/colors.module.scss";
-@import "./config/palette.scss";
+$app-primary: mat.define-palette(mat.$blue-palette);
+$app-accent: mat.define-palette(mat.$yellow-palette, 600);
+$app-warn: mat.define-palette(mat.$red-palette);
 
-@import "./config/theme.light.scss";
+$primary: mat.get-color-from-palette($app-primary);
+$accent: mat.get-color-from-palette($app-accent);
+$warn: mat.get-color-from-palette($app-warn);
 
-$app-primary-light: mat.define-palette($md-primary-palette, 400);
-$app-accent-light: mat.define-palette($md-accent-palette, 400);
-$app-warn-light: mat.define-palette($md-warn-palette, 400);
+$app-form-primary: mat.define-palette(mat.$blue-palette);
+$app-form-accent: mat.define-palette(mat.$green-palette, A700);
+$app-form-warn: mat.define-palette(mat.$red-palette);
 
-$app-primary-dark: mat.define-palette($md-primary-palette, 800);
-$app-accent-dark: mat.define-palette($md-accent-palette, 800);
-$app-warn-dark: mat.define-palette($md-warn-palette, 800);
+$form-primary: mat.get-color-from-palette($app-form-primary);
+$form-accent: mat.get-color-from-palette($app-form-accent);
+$form-warn: mat.get-color-from-palette($app-form-warn);
 
-$app-typography: mat.define-typography-config(
-  $font-family: "IRANSans",
-);
+$gray: #757575;
+$gray-l1: #bdbdbd;
+$gray-l2: #e0e0e0;
+$background: #f5f5f5;
+$border-color: $gray-l2;
+$dark-background: #1c212d;
 
-$app-theme-light: mat.define-light-theme(
-  (
-    color: (
-      primary: $app-primary-light,
-      accent: $app-accent-light,
-      warn: $app-warn-light,
-    ),
-    typography: $app-typography,
-  )
-);
+$green: #00c853;
+$yellow: #fdd835;
+$red: #f44336;
+$blue-gray: #90a4ae;
+$blue: #2196f3;
 
-$app-theme-dark: mat.define-dark-theme(
-  (
-    color: (
-      primary: $app-primary-dark,
-      accent: $app-accent-dark,
-      warn: $app-warn-dark,
-    ),
-    typography: $app-typography,
-  )
-);
-@include mat.core();
-
-@media (prefers-color-scheme: light) {
-  @import "./config/theme.light.scss";
-  @include mat.all-component-themes($app-theme-light);
-}
-
-@media (prefers-color-scheme: dark) {
-  @import "./config/theme.dark.scss";
-  @include mat.all-component-colors($app-theme-dark);
-}
+$border: 1px solid $border-color;
