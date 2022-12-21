@@ -1,1 +1,7 @@
 <menno-menu-toolbar></menno-menu-toolbar>
+<main>
+  <div *ngFor="let cat of categories | async">
+    <menu-category-container [category]="cat"></menu-category-container>
+    <span spacer-2x></span>
+  </div>
+</main>

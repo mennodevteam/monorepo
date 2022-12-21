@@ -21,10 +21,14 @@ export class ShopService {
     return this.shop$.asObservable();
   }
 
+  update(data: Shop) {
+    this.shop$.next({ ...this.shop, ...data });
+  }
+
   async loadShop() {
     const shop = await this.http.get<Shop>('shops').toPromise();
     if (shop) {
-      this.shop$.next({ ...this.shop, ...shop });
+      this.update(shop);
     }
   }
 }

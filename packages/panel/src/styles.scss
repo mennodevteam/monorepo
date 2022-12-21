@@ -39,6 +39,12 @@ span[spacer-2x] {
   flex: 1;
 }
 
+.page-toolbar {
+  position: sticky;
+  top: 0px;
+  z-index: 999;
+}
+
 // material override
 .mat-toolbar {
   background-color: $color-surface;
@@ -58,6 +64,7 @@ span[spacer-2x] {
 
 mat-card {
   box-shadow: none !important;
+  background-color: $color-surface-variant !important;
 }
 
 [matListItemIcon] {
