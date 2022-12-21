@@ -7,7 +7,12 @@
     <mat-card-subtitle *ngIf="category.description"> {{ category.description }} </mat-card-subtitle>
   </mat-card-header>
   <mat-card-actions>
-    <button mat-stroked-button color="primary">
+    <button
+      mat-stroked-button
+      color="primary"
+      routerLink="product"
+      [queryParams]="{ categoryId: category.id }"
+    >
       {{ 'menu.addProduct' | translate }}
     </button>
     <span spacer-2x></span>

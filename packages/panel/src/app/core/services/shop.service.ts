@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Menu, Shop } from '@menno/types';
+import { Menu, ProductCategory, Shop } from '@menno/types';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -22,7 +22,17 @@ export class ShopService {
   }
 
   updateShop(data: Shop) {
-    this.shop$.next({ ...this.shop, ...data });
+    const state = { ...this.shop, ...data };
+    if (data.menu?.categories && state.menu?.categories) {
+      Menu.sortCategories(state.menu.categories);
+
+      for (const cat of state.menu?.categories) {
+        const dataCatIndex = data.menu.categories.indexOf(cat);
+        if (dataCatIndex > -1 && data.menu.categories[dataCatIndex].products && cat.products)
+          ProductCategory.sortProducts(cat.products);
+      }
+    }
+    this.shop$.next(state);
   }
 
   updateMenu(data: Menu) {

@@ -7,7 +7,6 @@
 @import "theming-class.scss";
 @import "material-theming.scss";
 
-
 html[dir="rtl"] {
   .mat-button-ripple {
     position: absolute;
@@ -105,6 +104,31 @@ i[empty-state-icon] {
   margin: auto;
   opacity: 0.5;
   text-align: center;
+}
+
+.form-page-layout {
+  display: flex;
+  flex-direction: row;
+
+  .static-col {
+    width: 300px;
+    flex: none;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .flex-col {
+    flex: 1;
+    flex-direction: column;
+  }
+
+  @media only screen and (max-width: 960px) {
+    flex-direction: column;
+
+    .static-col {
+      width: initial;
+    }
+  }
 }
 
 // material components

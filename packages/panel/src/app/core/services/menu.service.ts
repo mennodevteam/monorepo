@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ShopService } from './shop.service';
-import { Menu, ProductCategory, Shop } from '@menno/types';
+import { Menu, Product, ProductCategory, Shop } from '@menno/types';
 
 @Injectable({
   providedIn: 'root',
@@ -35,5 +35,14 @@ export class MenuService {
     this.shopService.updateMenu(<Menu>{
       categories: shop?.menu?.categories?.filter((x) => x.id !== categoryId),
     });
+  }
+
+  async saveProduct(dto: Product) {
+    const menu = this.shopService.shopValue?.menu;
+    const currentCategory = dto.id
+      ? menu?.categories?.find((x) => x.products?.find((y) => y.id === dto.id))
+      : undefined;
+    const savedProduct = await this.http.post<Product>(`products`, dto).toPromise();
+    await this.shopService.loadShop();
   }
 }

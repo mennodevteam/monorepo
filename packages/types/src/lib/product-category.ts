@@ -16,4 +16,16 @@ export class ProductCategory {
   menu: Menu;
   createdAt?: Date;
   deletedAt?: Date;
+  
+  static sortProducts(products: Product[]) {
+    products.sort((a, b) => {
+      if (a.position != undefined && b.position == undefined) return -1;
+      if (b.position != undefined && a.position == undefined) return 1;
+      if (a.position == b.position && a.createdAt && b.createdAt) {
+        return new Date(a.createdAt).valueOf() - new Date(b.createdAt).valueOf();
+      }
+      if (a.position != undefined && b.position != undefined) return a.position - b.position;
+      return 1;
+    });
+  }
 }
