@@ -23,6 +23,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { PromptDialogComponent } from './dialogs/prompt-dialog/prompt-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -66,6 +67,7 @@ import { AlertDialogComponent } from './dialogs/alert-dialog/alert-dialog.compon
     MatFormFieldModule,
     MatDatepickerModule,
     MatInputModule,
+    MatButtonToggleModule,
     MatDialogModule,
     MatSnackBarModule,
     MatNativeDateModule,
@@ -103,6 +105,7 @@ import { AlertDialogComponent } from './dialogs/alert-dialog/alert-dialog.compon
     MatFormFieldModule,
     MatDatepickerModule,
     MatInputModule,
+    MatButtonToggleModule,
     MatDialogModule,
     MatSnackBarModule,
     MatSelectModule,

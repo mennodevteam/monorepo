@@ -1,0 +1,14 @@
+mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  max-width: 360px;
+}
+
+mat-button-toggle-group {
+  flex-wrap: wrap;
+  justify-content: center;
+  mat-button-toggle {
+    width: 48px;
+    border: none !important;
+  }
+}

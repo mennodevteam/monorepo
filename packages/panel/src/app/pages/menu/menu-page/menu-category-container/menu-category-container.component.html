@@ -7,6 +7,12 @@
   </mat-card-actions>
   <mat-divider></mat-divider>
   <mat-card-content>
-    <p>this is content</p>
+    <ng-container *ngIf="category.products?.length">
+      <products-table></products-table>
+    </ng-container>
+    <div *ngIf="!category.products?.length" class="empty-state">
+      <i empty-state-icon class="fa-solid fa-burger-fries"></i>
+      <p>{{'menu.emptyProductsDescription' | translate}}</p>
+    </div>
   </mat-card-content>
 </mat-card>

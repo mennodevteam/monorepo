@@ -99,6 +99,14 @@ i {
   border-radius: 10px;
 }
 
+i[empty-state-icon] {
+  font-size: 64px;
+  display: block;
+  margin: auto;
+  opacity: 0.5;
+  text-align: center;
+}
+
 // material components
 
 mat-card {

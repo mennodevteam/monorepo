@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ProductCategory } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuService } from 'packages/panel/src/app/core/services/menu.service';
 import { PromptDialogComponent } from '../../../../shared/dialogs/prompt-dialog/prompt-dialog.component';
+import { CategoryEditDialogComponent } from '../category-edit-dialog/category-edit-dialog.component';
 
 @Component({
   selector: 'menno-menu-toolbar',
@@ -18,16 +20,11 @@ export class MenuToolbarComponent {
 
   addCategory() {
     this.dialog
-      .open(PromptDialogComponent, {
-        data: {
-          title: this.translate.instant('menu.addCategory'),
-          label: this.translate.instant('menu.addCategoryDialog.label'),
-        },
-      })
+      .open(CategoryEditDialogComponent)
       .afterClosed()
-      .subscribe((title) => {
-        if (title) {
-          this.menuService.addCategory(title);
+      .subscribe((category: ProductCategory) => {
+        if (category) {
+          this.menuService.saveCategory(category);
         }
       });
   }

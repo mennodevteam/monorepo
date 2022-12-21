@@ -13,6 +13,10 @@ export const ProductCategorySchema = new EntitySchema<ProductCategory>({
     title: {
       type: String,
     },
+    description: {
+      type: String,
+      nullable: true,
+    },
     status: {
       type: 'enum',
       enum: Status,
@@ -20,6 +24,10 @@ export const ProductCategorySchema = new EntitySchema<ProductCategory>({
     },
     star: {
       type: Number,
+      nullable: true,
+    },
+    faIcon: {
+      type: String,
       nullable: true,
     },
     position: {

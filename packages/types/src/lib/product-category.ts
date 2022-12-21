@@ -6,6 +6,8 @@ import { OrderType } from './order-type.enum';
 export class ProductCategory {
   id: number;
   title: string;
+  description?: string;
+  faIcon?: string;
   status: Status;
   orderTypes: OrderType[];
   products?: Product[];
