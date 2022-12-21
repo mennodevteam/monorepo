@@ -1,0 +1,14 @@
+main {
+  padding: 32px;
+  max-width: 1024px;
+  margin: auto;
+}
+
+mat-card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+mat-button-toggle {
+  flex: 1;
+}

@@ -1,0 +1,92 @@
+<form [formGroup]="form">
+  <mat-toolbar class="page-toolbar">
+    <button mat-icon-button goBack>
+      <i class="fa-regular fa-arrow-right"></i>
+    </button>
+    <h2>{{ 'productEdit.newProductPageTitle' | translate }}</h2>
+  </mat-toolbar>
+  <main>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{ 'productEdit.baseSectionTitle' | translate }}</mat-card-title>
+      </mat-card-header>
+      <span spacer-2x></span>
+      <mat-card-content>
+        <mat-form-field>
+          <mat-label>{{ 'productEdit.titleLabel' | translate }}</mat-label>
+          <input matInput formControlName="title" required />
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>{{ 'productEdit.categoryLabel' | translate }}</mat-label>
+          <mat-select formControlName="category" required>
+            <mat-option *ngFor="let cat of categories | async" [value]="cat">
+              <i *ngIf="cat.faIcon" class="fa-solid fa-{{ cat.faIcon }}"></i>
+              {{ cat.title }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>{{ 'productEdit.descriptionLabel' | translate }}</mat-label>
+          <textarea rows="3" matInput formControlName="description"></textarea>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+
+    <span spacer-2x></span>
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{ 'productEdit.priceSectionTitle' | translate }}</mat-card-title>
+      </mat-card-header>
+      <span spacer-2x></span>
+      <mat-card-content>
+        <mat-form-field>
+          <mat-label>{{ 'productEdit.priceLabel' | translate }}</mat-label>
+          <input matInput formControlName="price" required />
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+    
+    <span spacer-2x></span>
+    
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title> {{ 'app.status' | translate }} </mat-card-title>
+      </mat-card-header>
+      <span spacer-2x></span>
+      <mat-card-content>
+        <mat-button-toggle-group formControlName="status">
+          <mat-button-toggle [value]="Status.Active"
+            >{{ 'app.active' | translate }}
+          </mat-button-toggle>
+          <mat-button-toggle [value]="Status.Inactive"
+            >{{ 'app.inactive' | translate }}
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+        <ng-container *ngIf="form.controls['status'].value === Status.Inactive">
+          <br />
+          <mat-card class="error">
+            <mat-card-content>
+              <p>{{ 'productEdit.inactiveHint' | translate }}</p>
+            </mat-card-content>
+          </mat-card>
+        </ng-container>
+        <span spacer-2x></span>
+        <p class="gray" style="margin-bottom: 0">{{ 'productEdit.orderTypes' | translate }}</p>
+        <mat-selection-list dense formControlName="orderTypes" color="primary">
+          <mat-list-option [value]="OrderType.DineIn" checkboxPosition="before">
+            {{ 'orderType.dineIn' | translate }}
+          </mat-list-option>
+          <mat-list-option [value]="OrderType.Delivery" checkboxPosition="before">
+            {{ 'orderType.delivery' | translate }}
+          </mat-list-option>
+          <mat-list-option [value]="OrderType.Takeaway" checkboxPosition="before">
+            {{ 'orderType.takeaway' | translate }}
+          </mat-list-option>
+        </mat-selection-list>
+      </mat-card-content>
+    </mat-card>
+  </main>
+</form>

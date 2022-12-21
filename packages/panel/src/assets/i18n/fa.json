@@ -1,7 +1,10 @@
 {
   "app": {
     "ok": "تایید",
-    "cancel": "انصراف"
+    "cancel": "انصراف",
+    "status": "وضعیت",
+    "active": "فعال",
+    "inactive": "غیرفعال"
   },
   "sidenav": {
     "menu": "مدیریت آیتم‌های منو",
@@ -24,5 +27,21 @@
       "description": "در صورت اطمینان از حذف، لطفا تایید کنید"
     },
     "emptyProductsDescription": "هنوز هیچ آیتمی درج نشده"
+  },
+  "productEdit": {
+    "newProductPageTitle": "ایجاد آیتم",
+    "baseSectionTitle": "اطلاعات پایه",
+    "titleLabel": "عنوان آیتم",
+    "categoryLabel": "دسته‌بندی",
+    "descriptionLabel": "توضیحات",
+    "priceSectionTitle": "قیمت‌گذاری",
+    "priceLabel": "قیمت آیتم",
+    "inactiveHint": "آیتم غیرفعال است و در منو به کاربر نمایش داده نمی‌شود",
+    "orderTypes": "نمایش در انواع سفارش زیر"
+  },
+  "orderType": {
+    "dineIn": "داخل مجموعه",
+    "delivery": "ارسال با پیک",
+    "takeaway": "تحویل در محل"
   }
 }

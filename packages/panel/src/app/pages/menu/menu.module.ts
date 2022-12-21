@@ -8,6 +8,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { MenuCategoryContainerComponent } from './menu-page/menu-category-container/menu-category-container.component';
 import { ProductsTableComponent } from './menu-page/products-table/products-table.component';
 import { CategoryEditDialogComponent } from './menu-page/category-edit-dialog/category-edit-dialog.component';
+import { ProductEditPageComponent } from './product-edit-page/product-edit-page.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { CategoryEditDialogComponent } from './menu-page/category-edit-dialog/ca
     MenuCategoryContainerComponent,
     ProductsTableComponent,
     CategoryEditDialogComponent,
+    ProductEditPageComponent,
   ],
   imports: [CommonModule, RouterModule.forChild(menuRoutes), SharedModule],
 })
