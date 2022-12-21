@@ -1,21 +1,27 @@
-<mat-toolbar class="primary on-primary-text">
+<mat-toolbar color="accent">
   <button mat-icon-button>
     <i class="fa-regular fa-bars"></i>
   </button>
   <h1>{{ (shopService.shop | async)?.title }}</h1>
 </mat-toolbar>
-<mat-sidenav-container class="background on-background-text">
-  <mat-sidenav mode="side" opened class="surface-2 on-surface-text">
+<mat-sidenav-container>
+  <mat-sidenav
+    class="dark-theme"
+    fixedTopGap="64"
+    fixedInViewport
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
     <mat-nav-list>
       <a mat-list-item *ngFor="let item of items">
-        <i matListItemIcon *ngIf="item.icon" class="on-surface-text fa-solid {{ item.icon }}"></i>
-        <span class="on-surface-text" matListItemTitle>
+        <i matListItemIcon *ngIf="item.icon" class=" fa-solid {{ item.icon }}"></i>
+        <span matListItemTitle>
           {{ 'sidenav.' + item.title | translate }}
         </span>
       </a>
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content class="background on-background-text">
+  <mat-sidenav-content>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

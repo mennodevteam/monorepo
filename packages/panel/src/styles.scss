@@ -99,7 +99,9 @@ i {
   border-radius: 10px;
 }
 
-.mat-card {
+// material components
+
+mat-card {
   &:not(.shadow) {
     box-shadow: none !important;
     border: $border;
@@ -107,7 +109,7 @@ i {
 
   border-radius: 8px !important;
 
-  .mat-toolbar {
+  mat-toolbar {
     margin: -16px !important;
     width: -webkit-fill-available;
     width: -moz-available;
@@ -124,11 +126,7 @@ i {
     }
   }
 
-  .mat-stroked-button {
-    border-radius: 40px;
-  }
-
-  .mat-card-title {
+  mat-card-title {
     font-size: 16px !important;
     font-weight: 600 !important;
   }
@@ -156,28 +154,9 @@ i {
     border-color: $red;
     background: rgba($red, 0.1);
   }
-
-  &.key-value {
-    i.mat-card-avatar {
-      width: 55px;
-      height: 55px;
-      line-height: 55px;
-      text-align: center;
-      font-size: 32px;
-      color: $gray;
-    }
-
-    .mat-card-subtitle {
-      margin-bottom: 0;
-    }
-  }
 }
 
-.fa-gem {
-  color: #ff5722;
-}
-
-.mat-table {
+mat-table {
   tr {
     &.clickable {
       cursor: pointer;
@@ -238,9 +217,9 @@ snack-bar-container {
   }
 }
 
-.content-toolbar {
+.page-toolbar {
   position: sticky;
-  top: 64px;
+  top: 0px;
   z-index: 200;
   border-bottom: $border;
   background-color: white !important;

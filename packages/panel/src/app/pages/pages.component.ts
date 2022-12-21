@@ -1,4 +1,6 @@
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
+import { map, Observable, shareReplay } from 'rxjs';
 import { ShopService } from '../core/services/shop.service';
 import { ITEMS } from './sidebar.constant';
 
@@ -9,9 +11,14 @@ import { ITEMS } from './sidebar.constant';
 })
 export class PagesComponent implements OnInit {
   items = ITEMS;
-  constructor(
-    public shopService: ShopService,
-  ) {}
+  isHandset$: Observable<boolean>;
+
+  constructor(public shopService: ShopService, private breakpointObserver: BreakpointObserver) {
+    this.isHandset$ = this.breakpointObserver.observe('(max-width: 1024px)').pipe(
+      map((result) => result.matches),
+      shareReplay()
+    );
+  }
 
   ngOnInit(): void {}
 }
