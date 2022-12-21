@@ -9,12 +9,19 @@
   },
   "menu": {
     "addCategory": "ایجاد دسته‌بندی",
+    "editCategory": "ویرایش دسته‌بندی",
+    "deleteCategory": "حذف دسته‌بندی",
+    "addProduct": "ایجاد آیتم",
     "categoryDialog": {
       "newTitle": "ایجاد دسته‌بندی جدید",
       "editTitle": "ویرایش {{value}}",
       "titleLabel": "عنوان دسته‌بندی",
       "icon": "آیکون دسته‌بندی",
       "descriptionLabel": "توضیحات دسته‌بندی"
+    },
+    "deleteCategoryAlert": {
+      "title": "حذف دسته‌بندی {{value}}",
+      "description": "در صورت اطمینان از حذف، لطفا تایید کنید"
     },
     "emptyProductsDescription": "هنوز هیچ آیتمی درج نشده"
   }

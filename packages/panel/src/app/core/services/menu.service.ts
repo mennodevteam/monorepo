@@ -14,11 +14,26 @@ export class MenuService {
     dto.menu = <Menu>{ id: shop?.menu?.id };
     const newCat = await this.http.post<ProductCategory>(`productCategories`, dto).toPromise();
 
-    this.shopService.update(<Shop>{
-      menu: {
-        ...shop?.menu,
+    if (!dto.id) {
+      this.shopService.updateMenu(<Menu>{
         categories: [...(shop?.menu?.categories || []), newCat],
-      },
+      });
+    } else {
+      const catIndex = shop?.menu?.categories?.findIndex((x) => x.id === dto.id);
+      this.shopService.updateMenu(<Menu>{
+        categories: shop?.menu?.categories?.map((value, index) =>
+          index === catIndex ? { ...value, ...newCat } : value
+        ),
+      });
+    }
+  }
+
+  async deleteCategory(categoryId: number) {
+    const shop = this.shopService.shopValue;
+    const category = shop?.menu?.categories?.findIndex((x) => x.id === categoryId);
+    await this.http.delete(`productCategories/${categoryId}`).toPromise();
+    this.shopService.updateMenu(<Menu>{
+      categories: shop?.menu?.categories?.filter((x) => x.id !== categoryId),
     });
   }
 }

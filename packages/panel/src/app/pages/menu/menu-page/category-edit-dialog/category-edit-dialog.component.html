@@ -4,7 +4,7 @@
 <h3 mat-dialog-title *ngIf="category">
   {{ 'menu.categoryDialog.editTitle' | translate: { value: category.title } }}
 </h3>
-<form [formGroup]="form">
+<form [formGroup]="form" (ngSubmit)="save()">
   <mat-dialog-content>
     <mat-form-field>
       <mat-label>{{ 'menu.categoryDialog.titleLabel' | translate }}</mat-label>

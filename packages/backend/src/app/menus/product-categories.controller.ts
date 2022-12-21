@@ -22,7 +22,7 @@ export class ProductCategoriesController {
 
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<void> {
-    await this.categoriesRepo.delete({ id: Number(id) });
+    await this.categoriesRepo.softDelete({ id: Number(id) });
   }
 
   @Post('sort')
