@@ -32,7 +32,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient],
       },
     }),
-    RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking', useHash: true }),
+    RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking', useHash: true, scrollPositionRestoration: 'enabled' }),
 
     SharedModule,
   ],

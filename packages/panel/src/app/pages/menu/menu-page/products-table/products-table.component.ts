@@ -7,6 +7,6 @@ import { Product } from '@menno/types';
   styleUrls: ['./products-table.component.scss'],
 })
 export class ProductsTableComponent {
-  displayedColumns = ['title', 'price', 'stock', 'actions'];
+  displayedColumns = ['image', 'title', 'price', 'stock', 'actions'];
   @Input() products: Product[];
 }
