@@ -111,7 +111,7 @@ i[empty-state-icon] {
   flex-direction: row;
 
   .static-col {
-    width: 300px;
+    width: 400px;
     flex: none;
     display: flex;
     flex-direction: column;
@@ -135,8 +135,11 @@ i[empty-state-icon] {
 
 [mat-icon-button] {
   line-height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   i {
-    font-size: 18px;
+    font-size: 14px;
     line-height: 24px;
   }
 }

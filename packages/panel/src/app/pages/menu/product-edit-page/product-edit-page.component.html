@@ -4,7 +4,7 @@
       <i class="fa-regular fa-arrow-right"></i>
     </button>
     <h2>{{ 'productEdit.newProductPageTitle' | translate }}</h2>
-    <button mat-flat-button color="accent" (click)="save()">
+    <button mat-flat-button color="accent" (click)="save()" [disabled]="!form.dirty">
       {{ 'app.save' | translate }}
     </button>
   </mat-toolbar>
@@ -94,6 +94,34 @@
               </mat-list-option>
             </mat-selection-list>
           </mat-card-content>
+        </mat-card>
+
+        <span spacer-2x></span>
+
+        <mat-card>
+          <mat-card-content>
+            <img *ngIf="!imageCropperResult" [imageLoader]="form.controls['images'].value[0]" />
+            <img *ngIf="imageCropperResult" [src]="imageCropperResult.base64" />
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button color="primary" type="button" (click)="upload()">
+              <i class="fa-regular fa-upload"></i>
+              {{ 'app.upload' | translate }}
+            </button>
+            <button
+              *ngIf="imageCropperResult"
+              mat-button
+              type="button"
+              (click)="imageCropperResult = undefined"
+            >
+              <i class="fa-regular fa-undo"></i>
+              {{ 'app.undo' | translate }}
+            </button>
+            <div flex></div>
+            <button mat-icon-button color="warn" type="button" (click)="removePhoto()">
+              <i class="fa-regular fa-trash-alt"></i>
+            </button>
+          </mat-card-actions>
         </mat-card>
       </div>
     </div>

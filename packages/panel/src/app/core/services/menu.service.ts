@@ -42,7 +42,23 @@ export class MenuService {
     const currentCategory = dto.id
       ? menu?.categories?.find((x) => x.products?.find((y) => y.id === dto.id))
       : undefined;
+
+    if (dto.category) dto.category = <ProductCategory>{ id: dto.category.id };
     const savedProduct = await this.http.post<Product>(`products`, dto).toPromise();
     await this.shopService.loadShop();
+    return savedProduct;
+  }
+
+  getProductById(id: string) {
+    if (this.shopService.shopValue?.menu?.categories) {
+      for (const cat of this.shopService.shopValue?.menu?.categories) {
+        if (cat.products) {
+          for (const p of cat.products) {
+            if (p.id === id) return p;
+          }
+        }
+      }
+    }
+    return undefined;
   }
 }

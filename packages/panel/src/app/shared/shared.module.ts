@@ -36,23 +36,29 @@ import { PdatePipe } from './pipes/pdate.pipe';
 import { SelectDialogComponent } from './dialogs/select-dialog/select-dialog.component';
 import { AlertDialogComponent } from './dialogs/alert-dialog/alert-dialog.component';
 import { MenuCurrencyPipe } from './pipes/menu-currency.pipe';
+import { ImageCropperDialogComponent } from './dialogs/image-cropper-dialog/image-cropper-dialog.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
+import { ImageLoaderDirective } from './directives/image-loader.directive';
 
 @NgModule({
   declarations: [
     PromptDialogComponent,
     AdvancedPromptDialogComponent,
+    ImageCropperDialogComponent,
     GoBackDirective,
     SanitizeUrlPipe,
     MenuCurrencyPipe,
     PdatePipe,
     SelectDialogComponent,
     AlertDialogComponent,
+    ImageLoaderDirective,
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     LayoutModule,
+    ImageCropperModule,
     TranslateModule,
     MatToolbarModule,
     MatButtonModule,
@@ -82,6 +88,7 @@ import { MenuCurrencyPipe } from './pipes/menu-currency.pipe';
   ],
   exports: [
     AdvancedPromptDialogComponent,
+    ImageCropperDialogComponent,
     GoBackDirective,
     SanitizeUrlPipe,
     MenuCurrencyPipe,
@@ -89,6 +96,7 @@ import { MenuCurrencyPipe } from './pipes/menu-currency.pipe';
     AlertDialogComponent,
     SelectDialogComponent,
     TranslateModule,
+    ImageLoaderDirective,
 
     FormsModule,
     ReactiveFormsModule,

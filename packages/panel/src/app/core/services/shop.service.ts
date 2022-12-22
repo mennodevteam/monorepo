@@ -47,6 +47,15 @@ export class ShopService {
   async loadShop() {
     const shop = await this.http.get<Shop>('shops').toPromise();
     if (shop) {
+      if (shop.menu?.categories) {
+        for (const cat of shop.menu.categories) {
+          if (cat.products) {
+            for (const p of cat.products) {
+              p.category = cat;
+            }
+          }
+        }
+      }
       this.updateShop(shop);
     }
   }

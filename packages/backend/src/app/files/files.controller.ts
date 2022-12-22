@@ -8,8 +8,9 @@ export class FilesController {
   constructor(private filesService: FilesService) {}
 
   @Public()
+  @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   uploadFile(@UploadedFile() file: Express.Multer.File, @Body() body) {
-    return this.filesService.upload(file, body?.path);
+    return this.filesService.upload(file, body?.name, body?.path);
   }
 }

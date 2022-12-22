@@ -7,7 +7,7 @@ import 'multer';
 export class FilesService {
   private client = new S3(awsConfig);
 
-  async upload(file: Express.Multer.File, path?: string) {
+  async upload(file: Express.Multer.File, name: string, path?: string) {
     // file.
     return new Promise((resolve, reject) => {
       let key = '';
@@ -15,7 +15,7 @@ export class FilesService {
         key += path;
         if (!key.endsWith('/')) key += '/';
       }
-      key += `${Date.now()}_${file.originalname}`;
+      key += `${Date.now()}_${name}`;
       this.client.upload(
         {
           Bucket: process.env.LIARA_BUCKET_NAME,

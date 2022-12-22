@@ -6,7 +6,6 @@ export * from './create-shop.dto';
 export * from './delivery-area';
 export * from './discount-coupon';
 export * from './discount-usage';
-export * from './file';
 export * from './filter-campaign-action';
 export * from './filter-discount-coupons.dto';
 export * from './filter-jsonbin.dto';

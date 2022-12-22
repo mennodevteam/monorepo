@@ -4,7 +4,13 @@
     "cancel": "انصراف",
     "status": "وضعیت",
     "active": "فعال",
-    "inactive": "غیرفعال"
+    "inactive": "غیرفعال",
+    "save": "ذخیره",
+    "upload": "آپلود",
+    "undo": "بازگردادن",
+    "uploading": "درحال ارسال فایل...",
+    "saving": "درحال ذخیره کردن...",
+    "savedSuccessfully": "با موفقیت ذخیره شد"
   },
   "sidenav": {
     "menu": "مدیریت آیتم‌های منو",
