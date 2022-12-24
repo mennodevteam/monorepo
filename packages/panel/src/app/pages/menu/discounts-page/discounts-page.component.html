@@ -1,0 +1,18 @@
+<mat-toolbar class="content-toolbar">
+  <h2 flex>{{ 'menu.discountsTab' | translate }}</h2>
+  <button mat-flat-button color="primary" (click)="add()">
+    {{ 'menuDiscountPage.addFestival' | translate }}
+  </button>
+  <span spacer></span>
+  <button mat-flat-button color="primary" (click)="add()">
+    {{ 'menuDiscountPage.addDiscount' | translate }}
+  </button>
+</mat-toolbar>
+<p class="gray">
+  {{'menuDiscountPage.pageDescription' | translate}}
+</p>
+<!-- 
+<div *ngFor="let cat of categories | async">
+  <menu-category-container [category]="cat"></menu-category-container>
+  <span spacer-2x></span>
+</div> -->

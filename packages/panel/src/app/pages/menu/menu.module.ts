@@ -9,6 +9,7 @@ import { ProductsTableComponent } from './menu-page/products-table/products-tabl
 import { CategoryEditDialogComponent } from './menu-page/category-edit-dialog/category-edit-dialog.component';
 import { ProductEditPageComponent } from './product-edit-page/product-edit-page.component';
 import { MenuComponent } from './menu.component';
+import { DiscountsPageComponent } from './discounts-page/discounts-page.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { MenuComponent } from './menu.component';
     CategoryEditDialogComponent,
     ProductEditPageComponent,
     MenuComponent,
+    DiscountsPageComponent,
   ],
   imports: [CommonModule, RouterModule.forChild(menuRoutes), SharedModule],
 })
