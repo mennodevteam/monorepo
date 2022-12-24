@@ -1,0 +1,15 @@
+::ng-deep .category-chips {
+  overflow: scroll;
+  margin: 0 -24px;
+  padding: 8px 24px;
+
+  & > * {
+    flex-wrap: nowrap !important;
+  }
+}
+
+.category-chips {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}

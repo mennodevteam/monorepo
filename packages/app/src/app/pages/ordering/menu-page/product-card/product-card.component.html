@@ -1,0 +1,12 @@
+<mat-card class="product" [ngClass]="{'tertiary on-tertiary-text': product.costs}">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title class="product__title">{{product.title}}</mat-card-title>
+      <mat-card-subtitle class="product__description">{{product.description}}</mat-card-subtitle>
+      <img mat-card-sm-image class="product__image" [src]="product.images ? product.images[0] : ''" >
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-content>
+    <!-- {{longText}} -->
+  </mat-card-content>
+</mat-card>

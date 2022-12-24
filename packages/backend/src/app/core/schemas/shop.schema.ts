@@ -27,13 +27,26 @@ export const ShopSchema = new EntitySchema<Shop>({
       nullable: true,
       unique: true,
     },
+    domain: {
+      type: String,
+      nullable: true,
+      unique: true,
+    },
+    latitude: {
+      type: Number,
+      nullable: true,
+    },
+    longitude: {
+      type: Number,
+      nullable: true,
+    },
+    address: {
+      type: String,
+      nullable: true,
+    },
     lastDisconnectAlertAt: {
       type: 'timestamptz',
       nullable: true,
-    },
-    location: {
-      type: 'simple-json',
-      default: {},
     },
     details: {
       type: 'simple-json',

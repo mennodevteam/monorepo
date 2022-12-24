@@ -3,6 +3,7 @@ import { Body, Controller, Get, Param, Put } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
+import { Public } from '../auth/public.decorator';
 import { Roles } from '../auth/roles.decorators';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
@@ -37,10 +38,11 @@ export class ShopsController {
     return this.shopsService.sendShopLink(user.shopId, mobile);
   }
 
+  @Public()
   @Get(':query')
   findByUsernameOrCode(@Param('query') query: string): Promise<Shop> {
     return this.shopsRepo.findOne({
-      where: [{ username: query }, { code: query }],
+      where: [{ domain: query }, { username: query }, { code: query }],
       relations: ['region', 'shopGroup'],
     });
   }

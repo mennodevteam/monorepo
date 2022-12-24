@@ -1,0 +1,50 @@
+<div class="wrapper">
+  <h1 id="title">{{ (shop | async)?.title }}</h1>
+  <img src="{{ (shop | async)?.logo }}" id="logo" />
+
+  <span spacer-2x></span>
+
+  <mat-nav-list>
+    <a mat-list-item>
+      <span matListItemTitle>تلفن</span>
+      <span matListItemLine>
+        {{ phones | async }}
+      </span>
+      <button mat-icon-button matListItemMeta>
+        <i class="fa-solid fa-phone"></i>
+      </button>
+    </a>
+    <a mat-list-item>
+      <span matListItemTitle>اینستاگرام</span>
+      <span matListItemLine>
+        {{ (shop | async)?.instagram }}
+      </span>
+      <button mat-icon-button matListItemMeta>
+        <i class="fa-brands fa-instagram"></i>
+      </button>
+    </a>
+    <a mat-list-item lines="3">
+      <span matListItemTitle>آدرس</span>
+      <span>
+        {{ (shop | async)?.address }}
+      </span>
+      <button mat-icon-button matListItemMeta>
+        <i class="fa-solid fa-location-dot"></i>
+      </button>
+    </a>
+
+    <mat-divider></mat-divider>
+
+    <a mat-list-item>
+      <span matListItemTitle>لیست سفارشات پیشین</span>
+      <button mat-icon-button matListItemMeta>
+        <i class="fa-sharp fa-solid fa-clock-rotate-left"></i>
+      </button>
+    </a>
+  </mat-nav-list>
+
+  <button mat-raised-button color="accent" id="action-button" routerLink="menu">
+    مشاهده منو و ثبت سفارش
+    <i class="fa-solid fa-utensils fa-lg"></i>
+  </button>
+</div>

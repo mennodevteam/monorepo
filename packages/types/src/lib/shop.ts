@@ -28,11 +28,11 @@ export class Shop {
   username: string;
   lastDisconnectAlertAt: Date;
   region: Region;
-  location: {
-    latitude: number;
-    longitude: number;
-    address: string;
-  };
+  domain: string;
+  latitude: number;
+  longitude: number;
+  address: string;
+  instagram: string;
   phones: string[];
   images: string[];
   deliveryAccountId?: string;

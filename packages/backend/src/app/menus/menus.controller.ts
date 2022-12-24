@@ -1,30 +1,24 @@
-import { Menu } from '@menno/types';
+import { Menu, Shop } from '@menno/types';
 import { Controller, Get, Param } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Public } from '../auth/public.decorator';
 
 @Controller('menus')
 export class MenusController {
   constructor(
-    @InjectRepository(Menu)
-    private menusRepo: Repository<Menu>
+    @InjectRepository(Shop)
+    private shopsRepo: Repository<Shop>
   ) {}
 
-  @Get(':id')
-  findOne(@Param('id') id: string): Promise<Menu> {
-    return this.menusRepo.findOne({
-      where: { id },
-      relations: ['categories', 'categories.products', 'costs'],
-      order: {
-        categories: {
-          position: 'ASC',
-          createdAt: 'ASC',
-          products: {
-            position: 'ASC',
-            createdAt: 'ASC',
-          },
-        },
-      },
+  @Public()
+  @Get(':query')
+  async findOne(@Param('query') query: string): Promise<Menu> {
+    const shop = await this.shopsRepo.findOne({
+      where: [{ domain: query }, { username: query }, { code: query }],
+      relations: ['menu.categories.products', 'menu.costs'],
     });
+
+    return shop.menu;
   }
 }

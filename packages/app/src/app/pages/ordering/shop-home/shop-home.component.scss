@@ -1,0 +1,44 @@
+@import "config/vars";
+
+.wrapper {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+
+  #title {
+    text-align: center;
+    font-size: 64px;
+    font-weight: 300;
+    margin: 0;
+  }
+
+  #logo {
+    width: 320px;
+    height: 320px;
+    border-radius: 36px;
+    margin: auto;
+  }
+
+  #description {
+    text-align: center;
+    opacity: 0.7;
+  }
+}
+
+.mat-mdc-list-item {
+  min-height: 72px !important;
+}
+
+.mat-mdc-subheader {
+  margin-bottom: 0;
+}
+
+.mat-mdc-list-item-meta i {
+  font-size: 20px;
+}
+
+#action-button {
+  position: sticky;
+  bottom: 24px;
+  height: 64px;
+}

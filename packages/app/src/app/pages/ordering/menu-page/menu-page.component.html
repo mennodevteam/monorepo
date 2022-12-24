@@ -1,0 +1,12 @@
+<menu-toolbar></menu-toolbar>
+
+<div class="wrapper">
+  <menu-categories (chipClick)="categoryClick($event)"></menu-categories>
+
+  <div *ngFor="let c of categories | async" id="category_{{c.id}}" #category class="category-wrapper">
+    <h3>{{c.title}}</h3>
+    <div class="product-wrapper" id="product_{{p.id}}" *ngFor="let p of c.products">
+      <product-card [product]="p" routerLink="product/{{p.id}}"></product-card>
+    </div>
+  </div>
+</div>

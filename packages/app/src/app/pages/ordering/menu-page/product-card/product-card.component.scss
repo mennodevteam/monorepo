@@ -1,0 +1,20 @@
+@import "config/vars.scss";
+
+.product {
+  background-color: $color-surface-variant;
+  border-radius: 16px;
+
+  &__title {
+    margin-bottom: 8px;
+  }
+
+  &__description {
+    font-size: 0.7rem;
+    color: inherit;
+    opacity: 0.8;
+  }
+
+  &__image {
+    border-radius: 12px !important;
+  }
+}

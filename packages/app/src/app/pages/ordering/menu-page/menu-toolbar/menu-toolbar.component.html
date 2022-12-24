@@ -1,0 +1,12 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <button mat-icon-button>
+      <i class="fa-regular fa-arrow-right"></i>
+    </button>
+  </mat-toolbar-row>
+  <mat-toolbar-row>
+    <img src="{{(shop | async)?.logo}}" id="logo">
+    <span spacer></span>
+    <h1>{{(shop | async)?.title}}</h1>
+  </mat-toolbar-row>
+</mat-toolbar>

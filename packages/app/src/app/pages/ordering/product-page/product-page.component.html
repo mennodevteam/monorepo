@@ -1,0 +1,14 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <button mat-icon-button>
+      <i class="fa-regular fa-arrow-right"></i>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<main *ngIf="product">
+  <h1>{{ product.title }}</h1>
+  <img id="product-image" [src]="image" />
+
+  <p>{{product.description}}</p>
+</main>

@@ -1,0 +1,61 @@
+/* You can add global styles to this file, and also import other style files */
+@import "assets/fonts/iransans/iransans.scss";
+@import "theme2.scss";
+@import "theme";
+@import "assets/fonts/fontawesome/scss/fontawesome.scss";
+@import "assets/fonts/fontawesome/scss/regular.scss";
+@import "assets/fonts/fontawesome/scss/brands.scss";
+@import "assets/fonts/fontawesome/scss/solid.scss";
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "IRANSans";
+  background-color: $color-background;
+  color: $color-on-background;
+}
+
+.spacer,
+span[spacer] {
+  flex: none;
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+
+.spacer-2x,
+span[spacer-2x] {
+  flex: none;
+  display: block;
+  width: 32px;
+  height: 32px;
+}
+
+// material override
+.mat-toolbar {
+  background-color: $color-background;
+
+  min-height: 72px;
+  &-row {
+    min-height: 72px;
+  }
+}
+
+[mat-button],
+[mat-raised-button],
+[mat-flat-button] {
+  border-radius: 24px !important;
+}
+
+mat-card {
+  box-shadow: none !important;
+}
+
+[matListItemIcon] {
+  line-height: 24px;
+  text-align: center;
+}
