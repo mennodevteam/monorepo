@@ -8,9 +8,9 @@ export const menuRoutes: Route[] = [
     path: '',
     component: MenuComponent,
     children: [
-      { path: 'list', component: MenuPageComponent },
-      { path: 'list/product', component: ProductEditPageComponent },
-      { path: '', redirectTo: 'list', pathMatch: 'full' },
+      { path: 'items', component: MenuPageComponent },
+      { path: 'items/product', component: ProductEditPageComponent },
+      { path: '', redirectTo: 'items', pathMatch: 'full' },
     ],
   },
 ];

@@ -8,7 +8,7 @@ export type SidebarItem = {
 export const ITEMS: SidebarItem[] = [
   {
     title: 'menu',
-    icon: 'fa-burger-fries'
+    icon: 'fa-book-open'
   },
   {
     title: 'orders',

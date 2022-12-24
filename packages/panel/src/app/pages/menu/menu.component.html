@@ -3,11 +3,36 @@
     <a
       mat-tab-link
       routerLinkActive
-      #listLink="routerLinkActive"
-      [active]="listLink.isActive"
-      routerLink="list"
-      >{{ 'menu.menuList' | translate }}</a
+      #itemsLink="routerLinkActive"
+      [active]="itemsLink.isActive"
+      routerLink="items"
     >
+      <i class="fa-regular fa-burger-fries"></i>
+      <span spacer></span>
+      {{ 'menu.itemsTab' | translate }}
+    </a>
+    <a
+      mat-tab-link
+      routerLinkActive
+      #discountsLink="routerLinkActive"
+      [active]="discountsLink.isActive"
+      routerLink="discounts"
+    >
+      <i class="fa-regular fa-badge-percent"></i>
+      <span spacer></span>
+      {{ 'menu.discountsTab' | translate }}
+    </a>
+    <a
+      mat-tab-link
+      routerLinkActive
+      #costsLink="routerLinkActive"
+      [active]="costsLink.isActive"
+      routerLink="costs"
+    >
+      <i class="fa-regular fa-grid-2-plus"></i>
+      <span spacer></span>
+      {{ 'menu.costsTab' | translate }}
+    </a>
   </nav>
 </mat-toolbar>
 <main class="content-wrapper">

@@ -7,7 +7,7 @@
       </h3>
       <button
         mat-icon-button
-        matTooltip="{{ 'menu.editCategory' | translate }}"
+        matTooltip="{{ 'menuList.editCategory' | translate }}"
         (click)="editCategory()"
       >
         <i class="fa-regular fa-pencil-alt"></i>
@@ -15,7 +15,7 @@
       <span spacer-2x></span>
       <button
         mat-icon-button
-        matTooltip="{{ 'menu.deleteCategory' | translate }}"
+        matTooltip="{{ 'menuList.deleteCategory' | translate }}"
         (click)="deleteCategory()"
       >
         <i class="fa-regular fa-trash-alt"></i>
@@ -29,7 +29,7 @@
     </ng-container>
     <div *ngIf="!category.products?.length" class="empty-state">
       <i *ngIf="category.faIcon" empty-state-icon class="fa-solid fa-{{ category.faIcon }}"></i>
-      <p>{{ 'menu.emptyProductsDescription' | translate }}</p>
+      <p>{{ 'menuList.emptyProductsDescription' | translate }}</p>
     </div>
   </mat-card-content>
   <mat-divider></mat-divider>
@@ -41,7 +41,7 @@
       [queryParams]="{ categoryId: category.id }"
     >
       <i class="fa-regular fa-plus"></i>
-      {{ 'menu.addProduct' | translate }}
+      {{ 'menuList.addProduct' | translate }}
     </button>
   </mat-card-actions>
 </mat-card>

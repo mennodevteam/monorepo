@@ -7,6 +7,7 @@ mat-dialog-content {
 mat-button-toggle-group {
   flex-wrap: wrap;
   justify-content: center;
+  height: auto;
   mat-button-toggle {
     width: 48px;
     border: none !important;

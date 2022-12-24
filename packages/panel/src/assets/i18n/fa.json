@@ -18,6 +18,11 @@
     "orders": "سفارشات"
   },
   "menu": {
+    "itemsTab": "آیتم‌های منو",
+    "discountsTab": "جشنواره و تخفیف",
+    "costsTab": "هزینه‌های مازاد"
+  },
+  "menuList": {
     "addCategory": "ایجاد دسته‌بندی",
     "editCategory": "ویرایش دسته‌بندی",
     "deleteCategory": "حذف دسته‌بندی",
