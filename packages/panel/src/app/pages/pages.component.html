@@ -1,27 +1,16 @@
 <mat-toolbar color="accent">
-  <button mat-icon-button>
-    <i class="fa-regular fa-bars"></i>
-  </button>
-  <h1>{{ (shopService.shop | async)?.title }}</h1>
+  <img src="assets/icons/logo.png" id="logo" />
+  <span spacer-2x></span>
+  <span spacer-2x></span>
+  <span spacer-2x></span>
+  <ng-container *ngIf="translateService.get('menno') | async">
+    <ng-container *ngFor="let item of items; let last = last">
+      <button mat-button>
+        <!-- <i *ngIf="item.icon" class="fa-solid fa-{{item.icon}}"></i> -->
+        {{ 'sidenav.' + item.title | translate }}
+      </button>
+      <span spacer-2x *ngIf="!last"></span>
+    </ng-container>
+  </ng-container>
 </mat-toolbar>
-<mat-sidenav-container>
-  <mat-sidenav
-    class="dark-theme"
-    fixedTopGap="64"
-    fixedInViewport
-    [mode]="(isHandset$ | async) ? 'over' : 'side'"
-    [opened]="(isHandset$ | async) === false"
-  >
-    <mat-nav-list>
-      <a mat-list-item *ngFor="let item of items">
-        <i matListItemIcon *ngIf="item.icon" class=" fa-solid {{ item.icon }}"></i>
-        <span matListItemTitle>
-          {{ 'sidenav.' + item.title | translate }}
-        </span>
-      </a>
-    </mat-nav-list>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+<router-outlet></router-outlet>

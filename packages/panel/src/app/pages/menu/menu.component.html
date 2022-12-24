@@ -1,0 +1,17 @@
+<mat-toolbar class="mat-elevation-z3 page-toolbar">
+  <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+    <a
+      mat-tab-link
+      routerLinkActive
+      #listLink="routerLinkActive"
+      [active]="listLink.isActive"
+      routerLink="list"
+      >{{ 'menu.menuList' | translate }}</a
+    >
+  </nav>
+</mat-toolbar>
+<main class="content-wrapper">
+  <mat-tab-nav-panel #tabPanel>
+    <router-outlet></router-outlet>
+  </mat-tab-nav-panel>
+</main>

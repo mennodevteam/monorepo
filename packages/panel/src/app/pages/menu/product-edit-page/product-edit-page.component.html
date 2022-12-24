@@ -1,9 +1,9 @@
 <form [formGroup]="form" class="form-theme">
-  <mat-toolbar class="page-toolbar">
+  <mat-toolbar class="content-toolbar">
     <button mat-icon-button goBack>
       <i class="fa-regular fa-arrow-right"></i>
     </button>
-    <h2>{{ 'productEdit.newProductPageTitle' | translate }}</h2>
+    <h2 flex>{{ 'productEdit.newProductPageTitle' | translate }}</h2>
     <button mat-flat-button color="accent" (click)="save()" [disabled]="!form.dirty">
       {{ 'app.save' | translate }}
     </button>

@@ -26,6 +26,7 @@ body {
   overflow-y: scroll;
   margin: 0;
   font-family: "IRANSans";
+  background-color: $background;
 }
 
 input,
@@ -144,12 +145,11 @@ i[empty-state-icon] {
   }
 }
 
-mat-card {
-  &:not(.shadow) {
-    box-shadow: none !important;
-    border: $border;
-  }
+.mat-toolbar {
+  background-color: transparent;
+}
 
+mat-card {
   border-radius: 8px !important;
 
   mat-toolbar {
@@ -261,16 +261,27 @@ snack-bar-container {
 
 .page-toolbar {
   position: sticky;
-  top: 0px;
-  z-index: 200;
-  border-bottom: $border;
+  top: 64px;
+  z-index: 2000;
+  height: 48px;
   background-color: white !important;
+}
 
-  h2 {
-    flex: 1;
-    font-size: 16px;
-    font-weight: 600;
+.content-wrapper {
+  padding: 24px;
+  max-width: 1280px;
+  margin: auto;
+
+  h2, h3, h4 {
+    font-size: 24px;
   }
+}
+
+.content-toolbar {
+  z-index: 1999;
+  border-bottom: $border;
+  padding: 0 !important;
+  margin-bottom: 24px;
 }
 
 .ltr {

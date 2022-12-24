@@ -1,7 +1,11 @@
-<menno-menu-toolbar></menno-menu-toolbar>
-<main>
-  <div *ngFor="let cat of categories | async">
-    <menu-category-container [category]="cat"></menu-category-container>
-    <span spacer-2x></span>
-  </div>
-</main>
+<mat-toolbar class="content-toolbar">
+  <h2 flex>{{ 'sidenav.menu' | translate }}</h2>
+  <button mat-flat-button color="primary" (click)="addCategory()">
+    {{ 'menu.addCategory' | translate }}
+  </button>
+</mat-toolbar>
+
+<div *ngFor="let cat of categories | async">
+  <menu-category-container [category]="cat"></menu-category-container>
+  <span spacer-2x></span>
+</div>
