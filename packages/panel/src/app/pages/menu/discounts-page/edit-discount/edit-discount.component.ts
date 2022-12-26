@@ -16,7 +16,6 @@ import { MenuService } from 'packages/panel/src/app/core/services/menu.service';
 export class EditDiscountComponent {
   form: FormGroup;
   Status = Status;
-  // OrderType = OrderType;
   saving = false;
   discount?: MenuCost;
 
@@ -41,28 +40,32 @@ export class EditDiscountComponent {
       _type: new FormControl('all', Validators.required),
     });
 
-    // this.route.queryParams.subscribe(async (params) => {
-    //   const categories = this.menuService?.menu?.categories;
-    //   if (params['id']) {
-    //     this.product = this.menuService.getProductById(params['id']);
-    //     if (this.product) {
-    //       this.form.setValue({
-    //         title: this.product.title,
-    //         category: categories?.find((x) => x.id === this.product?.category.id),
-    //         description: this.product.description,
-    //         price: this.product.price,
-    //         status: this.product.status,
-    //         orderTypes: this.product.orderTypes,
-    //         images: this.product.images,
-    //       });
-    //     }
-    //   }
-
-    //   if (params['categoryId'] && categories)
-    //     this.form
-    //       .get('category')
-    //       ?.setValue(categories?.find((x) => x.id.toString() === params['categoryId']));
-    // });
+    this.route.queryParams.subscribe(async (params) => {
+      if (params['id']) {
+        this.discount = this.menuService.menu?.costs.find((x) => x.id.toString() === params['id']);
+        if (this.discount) {
+          const d = this.discount;
+          this.form.setValue({
+            title: d.title,
+            description: d.description,
+            percentageCost: d.percentageCost ? Math.abs(d.percentageCost) : 0,
+            fixedCost: d.fixedCost ? Math.abs(d.fixedCost) : 0,
+            status: d.status,
+            fromDate: d.fromDate ? new Date(d.fromDate) : undefined,
+            toDate: d.toDate ? new Date(d.toDate) : undefined,
+            includeProductCategory: d.includeProductCategory ? this.menuService.filterCategoriesByIds(
+              d.includeProductCategory.map((x) => x.id)
+            ) : [],
+            includeProduct: d.includeProduct ? this.menuService.filterProductsByIds(d.includeProduct.map((x) => x.id)) : [],
+            _type: d.includeProduct.length
+              ? 'product'
+              : d.includeProductCategory
+              ? 'category'
+              : 'all',
+          });
+        }
+      }
+    });
   }
 
   get categories() {
@@ -73,7 +76,10 @@ export class EditDiscountComponent {
     if (this.form.invalid) return;
     const dto = this.form.getRawValue();
     if (!dto.fixedCost && !dto.percentageCost) {
-      this.snack.open(this.translate.instant('discountEdit.priceWarning'), '', { duration: 4000, panelClass: 'warning' });
+      this.snack.open(this.translate.instant('discountEdit.priceWarning'), '', {
+        duration: 4000,
+        panelClass: 'warning',
+      });
       return;
     }
 
@@ -84,8 +90,11 @@ export class EditDiscountComponent {
     this.snack.open(this.translate.instant('app.saving'), '', { duration: 8000 });
     if (dto.fixedCost) dto.fixedCost = Math.abs(dto.fixedCost) * -1;
     if (dto.percentageCost) dto.percentageCost = Math.abs(dto.percentageCost) * -1;
-    this.menuService.saveMenuCost(dto);
-    this.snack.open(this.translate.instant('app.savedSuccessfully'), '', { duration: 3000, panelClass: 'success' });
+    await this.menuService.saveMenuCost(dto);
+    this.snack.open(this.translate.instant('app.savedSuccessfully'), '', {
+      duration: 3000,
+      panelClass: 'success',
+    });
     this.location.back();
   }
 

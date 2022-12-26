@@ -115,5 +115,9 @@
     "festivalDateLabel": "بازه زمانی جشنواره",
     "removeDate": "حذف بازه زمانی",
     "priceWarning": "مقدار تخفیف را مشخص کنید"
+  },
+  "removeDialog": {
+    "title": "حذف {{value}}",
+    "description": "در صورت اطمینان از حذف {{value}} لطفا تایید کنید."
   }
 }

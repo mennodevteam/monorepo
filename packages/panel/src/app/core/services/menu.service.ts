@@ -55,6 +55,11 @@ export class MenuService {
     await this.loadMenu();
   }
 
+  async deleteMenuCost(id: number) {
+    await this.http.delete(`menuCosts/${id}`).toPromise();
+    await this.loadMenu();
+  }
+
   async saveProduct(dto: Product) {
     const savedProduct = await this.http.post<Product>(`products`, dto).toPromise();
     await this.loadMenu();
@@ -97,5 +102,29 @@ export class MenuService {
       }
     }
     return undefined;
+  }
+
+  filterProductsByIds(ids: string[]) {
+    const res = [];
+    if (this.menu?.categories) {
+      for (const cat of this.menu?.categories) {
+        if (cat.products) {
+          for (const p of cat.products) {
+            if (ids.indexOf(p.id) > -1) res.push(p);
+          }
+        }
+      }
+    }
+    return res;
+  }
+
+  filterCategoriesByIds(ids: number[]) {
+    const res = [];
+    if (this.menu?.categories) {
+      for (const cat of this.menu?.categories) {
+        if (ids.indexOf(cat.id) > -1) res.push(cat);
+      }
+    }
+    return res;
   }
 }

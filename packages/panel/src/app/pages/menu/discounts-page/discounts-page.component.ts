@@ -1,3 +1,4 @@
+import { Dialog } from '@angular/cdk/dialog';
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -5,11 +6,13 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MenuCost, Status } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
+import { AlertDialogService } from '../../../core/services/alert-dialog.service';
 import { MenuService } from '../../../core/services/menu.service';
 import {
   AdvancedPromptDialogComponent,
   PromptKeyFields,
 } from '../../../shared/dialogs/advanced-prompt-dialog/advanced-prompt-dialog.component';
+import { AlertDialogComponent } from '../../../shared/dialogs/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'discounts-page',
@@ -23,9 +26,12 @@ export class DiscountsPageComponent {
 
   constructor(
     private menuService: MenuService,
-    private translate: TranslateService,
-    private snack: MatSnackBar
+    private alertDialogService: AlertDialogService,
   ) {
+    this.load();
+  }
+
+  load() {
     this.discounts = this.menuService.menu!.costs.filter(
       (x) => x.fixedCost < 0 || x.percentageCost < 0
     );
@@ -42,5 +48,14 @@ export class DiscountsPageComponent {
       discount.status = prevStatus;
       ev.source.checked = !ev.checked;
     }
+  }
+
+  remove(discount: MenuCost) {
+    this.alertDialogService.removeItem(discount.title).then(async (ok) => {
+      if (ok) {
+        await this.menuService.deleteMenuCost(discount.id);
+        this.load();
+      }
+    })
   }
 }
