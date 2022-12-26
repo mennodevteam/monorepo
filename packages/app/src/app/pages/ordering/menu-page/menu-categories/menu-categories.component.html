@@ -1,4 +1,4 @@
 <mat-chip-listbox aria-label="categories" class="category-chips background">
-  <mat-chip-option #categoryChip color="primary" (click)="chipClick.emit(i)" *ngFor="let c of (categories | async); let i = index;">{{c.title}}</mat-chip-option>
+  <mat-chip-option #categoryChip color="primary" (click)="chipClick.emit(i)" *ngFor="let c of categories; let i = index;">{{c.title}}</mat-chip-option>
   <span spacer-2x></span>
 </mat-chip-listbox>

@@ -30,16 +30,16 @@ export class DataService {
   }
 
   get shop() {
-    return this._shop.asObservable();
+    return this._shop.value;
   }
 
   get menu() {
-    return this._menu.asObservable();
+    return this._menu.value;
   }
 
   getProductById(id: string): Product | null {
     try {
-      const menu = this._menu.value;
+      const menu = this.menu;
       if (menu && menu.categories) {
         for (const cat of menu.categories) {
           if (cat.products) {

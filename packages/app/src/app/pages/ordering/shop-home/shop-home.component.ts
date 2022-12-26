@@ -24,8 +24,4 @@ export class ShopHomeComponent {
   get shop() {
     return this.data.shop;
   }
-
-  get phones() {
-    return this.data.shop.pipe(map((x) => x?.phones.join(', ')));
-  }
 }

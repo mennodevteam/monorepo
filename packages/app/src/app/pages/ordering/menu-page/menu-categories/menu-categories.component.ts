@@ -14,7 +14,7 @@ export class MenuCategoriesComponent {
   constructor(private data: DataService) {}
 
   get categories() {
-    return this.data.menu.pipe(map((x) => x?.categories));
+    return this.data.menu?.categories;
   }
 
   selectChip(index: number) {
@@ -22,5 +22,4 @@ export class MenuCategoriesComponent {
 
     selectedChip.select();
   }
-
 }

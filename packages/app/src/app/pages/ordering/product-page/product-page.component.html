@@ -8,7 +8,7 @@
 
 <main *ngIf="product">
   <h1>{{ product.title }}</h1>
-  <img id="product-image" [src]="image" />
+  <img id="product-image" [imageLoader]="product.images ? product.images[0] : undefined" />
 
-  <p>{{product.description}}</p>
+  <p>{{ product.description }}</p>
 </main>

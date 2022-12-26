@@ -13,6 +13,7 @@ import { ShopHomeComponent } from './shop-home/shop-home.component';
 import { MenuCategoriesComponent } from './menu-page/menu-categories/menu-categories.component';
 import { ProductCardComponent } from './menu-page/product-card/product-card.component';
 import { ProductPageComponent } from './product-page/product-page.component';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ProductPageComponent } from './product-page/product-page.component';
   imports: [
     CommonModule,
     RouterModule.forChild(orderingRoutes),
+    SharedModule,
     MatButtonModule,
     MatListModule,
     MatToolbarModule,

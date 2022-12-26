@@ -9,6 +9,7 @@ export const environment = {
   apiUrl: 'http://localhost:3000/api',
   apiHost: 'http://localhost:3000',
   systemHostNames: ['app.menno.ir', 'menno.ir'],
+  bucketUrl: 'https://menno.storage.iran.liara.space',
 };
 
 /*

@@ -5,8 +5,8 @@
     </button>
   </mat-toolbar-row>
   <mat-toolbar-row>
-    <img src="{{(shop | async)?.logo}}" id="logo">
+    <img [imageLoader]="shop?.logo" id="logo" />
     <span spacer></span>
-    <h1>{{(shop | async)?.title}}</h1>
+    <h1>{{ shop?.title }}</h1>
   </mat-toolbar-row>
 </mat-toolbar>

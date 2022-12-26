@@ -40,7 +40,7 @@ export class MenuPageComponent {
   }
 
   get categories() {
-    return this.data.menu.pipe(map((x) => x?.categories));
+    return this.data.menu?.categories;
   }
 
   @HostListener('window:scroll', ['$event']) onScrollEvent(ev: Event) {

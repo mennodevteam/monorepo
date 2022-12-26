@@ -1,6 +1,6 @@
 <div class="wrapper">
-  <h1 id="title">{{ (shop | async)?.title }}</h1>
-  <img src="{{ (shop | async)?.logo }}" id="logo" />
+  <h1 id="title">{{ shop?.title }}</h1>
+  <img [imageLoader]="shop?.logo" id="logo" />
 
   <span spacer-2x></span>
 
@@ -8,7 +8,7 @@
     <a mat-list-item>
       <span matListItemTitle>تلفن</span>
       <span matListItemLine>
-        {{ phones | async }}
+        {{ shop?.phones }}
       </span>
       <button mat-icon-button matListItemMeta>
         <i class="fa-solid fa-phone"></i>
@@ -17,7 +17,7 @@
     <a mat-list-item>
       <span matListItemTitle>اینستاگرام</span>
       <span matListItemLine>
-        {{ (shop | async)?.instagram }}
+        {{ shop?.instagram }}
       </span>
       <button mat-icon-button matListItemMeta>
         <i class="fa-brands fa-instagram"></i>
@@ -26,7 +26,7 @@
     <a mat-list-item lines="3">
       <span matListItemTitle>آدرس</span>
       <span>
-        {{ (shop | async)?.address }}
+        {{ shop?.address }}
       </span>
       <button mat-icon-button matListItemMeta>
         <i class="fa-solid fa-location-dot"></i>
@@ -43,7 +43,7 @@
     </a>
   </mat-nav-list>
 
-  <button mat-raised-button color="accent" id="action-button" routerLink="menu">
+  <button mat-raised-button color="primary" id="action-button" routerLink="menu">
     مشاهده منو و ثبت سفارش
     <i class="fa-solid fa-utensils fa-lg"></i>
   </button>
