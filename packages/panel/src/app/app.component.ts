@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RegionsService } from './core/services/regions.service';
 
 @Component({
   selector: 'menno-root',
@@ -7,4 +8,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'panel';
+
+  constructor(private regions: RegionsService) {}
 }

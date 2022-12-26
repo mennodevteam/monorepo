@@ -3,14 +3,22 @@
   <span spacer-2x></span>
   <span spacer-2x></span>
   <span spacer-2x></span>
-  <ng-container *ngIf="translateService.get('menno') | async">
-    <ng-container *ngFor="let item of items; let last = last">
-      <button mat-button routerLink="{{item.route}}">
-        <i *ngIf="item.icon" [ngClass]="['fa-solid fa-lg ' + item.icon]"></i>
-        {{ 'sidenav.' + item.title | translate }}
-      </button>
-      <span spacer-2x *ngIf="!last"></span>
-    </ng-container>
-  </ng-container>
+  <button mat-button routerLink="menu">
+    <i class="fa-solid fa-lg fa-book-open"></i>
+    {{ 'sidenav.menu' | translate }}
+  </button>
+  <span spacer></span>
+  <button mat-button routerLink="orders">
+    <i class="fa-solid fa-lg fa-utensils"></i>
+    {{ 'sidenav.orders' | translate }}
+  </button>
+  <div flex></div>
+  <button mat-icon-button routerLink="settings">
+    <i class="fa-solid fa-lg fa-gear"></i>
+  </button>
+  <span spacer></span>
+  <button mat-icon-button id="user-button">
+    <img [imageLoader]="shop?.logo">
+  </button>
 </mat-toolbar>
 <router-outlet></router-outlet>

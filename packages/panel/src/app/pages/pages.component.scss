@@ -11,11 +11,12 @@ mat-toolbar {
   height: 64px;
 }
 
-mat-sidenav-container {
-  min-height: calc(100vh - 64px);
-}
+#user-button {
+  border: 1px solid $border-color;
 
-mat-sidenav {
-  background-color: $dark-background;
-  width: 250px;
+  img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+  }
 }

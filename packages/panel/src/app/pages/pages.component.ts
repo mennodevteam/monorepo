@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { map, Observable, shareReplay } from 'rxjs';
 import { ShopService } from '../core/services/shop.service';
-import { ITEMS } from './sidebar.constant';
 
 @Component({
   selector: 'menno-pages',
@@ -11,7 +10,6 @@ import { ITEMS } from './sidebar.constant';
   styleUrls: ['./pages.component.scss'],
 })
 export class PagesComponent implements OnInit {
-  items = ITEMS;
   isHandset$: Observable<boolean>;
 
   constructor(
@@ -26,4 +24,8 @@ export class PagesComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  get shop() {
+    return this.shopService.shop;
+  }
 }

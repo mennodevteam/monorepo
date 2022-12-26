@@ -11,6 +11,8 @@ import { ImageCropperDialogComponent } from '../../../shared/dialogs/image-cropp
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FilesService } from '../../../core/services/files.service';
 import { TranslateService } from '@ngx-translate/core';
+import { RegionsService } from '../../../core/services/regions.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'shop-page',
@@ -20,7 +22,6 @@ import { TranslateService } from '@ngx-translate/core';
 export class ShopPageComponent implements OnInit {
   form: FormGroup;
   imageCropperResult?: { base64: string; file: File };
-  regions: Region[] = [];
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   formBuilderData: FieldSection[];
   saving = false;
@@ -32,6 +33,7 @@ export class ShopPageComponent implements OnInit {
     private snack: MatSnackBar,
     private fileService: FilesService,
     private translate: TranslateService,
+    private regionsService: RegionsService
   ) {
     const shop = this.shopService.shop;
 
@@ -46,6 +48,14 @@ export class ShopPageComponent implements OnInit {
       longitude: [shop?.longitude],
       logo: [shop?.logo],
     });
+
+    this.regionsService.regionsObservable
+      .pipe(filter((x) => x != undefined))
+      .subscribe((regions) => {
+        if (shop?.region) {
+          this.form.get('region')?.setValue(regions?.find((x) => x.id === shop.region.id));
+        }
+      });
   }
 
   ngOnInit(): void {}
@@ -99,12 +109,15 @@ export class ShopPageComponent implements OnInit {
       dto.logo = savedFile?.key;
     }
     this.snack.open(this.translate.instant('app.saving'), '', { duration: 5000 });
-    await this.shopService.saveShop(dto)
+    await this.shopService.saveShop(dto);
     this.snack.open(this.translate.instant('app.savedSuccessfully'), '', {
       duration: 5000,
       panelClass: 'success',
     });
     this.saving = false;
+  }
 
+  get regions() {
+    return this.regionsService.regions;
   }
 }
