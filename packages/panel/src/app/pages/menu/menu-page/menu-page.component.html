@@ -5,7 +5,7 @@
   </button>
 </mat-toolbar>
 
-<div *ngFor="let cat of categories | async">
+<div *ngFor="let cat of categories">
   <menu-category-container [category]="cat"></menu-category-container>
   <span spacer-2x></span>
 </div>

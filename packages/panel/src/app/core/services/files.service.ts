@@ -15,7 +15,7 @@ export class FilesService {
 
   upload(file: File, name: string): Promise<{ key: string; url: string } | undefined> {
     const formData = new FormData();
-    formData.append('path', `${BASE_PATH}/${this.shopsService?.shopValue?.id}`);
+    formData.append('path', `${BASE_PATH}/${this.shopsService?.shop?.id}`);
     formData.append('name', name);
     formData.append('file', file);
     return this.http

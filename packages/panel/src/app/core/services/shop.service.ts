@@ -13,35 +13,12 @@ export class ShopService {
     this.loadShop();
   }
 
-  get shopValue(): Shop | null {
-    return this.shop$.getValue();
-  }
-
-  get shop() {
+  get shopObservable() {
     return this.shop$.asObservable();
   }
 
-  updateShop(data: Shop) {
-    const state = { ...this.shop, ...data };
-    if (data.menu?.categories && state.menu?.categories) {
-      Menu.sortCategories(state.menu.categories);
-
-      for (const cat of state.menu?.categories) {
-        const dataCatIndex = data.menu.categories.indexOf(cat);
-        if (dataCatIndex > -1 && data.menu.categories[dataCatIndex].products && cat.products)
-          ProductCategory.sortProducts(cat.products);
-      }
-    }
-    this.shop$.next(state);
-  }
-
-  updateMenu(data: Menu) {
-    this.updateShop(<Shop>{
-      menu: {
-        ...this.shopValue?.menu,
-        ...data,
-      },
-    });
+  get shop() {
+    return this.shop$.value;
   }
 
   async loadShop() {
@@ -56,12 +33,12 @@ export class ShopService {
           }
         }
       }
-      this.updateShop(shop);
+      this.shop$.next(shop);
     }
   }
 
   async saveShop(dto: Shop) {
-    dto.id = this.shopValue!.id;
+    dto.id = this.shop!.id;
     await this.http.put(`shops`, dto).toPromise();
     await this.loadShop();
   }

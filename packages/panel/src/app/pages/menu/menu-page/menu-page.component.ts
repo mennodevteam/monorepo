@@ -29,6 +29,6 @@ export class MenuPageComponent {
       });
   }
   get categories() {
-    return this.shopService.shop.pipe(map((x) => x?.menu?.categories));
+    return this.menuService.menu?.categories;
   }
 }

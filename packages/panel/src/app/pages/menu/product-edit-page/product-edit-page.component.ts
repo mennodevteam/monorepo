@@ -49,7 +49,7 @@ export class ProductEditPageComponent {
     });
 
     this.route.queryParams.subscribe(async (params) => {
-      const categories = this.shopService.shopValue?.menu?.categories;
+      const categories = this.menuService?.menu?.categories;
       if (params['id']) {
         this.product = this.menuService.getProductById(params['id']);
         if (this.product) {
@@ -73,7 +73,7 @@ export class ProductEditPageComponent {
   }
 
   get categories() {
-    return this.shopService.shop.pipe(map((x) => x?.menu?.categories));
+    return this.menuService.menu?.categories;
   }
 
   async save() {

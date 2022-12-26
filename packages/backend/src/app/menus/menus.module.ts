@@ -4,9 +4,10 @@ import { ProductsController } from './products.controller';
 import { ProductCategoriesController } from './product-categories.controller';
 import { MenusService } from './menu.service';
 import { SchemasModule } from '../core/schemas.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [SchemasModule],
+  imports: [SchemasModule, AuthModule],
   providers: [MenusService],
   controllers: [MenusController, ProductsController, ProductCategoriesController],
 })

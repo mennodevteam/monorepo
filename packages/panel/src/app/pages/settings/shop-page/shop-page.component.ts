@@ -33,7 +33,7 @@ export class ShopPageComponent implements OnInit {
     private fileService: FilesService,
     private translate: TranslateService,
   ) {
-    const shop = this.shopService.shopValue;
+    const shop = this.shopService.shop;
 
     this.form = this.fb.group({
       title: [shop?.title, Validators.required],

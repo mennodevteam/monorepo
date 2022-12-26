@@ -14,7 +14,7 @@ export class MenuCurrencyPipe implements PipeTransform {
     private translate: TranslateService
   ) {}
   transform(value: any, digitsInfo?: string): string {
-    const currency = this.shopService.shopValue?.menu?.currency || 'تومان';
+    const currency = this.shopService.shop?.menu?.currency || 'تومان';
     try {
       if (value === 0) {
         return '0';
