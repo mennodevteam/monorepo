@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Menu, Product, ProductCategory, Shop } from '@menno/types';
+import { Menu, MenuCost, Product, ProductCategory, Shop } from '@menno/types';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -54,6 +54,23 @@ export class MenuService {
     const savedProduct = await this.http.post<Product>(`products`, dto).toPromise();
     await this.loadMenu();
     return savedProduct;
+  }
+
+  async saveMenuCost(dto: MenuCost) {
+    dto.menu = <Menu>{ id: this.menu?.id };
+    if (dto.includeProductCategory) {
+      dto.includeProductCategory = dto.includeProductCategory.map(
+        (x) => <ProductCategory>{ id: x.id }
+      );
+    }
+
+    if (dto.includeProduct) {
+      dto.includeProduct = dto.includeProduct.map((x) => <Product>{ id: x.id });
+    }
+
+    const saved = await this.http.post<MenuCost>(`menuCosts`, dto).toPromise();
+    await this.loadMenu();
+    return saved;
   }
 
   getProductById(id: string) {

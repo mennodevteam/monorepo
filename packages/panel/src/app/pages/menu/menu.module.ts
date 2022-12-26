@@ -10,6 +10,7 @@ import { CategoryEditDialogComponent } from './menu-page/category-edit-dialog/ca
 import { ProductEditPageComponent } from './product-edit-page/product-edit-page.component';
 import { MenuComponent } from './menu.component';
 import { DiscountsPageComponent } from './discounts-page/discounts-page.component';
+import { EditDiscountComponent } from './discounts-page/edit-discount/edit-discount.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { DiscountsPageComponent } from './discounts-page/discounts-page.componen
     ProductEditPageComponent,
     MenuComponent,
     DiscountsPageComponent,
+    EditDiscountComponent,
   ],
   imports: [CommonModule, RouterModule.forChild(menuRoutes), SharedModule],
 })

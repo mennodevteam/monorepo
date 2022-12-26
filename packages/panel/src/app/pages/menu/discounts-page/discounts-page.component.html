@@ -1,18 +1,30 @@
 <mat-toolbar class="content-toolbar">
   <h2 flex>{{ 'menu.discountsTab' | translate }}</h2>
-  <button mat-flat-button color="primary" (click)="add()">
+  <button mat-flat-button color="primary" routerLink="edit">
     {{ 'menuDiscountPage.addFestival' | translate }}
-  </button>
-  <span spacer></span>
-  <button mat-flat-button color="primary" (click)="add()">
-    {{ 'menuDiscountPage.addDiscount' | translate }}
   </button>
 </mat-toolbar>
 <p class="gray">
   {{'menuDiscountPage.pageDescription' | translate}}
 </p>
-<!-- 
-<div *ngFor="let cat of categories | async">
-  <menu-category-container [category]="cat"></menu-category-container>
-  <span spacer-2x></span>
-</div> -->
+
+<table mat-table [dataSource]="discounts">
+  <ng-container matColumnDef="title">
+    <th mat-header-cell *matHeaderCellDef>{{ 'discountsTable.title' | translate }}</th>
+    <td mat-cell *matCellDef="let discount">{{ discount.title }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="price">
+    <th mat-header-cell *matHeaderCellDef>{{ 'discountsTable.price' | translate }}</th>
+    <td mat-cell *matCellDef="let discount">{{ discount.price | menuCurrency }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let discount" style="text-align: end">
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>

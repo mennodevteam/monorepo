@@ -1,4 +1,4 @@
-import { MenuCost, OrderType } from '@menno/types';
+import { MenuCost, OrderType, Status } from '@menno/types';
 import { EntitySchema } from 'typeorm';
 
 export const MenuCostSchema = new EntitySchema<MenuCost>({
@@ -14,6 +14,19 @@ export const MenuCostSchema = new EntitySchema<MenuCost>({
       type: String,
       nullable: true,
     },
+    fromDate: {
+      type: 'timestamptz',
+      nullable: true,
+    },
+    toDate: {
+      type: 'timestamptz',
+      nullable: true,
+    },
+    status: {
+      type: 'enum',
+      enum: Status,
+      default: Status.Active,
+    },
     description: {
       type: String,
       nullable: true,
@@ -21,16 +34,6 @@ export const MenuCostSchema = new EntitySchema<MenuCost>({
     percentageCost: {
       type: Number,
       default: 0,
-    },
-    includeProductCategoryIds: {
-      type: Number,
-      nullable: true,
-      array: true,
-    },
-    includeProductIds: {
-      type: String,
-      nullable: true,
-      array: true,
     },
     fixedCost: {
       type: 'real',
@@ -51,6 +54,18 @@ export const MenuCostSchema = new EntitySchema<MenuCost>({
     menu: {
       type: 'many-to-one',
       target: 'Menu',
+    },
+    includeProductCategory: {
+      type: 'many-to-many',
+      target: 'ProductCategory',
+      joinTable: true,
+      nullable: true,
+    },
+    includeProduct: {
+      type: 'many-to-many',
+      target: 'Product',
+      joinTable: true,
+      nullable: true,
     },
   },
 });

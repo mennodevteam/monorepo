@@ -86,5 +86,26 @@
     "phonesHint": "با enter شماره جدید وارد کنید",
     "instagram": "آی‌دی اینستاگرام",
     "instagramHint": "بدون @"
+  },
+  "discountEdit": {
+    "pageTitle": "ایجاد تخفیف و جشنواره",
+    "baseSectionTitle": "اطلاعات پایه",
+    "titleLabel": "عنوان",
+    "titleHint": "در جشنواره به کاربر نمایش داده می‌شود",
+    "descriptionLabel": "توضیحات",
+    "priceSectionTitle": "میزان تخفیف",
+    "fixedCostLabel": "مقدار ثابت تخفیف",
+    "percentageCostLabel": "درصد تخفیف",
+    "productSection": "نحوه اعمال",
+    "_type": "در این بخش مشخص کنید که تخفیف مورد نظر روی چه آیتم‌هایی اعمال شود.",
+    "allMenu": "روی همه آیتم های منو",
+    "someCategories": "روی برخی از دسته بندی ها",
+    "someProducts": "روی برخی از محصولات",
+    "selectCategory": "انتخاب دسته بندی‌ها",
+    "selectProduct": "انتخاب محصولات",
+    "inactiveHint": "غیرفعال است و به کاربر نمایش داده نمی‌شود",
+    "festivalSection": "بازه زمانی جشنواره",
+    "festivalDescription": "در صورتی که بازه زمانی مشخص کنید، تخفیف شما به صورت جشنواره به کاربر نمایش داده می‌شود. قبل از شروع و در حین جشنواره تایمر به کاربر نمایش داده می‌شود.",
+    "festivalDateLabel": "بازه زمانی جشنواره"
   }
 }

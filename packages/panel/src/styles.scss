@@ -134,6 +134,10 @@ i[empty-state-icon] {
   }
 }
 
+[hidden] {
+  display: hidden !important;
+}
+
 // material components
 
 [mat-icon-button] {
@@ -176,26 +180,30 @@ mat-card {
   }
 
   &.success {
+    box-shadow: none !important;
     color: $green;
-    border-color: $green;
+    border: 1px solid $green;
     background: rgba($green, 0.1);
   }
 
   &.info {
+    box-shadow: none !important;
     color: $blue;
-    border-color: $blue;
+    border: 1px solid $blue;
     background: rgba($blue, 0.1);
   }
 
   &.warning {
+    box-shadow: none !important;
     color: darken($yellow, 15);
-    border-color: $yellow;
+    border: 1px solid $yellow;
     background: rgba($yellow, 0.1);
   }
 
   &.error {
+    box-shadow: none !important;
     color: $red;
-    border-color: $red;
+    border: 1px solid $red;
     background: rgba($red, 0.1);
   }
 }
@@ -274,7 +282,9 @@ snack-bar-container {
   max-width: 1280px;
   margin: auto;
 
-  h2, h3, h4 {
+  h2,
+  h3,
+  h4 {
     font-size: 24px;
   }
 }

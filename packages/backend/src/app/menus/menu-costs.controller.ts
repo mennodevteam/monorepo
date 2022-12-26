@@ -1,5 +1,5 @@
 import { MenuCost } from '@menno/types';
-import { Controller, Delete, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Roles } from '../auth/roles.decorators';
@@ -14,7 +14,7 @@ export class MenuCostsController {
   ) {}
 
   @Post()
-  save(dto: MenuCost): Promise<MenuCost> {
+  save(@Body() dto: MenuCost): Promise<MenuCost> {
     return this.menuCostsRepo.save(dto);
   }
 

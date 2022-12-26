@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
+import { MenuGuard } from './core/guards/menu.guard';
 import { ShopGuard } from './core/guards/shop.guard';
 import { PagesComponent } from './pages/pages.component';
 
@@ -15,7 +16,7 @@ export const appRoutes: Route[] = [
     children: [
       {
         path: '',
-        canActivate: [ShopGuard],
+        canActivate: [ShopGuard, MenuGuard],
         children: [
           {
             path: 'menu',
@@ -23,7 +24,8 @@ export const appRoutes: Route[] = [
           },
           {
             path: 'settings',
-            loadChildren: () => import('./pages/settings/settings.module').then((m) => m.SettingsModule),
+            loadChildren: () =>
+              import('./pages/settings/settings.module').then((m) => m.SettingsModule),
           },
           { path: '', redirectTo: 'menu', pathMatch: 'full' },
         ],

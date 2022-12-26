@@ -1,0 +1,154 @@
+<form [formGroup]="form" class="form-theme">
+  <mat-toolbar class="content-toolbar">
+    <button mat-icon-button goBack>
+      <i class="fa-regular fa-arrow-right"></i>
+    </button>
+    <h2 flex>{{ 'discountEdit.pageTitle' | translate }}</h2>
+    <button mat-flat-button color="accent" (click)="save()" [disabled]="!form.dirty">
+      {{ 'app.save' | translate }}
+    </button>
+  </mat-toolbar>
+  <main>
+    <div class="form-page-layout">
+      <div class="flex-col">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>{{ 'discountEdit.baseSectionTitle' | translate }}</mat-card-title>
+          </mat-card-header>
+          <span spacer-2x></span>
+          <mat-card-content>
+            <mat-form-field>
+              <mat-label>{{ 'discountEdit.titleLabel' | translate }}</mat-label>
+              <input matInput formControlName="title" required />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>{{ 'discountEdit.descriptionLabel' | translate }}</mat-label>
+              <textarea rows="3" matInput formControlName="description"></textarea>
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+
+        <span spacer-2x></span>
+
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>{{ 'discountEdit.priceSectionTitle' | translate }}</mat-card-title>
+          </mat-card-header>
+          <span spacer-2x></span>
+          <mat-card-content>
+            <mat-form-field>
+              <mat-label>{{ 'discountEdit.fixedCostLabel' | translate }}</mat-label>
+              <input matInput type="number" formControlName="fixedCost" />
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>{{ 'discountEdit.percentageCostLabel' | translate }}</mat-label>
+              <input matInput type="number" formControlName="percentageCost" />
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+
+        <span spacer-2x></span>
+
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>{{ 'discountEdit.productSection' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{ 'discountEdit._type' | translate }}</p>
+            <mat-radio-group matInput formControlName="_type">
+              <mat-radio-button value="all">
+                {{ 'discountEdit.allMenu' | translate }}
+              </mat-radio-button>
+              <span spacer></span>
+              <mat-radio-button value="category">
+                {{ 'discountEdit.someCategories' | translate }}
+              </mat-radio-button>
+              <div class="padding-container" *ngIf="form.controls['_type'].value == 'category'">
+                <mat-form-field>
+                  <mat-label>{{ 'discountEdit.selectCategory' | translate }}</mat-label>
+                  <mat-select multiple formControlName="includeProductCategory">
+                    <mat-option *ngFor="let cat of categories" [value]="cat">{{
+                      cat.title
+                    }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <span spacer></span>
+              <mat-radio-button value="product">
+                {{ 'discountEdit.someProducts' | translate }}
+              </mat-radio-button>
+              <div class="padding-container" *ngIf="form.controls['_type'].value == 'product'">
+                <mat-form-field>
+                  <mat-label>{{ 'discountEdit.selectProduct' | translate }}</mat-label>
+                  <mat-select multiple formControlName="includeProduct">
+                    <mat-optgroup
+                      *ngFor="let cat of categories"
+                      [label]="cat.title"
+                      [hidden]="!cat.products?.length"
+                    >
+                      <mat-option *ngFor="let p of cat.products" [value]="p">{{
+                        p.title
+                      }}</mat-option>
+                    </mat-optgroup>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </mat-radio-group>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <span spacer-2x></span>
+
+      <div class="static-col">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title> {{ 'app.status' | translate }} </mat-card-title>
+          </mat-card-header>
+          <span spacer-2x></span>
+          <mat-card-content>
+            <mat-button-toggle-group formControlName="status">
+              <mat-button-toggle [value]="Status.Active"
+                >{{ 'app.active' | translate }}
+              </mat-button-toggle>
+              <mat-button-toggle [value]="Status.Inactive"
+                >{{ 'app.inactive' | translate }}
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+            <ng-container *ngIf="form.controls['status'].value === Status.Inactive">
+              <br />
+              <mat-card class="error">
+                <mat-card-content>
+                  {{ 'discountEdit.inactiveHint' | translate }}
+                </mat-card-content>
+              </mat-card>
+            </ng-container>
+          </mat-card-content>
+        </mat-card>
+
+        <span spacer-2x></span>
+
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title> {{ 'discountEdit.festivalSection' | translate }} </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{ 'discountEdit.festivalDescription' | translate }}</p>
+
+            <mat-form-field>
+              <mat-label>{{ 'discountEdit.festivalDateLabel' | translate }}</mat-label>
+              <mat-date-range-input [rangePicker]="picker">
+                <input matStartDate placeholder="{{ 'app.fromDate' | translate }}" />
+                <input matEndDate placeholder="{{ 'app.toDate' | translate }}" />
+              </mat-date-range-input>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </main>
+</form>

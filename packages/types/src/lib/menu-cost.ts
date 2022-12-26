@@ -1,5 +1,8 @@
 import { OrderType } from './order-type.enum';
 import { Menu } from './menu';
+import { Status } from './status.enum';
+import { ProductCategory } from './product-category';
+import { Product } from './product';
 
 export class MenuCost {
   id: number;
@@ -9,7 +12,10 @@ export class MenuCost {
   fixedCost: number;
   showOnItem: boolean;
   orderTypes: OrderType[];
-  includeProductCategoryIds: number[];
-  includeProductIds: string[];
+  fromDate: Date;
+  toDate: Date;
+  status: Status;
+  includeProductCategory: ProductCategory[];
+  includeProduct: Product[];
   menu: Menu;
 }
