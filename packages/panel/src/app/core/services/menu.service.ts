@@ -17,13 +17,18 @@ export class MenuService {
     const menu = await this.http.get<Menu>(`menus`).toPromise();
     if (menu) {
       if (menu?.categories) {
+        ProductCategory.sort(menu.categories);
         for (const cat of menu.categories) {
           if (cat.products) {
+            Product.sort(cat.products);
             for (const p of cat.products) {
               p.category = cat;
             }
           }
         }
+      }
+      if (menu.costs) {
+        MenuCost.sort(menu.costs);
       }
       this.menu$.next(menu);
     }
@@ -62,6 +67,14 @@ export class MenuService {
       dto.includeProductCategory = dto.includeProductCategory.map(
         (x) => <ProductCategory>{ id: x.id }
       );
+    }
+
+    if (dto.fromDate) {
+      dto.fromDate.setHours(12, 0, 0, 0);
+    }
+
+    if (dto.toDate) {
+      dto.toDate.setHours(12, 0, 0, 0);
     }
 
     if (dto.includeProduct) {

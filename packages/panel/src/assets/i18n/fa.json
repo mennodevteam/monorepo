@@ -11,7 +11,10 @@
     "undo": "بازگردادن",
     "uploading": "درحال ارسال فایل...",
     "saving": "درحال ذخیره کردن...",
-    "savedSuccessfully": "با موفقیت ذخیره شد"
+    "fromTo": "از {{from}} تا {{to}}",
+    "savedSuccessfully": "با موفقیت ذخیره شد",
+    "edit": "ویرایش",
+    "remove": "حذف"
   },
   "sidenav": {
     "menu": "منو",
@@ -25,7 +28,10 @@
   "menuDiscountPage": {
     "pageDescription": "شما میتوانید روی آیتم‌های خود یک تخفیف ساده بگذارید و یا با گذاشتن جشنواره یک نمایش متفاوت‌تر از آیتم‌های جشنواره خود داشته باشید.",
     "addFestival": "ایجاد جشنواره",
-    "addDiscount": "ایجاد تخفیف"
+    "addDiscount": "ایجاد تخفیف",
+    "tableTitleCol": "عنوان",
+    "tableDiscountCol": "میزان تخفیف",
+    "tableDateCol": "بازه زمانی"
   },
   "menuList": {
     "addCategory": "ایجاد دسته‌بندی",
@@ -106,6 +112,8 @@
     "inactiveHint": "غیرفعال است و به کاربر نمایش داده نمی‌شود",
     "festivalSection": "بازه زمانی جشنواره",
     "festivalDescription": "در صورتی که بازه زمانی مشخص کنید، تخفیف شما به صورت جشنواره به کاربر نمایش داده می‌شود. قبل از شروع و در حین جشنواره تایمر به کاربر نمایش داده می‌شود.",
-    "festivalDateLabel": "بازه زمانی جشنواره"
+    "festivalDateLabel": "بازه زمانی جشنواره",
+    "removeDate": "حذف بازه زمانی",
+    "priceWarning": "مقدار تخفیف را مشخص کنید"
   }
 }

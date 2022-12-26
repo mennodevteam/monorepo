@@ -16,12 +16,10 @@ export class MenuCurrencyPipe implements PipeTransform {
   transform(value: any, digitsInfo?: string): string {
     const currency = this.shopService.shop?.menu?.currency || 'تومان';
     try {
-      if (value === 0) {
-        return '0';
-      } else if (value != '' && value != null && !isNaN(value)) {
+      if (value != '' && value != null && !isNaN(value)) {
         return this.decimal.transform(value, digitsInfo || '1.0-0') + ' ' + currency;
       } else {
-        return value || '' + currency;
+        return value || currency;
       }
     } catch (error) {
       return value;

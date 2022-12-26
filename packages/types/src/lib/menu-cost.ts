@@ -18,4 +18,11 @@ export class MenuCost {
   includeProductCategory: ProductCategory[];
   includeProduct: Product[];
   menu: Menu;
+  createdAt: Date;
+
+  static sort(costs: MenuCost[]) {
+    costs.sort((a, b) => {
+      return new Date(a.createdAt).valueOf() - new Date(b.createdAt).valueOf();
+    });
+  }
 }

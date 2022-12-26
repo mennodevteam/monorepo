@@ -71,10 +71,30 @@ export class EditDiscountComponent {
 
   async save() {
     if (this.form.invalid) return;
-    const dto: MenuCost = this.form.getRawValue();
-    if (!dto.fixedCost && !dto.percentageCost) return;
-    if (dto.fixedCost) dto.fixedCost = dto.fixedCost * -1;
-    if (dto.percentageCost) dto.percentageCost = dto.percentageCost * -1;
+    const dto = this.form.getRawValue();
+    if (!dto.fixedCost && !dto.percentageCost) {
+      this.snack.open(this.translate.instant('discountEdit.priceWarning'), '', { duration: 4000, panelClass: 'warning' });
+      return;
+    }
+
+    if (dto._type === 'all') dto.includeProduct = dto.includeProductCategory = [];
+    else if (dto._type === 'category') dto.includeProduct = [];
+    else if (dto._type === 'product') dto.includeProductCategory = [];
+
+    this.snack.open(this.translate.instant('app.saving'), '', { duration: 8000 });
+    if (dto.fixedCost) dto.fixedCost = Math.abs(dto.fixedCost) * -1;
+    if (dto.percentageCost) dto.percentageCost = Math.abs(dto.percentageCost) * -1;
     this.menuService.saveMenuCost(dto);
+    this.snack.open(this.translate.instant('app.savedSuccessfully'), '', { duration: 3000, panelClass: 'success' });
+    this.location.back();
+  }
+
+  cv(key: string) {
+    return this.form.get(key)?.value;
+  }
+
+  clearDate() {
+    this.form.get('fromDate')?.setValue(null);
+    this.form.get('toDate')?.setValue(null);
   }
 }

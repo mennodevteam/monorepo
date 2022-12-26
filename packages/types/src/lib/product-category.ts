@@ -17,8 +17,8 @@ export class ProductCategory {
   createdAt?: Date;
   deletedAt?: Date;
   
-  static sortProducts(products: Product[]) {
-    products.sort((a, b) => {
+  static sort(cats: ProductCategory[]) {
+    cats.sort((a, b) => {
       if (a.position != undefined && b.position == undefined) return -1;
       if (b.position != undefined && a.position == undefined) return 1;
       if (a.position == b.position && a.createdAt && b.createdAt) {

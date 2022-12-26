@@ -49,6 +49,10 @@ export const MenuCostSchema = new EntitySchema<MenuCost>({
       enum: OrderType,
       default: [OrderType.Delivery, OrderType.DineIn, OrderType.Takeaway],
     },
+    createdAt: {
+      type: 'timestamptz',
+      createDate: true,
+    },
   },
   relations: {
     menu: {

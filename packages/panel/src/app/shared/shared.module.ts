@@ -11,16 +11,23 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatNativeDateModule } from '@angular/material/core';
+import {
+  DateAdapter,
+  MatNativeDateModule,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+} from '@angular/material/core';
 import { PromptDialogComponent } from './dialogs/prompt-dialog/prompt-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -40,6 +47,10 @@ import { ImageCropperDialogComponent } from './dialogs/image-cropper-dialog/imag
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { ImageLoaderDirective } from './directives/image-loader.directive';
 import { FormBuilderComponent } from './components/form-builder/form-builder.component';
+import {
+  MaterialPersianDateAdapter,
+  PERSIAN_DATE_FORMATS,
+} from '../core/material.persian-date.adapter';
 
 @NgModule({
   declarations: [
@@ -76,7 +87,9 @@ import { FormBuilderComponent } from './components/form-builder/form-builder.com
     MatProgressSpinnerModule,
     MatFormFieldModule,
     MatDatepickerModule,
+    MatSlideToggleModule,
     MatInputModule,
+    MatMenuModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatSnackBarModule,
@@ -118,7 +131,9 @@ import { FormBuilderComponent } from './components/form-builder/form-builder.com
     MatProgressSpinnerModule,
     MatFormFieldModule,
     MatDatepickerModule,
+    MatSlideToggleModule,
     MatInputModule,
+    MatMenuModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatSnackBarModule,
@@ -129,6 +144,11 @@ import { FormBuilderComponent } from './components/form-builder/form-builder.com
     MatChipsModule,
     MatRadioModule,
   ],
-  providers: [MatDatepickerModule, DatePipe, DecimalPipe],
+  providers: [
+    { provide: DateAdapter, useClass: MaterialPersianDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: PERSIAN_DATE_FORMATS },
+    DatePipe,
+    DecimalPipe,
+  ],
 })
 export class SharedModule {}
