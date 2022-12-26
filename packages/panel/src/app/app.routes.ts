@@ -21,6 +21,10 @@ export const appRoutes: Route[] = [
             path: 'menu',
             loadChildren: () => import('./pages/menu/menu.module').then((m) => m.MenuModule),
           },
+          {
+            path: 'settings',
+            loadChildren: () => import('./pages/settings/settings.module').then((m) => m.SettingsModule),
+          },
           { path: '', redirectTo: 'menu', pathMatch: 'full' },
         ],
       },

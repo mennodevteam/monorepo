@@ -39,6 +39,7 @@ import { MenuCurrencyPipe } from './pipes/menu-currency.pipe';
 import { ImageCropperDialogComponent } from './dialogs/image-cropper-dialog/image-cropper-dialog.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { ImageLoaderDirective } from './directives/image-loader.directive';
+import { FormBuilderComponent } from './components/form-builder/form-builder.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { ImageLoaderDirective } from './directives/image-loader.directive';
     SelectDialogComponent,
     AlertDialogComponent,
     ImageLoaderDirective,
+    FormBuilderComponent,
   ],
   imports: [
     CommonModule,
@@ -97,6 +99,7 @@ import { ImageLoaderDirective } from './directives/image-loader.directive';
     SelectDialogComponent,
     TranslateModule,
     ImageLoaderDirective,
+    FormBuilderComponent,
 
     FormsModule,
     ReactiveFormsModule,

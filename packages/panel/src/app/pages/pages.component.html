@@ -5,7 +5,7 @@
   <span spacer-2x></span>
   <ng-container *ngIf="translateService.get('menno') | async">
     <ng-container *ngFor="let item of items; let last = last">
-      <button mat-button>
+      <button mat-button routerLink="{{item.route}}">
         <i *ngIf="item.icon" [ngClass]="['fa-solid fa-lg ' + item.icon]"></i>
         {{ 'sidenav.' + item.title | translate }}
       </button>

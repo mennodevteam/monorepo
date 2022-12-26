@@ -37,22 +37,19 @@ textarea {
 
 .spacer,
 *[spacer] {
-  display: inline-block;
-  padding: 4px;
+  padding: 8px;
   flex: none !important;
 }
 
 .spacer-2x,
 *[spacer-2x] {
-  display: inline-block;
-  padding: 8px;
+  padding: 16px;
   flex: none !important;
 }
 
 .spacer-sm,
 *[spacer-sm] {
-  display: inline-block;
-  padding: 2px;
+  padding: 4px;
   flex: none !important;
 }
 
@@ -120,6 +117,11 @@ i[empty-state-icon] {
 
   .flex-col {
     flex: 1;
+    flex-direction: column;
+  }
+
+  mat-card-content {
+    display: flex;
     flex-direction: column;
   }
 

@@ -27,6 +27,11 @@ export const ShopSchema = new EntitySchema<Shop>({
       nullable: true,
       unique: true,
     },
+    instagram: {
+      type: String,
+      nullable: true,
+      unique: true,
+    },
     domain: {
       type: String,
       nullable: true,
@@ -41,6 +46,10 @@ export const ShopSchema = new EntitySchema<Shop>({
       nullable: true,
     },
     address: {
+      type: String,
+      nullable: true,
+    },
+    description: {
       type: String,
       nullable: true,
     },

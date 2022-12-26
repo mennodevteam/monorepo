@@ -67,5 +67,24 @@
     "price": "قیمت",
     "stock": "موجودی",
     "edit": "ویرایش محصول"
+  },
+  "settings": {
+    "shopTab": "اطلاعات مجموعه"
+  },
+  "shopPage": {
+    "baseSection": "اطلاعات پایه",
+    "title": "عنوان مجموعه",
+    "description": "توضیحات مجموعه",
+    "descriptionHint": "توضیحات در صفحه اصلی به کاربر نمایش داده می‌شود.",
+    "addressSection": "آدرس",
+    "region": "شهر",
+    "address": "آدرس متنی",
+    "logo": "لوگو مجموعه",
+    "connectionSection": "راه‌های ارتباطی",
+    "phonesLabel": "شماره‌های تماس",
+    "phonesPlaceholder": "همراه با پیش شماره...",
+    "phonesHint": "با enter شماره جدید وارد کنید",
+    "instagram": "آی‌دی اینستاگرام",
+    "instagramHint": "بدون @"
   }
 }

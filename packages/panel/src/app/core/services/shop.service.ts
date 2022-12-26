@@ -59,4 +59,10 @@ export class ShopService {
       this.updateShop(shop);
     }
   }
+
+  async saveShop(dto: Shop) {
+    dto.id = this.shopValue!.id;
+    await this.http.put(`shops`, dto).toPromise();
+    await this.loadShop();
+  }
 }

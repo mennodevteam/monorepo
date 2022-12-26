@@ -1,0 +1,76 @@
+
+<div class="form-container">
+  <ng-container *ngFor="let section of sections; let lastSection = last">
+    <mat-card>
+      <mat-card-header *ngIf="section.title || section.description">
+        <mat-card-title *ngIf="section.title">{{
+          i18n ? (section.title | translate) : section.title
+        }}</mat-card-title>
+        <mat-card-subtitle *ngIf="section.description">{{
+          i18n ? (section.description | translate) : section.title
+        }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <ng-container *ngFor="let field of section.fields; let lastField = last">
+          <mat-form-field appearance="fill">
+            <mat-label>{{ i18n ? (field.label | translate) : field.label }}</mat-label>
+            <input
+              *ngIf="['textarea', 'select', 'multiple', 'datepicker'].indexOf(field.type!) === -1"
+              matInput
+              [formControl]="field.control"
+              [placeholder]="i18n ? (field.placeholder! | translate) : field.placeholder!"
+              type="{{ field.type || 'text' }}"
+              [class.ltr]="field.ltr"
+            />
+  
+            <input
+              *ngIf="field.type === 'datepicker'"
+              matInput
+              [formControl]="field.control"
+              [placeholder]="i18n ? (field.placeholder! | translate) : field.placeholder!"
+              [matDatepicker]="picker"
+            />
+            <mat-datepicker-toggle
+              *ngIf="field.type === 'datepicker'"
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker [hidden]="field.type !== 'datepicker'" #picker></mat-datepicker>
+  
+            <textarea
+              *ngIf="field.type === 'textarea'"
+              matInput
+              [formControl]="field.control"
+              [placeholder]="i18n ? (field.placeholder! | translate) : field.placeholder!"
+              [rows]="field.rows || 3"
+            ></textarea>
+  
+            <mat-select
+              *ngIf="field.type === 'select' || field.type === 'multiple'"
+              [formControl]="field.control"
+              [multiple]="field.type === 'multiple'"
+            >
+              <ng-container *ngIf="field.options">
+                <mat-option *ngFor="let option of field.options" [value]="option.value">
+                  {{ option.text }}
+                </mat-option>
+              </ng-container>
+              <ng-container *ngIf="field.groups">
+                <mat-optgroup *ngFor="let group of field.groups" [label]="group.text">
+                  <mat-option *ngFor="let option of group.options" [value]="option.value">
+                    {{ option.text }}
+                  </mat-option>
+                </mat-optgroup>
+              </ng-container>
+            </mat-select>
+            <mat-hint *ngIf="field.hint">
+              {{ i18n ? (field.hint | translate) : field.hint }}
+            </mat-hint>
+          </mat-form-field>
+          <span spacer *ngIf="!lastField"></span>
+        </ng-container>
+      </mat-card-content>
+    </mat-card>
+    <span spacer-2x *ngIf="!lastSection"></span>
+  </ng-container>
+</div>

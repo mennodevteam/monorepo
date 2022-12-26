@@ -4,7 +4,6 @@ import { Region } from './region';
 import { ShopGroup } from './shop-group';
 import { ShopUser } from './shop-user';
 import { SmsAccount } from './sms-account';
-import { User } from './user';
 
 export interface ShopTable {
   code: string;
@@ -16,13 +15,14 @@ export interface ShopDetails {
   poses?: string[];
   instagram?: string;
   description?: string;
-  openingHours?: string[][];
   diagonInviteCode?: string;
+  openingHours?: string[][];
 }
 
 export class Shop {
   id: string;
   title: string;
+  description: string;
   code: string;
   prevServerCode: string;
   username: string;

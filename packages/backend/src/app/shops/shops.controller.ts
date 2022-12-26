@@ -28,7 +28,8 @@ export class ShopsController {
   @Put()
   @Roles(Role.Panel)
   async edit(@Body() dto: Shop, @LoginUser() user: AuthPayload): Promise<Shop> {
-    dto.id = user.shopId;
+    const shop = await this.auth.getPanelUserShop(user);
+    dto.id = shop.id;
     return this.shopsService.save(dto);
   }
 
