@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Output, QueryList, ViewChildren } from '@angular/core';
 import { MatChipOption } from '@angular/material/chips';
-import { map } from 'rxjs';
-import { DataService } from '../../data.service';
+import { MenuService } from '../../../../core/services/menu.service';
 
 @Component({
   selector: 'menu-categories',
@@ -11,10 +10,10 @@ import { DataService } from '../../data.service';
 export class MenuCategoriesComponent {
   @ViewChildren('categoryChip') categoryChips: QueryList<MatChipOption>;
   @Output() chipClick = new EventEmitter<number>();
-  constructor(private data: DataService) {}
+  constructor(private menuService: MenuService) {}
 
   get categories() {
-    return this.data.menu?.categories;
+    return this.menuService.menu?.categories;
   }
 
   selectChip(index: number) {

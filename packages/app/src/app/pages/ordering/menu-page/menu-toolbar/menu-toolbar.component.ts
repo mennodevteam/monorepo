@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DataService } from '../../data.service';
+import { ShopService } from '../../../../core/services/shop.service';
 
 @Component({
   selector: 'menu-toolbar',
@@ -7,8 +7,8 @@ import { DataService } from '../../data.service';
   styleUrls: ['./menu-toolbar.component.scss'],
 })
 export class MenuToolbarComponent {
-  constructor(private data: DataService) {}
+  constructor(private shopService: ShopService) {}
   get shop() {
-    return this.data.shop;
+    return this.shopService.shop;
   }
 }

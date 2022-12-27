@@ -7,7 +7,7 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { BehaviorSubject, debounceTime, map } from 'rxjs';
-import { DataService } from '../data.service';
+import { MenuService } from '../../../core/services/menu.service';
 import { MenuCategoriesComponent } from './menu-categories/menu-categories.component';
 
 @Component({
@@ -20,7 +20,7 @@ export class MenuPageComponent {
   @ViewChildren('category') categoryElements: QueryList<ElementRef>;
   @ViewChild(MenuCategoriesComponent)
   menuCategoriesComponent: MenuCategoriesComponent;
-  constructor(private data: DataService) {
+  constructor(private menuService: MenuService) {
     this.onScrollMenu.pipe(debounceTime(200)).subscribe(() => {
       const selectedCatElem = this.categoryElements.reduce((a, b) => {
         const aView = this.elementViewportCapacity(a);
@@ -40,7 +40,7 @@ export class MenuPageComponent {
   }
 
   get categories() {
-    return this.data.menu?.categories;
+    return this.menuService.menu?.categories;
   }
 
   @HostListener('window:scroll', ['$event']) onScrollEvent(ev: Event) {

@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import { environment } from '../../../../environments/environment';
-import { map } from 'rxjs';
-import { DataService } from '../data.service';
-import { ActivatedRoute } from '@angular/router';
+import { MenuService } from '../../../core/services/menu.service';
+import { ShopService } from '../../../core/services/shop.service';
 
 @Component({
   selector: 'shop-home',
@@ -10,18 +8,9 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./shop-home.component.scss'],
 })
 export class ShopHomeComponent {
-  constructor(private data: DataService, private route: ActivatedRoute) {
-    let query = location.hostname;
-    if (environment.systemHostNames.indexOf(location.hostname) === -1)
-      query = location.hostname;
-    else {
-      query = route.snapshot.params['code'];
-    }
-
-    this.data.load(query);
-  }
+  constructor(private shopService: ShopService, private menuService: MenuService) {}
 
   get shop() {
-    return this.data.shop;
+    return this.shopService.shop;
   }
 }

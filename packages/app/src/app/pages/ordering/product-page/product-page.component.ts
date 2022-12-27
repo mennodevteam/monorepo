@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '@menno/types';
-import { DataService } from '../data.service';
+import { MenuService } from '../../../core/services/menu.service';
 
 @Component({
   selector: 'product-page',
@@ -11,9 +11,9 @@ import { DataService } from '../data.service';
 export class ProductPageComponent {
   product: Product | null;
 
-  constructor(private data: DataService, private route: ActivatedRoute) {
+  constructor(private menuService: MenuService, private route: ActivatedRoute) {
     this.route.params.subscribe((params) => {
-      this.product = this.data.getProductById(params['id']);
+      this.product = this.menuService.getProductById(params['id']);
     });
   }
 
