@@ -9,15 +9,15 @@ import { TranslateService } from '@ngx-translate/core';
 import { MenuService } from 'packages/panel/src/app/core/services/menu.service';
 
 @Component({
-  selector: 'edit-discount',
-  templateUrl: './edit-discount.component.html',
-  styleUrls: ['./edit-discount.component.scss'],
+  selector: 'edit-cost',
+  templateUrl: './edit-cost.component.html',
+  styleUrls: ['./edit-cost.component.scss'],
 })
-export class EditDiscountComponent {
+export class EditCostComponent {
   form: FormGroup;
   Status = Status;
   saving = false;
-  discount?: MenuCost;
+  cost?: MenuCost;
 
   constructor(
     private menuService: MenuService,
@@ -33,8 +33,7 @@ export class EditDiscountComponent {
       percentageCost: new FormControl(0),
       fixedCost: new FormControl(0),
       status: new FormControl(Status.Active, Validators.required),
-      fromDate: new FormControl(),
-      toDate: new FormControl(),
+      showOnItem: new FormControl(true, Validators.required),
       includeProductCategory: new FormControl([]),
       includeProduct: new FormControl([]),
       _type: new FormControl('all', Validators.required),
@@ -42,17 +41,16 @@ export class EditDiscountComponent {
 
     this.route.queryParams.subscribe(async (params) => {
       if (params['id']) {
-        this.discount = this.menuService.menu?.costs.find((x) => x.id.toString() === params['id']);
-        if (this.discount) {
-          const d = this.discount;
+        this.cost = this.menuService.menu?.costs.find((x) => x.id.toString() === params['id']);
+        if (this.cost) {
+          const d = this.cost;
           this.form.setValue({
             title: d.title,
             description: d.description,
             percentageCost: d.percentageCost ? Math.abs(d.percentageCost) : 0,
             fixedCost: d.fixedCost ? Math.abs(d.fixedCost) : 0,
             status: d.status,
-            fromDate: d.fromDate ? new Date(d.fromDate) : undefined,
-            toDate: d.toDate ? new Date(d.toDate) : undefined,
+            showOnItem: d.showOnItem ? true : false,
             includeProductCategory: d.includeProductCategory ? this.menuService.filterCategoriesByIds(
               d.includeProductCategory.map((x) => x.id)
             ) : [],
@@ -88,9 +86,9 @@ export class EditDiscountComponent {
     else if (dto._type === 'product') dto.includeProductCategory = [];
 
     this.snack.open(this.translate.instant('app.saving'), '', { duration: 8000 });
-    if (dto.fixedCost) dto.fixedCost = Math.abs(dto.fixedCost) * -1;
-    if (dto.percentageCost) dto.percentageCost = Math.abs(dto.percentageCost) * -1;
-    if (this.discount) dto.id = this.discount.id;
+    if (dto.fixedCost) dto.fixedCost = Math.abs(dto.fixedCost);
+    if (dto.percentageCost) dto.percentageCost = Math.abs(dto.percentageCost);
+    if (this.cost) dto.id = this.cost.id;
     await this.menuService.saveMenuCost(dto);
     this.snack.open(this.translate.instant('app.savedSuccessfully'), '', {
       duration: 3000,
@@ -101,10 +99,5 @@ export class EditDiscountComponent {
 
   cv(key: string) {
     return this.form.get(key)?.value;
-  }
-
-  clearDate() {
-    this.form.get('fromDate')?.setValue(null);
-    this.form.get('toDate')?.setValue(null);
   }
 }

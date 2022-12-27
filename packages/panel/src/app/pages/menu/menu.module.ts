@@ -11,6 +11,8 @@ import { ProductEditPageComponent } from './product-edit-page/product-edit-page.
 import { MenuComponent } from './menu.component';
 import { DiscountsPageComponent } from './discounts-page/discounts-page.component';
 import { EditDiscountComponent } from './discounts-page/edit-discount/edit-discount.component';
+import { CostsPageComponent } from './costs-page/costs-page.component';
+import { EditCostComponent } from './costs-page/edit-cost/edit-cost.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { EditDiscountComponent } from './discounts-page/edit-discount/edit-disco
     MenuComponent,
     DiscountsPageComponent,
     EditDiscountComponent,
+    CostsPageComponent,
+    EditCostComponent,
   ],
   imports: [CommonModule, RouterModule.forChild(menuRoutes), SharedModule],
 })

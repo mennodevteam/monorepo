@@ -3,6 +3,7 @@
   "app": {
     "ok": "تایید",
     "cancel": "انصراف",
+    "add": "ایجاد کردن",
     "status": "وضعیت",
     "active": "فعال",
     "inactive": "غیرفعال",
@@ -27,8 +28,6 @@
   },
   "menuDiscountPage": {
     "pageDescription": "شما میتوانید روی آیتم‌های خود یک تخفیف ساده بگذارید و یا با گذاشتن جشنواره یک نمایش متفاوت‌تر از آیتم‌های جشنواره خود داشته باشید.",
-    "addFestival": "ایجاد جشنواره",
-    "addDiscount": "ایجاد تخفیف",
     "tableTitleCol": "عنوان",
     "tableDiscountCol": "میزان تخفیف",
     "tableDateCol": "بازه زمانی"
@@ -94,7 +93,7 @@
     "instagramHint": "بدون @"
   },
   "discountEdit": {
-    "pageTitle": "ایجاد تخفیف و جشنواره",
+    "pageTitle": "تخفیف و جشنواره",
     "baseSectionTitle": "اطلاعات پایه",
     "titleLabel": "عنوان",
     "titleHint": "در جشنواره به کاربر نمایش داده می‌شود",
@@ -116,8 +115,35 @@
     "removeDate": "حذف بازه زمانی",
     "priceWarning": "مقدار تخفیف را مشخص کنید"
   },
+  "costEdit": {
+    "pageTitle": "هزینه مازاد",
+    "baseSectionTitle": "اطلاعات پایه",
+    "titleLabel": "عنوان",
+    "shopOnItemTitle": "نحوه نمایش",
+    "shopOnItemDescription": "نحوه نمایش هزینه مازاد را انتخاب کنید",
+    "shopOnItemDescriptionTrue": "در منو به هزینه آیتم مستقیما اضافه شود",
+    "shopOnItemDescriptionFalse": "به صورت یک آیتم مجزا در انتهای فاکتور اعمال شود",
+    "descriptionLabel": "توضیحات",
+    "priceSectionTitle": "هزینه مازاد",
+    "fixedCostLabel": "مقدار ثابت هزینه مازاد",
+    "percentageCostLabel": "درصد هزینه مازاد",
+    "productSection": "نحوه اعمال",
+    "_type": "در این بخش مشخص کنید که هزینه مورد نظر روی چه آیتم‌هایی اعمال شود.",
+    "allMenu": "روی همه آیتم های منو",
+    "someCategories": "روی برخی از دسته بندی ها",
+    "someProducts": "روی برخی از محصولات",
+    "selectCategory": "انتخاب دسته بندی‌ها",
+    "selectProduct": "انتخاب محصولات",
+    "inactiveHint": "غیرفعال است و به کاربر نمایش داده نمی‌شود",
+    "priceWarning": "مقدار هزینه مازاد را مشخص کنید"
+  },
   "removeDialog": {
     "title": "حذف {{value}}",
     "description": "در صورت اطمینان از حذف {{value}} لطفا تایید کنید."
+  },
+  "menuCostPage": {
+    "pageDescription": "هزینه مازاد مثل مالیات، بسته بندی خاص، سرویس دهی و یا هر چیز دیگری می‌شود.",
+    "tableTitleCol": "عنوان",
+    "tableCostCol": "هزینه اضافی"
   }
 }
