@@ -45,7 +45,7 @@ export class ProductEditPageComponent {
         [OrderType.Delivery, OrderType.DineIn, OrderType.Takeaway],
         Validators.required
       ),
-      images: new FormControl(['1671705992926_300x250.jpeg']),
+      images: new FormControl([]),
     });
 
     this.route.queryParams.subscribe(async (params) => {

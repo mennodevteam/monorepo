@@ -61,6 +61,10 @@ export class MenuService {
   }
 
   async saveProduct(dto: Product) {
+    if (dto.category) {
+      dto.category = <ProductCategory>{ id: dto.category.id };
+    }
+
     const savedProduct = await this.http.post<Product>(`products`, dto).toPromise();
     await this.loadMenu();
     return savedProduct;
