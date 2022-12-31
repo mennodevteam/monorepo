@@ -22,7 +22,12 @@ export class ShopsController {
   @Get()
   @Roles(Role.Panel)
   findOne(@LoginUser() user: AuthPayload): Promise<Shop> {
-    return this.auth.getPanelUserShop(user, ['region', 'shopGroup', 'menu.categories.products']);
+    return this.auth.getPanelUserShop(user, [
+      'region',
+      'appConfig',
+      'shopGroup',
+      'menu.categories.products',
+    ]);
   }
 
   @Put()
@@ -33,7 +38,7 @@ export class ShopsController {
     return this.shopsService.save(dto);
   }
 
-  @Get('sendLink/:mobile')
+  @Get('sendLink/:mobile')  
   @Roles(Role.Panel)
   async sendLink(@Param('mobile') mobile: string, @LoginUser() user: AuthPayload): Promise<Sms> {
     return this.shopsService.sendShopLink(user.shopId, mobile);
@@ -44,7 +49,7 @@ export class ShopsController {
   findByUsernameOrCode(@Param('query') query: string): Promise<Shop> {
     return this.shopsRepo.findOne({
       where: [{ domain: query }, { username: query }, { code: query }],
-      relations: ['region', 'shopGroup'],
+      relations: ['region', 'shopGroup', 'appConfig'],
     });
   }
 }

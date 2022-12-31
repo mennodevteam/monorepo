@@ -11,10 +11,6 @@ export class AppConfigsController {
     private repo: Repository<AppConfig>
   ) {}
 
-  @MessagePattern('appConfigs/find')
-  find(shopId: string): Promise<AppConfig[]> {
-    return this.repo.findBy({ shop: { id: shopId } });
-  }
   @MessagePattern('appConfigs/save')
   save(appConfig: AppConfig): Promise<AppConfig> {
     return this.repo.save(appConfig);

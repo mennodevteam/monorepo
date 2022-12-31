@@ -99,6 +99,12 @@ export const ShopSchema = new EntitySchema<Shop>({
       target: 'Menu',
       nullable: true,
     },
+    appConfig: {
+      cascade: ['insert'],
+      type: 'many-to-one',
+      target: 'AppConfig',
+      nullable: true,
+    },
     region: {
       cascade: ['insert'],
       type: 'many-to-one',

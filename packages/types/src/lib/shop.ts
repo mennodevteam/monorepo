@@ -1,3 +1,4 @@
+import { AppConfig } from './app-config';
 import { Club } from './club';
 import { Menu } from './menu';
 import { Region } from './region';
@@ -41,6 +42,7 @@ export class Shop {
   menu?: Menu;
   club?: Club;
   logo: string;
+  appConfig?: AppConfig;
   connectionAt: Date;
   shopGroup?: ShopGroup;
   options: any;
