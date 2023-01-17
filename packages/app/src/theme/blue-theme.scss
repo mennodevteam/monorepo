@@ -168,6 +168,14 @@
   --md-sys-color-scrim-dark: #000000;
 }
 
-.blue-theme {
-  @include setTheme();
+html[theme-color="blue-theme"] {
+  &.dark-mode {
+    @include setTheme(dark);
+  }
+  &.light-mode {
+    @include setTheme(light);
+  }
+  &:not(.dark-mode):not(.light-mode) {
+    @include setTheme();
+  }
 }

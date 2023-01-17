@@ -1,3 +1,5 @@
+@import "./config/theme.dark.scss";
+@import "./config/theme.light.scss";
 @media (prefers-color-scheme: dark) {
   @import "./config/theme.dark.scss";
 }

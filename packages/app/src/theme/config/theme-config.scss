@@ -79,11 +79,17 @@ $app-typography: mat.define-typography-config(
     )
   );
 
-  @media (prefers-color-scheme: dark) {
+  @if $mode == dark {
     @include mat.all-component-themes($dark-theme);
-  }
-
-  @media (prefers-color-scheme: light) {
+  } @else if $mode == light {
     @include mat.all-component-themes($light-theme);
+  } @else {
+    @media (prefers-color-scheme: dark) {
+      @include mat.all-component-themes($dark-theme);
+    }
+
+    @media (prefers-color-scheme: light) {
+      @include mat.all-component-themes($light-theme);
+    }
   }
 }

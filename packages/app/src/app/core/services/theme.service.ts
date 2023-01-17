@@ -2,7 +2,6 @@ import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 
 export const LOCAL_STORAGE_THEME_COLOR_KEY = 'appThemeString';
-export const LOCAL_STORAGE_THEME_MODE_KEY = 'appThemeModeString';
 export const DEFAULT_THEME_COLOR = 'amber';
 
 export const COLORS = ['default', 'red', 'blue', 'green', 'amber'];
@@ -26,11 +25,6 @@ export class ThemeService {
     const localStorageTheme = localStorage.getItem(LOCAL_STORAGE_THEME_COLOR_KEY);
     if (localStorageTheme) {
       this.color = localStorageTheme;
-    }
-
-    const localStorageThemeMode = localStorage.getItem(LOCAL_STORAGE_THEME_MODE_KEY);
-    if (localStorageThemeMode) {
-      this.mode = localStorageThemeMode;
     }
   }
 
@@ -59,15 +53,14 @@ export class ThemeService {
 
   set mode(val: string) {
     if (val === 'dark' || val === 'light') {
-      localStorage.setItem(LOCAL_STORAGE_THEME_MODE_KEY, val);
       this._mode = val;
-      this.html.setAttribute('theme-mode', this.mode);
+      this.html.classList.add(this.mode);
     }
   }
 
   get mode() {
     if (this._mode) {
-      return `${this._mode}-theme`;
+      return `${this._mode}-mode`;
     }
     return '';
   }
