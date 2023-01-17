@@ -10,14 +10,17 @@ export const AppConfigSchema = new EntitySchema<AppConfig>({
       generated: 'uuid',
       primary: true,
     },
-    themeColor: {
-      type: String,
-      nullable: true,
-    },
     themeMode: {
       type: 'enum',
       enum: ThemeMode,
       default: ThemeMode.auto,
     },
   },
+  relations: {
+    theme: {
+      type: 'many-to-one',
+      target: 'Theme',
+      nullable: true,
+    }
+  }
 });

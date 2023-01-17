@@ -1,6 +1,7 @@
 export class Theme {
     id: string;
     title: string;
-    details: any;
-    imageId:string;
+    key: string;
+    primaryColor: string;
+    images: string[];
 }

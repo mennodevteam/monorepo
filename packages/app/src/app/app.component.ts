@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ThemeService } from './core/services/theme.service';
 
 @Component({
   selector: 'menno-root',
@@ -7,4 +8,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+  constructor(private themeService: ThemeService) {}
+
+  get themeColor() {
+    return this.themeService.color;
+  }
+
+  get themeMode() {
+    return this.themeService.mode;
+  }
 }

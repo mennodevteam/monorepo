@@ -6,20 +6,23 @@ export const ThemeSchema = new EntitySchema<Theme>({
   target: Theme,
   columns: {
     id: {
-      type: String,
+      type: Number,
       primary: true,
+      generated: true,
     },
     title: {
       type: String,
-      nullable: true,
     },
-    details: {
-      type: 'simple-json',
-      nullable: true,
-    },
-    imageId: {
+    key: {
       type: String,
-      nullable: true,
+    },
+    primaryColor: {
+      type: String,
+    },
+    images: {
+      type: String,
+      default: [],
+      array: true,
     },
   },
 });

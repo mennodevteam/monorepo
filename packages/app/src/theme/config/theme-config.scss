@@ -1,0 +1,89 @@
+@use "@angular/material" as mat;
+
+$app-typography: mat.define-typography-config(
+  $font-family: "IRANSans",
+);
+
+@mixin setTheme($mode: auto) {
+  $md-primary-palette: (
+    50: var(--md-ref-palette-primary0),
+    100: var(--md-ref-palette-primary10),
+    200: var(--md-ref-palette-primary20),
+    300: var(--md-ref-palette-primary30),
+    400: var(--md-ref-palette-primary40),
+    500: var(--md-ref-palette-primary50),
+    600: var(--md-ref-palette-primary60),
+    700: var(--md-ref-palette-primary70),
+    800: var(--md-ref-palette-primary80),
+    900: var(--md-ref-palette-primary90),
+    contrast: (
+      800: var(--md-ref-palette-primary20),
+    ),
+  );
+
+  $md-accent-palette: (
+    50: var(--md-ref-palette-tertiary0),
+    100: var(--md-ref-palette-tertiary10),
+    200: var(--md-ref-palette-tertiary20),
+    300: var(--md-ref-palette-tertiary30),
+    400: var(--md-ref-palette-tertiary40),
+    500: var(--md-ref-palette-tertiary50),
+    600: var(--md-ref-palette-tertiary60),
+    700: var(--md-ref-palette-tertiary70),
+    800: var(--md-ref-palette-tertiary80),
+    900: var(--md-ref-palette-tertiary90),
+    contrast: (
+      800: var(--md-ref-palette-tertiary20),
+    ),
+  );
+
+  $md-warn-palette: (
+    50: var(--md-ref-palette-error0),
+    100: var(--md-ref-palette-error10),
+    200: var(--md-ref-palette-error20),
+    300: var(--md-ref-palette-error30),
+    400: var(--md-ref-palette-error40),
+    500: var(--md-ref-palette-error50),
+    600: var(--md-ref-palette-error60),
+    700: var(--md-ref-palette-error70),
+    800: var(--md-ref-palette-error80),
+    900: var(--md-ref-palette-error90),
+    contrast: (
+      800: var(--md-ref-palette-error20),
+    ),
+  );
+
+  $primary: mat.define-palette($md-primary-palette, 400);
+  $accent: mat.define-palette($md-accent-palette, 400);
+  $warn: mat.define-palette($md-warn-palette, 400);
+  @include mat.core();
+
+  $light-theme: mat.define-light-theme(
+    (
+      color: (
+        primary: $primary,
+        accent: $accent,
+        warn: $warn,
+      ),
+      typography: $app-typography,
+    )
+  );
+  $dark-theme: mat.define-dark-theme(
+    (
+      color: (
+        primary: $primary,
+        accent: $accent,
+        warn: $warn,
+      ),
+      typography: $app-typography,
+    )
+  );
+
+  @media (prefers-color-scheme: dark) {
+    @include mat.all-component-themes($dark-theme);
+  }
+
+  @media (prefers-color-scheme: light) {
+    @include mat.all-component-themes($light-theme);
+  }
+}

@@ -16,15 +16,38 @@
         "tsConfig": "packages/app/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": ["packages/app/src/favicon.ico", "packages/app/src/assets"],
-        "styles": ["packages/app/src/styles.scss"],
+        "styles": [
+          "packages/app/src/styles.scss",
+          {
+            "input": "packages/app/src/theme/amber-theme.scss",
+            "inject": false,
+            "bundleName": "amber-theme"
+          },
+          {
+            "input": "packages/app/src/theme/blue-theme.scss",
+            "inject": false,
+            "bundleName": "blue-theme"
+          },
+          {
+            "input": "packages/app/src/theme/default-theme.scss",
+            "inject": false,
+            "bundleName": "default-theme"
+          },
+          {
+            "input": "packages/app/src/theme/green-theme.scss",
+            "inject": false,
+            "bundleName": "green-theme"
+          },
+          {
+            "input": "packages/app/src/theme/red-theme.scss",
+            "inject": false,
+            "bundleName": "red-theme"
+          }
+        ],
         "stylePreprocessorOptions": {
-          "includePaths": [
-            "packages/app/src/theme/"
-          ]
+          "includePaths": ["packages/app/src/theme/"]
         },
-        "scripts": [
-          "node_modules/persian-date/dist/persian-date.js"
-        ]
+        "scripts": ["node_modules/persian-date/dist/persian-date.js"]
       },
       "configurations": {
         "production": {

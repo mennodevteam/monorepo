@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "assets/fonts/iransans/iransans.scss";
-@import "theme4.scss";
-@import "theme";
+@import "_base-theme.scss";
 @import "assets/fonts/fontawesome/scss/fontawesome.scss";
 @import "assets/fonts/fontawesome/scss/regular.scss";
 @import "assets/fonts/fontawesome/scss/brands.scss";
@@ -15,8 +14,8 @@ body {
 
 body {
   font-family: "IRANSans";
-  background-color: $color-background;
-  color: $color-on-background;
+  background-color: var(--md-sys-color-background);
+  color: var(--md-sys-color-on-background);
 }
 
 .spacer,
@@ -36,8 +35,9 @@ span[spacer-2x] {
 }
 
 // material override
-.mat-toolbar {
-  background-color: $color-background;
+mat-toolbar {
+  background-color: var(--md-sys-color-background) !important;
+  color: var(--md-sys-color-on-background) !important;
 
   min-height: 72px;
   &-row {

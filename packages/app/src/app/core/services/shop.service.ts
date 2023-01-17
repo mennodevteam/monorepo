@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Shop } from '@menno/types';
+import { Shop, ThemeMode } from '@menno/types';
 import { BehaviorSubject } from 'rxjs';
+import { ThemeService } from './theme.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 export class ShopService {
   private _shop: BehaviorSubject<Shop | null> = new BehaviorSubject<Shop | null>(null);
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private themeService: ThemeService) {
     this.load();
   }
 
@@ -23,6 +24,14 @@ export class ShopService {
 
       const shop = await this.http.get<Shop>(`shops/${query}`).toPromise();
       this._shop.next(shop || null);
+
+      // set theme
+      if (shop?.appConfig?.theme) {
+        const theme = shop?.appConfig?.theme;
+        this.themeService.color = theme.key;
+        if (shop?.appConfig.themeMode)
+          this.themeService.mode = shop?.appConfig.themeMode === ThemeMode.dark ? 'dark' : 'light';
+      }
     }
   }
 

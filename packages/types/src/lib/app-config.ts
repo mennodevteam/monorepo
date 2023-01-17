@@ -1,3 +1,5 @@
+import { Theme } from './theme';
+
 export enum ThemeMode {
   auto,
   dark,
@@ -5,6 +7,6 @@ export enum ThemeMode {
 }
 export class AppConfig {
   id: string;
-  themeColor: string;
+  theme: Theme;
   themeMode: ThemeMode;
 }

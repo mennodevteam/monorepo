@@ -24,7 +24,7 @@ export class ShopsController {
   findOne(@LoginUser() user: AuthPayload): Promise<Shop> {
     return this.auth.getPanelUserShop(user, [
       'region',
-      'appConfig',
+      'appConfig.theme',
       'shopGroup',
       'menu.categories.products',
     ]);
@@ -49,7 +49,7 @@ export class ShopsController {
   findByUsernameOrCode(@Param('query') query: string): Promise<Shop> {
     return this.shopsRepo.findOne({
       where: [{ domain: query }, { username: query }, { code: query }],
-      relations: ['region', 'shopGroup', 'appConfig'],
+      relations: ['region', 'shopGroup', 'appConfig.theme'],
     });
   }
 }
