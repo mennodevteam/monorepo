@@ -20,10 +20,26 @@ export class MenuService {
     if (menu?.categories) {
       menu.categories = menu.categories.filter((x) => x.products?.length);
       ProductCategory.sort(menu.categories);
-      menu.categories.forEach((cat) => {
-        if (cat.products) Product.sort(cat.products);
-      });
+      for (const cat of menu.categories) {
+        cat.costs = menu.costs?.filter(
+          (x) =>
+            (!x.includeProduct?.length && !x.includeProductCategory?.length) ||
+            x.includeProductCategory.find((y) => y.id === cat.id)
+        );
+        if (cat.products) {
+          Product.sort(cat.products);
+          for (const p of cat.products) {
+            p.costs = menu.costs?.filter(
+              (x) =>
+                !cat.costs?.find((y) => y.id === x.id) &&
+                ((!x.includeProduct?.length && !x.includeProductCategory?.length) ||
+                  x.includeProduct.find((y) => y.id === p.id))
+            );
+          }
+        }
+      }
     }
+    console.log(menu);
     this._menu.next(menu || null);
   }
 

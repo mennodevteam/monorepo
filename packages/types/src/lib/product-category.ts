@@ -2,6 +2,7 @@ import { Status } from './status.enum';
 import { Menu } from './menu';
 import { Product } from './product';
 import { OrderType } from './order-type.enum';
+import { MenuCost } from './menu-cost';
 
 export class ProductCategory {
   id: number;
@@ -14,6 +15,7 @@ export class ProductCategory {
   position?: number;
   star?: number;
   menu: Menu;
+  costs?: MenuCost[];
   createdAt?: Date;
   deletedAt?: Date;
   

@@ -2,8 +2,8 @@
   <ng-container *ngFor="let product of category.products; let last = last">
     <mat-card
       routerLink="product/{{ product.id }}"
-      class="product surface-variant"
-      [ngClass]="{ 'tertiary on-tertiary-text': product.costs }"
+      class="product"
+      [ngClass]="[product.costs?.length ? 'tertiary on-tertiary-text' : 'surface-variant on-surface-variant-text']"
       matRipple
     >
       <mat-card-header>
