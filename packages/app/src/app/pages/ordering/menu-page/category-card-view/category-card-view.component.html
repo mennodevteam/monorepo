@@ -1,0 +1,28 @@
+<div>
+  <ng-container *ngFor="let product of category.products; let last = last">
+    <mat-card
+      routerLink="product/{{ product.id }}"
+      class="product surface-variant"
+      [ngClass]="{ 'tertiary on-tertiary-text': product.costs }"
+      matRipple
+    >
+      <mat-card-header>
+        <mat-card-title-group>
+          <mat-card-title class="product__title">{{ product.title }}</mat-card-title>
+          <mat-card-subtitle class="product__description">{{
+            product.description
+          }}</mat-card-subtitle>
+          <img
+            mat-card-sm-image
+            class="product__image"
+            [imageLoader]="product.images ? product.images[0] : undefined"
+          />
+        </mat-card-title-group>
+      </mat-card-header>
+      <mat-card-actions>
+        {{ product.price | menuCurrency }}
+      </mat-card-actions>
+    </mat-card>
+    <span spacer *ngIf="!last"></span>
+  </ng-container>
+</div>

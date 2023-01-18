@@ -40,7 +40,7 @@ export class ImageLoaderDirective {
       nativeEl.src = src;
       nativeEl.onerror = `this.onerror = null;this.src=${placeholderSrc}`;
     } else {
-      nativeEl.style.background = `url(${src}), url(${placeholderSrc})`;
+      nativeEl.style.background = `url('${src}'), url(${placeholderSrc})`;
       nativeEl.style.backgroundSize = 'cover';
       nativeEl.style.backgroundPosition = 'center';
     }

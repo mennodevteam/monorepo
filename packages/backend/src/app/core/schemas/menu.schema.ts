@@ -1,4 +1,4 @@
-import { Menu } from '@menno/types';
+import { Menu, MenuViewType } from '@menno/types';
 import { EntitySchema } from 'typeorm';
 
 export const MenuSchema = new EntitySchema<Menu>({
@@ -18,6 +18,15 @@ export const MenuSchema = new EntitySchema<Menu>({
       type: String,
       nullable: true,
     },
+    viewType: {
+      type: 'enum',
+      enum: MenuViewType,
+      default: MenuViewType.Card,
+    },
+    cols: {
+      type: Number,
+      default: 2,
+    }
   },
   relations: {
     categories: {

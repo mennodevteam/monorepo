@@ -1,0 +1,14 @@
+::ng-deep .product-tile {
+  border-radius: 12px;
+  position: absolute !important;
+  .mat-grid-tile-footer {
+    padding: 0 8px !important;
+    height: 24px !important;
+    background-color: rgba(0, 0, 0, 0.6) !important;
+
+    .product-title {
+      flex: 1;
+      font-size: 11px;
+    }
+  }
+}

@@ -1,0 +1,18 @@
+<mat-grid-list [cols]="menuCols" gutterSize="4px" rowHeight="1:1">
+  <mat-grid-tile
+    matRipple
+    class="product-tile"
+    *ngFor="let product of category.products"
+    routerLink="product/{{ product.id }}"
+    [imageLoader]="product.images ? product.images[0] : undefined"
+  >
+    <mat-grid-tile-footer>
+      <span class="product-title">
+        {{ product.title }}
+      </span>
+      <span class="product-price">
+        {{ product.price / 1000 }}
+      </span>
+    </mat-grid-tile-footer>
+  </mat-grid-tile>
+</mat-grid-list>
