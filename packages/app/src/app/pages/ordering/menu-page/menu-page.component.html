@@ -9,12 +9,15 @@
     #category
     class="category-wrapper"
   >
-    <h3>{{ c.title }}</h3>
+    <h3>
+      <i *ngIf="c.faIcon" class="fa-solid fa-{{ c.faIcon }}"></i>
+      {{ c.title }}
+    </h3>
     <ng-container *ngIf="menu?.viewType === MenuViewType.Card">
       <category-card-view [category]="c"></category-card-view>
     </ng-container>
     <ng-container *ngIf="menu?.viewType === MenuViewType.Grid">
-      <category-grid-view [category]="c"></category-grid-view>
+      <category-grid-view [category]="c" [menu]="menu"></category-grid-view>
     </ng-container>
     <span spacer-2x *ngIf="!last"></span>
   </div>

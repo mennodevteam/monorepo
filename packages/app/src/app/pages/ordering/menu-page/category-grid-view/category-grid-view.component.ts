@@ -7,7 +7,7 @@ import { Menu, ProductCategory } from '@menno/types';
   styleUrls: ['./category-grid-view.component.scss'],
 })
 export class CategoryGridViewComponent {
-  @Input() menu: Menu;
+  @Input() menu?: Menu | null;
   @Input() category: ProductCategory;
 
   get menuCols() {
