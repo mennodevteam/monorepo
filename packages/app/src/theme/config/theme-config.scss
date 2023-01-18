@@ -93,3 +93,15 @@ $app-typography: mat.define-typography-config(
     }
   }
 }
+
+@mixin loadTheme() {
+  &.dark-mode {
+    @include setTheme(dark);
+  }
+  &.light-mode {
+    @include setTheme(light);
+  }
+  &:not(.dark-mode):not(.light-mode) {
+    @include setTheme();
+  }
+}

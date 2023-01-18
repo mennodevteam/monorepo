@@ -1,5 +1,3 @@
-@import "./config/theme-config.scss";
-
 :root {
   --md-source: #4caf50;
   /* primary */
@@ -168,14 +166,8 @@
   --md-sys-color-scrim-dark: #000000;
 }
 
+
+@import "./config/theme-config.scss";
 html[theme-color="green-theme"] {
-  &.dark-mode {
-    @include setTheme(dark);
-  }
-  &.light-mode {
-    @include setTheme(light);
-  }
-  &:not(.dark-mode):not(.light-mode) {
-    @include setTheme();
-  }
+  @include loadTheme();
 }
