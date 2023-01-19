@@ -31,7 +31,11 @@
     <mat-toolbar-row style="height: 72px">
       {{ 'app.count' | translate }}
       <span style="flex: 1"></span>
-      <count-selector></count-selector>
+      <count-selector
+        [count]="initCount"
+        (plusClick)="plus()"
+        (minusClick)="minus()"
+      ></count-selector>
     </mat-toolbar-row>
   </mat-toolbar>
 

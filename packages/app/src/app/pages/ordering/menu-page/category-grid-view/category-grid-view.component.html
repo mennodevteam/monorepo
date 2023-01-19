@@ -7,14 +7,14 @@
     [imageLoader]="product.images ? product.images[0] : undefined"
   >
     <discount-badge *ngIf="Product.hasDiscount(product)">
-      {{ Product.percentageDiscount(product) }}٪ تخفیف
+      {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
     </discount-badge>
     <mat-grid-tile-footer>
       <span class="product-title">
         {{ product.title }}
       </span>
       <span class="product-price">
-        {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
+        {{ Product.totalPrice(product) / 1000 }}
       </span>
     </mat-grid-tile-footer>
   </mat-grid-tile>
