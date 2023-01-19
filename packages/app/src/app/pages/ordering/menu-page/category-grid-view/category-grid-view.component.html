@@ -6,9 +6,14 @@
     routerLink="product/{{ product.id }}"
     [imageLoader]="product.images ? product.images[0] : undefined"
   >
-    <div class="badge tertiary on-tertiary-text mat-elevation-z3" *ngIf="product._orderItem?.quantity">{{product._orderItem?.quantity}}</div>
+    <div class="badge tertiary on-tertiary-text mat-elevation-z3" *ngIf="product._orderItem?.quantity">
+      {{ product._orderItem?.quantity }}
+    </div>
     <discount-badge *ngIf="Product.hasDiscount(product)">
-      {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
+      <span *ngIf="menuCols > 2">{{ Product.percentageDiscount(product) }}%</span>
+      <span *ngIf="menuCols <= 2">
+        {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
+      </span>
     </discount-badge>
     <mat-grid-tile-footer>
       <span class="product-title">
