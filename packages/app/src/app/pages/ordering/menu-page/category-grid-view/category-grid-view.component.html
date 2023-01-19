@@ -6,12 +6,15 @@
     routerLink="product/{{ product.id }}"
     [imageLoader]="product.images ? product.images[0] : undefined"
   >
+    <discount-badge *ngIf="Product.hasDiscount(product)">
+      {{ Product.percentageDiscount(product) }}٪ تخفیف
+    </discount-badge>
     <mat-grid-tile-footer>
       <span class="product-title">
         {{ product.title }}
       </span>
       <span class="product-price">
-        {{ product.price / 1000 }}
+        {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
       </span>
     </mat-grid-tile-footer>
   </mat-grid-tile>

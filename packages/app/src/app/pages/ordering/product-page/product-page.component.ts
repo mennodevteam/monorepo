@@ -10,6 +10,7 @@ import { MenuService } from '../../../core/services/menu.service';
 })
 export class ProductPageComponent {
   product: Product | null;
+  Product = Product;
 
   constructor(private menuService: MenuService, private route: ActivatedRoute) {
     this.route.params.subscribe((params) => {

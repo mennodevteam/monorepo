@@ -1,0 +1,6 @@
+{
+  "discount": {
+    "percentage": "{{value}}% تخفیف",
+    "fixed": "{{value}} تخفیف"
+  }
+}

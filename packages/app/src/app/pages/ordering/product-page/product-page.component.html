@@ -11,4 +11,16 @@
   <img id="product-image" [imageLoader]="product.images ? product.images[0] : undefined" />
 
   <p>{{ product.description }}</p>
+
+  <mat-toolbar class="price-section">
+    <span class="price-section__text">
+      <span class="price-section__text__old error-text" *ngIf="Product.hasDiscount(product)">{{
+        product.price | menuCurrency
+      }}</span>
+      <b class="secondary-text">{{ Product.totalPrice(product) | menuCurrency }}</b>
+    </span>
+    <discount-badge *ngIf="Product.hasDiscount(product)">
+      {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
+    </discount-badge>
+  </mat-toolbar>
 </main>

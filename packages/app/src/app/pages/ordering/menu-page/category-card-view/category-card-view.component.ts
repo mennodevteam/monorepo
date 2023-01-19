@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ProductCategory } from '@menno/types';
+import { Product, ProductCategory } from '@menno/types';
 
 @Component({
   selector: 'category-card-view',
@@ -7,5 +7,6 @@ import { ProductCategory } from '@menno/types';
   styleUrls: ['./category-card-view.component.scss'],
 })
 export class CategoryCardViewComponent {
-  @Input() category: ProductCategory
+  @Input() category: ProductCategory;
+  Product = Product;
 }

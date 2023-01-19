@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  padding: 4px 12px;
+  font-size: 12px;
+  border-radius: 8px 16px 16px 16px;
+  
+  i {
+    vertical-align: middle;
+  }
+}

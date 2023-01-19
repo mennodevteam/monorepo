@@ -29,11 +29,12 @@ export class MenuService {
         if (cat.products) {
           Product.sort(cat.products);
           for (const p of cat.products) {
+            p.category = cat;
             p.costs = menu.costs?.filter(
               (x) =>
-                !cat.costs?.find((y) => y.id === x.id) &&
-                ((!x.includeProduct?.length && !x.includeProductCategory?.length) ||
-                  x.includeProduct.find((y) => y.id === p.id))
+                (!x.includeProduct?.length && !x.includeProductCategory?.length) ||
+                x.includeProductCategory?.find((y) => y.id === p.category.id) ||
+                x.includeProduct?.find((y) => y.id === p.id)
             );
           }
         }

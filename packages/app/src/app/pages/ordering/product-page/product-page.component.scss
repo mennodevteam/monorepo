@@ -18,3 +18,16 @@ main {
     margin: auto;
   }
 }
+
+.price-section {
+  &__text {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    &__old {
+      text-decoration: line-through;
+      font-size: 12px;
+    }
+  }
+}

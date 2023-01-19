@@ -2,10 +2,13 @@
   <ng-container *ngFor="let product of category.products; let last = last">
     <mat-card
       routerLink="product/{{ product.id }}"
-      class="product"
-      [ngClass]="[product.costs?.length ? 'tertiary on-tertiary-text' : 'surface-variant on-surface-variant-text']"
+      class="product surface-variant on-surface-variant-text"
       matRipple
     >
+      <discount-badge *ngIf="Product.hasDiscount(product)">
+        {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
+      </discount-badge>
+
       <mat-card-header>
         <mat-card-title-group>
           <mat-card-title class="product__title">{{ product.title }}</mat-card-title>

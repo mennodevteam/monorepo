@@ -17,6 +17,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { CategoryGridViewComponent } from './menu-page/category-grid-view/category-grid-view.component';
 import { CategoryCardViewComponent } from './menu-page/category-card-view/category-card-view.component';
 import { MatRippleModule } from '@angular/material/core';
+import { DiscountBadgeComponent } from './discount-badge/discount-badge.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { MatRippleModule } from '@angular/material/core';
     ProductPageComponent,
     CategoryGridViewComponent,
     CategoryCardViewComponent,
+    DiscountBadgeComponent,
   ],
   imports: [
     CommonModule,
