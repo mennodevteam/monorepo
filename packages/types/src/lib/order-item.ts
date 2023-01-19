@@ -9,5 +9,6 @@ export class OrderItem {
   price: number;
   isAbstract: boolean;
   quantity: number;
+  note?: string;
   details?: any;
 }

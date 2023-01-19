@@ -19,6 +19,10 @@ import { CategoryCardViewComponent } from './menu-page/category-card-view/catego
 import { MatRippleModule } from '@angular/material/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DiscountBadgeComponent } from './discount-badge/discount-badge.component';
+import { BasketPageComponent } from './basket-page/basket-page.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -29,10 +33,14 @@ import { DiscountBadgeComponent } from './discount-badge/discount-badge.componen
     CategoryGridViewComponent,
     CategoryCardViewComponent,
     DiscountBadgeComponent,
+    BasketPageComponent,
   ],
   imports: [
     CommonModule,
+    FormsModule,
     RouterModule.forChild(orderingRoutes),
+    MatFormFieldModule,
+    MatInputModule,
     SharedModule,
     MatButtonModule,
     MatListModule,

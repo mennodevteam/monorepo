@@ -17,7 +17,7 @@ export class ProductPageComponent {
   constructor(
     private menuService: MenuService,
     private route: ActivatedRoute,
-    private basket: BasketService
+    public basket: BasketService
   ) {
     this.route.params.subscribe((params) => {
       this.product = this.menuService.getProductById(params['id']);

@@ -10,7 +10,7 @@ export enum ImagePlaceholder {
   selector: '[imageLoader]',
 })
 export class ImageLoaderDirective {
-  @Input() imageLoader?: string;
+  @Input() imageLoader?: string | undefined;
   @Input() placeholder: string;
   @Input() defaultPlaceholder = ImagePlaceholder.default;
 

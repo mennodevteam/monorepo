@@ -1,0 +1,41 @@
+main {
+  padding: 12px;
+}
+
+.empty {
+  margin: 24px auto;
+  text-align: center;
+}
+
+[matlistitemavatar] {
+  border-radius: 8px !important;
+}
+
+.product-item {
+  [matListItemMeta] {
+    &::before {
+      display: none !important;
+    }
+  }
+}
+
+.total b {
+  font-size: 18px !important;
+  font-weight: bold !important;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.actions-toolbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  button {
+    height: 56px !important;
+    flex: 1;
+  }
+}

@@ -39,7 +39,7 @@
   </div>
 </div>
 
-<mat-toolbar class="actions-toolbar background" *ngIf="basket.items?.length">
+<mat-toolbar class="actions-toolbar background" *ngIf="basket.items?.length" routerLink="/basket">
   <button mat-raised-button color="primary">
     {{ 'menu.complete' | translate }}
   </button>

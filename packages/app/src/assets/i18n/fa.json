@@ -2,6 +2,7 @@
   "app": {
     "number": "{{value}} عدد",
     "count": "تعداد",
+    "select": "انتخاب",
     "add": "افزودن",
     "price": "قیمت"
   },
@@ -15,5 +16,13 @@
   },
   "menu": {
     "complete": "تکمیل سفارش"
+  },
+  "basket": {
+    "pageTitle": "تایید سفارش",
+    "total": "مبلغ کل سفارش",
+    "emptyDescription": "هیچ آیتمی انتخاب نشده است",
+    "noteLabel": "توضیحات شما",
+    "notePlaceholder": "توضیحاتی درباره سفارش دارید اینجا بنویسید...",
+    "complete": "ثبت سفارش"
   }
 }
