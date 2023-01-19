@@ -32,10 +32,10 @@ export class ShopService {
         const theme = shop?.appConfig?.theme;
         this.themeService.color = theme.key;
         switch (shop?.appConfig.themeMode) {
-          case ThemeMode.dark:
+          case ThemeMode.Dark:
             this.themeService.mode = 'dark';
             break;
-          case ThemeMode.light:
+          case ThemeMode.Light:
             this.themeService.mode = 'light';
             break;
         }

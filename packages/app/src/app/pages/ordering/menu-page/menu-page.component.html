@@ -1,4 +1,20 @@
-<menu-toolbar></menu-toolbar>
+<mat-toolbar>
+  <mat-toolbar-row>
+    <button mat-icon-button goBack>
+      <i class="fa-regular fa-arrow-right"></i>
+    </button>
+    <span flex></span>
+    <button mat-icon-button *ngIf="menu?.viewType === MenuViewType.Manual" (click)="toggleView()">
+      <i class="fa-solid fa-list" *ngIf="viewType === MenuViewType.Card"></i>
+      <i class="fa-solid fa-grid-2" *ngIf="viewType === MenuViewType.Grid"></i>
+    </button>
+  </mat-toolbar-row>
+  <mat-toolbar-row>
+    <img [imageLoader]="shop?.logo" id="logo" />
+    <span spacer></span>
+    <h1>{{ shop?.title }}</h1>
+  </mat-toolbar-row>
+</mat-toolbar>
 
 <div class="wrapper">
   <menu-categories (chipClick)="categoryClick($event)"></menu-categories>
@@ -13,10 +29,10 @@
       <i *ngIf="c.faIcon" class="fa-solid fa-{{ c.faIcon }}"></i>
       {{ c.title }}
     </h3>
-    <ng-container *ngIf="menu?.viewType === MenuViewType.Card">
+    <ng-container *ngIf="viewType === MenuViewType.Card">
       <category-card-view [category]="c"></category-card-view>
     </ng-container>
-    <ng-container *ngIf="menu?.viewType === MenuViewType.Grid">
+    <ng-container *ngIf="viewType === MenuViewType.Grid">
       <category-grid-view [category]="c" [menu]="menu"></category-grid-view>
     </ng-container>
     <span spacer-2x *ngIf="!last"></span>

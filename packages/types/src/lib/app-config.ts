@@ -1,9 +1,10 @@
 import { Theme } from './theme';
 
 export enum ThemeMode {
-  auto,
-  dark,
-  light,
+  Auto,
+  Manual,
+  Dark,
+  Light,
 }
 export class AppConfig {
   id: string;

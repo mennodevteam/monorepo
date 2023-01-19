@@ -6,10 +6,11 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import { MenuViewType } from '@menno/types';
+import { Menu, MenuViewType } from '@menno/types';
 import { BehaviorSubject, debounceTime, map } from 'rxjs';
 import { BasketService } from '../../../core/services/basket.service';
 import { MenuService } from '../../../core/services/menu.service';
+import { ShopService } from '../../../core/services/shop.service';
 import { MenuCategoriesComponent } from './menu-categories/menu-categories.component';
 
 @Component({
@@ -23,8 +24,13 @@ export class MenuPageComponent {
   @ViewChild(MenuCategoriesComponent)
   menuCategoriesComponent: MenuCategoriesComponent;
   MenuViewType = MenuViewType;
+  viewType: MenuViewType;
 
-  constructor(private menuService: MenuService, public basket: BasketService) {
+  constructor(
+    private menuService: MenuService,
+    public basket: BasketService,
+    private shopService: ShopService
+  ) {
     this.onScrollMenu.pipe(debounceTime(200)).subscribe(() => {
       const selectedCatElem = this.categoryElements.reduce((a, b) => {
         const aView = this.elementViewportCapacity(a);
@@ -39,6 +45,15 @@ export class MenuPageComponent {
         this.menuCategoriesComponent.selectChip(selectedIndex);
       }
     });
+
+    if (this.menu) {
+      this.viewType =
+        this.menu?.viewType === MenuViewType.Manual ? MenuViewType.Card : this.menu?.viewType;
+    }
+  }
+
+  get shop() {
+    return this.shopService.shop;
   }
 
   get menu() {
@@ -73,5 +88,10 @@ export class MenuPageComponent {
 
   categoryClick(index: number) {
     this.categoryElements.toArray()[index].nativeElement.scrollIntoView(true);
+  }
+
+  toggleView() {
+    if (this.viewType === MenuViewType.Card) this.viewType = MenuViewType.Grid;
+    else if (this.viewType === MenuViewType.Grid) this.viewType = MenuViewType.Card;
   }
 }

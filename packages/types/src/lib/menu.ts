@@ -2,6 +2,7 @@ import { MenuCost } from './menu-cost';
 import { ProductCategory } from './product-category';
 
 export enum MenuViewType {
+  Manual,
   Card,
   Grid,
 }

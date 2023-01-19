@@ -13,7 +13,7 @@ export const AppConfigSchema = new EntitySchema<AppConfig>({
     themeMode: {
       type: 'enum',
       enum: ThemeMode,
-      default: ThemeMode.auto,
+      default: ThemeMode.Auto,
     },
   },
   relations: {
