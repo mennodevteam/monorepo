@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Product, ProductCategory } from '@menno/types';
+import { BasketService } from '../../../../core/services/basket.service';
 
 @Component({
   selector: 'category-card-view',
@@ -9,4 +10,16 @@ import { Product, ProductCategory } from '@menno/types';
 export class CategoryCardViewComponent {
   @Input() category: ProductCategory;
   Product = Product;
+
+  constructor(private basket: BasketService) {}
+  
+  plus(product: Product, ev?: Event) {
+    this.basket.plus(product);
+    if (ev) ev.stopPropagation();
+  }
+  
+  minus(product: Product, ev?: Event) {
+    this.basket.minus(product);
+    if (ev) ev.stopPropagation();
+  }
 }

@@ -2,6 +2,7 @@
   "app": {
     "number": "{{value}} عدد",
     "count": "تعداد",
+    "add": "افزودن",
     "price": "قیمت"
   },
   "discount": {
@@ -11,5 +12,8 @@
   "productPage": {
     "complete": "تکمیل سفارش",
     "backMenu": "برگشت به منو"
+  },
+  "menu": {
+    "complete": "تکمیل سفارش"
   }
 }

@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { MenuViewType } from '@menno/types';
 import { BehaviorSubject, debounceTime, map } from 'rxjs';
+import { BasketService } from '../../../core/services/basket.service';
 import { MenuService } from '../../../core/services/menu.service';
 import { MenuCategoriesComponent } from './menu-categories/menu-categories.component';
 
@@ -23,7 +24,7 @@ export class MenuPageComponent {
   menuCategoriesComponent: MenuCategoriesComponent;
   MenuViewType = MenuViewType;
 
-  constructor(private menuService: MenuService) {
+  constructor(private menuService: MenuService, public basket: BasketService) {
     this.onScrollMenu.pipe(debounceTime(200)).subscribe(() => {
       const selectedCatElem = this.categoryElements.reduce((a, b) => {
         const aView = this.elementViewportCapacity(a);

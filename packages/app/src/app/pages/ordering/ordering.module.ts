@@ -7,6 +7,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MenuPageComponent } from './menu-page/menu-page.component';
 import { MenuToolbarComponent } from './menu-page/menu-toolbar/menu-toolbar.component';
@@ -39,6 +40,7 @@ import { DiscountBadgeComponent } from './discount-badge/discount-badge.componen
     MatToolbarModule,
     MatChipsModule,
     MatCardModule,
+    MatBadgeModule,
     MatGridListModule,
     MatRippleModule,
   ],

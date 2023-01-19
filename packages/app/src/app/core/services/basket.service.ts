@@ -14,6 +14,7 @@ export class BasketService {
     if (item) item.quantity ? item.quantity++ : (item.quantity = 1);
     else {
       const item = new OrderItem();
+      product._orderItem = item;
       item.quantity = 1;
       item.title = product.title;
       item.product = product;
@@ -26,6 +27,7 @@ export class BasketService {
     if (item) {
       if (item.quantity > 1) item.quantity--;
       else {
+        product._orderItem = undefined;
         this.items.splice(this.items.indexOf(item), 1);
       }
     }

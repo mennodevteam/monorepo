@@ -15,3 +15,16 @@
     border-radius: 12px !important;
   }
 }
+
+
+.price-section {
+  &__text {
+    display: flex;
+    flex-direction: column;
+
+    &__old {
+      text-decoration: line-through;
+      font-size: 12px;
+    }
+  }
+}

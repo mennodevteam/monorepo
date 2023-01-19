@@ -40,7 +40,7 @@ span[spacer-2x] {
 
 // material override
 mat-toolbar {
-  background-color: var(--md-sys-color-background) !important;
+  background-color: transparent !important;
   color: var(--md-sys-color-on-background) !important;
 
   min-height: 72px;

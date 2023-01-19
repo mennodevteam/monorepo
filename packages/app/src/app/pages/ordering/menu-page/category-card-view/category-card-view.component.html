@@ -5,10 +5,6 @@
       class="product surface-variant on-surface-variant-text"
       matRipple
     >
-      <discount-badge *ngIf="Product.hasDiscount(product)">
-        {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
-      </discount-badge>
-
       <mat-card-header>
         <mat-card-title-group>
           <mat-card-title class="product__title">{{ product.title }}</mat-card-title>
@@ -22,8 +18,34 @@
           />
         </mat-card-title-group>
       </mat-card-header>
-      <mat-card-actions>
-        {{ product.price | menuCurrency }}
+      <mat-card-actions class="price-section">
+        <span class="price-section__text">
+          <span class="price-section__text__old error-text" *ngIf="Product.hasDiscount(product)">{{
+            product.price | menuCurrency
+          }}</span>
+          <b class="secondary-text">{{ Product.totalPrice(product) | menuCurrency }}</b>
+        </span>
+        <ng-container *ngIf="!product._orderItem?.quantity">
+          <span spacer></span>
+          <discount-badge *ngIf="Product.hasDiscount(product)">
+            {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
+          </discount-badge>
+        </ng-container>
+        <span flex></span>
+
+        <count-selector
+          *ngIf="product._orderItem?.quantity"
+          [count]="product._orderItem?.quantity || 0"
+          (plusClick)="plus(product, $event)"
+          (minusClick)="minus(product, $event)"
+        ></count-selector>
+        <button
+          mat-stroked-button
+          (click)="plus(product, $event)"
+          *ngIf="!product._orderItem?.quantity"
+        >
+          {{ 'app.add' | translate }}
+        </button>
       </mat-card-actions>
     </mat-card>
     <span spacer *ngIf="!last"></span>

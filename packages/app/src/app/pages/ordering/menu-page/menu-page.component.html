@@ -22,3 +22,11 @@
     <span spacer-2x *ngIf="!last"></span>
   </div>
 </div>
+
+<mat-toolbar class="actions-toolbar background" *ngIf="basket.items?.length">
+  <button mat-raised-button color="primary">
+    {{ 'menu.complete' | translate }}
+  </button>
+</mat-toolbar>
+
+<div style="height: 72px"></div>

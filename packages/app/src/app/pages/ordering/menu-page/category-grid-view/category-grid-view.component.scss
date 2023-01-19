@@ -11,6 +11,18 @@
       font-size: 11px;
     }
   }
+
+  .badge {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 24px;
+    font-size: 12px;
+    top: 8px;
+    right: 8px;
+  }
 }
 
 discount-badge {

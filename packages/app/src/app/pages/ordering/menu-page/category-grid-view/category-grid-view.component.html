@@ -6,6 +6,7 @@
     routerLink="product/{{ product.id }}"
     [imageLoader]="product.images ? product.images[0] : undefined"
   >
+    <div class="badge tertiary on-tertiary-text mat-elevation-z3" *ngIf="product._orderItem?.quantity">{{product._orderItem?.quantity}}</div>
     <discount-badge *ngIf="Product.hasDiscount(product)">
       {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
     </discount-badge>
