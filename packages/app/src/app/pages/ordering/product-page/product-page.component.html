@@ -12,15 +12,38 @@
 
   <p>{{ product.description }}</p>
 
-  <mat-toolbar class="price-section">
-    <span class="price-section__text">
-      <span class="price-section__text__old error-text" *ngIf="Product.hasDiscount(product)">{{
-        product.price | menuCurrency
-      }}</span>
-      <b class="secondary-text">{{ Product.totalPrice(product) | menuCurrency }}</b>
-    </span>
-    <discount-badge *ngIf="Product.hasDiscount(product)">
-      {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
-    </discount-badge>
+  <mat-toolbar>
+    <mat-toolbar-row class="price-section">
+      <p *ngIf="!Product.hasDiscount(product)" flex>{{ 'app.price' | translate }}</p>
+      <span class="price-section__text">
+        <span class="price-section__text__old error-text" *ngIf="Product.hasDiscount(product)">{{
+          product.price | menuCurrency
+        }}</span>
+        <b class="secondary-text">{{ Product.totalPrice(product) | menuCurrency }}</b>
+      </span>
+      <ng-container *ngIf="Product.hasDiscount(product)">
+        <span flex></span>
+        <discount-badge>
+          {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
+        </discount-badge>
+      </ng-container>
+    </mat-toolbar-row>
+    <mat-toolbar-row style="height: 72px">
+      {{ 'app.count' | translate }}
+      <span style="flex: 1"></span>
+      <count-selector></count-selector>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <div style="height: 72px"></div>
+
+  <mat-toolbar class="actions">
+    <button mat-stroked-button color="primary" goBack>
+      {{ 'productPage.backMenu' | translate }}
+    </button>
+    <span spacer></span>
+    <button flex mat-raised-button color="primary">
+      {{ 'productPage.complete' | translate }}
+    </button>
   </mat-toolbar>
 </main>

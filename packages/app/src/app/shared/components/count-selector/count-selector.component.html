@@ -1,0 +1,9 @@
+<div class="container secondary-container on-secondary-container-text">
+  <button mat-icon-button (click)="plus()">
+    <i class="fa-solid fa-circle-plus fa-large"></i>
+  </button>
+  <p>{{ 'app.number' | translate: { value: (count | number) } }}</p>
+  <button mat-icon-button (click)="minus()">
+    <i class="fa-solid fa-circle-minus fa-large"></i>
+  </button>
+</div>

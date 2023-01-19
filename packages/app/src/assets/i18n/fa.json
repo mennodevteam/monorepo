@@ -1,6 +1,15 @@
 {
+  "app": {
+    "number": "{{value}} عدد",
+    "count": "تعداد",
+    "price": "قیمت"
+  },
   "discount": {
     "percentage": "{{value}}% تخفیف",
     "fixed": "{{value}} تخفیف"
+  },
+  "productPage": {
+    "complete": "تکمیل سفارش",
+    "backMenu": "برگشت به منو"
   }
 }
