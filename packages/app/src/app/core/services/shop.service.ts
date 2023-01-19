@@ -15,10 +15,12 @@ export class ShopService {
   }
 
   async load() {
-    const query = location.hostname;
+    const query = this.getShopUsernameFromQuery();
     if (
       !this._shop.value ||
-      (this._shop.value.code !== query && this._shop.value.domain !== query)
+      (this._shop.value.username !== query &&
+        this._shop.value.code !== query &&
+        this._shop.value.domain !== query)
     ) {
       this._shop.next(null);
 
@@ -29,10 +31,22 @@ export class ShopService {
       if (shop?.appConfig?.theme) {
         const theme = shop?.appConfig?.theme;
         this.themeService.color = theme.key;
-        if (shop?.appConfig.themeMode)
-          this.themeService.mode = shop?.appConfig.themeMode === ThemeMode.dark ? 'dark' : 'light';
+        switch (shop?.appConfig.themeMode) {
+          case ThemeMode.dark:
+            this.themeService.mode = 'dark';
+            break;
+          case ThemeMode.light:
+            this.themeService.mode = 'light';
+            break;
+        }
       }
     }
+  }
+
+  getShopUsernameFromQuery() {
+    const hostname = location.hostname;
+    const query = hostname.split('.')[0];
+    return query;
   }
 
   get shopObservable() {

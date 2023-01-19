@@ -15,7 +15,7 @@ export class MenuService {
   }
 
   async load() {
-    const query = location.hostname;
+    const query = this.shopService.getShopUsernameFromQuery();
     const menu = await this.http.get<Menu>(`menus/${query}`).toPromise();
     if (menu?.categories) {
       menu.categories = menu.categories.filter((x) => x.products?.length);
@@ -39,7 +39,6 @@ export class MenuService {
         }
       }
     }
-    console.log(menu);
     this._menu.next(menu || null);
   }
 

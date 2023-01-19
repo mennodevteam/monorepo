@@ -8,7 +8,7 @@ export const environment = {
   // apiHost: 'https://api.boorantech.com'
   apiUrl: 'http://localhost:3000/api',
   apiHost: 'http://localhost:3000',
-  systemHostNames: ['app.menno.ir', 'menno.ir'],
+  systemHostNames: ['localhost'],
   bucketUrl: 'https://menno.storage.iran.liara.space',
 };
 
