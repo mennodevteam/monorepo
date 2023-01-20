@@ -17,28 +17,8 @@ export class MenuService {
   async load() {
     const query = this.shopService.getShopUsernameFromQuery();
     const menu = await this.http.get<Menu>(`menus/${query}`).toPromise();
-    if (menu?.categories) {
-      menu.categories = menu.categories.filter((x) => x.products?.length);
-      ProductCategory.sort(menu.categories);
-      for (const cat of menu.categories) {
-        cat.costs = menu.costs?.filter(
-          (x) =>
-            (!x.includeProduct?.length && !x.includeProductCategory?.length) ||
-            x.includeProductCategory.find((y) => y.id === cat.id)
-        );
-        if (cat.products) {
-          Product.sort(cat.products);
-          for (const p of cat.products) {
-            p.category = cat;
-            p.costs = menu.costs?.filter(
-              (x) =>
-                (!x.includeProduct?.length && !x.includeProductCategory?.length) ||
-                x.includeProductCategory?.find((y) => y.id === p.category.id) ||
-                x.includeProduct?.find((y) => y.id === p.id)
-            );
-          }
-        }
-      }
+    if (menu) {
+      Menu.setRefsAndSort(menu);
     }
     this._menu.next(menu || null);
   }
@@ -52,20 +32,7 @@ export class MenuService {
   }
 
   getProductById(id: string): Product | null {
-    try {
-      const menu = this.menu;
-      if (menu && menu.categories) {
-        for (const cat of menu.categories) {
-          if (cat.products) {
-            for (const prod of cat.products) {
-              if (prod.id === id) return prod;
-            }
-          }
-        }
-      }
-    } catch (error) {
-      return null;
-    }
+    if (this.menu) return Menu.getProductById(this.menu, id);
     return null;
   }
 }

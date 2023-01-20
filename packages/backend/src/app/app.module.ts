@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { SchemasModule } from './core/schemas.module';
 import { FilesModule } from './files/files.module';
 import { MenusModule } from './menus/menus.module';
+import { OrdersModule } from './orders/orders.module';
 import { RegionsModule } from './regions/regions.module';
 import { ShopsModule } from './shops/shops.module';
 import { UsersModule } from './users/users.module';
@@ -30,6 +31,7 @@ import { UsersModule } from './users/users.module';
     MenusModule,
     FilesModule,
     RegionsModule,
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

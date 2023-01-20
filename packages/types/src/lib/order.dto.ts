@@ -8,6 +8,7 @@ export class OrderDto {
   shopId: string;
   customerId?: string;
   creatorId?: string;
+  waiterId?: string;
   state: OrderState;
   type: OrderType;
   isManual: boolean;

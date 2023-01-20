@@ -15,13 +15,9 @@ export class BasketService {
     const item = this.items?.find((x) => x.product?.id === product.id);
     if (item) item.quantity ? item.quantity++ : (item.quantity = 1);
     else {
-      const item = new OrderItem();
-      product._orderItem = item;
-      item.quantity = 1;
-      item.title = product.title;
-      item.price = Product.totalPrice(product);
-      item.product = product;
+      const item = new OrderItem(product);
       this.items.push(item);
+      product._orderItem = item;
     }
   }
 
