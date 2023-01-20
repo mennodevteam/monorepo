@@ -1,4 +1,5 @@
 import { OrderDetails } from './order';
+import { OrderPaymentType } from './order-payment-type.enum';
 import { OrderState } from './order-state.enum';
 import { OrderType } from './order-type.enum';
 
@@ -13,7 +14,8 @@ export class OrderDto {
   packOrderId?: string;
   manualDiscount?: number;
   manualCost?: number;
-  isPayed: boolean;
+  paymentType?: OrderPaymentType;
+  note?: string;
   details: OrderDetails;
   productItems: {
     productId: string;

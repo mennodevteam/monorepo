@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { OrderItem, Product } from '@menno/types';
+import { Order, OrderItem, Product } from '@menno/types';
 import { MenuService } from './menu.service';
 
 @Injectable({
@@ -46,39 +46,20 @@ export class BasketService {
   }
 
   get abstractItems() {
-    const costs = this.menuService.menu?.costs?.filter((x) => !x.showOnItem) || [];
-    const items: OrderItem[] = [];
-    const sum = this.sum;
-    for (const c of costs) {
-      let price = 0;
-      if (c.fixedCost) price += c.fixedCost;
-      if (c.percentageCost) {
-        const dis = (sum * c.percentageCost) / 100;
-        price += Math.floor(dis / 500) * 500;
-      }
-      items.push(<OrderItem>{
-        isAbstract: true,
-        quantity: 1,
-        price,
-        title: c.title,
-      });
+    if (this.menuService.menu) {
+      return Order.abstractItems(this.menuService.menu, this.items);
     }
-    return items;
+    return [];
   }
 
   get sum() {
-    let sum = 0;
-    for (const i of this.items) {
-      sum += i.quantity * i.price;
-    }
-    return sum;
+    return Order.sum(this.items);
   }
 
   get total() {
-    let total = this.sum;
-    for (const i of this.abstractItems) {
-      total += i.price;
+    if (this.menuService.menu) {
+      return Order.total(this.menuService.menu, this.items);
     }
-    return total;
+    return 0;
   }
 }
