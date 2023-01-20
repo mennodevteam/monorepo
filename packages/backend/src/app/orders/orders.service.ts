@@ -1,4 +1,4 @@
-import { Menu, Order, OrderDto, OrderItem, Shop, User } from '@menno/types';
+import { Menu, Order, OrderDto, OrderItem, Product, Shop, User } from '@menno/types';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -42,6 +42,7 @@ export class OrdersService {
       const product = Menu.getProductById(menu, item.productId);
       if (product) {
         const orderItem = new OrderItem(product, item.quantity);
+        orderItem.product = <Product>{id: item.productId}
         order.items.push(orderItem);
       } else {
         throw new HttpException(`product id ${item.productId} not found`, HttpStatus.NOT_FOUND);
@@ -50,6 +51,7 @@ export class OrdersService {
 
     const abstractItems = Order.abstractItems(menu, order.items);
     order.items.push(...abstractItems);
+    console.log(menu, order.items);
     order.totalPrice = Order.total(menu, order.items);
     return order;
   }

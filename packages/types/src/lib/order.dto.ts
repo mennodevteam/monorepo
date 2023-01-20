@@ -4,20 +4,20 @@ import { OrderState } from './order-state.enum';
 import { OrderType } from './order-type.enum';
 
 export class OrderDto {
-  id: string;
+  id?: string;
   shopId: string;
   customerId?: string;
   creatorId?: string;
   waiterId?: string;
-  state: OrderState;
+  state?: OrderState;
   type: OrderType;
-  isManual: boolean;
+  isManual?: boolean;
   packOrderId?: string;
   manualDiscount?: number;
   manualCost?: number;
   paymentType?: OrderPaymentType;
   note?: string;
-  details: OrderDetails;
+  details?: OrderDetails;
   productItems: {
     productId: string;
     quantity: number;

@@ -49,7 +49,8 @@ export class Order {
 
   static sum(items: OrderItem[]) {
     let sum = 0;
-    for (const i of items) {
+    const productItems = items.filter((x) => !x.isAbstract);
+    for (const i of productItems) {
       sum += i.quantity * i.price;
     }
     return sum;

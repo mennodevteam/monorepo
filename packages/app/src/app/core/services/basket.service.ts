@@ -1,6 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Order, OrderItem, Product } from '@menno/types';
+import { Order, OrderDto, OrderItem, OrderType, Product } from '@menno/types';
 import { MenuService } from './menu.service';
+import { OrdersService } from './orders.service';
+import { ShopService } from './shop.service';
 
 @Injectable({
   providedIn: 'root',
@@ -8,8 +11,14 @@ import { MenuService } from './menu.service';
 export class BasketService {
   items: OrderItem[] = [];
   note?: string;
+  type?: OrderType = OrderType.Takeaway;
 
-  constructor(private menuService: MenuService) {}
+  constructor(
+    private menuService: MenuService,
+    private shopService: ShopService,
+    private ordersService: OrdersService,
+    private http: HttpClient
+  ) {}
 
   plus(product: Product) {
     const item = this.items?.find((x) => x.product?.id === product.id);
@@ -39,6 +48,7 @@ export class BasketService {
   clear() {
     this.items = [];
     this.note = undefined;
+    this.type = undefined;
   }
 
   get abstractItems() {
@@ -57,5 +67,21 @@ export class BasketService {
       return Order.total(this.menuService.menu, this.items);
     }
     return 0;
+  }
+
+  complete() {
+    if (this.type && this.shopService.shop) {
+      const dto: OrderDto = {
+        productItems: this.items
+          .filter((x) => x.product)
+          .map((x) => ({ productId: x.product!.id, quantity: x.quantity })),
+        type: this.type,
+        note: this.note,
+        shopId: this.shopService.shop.id,
+      };
+
+      return this.ordersService.save(dto);
+    }
+    return null;
   }
 }

@@ -18,4 +18,8 @@ export class BasketPageComponent {
   get items() {
     return this.basket.items || [];
   }
+
+  complete() {
+    this.basket.complete();
+  }
 }

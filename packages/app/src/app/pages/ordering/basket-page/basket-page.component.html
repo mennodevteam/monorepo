@@ -57,7 +57,7 @@
 </main>
 
 <mat-toolbar class="actions-toolbar background" *ngIf="basket.items?.length" routerLink="/basket">
-  <button mat-raised-button color="primary">
+  <button mat-raised-button color="primary" (click)="complete()">
     {{ 'basket.complete' | translate }}
   </button>
 </mat-toolbar>
