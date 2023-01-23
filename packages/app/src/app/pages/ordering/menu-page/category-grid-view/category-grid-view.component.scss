@@ -9,19 +9,9 @@
     .product-title {
       flex: 1;
       font-size: 11px;
+      height: 24px;
+      line-height: 24px;
     }
-  }
-
-  .badge {
-    position: absolute;
-    width: 24px;
-    height: 24px;
-    line-height: 24px;
-    text-align: center;
-    border-radius: 24px;
-    font-size: 12px;
-    top: 8px;
-    right: 8px;
   }
 }
 

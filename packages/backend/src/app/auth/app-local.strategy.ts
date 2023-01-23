@@ -3,16 +3,15 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { User } from '@menno/types';
-import { PersianNumberService } from '@menno/utils';
 
 @Injectable()
-export class LocalStrategy extends PassportStrategy(Strategy) {
+export class AppLocalStrategy extends PassportStrategy(Strategy, 'app-local') {
   constructor(private authService: AuthService) {
     super();
   }
 
   async validate(username: string, password: string): Promise<User> {
-    const user = await this.authService.validateUser(PersianNumberService.toEnglish(username), password);
+    const user = await this.authService.registerEmptyUserBasedOnGuidHash(username, password);
     if (!user) {
       throw new UnauthorizedException();
     }
