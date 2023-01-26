@@ -45,7 +45,7 @@
       {{ 'productPage.backMenu' | translate }}
     </button>
     <span spacer></span>
-    <button flex mat-raised-button color="primary" routerLink="/basket" [disabled]="!basket.items?.length">
+    <button flex mat-raised-button color="primary" routerLink="/basket" [disabled]="!basket.items.length">
       {{ 'productPage.complete' | translate }}
     </button>
   </mat-toolbar>

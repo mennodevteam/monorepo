@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Post, Request, UseGuards } from '@nestjs/common';
 import { AppLocalAuthGuard } from './app-local-auth.guard';
 import { AuthService } from './auth.service';
 import { PanelLocalAuthGuard } from './panel-local-auth.guard';
@@ -20,5 +20,10 @@ export class AuthController {
   @Post('login/app')
   async loginApp(@Request() req) {
     return this.auth.loginApp(req.user);
+  }
+
+  @Get('login/app/:userId/:mobile/:token')
+  async loginAppWithToken(@Param() params) {
+    return this.auth.loginAppWithToken(params.userId, params.mobile, params.token);
   }
 }

@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from '../../core/guards/auth.guard';
 import { MenuGuard } from '../../core/guards/menu.guard';
-import { ShopService } from '../../core/services/shop.service';
 import { BasketPageComponent } from './basket-page/basket-page.component';
 import { MenuPageComponent } from './menu-page/menu-page.component';
 import { ProductPageComponent } from './product-page/product-page.component';
@@ -16,6 +16,7 @@ export const orderingRoutes: Routes = [
         component: ShopHomeComponent,
       },
       {
+        canActivate: [AuthGuard],
         path: 'basket',
         component: BasketPageComponent,
       },

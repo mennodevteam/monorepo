@@ -4,7 +4,8 @@
     "count": "تعداد",
     "select": "انتخاب",
     "add": "افزودن",
-    "price": "قیمت"
+    "price": "قیمت",
+    "continue": "ادامه"
   },
   "discount": {
     "percentage": "{{value}}% تخفیف",
@@ -24,5 +25,15 @@
     "noteLabel": "توضیحات شما",
     "notePlaceholder": "توضیحاتی درباره سفارش دارید اینجا بنویسید...",
     "complete": "ثبت سفارش"
+  },
+  "loginBottomSheet": {
+    "title": "ورود و ثبت نام",
+    "acceptNumberTitle": "تایید شماره تلفن",
+    "mobileDescription": "لطفا شماره تلفن همراه خود را وارد کنید",
+    "mobileLabel": "شماره تلفن همراه",
+    "codeDescription": "یک کد عددی به شماره {{value}} ارسال شد. آن را در کادر زیر وارد کنید.",
+    "codeLabel": "کد پیامک شده",
+    "incorrectCode": "کد وارد شده اشتباه است",
+    "sendAgain": "ارسال دوباره کد"
   }
 }

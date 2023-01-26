@@ -60,6 +60,13 @@ export class AuthService {
     return this.login(user, Role.App, '90d');
   }
 
+  async loginAppWithToken(userId: string, mobile: string, token: string): Promise<User> {
+    const user = await this.usersRepo.findOneBy({ id: userId });
+    if (!user.mobilePhone) user.mobilePhone = mobile;
+    await this.usersRepo.save(user);
+    if (user) return this.loginApp(user);
+  }
+
   async loginPanel(user: User) {
     return this.login(user, Role.Panel);
   }

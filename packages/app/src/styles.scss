@@ -18,6 +18,10 @@ body {
   color: var(--md-sys-color-on-background);
 }
 
+.submit-button {
+  height: 56px !important;
+}
+
 .cut-text {
   text-overflow: ellipsis;
   overflow: hidden;
@@ -69,4 +73,8 @@ mat-card {
 [matListItemIcon] {
   line-height: 24px;
   text-align: center;
+}
+
+.mat-bottom-sheet-container {
+  background-color: var(--md-sys-color-background) !important;
 }
