@@ -16,7 +16,8 @@ export class DailyOrderListService {
   allOrders: Order[] = [];
   orders = new BehaviorSubject<Order[]>([]);
 
-  constructor(private ordersService: OrdersService) {}
+  constructor(private ordersService: OrdersService) {
+  }
 
   get date() {
     return this._date;

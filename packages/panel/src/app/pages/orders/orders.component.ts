@@ -28,6 +28,11 @@ export class OrdersComponent {
         this.setQueryParams();
       }
     });
+
+    this.route.queryParams.subscribe((params) => {
+      this.dateControl.setValue(params['date'] ? new Date(params['date']) : new Date());
+      if (params['filter']) this.filterControl.setValue(params['filter']);
+    });
   }
 
   get filter() {
@@ -35,7 +40,7 @@ export class OrdersComponent {
   }
 
   set filter(value: DailyOrderFilter) {
-    this.OS.filter = value;
+    this.filterControl.setValue(value);
   }
 
   get orders() {
@@ -53,6 +58,7 @@ export class OrdersComponent {
   setQueryParams() {
     const qp = JSON.parse(JSON.stringify(this.route.snapshot.queryParams || {}));
     qp.date = `${this.date.getFullYear()}-${this.date.getMonth() + 1}-${this.date.getDate()}`;
+    qp.filter = this.filter;
     this.router.navigate([], {
       queryParams: qp,
       replaceUrl: true,
