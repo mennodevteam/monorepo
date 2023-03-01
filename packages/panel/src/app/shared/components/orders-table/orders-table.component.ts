@@ -23,21 +23,18 @@ export class OrdersTableComponent implements AfterViewInit {
   dataSource = new MatTableDataSource<Order>();
 
   @Input() pageSizeOptions: number[];
-  @Input() columns = [
-    'qNumber',
-    'customer',
-    'type',
-    'total',
-    'state',
-    'waiter',
-    'date',
-    'actions',
-  ];
+  @Input() columns = ['qNumber', 'customer', 'type', 'total', 'state', 'date', 'actions'];
   @Input() orders: BehaviorSubject<Order[]>;
-  
+
+  constructor(private dialog: MatDialog) {}
+
   ngAfterViewInit() {
     this.orders.subscribe((orders) => {
-      this.dataSource = new MatTableDataSource(orders)
-    })
+      this.dataSource = new MatTableDataSource(orders);
+    });
+  }
+
+  stateClick(order: Order) {
+    this.dialog.open;
   }
 }

@@ -3,6 +3,10 @@
     <h2>{{ 'orders.pageTitle' | translate }}</h2>
   </mat-toolbar-row>
 </mat-toolbar>
-<main class="content-wrapper" *ngIf="orders">
-  <orders-table [orders]="orders"></orders-table>
+<main class="content-wrapper">
+  <mat-card *ngIf="orders">
+    <mat-card-content>
+      <orders-table [orders]="orders"></orders-table>
+    </mat-card-content>
+  </mat-card>
 </main>
