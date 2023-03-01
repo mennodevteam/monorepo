@@ -1,11 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  QueryList,
-  ViewChild,
-  ViewChildren,
-} from '@angular/core';
+import { Component, ElementRef, HostListener, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Menu, MenuViewType } from '@menno/types';
 import { BehaviorSubject, debounceTime, map } from 'rxjs';
 import { BasketService } from '../../../core/services/basket.service';
@@ -48,12 +41,18 @@ export class MenuPageComponent {
 
     if (this.menu) {
       this.viewType =
-        this.menu?.viewType === MenuViewType.Manual ? MenuViewType.Card : this.menu?.viewType;
+        this.appConfig?.menuViewType === MenuViewType.Manual
+          ? MenuViewType.Card
+          : this.appConfig?.menuViewType || MenuViewType.Card;
     }
   }
 
   get shop() {
     return this.shopService.shop;
+  }
+
+  get appConfig() {
+    return this.shopService.shop?.appConfig;
   }
 
   get menu() {

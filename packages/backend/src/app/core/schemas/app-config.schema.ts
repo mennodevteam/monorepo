@@ -1,4 +1,4 @@
-import { AppConfig, ThemeMode } from '@menno/types';
+import { AppConfig, MenuViewType, ThemeMode } from '@menno/types';
 import { EntitySchema } from 'typeorm';
 
 export const AppConfigSchema = new EntitySchema<AppConfig>({
@@ -15,12 +15,21 @@ export const AppConfigSchema = new EntitySchema<AppConfig>({
       enum: ThemeMode,
       default: ThemeMode.Auto,
     },
+    menuViewType: {
+      type: 'enum',
+      enum: MenuViewType,
+      default: MenuViewType.Card,
+    },
+    menuCols: {
+      type: Number,
+      default: 2,
+    },
   },
   relations: {
     theme: {
       type: 'many-to-one',
       target: 'Theme',
       nullable: true,
-    }
-  }
+    },
+  },
 });

@@ -4,7 +4,7 @@
       <i class="fa-regular fa-arrow-right"></i>
     </button>
     <span flex></span>
-    <button mat-icon-button *ngIf="menu?.viewType === MenuViewType.Manual" (click)="toggleView()">
+    <button mat-icon-button *ngIf="appConfig?.menuViewType === MenuViewType.Manual" (click)="toggleView()">
       <i class="fa-solid fa-list" *ngIf="viewType === MenuViewType.Card"></i>
       <i class="fa-solid fa-grid-2" *ngIf="viewType === MenuViewType.Grid"></i>
     </button>
@@ -33,7 +33,7 @@
       <category-card-view [category]="c"></category-card-view>
     </ng-container>
     <ng-container *ngIf="viewType === MenuViewType.Grid">
-      <category-grid-view [category]="c" [menu]="menu"></category-grid-view>
+      <category-grid-view [category]="c" [menu]="menu" [appConfig]="appConfig"></category-grid-view>
     </ng-container>
     <span spacer-2x *ngIf="!last"></span>
   </div>
