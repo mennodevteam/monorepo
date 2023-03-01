@@ -13,6 +13,9 @@ import { DiscountsPageComponent } from './discounts-page/discounts-page.componen
 import { EditDiscountComponent } from './discounts-page/edit-discount/edit-discount.component';
 import { CostsPageComponent } from './costs-page/costs-page.component';
 import { EditCostComponent } from './costs-page/edit-cost/edit-cost.component';
+import { SelectProductCardComponent } from './select-product-card/select-product-card.component';
+import { SelectStatusCardComponent } from './select-status-card/select-status-card.component';
+import { SelectOrderTypeCardComponent } from './select-order-type-card/select-order-type-card.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +29,9 @@ import { EditCostComponent } from './costs-page/edit-cost/edit-cost.component';
     EditDiscountComponent,
     CostsPageComponent,
     EditCostComponent,
+    SelectProductCardComponent,
+    SelectStatusCardComponent,
+    SelectOrderTypeCardComponent,
   ],
   imports: [CommonModule, RouterModule.forChild(menuRoutes), SharedModule],
 })

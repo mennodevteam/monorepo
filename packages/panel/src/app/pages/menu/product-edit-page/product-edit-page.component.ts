@@ -72,6 +72,14 @@ export class ProductEditPageComponent {
     });
   }
 
+  get statusControl() {
+    return this.form.get('status') as FormControl;
+  }
+
+  get orderTypesControl() {
+    return this.form.get('orderTypes') as FormControl;
+  }
+
   get categories() {
     return this.menuService.menu?.categories;
   }

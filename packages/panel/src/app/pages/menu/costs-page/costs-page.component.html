@@ -19,7 +19,7 @@
       </ng-container>
 
       <ng-container matColumnDef="cost">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef class="fixed-width">
           {{ 'menuCostPage.tableCostCol' | translate }}
         </th>
         <td mat-cell *matCellDef="let cost">
@@ -32,7 +32,7 @@
       </ng-container>
 
       <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef class="fixed-width">
           {{ 'app.status' | translate }}
         </th>
         <td mat-cell *matCellDef="let cost" class="form-theme">
@@ -48,18 +48,20 @@
 
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let cost" style="justify-content: end; display: flex">
-          <button
-            mat-icon-button
-            matTooltip="{{ 'app.edit' | translate }}"
-            routerLink="edit"
-            [queryParams]="{ id: cost.id }"
-          >
-            <i class="fa-regular fa-pencil-alt"></i>
-          </button>
-          <button mat-icon-button matTooltip="{{ 'app.remove' | translate }}" (click)="remove(cost)">
-            <i class="fa-regular fa-trash-alt"></i>
-          </button>
+        <td mat-cell *matCellDef="let cost">
+          <div style="justify-content: end; display: flex">
+            <button
+              mat-icon-button
+              matTooltip="{{ 'app.edit' | translate }}"
+              routerLink="edit"
+              [queryParams]="{ id: cost.id }"
+            >
+              <i class="fa-regular fa-pencil-alt"></i>
+            </button>
+            <button mat-icon-button matTooltip="{{ 'app.remove' | translate }}" (click)="remove(cost)">
+              <i class="fa-regular fa-trash-alt"></i>
+            </button>
+          </div>
         </td>
       </ng-container>
 

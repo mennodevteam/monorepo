@@ -15,7 +15,7 @@
           <mat-card-header>
             <mat-card-title>{{ 'productEdit.baseSectionTitle' | translate }}</mat-card-title>
           </mat-card-header>
-          <span spacer-2x></span>
+          <span spacer></span>
           <mat-card-content>
             <mat-form-field>
               <mat-label>{{ 'productEdit.titleLabel' | translate }}</mat-label>
@@ -39,13 +39,13 @@
           </mat-card-content>
         </mat-card>
 
-        <span spacer-2x></span>
+        <span spacer></span>
 
         <mat-card>
           <mat-card-header>
             <mat-card-title>{{ 'productEdit.priceSectionTitle' | translate }}</mat-card-title>
           </mat-card-header>
-          <span spacer-2x></span>
+          <span spacer></span>
           <mat-card-content>
             <mat-form-field>
               <mat-label>{{ 'productEdit.priceLabel' | translate }}</mat-label>
@@ -55,48 +55,16 @@
         </mat-card>
       </div>
 
-      <span spacer-2x></span>
+      <span spacer></span>
 
       <div class="static-col">
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title> {{ 'app.status' | translate }} </mat-card-title>
-          </mat-card-header>
-          <span spacer-2x></span>
-          <mat-card-content>
-            <mat-button-toggle-group formControlName="status">
-              <mat-button-toggle [value]="Status.Active"
-                >{{ 'app.active' | translate }}
-              </mat-button-toggle>
-              <mat-button-toggle [value]="Status.Inactive"
-                >{{ 'app.inactive' | translate }}
-              </mat-button-toggle>
-            </mat-button-toggle-group>
-            <ng-container *ngIf="form.controls['status'].value === Status.Inactive">
-              <br />
-              <mat-card class="error">
-                <mat-card-content>
-                  {{ 'productEdit.inactiveHint' | translate }}
-                </mat-card-content>
-              </mat-card>
-            </ng-container>
-            <span spacer-2x></span>
-            <p class="gray" style="margin-bottom: 0">{{ 'productEdit.orderTypes' | translate }}</p>
-            <mat-selection-list dense formControlName="orderTypes" color="primary">
-              <mat-list-option [value]="OrderType.DineIn" checkboxPosition="before">
-                {{ 'orderType.dineIn' | translate }}
-              </mat-list-option>
-              <mat-list-option [value]="OrderType.Delivery" checkboxPosition="before">
-                {{ 'orderType.delivery' | translate }}
-              </mat-list-option>
-              <mat-list-option [value]="OrderType.Takeaway" checkboxPosition="before">
-                {{ 'orderType.takeaway' | translate }}
-              </mat-list-option>
-            </mat-selection-list>
-          </mat-card-content>
-        </mat-card>
+        <select-status-card [control]="statusControl"></select-status-card>
 
-        <span spacer-2x></span>
+        <span spacer></span>
+
+        <select-order-type-card [control]="orderTypesControl"></select-order-type-card>
+
+        <span spacer></span>
 
         <mat-card>
           <mat-card-content>

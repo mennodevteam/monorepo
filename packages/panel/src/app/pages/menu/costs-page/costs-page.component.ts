@@ -23,7 +23,7 @@ export class CostsPageComponent {
 
   load() {
     this.costs = this.menuService.menu!.costs.filter(
-      (x) => x.fixedCost >= 0 || x.percentageCost >= 0
+      (x) => x.fixedCost > 0 || x.percentageCost > 0
     );
   }
 

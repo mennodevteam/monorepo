@@ -1,0 +1,38 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{ 'selectProductCard.productSection' | translate }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-radio-group matInput [formControl]="typeControl">
+      <mat-radio-button value="all">
+        {{ 'selectProductCard.allMenu' | translate }}
+      </mat-radio-button>
+      <span spacer></span>
+      <mat-radio-button value="category">
+        {{ 'selectProductCard.someCategories' | translate }}
+      </mat-radio-button>
+      <div class="padding-container" *ngIf="typeControl.value == 'category'">
+        <mat-form-field>
+          <mat-label>{{ 'selectProductCard.selectCategory' | translate }}</mat-label>
+          <mat-select multiple [formControl]="categoryControl">
+            <mat-option *ngFor="let cat of categories" [value]="cat">{{ cat.title }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <span spacer></span>
+      <mat-radio-button value="product">
+        {{ 'selectProductCard.someProducts' | translate }}
+      </mat-radio-button>
+      <div class="padding-container" *ngIf="typeControl.value == 'product'">
+        <mat-form-field>
+          <mat-label>{{ 'selectProductCard.selectProduct' | translate }}</mat-label>
+          <mat-select multiple [formControl]="productControl">
+            <mat-optgroup *ngFor="let cat of categories" [label]="cat.title" [hidden]="!cat.products?.length">
+              <mat-option *ngFor="let p of cat.products" [value]="p">{{ p.title }}</mat-option>
+            </mat-optgroup>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-radio-group>
+  </mat-card-content>
+</mat-card>

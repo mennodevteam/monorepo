@@ -4,7 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { MenuCost, Status } from '@menno/types';
+import { MenuCost, OrderType, Status } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuService } from 'packages/panel/src/app/core/services/menu.service';
 
@@ -32,11 +32,11 @@ export class EditCostComponent {
       description: new FormControl(''),
       percentageCost: new FormControl(0),
       fixedCost: new FormControl(0),
+      orderTypes: new FormControl([OrderType.Delivery, OrderType.DineIn, OrderType.Takeaway]),
       status: new FormControl(Status.Active, Validators.required),
       showOnItem: new FormControl(true, Validators.required),
       includeProductCategory: new FormControl([]),
       includeProduct: new FormControl([]),
-      _type: new FormControl('all', Validators.required),
     });
 
     this.route.queryParams.subscribe(async (params) => {
@@ -50,20 +50,34 @@ export class EditCostComponent {
             percentageCost: d.percentageCost ? Math.abs(d.percentageCost) : 0,
             fixedCost: d.fixedCost ? Math.abs(d.fixedCost) : 0,
             status: d.status,
+            orderTypes: d.orderTypes,
             showOnItem: d.showOnItem ? true : false,
-            includeProductCategory: d.includeProductCategory ? this.menuService.filterCategoriesByIds(
-              d.includeProductCategory.map((x) => x.id)
-            ) : [],
-            includeProduct: d.includeProduct ? this.menuService.filterProductsByIds(d.includeProduct.map((x) => x.id)) : [],
-            _type: d.includeProduct?.length
-              ? 'product'
-              : d.includeProductCategory?.length
-              ? 'category'
-              : 'all',
+            includeProductCategory: d.includeProductCategory
+              ? this.menuService.filterCategoriesByIds(d.includeProductCategory.map((x) => x.id))
+              : [],
+            includeProduct: d.includeProduct
+              ? this.menuService.filterProductsByIds(d.includeProduct.map((x) => x.id))
+              : [],
           });
         }
       }
     });
+  }
+
+  get orderTypesControl() {
+    return this.form.get('orderTypes') as FormControl;
+  }
+
+  get statusControl() {
+    return this.form.get('status') as FormControl;
+  }
+
+  get includeProductControl() {
+    return this.form.get('includeProduct') as FormControl;
+  }
+
+  get includeProductCategoryControl() {
+    return this.form.get('includeProductCategory') as FormControl;
   }
 
   get categories() {

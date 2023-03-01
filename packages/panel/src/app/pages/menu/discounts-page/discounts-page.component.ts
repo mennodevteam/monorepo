@@ -20,21 +20,16 @@ import { AlertDialogComponent } from '../../../shared/dialogs/alert-dialog/alert
   styleUrls: ['./discounts-page.component.scss'],
 })
 export class DiscountsPageComponent {
-  displayedColumns = ['title', 'discount', 'date', 'status', 'actions'];
+  displayedColumns = ['title', 'discount', 'status', 'actions'];
   discounts: MenuCost[];
   Status = Status;
 
-  constructor(
-    private menuService: MenuService,
-    private alertDialogService: AlertDialogService,
-  ) {
+  constructor(private menuService: MenuService, private alertDialogService: AlertDialogService) {
     this.load();
   }
 
   load() {
-    this.discounts = this.menuService.menu!.costs.filter(
-      (x) => x.fixedCost < 0 || x.percentageCost < 0
-    );
+    this.discounts = this.menuService.menu!.costs.filter((x) => x.fixedCost < 0 || x.percentageCost < 0);
   }
 
   async changeStatus(discount: MenuCost, ev: MatSlideToggleChange) {
@@ -56,6 +51,6 @@ export class DiscountsPageComponent {
         await this.menuService.deleteMenuCost(discount.id);
         this.load();
       }
-    })
+    });
   }
 }
