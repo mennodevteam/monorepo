@@ -1,5 +1,4 @@
-import { Order, OrderState, OrderType } from "@menno/types";
-import { OrderPaymentType } from "packages/types/src/lib/order-payment-type.enum";
+import { Order, OrderPaymentType, OrderState, OrderType } from "@menno/types";
 import { EntitySchema } from "typeorm";
 
 export const OrderSchema = new EntitySchema<Order>({

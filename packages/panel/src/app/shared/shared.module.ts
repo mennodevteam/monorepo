@@ -22,12 +22,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-  DateAdapter,
-  MatNativeDateModule,
-  MAT_DATE_FORMATS,
-  MAT_DATE_LOCALE,
-} from '@angular/material/core';
+import { DateAdapter, MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { PromptDialogComponent } from './dialogs/prompt-dialog/prompt-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -47,10 +42,11 @@ import { ImageCropperDialogComponent } from './dialogs/image-cropper-dialog/imag
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { ImageLoaderDirective } from './directives/image-loader.directive';
 import { FormBuilderComponent } from './components/form-builder/form-builder.component';
-import {
-  MaterialPersianDateAdapter,
-  PERSIAN_DATE_FORMATS,
-} from '../core/material.persian-date.adapter';
+import { MaterialPersianDateAdapter, PERSIAN_DATE_FORMATS } from '../core/material.persian-date.adapter';
+import { OrdersTableComponent } from './components/orders-table/orders-table.component';
+import { OrderTypePipe } from './pipes/order-type.pipe';
+import { OrderStatePipe } from './pipes/order-state.pipe';
+import { OrderPaymentPipe } from './pipes/order-payment.pipe';
 
 @NgModule({
   declarations: [
@@ -65,6 +61,10 @@ import {
     AlertDialogComponent,
     ImageLoaderDirective,
     FormBuilderComponent,
+    OrdersTableComponent,
+    OrderTypePipe,
+    OrderStatePipe,
+    OrderPaymentPipe,
   ],
   imports: [
     CommonModule,
@@ -107,12 +107,16 @@ import {
     GoBackDirective,
     SanitizeUrlPipe,
     MenuCurrencyPipe,
+    OrderTypePipe,
+    OrderStatePipe,
+    OrderPaymentPipe,
     PdatePipe,
     AlertDialogComponent,
     SelectDialogComponent,
     TranslateModule,
     ImageLoaderDirective,
     FormBuilderComponent,
+    OrdersTableComponent,
 
     FormsModule,
     ReactiveFormsModule,

@@ -1,7 +1,8 @@
-import { Order, OrderDto } from '@menno/types';
+import { FilterOrderDto, Order, OrderDto } from '@menno/types';
 import { Body, Controller, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { AuthService } from '../auth/auth.service';
 import { Public } from '../auth/public.decorator';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
@@ -15,6 +16,7 @@ export class OrdersController {
     @InjectRepository(Order)
     private ordersRepo: Repository<Order>,
     private ordersService: OrdersService,
+    private auth: AuthService,
   ) {}
   
   @Public()
@@ -29,5 +31,12 @@ export class OrdersController {
     const order = await this.ordersService.dtoToOrder(dto);
     const savedOrder = await this.ordersRepo.save(order);
     return savedOrder;
+  }
+
+  @Post('filter')
+  async filterPanelOrders(@Body() dto: FilterOrderDto, @LoginUser() user: AuthPayload) {
+    const shop = await this.auth.getPanelUserShop(user);
+    dto.shopId = shop.id;
+    return this.ordersService.filter(dto);
   }
 }

@@ -15,7 +15,8 @@
     "fromTo": "از {{from}} تا {{to}}",
     "savedSuccessfully": "با موفقیت ذخیره شد",
     "edit": "ویرایش",
-    "remove": "حذف"
+    "remove": "حذف",
+    "noSet": "ثبت نشده"
   },
   "sidenav": {
     "menu": "منو",
@@ -66,6 +67,20 @@
     "dineIn": "داخل مجموعه",
     "delivery": "ارسال با پیک",
     "takeaway": "مراجعه حضوری"
+  },
+  "orderState": {
+    "canceled": "لغو شده",
+    "pending": "در انتظار تایید",
+    "processing": "درحال آماده‌سازی",
+    "shipping": "ارسال‌شده با پیک",
+    "completed": "تحویل شده",
+    "ready": "آماده تحویل"
+  },
+  "orderPaymentType": {
+    "notPayed": "پرداخت نشده",
+    "online": "آنلاین پرداخت‌شده",
+    "cash": "صندوق‌ پرداخت‌شده",
+    "clubWallet": "اعتباری پرداخت‌شده"
   },
   "productTable": {
     "image": "عکس",
@@ -152,5 +167,13 @@
     "pageDescription": "هزینه مازاد مثل مالیات، بسته بندی خاص، سرویس دهی و یا هر چیز دیگری می‌شود.",
     "tableTitleCol": "عنوان",
     "tableCostCol": "هزینه اضافی"
+  },
+  "ordersTable": {
+    "customer": "مشتری",
+    "type": "نوع",
+    "state": "وضعیت",
+    "total": "قیمت کل",
+    "waiter": "سالن‌دار",
+    "date": "تاریخ"
   }
 }

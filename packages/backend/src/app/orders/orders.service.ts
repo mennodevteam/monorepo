@@ -1,13 +1,15 @@
-import { Menu, Order, OrderDto, OrderItem, Product, Shop, User } from '@menno/types';
+import { FilterOrderDto, Menu, Order, OrderDto, OrderItem, Product, Shop, User } from '@menno/types';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, FindOptionsWhere, In, IsNull, LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 
 @Injectable()
 export class OrdersService {
   constructor(
     @InjectRepository(Shop)
-    private shopsRepo: Repository<Shop>
+    private shopsRepo: Repository<Shop>,
+    @InjectRepository(Order)
+    private ordersRepo: Repository<Order>
   ) {}
   async dtoToOrder(dto: OrderDto) {
     const order = new Order();
@@ -42,7 +44,7 @@ export class OrdersService {
       const product = Menu.getProductById(menu, item.productId);
       if (product) {
         const orderItem = new OrderItem(product, item.quantity);
-        orderItem.product = <Product>{id: item.productId}
+        orderItem.product = <Product>{ id: item.productId };
         order.items.push(orderItem);
       } else {
         throw new HttpException(`product id ${item.productId} not found`, HttpStatus.NOT_FOUND);
@@ -54,5 +56,57 @@ export class OrdersService {
     console.log(menu, order.items);
     order.totalPrice = Order.total(menu, order.items);
     return order;
+  }
+
+  async filter(dto: FilterOrderDto) {
+    const condition: FindOptionsWhere<Order> = {};
+
+    if (dto.fromDate && dto.toDate) {
+      condition.createdAt = Between(dto.fromDate, dto.toDate);
+    } else if (dto.fromDate) {
+      condition.createdAt = MoreThanOrEqual(dto.fromDate);
+    } else if (dto.toDate) {
+      condition.createdAt = LessThanOrEqual(dto.toDate);
+    }
+
+    if (dto.shopId) condition.shop = { id: dto.shopId };
+    if (dto.states?.length) condition.state = In(dto.states);
+    if (dto.types?.length) condition.type = In(dto.types);
+    if (dto.paymentTypes?.length) condition.paymentType = In(dto.paymentTypes);
+
+    if (dto.customerId === null) {
+      condition.customer = IsNull();
+    } else if (dto.customerId) {
+      condition.customer = { id: dto.customerId };
+    }
+
+    if (dto.creatorId === null) {
+      condition.creator = IsNull();
+    } else if (dto.creatorId) {
+      condition.creator = { id: dto.creatorId };
+    }
+    if (dto.waiterId === null) {
+      condition.waiter = IsNull();
+    } else if (dto.waiterId) {
+      condition.waiter = { id: dto.waiterId };
+    }
+    if (dto.isManual === true || dto.isManual === false) condition.isManual = dto.isManual;
+
+    const relations = ['items', 'mergeTo', 'reviews', 'customer', 'creator', 'waiter'];
+    if (dto.fillProductsAndCategory) {
+      relations.push('items.product', 'items.product.category');
+    }
+    let orders = await this.ordersRepo.find({
+      where: condition,
+      order: { createdAt: 'DESC' },
+      relations,
+      withDeleted: dto.withDeleted,
+    });
+
+    if (dto.hasReview) {
+      orders = orders.filter((x) => x.reviews.length > 0);
+    }
+
+    return orders;
   }
 }

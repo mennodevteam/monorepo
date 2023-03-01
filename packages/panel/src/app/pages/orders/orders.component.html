@@ -1,0 +1,8 @@
+<mat-toolbar class="page-toolbar mat-elevation-z3">
+  <mat-toolbar-row>
+    <h2>{{ 'orders.pageTitle' | translate }}</h2>
+  </mat-toolbar-row>
+</mat-toolbar>
+<main class="content-wrapper" *ngIf="orders">
+  <orders-table [orders]="orders"></orders-table>
+</main>

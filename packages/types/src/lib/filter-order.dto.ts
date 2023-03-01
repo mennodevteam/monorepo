@@ -1,3 +1,4 @@
+import { OrderPaymentType } from './order-payment-type.enum';
 import { OrderState } from './order-state.enum';
 import { OrderType } from './order-type.enum';
 
@@ -8,9 +9,8 @@ export class FilterOrderDto {
   customerId?: string;
   creatorId?: string;
   waiterId?: string;
-  isPayed?: boolean;
   isManual?: boolean;
-  paymentType?: 'online' | 'cash' | 'clubWallet';
+  paymentTypes?: OrderPaymentType[];
   states?: OrderState[];
   fillProductsAndCategory?: boolean;
   types?: OrderType[];
