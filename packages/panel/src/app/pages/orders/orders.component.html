@@ -1,12 +1,60 @@
 <mat-toolbar class="page-toolbar mat-elevation-z3">
   <mat-toolbar-row>
-    <h2>{{ 'orders.pageTitle' | translate }}</h2>
+    <button mat-icon-button (click)="goToPrevDate()">
+      <i class="fa-regular fa-angle-right"></i>
+    </button>
+    <button mat-button (click)="picker.open()" style="width: 100px">
+      {{ date | pdate: 'YYYY/MM/DD' }}
+    </button>
+    <input hidden [matDatepicker]="picker" [formControl]="dateControl" [max]="today" />
+    <mat-datepicker touchUi #picker></mat-datepicker>
+    <button
+      mat-icon-button
+      [disabled]="date.toDateString() === today.toDateString()"
+      (click)="goToPrevDate()"
+    >
+      <i class="fa-regular fa-angle-left"></i>
+    </button>
+    <button
+      mat-icon-button
+      *ngIf="date.toDateString() !== today.toDateString()"
+      color="warn"
+      (click)="goToToday()"
+    >
+      <i class="fa-regular fa-angles-left"></i>
+    </button>
   </mat-toolbar-row>
 </mat-toolbar>
+<nav mat-tab-nav-bar mat-stretch-tabs="false" class="border-bottom">
+  <a mat-tab-link (click)="filter = 'all'" [active]="filter === 'all'">
+    {{ 'dailyOrder.filter.all' | translate }}
+  </a>
+  <a mat-tab-link (click)="filter = 'pending'" [active]="filter === 'pending'">
+    {{ 'dailyOrder.filter.pending' | translate }}
+  </a>
+  <a mat-tab-link (click)="filter = 'complete'" [active]="filter === 'complete'">
+    {{ 'dailyOrder.filter.complete' | translate }}
+  </a>
+  <a mat-tab-link (click)="filter = 'notPayed'" [active]="filter === 'notPayed'">
+    {{ 'dailyOrder.filter.notPayed' | translate }}
+  </a>
+  <a mat-tab-link (click)="filter = 'payed'" [active]="filter === 'payed'">
+    {{ 'dailyOrder.filter.payed' | translate }}
+  </a>
+  <a mat-tab-link (click)="filter = 'edited'" [active]="filter === 'edited'">
+    {{ 'dailyOrder.filter.edited' | translate }}
+  </a>
+  <a mat-tab-link (click)="filter = 'deleted'" [active]="filter === 'deleted'">
+    {{ 'dailyOrder.filter.deleted' | translate }}
+  </a>
+</nav>
 <main class="content-wrapper">
-  <mat-card *ngIf="orders">
+  <mat-card>
     <mat-card-content>
-      <orders-table [orders]="orders"></orders-table>
+      <ng-container *ngIf="orders && !loading">
+        <orders-table [orders]="orders"></orders-table>
+      </ng-container>
+      <mat-spinner class="loading-spinner" *ngIf="loading" [diameter]="24"></mat-spinner>
     </mat-card-content>
   </mat-card>
 </main>

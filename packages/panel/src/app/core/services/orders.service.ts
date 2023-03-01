@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Order } from '@menno/types';
+import { FilterOrderDto, Order } from '@menno/types';
 
 @Injectable({
   providedIn: 'root',
@@ -8,8 +8,8 @@ import { Order } from '@menno/types';
 export class OrdersService {
   constructor(private http: HttpClient) {}
 
-  async getOrders(date: Date) {
-    const orders = await this.http.post<Order[]>(`orders/filter`, {}).toPromise();
+  async filter(dto: FilterOrderDto) {
+    const orders = await this.http.post<Order[]>(`orders/filter`, dto).toPromise();
     return orders;
   }
 }

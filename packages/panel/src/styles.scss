@@ -104,6 +104,10 @@ i[empty-state-icon] {
   text-align: center;
 }
 
+.border-bottom {
+  border-bottom: $border;
+}
+
 .form-page-layout {
   display: flex;
   flex-direction: row;
@@ -141,7 +145,7 @@ i[empty-state-icon] {
 .page-toolbar {
   position: sticky;
   top: 64px;
-  z-index: 2000;
+  z-index: 500;
   height: 48px;
   background-color: white !important;
 }
@@ -159,7 +163,7 @@ i[empty-state-icon] {
 }
 
 .content-toolbar {
-  z-index: 1999;
+  z-index: 499;
   border-bottom: $border;
   padding: 0 !important;
   margin-bottom: 24px;
@@ -190,7 +194,7 @@ i[empty-state-icon] {
   letter-spacing: normal !important;
 }
 
-.mdc-calendar {
+.mat-calendar {
   font-family: inherit;
 }
 
