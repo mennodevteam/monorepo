@@ -2,6 +2,7 @@ import { Route } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { MenuGuard } from './core/guards/menu.guard';
 import { ShopGuard } from './core/guards/shop.guard';
+import { TranslateGuard } from './core/guards/translate.guard';
 import { PagesComponent } from './pages/pages.component';
 
 export const appRoutes: Route[] = [
@@ -12,7 +13,7 @@ export const appRoutes: Route[] = [
   {
     path: '',
     component: PagesComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, TranslateGuard],
     children: [
       {
         path: '',

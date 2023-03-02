@@ -20,9 +20,9 @@
       </mat-card-header>
       <mat-card-actions class="price-section">
         <span class="price-section__text">
-          <span class="price-section__text__old error-text" *ngIf="Product.hasDiscount(product)">{{
-            product.price | menuCurrency
-          }}</span>
+          <span class="price-section__text__old error-text" *ngIf="Product.hasDiscount(product)">
+            {{ Product.realPrice(product) | menuCurrency }}
+          </span>
           <b class="secondary-text">{{ Product.totalPrice(product) | menuCurrency }}</b>
         </span>
         <ng-container *ngIf="!product._orderItem?.quantity">
@@ -39,11 +39,7 @@
           (plusClick)="plus(product, $event)"
           (minusClick)="minus(product, $event)"
         ></count-selector>
-        <button
-          mat-stroked-button
-          (click)="plus(product, $event)"
-          *ngIf="!product._orderItem?.quantity"
-        >
+        <button mat-stroked-button (click)="plus(product, $event)" *ngIf="!product._orderItem?.quantity">
           {{ 'app.add' | translate }}
         </button>
       </mat-card-actions>

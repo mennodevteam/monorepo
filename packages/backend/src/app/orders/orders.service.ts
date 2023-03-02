@@ -38,7 +38,7 @@ export class OrdersService {
     if (dto.type) order.type = dto.type;
 
     order.items = [];
-    Menu.setRefsAndSort(shop.menu);
+    Menu.setRefsAndSort(shop.menu, dto.type);
     const menu = shop.menu;
     for (const item of dto.productItems) {
       const product = Menu.getProductById(menu, item.productId);

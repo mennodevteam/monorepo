@@ -7,6 +7,7 @@
     "status": "وضعیت",
     "active": "فعال",
     "inactive": "غیرفعال",
+    "optional": "اختیاری",
     "save": "ذخیره",
     "upload": "آپلود",
     "undo": "بازگردادن",
@@ -90,7 +91,8 @@
     "edit": "ویرایش محصول"
   },
   "settings": {
-    "shopTab": "اطلاعات مجموعه"
+    "shopTab": "اطلاعات مجموعه",
+    "appConfig": "اپ سفارش‌گیری"
   },
   "shopPage": {
     "baseSection": "اطلاعات پایه",
@@ -107,6 +109,28 @@
     "phonesHint": "با enter شماره جدید وارد کنید",
     "instagram": "آی‌دی اینستاگرام",
     "instagramHint": "بدون @"
+  },
+  "appConfig": {
+    "themeSection": "رنگبندی اپلیکیشن",
+    "theme": "رنگ",
+    "themeMode": "تاریک / روشن",
+    "themeModeAutoHint": "برمبنای تنظیمات dark mode گوشی",
+    "themeModeDark": "پوسته تاریک",
+    "themeModeLight": "پوسته روشن",
+    "themeModeAuto": "خودکار",
+    "menuSection": "نحوه نمایش آیتم‌ها",
+    "menuViewType": "نوع آیتم‌ها",
+    "menuViewTypeCard": "به صورت کارتی",
+    "menuViewTypeGrid": "به صورت گرید",
+    "menuViewTypeManual": "به انتخاب کاربر",
+    "menuCols": "تعداد ستون",
+    "menuColsText": "{{value}} ستون",
+    "orderingSection": "محدودیت سفارش‌گیری",
+    "disableOrdering": "امکان ثبت سفارش",
+    "disableOrderingText": "نمایش علت غیرفعالی به کاربر",
+    "selectableOrderTypes": "انواع سفارش قابل انتخاب",
+    "requiredRegister": "لزوم ثبت نام کامل قبل از ثبت سفارش",
+    "requiredPayment": "لزوم پرداخت آنلاین قبل از ثبت سفارش"
   },
   "discountEdit": {
     "pageTitle": "تخفیف و جشنواره",

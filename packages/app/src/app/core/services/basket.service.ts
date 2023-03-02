@@ -11,7 +11,6 @@ import { ShopService } from './shop.service';
 export class BasketService {
   items: OrderItem[] = [];
   note?: string;
-  type?: OrderType = OrderType.Takeaway;
 
   constructor(
     private menuService: MenuService,
@@ -48,7 +47,6 @@ export class BasketService {
   clear() {
     this.items = [];
     this.note = undefined;
-    this.type = undefined;
   }
 
   get abstractItems() {
@@ -56,6 +54,10 @@ export class BasketService {
       return Order.abstractItems(this.menuService.menu, this.items);
     }
     return [];
+  }
+
+  get type() {
+    return this.menuService.type;
   }
 
   get sum() {

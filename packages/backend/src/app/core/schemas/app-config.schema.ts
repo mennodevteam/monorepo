@@ -1,4 +1,4 @@
-import { AppConfig, MenuViewType, ThemeMode } from '@menno/types';
+import { AppConfig, MenuViewType, OrderType, ThemeMode } from '@menno/types';
 import { EntitySchema } from 'typeorm';
 
 export const AppConfigSchema = new EntitySchema<AppConfig>({
@@ -14,6 +14,32 @@ export const AppConfigSchema = new EntitySchema<AppConfig>({
       type: 'enum',
       enum: ThemeMode,
       default: ThemeMode.Auto,
+    },
+    disableOrdering: {
+      type: Boolean,
+      default: false,
+    },
+    disableOrderingText: {
+      type: String,
+      nullable: true,
+    },
+    requiredPayment: {
+      type: 'enum',
+      array: true,
+      enum: OrderType,
+      default: [OrderType.Delivery],
+    },
+    requiredRegister: {
+      type: 'enum',
+      array: true,
+      enum: OrderType,
+      default: [OrderType.Delivery],
+    },
+    selectableOrderTypes: {
+      type: 'enum',
+      array: true,
+      enum: OrderType,
+      default: [OrderType.Delivery, OrderType.DineIn, OrderType.Takeaway],
     },
     menuViewType: {
       type: 'enum',

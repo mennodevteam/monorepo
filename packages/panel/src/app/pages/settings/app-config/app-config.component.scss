@@ -1,0 +1,5 @@
+@import "theme";
+
+.mat-button-toggle-checked[color="warn"] {
+  background-color: $red !important;
+}

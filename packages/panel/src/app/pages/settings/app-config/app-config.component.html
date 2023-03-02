@@ -1,0 +1,178 @@
+<form [formGroup]="form">
+  <mat-toolbar class="content-toolbar">
+    <span flex></span>
+    <button mat-flat-button color="primary" (click)="save()" [disabled]="saving || !form.dirty">
+      {{ 'app.save' | translate }}
+    </button>
+  </mat-toolbar>
+  <main class="form-page-layout">
+    <div class="flex-col">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{ 'appConfig.themeSection' | translate }}</mat-card-title>
+        </mat-card-header>
+        <span spacer-2x></span>
+        <mat-card-content>
+          <mat-form-field>
+            <mat-label>{{ 'appConfig.theme' | translate }}</mat-label>
+            <mat-select formControlName="theme">
+              <mat-option *ngFor="let t of themes" [value]="t">
+                <i class="fa-solid fa-circle" [style.color]="t.primaryColor"></i>
+                {{ t.title }}
+              </mat-option>
+            </mat-select>
+            <i
+              matSuffix
+              [style.color]="form.controls['theme'].value?.primaryColor"
+              class="fa-solid fa-circle"
+              style="width: 48px; text-align: center"
+            ></i>
+          </mat-form-field>
+          <span spacer-2x></span>
+          <mat-form-field>
+            <mat-label>{{ 'appConfig.themeMode' | translate }}</mat-label>
+            <mat-select formControlName="themeMode">
+              <mat-option [value]="ThemeMode.Auto">
+                {{ 'appConfig.themeModeAuto' | translate }}
+              </mat-option>
+              <mat-option [value]="ThemeMode.Dark">
+                {{ 'appConfig.themeModeDark' | translate }}
+              </mat-option>
+              <mat-option [value]="ThemeMode.Light">
+                {{ 'appConfig.themeModeLight' | translate }}
+              </mat-option>
+              <!-- <mat-option [value]="ThemeMode.Manual">
+                {{ 'appConfig.themeModeManual' | translate }}
+              </mat-option> -->
+            </mat-select>
+            <mat-hint *ngIf="form.controls['themeMode'].value === ThemeMode.Auto">{{
+              'appConfig.themeModeAutoHint' | translate
+            }}</mat-hint>
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+
+      <span spacer></span>
+
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{ 'appConfig.menuSection' | translate }}</mat-card-title>
+        </mat-card-header>
+        <span spacer-2x></span>
+        <mat-card-content>
+          <mat-form-field>
+            <mat-label>{{ 'appConfig.menuViewType' | translate }}</mat-label>
+            <mat-select formControlName="menuViewType">
+              <mat-option [value]="MenuViewType.Card">
+                {{ 'appConfig.menuViewTypeCard' | translate }}
+              </mat-option>
+              <mat-option [value]="MenuViewType.Grid">
+                {{ 'appConfig.menuViewTypeGrid' | translate }}
+              </mat-option>
+              <mat-option [value]="MenuViewType.Manual">
+                {{ 'appConfig.menuViewTypeManual' | translate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <ng-container *ngIf="form.controls['menuViewType']?.value === MenuViewType.Grid">
+            <mat-form-field>
+              <mat-label>{{ 'appConfig.menuCols' | translate }}</mat-label>
+              <mat-select formControlName="menuCols">
+                <mat-option [value]="2">
+                  {{ 'appConfig.menuColsText' | translate: { value: 2 } }}
+                </mat-option>
+                <mat-option [value]="3">
+                  {{ 'appConfig.menuColsText' | translate: { value: 3 } }}
+                </mat-option>
+                <mat-option [value]="4">
+                  {{ 'appConfig.menuColsText' | translate: { value: 4 } }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-container>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <span spacer></span>
+
+    <div class="flex-col">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{ 'appConfig.orderingSection' | translate }}</mat-card-title>
+        </mat-card-header>
+        <span spacer></span>
+        <mat-card-content>
+          <div class="row">
+            <p class="flex">
+              {{ 'appConfig.disableOrdering' | translate }}
+            </p>
+            <mat-button-toggle-group formControlName="disableOrdering">
+              <mat-button-toggle [value]="true">{{ 'app.active' | translate }}</mat-button-toggle>
+              <mat-button-toggle [value]="false" color="warn">{{
+                'app.inactive' | translate
+              }}</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+
+          <mat-form-field *ngIf="!form.controls['disableOrdering']?.value">
+            <mat-label>{{ 'appConfig.disableOrderingText' | translate }}</mat-label>
+            <textarea matInput formControlName="disableOrderingText" rows="2"></textarea>
+            <mat-hint>{{ 'app.optional' | translate }}</mat-hint>
+          </mat-form-field>
+
+          <span spacer-2x></span>
+
+          <mat-form-field>
+            <mat-label>{{ 'appConfig.selectableOrderTypes' | translate }}</mat-label>
+            <mat-select formControlName="selectableOrderTypes" multiple>
+              <mat-option [value]="OrderType.DineIn">
+                {{ 'orderType.dineIn' | translate }}
+              </mat-option>
+              <mat-option [value]="OrderType.Takeaway">
+                {{ 'orderType.takeaway' | translate }}
+              </mat-option>
+              <mat-option [value]="OrderType.Delivery">
+                {{ 'orderType.delivery' | translate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <span spacer></span>
+
+          <mat-form-field>
+            <mat-label>{{ 'appConfig.requiredRegister' | translate }}</mat-label>
+            <mat-select formControlName="requiredRegister" multiple>
+              <mat-option [value]="OrderType.DineIn">
+                {{ 'orderType.dineIn' | translate }}
+              </mat-option>
+              <mat-option [value]="OrderType.Takeaway">
+                {{ 'orderType.takeaway' | translate }}
+              </mat-option>
+              <mat-option [value]="OrderType.Delivery">
+                {{ 'orderType.delivery' | translate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <span spacer></span>
+
+          <mat-form-field>
+            <mat-label>{{ 'appConfig.requiredPayment' | translate }}</mat-label>
+            <mat-select formControlName="requiredPayment" multiple>
+              <mat-option [value]="OrderType.DineIn">
+                {{ 'orderType.dineIn' | translate }}
+              </mat-option>
+              <mat-option [value]="OrderType.Takeaway">
+                {{ 'orderType.takeaway' | translate }}
+              </mat-option>
+              <mat-option [value]="OrderType.Delivery">
+                {{ 'orderType.delivery' | translate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </main>
+</form>

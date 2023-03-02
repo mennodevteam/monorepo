@@ -1,22 +1,43 @@
-import { AppConfig } from '@menno/types';
-import { Controller } from '@nestjs/common';
+import { AppConfig, Shop, Theme } from '@menno/types';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { AuthService } from '../auth/auth.service';
+import { LoginUser } from '../auth/user.decorator';
+import { AuthPayload } from '../core/types/auth-payload';
 
-@Controller()
+@Controller('appConfigs')
 export class AppConfigsController {
   constructor(
     @InjectRepository(AppConfig)
-    private repo: Repository<AppConfig>
+    private appConfigsRepo: Repository<AppConfig>,
+    @InjectRepository(Shop)
+    private shopsRepo: Repository<Shop>,
+    @InjectRepository(Theme)
+    private themesRepo: Repository<Theme>,
+    private auth: AuthService
   ) {}
 
-  @MessagePattern('appConfigs/save')
-  save(appConfig: AppConfig): Promise<AppConfig> {
-    return this.repo.save(appConfig);
+  @Get('themes')
+  getThemes() {
+    return this.themesRepo.find();
   }
-  @MessagePattern('appConfigs/delete')
-  delete(id: string): Promise<any> {
-    return this.repo.delete(id);
+
+  @Post()
+  async save(@Body() dto: AppConfig, @LoginUser() user: AuthPayload) {
+    const shop = await this.auth.getPanelUserShop(user);
+    if (shop) {
+      if (shop.appConfig) {
+        dto.id = shop.appConfig.id;
+        return this.appConfigsRepo.save(dto);
+      } else {
+        const newConfig = await this.appConfigsRepo.save(dto);
+        this.shopsRepo.update(shop.id, {
+          appConfig: { id: newConfig.id },
+        });
+        return newConfig;
+      }
+    }
   }
 }

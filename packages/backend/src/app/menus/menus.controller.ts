@@ -1,4 +1,4 @@
-import { Menu, Shop } from '@menno/types';
+import { Menu, Shop, Status } from '@menno/types';
 import { Controller, Get, Param } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -27,6 +27,8 @@ export class MenusController {
         'menu.costs.includeProduct',
       ],
     });
+
+    if (shop.menu?.costs) shop.menu.costs = shop.menu.costs.filter((x) => x.status === Status.Active);
 
     return shop.menu;
   }

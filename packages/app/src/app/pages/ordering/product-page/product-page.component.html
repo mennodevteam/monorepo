@@ -16,9 +16,9 @@
     <mat-toolbar-row class="price-section">
       <p *ngIf="!Product.hasDiscount(product)" flex>{{ 'app.price' | translate }}</p>
       <span class="price-section__text">
-        <span class="price-section__text__old error-text" *ngIf="Product.hasDiscount(product)">{{
-          product.price | menuCurrency
-        }}</span>
+        <span class="price-section__text__old error-text" *ngIf="Product.hasDiscount(product)">
+          {{ Product.realPrice(product) | menuCurrency }}
+        </span>
         <b class="secondary-text">{{ Product.totalPrice(product) | menuCurrency }}</b>
       </span>
       <ng-container *ngIf="Product.hasDiscount(product)">

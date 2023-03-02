@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppConfigsModule } from './app-configs/app-configs.module';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -32,6 +33,7 @@ import { UsersModule } from './users/users.module';
     FilesModule,
     RegionsModule,
     OrdersModule,
+    AppConfigsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
