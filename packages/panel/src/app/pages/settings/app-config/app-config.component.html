@@ -108,14 +108,14 @@
               {{ 'appConfig.disableOrdering' | translate }}
             </p>
             <mat-button-toggle-group formControlName="disableOrdering">
-              <mat-button-toggle [value]="true">{{ 'app.active' | translate }}</mat-button-toggle>
-              <mat-button-toggle [value]="false" color="warn">{{
+              <mat-button-toggle [value]="false">{{ 'app.active' | translate }}</mat-button-toggle>
+              <mat-button-toggle [value]="true" color="warn">{{
                 'app.inactive' | translate
               }}</mat-button-toggle>
             </mat-button-toggle-group>
           </div>
 
-          <mat-form-field *ngIf="!form.controls['disableOrdering']?.value">
+          <mat-form-field *ngIf="form.controls['disableOrdering']?.value">
             <mat-label>{{ 'appConfig.disableOrderingText' | translate }}</mat-label>
             <textarea matInput formControlName="disableOrderingText" rows="2"></textarea>
             <mat-hint>{{ 'app.optional' | translate }}</mat-hint>

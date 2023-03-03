@@ -56,7 +56,15 @@
   </ng-container>
 </main>
 
-<mat-toolbar class="actions-toolbar background" *ngIf="basket.items?.length" routerLink="/basket">
+<div *ngIf="disableOrdering" style="padding: 24px">
+  <disable-ordering-card></disable-ordering-card>
+</div>
+
+<mat-toolbar
+  class="actions-toolbar background"
+  *ngIf="basket.items?.length && !disableOrdering"
+  routerLink="/basket"
+>
   <button mat-raised-button color="primary" (click)="complete()">
     {{ 'basket.complete' | translate }}
   </button>

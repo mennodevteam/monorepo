@@ -1,0 +1,20 @@
+<h3>{{ 'orderType.select' | translate }}</h3>
+<mat-nav-list>
+  <a mat-list-item (click)="select(OrderType.DineIn)">
+    <i matListItemIcon class="fa-solid fa-mug-hot fa-large"></i>
+    <span matListItemTitle>{{ 'orderType.dineIn' | translate }}</span>
+    <span matLine>{{ 'orderType.dineInDescription' | translate }}</span>
+  </a>
+
+  <a mat-list-item (click)="select(OrderType.Takeaway)">
+    <i matListItemIcon class="fa-solid fa-cup-togo fa-large"></i>
+    <span matListItemTitle>{{ 'orderType.takeaway' | translate }}</span>
+    <span matLine>{{ 'orderType.takeawayDescription' | translate }}</span>
+  </a>
+
+  <a mat-list-item (click)="select(OrderType.Delivery)">
+    <i matListItemIcon class="fa-solid fa-moped fa-large"></i>
+    <span matListItemTitle>{{ 'orderType.delivery' | translate }}</span>
+    <span matLine>{{ 'orderType.deliveryDescription' | translate }}</span>
+  </a>
+</mat-nav-list>

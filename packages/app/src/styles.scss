@@ -31,7 +31,7 @@ body {
 .spacer,
 span[spacer] {
   flex: none;
-  display: block;
+  display: inline-block;
   width: 16px;
   height: 16px;
 }
@@ -39,9 +39,17 @@ span[spacer] {
 .spacer-2x,
 span[spacer-2x] {
   flex: none;
-  display: block;
+  display: inline-block;
   width: 32px;
   height: 32px;
+}
+
+.spacer-sm,
+span[spacer-sm] {
+  flex: none;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
 }
 
 [flex] {

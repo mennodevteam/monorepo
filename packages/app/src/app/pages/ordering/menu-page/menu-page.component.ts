@@ -1,6 +1,6 @@
 import { Component, ElementRef, HostListener, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { Menu, MenuViewType } from '@menno/types';
-import { BehaviorSubject, debounceTime, map } from 'rxjs';
+import { MenuViewType } from '@menno/types';
+import { BehaviorSubject, debounceTime } from 'rxjs';
 import { BasketService } from '../../../core/services/basket.service';
 import { MenuService } from '../../../core/services/menu.service';
 import { ShopService } from '../../../core/services/shop.service';
@@ -24,6 +24,7 @@ export class MenuPageComponent {
     public basket: BasketService,
     private shopService: ShopService
   ) {
+    this.menuService.checkSelectedOrderType();
     this.onScrollMenu.pipe(debounceTime(200)).subscribe(() => {
       const selectedCatElem = this.categoryElements.reduce((a, b) => {
         const aView = this.elementViewportCapacity(a);

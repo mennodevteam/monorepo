@@ -16,6 +16,10 @@
   </mat-toolbar-row>
 </mat-toolbar>
 
+<section class="order-disable" *ngIf="appConfig?.disableOrderingText && appConfig?.disableOrdering">
+  <disable-ordering-card></disable-ordering-card>
+</section>
+
 <div class="wrapper">
   <menu-categories (chipClick)="categoryClick($event)"></menu-categories>
 

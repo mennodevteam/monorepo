@@ -11,12 +11,22 @@
     "percentage": "{{value}}% تخفیف",
     "fixed": "{{value}} تخفیف"
   },
+  "orderType": {
+    "select": "نوع سفارش خود را انتخاب کنید:",
+    "dineIn": "داخل مجموعه",
+    "dineInDescription": "داخل مجموعه هستم و همینجا سرو می‌کنم",
+    "delivery": "ارسال با پیک",
+    "deliveryDescription": "با پیک برایم ارسال کنید",
+    "takeaway": "مراجعه حضوری",
+    "takeawayDescription": "آماده کنید میام میگیرم"
+  },
   "productPage": {
     "complete": "تکمیل سفارش",
     "backMenu": "برگشت به منو"
   },
   "menu": {
-    "complete": "تکمیل سفارش"
+    "complete": "تکمیل سفارش",
+    "disableOrderingTitle": "امکان ثبت آنلاین سفارش وجود ندارد"
   },
   "basket": {
     "pageTitle": "تایید سفارش",

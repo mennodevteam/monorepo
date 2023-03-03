@@ -23,6 +23,8 @@ import { BasketPageComponent } from './basket-page/basket-page.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import { SelectOrderTypeModalComponent } from './select-order-type-modal/select-order-type-modal.component';
+import { DisableOrderingCardComponent } from './disable-ordering-card/disable-ordering-card.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { FormsModule } from '@angular/forms';
     CategoryCardViewComponent,
     DiscountBadgeComponent,
     BasketPageComponent,
+    SelectOrderTypeModalComponent,
+    DisableOrderingCardComponent,
   ],
   imports: [
     CommonModule,
