@@ -157,7 +157,19 @@
 
           <span spacer></span>
 
-          <mat-form-field>
+          <div class="row">
+            <p class="flex">
+              {{ 'appConfig.disablePayment' | translate }}
+            </p>
+            <mat-button-toggle-group formControlName="disablePayment">
+              <mat-button-toggle [value]="false">{{ 'app.active' | translate }}</mat-button-toggle>
+              <mat-button-toggle [value]="true" color="warn">{{
+                'app.inactive' | translate
+              }}</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+
+          <mat-form-field *ngIf="!form.controls['disablePayment']?.value">
             <mat-label>{{ 'appConfig.requiredPayment' | translate }}</mat-label>
             <mat-select formControlName="requiredPayment" multiple>
               <mat-option [value]="OrderType.DineIn">

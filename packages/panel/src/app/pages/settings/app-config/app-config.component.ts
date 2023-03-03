@@ -29,6 +29,7 @@ export class AppConfigComponent {
       theme: new FormControl(this.appConfig.theme),
       themeMode: new FormControl(this.appConfig.themeMode),
       disableOrdering: new FormControl(this.appConfig.disableOrdering),
+      disablePayment: new FormControl(this.appConfig.disablePayment),
       disableOrderingText: new FormControl(this.appConfig.disableOrderingText),
       selectableOrderTypes: new FormControl(this.appConfig.selectableOrderTypes),
       requiredPayment: new FormControl(this.appConfig.requiredPayment),

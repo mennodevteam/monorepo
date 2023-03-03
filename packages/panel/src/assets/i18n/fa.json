@@ -126,6 +126,7 @@
     "menuCols": "تعداد ستون",
     "menuColsText": "{{value}} ستون",
     "orderingSection": "محدودیت سفارش‌گیری",
+    "disablePayment": "امکان پرداخت آنلاین",
     "disableOrdering": "امکان ثبت سفارش",
     "disableOrderingText": "نمایش علت غیرفعالی به کاربر",
     "selectableOrderTypes": "انواع سفارش قابل انتخاب",

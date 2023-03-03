@@ -9,6 +9,7 @@ import { ShopService } from '../../../core/services/shop.service';
   styleUrls: ['./basket-page.component.scss'],
 })
 export class BasketPageComponent {
+  saving = false;
   constructor(public basket: BasketService, private router: Router, private shopService: ShopService) {
     if (!this.basket.items?.length)
       this.router.navigate(['/menu'], {
@@ -20,8 +21,18 @@ export class BasketPageComponent {
     return this.basket.items || [];
   }
 
-  complete() {
-    this.basket.complete();
+  async complete() {
+    this.saving = true;
+    try {
+      const order = await this.basket.complete();
+      if (order) {
+        this.router.navigateByUrl(`/orders/details/${order.id}`);
+      } else {
+        this.saving = false;
+      }
+    } catch (error) {
+      this.saving = false;
+    }
   }
 
   get disableOrdering() {

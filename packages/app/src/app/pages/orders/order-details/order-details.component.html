@@ -40,15 +40,16 @@
 
   <mat-list>
     <mat-list-item *ngFor="let item of items">
-      <h4 matListItemLine>{{ item.title }}</h4>
-      <p matListItemMeta style="direction: ltr">{{ item.price | number }}</p>
+      <h4 matListItemTitle>{{ item.title }}</h4>
+      <p matListItemLine *ngIf="!item.isAbstract">{{ 'app.number' | translate: { value: item.quantity } }}</p>
+      <p matListItemMeta style="direction: ltr">{{ item.price * (item.quantity || 1) | number }}</p>
     </mat-list-item>
     <mat-divider></mat-divider>
     <mat-list-item>
-      <h4 matListItemLine>{{ 'orderDetails.totalPrice' | translate }}</h4>
-      <h4 matListItemMeta>
-        <b>{{ order.totalPrice | menuCurrency }}</b>
-      </h4>
+      <h4 matListItemTitle>{{ 'orderDetails.totalPrice' | translate }}</h4>
+      <b matListItemMeta>
+        {{ order.totalPrice | menuCurrency }}
+      </b>
     </mat-list-item>
   </mat-list>
 </main>

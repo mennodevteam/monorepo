@@ -9,7 +9,7 @@ export class OrdersService {
   constructor(private http: HttpClient) {}
 
   async save(dto: OrderDto) {
-    const order = await this.http.post(`orders`, dto).toPromise();
+    const order = await this.http.post<Order>(`orders`, dto).toPromise();
     return order;
   }
 
