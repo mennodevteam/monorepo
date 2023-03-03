@@ -1,3 +1,9 @@
+<mat-toolbar>
+  <button mat-icon-button goBack>
+    <i class="fa-regular fa-arrow-right"></i>
+  </button>
+</mat-toolbar>
+
 <main *ngIf="orders">
   <order-card *ngFor="let order of orders" [order]="order"></order-card>
 </main>
