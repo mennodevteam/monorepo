@@ -1,0 +1,17 @@
+<mat-card>
+  <mat-card-header>
+    <img matCardAvatar [imageLoader]="order.shop?.logo" />
+    <mat-card-title>{{ order.shop?.title }}</mat-card-title>
+    <mat-card-subtitle>{{ order.createdAt | pdate }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <mat-chip-grid>
+      <mat-chip-option disabled *ngFor="let item of products">{{ item.title }}</mat-chip-option>
+    </mat-chip-grid>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-actions>
+    {{ order.totalPrice | menuCurrency }}
+  </mat-card-actions>
+</mat-card>

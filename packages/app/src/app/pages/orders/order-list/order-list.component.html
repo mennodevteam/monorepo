@@ -1,0 +1,3 @@
+<main *ngIf="orders">
+  <order-card *ngFor="let order of orders" [order]="order"></order-card>
+</main>

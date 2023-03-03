@@ -72,7 +72,7 @@ export class BasketService {
   }
 
   complete() {
-    if (this.type && this.shopService.shop) {
+    if (this.type != undefined && this.shopService.shop) {
       const dto: OrderDto = {
         productItems: this.items
           .filter((x) => x.product)

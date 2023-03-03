@@ -1,5 +1,5 @@
 import { FilterOrderDto, Order, OrderDto } from '@menno/types';
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
@@ -7,18 +7,18 @@ import { Public } from '../auth/public.decorator';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 import { Role } from '../core/types/role.enum';
+import { Roles } from '../auth/roles.decorators';
 import { OrdersService } from './orders.service';
 
 @Controller('orders')
 export class OrdersController {
-
   constructor(
     @InjectRepository(Order)
     private ordersRepo: Repository<Order>,
     private ordersService: OrdersService,
-    private auth: AuthService,
+    private auth: AuthService
   ) {}
-  
+
   @Public()
   @Post()
   async save(@Body() dto: OrderDto, @LoginUser() user: AuthPayload) {
@@ -38,5 +38,21 @@ export class OrdersController {
     const shop = await this.auth.getPanelUserShop(user);
     dto.shopId = shop.id;
     return this.ordersService.filter(dto);
+  }
+
+  @Get()
+  @Roles(Role.App)
+  getMyOrders(@LoginUser() user: AuthPayload, @Query('skip', ParseIntPipe) skip = 0) {
+    return this.ordersRepo.find({
+      take: 25,
+      skip,
+      where: {
+        customer: { id: user.id },
+      },
+      relations: ['shop', 'items'],
+      order: {
+        createdAt: 'DESC',
+      },
+    });
   }
 }

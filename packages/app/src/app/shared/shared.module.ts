@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { PdatePipe } from './pipes/pdate.pipe';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MenuCurrencyPipe,
     CountSelectorComponent,
     LoginBottomSheetComponent,
+    PdatePipe,
   ],
   imports: [
     CommonModule,
@@ -29,7 +31,14 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatInputModule,
     MatSnackBarModule,
   ],
-  exports: [GoBackDirective, ImageLoaderDirective, MenuCurrencyPipe, TranslateModule, CountSelectorComponent],
+  exports: [
+    GoBackDirective,
+    PdatePipe,
+    ImageLoaderDirective,
+    MenuCurrencyPipe,
+    TranslateModule,
+    CountSelectorComponent,
+  ],
   providers: [DecimalPipe],
 })
 export class SharedModule {}

@@ -1,5 +1,6 @@
 ::ng-deep .product-tile {
-  border-radius: 12px;
+  border-radius: 12px !important;
+
   position: absolute !important;
   .mat-grid-tile-footer {
     padding: 0 8px !important;

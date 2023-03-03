@@ -33,9 +33,9 @@ export class OrdersService {
     if (dto.id) order.id = dto.id;
     if (dto.isManual) order.isManual = dto.isManual;
     if (dto.note) order.note = dto.note;
-    if (dto.paymentType) order.paymentType = dto.paymentType;
-    if (dto.state) order.state = dto.state;
-    if (dto.type) order.type = dto.type;
+    if (dto.paymentType != undefined) order.paymentType = dto.paymentType;
+    if (dto.state != undefined) order.state = dto.state;
+    if (dto.type != undefined) order.type = dto.type;
 
     order.items = [];
     Menu.setRefsAndSort(shop.menu, dto.type);
@@ -53,7 +53,6 @@ export class OrdersService {
 
     const abstractItems = Order.abstractItems(menu, order.items);
     order.items.push(...abstractItems);
-    console.log(menu, order.items);
     order.totalPrice = Order.total(menu, order.items);
     return order;
   }
