@@ -1,5 +1,5 @@
 import { FilterOrderDto, Order, OrderDto } from '@menno/types';
-import { Body, Controller, Get, ParseIntPipe, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
@@ -53,6 +53,16 @@ export class OrdersController {
       order: {
         createdAt: 'DESC',
       },
+    });
+  }
+
+  @Get(':id')
+  getOrderDetails(@Param('id') id: string) {
+    return this.ordersRepo.findOne({
+      where: {
+        id,
+      },
+      relations: ['shop', 'shop.appConfig', 'items', 'customer', 'waiter', 'creator', 'reviews'],
     });
   }
 }

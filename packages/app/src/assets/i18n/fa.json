@@ -45,5 +45,18 @@
     "codeLabel": "کد پیامک شده",
     "incorrectCode": "کد وارد شده اشتباه است",
     "sendAgain": "ارسال دوباره کد"
+  },
+  "orderDetails": {
+    "newOrder": "سفارش جدید",
+    "pay": "پرداخت سفارش",
+    "totalPrice": "مبلغ کل سفارش"
+  },
+  "orderState": {
+    "pending": "در انتظار تایید مجموعه",
+    "processing": "درحال آماده سازی",
+    "shipping": "درحال ارسال با پیک",
+    "completed": "تحویل داده شده",
+    "canceled": "لغو شده",
+    "ready": "آماده شده"
   }
 }

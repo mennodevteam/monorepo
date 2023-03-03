@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card matRipple routerLink="details/{{ order.id }}">
   <mat-card-header>
     <img matCardAvatar [imageLoader]="order.shop?.logo" />
     <mat-card-title>{{ order.shop?.title }}</mat-card-title>

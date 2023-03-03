@@ -15,6 +15,10 @@ export const AppConfigSchema = new EntitySchema<AppConfig>({
       enum: ThemeMode,
       default: ThemeMode.Auto,
     },
+    disablePayment: {
+      type: Boolean,
+      default: false,
+    },
     disableOrdering: {
       type: Boolean,
       default: false,

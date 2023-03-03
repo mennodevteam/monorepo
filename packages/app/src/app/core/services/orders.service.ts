@@ -20,4 +20,8 @@ export class OrdersService {
       },
     });
   }
+
+  getById(id?: string) {
+    return this.http.get<Order>(`orders/${id}`);
+  }
 }

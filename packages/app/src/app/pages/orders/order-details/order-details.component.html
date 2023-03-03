@@ -1,0 +1,60 @@
+<mat-toolbar>
+  <button mat-icon-button goBack>
+    <i class="fa-regular fa-arrow-right"></i>
+  </button>
+  <span flex></span>
+  <button mat-flat-button color="accent" routerLink="/">
+    <i class="fa-regular fa-plus"></i>
+    {{ 'orderDetails.newOrder' | translate }}
+  </button>
+</mat-toolbar>
+
+<main *ngIf="order">
+  <header>
+    <img [imageLoader]="shop?.logo" />
+    <h2>{{ shop?.title }}</h2>
+    <label class="surface-variant-text">{{ order.createdAt | pdate }}</label>
+  </header>
+
+  <ng-container *ngIf="showStateCard">
+    <mat-card class="state-card secondary-container on-secondary-container-text" [ngSwitch]="state">
+      <mat-card-content>
+        <p *ngSwitchCase="OrderState.Canceled">
+          {{ 'orderState.canceled' | translate }}
+        </p>
+        <p *ngSwitchCase="OrderState.Pending">
+          {{ 'orderState.pending' | translate }}
+        </p>
+        <p *ngSwitchCase="OrderState.Processing">
+          {{ 'orderState.processing' | translate }}
+        </p>
+        <p *ngSwitchCase="OrderState.Ready">
+          {{ 'orderState.ready' | translate }}
+        </p>
+        <p *ngSwitchCase="OrderState.Shipping">
+          {{ 'orderState.shipping' | translate }}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
+
+  <mat-list>
+    <mat-list-item *ngFor="let item of items">
+      <h4 matListItemLine>{{ item.title }}</h4>
+      <p matListItemMeta style="direction: ltr">{{ item.price | number }}</p>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <h4 matListItemLine>{{ 'orderDetails.totalPrice' | translate }}</h4>
+      <h4 matListItemMeta>
+        <b>{{ order.totalPrice | menuCurrency }}</b>
+      </h4>
+    </mat-list-item>
+  </mat-list>
+</main>
+
+<!-- <mat-toolbar class="actions-toolbar">
+  <button mat-raised-button color="primary">
+    {{ 'orderDetails.pay' | translate }}
+  </button>
+</mat-toolbar> -->

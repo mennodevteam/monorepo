@@ -1,0 +1,44 @@
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  padding-bottom: 72px;
+
+  header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    text-align: center;
+    margin-top: -24px;
+
+    img {
+      width: 128px;
+      height: 128px;
+      border-radius: 24px;
+    }
+
+    h2, p {
+      margin: 0;
+    }
+  }
+}
+
+.state-card {
+  p {
+    margin: 0;
+  }
+}
+
+.actions-toolbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  button {
+    height: 56px !important;
+    flex: 1;
+  }
+}
