@@ -22,6 +22,11 @@ export class AuthController {
     return this.auth.loginApp(req.user);
   }
 
+  @Get('sendToken/:mobile')
+  async sendToken(@Param() params) {
+    return this.auth.sendToken(params.mobile);
+  }
+
   @Get('login/app/:userId/:mobile/:token')
   async loginAppWithToken(@Param() params) {
     return this.auth.loginAppWithToken(params.userId, params.mobile, params.token);

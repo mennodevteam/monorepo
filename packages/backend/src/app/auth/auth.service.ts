@@ -1,4 +1,10 @@
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { ShopUser, User } from '@menno/types';
 import { JwtService } from '@nestjs/jwt';
 import { AuthPayload } from '../core/types/auth-payload';
@@ -6,16 +12,26 @@ import { Role } from '../core/types/role.enum';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as md5 from 'md5';
+import { PersianNumberService } from '@menno/utils';
+
+import * as Kavenegar from 'kavenegar';
+
+let kavenegarApi;
 
 @Injectable()
 export class AuthService {
+  mobilePhoneTokens: { [key: string]: string } = {};
   constructor(
     @InjectRepository(User)
     private usersRepo: Repository<User>,
     private jwtService: JwtService,
     @InjectRepository(ShopUser)
     private shopUsersRepo: Repository<ShopUser>
-  ) {}
+  ) {
+    kavenegarApi = Kavenegar.KavenegarApi({
+      apikey: process.env.KAVENEGAR_API_KEY,
+    });
+  }
 
   async validateUser(username: string, pass: string): Promise<User> {
     const user = await this.usersRepo.findOneBy({ username });
@@ -60,11 +76,31 @@ export class AuthService {
     return this.login(user, Role.App, '90d');
   }
 
+  async sendToken(mobilePhone: string) {
+    const phone = PersianNumberService.toEnglish(mobilePhone);
+    const token = Math.floor(Math.random() * 8000 + 1000).toString();
+    await this.lookup(phone, process.env.KAVENEGAR_CONFIRM_PHONE_TEMPLATE, token);
+    this.mobilePhoneTokens[phone] = token;
+    setTimeout(() => {
+      delete this.mobilePhoneTokens[phone];
+    }, 70000);
+  }
+
   async loginAppWithToken(userId: string, mobile: string, token: string): Promise<User> {
-    const user = await this.usersRepo.findOneBy({ id: userId });
-    if (!user.mobilePhone) user.mobilePhone = mobile;
-    await this.usersRepo.save(user);
-    if (user) return this.loginApp(user);
+    const mobilePhone = PersianNumberService.toEnglish(mobile);
+    if (this.mobilePhoneTokens[mobilePhone] === PersianNumberService.toEnglish(token)) {
+      delete this.mobilePhoneTokens[mobilePhone];
+      const user = await this.usersRepo.findOneBy({ mobilePhone });
+      if (!user) {
+        await this.usersRepo.update(userId, {
+          mobilePhone: mobile,
+        });
+      } else {
+        return this.loginApp(user);
+      }
+    } else {
+      throw new HttpException('code is not valid', HttpStatus.FORBIDDEN);
+    }
   }
 
   async loginPanel(user: User) {
@@ -81,5 +117,26 @@ export class AuthService {
       relations: ['shop', ...relations.map((x) => `shop.${x}`)],
     });
     return shopUsers.shop;
+  }
+
+  async lookup(mobilePhone: string, kavenagarTemplate: string, token: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      console.log(mobilePhone, kavenagarTemplate, token);
+      kavenegarApi.VerifyLookup(
+        {
+          receptor: mobilePhone,
+          token,
+          template: kavenagarTemplate,
+        },
+        async (response, status) => {
+          console.log(response, status);
+          if (status == 200) {
+            resolve(true);
+          } else {
+            reject(response);
+          }
+        }
+      );
+    });
   }
 }

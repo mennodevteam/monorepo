@@ -119,8 +119,6 @@ export class ShopsService {
     };
     shop.users[0].role = ShopUserRole.Admin;
 
-    if (process.env.DEFAULT_BANK_PORTAL_ID) shop.bankPortalId = process.env.DEFAULT_BANK_PORTAL_ID;
-
     const savedShopInfo = await this.shopsRepository.save(shop);
 
     return savedShopInfo;

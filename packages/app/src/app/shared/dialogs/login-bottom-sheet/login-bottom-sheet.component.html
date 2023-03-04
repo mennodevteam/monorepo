@@ -1,6 +1,6 @@
 <h2 *ngIf="!auth.user?.extraInfo?.mobilePhone">{{ 'loginBottomSheet.title' | translate }}</h2>
 <h2 *ngIf="auth.user?.extraInfo?.mobilePhone">{{ 'loginBottomSheet.acceptNumberTitle' | translate }}</h2>
-<form *ngIf="(mobilePhone | async) === undefined" [formGroup]="mobileForm" (ngSubmit)="sendMessage()">
+<form *ngIf="(mobilePhone | async) === undefined" [formGroup]="mobileForm" (ngSubmit)="sendToken()">
   <p>{{ 'loginBottomSheet.mobileDescription' | translate }}</p>
   <mat-form-field appearance="outline">
     <mat-label>{{ 'loginBottomSheet.mobileLabel' | translate }}</mat-label>
@@ -35,7 +35,7 @@
       required
     />
   </mat-form-field>
-  <button mat-button [disabled]="(timer | async) && (timer | async)! > 0" (click)="sendAgain()">
+  <button mat-button [disabled]="(timer | async)! > 0" (click)="sendAgain()">
     {{ 'loginBottomSheet.sendAgain' | translate }}
     <span spacer></span>
     <span class="ltr" *ngIf="timer | async">({{ timer | async }})</span>

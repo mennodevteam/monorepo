@@ -41,7 +41,7 @@ export class LoginBottomSheetComponent {
         this.mobileForm.get('mobile')?.setValue(this.auth.user.extraInfo.mobilePhone);
 
         if (this.data && this.data.autoSendToken) {
-          this.sendMessage();
+          this.sendToken();
         }
       }
 
@@ -78,14 +78,14 @@ export class LoginBottomSheetComponent {
     });
   }
 
-  async sendMessage() {
+  async sendToken() {
     if (this.mobileForm.valid) {
       this.loading = true;
       let mobile = this.mobileForm.get('mobile')?.value;
       if (mobile) {
         if (mobile.length === 10 && mobile[0] === '9') mobile = `0${mobile}`;
         try {
-          await this.auth.sendToken(mobile);
+          await this.auth.sendToken(mobile).toPromise();
           this.mobilePhone.next(mobile);
           this.loading = false;
           setTimeout(() => {
@@ -98,9 +98,9 @@ export class LoginBottomSheetComponent {
     }
   }
 
-  sendAgain() {
+  async sendAgain() {
     if (this.mobilePhone.value && this.timer.value === 0) {
-      this.auth.sendToken(this.mobilePhone.value);
+      await this.auth.sendToken(this.mobilePhone.value).toPromise();
       this.timer.next(60);
     }
   }

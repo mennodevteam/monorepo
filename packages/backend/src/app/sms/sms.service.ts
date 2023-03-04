@@ -107,7 +107,6 @@ export class SmsService {
   }
 
   async lookup(accountId: string, mobilePhone: string, kavenagarTemplate: string, tokens: string[]): Promise<Sms> {
-    console.log('start lookup', accountId, mobilePhone, kavenagarTemplate, tokens);
     const account = await this.smsAccountsRepo.findOneBy({ id: accountId });
     if (account.charge < 20) {
       throw new HttpException('not enough charge.', HttpStatus.PAYMENT_REQUIRED);
