@@ -1,6 +1,7 @@
 import { AppConfig } from './app-config';
 import { Club } from './club';
 import { Menu } from './menu';
+import { PaymentGateway } from './payment-gateway';
 import { Region } from './region';
 import { ShopGroup } from './shop-group';
 import { ShopUser } from './shop-user';
@@ -38,7 +39,7 @@ export class Shop {
   images: string[];
   deliveryAccountId?: string;
   smsAccount?: SmsAccount;
-  bankPortalId?: string;
+  paymentGateway?: PaymentGateway;
   menu?: Menu;
   club?: Club;
   logo: string;

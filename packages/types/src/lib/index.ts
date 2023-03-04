@@ -36,6 +36,8 @@ export * from './order-state.enum';
 export * from './order-type.enum';
 export * from './order.dto';
 export * from './order';
+export * from './payment-gateway';
+export * from './payment-token';
 export * from './payment';
 export * from './plugin.enum';
 export * from './print-action';

@@ -71,6 +71,10 @@ export class AuthService {
     return this.login(user, Role.Panel);
   }
 
+  async getUserData(user: AuthPayload) {
+    return this.usersRepo.findOneBy({ id: user.id });
+  }
+
   async getPanelUserShop(user: AuthPayload, relations: string[] = []) {
     const shopUsers = await this.shopUsersRepo.findOne({
       where: { user: { id: user.id } },

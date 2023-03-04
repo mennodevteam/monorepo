@@ -4,6 +4,7 @@ import { OrderPaymentType } from './order-payment-type.enum';
 import { OrderReview } from './order-review';
 import { OrderState } from './order-state.enum';
 import { OrderType } from './order-type.enum';
+import { Payment } from './payment';
 import { Shop } from './shop';
 import { User } from './user';
 export interface OrderDetails {
@@ -42,6 +43,7 @@ export class Order {
   totalPrice: number;
   reviews: OrderReview[];
   packOrderId?: string;
+  payment?: Payment;
   details: OrderDetails;
   _groupOffer?: Order[];
   createdAt: Date;

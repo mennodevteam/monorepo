@@ -33,6 +33,7 @@ export class OrdersService {
     if (dto.id) order.id = dto.id;
     if (dto.isManual) order.isManual = dto.isManual;
     if (dto.note) order.note = dto.note;
+    if (dto.payment) order.payment = dto.payment;
     if (dto.paymentType != undefined) order.paymentType = dto.paymentType;
     if (dto.state != undefined) order.state = dto.state;
     if (dto.type != undefined) order.type = dto.type;

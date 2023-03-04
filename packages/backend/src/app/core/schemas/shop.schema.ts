@@ -74,10 +74,6 @@ export const ShopSchema = new EntitySchema<Shop>({
       type: String,
       nullable: true,
     },
-    bankPortalId: {
-      type: String,
-      nullable: true,
-    },
     phones: {
       type: String,
       array: true,
@@ -114,6 +110,11 @@ export const ShopSchema = new EntitySchema<Shop>({
       type: 'many-to-one',
       target: 'ShopGroup',
       inverseSide: 'shops',
+      nullable: true,
+    },
+    paymentGateway: {
+      type: 'many-to-one',
+      target: 'PaymentGateway',
       nullable: true,
     },
     smsAccount: {

@@ -1,3 +1,4 @@
+import { PaymentGateway } from './payment-gateway';
 export class Payment {
   id: string;
   amount: number;
@@ -7,9 +8,10 @@ export class Payment {
   userPhone: string;
   invoiceId: string;
   token: string;
-  businessId: string;
+  shopId: string;
   referenceId: string;
   appReturnUrl: string;
+  gateway: PaymentGateway;
   isCompleted: boolean;
   confirmedAt?: Date;
   reversedAt?: Date;
