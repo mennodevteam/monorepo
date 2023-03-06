@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '@menno/types';
 import * as md5 from 'md5';
@@ -13,10 +13,18 @@ export class AuthService {
   private _user = new BehaviorSubject<User | null>(null);
 
   constructor(private http: HttpClient) {
+    this.init();
+  }
+
+  async init() {
     const _item: any = sessionStorage?.getItem('appLoginUser') || localStorage?.getItem('appLoginUser');
     if (_item) {
       try {
-        this._user = new BehaviorSubject<User | null>(JSON.parse(_item));
+        const user = JSON.parse(_item);
+        const info = await this.http.get<User>(`auth/info`).toPromise();
+        if (info?.id === user.id) {
+          this._user.next(user);
+        }
       } catch (error) {}
     }
 
@@ -79,6 +87,7 @@ export class AuthService {
   }
 
   get userObservable() {
+    if (this.user) return of(this.user);
     return this._user.asObservable();
   }
 
