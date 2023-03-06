@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost:3000/api',
+  apiUrl: 'https://menno-backend.iran.liara.run/api',
   localStorageUserKey: 'mennoPanelUser',
   bucketUrl: 'https://menno.storage.iran.liara.space',
 };

@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost:3000',
-  apiHost: 'http://localhost:3333',
+  apiUrl: 'https://menno-api.fardad-azma.shop/api',
+  apiHost: 'https://menno-api.fardad-azma.shop',
   systemHostNames: ['app.menno.ir', 'menno.ir'],
   bucketUrl: 'https://menno.storage.iran.liara.space',
 };
