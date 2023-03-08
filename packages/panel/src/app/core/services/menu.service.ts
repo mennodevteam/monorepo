@@ -16,20 +16,7 @@ export class MenuService {
   async loadMenu() {
     const menu = await this.http.get<Menu>(`menus`).toPromise();
     if (menu) {
-      if (menu?.categories) {
-        ProductCategory.sort(menu.categories);
-        for (const cat of menu.categories) {
-          if (cat.products) {
-            Product.sort(cat.products);
-            for (const p of cat.products) {
-              p.category = cat;
-            }
-          }
-        }
-      }
-      if (menu.costs) {
-        MenuCost.sort(menu.costs);
-      }
+      Menu.setRefsAndSort(menu, undefined, true);
       this.menu$.next(menu);
     }
   }
@@ -73,9 +60,7 @@ export class MenuService {
   async saveMenuCost(dto: MenuCost) {
     dto.menu = <Menu>{ id: this.menu?.id };
     if (dto.includeProductCategory) {
-      dto.includeProductCategory = dto.includeProductCategory.map(
-        (x) => <ProductCategory>{ id: x.id }
-      );
+      dto.includeProductCategory = dto.includeProductCategory.map((x) => <ProductCategory>{ id: x.id });
     }
 
     if (dto.fromDate) {

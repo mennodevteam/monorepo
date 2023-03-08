@@ -1,0 +1,22 @@
+<mat-tab-group mat-stretch-tabs="false" class="categories">
+  <mat-tab label="{{ cat.title }}" *ngFor="let cat of POS.categories">
+    <mat-grid-list class="items" cols="{{ (isXSmall$ | async) ? 3 : 4 }}" rowHeight="64px">
+      <mat-grid-tile
+        class="product-tile no-select"
+        matRipple
+        *ngFor="let product of cat.products"
+        (click)="POS.plus(product.id)"
+      >
+        <span spacer></span>
+        <ng-container *ngIf="product.images && !(isHandset$ | async)">
+          <img [imageLoader]="product.images[0]" fileImage />
+          <span spacer></span>
+        </ng-container>
+        <div class="texts">
+          <p>{{ product.title }}</p>
+          <h4>{{ Product.totalPrice(product) | menuCurrency }}</h4>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-tab>
+</mat-tab-group>

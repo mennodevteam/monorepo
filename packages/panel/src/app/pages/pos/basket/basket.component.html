@@ -1,0 +1,61 @@
+<div class="container">
+  <mat-list flex class="scrollable">
+    <mat-list-item *ngFor="let item of POS.items">
+      <h5 matListItemTitle>{{ item.title }}</h5>
+      <p matListItemLine>{{ item.price | menuCurrency }}</p>
+      <div matListItemMeta class="quantity-section">
+        <button mat-icon-button (click)="POS.minus(item.product?.id!)">
+          <i class="fas fa-minus-circle"></i>
+        </button>
+        <b> {{ item.quantity | number }} </b>
+        <button mat-icon-button (click)="POS.plus(item.product?.id!)">
+          <i class="fas fa-plus-circle"></i>
+        </button>
+      </div>
+    </mat-list-item>
+  </mat-list>
+  <mat-divider></mat-divider>
+  <mat-nav-list dense class="footer">
+    <a mat-list-item class="more-details" (click)="showFactorDetails = !showFactorDetails">
+      <p matListItemTitle>
+        {{ 'pos.showMoreFactorDetails' | translate }}
+      </p>
+      <i matListItemMeta *ngIf="!showFactorDetails" class="fa-regular fa-angle-left"></i>
+      <i matListItemMeta *ngIf="showFactorDetails" class="fa-regular fa-angle-down"></i>
+    </a>
+    <div *ngIf="showFactorDetails" [@slideInOut]>
+      <a mat-list-item (click)="openNoteDialog()">
+        <p matListItemTitle *ngIf="!POS.note">{{ 'pos.noteDialogTitle' | translate }}:</p>
+        <p matListItemLine *ngIf="POS.note">{{ POS.note }}</p>
+        <i matListItemMeta class="fa-regular fa-angle-left"></i>
+      </a>
+      <mat-divider></mat-divider>
+      <a mat-list-item *ngIf="POS.abstractItems.length">
+        <p matListItemTitle>{{ 'app.sum' | translate }}:</p>
+        <p matListItemMeta>{{ POS.sum | menuCurrency }}</p>
+      </a>
+      <a mat-list-item *ngFor="let item of POS.abstractItems">
+        <p matListItemTitle>{{ item.title }}:</p>
+        <p matListItemMeta>{{ item.price | menuCurrency }}</p>
+      </a>
+      <a mat-list-item (click)="openDiscountAndCostDialog(POS.manualCost || 0, 'cost')">
+        <p matListItemTitle>{{ 'settlementDialog.manualCost' | translate }}:</p>
+        <p matListItemLine *ngIf="POS.manualCost">{{ POS.manualCost | menuCurrency }}</p>
+        <i matListItemMeta class="fa-regular fa-angle-left"></i>
+      </a>
+      <a mat-list-item (click)="openDiscountAndCostDialog(POS.manualDiscount || 0, 'discount')">
+        <p matListItemTitle>{{ 'settlementDialog.manualDiscount' | translate }}:</p>
+        <p matListItemLine *ngIf="POS.manualDiscount">{{ POS.manualDiscount | menuCurrency }}</p>
+        <i matListItemMeta class="fa-regular fa-angle-left"></i>
+      </a>
+    </div>
+    <!-- <a mat-list-item *ngIf="POS.selectedDiscountCoupon">
+      <p matListItemTitle>{{ 'app.discountCoupon' | translate }}:</p>
+      <p class="red">{{ POS.discountCouponValue | menuCurrency }}</p>
+    </a> -->
+    <a mat-list-item class="total-row">
+      <b matListItemTitle>{{ 'app.totalPrice' | translate }}:</b>
+      <b matListItemMeta>{{ POS.total | menuCurrency }}</b>
+    </a>
+  </mat-nav-list>
+</div>

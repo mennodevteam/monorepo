@@ -1,6 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Order, OrderDto, OrderItem, OrderType, Product } from '@menno/types';
+import { OrderDto, OrderItem, Product, ProductItem } from '@menno/types';
 import { MenuService } from './menu.service';
 import { OrdersService } from './orders.service';
 import { ShopService } from './shop.service';
@@ -8,65 +7,81 @@ import { ShopService } from './shop.service';
 @Injectable({
   providedIn: 'root',
 })
-export class BasketService {
-  items: OrderItem[] = [];
-  note?: string;
-
+export class BasketService extends OrderDto {
   constructor(
     private menuService: MenuService,
     private shopService: ShopService,
-    private ordersService: OrdersService,
-    private http: HttpClient
-  ) {}
+    private ordersService: OrdersService
+  ) {
+    super();
+    this.menuService.typeObservable.subscribe((type) => {
+      if (type != undefined) {
+        this.type = type;
+      }
+    });
+  }
 
   plus(product: Product) {
-    const item = this.items?.find((x) => x.product?.id === product.id);
+    const item = this.productItems?.find((x) => x.productId === product.id);
     if (item) item.quantity ? item.quantity++ : (item.quantity = 1);
     else {
-      const item = new OrderItem(product);
-      this.items.push(item);
+      const item: ProductItem = {
+        productId: product.id,
+        quantity: 1,
+      };
+      if (!this.productItems) this.productItems = [];
+      this.productItems.push(item);
       product._orderItem = item;
     }
   }
 
   minus(product: Product) {
-    const item = this.items?.find((x) => x.product?.id === product.id);
+    const item = this.productItems?.find((x) => x.productId === product.id);
     if (item) {
       if (item.quantity > 1) item.quantity--;
       else {
         product._orderItem = undefined;
-        this.items.splice(this.items.indexOf(item), 1);
+        this.productItems.splice(this.productItems.indexOf(item), 1);
       }
     }
   }
 
   getItem(productId: string) {
-    return this.items?.find((x) => x.product?.id === productId);
+    return this.productItems?.find((x) => x.productId === productId);
   }
 
   clear() {
-    this.items = [];
+    this.productItems = [];
     this.note = undefined;
+    this.address = undefined;
+    this.discountCoupon = undefined;
+    if (this.menuService.type != undefined) this.type = this.menuService.type;
   }
 
-  get abstractItems() {
+  get items(): OrderItem[] {
     if (this.menuService.menu) {
-      return Order.abstractItems(this.menuService.menu, this.items);
+      return OrderDto.productItems(this, this.menuService.menu);
     }
     return [];
   }
 
-  get type() {
-    return this.menuService.type;
+  get abstractItems(): OrderItem[] {
+    if (this.menuService.menu) {
+      return OrderDto.abstractItems(this, this.menuService.menu);
+    }
+    return [];
   }
 
   get sum() {
-    return Order.sum(this.items);
+    if (this.menuService.menu) {
+      return OrderDto.sum(this, this.menuService.menu);
+    }
+    return 0;
   }
 
   get total() {
     if (this.menuService.menu) {
-      return Order.total(this.menuService.menu, this.items);
+      return OrderDto.total(this, this.menuService.menu);
     }
     return 0;
   }
@@ -74,9 +89,7 @@ export class BasketService {
   complete() {
     if (this.type != undefined && this.shopService.shop) {
       const dto: OrderDto = {
-        productItems: this.items
-          .filter((x) => x.product)
-          .map((x) => ({ productId: x.product!.id, quantity: x.quantity })),
+        productItems: this.productItems.filter((x) => x.quantity),
         type: this.type,
         note: this.note,
         shopId: this.shopService.shop.id,
@@ -95,6 +108,6 @@ export class BasketService {
   }
 
   private get isPaymentRequired() {
-    return this.isPaymentAvailable && this.shopService.shop?.appConfig?.requiredPayment?.includes(this.type!);
+    return this.isPaymentAvailable && this.shopService.shop?.appConfig?.requiredPayment?.includes(this.type);
   }
 }

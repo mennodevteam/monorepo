@@ -13,6 +13,8 @@
     "undo": "بازگردادن",
     "uploading": "درحال ارسال فایل...",
     "saving": "درحال ذخیره کردن...",
+    "sum": "جمع کل",
+    "totalPrice": "مبلغ کل",
     "fromTo": "از {{from}} تا {{to}}",
     "savedSuccessfully": "با موفقیت ذخیره شد",
     "edit": "ویرایش",
@@ -211,5 +213,12 @@
       "edited": "ویرایش شده",
       "deleted": "حذف شده"
     }
+  },
+  "pos": {
+    "newTitle": "ثبت سفارش جدید",
+    "showMoreFactorDetails": "جزئیات بیشتر فاکتور",
+    "noteDialogTitle": "توضیحات سفارش",
+    "noteDialogLabel": "توضیحات",
+    "noteDialogPlaceholder": "متن وارد شده چاپ خواهد شد"
   }
 }

@@ -3,7 +3,7 @@ import { ProductCategory } from './product-category';
 import { StockItem } from './stock-item';
 import { MenuCost } from './menu-cost';
 import { OrderType } from './order-type.enum';
-import { OrderItem } from './order-item';
+import { ProductItem } from './order.dto';
 
 export class Product {
   id: string;
@@ -20,7 +20,7 @@ export class Product {
   limitQuantity: boolean;
   stockItem: StockItem;
   costs?: MenuCost[];
-  _orderItem?: OrderItem;
+  _orderItem?: ProductItem;
   createdAt?: Date;
   deletedAt?: Date;
 

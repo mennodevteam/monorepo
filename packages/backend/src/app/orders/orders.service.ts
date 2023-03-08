@@ -37,23 +37,15 @@ export class OrdersService {
     if (dto.state != undefined) order.state = dto.state;
     if (dto.type != undefined) order.type = dto.type;
 
-    order.items = [];
-    Menu.setRefsAndSort(shop.menu, dto.type);
     const menu = shop.menu;
-    for (const item of dto.productItems) {
-      const product = Menu.getProductById(menu, item.productId);
-      if (product) {
-        const orderItem = new OrderItem(product, item.quantity);
-        orderItem.product = <Product>{ id: item.productId };
-        order.items.push(orderItem);
-      } else {
-        throw new HttpException(`product id ${item.productId} not found`, HttpStatus.NOT_FOUND);
-      }
+    Menu.setRefsAndSort(menu, dto.type);
+    order.items = [...OrderDto.productItems(dto, menu), ...OrderDto.abstractItems(dto, menu)];
+
+    for (const item of order.items) {
+      if (item.product) item.product = { id: item.product.id } as Product;
     }
 
-    const abstractItems = Order.abstractItems(menu, order.items);
-    order.items.push(...abstractItems);
-    order.totalPrice = Order.total(menu, order.items);
+    order.totalPrice = OrderDto.total(dto, menu);
     return order;
   }
 

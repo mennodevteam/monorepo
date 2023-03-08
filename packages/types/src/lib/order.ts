@@ -84,6 +84,6 @@ export class Order {
     for (const i of this.abstractItems(menu, items)) {
       total += i.price;
     }
-    return total;
+    return Math.max(total, 0);
   }
 }

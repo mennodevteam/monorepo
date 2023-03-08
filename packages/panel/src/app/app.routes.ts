@@ -24,6 +24,10 @@ export const appRoutes: Route[] = [
             loadChildren: () => import('./pages/menu/menu.module').then((m) => m.MenuModule),
           },
           {
+            path: 'pos',
+            loadChildren: () => import('./pages/pos/pos.module').then((m) => m.PosModule),
+          },
+          {
             path: 'orders',
             loadChildren: () => import('./pages/orders/orders.module').then((m) => m.OrdersModule),
           },

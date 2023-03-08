@@ -13,8 +13,8 @@ export class OrderItem {
   details?: any;
 
   constructor(product?: Product, quantity?: number) {
+    this.quantity = quantity || 1;
     if (product) {
-      this.quantity = quantity || 1;
       this.title = product.title;
       this.price = Product.totalPrice(product);
       this.product = product;

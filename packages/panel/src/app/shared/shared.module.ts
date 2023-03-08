@@ -47,6 +47,7 @@ import { OrdersTableComponent } from './components/orders-table/orders-table.com
 import { OrderTypePipe } from './pipes/order-type.pipe';
 import { OrderStatePipe } from './pipes/order-state.pipe';
 import { OrderPaymentPipe } from './pipes/order-payment.pipe';
+import { ManualDiscountAndCostDialogComponent } from './dialogs/manual-discount-and-cost-dialog/manual-discount-and-cost-dialog.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { OrderPaymentPipe } from './pipes/order-payment.pipe';
     OrderTypePipe,
     OrderStatePipe,
     OrderPaymentPipe,
+    ManualDiscountAndCostDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -113,6 +115,7 @@ import { OrderPaymentPipe } from './pipes/order-payment.pipe';
     PdatePipe,
     AlertDialogComponent,
     SelectDialogComponent,
+    ManualDiscountAndCostDialogComponent,
     TranslateModule,
     ImageLoaderDirective,
     FormBuilderComponent,

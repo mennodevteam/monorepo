@@ -57,6 +57,15 @@ textarea {
   flex: 1;
 }
 
+*[hidden] {
+  display: none !important;
+}
+
+menu {
+  margin: 0;
+  padding: 0;
+}
+
 i {
   vertical-align: middle;
 }
