@@ -85,7 +85,6 @@ export class PaymentsController {
     }
     amount = amount * 10;
     const RETURN_URL = process.env.API_BASE_URL + '/payments/afterBankPayment';
-    console.log(RETURN_URL);
     return this.paymentsService.getLink(<PaymentToken>{
       gateway: { id: gatewayId },
       orderId: new Date().valueOf().toString(),

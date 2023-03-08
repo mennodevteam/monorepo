@@ -81,9 +81,20 @@ export class BasketService {
         note: this.note,
         shopId: this.shopService.shop.id,
       };
-
-      return this.ordersService.save(dto);
+      if (this.isPaymentRequired) {
+        this.ordersService.payAndAddOrder(dto);
+      } else {
+        return this.ordersService.save(dto);
+      }
     }
     return null;
+  }
+
+  private get isPaymentAvailable() {
+    return this.shopService.shop?.paymentGateway && !this.shopService.shop.appConfig?.disablePayment;
+  }
+
+  private get isPaymentRequired() {
+    return this.isPaymentAvailable && this.shopService.shop?.appConfig?.requiredPayment?.includes(this.type!);
   }
 }

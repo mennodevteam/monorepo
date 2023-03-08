@@ -26,7 +26,7 @@ export class AppConfigsController {
 
   @Post()
   async save(@Body() dto: AppConfig, @LoginUser() user: AuthPayload) {
-    const shop = await this.auth.getPanelUserShop(user);
+    const shop = await this.auth.getPanelUserShop(user, ['appConfig']);
     if (shop) {
       if (shop.appConfig) {
         dto.id = shop.appConfig.id;

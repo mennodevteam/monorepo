@@ -22,6 +22,7 @@ export const PaymentGatewaySchema = new EntitySchema<PaymentGateway>({
     keys: {
       type: 'simple-json',
       nullable: true,
+      select: false,
     },
     createdAt: {
       type: 'timestamptz',

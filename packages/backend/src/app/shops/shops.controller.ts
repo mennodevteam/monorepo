@@ -49,7 +49,7 @@ export class ShopsController {
   findByUsernameOrCode(@Param('query') query: string): Promise<Shop> {
     return this.shopsRepo.findOne({
       where: [{ domain: query }, { username: query }, { code: query }],
-      relations: ['region', 'shopGroup', 'appConfig.theme'],
+      relations: ['region', 'shopGroup', 'appConfig.theme', 'paymentGateway'],
     });
   }
 }

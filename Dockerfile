@@ -5,6 +5,6 @@ WORKDIR /api
 COPY package.json .
 COPY dist/packages/backend src
 
-RUN yarn
+RUN yarn --prod
 
 CMD ["node", "src/main.js"]

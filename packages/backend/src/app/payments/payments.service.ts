@@ -22,7 +22,13 @@ export class PaymentsService {
   ) {}
 
   async getLink(dto: PaymentToken): Promise<string> {
-    const gateway = await this.gatewaysRepository.findOneBy({ id: dto.gateway.id });
+    const gateway = await this.gatewaysRepository.findOne({
+      where: { id: dto.gateway.id },
+      select: {
+        id: true,
+        keys: true,
+      },
+    });
     // const invoice = await this.invoicesRepository.findOne(dto.invoiceId);
     const getTokenBody = {
       Username: gateway.keys.username,

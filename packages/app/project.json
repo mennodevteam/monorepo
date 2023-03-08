@@ -15,7 +15,7 @@
         "polyfills": ["zone.js"],
         "tsConfig": "packages/app/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["packages/app/src/favicon.ico", "packages/app/src/assets"],
+        "assets": ["packages/app/src/favicon.ico", "packages/app/src/assets", "packages/app/src/liara_nginx.conf"],
         "styles": [
           "packages/app/src/styles.scss",
           {

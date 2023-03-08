@@ -3,6 +3,8 @@
 /src
 /packages
 /tools
+/dist/packages/app
+/dist/packages/panel
 
 # compiled output
 /tmp

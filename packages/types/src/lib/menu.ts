@@ -2,6 +2,7 @@ import { MenuCost } from './menu-cost';
 import { OrderType } from './order-type.enum';
 import { Product } from './product';
 import { ProductCategory } from './product-category';
+import { Status } from './status.enum';
 
 export class Menu {
   id: string;
@@ -12,15 +13,21 @@ export class Menu {
 
   static setRefsAndSort(menu: Menu, orderType?: OrderType) {
     if (orderType != undefined) {
-      menu.categories = menu.categories?.filter((x) => x.orderTypes && x.orderTypes.includes(orderType));
-      menu.costs = menu.costs?.filter((x) => x.orderTypes && x.orderTypes.includes(orderType));
+      menu.categories = menu.categories?.filter(
+        (x) => x.status === Status.Active && x.orderTypes && x.orderTypes.includes(orderType)
+      );
+      menu.costs = menu.costs?.filter(
+        (x) => x.status === Status.Active && x.orderTypes && x.orderTypes.includes(orderType)
+      );
     }
     if (menu?.categories) {
       menu.categories = menu.categories.filter((x) => x.products?.length);
       ProductCategory.sort(menu.categories);
       for (const cat of menu.categories) {
         if (orderType != undefined) {
-          cat.products = cat.products?.filter((x) => x.orderTypes && x.orderTypes.includes(orderType));
+          cat.products = cat.products?.filter(
+            (x) => x.status === Status.Active && x.orderTypes && x.orderTypes.includes(orderType)
+          );
         }
         cat.costs = menu.costs?.filter(
           (x) =>

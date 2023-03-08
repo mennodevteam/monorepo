@@ -17,7 +17,6 @@ export class OrdersService {
       where: { id: dto.shopId },
       relations: [
         'menu.categories.products',
-        'menu.costs',
         'menu.costs.includeProductCategory',
         'menu.costs.includeProduct',
       ],
