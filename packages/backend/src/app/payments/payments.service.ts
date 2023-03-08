@@ -116,11 +116,12 @@ export class PaymentsService {
       },
       relations: ['gateway'],
     });
+    const gateway = await this.gatewaysRepository.findOne({ where: { id: payment.gateway.id }, select: ['keys'] });
     const PaymentBody = {
-      UserName: payment.gateway.keys.username,
-      Password: payment.gateway.keys.password,
-      MerchantID: payment.gateway.keys.merchantId,
-      TerminalID: payment.gateway.keys.terminalId,
+      UserName: gateway.keys.username,
+      Password: gateway.keys.password,
+      MerchantID: gateway.keys.merchantId,
+      TerminalID: gateway.keys.terminalId,
       Token: payment.token,
       SignData: '',
     };
@@ -143,11 +144,12 @@ export class PaymentsService {
       },
       relations: ['gateway'],
     });
+    const gateway = await this.gatewaysRepository.findOne({ where: { id: payment.gateway.id }, select: ['keys'] });
     const RevertBody = {
-      UserName: payment.gateway.keys.username,
-      Password: payment.gateway.keys.password,
-      MerchantID: payment.gateway.keys.merchantId,
-      TerminalID: payment.gateway.keys.terminalId,
+      UserName: gateway.keys.username,
+      Password: gateway.keys.password,
+      MerchantID: gateway.keys.merchantId,
+      TerminalID: gateway.keys.terminalId,
       Token: payment.token,
     };
     const revertResponse: any = (await this.http.post(REVERT_PAYMENT_URL, RevertBody).toPromise()).data;

@@ -1,5 +1,5 @@
 import { Shop, Sms } from '@menno/types';
-import { Body, Controller, Get, Param, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Put, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
@@ -38,7 +38,7 @@ export class ShopsController {
     return this.shopsService.save(dto);
   }
 
-  @Get('sendLink/:mobile')  
+  @Get('sendLink/:mobile')
   @Roles(Role.Panel)
   async sendLink(@Param('mobile') mobile: string, @LoginUser() user: AuthPayload): Promise<Sms> {
     return this.shopsService.sendShopLink(user.shopId, mobile);
@@ -46,7 +46,7 @@ export class ShopsController {
 
   @Public()
   @Get(':query')
-  findByUsernameOrCode(@Param('query') query: string): Promise<Shop> {
+  findByUsernameOrCode(@Param('query') query: string, @Req() req): Promise<Shop> {
     return this.shopsRepo.findOne({
       where: [{ domain: query }, { username: query }, { code: query }],
       relations: ['region', 'shopGroup', 'appConfig.theme', 'paymentGateway'],

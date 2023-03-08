@@ -1,8 +1,7 @@
-import { Member, Order, OrderDto, OrderPaymentType, Payment, PaymentToken, Shop, User } from '@menno/types';
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Response } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { Member, Order, OrderDto, OrderPaymentType, PaymentToken, Shop, User } from '@menno/types';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Req, Response } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { resolve } from 'path';
+import { Request } from 'express';
 import { Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
 import { Public } from '../auth/public.decorator';
@@ -25,7 +24,7 @@ export class PaymentsController {
   ) {}
 
   @Post('addOrder')
-  async addOrder(@LoginUser() user: AuthPayload, @Body() dto: OrderDto) {
+  async addOrder(@LoginUser() user: AuthPayload, @Body() dto: OrderDto, @Req() req: Request) {
     const shop: Shop = await this.shopsRepository.findOne({
       where: { id: dto.shopId },
       relations: ['paymentGateway'],
@@ -42,16 +41,16 @@ export class PaymentsController {
       order.totalPrice,
       {
         newOrder: dto,
-        shopPageUrl: `${process.env.APP_URL}/${shop.username}`,
       },
       'add order',
       userData,
-      dto.shopId
+      dto.shopId,
+      req.headers.origin
     );
   }
 
   @Get('payOrder/:orderId')
-  async payOrder(@LoginUser() user: AuthPayload, @Param('orderId') orderId: string) {
+  async payOrder(@LoginUser() user: AuthPayload, @Param('orderId') orderId: string, @Req() req: Request) {
     const order = await this.ordersRepository.findOne({
       where: { id: orderId },
       relations: ['shop.paymentGateway'],
@@ -64,11 +63,11 @@ export class PaymentsController {
       order.totalPrice,
       {
         payOrder: { id: orderId },
-        shopPageUrl: `${process.env.APP_URL}/'orders'/${order.id}`,
       },
       'pay order',
       userData,
-      order.shop.id
+      order.shop.id,
+      req.headers.origin
     );
   }
 
@@ -78,7 +77,8 @@ export class PaymentsController {
     details: any,
     description: string,
     user: User,
-    shopId: string
+    shopId: string,
+    appReturnUrl: string
   ) {
     if (!gatewayId) {
       throw new HttpException('no bank portal', HttpStatus.NOT_FOUND);
@@ -89,7 +89,6 @@ export class PaymentsController {
       gateway: { id: gatewayId },
       orderId: new Date().valueOf().toString(),
       invoiceId: new Date().valueOf().toString(),
-      appReturnUrl: process.env.APP_URL,
       returnUrl: RETURN_URL,
       userId: user.id,
       userPhone: user.mobilePhone,
@@ -101,6 +100,7 @@ export class PaymentsController {
         PayerMobile: user.mobilePhone,
         PayerNm: User.fullName(user),
       },
+      appReturnUrl,
       shopId,
       amount,
       details,
@@ -111,20 +111,23 @@ export class PaymentsController {
   @Post('afterBankPayment')
   async return(@Body() dto: any, @Response() res) {
     const payment = await this.paymentsService.afterBankPayment(dto);
-    if (payment.isCompleted) {
+    console.log(dto, payment);
+    if (payment?.isCompleted) {
       if (payment.details.newOrder) {
-        payment.details.newOrder.payment = payment;
+        payment.details.newOrder.payment = { id: payment.id };
+        console.log(payment.details.newOrder);
         const order = await this.ordersService.dtoToOrder(payment.details.newOrder);
+        console.log(order);
         const newOrder = await this.ordersRepository.save(order);
-        const redirectUrl = `${process.env.APP_URL}/${process.env.APP_ORDER_PAGE_PATH}/${newOrder.id}`;
+        const redirectUrl = `${payment.appReturnUrl}/${process.env.APP_ORDER_PAGE_PATH}/${newOrder.id}`;
         return res.redirect(redirectUrl);
       } else if (payment.details.payOrder) {
         const order = await this.ordersRepository.findOneBy({ id: payment.details.payOrder.id });
         await this.ordersRepository.update(order.id, {
-          payment: payment,
+          payment: { id: payment.id },
           paymentType: OrderPaymentType.Online,
         });
-        const redirectUrl = `${process.env.APP_URL}/${process.env.APP_ORDER_PAGE_PATH}/${order.id}`;
+        const redirectUrl = `${payment.appReturnUrl}/${process.env.APP_ORDER_PAGE_PATH}/${order.id}`;
         return res.redirect(redirectUrl);
       } else if (payment.details.chargeWallet) {
         // const shop = await this.sh;
@@ -143,36 +146,36 @@ export class PaymentsController {
         // return res.redirect(redirectUrl);
       }
     } else {
-      return res.redirect(payment.details.shopPageUrl);
+      return res.redirect(payment.appReturnUrl);
     }
   }
 
-  @Get('/chargeWallet/:shopId/:memberId/:amount')
-  async chargeWalletAccount(
-    @Param('shopId') shopId: string,
-    @Param('memberId') memberId: string,
-    @Param('amount') amount: string,
-    @LoginUser() user: AuthPayload
-  ) {
-    const shop: Shop = await this.shopsRepository.findOne({
-      where: { id: shopId },
-      relations: ['paymentGateway'],
-    });
-    const userData = await this.auth.getUserData(user);
-    return this.getRedirectLink(
-      shop.paymentGateway.id,
-      Number(amount),
-      {
-        chargeWallet: {
-          amount: Number(amount),
-          memberId,
-          shop: shopId,
-        },
-        shopPageUrl: `${process.env.APP_URL}/${shop.username}`,
-      },
-      'charge wallet',
-      userData,
-      shopId
-    );
-  }
+  // @Get('/chargeWallet/:shopId/:memberId/:amount')
+  // async chargeWalletAccount(
+  //   @Param('shopId') shopId: string,
+  //   @Param('memberId') memberId: string,
+  //   @Param('amount') amount: string,
+  //   @LoginUser() user: AuthPayload
+  // ) {
+  //   const shop: Shop = await this.shopsRepository.findOne({
+  //     where: { id: shopId },
+  //     relations: ['paymentGateway'],
+  //   });
+  //   const userData = await this.auth.getUserData(user);
+  //   return this.getRedirectLink(
+  //     shop.paymentGateway.id,
+  //     Number(amount),
+  //     {
+  //       chargeWallet: {
+  //         amount: Number(amount),
+  //         memberId,
+  //         shop: shopId,
+  //       },
+  //       shopPageUrl: `${process.env.APP_URL}/${shop.username}`,
+  //     },
+  //     'charge wallet',
+  //     userData,
+  //     shopId
+  //   );
+  // }
 }

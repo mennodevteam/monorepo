@@ -12,6 +12,7 @@ export class OrdersService {
     private ordersRepo: Repository<Order>
   ) {}
   async dtoToOrder(dto: OrderDto) {
+    console.log(dto);
     const order = new Order();
     const shop = await this.shopsRepo.findOne({
       where: { id: dto.shopId },
@@ -21,6 +22,7 @@ export class OrdersService {
         'menu.costs.includeProduct',
       ],
     });
+    console.log(shop);
 
     if (!shop) throw new HttpException('shop not found', HttpStatus.NOT_ACCEPTABLE);
 
