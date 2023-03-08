@@ -34,7 +34,6 @@ export class LoginBottomSheetComponent {
     public auth: AuthService,
     private translate: TranslateService,
     private snack: MatSnackBar
-    ,
   ) {
     try {
       if (this.auth.user?.extraInfo.mobilePhone) {
@@ -44,9 +43,7 @@ export class LoginBottomSheetComponent {
           this.sendToken();
         }
       }
-
     } catch (error) {}
-
   }
 
   ngOnInit(): void {
@@ -56,26 +53,27 @@ export class LoginBottomSheetComponent {
           this.timer.next(value - 1);
         }, 1000);
       }
-    })
+    });
   }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.mobileInput.nativeElement.focus();
     }, 500);
-    navigator.credentials.get(<any>{
-      otp: { transport: ['sms'] },
-      signal: this.abortController.signal
-    }).then((otp: any) => {
-      if (this.mobilePhone.value) {
-        try {
-          this.codeForm.get('code')?.setValue(otp.code);
-          this.login();
-        } catch (error) { }
-      }
-    }).catch(err => {
-      console.log('otp error: ', err);
-    });
+    navigator.credentials
+      .get(<any>{
+        otp: { transport: ['sms'] },
+        signal: this.abortController.signal,
+      })
+      .then((otp: any) => {
+        if (this.mobilePhone.value) {
+          try {
+            this.codeForm.get('code')?.setValue(otp.code);
+            this.login();
+          } catch (error) {}
+        }
+      })
+      .catch((err) => {});
   }
 
   async sendToken() {
@@ -125,12 +123,16 @@ export class LoginBottomSheetComponent {
           } else {
             this.loading = false;
             this.codeForm.reset();
-            this.snack.open(this.translate.instant('loginBottomSheet.incorrectCode'), '', { panelClass: 'warning' });
+            this.snack.open(this.translate.instant('loginBottomSheet.incorrectCode'), '', {
+              panelClass: 'warning',
+            });
           }
         } catch (error) {
           this.loading = false;
           this.codeForm.reset();
-          this.snack.open(this.translate.instant('loginBottomSheet.incorrectCode'), '', { panelClass: 'warning' });
+          this.snack.open(this.translate.instant('loginBottomSheet.incorrectCode'), '', {
+            panelClass: 'warning',
+          });
         }
       }
     }

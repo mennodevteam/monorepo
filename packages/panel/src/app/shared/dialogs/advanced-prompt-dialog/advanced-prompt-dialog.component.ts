@@ -33,10 +33,7 @@ export class AdvancedPromptDialogComponent implements OnInit {
   okText: string;
   cancelText: string;
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<any>
-  ) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<any>) {
     this.fields = this.data.fields;
     this.title = this.data.title;
     this.description = this.data.description;
@@ -67,11 +64,11 @@ export class AdvancedPromptDialogComponent implements OnInit {
           else {
             const field = this.fields[key];
             if (field.type === 'number' && value[key] != undefined) value[key] = Number(value[key]);
-            else if (field.type === 'datepicker' && value[key] != undefined) value[key] = value[key] ? value[key]._d || value[key] : undefined;
+            else if (field.type === 'datepicker' && value[key] != undefined)
+              value[key] = value[key] ? value[key]._d || value[key] : undefined;
           }
         }
       }
-      console.log(value);
       this.dialogRef.close(value);
     }
   }

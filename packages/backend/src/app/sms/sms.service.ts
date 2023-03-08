@@ -3,7 +3,15 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Between, MoreThanOrEqual, LessThanOrEqual, Like, MoreThan, FindOptionsWhere } from 'typeorm';
+import {
+  Repository,
+  Between,
+  MoreThanOrEqual,
+  LessThanOrEqual,
+  Like,
+  MoreThan,
+  FindOptionsWhere,
+} from 'typeorm';
 
 import * as Kavenegar from 'kavenegar';
 
@@ -48,10 +56,8 @@ export class SmsService {
         };
         kavenegarDtos.push(kavenegarDto);
       }
-      console.log(kavenegarDtos);
       for (const kavenegarDto of kavenegarDtos) {
         kavenegarApi.SendArray(kavenegarDto, async (response, status) => {
-          console.log(status);
           if (status == 200) {
             const entries = response;
             const sentSms: Sms[] = [];
@@ -78,7 +84,6 @@ export class SmsService {
   }
 
   async sendTemplate(dto: NewSmsDto) {
-    console.log(dto);
     const account = await this.smsAccountsRepo.findOneBy({ id: dto.accountId });
     if (account.charge < dto.receptors.length * 20) {
       throw new HttpException('not enough charge.', HttpStatus.PAYMENT_REQUIRED);
@@ -106,7 +111,12 @@ export class SmsService {
     return this.send(dto);
   }
 
-  async lookup(accountId: string, mobilePhone: string, kavenagarTemplate: string, tokens: string[]): Promise<Sms> {
+  async lookup(
+    accountId: string,
+    mobilePhone: string,
+    kavenagarTemplate: string,
+    tokens: string[]
+  ): Promise<Sms> {
     const account = await this.smsAccountsRepo.findOneBy({ id: accountId });
     if (account.charge < 20) {
       throw new HttpException('not enough charge.', HttpStatus.PAYMENT_REQUIRED);
@@ -123,7 +133,6 @@ export class SmsService {
           template: kavenagarTemplate,
         },
         async (response, status) => {
-          console.log('lookup res', response, status);
           if (status == 200) {
             const entry = response[0];
             const sms = <Sms>{

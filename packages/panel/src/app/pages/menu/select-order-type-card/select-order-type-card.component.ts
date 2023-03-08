@@ -7,23 +7,9 @@ import { OrderType } from '@menno/types';
   templateUrl: './select-order-type-card.component.html',
   styleUrls: ['./select-order-type-card.component.scss'],
 })
-export class SelectOrderTypeCardComponent implements OnChanges {
+export class SelectOrderTypeCardComponent {
   @Input() control: FormControl;
   OrderType = OrderType;
 
-  constructor() {
-    this.setChanges();
-  }
-
-  setChanges() {
-    this.control?.valueChanges.subscribe((value) => {
-      console.log(value);
-    });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['control']) {
-      this.setChanges();
-    }
-  }
+  constructor() {}
 }

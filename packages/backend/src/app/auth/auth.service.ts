@@ -121,7 +121,6 @@ export class AuthService {
 
   async lookup(mobilePhone: string, kavenagarTemplate: string, token: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      console.log(mobilePhone, kavenagarTemplate, token);
       kavenegarApi.VerifyLookup(
         {
           receptor: mobilePhone,
@@ -129,7 +128,6 @@ export class AuthService {
           template: kavenagarTemplate,
         },
         async (response, status) => {
-          console.log(response, status);
           if (status == 200) {
             resolve(true);
           } else {

@@ -1,4 +1,15 @@
-import { Club, CreateShopDto, Menu, Region, Shop, ShopUser, ShopUserRole, Sms, SmsAccount, User } from '@menno/types';
+import {
+  Club,
+  CreateShopDto,
+  Menu,
+  Region,
+  Shop,
+  ShopUser,
+  ShopUserRole,
+  Sms,
+  SmsAccount,
+  User,
+} from '@menno/types';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Not, Repository } from 'typeorm';
@@ -27,7 +38,12 @@ export class ShopsService {
       const tokens: string[] = [];
       tokens[0] = shop.username;
       tokens[4] = shop.title;
-      return this.smsService.lookup(shop.smsAccount.id, mobilePhone, process.env.SHOP_LINK_KAVENEGAR_TEMPLATE, tokens);
+      return this.smsService.lookup(
+        shop.smsAccount.id,
+        mobilePhone,
+        process.env.SHOP_LINK_KAVENEGAR_TEMPLATE,
+        tokens
+      );
     }
   }
 
@@ -39,7 +55,6 @@ export class ShopsService {
   }
 
   async privateInsert(dto: CreateShopDto) {
-    console.log('private insert shop', dto);
     if (!Shop.isUsernameValid(dto.loginUsername))
       throw new HttpException('the loginUsername is invalid', HttpStatus.NOT_ACCEPTABLE);
     let existUser = await this.usersService.findOneByUsername(dto.loginUsername);
@@ -79,7 +94,6 @@ export class ShopsService {
         });
         allShops.sort((a, b) => Number(b.code) - Number(a.code));
         const lastShopCode = allShops[0];
-        console.log('lastShopCode');
         if (lastShopCode) dto.code = (Number(lastShopCode.code) + 1).toString();
       } catch (error) {
         // do nothing

@@ -11,18 +11,13 @@ export class DeliveryArea {
   status: Status;
   shop: Shop;
 
-  static isInWitchArea(
-    areas: DeliveryArea[],
-    point: [number, number]
-  ): DeliveryArea | null {
+  static isInWitchArea(areas: DeliveryArea[], point: [number, number]): DeliveryArea | null {
     try {
       areas.sort((a, b) => a.price - b.price);
       for (const area of areas) {
         if (DeliveryArea.isInside(point, area.polygon)) return area;
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
     return null;
   }
 
@@ -38,8 +33,7 @@ export class DeliveryArea {
       const xj = polygon[j][0],
         yj = polygon[j][1];
 
-      const intersect =
-        yi > y != yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
+      const intersect = yi > y != yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
       if (intersect) inside = !inside;
     }
     return inside;

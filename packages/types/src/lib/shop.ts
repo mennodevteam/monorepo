@@ -53,20 +53,13 @@ export class Shop {
 
   static isOpen(openingHours: string[][], time: Date): boolean {
     try {
-      console.log(time);
       const dayOfWeek = (new Date(time).getDay() + 1) % 7;
       if (openingHours[dayOfWeek] && openingHours[dayOfWeek].length) {
-        const now =
-          new Date(time).getUTCHours() + new Date().getUTCMinutes() / 60;
+        const now = new Date(time).getUTCHours() + new Date().getUTCMinutes() / 60;
         for (const time of openingHours[dayOfWeek]) {
           const fromTo = time.split('-');
-          const from =
-            Number(fromTo[0].split(':')[0]) +
-            Number(fromTo[0].split(':')[1]) / 60;
-          const to =
-            Number(fromTo[1].split(':')[0]) +
-            Number(fromTo[1].split(':')[1]) / 60;
-          console.log('from', from, 'to', to, 'now:', now);
+          const from = Number(fromTo[0].split(':')[0]) + Number(fromTo[0].split(':')[1]) / 60;
+          const to = Number(fromTo[1].split(':')[0]) + Number(fromTo[1].split(':')[1]) / 60;
           if (from < to) {
             if (now >= from && now <= to) {
               return true;
@@ -87,5 +80,5 @@ export class Shop {
   static isUsernameValid(username: string): boolean {
     const regex = /^[a-zA-Z0-9_]{3,}$/.test(username);
     return regex;
-}
+  }
 }

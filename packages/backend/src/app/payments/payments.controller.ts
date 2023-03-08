@@ -111,13 +111,10 @@ export class PaymentsController {
   @Post('afterBankPayment')
   async return(@Body() dto: any, @Response() res) {
     const payment = await this.paymentsService.afterBankPayment(dto);
-    console.log(dto, payment);
     if (payment?.isCompleted) {
       if (payment.details.newOrder) {
         payment.details.newOrder.payment = { id: payment.id };
-        console.log(payment.details.newOrder);
         const order = await this.ordersService.dtoToOrder(payment.details.newOrder);
-        console.log(order);
         const newOrder = await this.ordersRepository.save(order);
         const redirectUrl = `${payment.appReturnUrl}/${process.env.APP_ORDER_PAGE_PATH}/${newOrder.id}`;
         return res.redirect(redirectUrl);
