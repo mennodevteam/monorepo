@@ -15,7 +15,6 @@
   }
 }
 
-
 .price-section {
   &__text {
     display: flex;
@@ -24,6 +23,17 @@
     &__old {
       text-decoration: line-through;
       font-size: 12px;
+    }
+  }
+}
+
+::ng-deep mat-card.product {
+  mat-card-title-group {
+    flex-direction: row-reverse;
+    gap: 8px;
+
+    & > div {
+      flex: 1;
     }
   }
 }
