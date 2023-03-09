@@ -12,18 +12,23 @@ import { posRoutes } from './pos.routes';
 import { MenuComponent } from './menu/menu.component';
 import { BasketComponent } from './basket/basket.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { LeftSectionComponent } from './left-section/left-section.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [PosComponent, MenuComponent, BasketComponent],
+  declarations: [PosComponent, MenuComponent, BasketComponent, LeftSectionComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(posRoutes),
+    FormsModule,
     SharedModule,
     MatTabsModule,
     MatToolbarModule,
     MatButtonModule,
     MatGridListModule,
     MatListModule,
+    MatButtonToggleModule,
     MatDialogModule,
   ],
 })

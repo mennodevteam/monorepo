@@ -1,12 +1,21 @@
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Menu, Order, OrderDto, OrderItem, OrderType, Product, ProductItem } from '@menno/types';
+import { TranslateService } from '@ngx-translate/core';
 import { MenuService } from './menu.service';
+import { OrdersService } from './orders.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PosService extends OrderDto {
-  constructor(private menuService: MenuService) {
+  saving = false;
+  constructor(
+    private menuService: MenuService,
+    private orderService: OrdersService,
+    private snack: MatSnackBar,
+    private translate: TranslateService
+  ) {
     super();
     this.clear();
   }
@@ -90,5 +99,24 @@ export class PosService extends OrderDto {
       return OrderDto.total(this, this.menuService.menu);
     }
     return 0;
+  }
+
+  async save(print = false) {
+    const dto: OrderDto = {
+      productItems: this.productItems,
+      type: this.type,
+      details: this.details,
+      manualCost: this.manualCost,
+      manualDiscount: this.manualDiscount,
+    } as OrderDto;
+    this.saving = true;
+    this.snack.open(this.translate.instant('app.saving'), '', { duration: 3000 });
+    await this.orderService.save(dto);
+    this.snack.open(this.translate.instant('app.savedSuccessfully'), '', {
+      duration: 5000,
+      panelClass: 'success',
+    });
+    this.clear();
+    this.saving = false;
   }
 }

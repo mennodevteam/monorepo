@@ -1,0 +1,11 @@
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+
+  mat-button-toggle-group {
+    margin: 8px;
+    font-size: 11px;
+  }
+}

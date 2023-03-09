@@ -1,5 +1,15 @@
 import { FilterOrderDto, Order, OrderDto } from '@menno/types';
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
@@ -19,16 +29,24 @@ export class OrdersController {
     private auth: AuthService
   ) {}
 
-  @Public()
   @Post()
   async save(@Body() dto: OrderDto, @LoginUser() user: AuthPayload) {
     if (user) {
       dto.creatorId = user.id;
-      if (user.role === Role.App) dto.customerId = user.id;
-      else if (user.role === Role.Panel) dto.waiterId = user.id;
+      if (user.role === Role.App) {
+        dto.customerId = user.id;
+        delete dto.manualDiscount;
+        delete dto.manualCost;
+      } else if (user.role === Role.Panel) {
+        const shop = await this.auth.getPanelUserShop(user);
+        if (!shop) throw new HttpException('no shop found', HttpStatus.NOT_FOUND);
+        dto.shopId = shop.id;
+        dto.waiterId = user.id;
+      }
     }
 
     const order = await this.ordersService.dtoToOrder(dto);
+    console.log(order);
     const savedOrder = await this.ordersRepo.save(order);
     return savedOrder;
   }

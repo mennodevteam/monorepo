@@ -18,8 +18,9 @@
     {{ 'sidenav.club' | translate }}
   </button>
   <div flex></div>
-  <button mat-icon-button routerLink="/pos">
-    <i class="fa-solid fa-lg fa-tv"></i>
+  <button mat-flat-button id="add-order" routerLink="/pos">
+    <i class="fa-solid fa-plus-circle"></i>
+    {{'sidenav.addOrder' | translate}}
   </button>
   <span spacer></span>
   <button mat-icon-button routerLink="settings">

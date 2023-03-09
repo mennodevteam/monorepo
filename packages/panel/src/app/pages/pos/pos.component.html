@@ -1,10 +1,28 @@
-<mat-toolbar class="main-toolbar mat-elevation-z3">
+<mat-toolbar class="main-toolbar mat-elevation-z3 form-theme">
   <button mat-icon-button class="fa-regular fa-close" goBack></button>
   <span spacer></span>
-  <h1>{{ 'pos.newTitle' | translate }}</h1>
+  <h1 flex>{{ 'pos.newTitle' | translate }}</h1>
+  <button mat-button [disabled]="POS.saving" (click)="POS.clear()" color="warn">
+    {{ 'app.clear' | translate }}
+  </button>
+  <span spacer></span>
+  <button
+    mat-flat-button
+    [disabled]="POS.saving || !POS.items.length"
+    (click)="POS.save(true)"
+    color="accent"
+  >
+    {{ 'pos.saveAndPrint' | translate }}
+  </button>
+  <span spacer></span>
+  <button mat-flat-button [disabled]="POS.saving || !POS.items.length" (click)="POS.save()" color="accent">
+    {{ 'app.save' | translate }}
+  </button>
 </mat-toolbar>
 <main>
   <menu></menu>
   <mat-divider vertical></mat-divider>
   <basket></basket>
+  <mat-divider vertical></mat-divider>
+  <left-section></left-section>
 </main>
