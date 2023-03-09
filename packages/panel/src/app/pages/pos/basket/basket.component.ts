@@ -1,7 +1,7 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { OrderItem } from '@menno/types';
+import { MANUAL_COST_TITLE, MANUAL_DISCOUNT_TITLE, OrderItem } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { fadeInOut } from '../../../core/animations/fade.animation';
 import { slideInOut } from '../../../core/animations/slide.animation';
@@ -26,6 +26,8 @@ import { PromptDialogComponent } from '../../../shared/dialogs/prompt-dialog/pro
 })
 export class BasketComponent {
   showFactorDetails = false;
+  MANUAL_COST_TITLE = MANUAL_COST_TITLE;
+  MANUAL_DISCOUNT_TITLE = MANUAL_DISCOUNT_TITLE;
   constructor(public POS: PosService, private dialog: MatDialog, private translate: TranslateService) {}
 
   async openNoteDialog() {
