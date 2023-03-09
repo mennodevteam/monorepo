@@ -116,4 +116,8 @@ export class MenuService {
     }
     return res;
   }
+
+  sync() {
+    this.http.get('menus/sync/103').toPromise();
+  }
 }

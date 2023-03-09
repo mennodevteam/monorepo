@@ -6,5 +6,6 @@ import { Module } from '@nestjs/common';
   imports: [],
   providers: [FilesService],
   controllers: [FilesController],
+  exports: [FilesService]
 })
 export class FilesModule {}

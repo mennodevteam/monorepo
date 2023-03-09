@@ -6,13 +6,15 @@ import { AuthService } from '../auth/auth.service';
 import { Public } from '../auth/public.decorator';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
+import { MenusService } from './menu.service';
 
 @Controller('menus')
 export class MenusController {
   constructor(
     @InjectRepository(Shop)
     private shopsRepo: Repository<Shop>,
-    private auth: AuthService
+    private auth: AuthService,
+    private menuService: MenusService
   ) {}
 
   @Public()
@@ -42,5 +44,17 @@ export class MenusController {
       'menu.costs.includeProduct',
     ]);
     return shop.menu;
+  }
+
+  @Get('sync/:prevCode')
+  async syncMenu(@LoginUser() user: AuthPayload, @Param('prevCode') prevCode: string) {
+    const shop = await this.auth.getPanelUserShop(user, [
+      'menu.categories.products',
+      'menu.costs',
+      'menu.costs.includeProductCategory',
+      'menu.costs.includeProduct',
+    ]);
+
+    this.menuService.syncMenu(shop.menu.id, prevCode);
   }
 }

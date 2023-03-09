@@ -31,4 +31,8 @@ export class MenuPageComponent {
   get categories() {
     return this.menuService.menu?.categories;
   }
+
+  sync() {
+    this.menuService.sync();
+  }
 }

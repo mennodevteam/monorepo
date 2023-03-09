@@ -55,6 +55,7 @@ export const ProductCategorySchema = new EntitySchema<ProductCategory>({
       type: 'one-to-many',
       target: 'Product',
       inverseSide: 'category',
+      cascade: ['insert', 'update']
     },
     menu: {
       type: 'many-to-one',
