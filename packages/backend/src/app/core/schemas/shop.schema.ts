@@ -38,11 +38,11 @@ export const ShopSchema = new EntitySchema<Shop>({
       unique: true,
     },
     latitude: {
-      type: Number,
+      type: 'real',
       nullable: true,
     },
     longitude: {
-      type: Number,
+      type: 'real',
       nullable: true,
     },
     address: {
@@ -130,8 +130,14 @@ export const ShopSchema = new EntitySchema<Shop>({
       nullable: true,
     },
     users: {
-      type: 'one-to-one',
+      type: 'one-to-many',
       target: 'ShopUser',
+      inverseSide: 'shop',
+      cascade: ['insert'],
+    },
+    deliveryAreas: {
+      type: 'one-to-many',
+      target: 'DeliveryArea',
       inverseSide: 'shop',
       cascade: ['insert'],
     },

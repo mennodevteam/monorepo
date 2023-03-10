@@ -36,6 +36,7 @@ export const DeliveryAreaSchema = new EntitySchema<DeliveryArea>({
   relations: {
     shop: {
       type: 'many-to-one',
+      inverseSide: 'deliveryAreas',
       target: 'Shop',
     },
   },

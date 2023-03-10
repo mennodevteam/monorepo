@@ -52,4 +52,10 @@ export class ShopsController {
       relations: ['region', 'shopGroup', 'appConfig.theme', 'paymentGateway'],
     });
   }
+
+  @Public()
+  @Get('createNewFromPrev/:code')
+  createNewShopFromPrev(@Param('code') code: string): Promise<Shop> {
+    return this.shopsService.createNewShopFromPrev(code)
+  }
 }

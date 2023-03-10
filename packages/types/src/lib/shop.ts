@@ -1,5 +1,6 @@
 import { AppConfig } from './app-config';
 import { Club } from './club';
+import { DeliveryArea } from './delivery-area';
 import { Menu } from './menu';
 import { PaymentGateway } from './payment-gateway';
 import { Region } from './region';
@@ -15,9 +16,6 @@ export interface ShopTable {
 export interface ShopDetails {
   tables?: ShopTable[];
   poses?: string[];
-  instagram?: string;
-  description?: string;
-  diagonInviteCode?: string;
   openingHours?: string[][];
 }
 
@@ -37,7 +35,7 @@ export class Shop {
   instagram: string;
   phones: string[];
   images: string[];
-  deliveryAccountId?: string;
+  deliveryAreas?: DeliveryArea[];
   smsAccount?: SmsAccount;
   paymentGateway?: PaymentGateway;
   menu?: Menu;

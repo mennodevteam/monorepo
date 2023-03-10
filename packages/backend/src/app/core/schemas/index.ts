@@ -1,6 +1,6 @@
 export * from './app-config.schema';
 export * from './club.schema';
-export * from './devliery-area.schema';
+export * from './delivery-area.schema';
 export * from './discount-coupon.schema';
 export * from './discount-usage.schema';
 export * from './gem-log.schema';

@@ -1,32 +1,49 @@
 import {
   Club,
   CreateShopDto,
+  DeliveryArea,
   Menu,
+  Product,
+  ProductCategory,
   Region,
   Shop,
+  ShopPrintView,
+  AppConfig,
   ShopUser,
   ShopUserRole,
   Sms,
   SmsAccount,
   User,
 } from '@menno/types';
+import { OldTypes } from '@menno/old-types';
+import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Not, Repository } from 'typeorm';
 import { SmsService } from '../sms/sms.service';
 import { UsersService } from '../users/users.service';
+import fetch from 'node-fetch';
+import { FilesService } from '../files/files.service';
 
 @Injectable()
 export class ShopsService {
   constructor(
     @InjectRepository(Shop)
     private shopsRepository: Repository<Shop>,
+    @InjectRepository(AppConfig)
+    private appConfigsRepository: Repository<AppConfig>,
     @InjectRepository(Menu)
     private menusRepository: Repository<Menu>,
+    @InjectRepository(ProductCategory)
+    private categoriesRepository: Repository<ProductCategory>,
+    @InjectRepository(ShopPrintView)
+    private printViewsRepository: Repository<ShopPrintView>,
     @InjectRepository(Region)
     private regionsRepository: Repository<Region>,
     private smsService: SmsService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private http: HttpService,
+    private filesService: FilesService
   ) {}
 
   async sendShopLink(shopId: string, mobilePhone: string): Promise<Sms> {
@@ -136,5 +153,92 @@ export class ShopsService {
     const savedShopInfo = await this.shopsRepository.save(shop);
 
     return savedShopInfo;
+  }
+
+  async createNewShopFromPrev(code: string) {
+    const isExist = await this.shopsRepository.findOneBy({ code });
+    if (isExist) throw new HttpException('shop existed', HttpStatus.CONFLICT);
+
+    const res = await this.http
+      .get<{
+        shop: OldTypes.Shop;
+        menu: OldTypes.Menu;
+        appConfig: OldTypes.AppConfig;
+        users: OldTypes.ShopUser[];
+        printViews: OldTypes.ShopPrintView[];
+        deliveryAreas: OldTypes.DeliveryArea[];
+      }>(`https://new-admin-api.menno.ir/shops/complete-data/xmje/${code}`)
+      .toPromise();
+
+    const { shop, menu, appConfig, users, printViews, deliveryAreas } = res.data;
+
+    const newShop = await this.shopsRepository.save({
+      id: shop.id,
+      title: shop.title,
+      description: shop.details?.description,
+      address: shop.location?.address,
+      latitude: shop.location?.latitude,
+      longitude: shop.location?.longitude,
+      code: shop.code,
+      createdAt: shop.createdAt,
+      instagram: shop.details?.instagram,
+      details: {
+        openingHours: shop.details?.openingHours,
+        poses: shop.details?.poses,
+        tables: shop.details?.tables,
+      },
+      username: shop.username,
+      region: shop.region,
+      phones: shop.phones,
+      deliveryAreas,
+      users,
+    });
+
+    if (shop.logo) {
+      const savedImage: any = await this.filesService.uploadFromUrl(
+        `https://new-app-api.menno.ir/files/${shop.logo}`,
+        shop.title,
+        shop.code
+      );
+      await this.shopsRepository.update(newShop.id, {
+        logo: savedImage.key,
+      });
+    }
+
+    const newMenu = await this.menusRepository.save({
+      id: menu.id,
+      title: shop.title,
+    });
+    for (const cat of menu.categories) {
+      cat.menu = { id: newMenu.id } as OldTypes.Menu;
+      if (cat.products) {
+        for (const p of cat.products) {
+          if (p.images && p.images[0]) {
+            const savedImage: any = await this.filesService.uploadFromUrl(
+              `https://new-app-api.menno.ir/files/${p.images[0]}`,
+              p.title,
+              shop.code
+            );
+            p.images = [savedImage.key];
+          }
+        }
+      }
+      await this.categoriesRepository.save(cat);
+    }
+    await this.shopsRepository.update(newShop.id, { menu: { id: newMenu.id } });
+
+    const newAppConfig = await this.appConfigsRepository.save({
+      disableOrdering: appConfig.viewMode,
+    });
+    this.shopsRepository.update(newShop.id, { appConfig: { id: newAppConfig.id } });
+
+    if (printViews) {
+      printViews.forEach((pv) => {
+        pv.printer.shop = { id: newShop.id } as any;
+      });
+      await this.printViewsRepository.save(printViews);
+    }
+
+    return newShop;
   }
 }

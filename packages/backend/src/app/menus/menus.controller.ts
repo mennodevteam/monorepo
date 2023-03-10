@@ -43,6 +43,7 @@ export class MenusController {
       'menu.costs.includeProductCategory',
       'menu.costs.includeProduct',
     ]);
+    console.log(shop);
     return shop.menu;
   }
 

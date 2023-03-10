@@ -70,15 +70,8 @@ export class MenusService {
       if (cat.products) {
         for (const p of cat.products) {
           if (p.images && p.images[0]) {
-            // const fileBinary: any = await this.http
-            //   .get(`https://new-app-api.menno.ir/files/${p.images[0]}`, {
-            //     responseType: 'blob',
-            //   })
-            //   .toPromise();
-
             const binary = await fetch(`https://new-app-api.menno.ir/files/${p.images[0]}`);
             const blob = await binary.buffer();
-            // const file: any = new Express.Multer.File([fileBinary], `${p.title || 'sample'}.jpg`, { type: 'image/jpeg' });
 
             const savedImage: any = await this.filesService.upload(<any>{ buffer: blob }, p.title);
             p.images = [savedImage.key];

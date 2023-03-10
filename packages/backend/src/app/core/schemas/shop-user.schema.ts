@@ -26,9 +26,11 @@ export const ShopUserSchema = new EntitySchema<ShopUser>({
     user: {
       type: 'many-to-one',
       target: 'User',
+      cascade: ['insert'],
     },
     shop: {
       type: 'many-to-one',
+      inverseSide: 'users',
       target: 'Shop',
     },
   },
