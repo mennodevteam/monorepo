@@ -1,4 +1,12 @@
-import { Component, ElementRef, HostListener, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { MenuViewType } from '@menno/types';
 import { BehaviorSubject, debounceTime } from 'rxjs';
 import { BasketService } from '../../../core/services/basket.service';
@@ -11,8 +19,7 @@ import { MenuCategoriesComponent } from './menu-categories/menu-categories.compo
   templateUrl: './menu-page.component.html',
   styleUrls: ['./menu-page.component.scss'],
 })
-export class MenuPageComponent {
-  private onScrollMenu = new BehaviorSubject(0);
+export class MenuPageComponent implements AfterViewInit {
   @ViewChildren('category') categoryElements: QueryList<ElementRef>;
   @ViewChild(MenuCategoriesComponent)
   menuCategoriesComponent: MenuCategoriesComponent;
@@ -25,26 +32,49 @@ export class MenuPageComponent {
     private shopService: ShopService
   ) {
     this.menuService.checkSelectedOrderType();
-    this.onScrollMenu.pipe(debounceTime(200)).subscribe(() => {
-      const selectedCatElem = this.categoryElements.reduce((a, b) => {
-        const aView = this.elementViewportCapacity(a);
-        const bView = this.elementViewportCapacity(b);
-        if (aView > bView) return a;
-        return b;
-      }, this.categoryElements.first);
 
-      const selectedIndex = this.categoryElements.toArray().indexOf(selectedCatElem);
+    // this.onScrollMenu.pipe(debounceTime(200)).subscribe(() => {
+    //   const selectedCatElem = this.categoryElements.reduce((a, b) => {
+    //     const aView = this.elementViewportCapacity(a);
+    //     const bView = this.elementViewportCapacity(b);
+    //     if (aView > bView) return a;
+    //     return b;
+    //   }, this.categoryElements.first);
 
-      if (selectedIndex > -1) {
-        this.menuCategoriesComponent.selectChip(selectedIndex);
-      }
-    });
+    //   const selectedIndex = this.categoryElements.toArray().indexOf(selectedCatElem);
+
+    //   if (selectedIndex > -1) {
+    //     this.menuCategoriesComponent.selectChip(selectedIndex);
+    //   }
+    // });
 
     if (this.menu) {
       this.viewType =
         this.appConfig?.menuViewType === MenuViewType.Manual
           ? MenuViewType.Card
           : this.appConfig?.menuViewType || MenuViewType.Card;
+    }
+  }
+
+  ngAfterViewInit(): void {
+    for (const cat of this.categoryElements) {
+      const topMargin = 60 + 120;
+      const bottomMargin = window.innerHeight - topMargin - 120;
+      const rootMargin = `-${topMargin}px 0px -${bottomMargin}px 0px`;
+      new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.intersectionRatio >= 0 && entry.isIntersecting) {
+              const selectedIndex = this.categoryElements.toArray().indexOf(cat);
+              this.menuCategoriesComponent.selectChip(selectedIndex, true);
+            }
+          });
+        },
+        {
+          root: null,
+          rootMargin,
+        }
+      ).observe(cat.nativeElement);
     }
   }
 
@@ -62,28 +92,6 @@ export class MenuPageComponent {
 
   get categories() {
     return this.menuService.menu?.categories;
-  }
-
-  @HostListener('window:scroll', ['$event']) onScrollEvent(ev: Event) {
-    this.onScrollMenu.next(0);
-  }
-
-  elementViewportCapacity(element: ElementRef) {
-    const viewportHeight = window.innerHeight;
-    const scrollTop = window.scrollY;
-    const elementOffsetTop = element.nativeElement.offsetTop;
-    const elementHeight = element.nativeElement.offsetHeight;
-
-    const bottom = Math.min(elementOffsetTop + elementHeight, scrollTop + viewportHeight);
-    const top = Math.max(elementOffsetTop, scrollTop);
-    const res = bottom - top;
-    return res;
-    // Calculate percentage of the element that's been seen
-    const distance = scrollTop + viewportHeight - elementOffsetTop;
-    const percentage = Math.round(distance / ((viewportHeight + elementHeight) / 100));
-
-    // Restrict the range to between 0 and 100
-    return Math.min(100, Math.max(0, percentage));
   }
 
   categoryClick(index: number) {
