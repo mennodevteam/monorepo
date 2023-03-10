@@ -1,15 +1,9 @@
-import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
-import { Order, OrderPaymentType, OrderState, OrderType, User } from '@menno/types';
-import { TranslateService } from '@ngx-translate/core';
+import { Order, OrderState, OrderType, User } from '@menno/types';
 import { BehaviorSubject } from 'rxjs';
 import { OrdersService } from '../../../core/services/orders.service';
-import { AlertDialogComponent } from '../../dialogs/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'orders-table',
@@ -26,7 +20,7 @@ export class OrdersTableComponent implements AfterViewInit {
   @Input() columns = ['qNumber', 'customer', 'type', 'total', 'state', 'date', 'actions'];
   @Input() orders: BehaviorSubject<Order[]>;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog, private ordersService: OrdersService) {}
 
   ngAfterViewInit() {
     this.orders.subscribe((orders) => {
@@ -34,7 +28,23 @@ export class OrdersTableComponent implements AfterViewInit {
     });
   }
 
-  stateClick(order: Order) {
-    this.dialog.open;
+  changeState(order: Order) {
+    let newState: OrderState | undefined;
+    switch (order.state) {
+      case OrderState.Pending:
+        newState = OrderState.Processing;
+        break;
+      case OrderState.Processing:
+        newState = order.type === OrderType.Delivery ? OrderState.Shipping : OrderState.Completed;
+        break;
+      case OrderState.Shipping:
+      case OrderState.Ready:
+        newState = OrderState.Completed;
+        break;
+    }
+
+    if (newState != undefined) {
+      this.ordersService.changeState(order, newState);
+    }
   }
 }

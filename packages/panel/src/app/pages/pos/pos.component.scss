@@ -10,12 +10,11 @@ main {
   display: flex;
   height: calc(100vh - 56px);
 
-  menu {
-    flex: 1;
+  div[flex] {
+    width: 0;
   }
 
-  basket,
-  left-section {
+  section {
     flex: none;
     width: 300px;
   }

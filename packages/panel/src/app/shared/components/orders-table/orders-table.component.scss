@@ -1,3 +1,27 @@
+@import "theme";
+
 table {
   box-shadow: none;
+}
+
+.state-button {
+  &.red {
+    background-color: lighten($red, 35);
+    color: $red;
+  }
+
+  &.yellow {
+    background-color: lighten($yellow, 30);
+    color: darken($yellow, 30);
+  }
+
+  &.blue {
+    background-color: lighten($blue, 30);
+    color: $blue;
+  }
+
+  &.green {
+    background-color: lighten($green, 50);
+    color: $green;
+  }
 }

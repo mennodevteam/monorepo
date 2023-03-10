@@ -6,18 +6,18 @@
     <button mat-button (click)="picker.open()" style="width: 100px">
       {{ date | pdate: 'YYYY/MM/DD' }}
     </button>
-    <input hidden [matDatepicker]="picker" [formControl]="dateControl" [max]="today" />
+    <input hidden [matDatepicker]="picker" [formControl]="dateControl" [max]="OS.today" />
     <mat-datepicker touchUi #picker></mat-datepicker>
     <button
       mat-icon-button
-      [disabled]="date.toDateString() === today.toDateString()"
+      [disabled]="OS.isToday"
       (click)="goToPrevDate()"
     >
       <i class="fa-regular fa-angle-left"></i>
     </button>
     <button
       mat-icon-button
-      *ngIf="date.toDateString() !== today.toDateString()"
+      *ngIf="!OS.isToday"
       color="warn"
       (click)="goToToday()"
     >

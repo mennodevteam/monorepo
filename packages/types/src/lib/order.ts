@@ -46,6 +46,7 @@ export class Order {
   payment?: Payment;
   details: OrderDetails;
   _groupOffer?: Order[];
+  _changingState?: boolean;
   createdAt: Date;
   deletedAt: Date;
 

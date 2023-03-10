@@ -1,4 +1,4 @@
-import { FilterOrderDto, Order, OrderDto } from '@menno/types';
+import { FilterOrderDto, Order, OrderDto, User } from '@menno/types';
 import {
   Body,
   Controller,
@@ -13,7 +13,6 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
-import { Public } from '../auth/public.decorator';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 import { Role } from '../core/types/role.enum';
@@ -82,5 +81,20 @@ export class OrdersController {
       },
       relations: ['shop', 'shop.appConfig', 'items', 'customer', 'waiter', 'creator', 'reviews'],
     });
+  }
+
+  @Get('changeState/:id/:state')
+  async changeState(
+    @Param('id') id: string,
+    @Param('state') state: string,
+    @LoginUser() user: AuthPayload
+  ): Promise<Order> {
+    const order = await this.ordersRepo.findOne({ where: { id }, relations: ['waiter'] });
+    const update: Partial<Order> = {
+      state: Number(state),
+    };
+    if (!order.waiter) update.waiter = { id: user.id } as User;
+    await this.ordersRepo.update(order.id, update);
+    return { ...order, ...update };
   }
 }

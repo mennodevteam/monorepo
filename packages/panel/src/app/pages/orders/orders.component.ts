@@ -14,8 +14,7 @@ import { DailyOrderFilter, DailyOrderListService } from './daily-order-list.serv
 export class OrdersComponent {
   dateControl = new FormControl(this.OS.date);
   filterControl = new FormControl<DailyOrderFilter>(this.OS.filter);
-  today = new Date();
-  constructor(private OS: DailyOrderListService, private router: Router, private route: ActivatedRoute) {
+  constructor(public OS: DailyOrderListService, private router: Router, private route: ActivatedRoute) {
     this.dateControl.valueChanges.subscribe((value: any) => {
       if (value) {
         this.OS.date = value._d || value || new Date();
@@ -30,7 +29,7 @@ export class OrdersComponent {
     });
 
     this.route.queryParams.subscribe((params) => {
-      this.dateControl.setValue(params['date'] ? new Date(params['date']) : new Date());
+      this.dateControl.setValue(params['date'] ? new Date(params['date']) : this.OS.today);
       if (params['filter']) this.filterControl.setValue(params['filter']);
     });
   }
@@ -78,7 +77,7 @@ export class OrdersComponent {
   }
 
   goToToday() {
-    const date = new Date(this.today);
+    const date = new Date(this.OS.today);
     this.dateControl.setValue(date);
   }
 }

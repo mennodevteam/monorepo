@@ -9,15 +9,14 @@ export type DailyOrderFilter = 'all' | 'pending' | 'complete' | 'notPayed' | 'pa
   providedIn: 'root',
 })
 export class DailyOrderListService {
-  private _date = new Date();
+  private _date = this.today;
   private _filter: DailyOrderFilter = 'all';
   private _loading = false;
 
   allOrders: Order[] = [];
   orders = new BehaviorSubject<Order[]>([]);
 
-  constructor(private ordersService: OrdersService) {
-  }
+  constructor(private ordersService: OrdersService) {}
 
   get date() {
     return this._date;
@@ -34,6 +33,18 @@ export class DailyOrderListService {
 
   get loading() {
     return this._loading;
+  }
+
+  get today() {
+    const date = new Date();
+    date.setHours(date.getHours() - 3);
+    return date;
+  }
+
+  get isToday() {
+    const date = new Date();
+    date.setHours(date.getHours() - 3);
+    return this.date.toDateString() === date.toDateString();
   }
 
   set filter(value) {
