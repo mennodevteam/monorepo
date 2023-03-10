@@ -1,9 +1,10 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { map, Observable, shareReplay } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { AuthService } from '../core/services/auth.service';
 import { ShopService } from '../core/services/shop.service';
 
 @Component({
@@ -18,7 +19,9 @@ export class PagesComponent implements OnInit {
     public shopService: ShopService,
     private breakpointObserver: BreakpointObserver,
     public translateService: TranslateService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
+    private auth: AuthService,
   ) {
     this.isHandset$ = this.breakpointObserver.observe('(max-width: 1024px)').pipe(
       map((result) => result.matches),
@@ -32,10 +35,6 @@ export class PagesComponent implements OnInit {
     return this.shopService.shop;
   }
 
-  openPOS() {
-    window.open(`http://localhost:4200/settings`, 'sample', 'fullscreen="yes"');
-  }
-
   getRouteData(route = this.route): any {
     if (!route) return {};
     let data = {};
@@ -47,5 +46,10 @@ export class PagesComponent implements OnInit {
       data = { ...data, ...this.getRouteData(child) };
     }
     return data;
+  }
+
+  logout() {
+    this.auth.logout();
+    window.location.reload();
   }
 }

@@ -5,30 +5,33 @@
   <span spacer-2x></span>
   <button mat-button routerLink="menu">
     <i class="fa-solid fa-lg fa-book-open"></i>
-    {{ 'sidenav.menu' | translate }}
+    {{ 'shell.menu' | translate }}
   </button>
   <span spacer></span>
   <button mat-button routerLink="orders">
     <i class="fa-solid fa-lg fa-utensils"></i>
-    {{ 'sidenav.orders' | translate }}
+    {{ 'shell.orders' | translate }}
   </button>
   <span spacer></span>
   <button mat-button routerLink="club">
     <i class="fa-solid fa-lg fa-crown"></i>
-    {{ 'sidenav.club' | translate }}
+    {{ 'shell.club' | translate }}
   </button>
   <div flex></div>
   <button mat-flat-button id="add-order" routerLink="/pos">
     <i class="fa-solid fa-plus-circle"></i>
-    {{'sidenav.addOrder' | translate}}
+    {{'shell.addOrder' | translate}}
   </button>
   <span spacer></span>
   <button mat-icon-button routerLink="settings">
     <i class="fa-solid fa-lg fa-gear"></i>
   </button>
   <span spacer></span>
-  <button mat-icon-button id="user-button">
+  <button mat-icon-button id="user-button" [matMenuTriggerFor]="userMenu">
     <img [imageLoader]="shop?.logo">
   </button>
+  <mat-menu #userMenu="matMenu">
+    <button mat-menu-item (click)="logout()">{{'shell.logout' | translate}}</button>
+  </mat-menu>
 </mat-toolbar>
 <router-outlet></router-outlet>

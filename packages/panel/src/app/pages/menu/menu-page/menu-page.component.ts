@@ -15,7 +15,7 @@ export class MenuPageComponent {
   constructor(
     private dialog: MatDialog,
     private menuService: MenuService,
-    private shopService: ShopService,
+    private shopService: ShopService
   ) {}
 
   addCategory() {
@@ -30,9 +30,5 @@ export class MenuPageComponent {
   }
   get categories() {
     return this.menuService.menu?.categories;
-  }
-
-  sync() {
-    this.menuService.sync();
   }
 }
