@@ -59,21 +59,20 @@ export class TodayOrdersService {
     });
 
     if (orders) {
-      let hasNewOrder = false;
+      let newOrders: Order[] = [];
       for (const ord of orders) {
         const existOrd = this.orders.find((x) => x.id === ord.id);
         if (existOrd) {
           Object.assign(existOrd, ord);
         } else {
-          hasNewOrder = true;
-          const newList = this.orders;
-          newList.unshift(ord);
-          this._orders.next(newList);
+          newOrders.push(ord);
         }
       }
       if (orders.length) {
-        if (hasNewOrder) this.onNewOrder.emit();
-        else this.onUpdateOrder.emit();
+        if (newOrders.length) {
+          this._orders.next([...newOrders, ...this.orders]);
+          this.onNewOrder.emit();
+        } else this.onUpdateOrder.emit();
       }
     }
   }

@@ -69,11 +69,13 @@ export class DailyOrderListService {
   async loadData() {
     if (this.isToday) {
       this._loading = true;
-      await this.todayOrders.ordersObservable
-        .pipe(filter((x) => x != null))
-        .pipe(take(1))
-        .toPromise();
-
+      if (!this.todayOrders.orders) {
+        console.log(1111);
+        await this.todayOrders.ordersObservable
+          .pipe(filter((x) => x != null))
+          .pipe(take(1))
+          .toPromise();
+      }
       if (this.todayOrders.orders) {
         this.allOrders = this.todayOrders.orders;
         this.setData();

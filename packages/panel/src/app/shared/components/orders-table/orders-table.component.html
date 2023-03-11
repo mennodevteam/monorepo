@@ -1,7 +1,9 @@
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
   <ng-container matColumnDef="qNumber">
-    <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let order">{{ order.qNumber }}</td>
+    <th mat-header-cell *matHeaderCellDef style="width: 64px"></th>
+    <td mat-cell *matCellDef="let order">
+      <b class="eng">{{ order.qNumber }}</b>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="customer">
