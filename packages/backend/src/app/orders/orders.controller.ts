@@ -43,10 +43,7 @@ export class OrdersController {
         dto.waiterId = user.id;
       }
     }
-
-    const order = await this.ordersService.dtoToOrder(dto);
-    const savedOrder = await this.ordersRepo.save(order);
-    return savedOrder;
+    return this.ordersService.addOrder(dto);
   }
 
   @Post('filter')
@@ -73,12 +70,24 @@ export class OrdersController {
   }
 
   @Get(':id')
-  getOrderDetails(@Param('id') id: string) {
+  @Roles(Role.App)
+  getOrderDetailsApp(@Param('id') id: string) {
     return this.ordersRepo.findOne({
       where: {
         id,
       },
-      relations: ['shop', 'shop.appConfig', 'items', 'customer', 'waiter', 'creator', 'reviews'],
+      relations: ['shop', 'shop.appConfig', 'items', 'customer', 'waiter', 'creator'],
+    });
+  }
+
+  @Get('panel/:id')
+  @Roles(Role.Panel)
+  getOrderDetailsPanel(@Param('id') id: string) {
+    return this.ordersRepo.findOne({
+      where: {
+        id,
+      },
+      relations: ['items', 'customer', 'waiter', 'creator', 'reviews', 'payment'],
     });
   }
 

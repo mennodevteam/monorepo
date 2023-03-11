@@ -80,4 +80,8 @@ export class OrdersComponent {
     const date = new Date(this.OS.today);
     this.dateControl.setValue(date);
   }
+
+  orderClicked(order: Order) {
+    this.router.navigateByUrl(`/orders/details/${order.id}`);
+  }
 }

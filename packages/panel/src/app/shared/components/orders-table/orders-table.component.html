@@ -28,7 +28,7 @@
           href="tel://{{ order.customer?.mobilePhone | phone }}"
         >
           {{ order.customer?.mobilePhone | phone }}
-      </a>
+        </a>
       </span>
     </td>
   </ng-container>
@@ -104,5 +104,5 @@
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="columns"></tr>
-  <tr mat-row *matRowDef="let row; columns: columns"></tr>
+  <tr mat-row *matRowDef="let row; columns: columns" class="clickable" (click)="orderClicked.emit(row)"></tr>
 </table>

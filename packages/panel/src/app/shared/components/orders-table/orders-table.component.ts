@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Member, Order, OrderState, OrderType, User } from '@menno/types';
@@ -18,10 +18,11 @@ export class OrdersTableComponent implements AfterViewInit {
   OrderType = OrderType;
   OrderState = OrderState;
   dataSource = new MatTableDataSource<Order>();
-
+  
   @Input() pageSizeOptions: number[];
   @Input() columns = ['qNumber', 'customer', 'type', 'total', 'state', 'date', 'actions'];
   @Input() orders: BehaviorSubject<Order[]>;
+  @Output() orderClicked = new EventEmitter<Order>();
 
   constructor(private dialog: MatDialog, private ordersService: OrdersService, private club: ClubService) {}
 

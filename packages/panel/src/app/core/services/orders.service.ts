@@ -19,6 +19,10 @@ export class OrdersService {
     return order;
   }
 
+  async getById(id: string) {
+    return this.http.get<Order>(`orders/panel/${id}`).toPromise();
+  }
+
   async changeState(order: Order, state: OrderState) {
     try {
       order._changingState = true;

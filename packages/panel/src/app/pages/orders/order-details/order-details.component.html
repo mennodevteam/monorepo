@@ -1,0 +1,249 @@
+<mat-toolbar class="page-toolbar mat-elevation-z3">
+  <button mat-icon-button goBack>
+    <i class="fa-regular fa-arrow-right"></i>
+  </button>
+  <h1>
+    {{ 'orderDetails.qNumber' | translate: { value: order?.qNumber } }}
+  </h1>
+</mat-toolbar>
+<main *ngIf="order">
+  <div class="form-page-layout">
+    <div class="static-col">
+      <mat-card class="form-theme">
+        <mat-card-content>
+          <mat-stepper
+            orientation="vertical"
+            [linear]="true"
+            #stepper
+            [selectedIndex]="selectedIndex"
+            class="order-state-stepper"
+          >
+            <mat-step>
+              <ng-template matStepLabel>{{ OrderState.Pending | orderState }}</ng-template>
+              <p class="gray-color">
+                {{ 'orderDetails.stateDescription.pending' | translate }}
+              </p>
+              <span spacer-2x></span>
+              <div class="row form-theme">
+                <button
+                  [disabled]="order._changingState"
+                  flex
+                  mat-flat-button
+                  color="primary"
+                  (click)="nextState()"
+                >
+                  <i class="fa-regular fa-check-circle"></i>
+                  {{ 'app.ok' | translate }}
+                </button>
+                <span spacer></span>
+                <button
+                  [disabled]="order._changingState"
+                  mat-stroked-button
+                  color="warn"
+                  (click)="removeOrder()"
+                >
+                  <i class="fa-regular fa-times-circle"></i>
+                  {{ 'app.remove' | translate }}
+                </button>
+              </div>
+            </mat-step>
+
+            <mat-step *ngIf="states.includes(OrderState.Ready)" state="done">
+              <ng-template matStepLabel>{{ OrderState.Processing | orderState }}</ng-template>
+              <p class="gray-color">
+                {{ 'orderDetails.stateDescription.processing' | translate }}
+              </p>
+              <span spacer-2x></span>
+              <div class="row form-theme">
+                <button flex mat-flat-button color="primary" (click)="nextState()">
+                  <i class="fa-regular fa-check-circle"></i>
+                  {{ 'app.next' | translate }}
+                </button>
+              </div>
+            </mat-step>
+
+            <mat-step *ngIf="states.includes(OrderState.Ready)" state="done">
+              <ng-template matStepLabel>{{ OrderState.Ready | orderState }}</ng-template>
+              <p class="gray-color">
+                {{ 'orderDetails.stateDescription.ready' | translate }}
+              </p>
+              <span spacer-2x></span>
+              <div class="row form-theme">
+                <button
+                  [disabled]="order._changingState"
+                  flex
+                  mat-flat-button
+                  color="primary"
+                  (click)="nextState()"
+                >
+                  <i class="fa-regular fa-check-circle"></i>
+                  {{ 'app.next' | translate }}
+                </button>
+              </div>
+            </mat-step>
+
+            <mat-step *ngIf="states.includes(OrderState.Shipping)" state="done">
+              <ng-template matStepLabel>{{ OrderState.Shipping | orderState }}</ng-template>
+              <p class="gray-color">
+                {{ 'orderDetails.stateDescription.shipping' | translate }}
+              </p>
+              <span spacer-2x></span>
+              <div class="row form-theme">
+                <button
+                  [disabled]="order._changingState"
+                  flex
+                  mat-flat-button
+                  color="primary"
+                  (click)="nextState()"
+                >
+                  <i class="fa-regular fa-check-circle"></i>
+                  {{ 'app.next' | translate }}
+                </button>
+              </div>
+            </mat-step>
+
+            <mat-step *ngIf="states.includes(OrderState.Completed)" state="done">
+              <ng-template matStepLabel>
+                {{ OrderState.Completed | orderState }}
+              </ng-template>
+              <p class="green-color">
+                <i class="fa-solid fa-check-circle"></i>
+                {{ 'orderDetails.stateDescription.completed' | translate }}
+              </p>
+            </mat-step>
+
+            <ng-template matStepperIcon="edit">
+              <i class="fa-regular fa-check fa-sm"></i>
+            </ng-template>
+            <ng-template matStepperIcon="done">
+              <i class="fa-regular fa-check fa-sm"></i>
+            </ng-template>
+          </mat-stepper>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="flex-col">
+      <header>
+        <mat-card class="info-card">
+          <mat-card-content>
+            <i mat-card-avatar class="fa-solid fa-clock"></i>
+            <!-- <b class="eng" style="font-size: 36px">5</b> -->
+            <div class="info-card__texts">
+              <p>{{ 'app.dateTime' | translate }}</p>
+              <h4>{{ order.createdAt | pdate }}</h4>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="info-card">
+          <mat-card-content [ngSwitch]="order.type">
+            <i *ngSwitchCase="OrderType.DineIn" mat-card-avatar class="fa-solid fa-mug-hot"></i>
+            <i *ngSwitchCase="OrderType.Takeaway" mat-card-avatar class="fa-solid fa-cup-togo"></i>
+            <i *ngSwitchCase="OrderType.Delivery" mat-card-avatar class="fa-solid fa-moped"></i>
+            <div class="info-card__texts">
+              <p>{{ 'ordersTable.type' | translate }}</p>
+              <h4>{{ order.type | orderType }}</h4>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="info-card">
+          <mat-card-content>
+            <i mat-card-avatar class="fa-solid fa-user"></i>
+            <div class="info-card__texts">
+              <ng-container *ngIf="order.customer">
+                <p *ngIf="order.customer">{{ User.fullName(order.customer) }}</p>
+                <button mat-button color="primary" class="eng">
+                  {{ order.customer.mobilePhone | phone }}
+                </button>
+              </ng-container>
+              <ng-container *ngIf="!order.customer">
+                <p>{{ 'ordersTable.customer' | translate }}</p>
+                <button mat-button color="primary">
+                  {{ 'ordersTable.addCustomer' | translate }}
+                </button>
+              </ng-container>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </header>
+      <mat-card>
+        <mat-card-content>
+          <h1 style="font-size: 18px">
+            {{ 'orderDetails.qNumber' | translate: { value: order.qNumber } }}
+          </h1>
+
+          <table mat-table [dataSource]="order.items">
+            <ng-container matColumnDef="row">
+              <th mat-header-cell *matHeaderCellDef>{{ 'app.row' | translate }}</th>
+              <td mat-cell *matCellDef="let element; let i = index" style="width: 40px">
+                <span *ngIf="!element.isAbstract">
+                  {{ i + 1 }}
+                </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef>{{ 'app.title' | translate }}</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.title }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="quantity">
+              <th mat-header-cell *matHeaderCellDef style="width: 60px">{{ 'app.count' | translate }}</th>
+              <td mat-cell *matCellDef="let element">
+                <span *ngIf="!element.isAbstract">{{ element.quantity }}</span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="price">
+              <th mat-header-cell *matHeaderCellDef style="width: 80px">{{ 'app.fee' | translate }}</th>
+              <td mat-cell *matCellDef="let element">
+                <span class="ltr" style="display: inline-block" *ngIf="!element.isAbstract">
+                  {{ element.price | number }}
+                </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="sum">
+              <th mat-header-cell *matHeaderCellDef style="width: 180px; text-align: end">
+                {{ 'app.sum' | translate }}
+              </th>
+              <td mat-cell *matCellDef="let element" style="text-align: end">
+                <span style="display: inline-block">
+                  {{ element.price * element.quantity | menuCurrency }}
+                </span>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+          <mat-list>
+            <mat-list-item class="total-row">
+              <h4 matListItemLine>
+                {{ 'app.totalPrice' | translate }}
+              </h4>
+              <b matListItemMeta>
+                <button
+                  mat-button
+                  color="warn"
+                  [disabled]="order._settlementing"
+                  *ngIf="!order.paymentType"
+                  (click)="settlement(order)"
+                >
+                  <i class="fa-regular fa-cash-register"></i>
+                  {{ 'orderDetails.settlement' | translate }}
+                </button>
+
+                <span *ngIf="order.paymentType" class="green-color">
+                  <i class="fa-solid fa-circle-check"></i>
+                  {{ order.paymentType | orderPayment }}
+                </span>
+                {{ order.totalPrice | menuCurrency }}
+              </b>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,62 @@
+main {
+  padding: 24px;
+  margin: auto;
+  max-width: 1280px;
+}
+
+header {
+  display: flex;
+  gap: 16px;
+
+  @media only screen and (max-width: 960px) {
+    flex-direction: column;
+  }
+}
+
+h1,
+h4,
+p {
+  margin: 0;
+}
+
+.info-card {
+  flex: 1;
+  @media only screen and (max-width: 960px) {
+    flex: none;
+  }
+
+  mat-card-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    i,
+    b {
+      margin: 0;
+      height: 48px;
+      min-width: 48px;
+      font-size: 24px;
+      text-align: center;
+      line-height: 48px;
+    }
+  }
+}
+
+.static-col {
+  width: 320px;
+}
+
+.total-row {
+  h4,
+  b {
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+  }
+}
+
+::ng-deep .order-state-stepper {
+  mat-step-header {
+    pointer-events: none !important;
+  }
+}

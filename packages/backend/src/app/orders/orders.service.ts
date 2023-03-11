@@ -15,7 +15,16 @@ import {
 } from '@menno/types';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, FindOptionsWhere, In, IsNull, LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
+import {
+  Between,
+  FindOptionsWhere,
+  In,
+  IsNull,
+  LessThanOrEqual,
+  MoreThanOrEqual,
+  Not,
+  Repository,
+} from 'typeorm';
 
 @Injectable()
 export class OrdersService {
@@ -63,6 +72,24 @@ export class OrdersService {
 
     order.totalPrice = OrderDto.total(dto, menu);
     return order;
+  }
+
+  async addOrder(dto: OrderDto) {
+    const order = await this.dtoToOrder(dto);
+
+    const lastOrder = await this.ordersRepo.findOne({
+      where: {
+        shop: { id: dto.shopId },
+        qNumber: Not(IsNull()),
+      },
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+
+    if (lastOrder) order.qNumber = Number(lastOrder.qNumber) + 1;
+
+    return await this.ordersRepo.save(order);
   }
 
   async filter(dto: FilterOrderDto) {
@@ -118,7 +145,10 @@ export class OrdersService {
   }
 
   async manualSettlement(dto: ManualSettlementDto): Promise<Order> {
-    const order = await this.ordersRepo.findOne({ where: { id: dto.orderId }, relations: ['shop', 'items'] });
+    const order = await this.ordersRepo.findOne({
+      where: { id: dto.orderId },
+      relations: ['shop', 'items.product'],
+    });
     if (order && order.items.length > 0) {
       const perviousManualCost = order.items.find((x) => x.title === MANUAL_COST_TITLE && x.isAbstract);
       if (perviousManualCost) {
@@ -143,7 +173,7 @@ export class OrdersService {
         isAbstract: true,
         quantity: 1,
         price: Math.abs(dto.manualDiscount) * -1,
-        title: 'manualDiscount',
+        title: MANUAL_DISCOUNT_TITLE,
       });
     }
 
@@ -153,7 +183,7 @@ export class OrdersService {
         isAbstract: true,
         quantity: 1,
         price: Math.abs(dto.manualCost),
-        title: 'manualCost',
+        title: MANUAL_COST_TITLE,
       });
     }
 
@@ -175,11 +205,13 @@ export class OrdersService {
       // await this.clubMicroservice.send('walletLogs/save', walletLogs).toPromise();
     }
 
-    await this.ordersRepo.update(order.id, {
+    return this.ordersRepo.save({
+      id: order.id,
       paymentType: dto.type,
+      items: order.items,
+      totalPrice: order.totalPrice,
       details: { ...order.details, posPayed: dto.posPayed },
     });
-    return order;
   }
 
   async setCustomer(orderId: string, memberId: string) {
@@ -190,7 +222,7 @@ export class OrdersService {
       await this.ordersRepo.update(order.id, {
         customer: { id: member.user.id },
       });
-      order.customer = member.user;
-      return order;
+    order.customer = member.user;
+    return order;
   }
 }

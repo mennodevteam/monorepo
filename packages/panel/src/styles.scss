@@ -61,6 +61,14 @@ textarea {
   display: none !important;
 }
 
+.gray-color {
+  color: $gray;
+}
+
+.green-color {
+  color: $green;
+}
+
 menu {
   margin: 0;
   padding: 0;
@@ -129,16 +137,20 @@ i[empty-state-icon] {
 .form-page-layout {
   display: flex;
   flex-direction: row;
+  gap: 16px;
 
   .static-col {
     width: 400px;
     flex: none;
     display: flex;
     flex-direction: column;
+    gap: 16px;
   }
 
   .flex-col {
+    display: flex;
     flex: 1;
+    gap: 16px;
     flex-direction: column;
   }
 
@@ -187,6 +199,14 @@ i[empty-state-icon] {
   margin-bottom: 24px;
 }
 
+.clickable {
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.01) !important;
+  }
+}
+
 .ltr {
   direction: ltr;
   text-align: left !important;
@@ -216,8 +236,10 @@ i[empty-state-icon] {
   letter-spacing: normal !important;
 }
 
+.mat-stepper-vertical,
+.mat-stepper-horizontal,
 .mat-calendar {
-  font-family: inherit;
+  font-family: inherit !important;
 }
 
 [mat-icon-button] {
@@ -237,6 +259,8 @@ i[empty-state-icon] {
 
 mat-card {
   border-radius: 8px !important;
+  box-shadow: none !important;
+  border: $border !important;
 
   mat-toolbar {
     width: -webkit-fill-available;
