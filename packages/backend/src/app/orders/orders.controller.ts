@@ -45,7 +45,6 @@ export class OrdersController {
     }
 
     const order = await this.ordersService.dtoToOrder(dto);
-    console.log(order);
     const savedOrder = await this.ordersRepo.save(order);
     return savedOrder;
   }
@@ -101,5 +100,10 @@ export class OrdersController {
   @Post('manualSettlement')
   async manualSettlement(@Body() body: ManualSettlementDto, @LoginUser() user: AuthPayload): Promise<Order> {
     return this.ordersService.manualSettlement(body);
+  }
+
+  @Get('setCustomer/:orderId/:memberId')
+  async setCustomer(@Param('orderId') orderId: string, @Param('memberId') memberId: string) {
+    return this.ordersService.setCustomer(orderId, memberId);
   }
 }

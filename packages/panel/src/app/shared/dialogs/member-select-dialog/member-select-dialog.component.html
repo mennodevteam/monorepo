@@ -1,0 +1,33 @@
+<mat-dialog-content>
+  <mat-toolbar>
+    <form (ngSubmit)="searchUser()">
+      <input
+        #queryInput
+        [(ngModel)]="query"
+        placeholder="{{ 'memberSelectDialog.placeholder' | translate }}"
+        [ngModelOptions]="{ standalone: true }"
+        [disabled]="searchingUser"
+      />
+      <span spacer></span>
+      <button mat-icon-button color="primary" type="submit" [disabled]="searchingUser">
+        <i *ngIf="!searchingUser" class="fas fa-search"></i>
+        <i *ngIf="searchingUser" class="fad fa-spinner-third fa-spin"></i>
+      </button>
+      <button mat-icon-button color="primary" type="button" (click)="newMember()">
+        <i class="far fa-plus-circle"></i>
+      </button>
+    </form>
+  </mat-toolbar>
+  <mat-divider></mat-divider>
+  <mat-nav-list dense>
+    <a mat-list-item *ngFor="let member of filteredMembers | async" (click)="selectMember(member)">
+      <i matListItemIcon class="fa-solid fa-user-hair{{ member.user.gender ? '-long' : '' }}"></i>
+      <h3 matListItemTitle>{{ User.fullName(member.user) }}</h3>
+      <span matListItemMeta>{{ member.user.mobilePhone }}</span>
+      <mat-divider></mat-divider>
+    </a>
+  </mat-nav-list>
+  <p class="no-data" *ngIf="(filteredMembers | async)?.length === 0 && !searchingUser">
+    {{ 'memberSelectDialog.noData' | translate }}
+  </p>
+</mat-dialog-content>

@@ -4,7 +4,16 @@ table {
   box-shadow: none;
 }
 
+.add-customer {
+  background-color: $gray-l2;
+  border-radius: 24px;
+  height: 32px;
+  font-size: 12px;
+}
+
 .state-button {
+  border-radius: 24px;
+  height: 32px;
   &.red {
     background-color: lighten($red, 35);
     color: $red;

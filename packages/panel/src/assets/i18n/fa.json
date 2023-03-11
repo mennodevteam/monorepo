@@ -201,6 +201,7 @@
   },
   "ordersTable": {
     "customer": "مشتری",
+    "addCustomer": "ثبت مشتری",
     "type": "نوع",
     "state": "وضعیت",
     "total": "قیمت کل",
@@ -225,6 +226,29 @@
     "noteDialogTitle": "توضیحات سفارش",
     "noteDialogLabel": "توضیحات",
     "noteDialogPlaceholder": "متن وارد شده چاپ خواهد شد"
+  },
+  "memberSelectDialog": {
+    "noData": "هیچ عضوی یافت نشد",
+    "placeholder": "جستجوی نام، تلفن یا کارت باشگاه..."
+  },
+  "addMemberDialog": {
+    "newTitle": "افزودن عضو",
+    "firstName": "نام",
+    "lastName": "نام خانوادگی",
+    "gender": "جنسیت",
+    "maleGender": "مرد",
+    "femaleGender": "زن",
+    "mobile": "تلفن همراه",
+    "mobileHint": "همراه با صفر مثال: 09351234567",
+    "localPhone": "تلفن ثابت",
+    "instagram": "اینستاگرام",
+    "job": "شغل",
+    "birthDate": "تاریخ تولد",
+    "marriageDate": "تاریخ ازدواج",
+    "publicKey": "کارت باشگاه",
+    "existPhoneError": "تلفن همراه وارد شده تکراری و مطعلق به {{value}} است",
+    "existPublicKeyError": "کارت باشگاه وارد شده تکراری و مطعلق به {{value}} است",
+    "address": "آدرس"
   },
   "settlementDialog": {
     "title": "تسویه کردن فیش شماره {{value}}",

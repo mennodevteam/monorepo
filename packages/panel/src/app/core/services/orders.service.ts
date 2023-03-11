@@ -47,4 +47,19 @@ export class OrdersService {
       order._settlementing = false;
     }
   }
+
+  async setCustomer(order: Order, memberId: string): Promise<Order | undefined> {
+    order._settingCustomer = true;
+    try {
+      const savedOrder = await this.http.get<Order>(`orders/setCustomer/${order.id}/${memberId}`).toPromise();
+      if (savedOrder) {
+        order.customer = savedOrder.customer;
+        return order;
+      }
+    } catch (error) {
+    } finally {
+      order._settingCustomer = false;
+    }
+    return;
+  }
 }

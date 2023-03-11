@@ -6,27 +6,24 @@ import {
   FilterMemberDto,
   Member,
   NewSmsDto,
+  Shop,
   User,
 } from '@menno/types';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  Between,
-  FindOptionsWhere,
-  In,
-  LessThan,
-  LessThanOrEqual,
-  MoreThanOrEqual,
-  Repository,
-} from 'typeorm';
+import { Between, FindOptionsWhere, In, LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import * as moment from 'jalali-moment';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { SmsService } from '../sms/sms.service';
+import { OldTypes } from '@menno/old-types';
+import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class ClubsService {
   constructor(
     private smsService: SmsService,
+    private http: HttpService,
+    @InjectRepository(Shop) private shopsRepo: Repository<Shop>,
     @InjectRepository(Club) private clubsRepo: Repository<Club>,
     @InjectRepository(Member) private membersRepo: Repository<Member>,
     @InjectRepository(DiscountCoupon) private discountCouponsRepo: Repository<DiscountCoupon>,
@@ -131,13 +128,9 @@ export class ClubsService {
     switch (filter.sortBy) {
       case 'credit':
         if (filter.sortType == 'ASC') {
-          members.sort(
-            (a, b) => (a.wallet ? a.wallet.charge : 0) - (b.wallet ? b.wallet.charge : 0)
-          );
+          members.sort((a, b) => (a.wallet ? a.wallet.charge : 0) - (b.wallet ? b.wallet.charge : 0));
         } else {
-          members.sort(
-            (b, a) => (a.wallet ? a.wallet.charge : 0) - (b.wallet ? b.wallet.charge : 0)
-          );
+          members.sort((b, a) => (a.wallet ? a.wallet.charge : 0) - (b.wallet ? b.wallet.charge : 0));
         }
         break;
       case 'gem':
@@ -169,16 +162,11 @@ export class ClubsService {
         }
         break;
     }
-    const res = members.slice(
-      filter.skip,
-      filter.take ? (filter.skip || 0) + filter.take : undefined
-    );
+    const res = members.slice(filter.skip, filter.take ? (filter.skip || 0) + filter.take : undefined);
     return [res, members.length];
   }
 
-  async filterDiscountCoupons(
-    discountsCouponFilter: FilterDiscountCouponsDto
-  ): Promise<DiscountCoupon[]> {
+  async filterDiscountCoupons(discountsCouponFilter: FilterDiscountCouponsDto): Promise<DiscountCoupon[]> {
     let couponUsage: DiscountUsage[];
     if (discountsCouponFilter.memberId) {
       couponUsage = await this.discountCouponUsagesRepo.find({
@@ -267,11 +255,7 @@ export class ClubsService {
         }
 
         const pDate = moment(date).locale('fa');
-        const anniversaryMembers = await this.filterMembersAnniversary(
-          c.id,
-          pDate.month() + 1,
-          pDate.date()
-        );
+        const anniversaryMembers = await this.filterMembersAnniversary(c.id, pDate.month() + 1, pDate.date());
 
         for (const m of anniversaryMembers) {
           if (
@@ -315,5 +299,49 @@ export class ClubsService {
         }
       }
     }
+  }
+
+  async syncClub(code: string) {
+    const shop = await this.shopsRepo.findOneBy({ code });
+    if (!shop) return;
+    const res = await this.http
+      .get<{ club: OldTypes.Club; members: [OldTypes.Member[], number] }>(
+        `https://new-admin-api.menno.ir/shops/club-data/xmje/${code}`
+      )
+      .toPromise();
+
+    const { members, club } = res.data;
+    const newClub = await this.clubsRepo.save({
+      id: club.id,
+      createdAt: club.createdAt,
+      title: shop.title,
+    });
+
+    await this.shopsRepo.update(shop.id, {
+      club: { id: club.id },
+    });
+
+    members[0].forEach((member) => {
+      member.club = { id: club.id } as OldTypes.Club;
+    });
+
+    const newMembers = await this.membersRepo.save(
+      members[0].map((m) => {
+        return <Member>{
+          club: { id: club.id },
+          description: m.description,
+          extraInfo: m.extraInfo,
+          gem: m.gem,
+          joinedAt: m.joinedAt,
+          id: m.id,
+          publicKey: m.publicKey,
+          star: m.star,
+          user: m.user,
+          wallet: m.wallet,
+        };
+      })
+    );
+
+    return { club, members: newMembers };
   }
 }

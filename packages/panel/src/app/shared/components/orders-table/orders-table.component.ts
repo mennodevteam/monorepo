@@ -1,9 +1,11 @@
 import { AfterViewInit, Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { Order, OrderState, OrderType, User } from '@menno/types';
+import { Member, Order, OrderState, OrderType, User } from '@menno/types';
 import { BehaviorSubject } from 'rxjs';
+import { ClubService } from '../../../core/services/club.service';
 import { OrdersService } from '../../../core/services/orders.service';
+import { MemberSelectDialogComponent } from '../../dialogs/member-select-dialog/member-select-dialog.component';
 import { SettlementDialogComponent } from '../../dialogs/settlement-dialog/settlement-dialog.component';
 
 @Component({
@@ -21,7 +23,7 @@ export class OrdersTableComponent implements AfterViewInit {
   @Input() columns = ['qNumber', 'customer', 'type', 'total', 'state', 'date', 'actions'];
   @Input() orders: BehaviorSubject<Order[]>;
 
-  constructor(private dialog: MatDialog, private ordersService: OrdersService) {}
+  constructor(private dialog: MatDialog, private ordersService: OrdersService, private club: ClubService) {}
 
   ngAfterViewInit() {
     this.orders.subscribe((orders) => {
@@ -46,6 +48,14 @@ export class OrdersTableComponent implements AfterViewInit {
 
     if (newState != undefined) {
       this.ordersService.changeState(order, newState);
+    }
+  }
+
+  async openSelectMember(order: Order) {
+    if (order.deletedAt || order.state == OrderState.Canceled) return;
+    let member: Member = await this.dialog.open(MemberSelectDialogComponent).afterClosed().toPromise();
+    if (member) {
+      await this.ordersService.setCustomer(order, member.id);
     }
   }
 

@@ -5,6 +5,7 @@ import { AppConfigsModule } from './app-configs/app-configs.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { ClubsModule } from './clubs/clubs.module';
 import { SchemasModule } from './core/schemas.module';
 import { FilesModule } from './files/files.module';
 import { MenusModule } from './menus/menus.module';
@@ -12,6 +13,7 @@ import { OrdersModule } from './orders/orders.module';
 import { PaymentsModule } from './payments/payments.module';
 import { RegionsModule } from './regions/regions.module';
 import { ShopsModule } from './shops/shops.module';
+import { SmsModule } from './sms/sms.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -33,6 +35,8 @@ import { UsersModule } from './users/users.module';
     MenusModule,
     FilesModule,
     RegionsModule,
+    ClubsModule,
+    SmsModule,
     OrdersModule,
     PaymentsModule,
     AppConfigsModule,

@@ -48,6 +48,7 @@ export class Order {
   _groupOffer?: Order[];
   _changingState?: boolean;
   _settlementing?: boolean;
+  _settingCustomer?: boolean;
   createdAt: Date;
   deletedAt: Date;
 

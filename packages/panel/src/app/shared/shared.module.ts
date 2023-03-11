@@ -49,6 +49,8 @@ import { OrderStatePipe } from './pipes/order-state.pipe';
 import { OrderPaymentPipe } from './pipes/order-payment.pipe';
 import { ManualDiscountAndCostDialogComponent } from './dialogs/manual-discount-and-cost-dialog/manual-discount-and-cost-dialog.component';
 import { SettlementDialogComponent } from './dialogs/settlement-dialog/settlement-dialog.component';
+import { MemberSelectDialogComponent } from './dialogs/member-select-dialog/member-select-dialog.component';
+import { PhonePipe } from './pipes/phone.pipe';
 
 @NgModule({
   declarations: [
@@ -59,6 +61,7 @@ import { SettlementDialogComponent } from './dialogs/settlement-dialog/settlemen
     SanitizeUrlPipe,
     MenuCurrencyPipe,
     PdatePipe,
+    PhonePipe,
     SelectDialogComponent,
     AlertDialogComponent,
     ImageLoaderDirective,
@@ -68,7 +71,9 @@ import { SettlementDialogComponent } from './dialogs/settlement-dialog/settlemen
     OrderStatePipe,
     OrderPaymentPipe,
     ManualDiscountAndCostDialogComponent,
+    MemberSelectDialogComponent,
     SettlementDialogComponent,
+    PhonePipe,
   ],
   imports: [
     CommonModule,
@@ -115,9 +120,11 @@ import { SettlementDialogComponent } from './dialogs/settlement-dialog/settlemen
     OrderStatePipe,
     OrderPaymentPipe,
     PdatePipe,
+    PhonePipe,
     AlertDialogComponent,
     SelectDialogComponent,
     ManualDiscountAndCostDialogComponent,
+    MemberSelectDialogComponent,
     SettlementDialogComponent,
     TranslateModule,
     ImageLoaderDirective,

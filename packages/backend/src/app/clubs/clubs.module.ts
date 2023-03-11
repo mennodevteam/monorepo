@@ -2,16 +2,17 @@ import { Module } from '@nestjs/common';
 import { ClubsService } from './clubs.service';
 import { ClubsController } from './clubs.controller';
 import { ScheduleModule } from '@nestjs/schedule';
-import { AuthService } from '../auth/auth.service';
-import { SmsService } from '../sms/sms.service';
 import { DiscountsCouponController } from './discounts-coupon.controller';
 import { MembersController } from './members.controller';
 import { MissionsController } from './missions.controller';
 import { TagsController } from './tags.controller';
 import { SchemasModule } from '../core/schemas.module';
+import { AuthModule } from '../auth/auth.module';
+import { SmsModule } from '../sms/sms.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [SchemasModule, AuthService, SmsService, ScheduleModule.forRoot()],
+  imports: [SchemasModule, AuthModule, SmsModule, HttpModule, ScheduleModule.forRoot()],
   providers: [ClubsService],
   controllers: [
     ClubsController,

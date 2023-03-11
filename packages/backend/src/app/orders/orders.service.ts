@@ -20,6 +20,8 @@ import { Between, FindOptionsWhere, In, IsNull, LessThanOrEqual, MoreThanOrEqual
 @Injectable()
 export class OrdersService {
   constructor(
+    @InjectRepository(Member)
+    private membersRepo: Repository<Member>,
     @InjectRepository(Shop)
     private shopsRepo: Repository<Shop>,
     @InjectRepository(Order)
@@ -178,5 +180,17 @@ export class OrdersService {
       details: { ...order.details, posPayed: dto.posPayed },
     });
     return order;
+  }
+
+  async setCustomer(orderId: string, memberId: string) {
+    const order = await this.ordersRepo.findOne({ where: { id: orderId }, relations: ['customer'] });
+    if (order?.customer) throw new HttpException('order has customer', HttpStatus.CONFLICT);
+    const member = await this.membersRepo.findOne({ where: { id: memberId }, relations: ['user'] });
+    if (order && member)
+      await this.ordersRepo.update(order.id, {
+        customer: { id: member.user.id },
+      });
+      order.customer = member.user;
+      return order;
   }
 }
