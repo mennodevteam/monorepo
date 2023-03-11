@@ -1,0 +1,107 @@
+<mat-dialog-content *ngIf="order">
+  <mat-nav-list>
+    <mat-list-item>
+      <p matListItemTitle>{{ 'app.sum' | translate }}</p>
+      <span matListItemMeta>{{ sum | menuCurrency }}</span>
+    </mat-list-item>
+    <mat-list-item
+      *ngFor="let item of abstractItems"
+      [ngSwitch]="item.title"
+      [hidden]="(item.title === MANUAL_DISCOUNT_TITLE || item.title === MANUAL_COST_TITLE) && item.isAbstract"
+    >
+      <p matListItemTitle *ngSwitchDefault>{{ item.title }}</p>
+      <span matListItemMeta>{{ item.price | menuCurrency }}</span>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item (click)="openDiscountAndCostDialog(manualCost)">
+      <p matListItemTitle>{{ 'settlementDialog.manualCost' | translate }}</p>
+      <span matListItemMeta *ngIf="manualCost.price">{{ manualCost.price | menuCurrency }}</span>
+      <button
+        matListItemMeta
+        mat-icon-button
+        stopPropagation
+        color="warn"
+        tabindex="-1"
+        *ngIf="manualCost.price"
+        (click)="removeManualCost()"
+      >
+        <i class="fas fa-times-circle"></i>
+      </button>
+      <button matListItemMeta mat-icon-button color="primary" tabindex="-1" *ngIf="!manualCost.price">
+        <i class="far fa-pencil-alt fa-sm"></i>
+      </button>
+    </mat-list-item>
+    <mat-list-item (click)="openDiscountAndCostDialog(manualDiscount)">
+      <p matListItemTitle>{{ 'settlementDialog.manualDiscount' | translate }}</p>
+      <span matListItemMeta *ngIf="manualDiscount.price">{{ manualDiscount.price | menuCurrency }}</span>
+      <button
+        matListItemMeta
+        mat-icon-button
+        stopPropagation
+        color="warn"
+        tabindex="-1"
+        *ngIf="manualDiscount.price"
+        (click)="removeManualDiscount()"
+      >
+        <i class="fas fa-times-circle"></i>
+      </button>
+      <button matListItemMeta mat-icon-button color="primary" tabindex="-1" *ngIf="!manualDiscount.price">
+        <i class="far fa-pencil-alt fa-sm"></i>
+      </button>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <b matListItemTitle> {{ 'app.totalPrice' | translate }} </b>
+      <b matListItemMeta>
+        <span *ngIf="manualDiscount.price" class="real-price">{{ order.totalPrice | menuCurrency }}</span>
+        {{ totalPrice | menuCurrency }}
+      </b>
+    </mat-list-item>
+    <mat-list-item *ngIf="member" (click)="useWallet = !useWallet">
+      <p matLine [class.red]="!member.wallet || member.wallet.charge < 0">
+        {{ 'settlementDialog.useWallet' | translate: { value: (member.wallet?.charge || 0 | menuCurrency) } }}
+      </p>
+      <i class="fas fa-toggle-off gray" *ngIf="!useWallet"></i>
+      <i class="fas fa-toggle-on blue" *ngIf="useWallet"></i>
+    </mat-list-item>
+  </mat-nav-list>
+  <mat-divider></mat-divider>
+  <div class="payment-method" *ngIf="!useWallet">
+    <mat-form-field *ngFor="let pos of posList; let i = index" appearance="fill" (click)="clickCashType(i)">
+      <mat-label>{{ pos }}</mat-label>
+      <input
+        matInput
+        type="number"
+        autocomplete="off"
+        [(ngModel)]="posValues[i]"
+        [ngModelOptions]="{ standalone: true }"
+        step="1000"
+        [max]="totalPrice"
+        [min]="0"
+      />
+      <i matSuffix class="fas fa-credit-card-blank"></i>
+      <mat-hint>{{ posValues[i] | menuCurrency }}</mat-hint>
+    </mat-form-field>
+    <mat-form-field appearance="fill" (click)="clickCashType()">
+      <mat-label>{{ 'settlementDialog.cash' | translate }}</mat-label>
+      <input
+        matInput
+        type="number"
+        autocomplete="off"
+        readonly
+        [ngModel]="cashValue"
+        [ngModelOptions]="{ standalone: true }"
+      />
+      <i matSuffix class="fas fa-money-bill-wave"></i>
+      <mat-hint>{{ cashValue | menuCurrency }}</mat-hint>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="save()" color="primary">
+    {{ 'app.save' | translate }}
+  </button>
+  <button mat-button mat-dialog-close>
+    {{ 'app.cancel' | translate }}
+  </button>
+</mat-dialog-actions>

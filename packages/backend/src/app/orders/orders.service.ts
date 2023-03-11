@@ -1,4 +1,18 @@
-import { FilterOrderDto, Menu, Order, OrderDto, OrderItem, Product, Shop, User } from '@menno/types';
+import {
+  FilterOrderDto,
+  ManualSettlementDto,
+  MANUAL_COST_TITLE,
+  MANUAL_DISCOUNT_TITLE,
+  Member,
+  Menu,
+  Order,
+  OrderDto,
+  OrderItem,
+  OrderPaymentType,
+  Product,
+  Shop,
+  User,
+} from '@menno/types';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, FindOptionsWhere, In, IsNull, LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
@@ -99,5 +113,70 @@ export class OrdersService {
     }
 
     return orders;
+  }
+
+  async manualSettlement(dto: ManualSettlementDto): Promise<Order> {
+    const order = await this.ordersRepo.findOne({ where: { id: dto.orderId }, relations: ['shop', 'items'] });
+    if (order && order.items.length > 0) {
+      const perviousManualCost = order.items.find((x) => x.title === MANUAL_COST_TITLE && x.isAbstract);
+      if (perviousManualCost) {
+        order.totalPrice -= perviousManualCost.price;
+        const index = order.items.findIndex((x) => x.id === perviousManualCost.id);
+        order.items.splice(index, 1);
+      }
+
+      const perviousManualDiscount = order.items.find(
+        (x) => x.title === MANUAL_DISCOUNT_TITLE && x.isAbstract
+      );
+      if (perviousManualDiscount) {
+        order.totalPrice += Math.abs(perviousManualDiscount.price);
+        const index = order.items.findIndex((x) => x.id === perviousManualDiscount.id);
+        order.items.splice(index, 1);
+      }
+    }
+
+    if (dto.manualDiscount) {
+      order.totalPrice = order.totalPrice - Math.abs(dto.manualDiscount);
+      order.items.push(<OrderItem>{
+        isAbstract: true,
+        quantity: 1,
+        price: Math.abs(dto.manualDiscount) * -1,
+        title: 'manualDiscount',
+      });
+    }
+
+    if (dto.manualCost) {
+      order.totalPrice = order.totalPrice + Math.abs(dto.manualCost);
+      order.items.push(<OrderItem>{
+        isAbstract: true,
+        quantity: 1,
+        price: Math.abs(dto.manualCost),
+        title: 'manualCost',
+      });
+    }
+
+    if (dto.type === OrderPaymentType.ClubWallet) {
+      // const member: Member = await this.clubMicroservice.send('members/filter', <FilterMemberDto>
+      //     { userId: order.customerId, clubId: order.shop.clubId }).toPromise();
+      // let wallet: Wallet;
+      // wallet = await this.clubMicroservice.send('wallets/findWallet', member[0][0].id).toPromise()
+      // member[0][0].wallet = wallet
+      // let club: Club = await this.clubMicroservice.send('clubs/findOne', order.shop.clubId).toPromise();
+      // if ((member[0][0].wallet.charge - Math.abs(order.totalPrice)) < (club.config.minMemberWalletCharge || 0)) {
+      //     throw new RpcException({ code: HttpStatus.FORBIDDEN, message: 'The purchase amount is more than the amount of the wallet' })
+      // }
+      // let walletLogs = new WalletLogs();
+      // walletLogs.user = order.creatorId;
+      // walletLogs.amount = - Math.abs(order.totalPrice);
+      // walletLogs.type = WalletLogType.PayOrder;
+      // walletLogs.wallet = wallet;
+      // await this.clubMicroservice.send('walletLogs/save', walletLogs).toPromise();
+    }
+
+    await this.ordersRepo.update(order.id, {
+      paymentType: dto.type,
+      details: { ...order.details, posPayed: dto.posPayed },
+    });
+    return order;
   }
 }

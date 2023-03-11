@@ -1,0 +1,30 @@
+@import 'theme';
+
+mat-dialog-content {
+    min-width: 280px;
+
+    .real-price {
+        color: $gray;
+        text-decoration: line-through;
+        font-weight: 200;
+        font-size: 13px;
+        margin: 0 8px;
+        display: inline-block;
+    }
+}
+
+.mat-chip {
+    min-height: 24px;
+    font-size: 12px;
+}
+
+.payment-method {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    .mat-form-field {
+        margin: 8px 4px;
+        width: 140px;
+        flex: none;
+    }
+}

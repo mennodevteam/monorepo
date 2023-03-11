@@ -10,6 +10,7 @@ export * from './menu-cost.schema';
 export * from './menu.schema';
 export * from './mission-complete.schema';
 export * from './mission.schema';
+export * from './order-customer-message.schema';
 export * from './order-item.schema';
 export * from './order-review.schema';
 export * from './order.schema';

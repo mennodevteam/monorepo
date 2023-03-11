@@ -48,6 +48,7 @@ import { OrderTypePipe } from './pipes/order-type.pipe';
 import { OrderStatePipe } from './pipes/order-state.pipe';
 import { OrderPaymentPipe } from './pipes/order-payment.pipe';
 import { ManualDiscountAndCostDialogComponent } from './dialogs/manual-discount-and-cost-dialog/manual-discount-and-cost-dialog.component';
+import { SettlementDialogComponent } from './dialogs/settlement-dialog/settlement-dialog.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { ManualDiscountAndCostDialogComponent } from './dialogs/manual-discount-
     OrderStatePipe,
     OrderPaymentPipe,
     ManualDiscountAndCostDialogComponent,
+    SettlementDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -116,6 +118,7 @@ import { ManualDiscountAndCostDialogComponent } from './dialogs/manual-discount-
     AlertDialogComponent,
     SelectDialogComponent,
     ManualDiscountAndCostDialogComponent,
+    SettlementDialogComponent,
     TranslateModule,
     ImageLoaderDirective,
     FormBuilderComponent,

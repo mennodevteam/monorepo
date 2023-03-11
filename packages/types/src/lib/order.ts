@@ -47,44 +47,28 @@ export class Order {
   details: OrderDetails;
   _groupOffer?: Order[];
   _changingState?: boolean;
+  _settlementing?: boolean;
   createdAt: Date;
   deletedAt: Date;
 
-  static sum(items: OrderItem[]) {
+  static sum(order: Order) {
     let sum = 0;
-    const productItems = items.filter((x) => !x.isAbstract);
+    const productItems = order.items.filter((x) => !x.isAbstract);
     for (const i of productItems) {
       sum += i.quantity * i.price;
     }
     return sum;
   }
 
-  static abstractItems(menu: Menu, items: OrderItem[]) {
-    const costs = menu?.costs?.filter((x) => !x.showOnItem) || [];
-    const abstractItems: OrderItem[] = [];
-    const sum = this.sum(items);
-    for (const c of costs) {
-      let price = 0;
-      if (c.fixedCost) price += c.fixedCost;
-      if (c.percentageCost) {
-        const dis = (sum * c.percentageCost) / 100;
-        price += Math.floor(dis / 500) * 500;
-      }
-      abstractItems.push(<OrderItem>{
-        isAbstract: true,
-        quantity: 1,
-        price,
-        title: c.title,
-      });
+  static abstractItems(Order: Order) {
+    try {
+      return Order.items.filter((x) => !x.isAbstract);
+    } catch (error) {
+      return [];
     }
-    return abstractItems;
   }
 
-  static total(menu: Menu, items: OrderItem[]) {
-    let total = this.sum(items);
-    for (const i of this.abstractItems(menu, items)) {
-      total += i.price;
-    }
-    return Math.max(total, 0);
+  static total(order: Order) {
+    return Math.max(order.totalPrice, 0);
   }
 }

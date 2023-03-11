@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Order, OrderState, OrderType, User } from '@menno/types';
 import { BehaviorSubject } from 'rxjs';
 import { OrdersService } from '../../../core/services/orders.service';
+import { SettlementDialogComponent } from '../../dialogs/settlement-dialog/settlement-dialog.component';
 
 @Component({
   selector: 'orders-table',
@@ -46,5 +47,13 @@ export class OrdersTableComponent implements AfterViewInit {
     if (newState != undefined) {
       this.ordersService.changeState(order, newState);
     }
+  }
+
+  settlement(order: Order) {
+    this.dialog.open(SettlementDialogComponent, {
+      data: {
+        order,
+      },
+    });
   }
 }

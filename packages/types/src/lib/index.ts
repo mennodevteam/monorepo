@@ -33,6 +33,7 @@ export * from './order-item';
 export * from './order-payment-type.enum';
 export * from './order-review';
 export * from './order-state.enum';
+export * from './order-customer-message';
 export * from './order-type.enum';
 export * from './order.dto';
 export * from './order';

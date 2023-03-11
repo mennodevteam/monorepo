@@ -1,4 +1,4 @@
-import { FilterOrderDto, Order, OrderDto, User } from '@menno/types';
+import { FilterOrderDto, ManualSettlementDto, Order, OrderDto, User } from '@menno/types';
 import {
   Body,
   Controller,
@@ -96,5 +96,10 @@ export class OrdersController {
     if (!order.waiter) update.waiter = { id: user.id } as User;
     await this.ordersRepo.update(order.id, update);
     return { ...order, ...update };
+  }
+
+  @Post('manualSettlement')
+  async manualSettlement(@Body() body: ManualSettlementDto, @LoginUser() user: AuthPayload): Promise<Order> {
+    return this.ordersService.manualSettlement(body);
   }
 }

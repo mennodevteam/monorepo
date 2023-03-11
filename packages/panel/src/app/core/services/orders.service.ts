@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FilterOrderDto, Order, OrderDto, OrderState } from '@menno/types';
+import { FilterOrderDto, ManualSettlementDto, Order, OrderDto, OrderState } from '@menno/types';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -28,6 +28,23 @@ export class OrdersService {
     } catch (error) {
     } finally {
       order._changingState = false;
+    }
+  }
+
+  async settlement(order: Order, dto: ManualSettlementDto): Promise<void> {
+    try {
+      order._settlementing = true;
+      const res = await this.http.post<Order>(`orders/manualSettlement`, dto).toPromise();
+      if (res) {
+        order.paymentType = dto.type;
+        order.details.posPayed = dto.posPayed;
+        order.items = res.items;
+        order.totalPrice = res.totalPrice;
+      }
+    } catch (error: any) {
+      throw new Error(error);
+    } finally {
+      order._settlementing = false;
     }
   }
 }

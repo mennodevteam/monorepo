@@ -85,9 +85,9 @@
   },
   "orderPaymentType": {
     "notPayed": "پرداخت نشده",
-    "online": "آنلاین پرداخت‌شده",
-    "cash": "صندوق‌ پرداخت‌شده",
-    "clubWallet": "اعتباری پرداخت‌شده"
+    "online": "آنلاین",
+    "cash": "صندوق‌",
+    "clubWallet": "اعتباری"
   },
   "productTable": {
     "image": "عکس",
@@ -225,5 +225,21 @@
     "noteDialogTitle": "توضیحات سفارش",
     "noteDialogLabel": "توضیحات",
     "noteDialogPlaceholder": "متن وارد شده چاپ خواهد شد"
+  },
+  "settlementDialog": {
+    "title": "تسویه کردن فیش شماره {{value}}",
+    "pos": "دستگاه پوز",
+    "cash": "نقد",
+    "manualDiscount": "تخفیف دستی",
+    "manualCost": "هزینه مازاد",
+    "morePercentageDiscount": "وارد کردن درصد تخفیف",
+    "moreFixedDiscount": "وارد کردن مقدار تخفیف",
+    "morePercentageDiscountDescription": "توجه داشته باشید که درصد وارد شده در زیر، با توجه به جمع آیتم ها ({{value}}) محاسبه میشود نه جمع کل فاکتور",
+    "morePercentageDiscountLabel": "درصد تخفیف",
+    "moreFixedDiscountLabel": "مقدار تخفیف",
+    "useWallet": "پرداخت به صورت اعتباری (اعتبار مشتری: {{value}})",
+    "posError": "مقادیر پوزها با جمع کل برابر نیست",
+    "minChargeError": "مبلغ سفارش بیشتر از حد اعتبار تعیین شده است",
+    "removeDiscount": "حذف تخفیف"
   }
 }

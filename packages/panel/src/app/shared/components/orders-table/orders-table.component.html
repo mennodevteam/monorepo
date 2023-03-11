@@ -12,8 +12,16 @@
   </ng-container>
 
   <ng-container matColumnDef="type">
-    <th mat-header-cell *matHeaderCellDef>{{ 'ordersTable.type' | translate }}</th>
-    <td mat-cell *matCellDef="let order">{{ order.type | orderType }}</td>
+    <th mat-header-cell *matHeaderCellDef style="width: 64px; text-align: center">
+      {{ 'ordersTable.type' | translate }}
+    </th>
+    <td mat-cell *matCellDef="let order" [ngSwitch]="order.type">
+      <button mat-icon-button matTooltip="{{ order.type | orderType }}" matTooltipPosition="left">
+        <i matListItemIcon *ngSwitchCase="OrderType.DineIn" class="fa-solid fa-mug-hot"></i>
+        <i matListItemIcon *ngSwitchCase="OrderType.Takeaway" class="fa-solid fa-cup-togo"></i>
+        <i matListItemIcon *ngSwitchCase="OrderType.Delivery" class="fa-solid fa-moped"></i>
+      </button>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="state">
@@ -37,11 +45,14 @@
   </ng-container>
 
   <ng-container matColumnDef="total">
-    <th mat-header-cell *matHeaderCellDef>{{ 'ordersTable.total' | translate }}</th>
+    <th mat-header-cell *matHeaderCellDef style="width: 200px">{{ 'ordersTable.total' | translate }}</th>
     <td mat-cell *matCellDef="let order">
       {{ order.totalPrice | menuCurrency }}
-      <span *ngIf="order.paymentType">{{ order.paymentType | orderPayment }}</span>
-      <button mat-icon-button color="warn">
+      <span *ngIf="order.paymentType" class="payed-label">
+        <i class="fa-solid fa-circle-check"></i>
+        {{ order.paymentType | orderPayment }}
+      </span>
+      <button mat-icon-button color="warn" *ngIf="!order.paymentType" (click)="settlement(order)">
         <i class="fa-regular fa-cash-register"></i>
       </button>
     </td>
