@@ -16,7 +16,8 @@
         "assets": [
           "packages/backend/src/assets",
           "packages/backend/src/package.json",
-          "packages/backend/src/Dockerfile"
+          "packages/backend/src/Dockerfile",
+          "packages/backend/src/liara.json"
         ]
       },
       "configurations": {

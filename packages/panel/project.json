@@ -14,16 +14,16 @@
         "polyfills": "packages/panel/src/polyfills.ts",
         "tsConfig": "packages/panel/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["packages/panel/src/favicon.ico", "packages/panel/src/assets"],
+        "assets": [
+          "packages/panel/src/favicon.ico",
+          "packages/panel/src/assets",
+          "packages/panel/src/liara.json"
+        ],
         "styles": ["packages/panel/src/styles.scss"],
         "stylePreprocessorOptions": {
-          "includePaths": [
-            "packages/panel/src/theme/"
-          ]
+          "includePaths": ["packages/panel/src/theme/"]
         },
-        "scripts": [
-          "node_modules/persian-date/dist/persian-date.min.js"
-        ]
+        "scripts": ["node_modules/persian-date/dist/persian-date.min.js"]
       },
       "configurations": {
         "production": {
