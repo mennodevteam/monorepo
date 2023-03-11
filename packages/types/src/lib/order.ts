@@ -50,6 +50,7 @@ export class Order {
   _settlementing?: boolean;
   _settingCustomer?: boolean;
   createdAt: Date;
+  updatedAt: Date;
   deletedAt: Date;
 
   static sum(order: Order) {

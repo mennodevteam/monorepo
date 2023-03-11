@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Order, OrderState } from '@menno/types';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, filter, map, take } from 'rxjs';
 import { OrdersService } from '../../core/services/orders.service';
+import { TodayOrdersService } from '../../core/services/today-orders.service';
 
 export type DailyOrderFilter = 'all' | 'pending' | 'complete' | 'notPayed' | 'payed' | 'edited' | 'deleted';
 
@@ -16,7 +17,20 @@ export class DailyOrderListService {
   allOrders: Order[] = [];
   orders = new BehaviorSubject<Order[]>([]);
 
-  constructor(private ordersService: OrdersService) {}
+  constructor(private ordersService: OrdersService, private todayOrders: TodayOrdersService) {
+    this.todayOrders.onNewOrder.subscribe(() => {
+      if (this.isToday) {
+        this.allOrders = this.todayOrders.orders;
+        this.setData();
+      }
+    });
+
+    this.todayOrders.onUpdateOrder.subscribe(() => {
+      if (this.isToday) {
+        this.setData();
+      }
+    });
+  }
 
   get date() {
     return this._date;
@@ -53,23 +67,37 @@ export class DailyOrderListService {
   }
 
   async loadData() {
-    const fromDate = new Date(this.date);
-    fromDate.setHours(0, 0, 0, 0);
-    fromDate.setHours(fromDate.getHours() + 3);
-    const toDate = new Date(this.date);
-    toDate.setHours(23, 59, 59, 999);
-    toDate.setHours(toDate.getHours() + 3);
-    this._loading = true;
-    const orders = await this.ordersService.filter({
-      fromDate,
-      toDate,
-    });
+    if (this.isToday) {
+      this._loading = true;
+      await this.todayOrders.ordersObservable
+        .pipe(filter((x) => x != null))
+        .pipe(take(1))
+        .toPromise();
 
-    if (orders) {
-      this.allOrders = orders;
-      this.setData();
+      if (this.todayOrders.orders) {
+        this.allOrders = this.todayOrders.orders;
+        this.setData();
+      }
+      this._loading = false;
+    } else {
+      const fromDate = new Date(this.date);
+      fromDate.setHours(0, 0, 0, 0);
+      fromDate.setHours(fromDate.getHours() + 3);
+      const toDate = new Date(this.date);
+      toDate.setHours(23, 59, 59, 999);
+      toDate.setHours(toDate.getHours() + 3);
+      this._loading = true;
+      const orders = await this.ordersService.filter({
+        fromDate,
+        toDate,
+      });
+
+      if (orders) {
+        this.allOrders = orders;
+        this.setData();
+      }
+      this._loading = false;
     }
-    this._loading = false;
   }
 
   private setData() {

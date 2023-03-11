@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Member, Order, OrderState, OrderType, User } from '@menno/types';
 import { BehaviorSubject } from 'rxjs';
 import { OrdersService } from '../../../core/services/orders.service';
+import { TodayOrdersService } from '../../../core/services/today-orders.service';
 import { MemberSelectDialogComponent } from '../../../shared/dialogs/member-select-dialog/member-select-dialog.component';
 import { SettlementDialogComponent } from '../../../shared/dialogs/settlement-dialog/settlement-dialog.component';
 
@@ -23,12 +24,17 @@ export class OrderDetailsComponent {
   @ViewChild('stepper') stepper: MatStepper;
   form = new FormGroup({});
 
-  constructor(private route: ActivatedRoute, private orderService: OrdersService, private dialog: MatDialog) {
+  constructor(
+    private route: ActivatedRoute,
+    private orderService: OrdersService,
+    private dialog: MatDialog,
+    private todayOrders: TodayOrdersService
+  ) {
     this.loadOrder();
   }
 
   async loadOrder() {
-    const order = await this.orderService.getById(this.orderId);
+    const order = this.todayOrders.getById(this.orderId) || (await this.orderService.getById(this.orderId));
     this.order = order;
   }
 

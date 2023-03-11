@@ -16,4 +16,5 @@ export class FilterOrderDto {
   types?: OrderType[];
   hasReview?: boolean;
   withDeleted?: boolean;
+  updatedAt?: Date;
 }

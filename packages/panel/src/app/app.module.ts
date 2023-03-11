@@ -13,6 +13,8 @@ import { ApiInterceptor } from './core/api.interceptor';
 import { PagesComponent } from './pages/pages.component';
 import { SharedModule } from './shared/shared.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/');
@@ -32,7 +34,12 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient],
       },
     }),
-    RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking', useHash: true, scrollPositionRestoration: 'enabled' }),
+    RouterModule.forRoot(appRoutes, {
+      initialNavigation: 'enabledBlocking',
+      useHash: true,
+      scrollPositionRestoration: 'enabled',
+    }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
 
     SharedModule,
   ],

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RegionsService } from './core/services/regions.service';
+import { TodayOrdersService } from './core/services/today-orders.service';
 
 @Component({
   selector: 'menno-root',
@@ -9,5 +10,5 @@ import { RegionsService } from './core/services/regions.service';
 export class AppComponent {
   title = 'panel';
 
-  constructor(private regions: RegionsService) {}
+  constructor(private regions: RegionsService, private todayOrders: TodayOrdersService) {}
 }

@@ -26,7 +26,7 @@ export class DeliveryArea {
     const x = point[0],
       y = point[1];
     let inside = false;
-    for (const i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
       const xi = polygon[i][0],
         yi = polygon[i][1];
       const xj = polygon[j][0],

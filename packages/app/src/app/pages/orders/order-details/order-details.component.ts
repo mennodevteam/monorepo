@@ -33,6 +33,7 @@ export class OrderDetailsComponent {
   }
 
   loadOrder(id: string) {
+    const order = 
     this.ordersService.getById(id).subscribe((order) => {
       if (order) this.order = order;
     });

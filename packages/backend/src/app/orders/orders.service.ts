@@ -21,6 +21,7 @@ import {
   In,
   IsNull,
   LessThanOrEqual,
+  MoreThan,
   MoreThanOrEqual,
   Not,
   Repository,
@@ -87,7 +88,8 @@ export class OrdersService {
       },
     });
 
-    if (lastOrder) order.qNumber = Number(lastOrder.qNumber) + 1;
+    if (lastOrder && lastOrder.qNumber) order.qNumber = Number(lastOrder.qNumber) + 1;
+    else order.qNumber = 1;
 
     return await this.ordersRepo.save(order);
   }
@@ -101,6 +103,10 @@ export class OrdersService {
       condition.createdAt = MoreThanOrEqual(dto.fromDate);
     } else if (dto.toDate) {
       condition.createdAt = LessThanOrEqual(dto.toDate);
+    }
+
+    if (dto.updatedAt) {
+      condition.updatedAt = MoreThan(dto.updatedAt);
     }
 
     if (dto.shopId) condition.shop = { id: dto.shopId };

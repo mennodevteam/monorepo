@@ -51,6 +51,7 @@ import { ManualDiscountAndCostDialogComponent } from './dialogs/manual-discount-
 import { SettlementDialogComponent } from './dialogs/settlement-dialog/settlement-dialog.component';
 import { MemberSelectDialogComponent } from './dialogs/member-select-dialog/member-select-dialog.component';
 import { PhonePipe } from './pipes/phone.pipe';
+import { StopPropagationDirective } from './directives/stop-propagation.directive';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { PhonePipe } from './pipes/phone.pipe';
     OrderTypePipe,
     OrderStatePipe,
     OrderPaymentPipe,
+    StopPropagationDirective,
     ManualDiscountAndCostDialogComponent,
     MemberSelectDialogComponent,
     SettlementDialogComponent,
@@ -119,6 +121,7 @@ import { PhonePipe } from './pipes/phone.pipe';
     OrderTypePipe,
     OrderStatePipe,
     OrderPaymentPipe,
+    StopPropagationDirective,
     PdatePipe,
     PhonePipe,
     AlertDialogComponent,
