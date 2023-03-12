@@ -32,5 +32,10 @@ export const ShopPrinterSchema = new EntitySchema<ShopPrinter>({
       type: 'many-to-one',
       target: 'Shop',
     },
+    printViews: {
+      type: 'one-to-many',
+      target: 'ShopPrintView',
+      inverseSide: 'printer'
+    }
   },
 });

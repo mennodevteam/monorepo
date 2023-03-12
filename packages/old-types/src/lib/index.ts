@@ -30,6 +30,8 @@ export * from './order.dto';
 export * from './order';
 export * from './payment';
 export * from './plugin.enum';
+export * from './print-action';
+export * from './print-order.dto';
 export * from './print-type.enum';
 export * from './product-category';
 export * from './product';

@@ -1,4 +1,4 @@
-export class PrintOrderDto {
+export class PrintOderDto {
     orderId: string;
     waitForLocal: boolean;
     prints: {

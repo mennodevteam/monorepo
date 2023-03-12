@@ -53,6 +53,7 @@ export const ShopPrintViewSchema = new EntitySchema<ShopPrintView>({
     printer: {
       type: 'many-to-one',
       target: 'ShopPrinter',
+      inverseSide: 'printViews',
       cascade: ['insert'],
     },
   },
