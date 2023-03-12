@@ -86,10 +86,19 @@ export class OrdersService {
       order: {
         createdAt: 'DESC',
       },
+      withDeleted: true,
     });
 
-    if (lastOrder && lastOrder.qNumber) order.qNumber = Number(lastOrder.qNumber) + 1;
-    else order.qNumber = 1;
+    if (lastOrder) {
+      const orderDate = new Date(lastOrder.createdAt);
+      orderDate.setHours(orderDate.getHours() - 2);
+
+      const now = new Date();
+      now.setHours(now.getHours() - 2);
+
+      if (orderDate.toDateString() === now.toDateString()) order.qNumber = Number(lastOrder.qNumber) + 1;
+      else order.qNumber = 1;
+    } else order.qNumber = 1;
 
     return await this.ordersRepo.save(order);
   }
