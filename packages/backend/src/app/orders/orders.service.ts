@@ -103,6 +103,127 @@ export class OrdersService {
     return await this.ordersRepo.save(order);
   }
 
+  async editOrder(dto: OrderDto) {
+    const order = await this.ordersRepo.findOne({
+      where: { id: dto.id },
+      relations: ['items.product', 'customer', 'shop'],
+    });
+    if (order.shop.id !== dto.shopId) {
+      throw new HttpException('this order is for another shop', HttpStatus.FORBIDDEN);
+    }
+    if (order.paymentType) throw new HttpException('not allowed for payed orders', HttpStatus.NOT_ACCEPTABLE);
+
+    if (order.customer) {
+      delete dto.customerId;
+    }
+
+    if (order.waiter) {
+      delete dto.waiterId;
+    }
+
+    const editedOrder = await this.dtoToOrder(dto);
+    editedOrder.id = dto.id;
+
+    // set prev details
+    editedOrder.details = { ...(order.details || {}), ...(editedOrder.details || {}) };
+
+    // create changes value
+    if (!editedOrder.details.itemChanges) editedOrder.details.itemChanges = [];
+    const changes: {
+      title: string;
+      change: number;
+    }[] = [];
+
+    for (const item of order.items) {
+      if (item.isAbstract || !item.product) continue;
+      const dtoItem = dto.productItems.find((x) => x.productId == item.product.id);
+      if (!dtoItem) changes.push({ title: item.title, change: -1 * item.quantity });
+      else if (dtoItem.quantity != item.quantity)
+        changes.push({ title: item.title, change: dtoItem.quantity - item.quantity });
+    }
+
+    const newProductItems = editedOrder.items.filter(
+      (x) => x.product && !order.items.find((y) => y.product && y.product.id === x.product.id)
+    );
+    for (const item of newProductItems) {
+      changes.push({ title: item.title, change: item.quantity });
+    }
+    if (changes.length) editedOrder.details.itemChanges.push(changes);
+
+    // const deletedItems = order.items.filter(
+    //   (x) => x.product && !editedOrder.items.find((y) => y.product && y.product.id === x.product.id)
+    // );
+    // const newItems = editedOrder.items.filter(
+    //   (x) => x.product && !order.items.find((y) => y.product && y.product.id === x.product.id)
+    // );
+    // const changedItems = editedOrder.items.filter(
+    //   (x) =>
+    //     x.product &&
+    //     order.items.find((y) => y.product && y.product.id === x.product.id) &&
+    //     order.items.find((y) => y.product && y.product.id === x.product.id).quantity !== x.quantity
+    // );
+
+    // if (deletedItems && deletedItems.length) {
+    //   for (const item of deletedItems) {
+    //     if (item.product && item.product.limitQuantity) {
+    //       this.stockMicroservice
+    //         .send('stockItems/setChanges', <QuantityLogDto>{
+    //           businessId: order.shop.id,
+    //           change: item.quantity,
+    //           description: 'editOrder',
+    //           itemId: item.product.id,
+    //           userId: order.customerId,
+    //         })
+    //         .toPromise();
+    //     }
+    //   }
+    // }
+
+    // if (newItems && newItems.length) {
+    //   for (const item of newItems) {
+    //     if (item.product && item.product.limitQuantity) {
+    //       this.stockMicroservice
+    //         .send('stockItems/setChanges', <QuantityLogDto>{
+    //           businessId: order.shop.id,
+    //           change: -1 * item.quantity,
+    //           description: 'editOrder',
+    //           itemId: item.product.id,
+    //           userId: order.customerId,
+    //         })
+    //         .toPromise();
+    //     }
+    //   }
+    // }
+
+    // if (changedItems && changedItems.length) {
+    //   for (const item of changedItems) {
+    //     if (item.product && item.product.limitQuantity) {
+    //       let beforeEditOrder = order.items.find((x) => x.product.id === item.product.id);
+    //       this.stockMicroservice
+    //         .send('stockItems/setChanges', <QuantityLogDto>{
+    //           businessId: order.shop.id,
+    //           change: beforeEditOrder.quantity - item.quantity,
+    //           description: 'editOrder',
+    //           itemId: item.product.id,
+    //           userId: order.customerId,
+    //         })
+    //         .toPromise();
+    //     }
+    //   }
+    // }
+
+    delete editedOrder.qNumber;
+    delete editedOrder.creator;
+    delete editedOrder.shop;
+    delete editedOrder.state;
+    delete editedOrder.payment;
+    delete editedOrder.isManual;
+    delete editedOrder.mergeTo;
+    delete editedOrder.mergeFrom;
+    delete editedOrder.reviews;
+    return this.ordersRepo.save(editedOrder);
+  }
+
   async filter(dto: FilterOrderDto) {
     const condition: FindOptionsWhere<Order> = {};
 
@@ -141,10 +262,7 @@ export class OrdersService {
     }
     if (dto.isManual === true || dto.isManual === false) condition.isManual = dto.isManual;
 
-    const relations = ['items', 'mergeTo', 'reviews', 'customer', 'creator', 'waiter'];
-    if (dto.fillProductsAndCategory) {
-      relations.push('items.product', 'items.product.category');
-    }
+    const relations = ['items.product', 'mergeTo', 'reviews', 'customer', 'creator', 'waiter'];
     let orders = await this.ordersRepo.find({
       where: condition,
       order: { createdAt: 'DESC' },

@@ -12,7 +12,6 @@ export class FilterOrderDto {
   isManual?: boolean;
   paymentTypes?: OrderPaymentType[];
   states?: OrderState[];
-  fillProductsAndCategory?: boolean;
   types?: OrderType[];
   hasReview?: boolean;
   withDeleted?: boolean;

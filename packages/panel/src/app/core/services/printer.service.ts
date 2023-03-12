@@ -6,7 +6,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { PrintType, ShopPrinter, ShopPrintView } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment';
-import { AdvancedPromptDialogComponent, PromptField } from '../../shared/dialogs/advanced-prompt-dialog/advanced-prompt-dialog.component';
+import {
+  AdvancedPromptDialogComponent,
+  PromptField,
+} from '../../shared/dialogs/advanced-prompt-dialog/advanced-prompt-dialog.component';
 import { MenuService } from './menu.service';
 import { ShopService } from './shop.service';
 

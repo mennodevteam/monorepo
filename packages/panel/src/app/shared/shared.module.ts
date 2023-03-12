@@ -53,6 +53,7 @@ import { MemberSelectDialogComponent } from './dialogs/member-select-dialog/memb
 import { PhonePipe } from './pipes/phone.pipe';
 import { StopPropagationDirective } from './directives/stop-propagation.directive';
 import { EmptyStateComponent } from './components/empty-state/empty-state.component';
+import { RouterLink } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import { EmptyStateComponent } from './components/empty-state/empty-state.compon
   imports: [
     CommonModule,
     FormsModule,
+    RouterLink,
     ReactiveFormsModule,
     LayoutModule,
     ImageCropperModule,

@@ -1,3 +1,5 @@
+import { Address } from './address';
+import { DiscountCoupon } from './discount-coupon';
 import { Menu } from './menu';
 import { OrderItem } from './order-item';
 import { OrderPaymentType } from './order-payment-type.enum';
@@ -36,6 +38,8 @@ export class Order {
   shop?: Shop;
   state: OrderState;
   type: OrderType;
+  address: Address;
+  discountCoupon: DiscountCoupon;
   paymentType: OrderPaymentType;
   note?: string;
   isManual: boolean;
@@ -64,7 +68,15 @@ export class Order {
 
   static abstractItems(Order: Order) {
     try {
-      return Order.items.filter((x) => !x.isAbstract);
+      return Order.items.filter((x) => x.isAbstract);
+    } catch (error) {
+      return [];
+    }
+  }
+
+  static productItems(order: Order) {
+    try {
+      return order.items.filter((x) => !x.isAbstract);
     } catch (error) {
       return [];
     }

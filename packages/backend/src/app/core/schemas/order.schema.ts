@@ -92,6 +92,14 @@ export const OrderSchema = new EntitySchema<Order>({
       type: 'many-to-one',
       target: 'Shop',
     },
+    address: {
+      type: 'many-to-one',
+      target: 'Address',
+    },
+    discountCoupon: {
+      type: 'many-to-one',
+      target: 'DiscountCoupon',
+    },
     payment: {
       type: 'many-to-one',
       target: 'Payment',

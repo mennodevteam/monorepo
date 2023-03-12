@@ -8,6 +8,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -43,7 +44,11 @@ export class OrdersController {
         dto.waiterId = user.id;
       }
     }
-    return this.ordersService.addOrder(dto);
+    if (dto.id) {
+      return this.ordersService.editOrder(dto);
+    } else {
+      return this.ordersService.addOrder(dto);
+    }
   }
 
   @Post('filter')
@@ -87,7 +92,7 @@ export class OrdersController {
       where: {
         id,
       },
-      relations: ['items', 'customer', 'waiter', 'creator', 'reviews', 'payment'],
+      relations: ['items.product', 'customer', 'waiter', 'creator', 'reviews', 'payment'],
     });
   }
 

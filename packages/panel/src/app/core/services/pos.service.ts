@@ -4,17 +4,22 @@ import { Menu, Order, OrderDto, OrderItem, OrderType, Product, ProductItem } fro
 import { TranslateService } from '@ngx-translate/core';
 import { MenuService } from './menu.service';
 import { OrdersService } from './orders.service';
+import { PrinterService } from './printer.service';
+import { TodayOrdersService } from './today-orders.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PosService extends OrderDto {
   saving = false;
+  editOrder?: Order;
   constructor(
     private menuService: MenuService,
     private orderService: OrdersService,
     private snack: MatSnackBar,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private printer: PrinterService,
+    private todayOrders: TodayOrdersService
   ) {
     super();
     this.clear();
@@ -65,12 +70,32 @@ export class PosService extends OrderDto {
     return this.productItems?.find((x) => x.productId === productId);
   }
 
+  async init(orderId?: string) {
+    this.clear();
+    if (orderId) {
+      const order = this.todayOrders.getById(orderId) || (await this.orderService.getById(orderId));
+      if (order) {
+        console.log(Order.productItems(order));
+        this.editOrder = order;
+        this.note = order.note;
+        this.productItems = Order.productItems(order).map((x) => ({
+          productId: x.product!.id,
+          quantity: x.quantity,
+        }));
+        this.address = order.address;
+        this.type = order.type;
+        this.discountCoupon = order.discountCoupon;
+      }
+    }
+  }
+
   clear() {
     this.productItems = [];
     this.note = undefined;
     this.address = undefined;
     this.discountCoupon = undefined;
     this.type = OrderType.DineIn;
+    this.editOrder = undefined;
   }
 
   get items(): OrderItem[] {
@@ -103,6 +128,7 @@ export class PosService extends OrderDto {
 
   async save(print = false) {
     const dto: OrderDto = {
+      id: this.editOrder?.id,
       productItems: this.productItems,
       type: this.type,
       details: this.details,
@@ -111,12 +137,14 @@ export class PosService extends OrderDto {
     } as OrderDto;
     this.saving = true;
     this.snack.open(this.translate.instant('app.saving'), '', { duration: 3000 });
-    await this.orderService.save(dto);
+    const savedOrder = await this.orderService.save(dto);
     this.snack.open(this.translate.instant('app.savedSuccessfully'), '', {
       duration: 5000,
       panelClass: 'success',
     });
     this.clear();
     this.saving = false;
+
+    if (print && savedOrder) this.printer.printOrder(savedOrder?.id);
   }
 }

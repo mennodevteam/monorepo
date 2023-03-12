@@ -1,3 +1,4 @@
+export * from './address.schema';
 export * from './app-config.schema';
 export * from './club.schema';
 export * from './delivery-area.schema';

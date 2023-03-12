@@ -235,6 +235,7 @@
   "pos": {
     "saveAndPrint": "ذخیره و چاپ",
     "newTitle": "ثبت سفارش جدید",
+    "editTitle": "ویرایش فیش {{value}}",
     "showMoreFactorDetails": "جزئیات بیشتر فاکتور",
     "noteDialogTitle": "توضیحات سفارش",
     "noteDialogLabel": "توضیحات",

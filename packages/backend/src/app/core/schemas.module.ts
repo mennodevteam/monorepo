@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   AppConfigSchema,
+  AddressSchema,
   ClubSchema,
   DiscountCouponSchema,
   DiscountUsageSchema,
@@ -43,6 +44,7 @@ import {
   imports: [
     TypeOrmModule.forFeature([
       AppConfigSchema,
+      AddressSchema,
       ClubSchema,
       DiscountCouponSchema,
       DiscountUsageSchema,
