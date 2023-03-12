@@ -2,7 +2,6 @@
   <img src="assets/icons/logo.png" id="logo" />
   <span spacer-2x></span>
   <span spacer-2x></span>
-  <span spacer-2x></span>
   <button mat-button routerLink="menu">
     <i class="fa-solid fa-lg fa-book-open"></i>
     {{ 'shell.menu' | translate }}
@@ -13,14 +12,14 @@
     {{ 'shell.orders' | translate }}
   </button>
   <span spacer></span>
-  <button mat-button routerLink="club">
+  <button mat-button routerLink="club" [disabled]="isClubDisabled">
     <i class="fa-solid fa-lg fa-crown"></i>
     {{ 'shell.club' | translate }}
   </button>
   <div flex></div>
   <button mat-flat-button id="add-order" routerLink="/pos">
     <i class="fa-solid fa-plus-circle"></i>
-    {{'shell.addOrder' | translate}}
+    {{ 'shell.addOrder' | translate }}
   </button>
   <span spacer></span>
   <button mat-icon-button routerLink="settings">
@@ -28,10 +27,10 @@
   </button>
   <span spacer></span>
   <button mat-icon-button id="user-button" [matMenuTriggerFor]="userMenu">
-    <img [imageLoader]="shop?.logo">
+    <img [imageLoader]="shop?.logo" />
   </button>
   <mat-menu #userMenu="matMenu">
-    <button mat-menu-item (click)="logout()">{{'shell.logout' | translate}}</button>
+    <button mat-menu-item (click)="logout()">{{ 'shell.logout' | translate }}</button>
   </mat-menu>
 </mat-toolbar>
 <router-outlet></router-outlet>

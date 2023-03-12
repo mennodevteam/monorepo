@@ -33,6 +33,10 @@ export const appRoutes: Route[] = [
             loadChildren: () => import('./pages/orders/orders.module').then((m) => m.OrdersModule),
           },
           {
+            path: 'club',
+            loadChildren: () => import('./pages/club/club.module').then((m) => m.ClubModule),
+          },
+          {
             path: 'settings',
             loadChildren: () => import('./pages/settings/settings.module').then((m) => m.SettingsModule),
           },

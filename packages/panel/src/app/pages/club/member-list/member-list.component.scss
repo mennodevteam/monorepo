@@ -1,0 +1,54 @@
+@import "theme";
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mat-spinner {
+  margin: 24px auto;
+}
+
+.mat-paginator {
+  margin: -16px !important;
+  width: -webkit-fill-available;
+  width: -moz-available;
+  border-radius: 8px 4px 0 0;
+  margin-bottom: 0 !important;
+  height: 48px;
+  background: $background;
+}
+
+.count-cards {
+  display: flex;
+  gap: 16px;
+}
+
+.info-card {
+  flex: 1;
+  @media only screen and (max-width: 960px) {
+    flex: none;
+  }
+
+  mat-card-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    i,
+    b {
+      margin: 0;
+      height: 48px;
+      min-width: 48px;
+      font-size: 24px;
+      text-align: center;
+      line-height: 48px;
+    }
+
+    p,
+    h4 {
+      margin: 0;
+    }
+  }
+}

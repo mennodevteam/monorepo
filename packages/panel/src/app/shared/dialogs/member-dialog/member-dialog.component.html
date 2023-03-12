@@ -1,0 +1,110 @@
+<mat-dialog-content *ngIf="member">
+  <div class="side">
+    <h4>{{ User.fullName(member.user) }}</h4>
+    <div style="direction: ltr">
+      <i class="fa-star fa-xs" [ngClass]="[member.star > 0 ? 'fas yellow' : 'far']"></i>
+      <i class="fa-star fa-xs" [ngClass]="[member.star > 1 ? 'fas yellow' : 'far']"></i>
+      <i class="fa-star fa-xs" [ngClass]="[member.star > 2 ? 'fas yellow' : 'far']"></i>
+      <i class="fa-star fa-xs" [ngClass]="[member.star > 3 ? 'fas yellow' : 'far']"></i>
+      <i class="fa-star fa-xs" [ngClass]="[member.star > 4 ? 'fas yellow' : 'far']"></i>
+    </div>
+    <button mat-button color="primary" (click)="editStar()">{{ 'memberDialog.editStar' | translate }}</button>
+    <span style="flex: 1"></span>
+    <mat-nav-list dense>
+      <mat-divider></mat-divider>
+      <a mat-list-item (click)="chargeWallet()" [disabled]="!canChargeWallet">
+        <span matListItemTitle>{{ 'memberDialog.chargeWallet' | translate }}</span>
+        <span matListItemLine class="gray">
+          {{ 'memberDialog.currentCharge' | translate }}:
+          <span [class.red]="member.wallet?.charge && member.wallet?.charge">{{
+            member.wallet?.charge || 0 | menuCurrency
+          }}</span>
+        </span>
+        <i matListItemMeta class="fa-solid fa-plus-circle"></i>
+      </a>
+      <mat-divider></mat-divider>
+      <a mat-list-item (click)="openSmsDialog()">
+        <i matListItemIcon class="far fa-comment-alt-lines"></i>
+        <p matListItemTitle>{{ 'memberDialog.sendSms' | translate }}</p>
+      </a>
+      <a mat-list-item (click)="publicKeyClick()">
+        <i matListItemIcon class="far fa-id-card"></i>
+        <p matListItemTitle>{{ 'memberDialog.publicKey' | translate }}</p>
+      </a>
+      <a mat-list-item (click)="removeMember()">
+        <i matListItemIcon class="far fa-trash-alt"></i>
+        <p matListItemTitle>{{ 'memberDialog.removeMember' | translate }}</p>
+      </a>
+    </mat-nav-list>
+  </div>
+  <main flex>
+    <mat-tab-group>
+      <mat-tab label="{{ 'memberDialog.infoTab' | translate }}">
+        <mat-nav-list dense>
+          <a mat-list-item>
+            <i matListItemIcon class="fas fa-mobile gray"></i>
+            <h5 matListItemTitle>{{ 'memberDialog.mobilePhone' | translate }}</h5>
+            <p matListItemLine>{{ member.user.mobilePhone }}</p>
+          </a>
+          <a mat-list-item>
+            <i matListItemIcon class="fas fa-birthday-cake gray"></i>
+            <h5 matListItemTitle>{{ 'memberDialog.birthDate' | translate }}</h5>
+            <p matListItemLine *ngIf="member.user.birthDate">{{ member.user.birthDate | pdate: 'YYYY/MM/DD' }}</p>
+          </a>
+          <a mat-list-item>
+            <i matListItemIcon class="fas fa-rings-wedding gray"></i>
+            <h5 matListItemTitle>{{ 'memberDialog.marriageDate' | translate }}</h5>
+            <p matListItemLine *ngIf="member.user.marriageDate">
+              {{ member.user.marriageDate | pdate: 'YYYY/MM/DD' }}
+            </p>
+          </a>
+          <a mat-list-item>
+            <i matListItemIcon class="fas fa-user-tie gray"></i>
+            <h5 matListItemTitle>{{ 'memberDialog.job' | translate }}</h5>
+            <p matListItemLine>{{ member.user.job }}</p>
+          </a>
+          <a mat-list-item>
+            <i matListItemIcon class="fas fa-thumbtack gray"></i>
+            <h5 matListItemTitle>{{ 'memberDialog.address' | translate }}</h5>
+            <p matListItemLine>{{ member.user.address }}</p>
+          </a>
+          <a mat-list-item (click)="edit()">
+            <i matListItemIcon class="far fa-pencil-alt blue"></i>
+            <h5 matListItemTitle class="blue">{{ 'memberDialog.editInfo' | translate }}</h5>
+          </a>
+        </mat-nav-list>
+      </mat-tab>
+      <mat-tab label="{{ 'memberDialog.ordersTab' | translate }}">
+        <mat-spinner mode="indeterminate" [diameter]="24" *ngIf="!orders"></mat-spinner>
+        <mat-nav-list dense>
+          <a mat-list-item *ngFor="let order of orders" [ngSwitch]="order.type" (click)="orderClick(order)">
+            <i matListItemIcon class="fas fa-coffee-togo" *ngSwitchCase="OrderType.Takeaway"></i>
+            <i matListItemIcon class="fas fa-mug-hot" *ngSwitchCase="OrderType.DineIn"></i>
+            <i matListItemIcon class="fas fa-map-marker-alt" *ngSwitchCase="OrderType.Delivery"></i>
+            <h5 matListItemTitle>{{ order.createdAt | pdate }}</h5>
+            <p matListItemLine class="gray" style="font-size: 10px">
+              <ng-container *ngFor="let item of order.items; let last = last">
+                <span *ngIf="!item.isAbstract">
+                  {{ item.title }}
+                  <span *ngIf="item.quantity > 1">({{ item.quantity }})</span>
+                  <span *ngIf="!last"> - </span>
+                </span>
+              </ng-container>
+            </p>
+            <p>
+              <i
+                class="fas fa-check-circle fa-sm green"
+                *ngIf="order.paymentType"
+                matTooltip="{{ order.paymentType | orderPayment }}"
+              ></i>
+              {{ order.totalPrice | menuCurrency }}
+            </p>
+          </a>
+        </mat-nav-list>
+      </mat-tab>
+    </mat-tab-group>
+  </main>
+</mat-dialog-content>
+<mat-dialog-content *ngIf="!member">
+  <mat-spinner mode="indeterminate" [diameter]="36"></mat-spinner>
+</mat-dialog-content>

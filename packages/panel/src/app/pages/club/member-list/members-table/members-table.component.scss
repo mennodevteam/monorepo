@@ -1,0 +1,48 @@
+@import 'theme';
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.mat-table {
+  width: 100%;
+  min-width: 600px;
+
+  img {
+    width: 36px;
+    height: 36px;
+    margin: 4px;
+    border-radius: 50%;
+    vertical-align: middle;
+  }
+}
+
+.mat-chip-listbox {
+  display: inline-block;
+
+  .mat-chip {
+    font-size: 10px;
+    height: 24px;
+    min-height: auto;
+    color: black !important;
+
+    &:not([disabled]) {
+      cursor: pointer;
+    }
+  }
+}
+
+.star-col {
+  width: 120px;
+  flex: none;
+
+  .star-container {
+    direction: ltr;
+    display: inline-block;
+  }
+
+  .fas {
+    color: $yellow;
+  }
+}

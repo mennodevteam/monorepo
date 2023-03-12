@@ -26,7 +26,7 @@ export class ShopsController {
       'region',
       'appConfig.theme',
       'shopGroup',
-      'menu.categories.products',
+      'club',
     ]);
   }
 

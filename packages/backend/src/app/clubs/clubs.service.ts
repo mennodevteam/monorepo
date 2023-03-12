@@ -93,7 +93,7 @@ export class ClubsService {
       conditions.publicKey = filter.publicKey;
     }
 
-    if (filter.tagIds) {
+    if (filter.tagIds && filter.tagIds.length) {
       conditions.tags = In(filter.tagIds);
     }
 
@@ -102,6 +102,8 @@ export class ClubsService {
         mobilePhone: filter.mobilePhone,
       };
     }
+
+    console.log(conditions);
 
     let members = await this.membersRepo.find({
       where: conditions,

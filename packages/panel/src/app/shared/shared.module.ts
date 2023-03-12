@@ -54,6 +54,7 @@ import { PhonePipe } from './pipes/phone.pipe';
 import { StopPropagationDirective } from './directives/stop-propagation.directive';
 import { EmptyStateComponent } from './components/empty-state/empty-state.component';
 import { RouterLink } from '@angular/router';
+import { MemberDialogComponent } from './dialogs/member-dialog/member-dialog.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { RouterLink } from '@angular/router';
     OrderPaymentPipe,
     StopPropagationDirective,
     ManualDiscountAndCostDialogComponent,
+    MemberDialogComponent,
     MemberSelectDialogComponent,
     SettlementDialogComponent,
     PhonePipe,
@@ -132,6 +134,7 @@ import { RouterLink } from '@angular/router';
     AlertDialogComponent,
     SelectDialogComponent,
     ManualDiscountAndCostDialogComponent,
+    MemberDialogComponent,
     MemberSelectDialogComponent,
     SettlementDialogComponent,
     TranslateModule,

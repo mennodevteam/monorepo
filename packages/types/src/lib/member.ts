@@ -13,7 +13,7 @@ export class Member {
   tags: MemberTag[];
   joinedAt: Date;
   description: string;
-  wallet: Wallet;
+  wallet?: Wallet;
   extraInfo: any;
   deletedAt: Date;
 }

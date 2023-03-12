@@ -48,6 +48,10 @@ export class PagesComponent implements OnInit {
     return data;
   }
 
+  get isClubDisabled() {
+    return !this.shop?.club;
+  }
+
   logout() {
     this.auth.logout();
     window.location.reload();
