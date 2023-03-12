@@ -1,10 +1,11 @@
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { Member, Order, OrderState, OrderType, User } from '@menno/types';
+import { Member, Order, OrderState, OrderType, ShopPrintView, User } from '@menno/types';
 import { BehaviorSubject } from 'rxjs';
 import { ClubService } from '../../../core/services/club.service';
 import { OrdersService } from '../../../core/services/orders.service';
+import { PrinterService } from '../../../core/services/printer.service';
 import { MemberSelectDialogComponent } from '../../dialogs/member-select-dialog/member-select-dialog.component';
 import { SettlementDialogComponent } from '../../dialogs/settlement-dialog/settlement-dialog.component';
 
@@ -28,7 +29,7 @@ export class OrdersTableComponent implements AfterViewInit {
     private dialog: MatDialog,
     private cdr: ChangeDetectorRef,
     private ordersService: OrdersService,
-    private club: ClubService
+    private printService: PrinterService
   ) {}
 
   ngAfterViewInit() {
@@ -75,5 +76,9 @@ export class OrdersTableComponent implements AfterViewInit {
         order,
       },
     });
+  }
+
+  print(order: Order, view?: ShopPrintView) {
+    this.printService.printOrder(order.id, view);
   }
 }

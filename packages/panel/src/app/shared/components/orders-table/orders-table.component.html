@@ -106,7 +106,10 @@
 
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let order">
+    <td mat-cell *matCellDef="let order" style="text-align: end;">
+      <button mat-icon-button (click)="print(order)" stopPropagation>
+        <i class="fa-regular fa-print"></i>
+      </button>
       <button mat-icon-button routerLink="/pos" [queryParams]="{ id: order.id }" stopPropagation>
         <i class="fa-regular fa-pencil"></i>
       </button>

@@ -52,5 +52,14 @@ export const PrintActionSchema = new EntitySchema<PrintAction>({
       type: 'many-to-one',
       target: 'Shop',
     },
+    order: {
+      type: 'many-to-one',
+      target: 'Order',
+      nullable: true,
+    },
+    printView: {
+      type: 'many-to-one',
+      target: 'ShopPrintView',
+    },
   },
 });

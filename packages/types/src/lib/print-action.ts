@@ -1,6 +1,8 @@
+import { Order } from "./order";
 import { OrderType } from "./order-type.enum";
 import { PrintType } from "./print-type.enum";
 import { Shop } from "./shop";
+import { ShopPrintView } from "./shop-print-view";
 
 export class PrintAction {
     id: string;
@@ -33,6 +35,8 @@ export class PrintAction {
     }
     waitForLocal: boolean;
     isPrinted: boolean;
+    order: Order;
+    printView: ShopPrintView;
     failedCount: number;
     createdAt: Date;
 }

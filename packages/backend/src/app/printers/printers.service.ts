@@ -110,6 +110,8 @@ export class PrintersService {
         printerTitle: view.title,
         shop: { id: order.shop.id },
         waitForLocal: dto.waitForLocal,
+        order: { id: order.id },
+        printView: { id: view.id },
         type: view.type,
       });
     }
