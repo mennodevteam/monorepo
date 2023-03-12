@@ -94,7 +94,7 @@ export class ClubsService {
     }
 
     if (filter.tagIds && filter.tagIds.length) {
-      conditions.tags = In(filter.tagIds);
+      conditions.tags = In(filter.tagIds.map((x) => ({ id: x })));
     }
 
     if (filter.mobilePhone) {
@@ -102,8 +102,6 @@ export class ClubsService {
         mobilePhone: filter.mobilePhone,
       };
     }
-
-    console.log(conditions);
 
     let members = await this.membersRepo.find({
       where: conditions,

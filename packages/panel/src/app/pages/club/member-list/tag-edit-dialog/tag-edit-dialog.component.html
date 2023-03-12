@@ -1,0 +1,23 @@
+<h2 mat-dialog-title> {{title}} </h2>
+
+<mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'membersTable.tagDialogLabel' | translate}}</mat-label>
+    <input matInput [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
+  </mat-form-field>
+  <div class="colors">
+    <button mat-icon-button [style.color]="c" *ngFor="let c of colors"
+      (click)="color = c">
+      <i *ngIf="c !== color" class="fas fa-circle fa-2x"></i>
+      <i *ngIf="c === color" class="fas fa-check-circle fa-2x"></i>
+    </button>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button color="primary" (click)="save()">
+    {{ 'app.save' | translate }}
+  </button>
+  <button mat-button mat-dialog-close>
+    {{ 'app.cancel' | translate }}
+  </button>
+</mat-dialog-actions>

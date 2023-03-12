@@ -6,9 +6,10 @@ import { SharedModule } from '../../shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { clubRoutes } from './club.routes';
 import { MembersTableComponent } from './member-list/members-table/members-table.component';
+import { TagEditDialogComponent } from './member-list/tag-edit-dialog/tag-edit-dialog.component';
 
 @NgModule({
-  declarations: [MemberListComponent, ClubComponent, MembersTableComponent],
+  declarations: [MemberListComponent, ClubComponent, TagEditDialogComponent, MembersTableComponent],
   imports: [CommonModule, SharedModule, RouterModule.forChild(clubRoutes)],
 })
 export class ClubModule {}

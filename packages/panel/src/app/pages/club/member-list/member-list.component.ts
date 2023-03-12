@@ -12,6 +12,7 @@ import { ClubService } from '../../../core/services/club.service';
 import { ShopService } from '../../../core/services/shop.service';
 import * as XLSX from 'xlsx';
 import { PersianNumberService } from '@menno/utils';
+import { TagEditDialogComponent } from './tag-edit-dialog/tag-edit-dialog.component';
 
 @Component({
   selector: 'member-list',
@@ -220,24 +221,24 @@ export class MemberListComponent {
 
   async addSelectedTag(tag?: MemberTag) {
     if (!tag) {
-      // const dto: MemberTag = await this.dialog
-      //   .open(TagEditDialogComponent, {
-      //     data: {
-      //       title: this.translate.instant('membersTable.addTag'),
-      //       value: undefined,
-      //       color: undefined,
-      //     },
-      //   })
-      //   .afterClosed()
-      //   .toPromise();
+      const dto: MemberTag = await this.dialog
+        .open(TagEditDialogComponent, {
+          data: {
+            title: this.translate.instant('membersTable.addTag'),
+            value: undefined,
+            color: undefined,
+          },
+        })
+        .afterClosed()
+        .toPromise();
 
-      // if (dto) tag = await this.club.editTag(dto);
-      // else return;
+      if (dto) tag = await this.club.editTag(dto);
+      else return;
       return;
     }
 
     for (const member of this.selection.selected) {
-      if (member.tags.find((x) => x.id == tag.id)) continue;
+      if (member.tags.find((x) => x.id == tag?.id)) continue;
       const dto = new Member();
       dto.id = member.id;
       dto.tags = [...member.tags, tag];

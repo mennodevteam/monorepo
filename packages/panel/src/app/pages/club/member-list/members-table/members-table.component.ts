@@ -9,6 +9,7 @@ import { Member, MemberTag, SmsTemplate, User } from '@menno/types';
 import { ShopService } from 'packages/panel/src/app/core/services/shop.service';
 import { ClubService } from 'packages/panel/src/app/core/services/club.service';
 import { MemberDialogComponent } from 'packages/panel/src/app/shared/dialogs/member-dialog/member-dialog.component';
+import { TagEditDialogComponent } from '../tag-edit-dialog/tag-edit-dialog.component';
 
 @Component({
   selector: 'clb-members-table',
@@ -70,35 +71,35 @@ export class MembersTableComponent implements OnInit {
   }
 
   async memberEditTag(member: Member, tag?: MemberTag) {
-    // const dto: MemberTag = await this.dialog
-    //   .open(TagEditDialogComponent, {
-    //     data: {
-    //       title: tag
-    //         ? this.translate.instant('membersTable.editTag')
-    //         : this.translate.instant('membersTable.addTag'),
-    //       value: tag ? tag.title : undefined,
-    //       color: tag ? tag.color : undefined,
-    //     },
-    //   })
-    //   .afterClosed()
-    //   .toPromise();
-    // if (dto) {
-    //   if (tag) {
-    //     dto.id = tag.id;
-    //     const editedTag = await this.club.editTag(dto);
-    //     const members = await this.members.pipe(take(1)).toPromise() || [];
-    //     for (const m of members) {
-    //       const memberTagIndex = m.tags.findIndex((x) => x.id === editedTag.id);
-    //       if (memberTagIndex > -1) {
-    //         m.tags[memberTagIndex] = editedTag;
-    //       }
-    //     }
-    //     this.club.loadTags();
-    //   } else {
-    //     await this.memberAddTag(member, dto);
-    //     this.club.loadTags();
-    //   }
-    // }
+    const dto: MemberTag = await this.dialog
+      .open(TagEditDialogComponent, {
+        data: {
+          title: tag
+            ? this.translate.instant('membersTable.editTag')
+            : this.translate.instant('membersTable.addTag'),
+          value: tag ? tag.title : undefined,
+          color: tag ? tag.color : undefined,
+        },
+      })
+      .afterClosed()
+      .toPromise();
+    if (dto) {
+      if (tag) {
+        dto.id = tag.id;
+        const editedTag = await this.club.editTag(dto);
+        const members = await this.members.pipe(take(1)).toPromise() || [];
+        for (const m of members) {
+          const memberTagIndex = m.tags.findIndex((x) => x.id === editedTag.id);
+          if (memberTagIndex > -1) {
+            m.tags[memberTagIndex] = editedTag;
+          }
+        }
+        this.club.loadTags();
+      } else {
+        await this.memberAddTag(member, dto);
+        this.club.loadTags();
+      }
+    }
   }
 
   async openSmsDialog(member: Member) {
