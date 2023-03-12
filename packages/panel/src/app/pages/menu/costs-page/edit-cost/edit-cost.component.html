@@ -29,8 +29,6 @@
           </mat-card-content>
         </mat-card>
 
-        <span spacer></span>
-
         <mat-card>
           <mat-card-header>
             <mat-card-title>{{ 'costEdit.priceSectionTitle' | translate }}</mat-card-title>
@@ -51,24 +49,16 @@
           </mat-card-content>
         </mat-card>
 
-        <span spacer></span>
-
         <select-product-card
           [productControl]="includeProductControl"
           [categoryControl]="includeProductCategoryControl"
         ></select-product-card>
       </div>
 
-      <span spacer></span>
-
       <div class="static-col">
         <select-status-card [control]="statusControl"></select-status-card>
 
-        <span spacer></span>
-
         <select-order-type-card [control]="orderTypesControl"></select-order-type-card>
-
-        <span spacer></span>
 
         <mat-card>
           <mat-card-header>

@@ -45,6 +45,7 @@
       <mat-card-content>
         <ng-container *ngIf="orders && !loading">
           <orders-table [orders]="orders" (orderClicked)="orderClicked($event)"></orders-table>
+          <empty-state *ngIf="!(orders | async)?.length" icon="fa-face-frown" text="{{'dailyOrder.emptyState' | translate}}"></empty-state>
         </ng-container>
         <mat-spinner class="loading-spinner" *ngIf="loading" [diameter]="24"></mat-spinner>
       </mat-card-content>
