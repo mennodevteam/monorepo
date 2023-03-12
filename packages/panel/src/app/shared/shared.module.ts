@@ -52,6 +52,7 @@ import { SettlementDialogComponent } from './dialogs/settlement-dialog/settlemen
 import { MemberSelectDialogComponent } from './dialogs/member-select-dialog/member-select-dialog.component';
 import { PhonePipe } from './pipes/phone.pipe';
 import { StopPropagationDirective } from './directives/stop-propagation.directive';
+import { EmptyStateComponent } from './components/empty-state/empty-state.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { StopPropagationDirective } from './directives/stop-propagation.directiv
     MemberSelectDialogComponent,
     SettlementDialogComponent,
     PhonePipe,
+    EmptyStateComponent,
   ],
   imports: [
     CommonModule,
@@ -124,6 +126,7 @@ import { StopPropagationDirective } from './directives/stop-propagation.directiv
     StopPropagationDirective,
     PdatePipe,
     PhonePipe,
+    EmptyStateComponent,
     AlertDialogComponent,
     SelectDialogComponent,
     ManualDiscountAndCostDialogComponent,

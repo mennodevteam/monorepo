@@ -22,6 +22,17 @@
       <span spacer></span>
       {{ 'settings.appConfig' | translate }}
     </a>
+    <a
+      mat-tab-link
+      routerLinkActive
+      #printers="routerLinkActive"
+      [active]="printers.isActive"
+      routerLink="printers"
+    >
+      <i class="fa-regular fa-print"></i>
+      <span spacer></span>
+      {{ 'settings.printers' | translate }}
+    </a>
   </nav>
 </mat-toolbar>
 <main class="content-wrapper">

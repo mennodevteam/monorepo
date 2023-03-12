@@ -3,6 +3,8 @@
   "app": {
     "ok": "تایید",
     "cancel": "انصراف",
+    "yes": "بله",
+    "no": "خیر",
     "add": "ایجاد کردن",
     "status": "وضعیت",
     "active": "فعال",
@@ -107,7 +109,8 @@
   },
   "settings": {
     "shopTab": "اطلاعات مجموعه",
-    "appConfig": "اپ سفارش‌گیری"
+    "appConfig": "اپ سفارش‌گیری",
+    "printers": "پرینتر‌ها"
   },
   "shopPage": {
     "baseSection": "اطلاعات پایه",
@@ -286,5 +289,33 @@
       "completed": "سفارش به مشتری تحویل داده شده است.",
       "canceled": "سفارش توسط مجموعه لغو شده"
     }
+  },
+  "printers": {
+    "listTab": "لیست پرینتر‌ها",
+    "helpTab": "راهنمای نصب",
+    "add": "افزودن پرینتر جدید",
+    "remove": {
+      "title": "حذف پرینتر {{value}}",
+      "description": "در صورت اطمینان از حذف، لطفا تایید کنید"
+    },
+    "printers": "دستگاه پرینتر",
+    "helpDownloadText": "درایور پرینتر را دانلود کنید و از صورت فشرده خارج کنید",
+    "helpDownloadAction": "دانلود درایور",
+    "helpFontText": "وارد فولدر ExtraData/Fonts شده، همه فونت ها را انتخاب کنید، راست کلیک کنید و گزینه install را انتخاب کنید",
+    "helpRunApp": "فایل MennoPrinting.exe را اجرا کنید",
+    "helpDownloadNetFramework": "در صورت خطا و نیاز به نصب .netFramework 4.7.2 آن را دانلود و نصب کنید",
+    "helpDownloadNetFrameworkAction": "دانلود .netFramework 4.7.2",
+    "helpLoginText": "پس از اجرای برنامه روی دکمه مقابل کلید کنید تا خودکار وارد شود",
+    "helpLoginAction": "ورود خودکار",
+    "type": "قالب",
+    "kitchen": "آشپزخانه",
+    "cash": "مشتری",
+    "kitchenLarge": "آشپزخانه بزرگ",
+    "cashLarge": "مشتری بزرگ",
+    "autoPrintOnNewOrder": "پرینت خودکار بعد ثبت سفارش توسط مشتری",
+    "autoPrintOnOnlinePayment": "پرینت خودکار بعد پرداخت آنلاین",
+    "autoPrintOnManualSettlement": "پرینت خودکار بعد تسویه حساب دستی",
+    "includeCategories": "فقط برخی دسته بندی ها",
+    "defaultCount": "تعداد پرینت پیشفرض"
   }
 }

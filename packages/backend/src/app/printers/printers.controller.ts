@@ -41,11 +41,10 @@ export class PrintersController {
       where: { shop: { id: shop.id } },
       relations: ['printViews'],
     });
-    const result = [];
-    for (const p of printers) {
-      result.push(p.printViews || []);
-    }
-    return result;
+    return this.printViewsRepo.find({
+      where: { printer: In(printers.map((x) => x.id)) },
+      relations: ['printer'],
+    });
   }
 
   @Post('printViews')

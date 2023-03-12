@@ -4,4 +4,6 @@ export const environment = {
   localPrintServiceUrl: 'http://127.0.0.1:5072/',
   localStorageUserKey: 'mennoPanelUser',
   bucketUrl: 'https://menno.storage.iran.liara.space',
+  printerZipUrl: 'https://drive.google.com/file/d/1ZmCKS8KqaaoCkHXFSEbHe3jmoAS5rDyv/view?usp=sharing',
+  netFrameworkUrl: 'https://dl2.soft98.ir/soft/n/NET.Framework.4.7.2.rar',
 };

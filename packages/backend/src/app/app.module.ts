@@ -11,6 +11,7 @@ import { FilesModule } from './files/files.module';
 import { MenusModule } from './menus/menus.module';
 import { OrdersModule } from './orders/orders.module';
 import { PaymentsModule } from './payments/payments.module';
+import { PrintersModule } from './printers/printers.module';
 import { RegionsModule } from './regions/regions.module';
 import { ShopsModule } from './shops/shops.module';
 import { SmsModule } from './sms/sms.module';
@@ -36,6 +37,7 @@ import { UsersModule } from './users/users.module';
     FilesModule,
     RegionsModule,
     ClubsModule,
+    PrintersModule,
     SmsModule,
     OrdersModule,
     PaymentsModule,

@@ -1,0 +1,34 @@
+<mat-card>
+  <mat-card-content>
+    <mat-list dense>
+      <mat-list-item>
+        <p matListItemLine>{{ 'printers.helpDownloadText' | translate }}</p>
+        <a matListItemMeta mat-button color="primary" [href]="env.printerZipUrl" target="_blank">{{
+          'printers.helpDownloadAction' | translate
+        }}</a>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <p matListItemLine>{{ 'printers.helpFontText' | translate }}</p>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <p matListItemLine>{{ 'printers.helpRunApp' | translate }}</p>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <p matListItemLine>{{ 'printers.helpDownloadNetFramework' | translate }}</p>
+        <a matListItemMeta mat-button color="primary" [href]="env.netFrameworkUrl" target="_blank">{{
+          'printers.helpDownloadNetFrameworkAction' | translate
+        }}</a>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <p matListItemLine>{{ 'printers.helpLoginText' | translate }}</p>
+        <button matListItemMeta mat-button (click)="PS.loginLocal()" color="primary">
+          {{ 'printers.helpLoginAction' | translate }}
+        </button>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

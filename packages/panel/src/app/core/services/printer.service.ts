@@ -1,9 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ShopPrintView } from '@menno/types';
+import { PrintType, ShopPrinter, ShopPrintView } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment';
+import { AdvancedPromptDialogComponent, PromptField } from '../../shared/dialogs/advanced-prompt-dialog/advanced-prompt-dialog.component';
+import { MenuService } from './menu.service';
 import { ShopService } from './shop.service';
 
 @Injectable({
@@ -14,6 +18,8 @@ export class PrinterService {
   constructor(
     private http: HttpClient,
     private shopsService: ShopService,
+    private menuService: MenuService,
+    private dialog: MatDialog,
     private translate: TranslateService,
     private snack: MatSnackBar
   ) {
@@ -31,6 +37,11 @@ export class PrinterService {
 
   async save(shopPrintView: ShopPrintView): Promise<ShopPrintView[]> {
     const printer = await this.http.post<ShopPrintView>('printers/printViews', shopPrintView).toPromise();
+    return this.load();
+  }
+
+  async remove(shopPrintView: ShopPrintView): Promise<ShopPrintView[]> {
+    await this.http.delete(`printers/printViews/${shopPrintView.id}`).toPromise();
     return this.load();
   }
 
@@ -111,5 +122,93 @@ export class PrinterService {
       };
       xhr.send(JSON.stringify(data));
     });
+  }
+
+  async openSaveDialog(printView?: ShopPrintView) {
+    const printers = await this.http.get<ShopPrinter[]>(`printers/${this.shopsService.shop!.id}`).toPromise();
+    if (!printers) return;
+    const printerOptions = printers.map((x) => ({ text: x.name, value: { id: x.id } }));
+    const fields: { [key: string]: PromptField } = {
+      title: {
+        label: this.translate.instant('app.title'),
+        control: new FormControl(printView ? printView.title : undefined, Validators.required),
+      },
+      printer: {
+        label: this.translate.instant('printers.printers'),
+        control: new FormControl(
+          printView ? printerOptions.find((x) => x.value.id === printView.printer.id) : undefined,
+          Validators.required
+        ),
+        type: 'select',
+        options: printerOptions,
+      },
+      type: {
+        label: this.translate.instant('printers.type'),
+        control: new FormControl(printView ? printView.type : PrintType.Cash, Validators.required),
+        type: 'select',
+        options: [
+          { text: this.translate.instant('printers.cash'), value: PrintType.Cash },
+          { text: this.translate.instant('printers.kitchen'), value: PrintType.Kitchen },
+          { text: this.translate.instant('printers.cashLarge'), value: PrintType.CashLarge },
+          { text: this.translate.instant('printers.kitchenLarge'), value: PrintType.KitchenLarge },
+        ],
+      },
+      includeProductCategoryIds: {
+        label: this.translate.instant('printers.includeCategories'),
+        control: new FormControl(printView ? printView.includeProductCategoryIds || [] : []),
+        type: 'multiple',
+        options: this.menuService.menu!.categories!.map((x) => ({ text: x.title, value: x.id })),
+      },
+      defaultCount: {
+        label: this.translate.instant('printers.defaultCount'),
+        control: new FormControl(printView ? printView.defaultCount : 1, Validators.required),
+        type: 'number',
+      },
+      autoPrintOnNewOrder: {
+        label: this.translate.instant('printers.autoPrintOnNewOrder'),
+        control: new FormControl(printView ? printView.autoPrintOnNewOrder : false, Validators.required),
+        type: 'select',
+        options: [
+          { text: this.translate.instant('app.no'), value: false },
+          { text: this.translate.instant('app.yes'), value: true },
+        ],
+      },
+      autoPrintOnOnlinePayment: {
+        label: this.translate.instant('printers.autoPrintOnOnlinePayment'),
+        control: new FormControl(printView ? printView.autoPrintOnOnlinePayment : false, Validators.required),
+        type: 'select',
+        options: [
+          { text: this.translate.instant('app.no'), value: false },
+          { text: this.translate.instant('app.yes'), value: true },
+        ],
+      },
+      autoPrintOnManualSettlement: {
+        label: this.translate.instant('printers.autoPrintOnManualSettlement'),
+        control: new FormControl(
+          printView ? printView.autoPrintOnManualSettlement : false,
+          Validators.required
+        ),
+        type: 'select',
+        options: [
+          { text: this.translate.instant('app.no'), value: false },
+          { text: this.translate.instant('app.yes'), value: true },
+        ],
+      },
+    };
+    const shopPrintView = await this.dialog
+      .open(AdvancedPromptDialogComponent, {
+        data: {
+          title: this.translate.instant('printers.add'),
+          fields,
+        },
+        width: '800px',
+      })
+      .afterClosed()
+      .toPromise();
+
+    if (shopPrintView) {
+      if (printView) shopPrintView.id = printView.id;
+      this.save(shopPrintView);
+    }
   }
 }
