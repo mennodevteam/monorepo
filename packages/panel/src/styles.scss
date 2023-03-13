@@ -262,6 +262,7 @@ mat-card {
   border-radius: 8px !important;
   box-shadow: none !important;
   border: $border !important;
+  overflow: hidden;
 
   mat-toolbar {
     width: -webkit-fill-available;

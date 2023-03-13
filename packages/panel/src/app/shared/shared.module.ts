@@ -55,6 +55,7 @@ import { StopPropagationDirective } from './directives/stop-propagation.directiv
 import { EmptyStateComponent } from './components/empty-state/empty-state.component';
 import { RouterLink } from '@angular/router';
 import { MemberDialogComponent } from './dialogs/member-dialog/member-dialog.component';
+import { MessageTemplateSelectorDialogComponent } from './dialogs/message-template-selector-dialog/message-template-selector-dialog.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { MemberDialogComponent } from './dialogs/member-dialog/member-dialog.com
     MemberDialogComponent,
     MemberSelectDialogComponent,
     SettlementDialogComponent,
+    MessageTemplateSelectorDialogComponent,
     PhonePipe,
     EmptyStateComponent,
   ],
@@ -137,6 +139,7 @@ import { MemberDialogComponent } from './dialogs/member-dialog/member-dialog.com
     MemberDialogComponent,
     MemberSelectDialogComponent,
     SettlementDialogComponent,
+    MessageTemplateSelectorDialogComponent,
     TranslateModule,
     ImageLoaderDirective,
     FormBuilderComponent,

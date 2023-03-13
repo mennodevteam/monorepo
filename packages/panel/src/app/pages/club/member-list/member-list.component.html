@@ -129,7 +129,9 @@
   </div>
 
   <mat-card>
-    <mat-paginator [showFirstLastButtons]="true" [pageSizeOptions]="[20, 50, 100, 200]"></mat-paginator>
+    <mat-toolbar>
+      <mat-paginator [showFirstLastButtons]="true" [pageSizeOptions]="[20, 50, 100, 200]"></mat-paginator>
+    </mat-toolbar>
     <mat-divider></mat-divider>
     <mat-card-content>
       <br />

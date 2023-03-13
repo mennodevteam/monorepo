@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FilterMemberDto, GenderType, Member, MemberTag, SmsTemplate, User } from '@menno/types';
+import { FilterMemberDto, GenderType, Member, MemberTag, NewSmsDto, SmsTemplate, User } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, map, merge, Observable, of } from 'rxjs';
 import { ClubService } from '../../../core/services/club.service';
@@ -13,6 +13,7 @@ import { ShopService } from '../../../core/services/shop.service';
 import * as XLSX from 'xlsx';
 import { PersianNumberService } from '@menno/utils';
 import { TagEditDialogComponent } from './tag-edit-dialog/tag-edit-dialog.component';
+import { MessageTemplateSelectorDialogComponent } from '../../../shared/dialogs/message-template-selector-dialog/message-template-selector-dialog.component';
 
 @Component({
   selector: 'member-list',
@@ -190,33 +191,33 @@ export class MemberListComponent {
   }
 
   async sendSmsToAll() {
-    // const template: SmsTemplate = await this.dialog
-    //   .open(MessageTemplateSelectorDialogComponent, {
-    //     width: '960px',
-    //   })
-    //   .afterClosed()
-    //   .toPromise();
-    // if (template) {
-    //   const dto = new NewSmsDto();
-    //   dto.receptors = undefined;
-    //   dto.templateId = template.id;
-    //   this.club.sendSms(dto);
-    // }
+    const template: SmsTemplate = await this.dialog
+      .open(MessageTemplateSelectorDialogComponent, {
+        width: '960px',
+      })
+      .afterClosed()
+      .toPromise();
+    if (template) {
+      const dto = new NewSmsDto();
+      dto.receptors = undefined;
+      dto.templateId = template.id;
+      this.club.sendSms(dto);
+    }
   }
 
   async sendSelectedSms() {
-    // const template: SmsTemplate = await this.dialog
-    //   .open(MessageTemplateSelectorDialogComponent, {
-    //     width: '960px',
-    //   })
-    //   .afterClosed()
-    //   .toPromise();
-    // if (template) {
-    //   const dto = new NewSmsDto();
-    //   dto.receptors = this.selection.selected.map((x) => x.user.mobilePhone);
-    //   dto.templateId = template.id;
-    //   this.club.sendSms(dto);
-    // }
+    const template: SmsTemplate = await this.dialog
+      .open(MessageTemplateSelectorDialogComponent, {
+        width: '960px',
+      })
+      .afterClosed()
+      .toPromise();
+    if (template) {
+      const dto = new NewSmsDto();
+      dto.receptors = this.selection.selected.map((x) => x.user.mobilePhone);
+      dto.templateId = template.id;
+      this.club.sendSms(dto);
+    }
   }
 
   async addSelectedTag(tag?: MemberTag) {

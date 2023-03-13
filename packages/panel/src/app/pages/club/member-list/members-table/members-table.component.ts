@@ -5,11 +5,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
-import { Member, MemberTag, SmsTemplate, User } from '@menno/types';
+import { Member, MemberTag, NewSmsDto, SmsTemplate, User } from '@menno/types';
 import { ShopService } from 'packages/panel/src/app/core/services/shop.service';
 import { ClubService } from 'packages/panel/src/app/core/services/club.service';
 import { MemberDialogComponent } from 'packages/panel/src/app/shared/dialogs/member-dialog/member-dialog.component';
 import { TagEditDialogComponent } from '../tag-edit-dialog/tag-edit-dialog.component';
+import { MessageTemplateSelectorDialogComponent } from 'packages/panel/src/app/shared/dialogs/message-template-selector-dialog/message-template-selector-dialog.component';
 
 @Component({
   selector: 'clb-members-table',
@@ -87,7 +88,7 @@ export class MembersTableComponent implements OnInit {
       if (tag) {
         dto.id = tag.id;
         const editedTag = await this.club.editTag(dto);
-        const members = await this.members.pipe(take(1)).toPromise() || [];
+        const members = (await this.members.pipe(take(1)).toPromise()) || [];
         for (const m of members) {
           const memberTagIndex = m.tags.findIndex((x) => x.id === editedTag.id);
           if (memberTagIndex > -1) {
@@ -103,18 +104,18 @@ export class MembersTableComponent implements OnInit {
   }
 
   async openSmsDialog(member: Member) {
-    // const template: SmsTemplate = await this.dialog
-    //   .open(MessageTemplateSelectorDialogComponent, {
-    //     width: '960px',
-    //   })
-    //   .afterClosed()
-    //   .toPromise();
-    // if (template) {
-    //   const dto = new NewSmsDto();
-    //   dto.receptors = [member.user.mobilePhone];
-    //   dto.templateId = template.id;
-    //   this.club.sendSms(dto);
-    // }
+    const template: SmsTemplate = await this.dialog
+      .open(MessageTemplateSelectorDialogComponent, {
+        width: '960px',
+      })
+      .afterClosed()
+      .toPromise();
+    if (template) {
+      const dto = new NewSmsDto();
+      dto.receptors = [member.user.mobilePhone];
+      dto.templateId = template.id;
+      this.club.sendSms(dto);
+    }
   }
 
   clickMember(member: Member) {

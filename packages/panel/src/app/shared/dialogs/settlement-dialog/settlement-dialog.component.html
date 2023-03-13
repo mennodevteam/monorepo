@@ -59,7 +59,7 @@
     </mat-list-item>
     <mat-list-item *ngIf="member" (click)="useWallet = !useWallet">
       <p matLine [class.red]="!member.wallet || member.wallet.charge < 0">
-        {{ 'settlementDialog.useWallet' | translate: { value: (member.wallet.charge || 0 | menuCurrency) } }}
+        {{ 'settlementDialog.useWallet' | translate: { value: (member.wallet?.charge || 0 | menuCurrency) } }}
       </p>
       <i class="fas fa-toggle-off gray" *ngIf="!useWallet"></i>
       <i class="fas fa-toggle-on blue" *ngIf="useWallet"></i>

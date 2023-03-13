@@ -6,18 +6,18 @@ main {
   gap: 16px;
 }
 
-.mat-spinner {
+mat-spinner {
   margin: 24px auto;
 }
 
-.mat-paginator {
-  margin: -16px !important;
+mat-paginator {
+  margin: 0 -16px !important;
   width: -webkit-fill-available;
   width: -moz-available;
   border-radius: 8px 4px 0 0;
   margin-bottom: 0 !important;
-  height: 48px;
   background: $background;
+  height: 100%;
 }
 
 .count-cards {

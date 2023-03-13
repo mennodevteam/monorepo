@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ClubService } from '../../../core/services/club.service';
 import { OrdersService } from '../../../core/services/orders.service';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
+import { MessageTemplateSelectorDialogComponent } from '../message-template-selector-dialog/message-template-selector-dialog.component';
 import { PromptDialogComponent } from '../prompt-dialog/prompt-dialog.component';
 
 @Component({
@@ -53,20 +54,20 @@ export class MemberDialogComponent implements OnInit {
   }
 
   async openSmsDialog() {
-    // const template: SmsTemplate = await this.dialog
-    //   .open(MessageTemplateSelectorDialogComponent, {
-    //     width: '960px',
-    //   })
-    //   .afterClosed()
-    //   .toPromise();
+    const template: SmsTemplate = await this.dialog
+      .open(MessageTemplateSelectorDialogComponent, {
+        width: '960px',
+      })
+      .afterClosed()
+      .toPromise();
 
-    // if (template) {
-    //   const dto = new NewSmsDto();
-    //   dto.receptors = [this.member.user.mobilePhone];
-    //   dto.templateId = template.id;
-    //   this.club.sendSms(dto);
-    //   this.dialogRef.close();
-    // }
+    if (template) {
+      const dto = new NewSmsDto();
+      dto.receptors = [this.member.user.mobilePhone];
+      dto.templateId = template.id;
+      this.club.sendSms(dto);
+      this.dialogRef.close();
+    }
   }
 
   async publicKeyClick() {
