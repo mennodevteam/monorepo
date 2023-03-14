@@ -231,7 +231,9 @@
       "edited": "ویرایش شده",
       "deleted": "حذف شده"
     },
-    "emptyState": "هیچ سفارش در این تاریخ ثبت نشده"
+    "emptyState": "هیچ سفارش در این تاریخ ثبت نشده",
+    "report": "گزارشات",
+    "advancedFilter": "فیلتر پیشرفته"
   },
   "pos": {
     "saveAndPrint": "ذخیره و چاپ",
@@ -426,5 +428,8 @@
     "autoPrintOnManualSettlement": "پرینت خودکار بعد تسویه حساب دستی",
     "includeCategories": "فقط برخی دسته بندی ها",
     "defaultCount": "تعداد پرینت پیشفرض"
+  },
+  "club": {
+    "members": "اعضای باشگاه"
   }
 }
