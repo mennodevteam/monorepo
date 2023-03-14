@@ -199,7 +199,6 @@ export class MemberListComponent {
       .toPromise();
     if (template) {
       const dto = new NewSmsDto();
-      dto.receptors = undefined;
       dto.templateId = template.id;
       this.club.sendSms(dto);
     }
@@ -214,7 +213,7 @@ export class MemberListComponent {
       .toPromise();
     if (template) {
       const dto = new NewSmsDto();
-      dto.receptors = this.selection.selected.map((x) => x.user.mobilePhone);
+      dto.memberIds = this.selection.selected.map((x) => x.id);
       dto.templateId = template.id;
       this.club.sendSms(dto);
     }

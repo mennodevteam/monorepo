@@ -22,11 +22,7 @@ export class MembersController {
   @Roles(Role.Panel)
   async filterAnniversary(@Param() param: any, @LoginUser() user: AuthPayload): Promise<Member[]> {
     const { club } = await this.auth.getPanelUserShop(user, ['club']);
-    return this.clubService.filterMembersAnniversary(
-      club.id,
-      Number(param.month),
-      Number(param.date)
-    );
+    return this.clubService.filterMembersAnniversary(club.id, Number(param.month), Number(param.date));
   }
 
   @Get('checkAnniversary/:date')
@@ -38,10 +34,7 @@ export class MembersController {
 
   @Get(':mobile')
   @Roles(Role.Panel)
-  async getByMobilePhone(
-    @LoginUser() user: AuthPayload,
-    @Param('mobile') mobile: string
-  ): Promise<Member> {
+  async getByMobilePhone(@LoginUser() user: AuthPayload, @Param('mobile') mobile: string): Promise<Member> {
     const { club } = await this.auth.getPanelUserShop(user, ['club']);
     const filter = new FilterMemberDto();
     filter.clubId = club.id;
@@ -56,10 +49,7 @@ export class MembersController {
 
   @Post('filter')
   @Roles(Role.Panel)
-  async filter(
-    @LoginUser() user: AuthPayload,
-    @Body() filter: FilterMemberDto
-  ): Promise<[Member[], number]> {
+  async filter(@LoginUser() user: AuthPayload, @Body() filter: FilterMemberDto): Promise<[Member[], number]> {
     const { club } = await this.auth.getPanelUserShop(user, ['club']);
     filter.clubId = club.id;
     return this.clubService.filterMembers(filter);

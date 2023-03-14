@@ -26,6 +26,7 @@ export class ClubsService {
     @InjectRepository(Shop) private shopsRepo: Repository<Shop>,
     @InjectRepository(Club) private clubsRepo: Repository<Club>,
     @InjectRepository(Member) private membersRepo: Repository<Member>,
+    @InjectRepository(User) private usersRepo: Repository<User>,
     @InjectRepository(DiscountCoupon) private discountCouponsRepo: Repository<DiscountCoupon>,
     @InjectRepository(DiscountUsage) private discountCouponUsagesRepo: Repository<DiscountUsage>
   ) {}
@@ -33,8 +34,28 @@ export class ClubsService {
   async saveMember(member: Member): Promise<Member> {
     if (member.user && member.user.id) {
       delete member.user.mobilePhone;
+    } else if (member.user.mobilePhone) {
+      const existUser = await this.usersRepo.findOneBy({ mobilePhone: member.user.mobilePhone });
+      if (existUser) member.user.id = existUser.id;
     }
-    return this.membersRepo.save(member);
+    const exist = member.user?.id
+      ? await this.membersRepo.findOne({
+          where: {
+            user: { mobilePhone: member.user.mobilePhone },
+            club: { id: member.club.id },
+          },
+          withDeleted: true,
+        })
+      : undefined;
+    if (exist) {
+      if (exist.deletedAt) {
+        await this.membersRepo.restore(exist.id);
+        delete exist.deletedAt;
+      }
+      return exist;
+    } else {
+      return this.membersRepo.save(member);
+    }
   }
 
   async join(clubId: string, userId: string) {

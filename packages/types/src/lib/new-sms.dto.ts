@@ -1,6 +1,7 @@
 export class NewSmsDto {
   accountId: string;
-  receptors: string[];
+  receptors?: string[];
+  memberIds?: string[];
   messages?: string[];
   templateId?: string;
   templateParams?: any;

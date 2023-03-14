@@ -111,8 +111,16 @@ export class ClubService {
   }
 
   async insertMembers(members: Member[]): Promise<Member[]> {
-    const res = await this.http.post<Member[]>('members/array', members).toPromise();
-    if (!res) throw new Error();
+    const res: Member[] = [];
+    if (members.length > 1) {
+      const m = await this.http.post<Member[]>('members/array', members).toPromise();
+      if (!m) throw new Error();
+      res.push(...m);
+    } else {
+      const m = await this.http.post<Member>('members', members[0]).toPromise();
+      if (!m) throw new Error();
+      res.push(m);
+    }
     return res;
   }
 
@@ -200,7 +208,7 @@ export class ClubService {
       .afterClosed()
       .toPromise();
     if (!verify) return;
-    const sms = await this.http.post<Sms[]>('sms', dto).toPromise();
+    const sms = await this.http.post<Sms[]>('sms/sendTemplate', dto).toPromise();
     this.snack
       .open(
         this.translate.instant('smsTable.successfullySent'),

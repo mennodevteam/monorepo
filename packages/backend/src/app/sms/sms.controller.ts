@@ -1,7 +1,7 @@
 import { FilterSmsDto, Member, NewSmsDto, Sms, User } from '@menno/types';
 import { Body, Controller, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
 import { Roles } from '../auth/roles.decorators';
 import { LoginUser } from '../auth/user.decorator';
@@ -11,7 +11,11 @@ import { SmsService } from './sms.service';
 
 @Controller('sms')
 export class SmsController {
-  constructor(private authService: AuthService, private smsService: SmsService) {}
+  constructor(
+    private authService: AuthService,
+    private smsService: SmsService,
+    @InjectRepository(Member) private membersRepo: Repository<Member>
+  ) {}
 
   @Post('filter')
   @Roles(Role.Panel)
@@ -19,5 +23,27 @@ export class SmsController {
     const { smsAccount } = await this.authService.getPanelUserShop(user, ['smsAccount']);
     filter.accountId = smsAccount.id;
     return this.smsService.filter(filter);
+  }
+
+  @Post('sendTemplate')
+  @Roles(Role.Panel)
+  async sendTemplate(@Body() dto: NewSmsDto, @LoginUser() user: AuthPayload): Promise<Sms[]> {
+    const shop = await this.authService.getPanelUserShop(user, ['smsAccount', 'club']);
+    dto.accountId = shop.smsAccount.id;
+    const members = await this.membersRepo.find({
+      where: { id: In(dto.memberIds), club: { id: shop.club.id } },
+      relations: ['user'],
+    });
+    dto.receptors = members.map(x => x.user.mobilePhone);
+    const shopLink = shop.domain
+      ? `https://${shop.domain}`
+      : `https://${shop.username}.${process.env.APP_ORIGIN}`;
+    dto.templateParams = {
+      '@@@': members.map((x) => User.fullName(x.user)),
+      '###': members.map((x) => shopLink),
+      '***': members.map((x) => shop.title),
+    };
+
+    return this.smsService.sendTemplate(dto);
   }
 }

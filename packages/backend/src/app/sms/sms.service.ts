@@ -56,6 +56,7 @@ export class SmsService {
         };
         kavenegarDtos.push(kavenegarDto);
       }
+      console.log(kavenegarDtos);
       for (const kavenegarDto of kavenegarDtos) {
         kavenegarApi.SendArray(kavenegarDto, async (response, status) => {
           if (status == 200) {
@@ -108,6 +109,7 @@ export class SmsService {
       messages.push(message);
     }
     dto.messages = messages;
+    console.log(dto);
     return this.send(dto);
   }
 

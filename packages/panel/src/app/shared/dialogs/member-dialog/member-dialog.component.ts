@@ -63,7 +63,7 @@ export class MemberDialogComponent implements OnInit {
 
     if (template) {
       const dto = new NewSmsDto();
-      dto.receptors = [this.member.user.mobilePhone];
+      dto.memberIds = [this.member.id];
       dto.templateId = template.id;
       this.club.sendSms(dto);
       this.dialogRef.close();
