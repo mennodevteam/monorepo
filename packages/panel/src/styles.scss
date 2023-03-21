@@ -1,3 +1,5 @@
+@use "@angular/material" as mat;
+
 @import "assets/fonts/iransans/iransans.scss";
 @import "assets/fonts/fontawesome/scss/fontawesome.scss";
 @import "assets/fonts/fontawesome/scss/regular.scss";
@@ -176,8 +178,8 @@ i[empty-state-icon] {
   position: sticky;
   top: 64px;
   z-index: 500;
-  height: 48px;
   background-color: white !important;
+  @include mat.elevation(3);
 }
 
 .content-wrapper {
@@ -235,12 +237,17 @@ i[empty-state-icon] {
 
 .mdc-button {
   letter-spacing: normal !important;
+  border-radius: 32px !important;
 }
 
 .mat-stepper-vertical,
 .mat-stepper-horizontal,
 .mat-calendar {
   font-family: inherit !important;
+}
+
+.mat-mdc-tab-header {
+  border-bottom: $border;
 }
 
 [mat-icon-button] {
@@ -256,6 +263,10 @@ i[empty-state-icon] {
 
 .mat-toolbar {
   background-color: transparent;
+
+  &.mat-toolbar-single-row {
+    gap: 8px;
+  }
 }
 
 mat-card {

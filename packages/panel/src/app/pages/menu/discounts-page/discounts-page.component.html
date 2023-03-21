@@ -1,90 +1,96 @@
-<mat-toolbar class="content-toolbar">
-  <h2 flex>{{ 'menu.discountsTab' | translate }}</h2>
+<mat-toolbar class="page-toolbar">
+  <button mat-icon-button goBack>
+    <i class="fa-regular fa-arrow-right fa-large"></i>
+  </button>
+  <h2 flex>{{ 'menuDiscountPage.pageTitle' | translate }}</h2>
   <button mat-flat-button color="primary" routerLink="edit">
     {{ 'app.add' | translate }}
   </button>
 </mat-toolbar>
-<p class="gray">
-  {{ 'menuDiscountPage.pageDescription' | translate }}
-</p>
 
-<mat-card>
-  <mat-card-content>
-    <table mat-table [dataSource]="discounts">
-      <ng-container matColumnDef="title">
-        <th mat-header-cell *matHeaderCellDef>
-          {{ 'menuDiscountPage.tableTitleCol' | translate }}
-        </th>
-        <td mat-cell *matCellDef="let discount">{{ discount.title }}</td>
-      </ng-container>
+<main class="content-wrapper">
+  <p class="gray">
+    {{ 'menuDiscountPage.pageDescription' | translate }}
+  </p>
 
-      <ng-container matColumnDef="discount">
-        <th mat-header-cell *matHeaderCellDef class="fixed-width">
-          {{ 'menuDiscountPage.tableDiscountCol' | translate }}
-        </th>
-        <td mat-cell *matCellDef="let discount">
-          <span *ngIf="discount.fixedCost">
-            {{ discount.fixedCost * -1 | menuCurrency }}
-          </span>
+  <mat-card>
+    <mat-card-content>
+      <table mat-table [dataSource]="discounts">
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ 'menuDiscountPage.tableTitleCol' | translate }}
+          </th>
+          <td mat-cell *matCellDef="let discount">{{ discount.title }}</td>
+        </ng-container>
 
-          <span *ngIf="discount.percentageCost"> {{ discount.percentageCost * -1 }} % </span>
-        </td>
-      </ng-container>
+        <ng-container matColumnDef="discount">
+          <th mat-header-cell *matHeaderCellDef class="fixed-width">
+            {{ 'menuDiscountPage.tableDiscountCol' | translate }}
+          </th>
+          <td mat-cell *matCellDef="let discount">
+            <span *ngIf="discount.fixedCost">
+              {{ discount.fixedCost * -1 | menuCurrency }}
+            </span>
 
-      <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef>{{ 'menuDiscountPage.tableDateCol' | translate }}</th>
-        <td mat-cell *matCellDef="let discount">
-          <span *ngIf="discount.fromDate && discount.toDate">
-            {{
-              'app.fromTo'
-                | translate
-                  : {
-                      from: (discount.fromDate | pdate: 'YYYY/MM/DD'),
-                      to: (discount.toDate | pdate: 'YYYY/MM/DD')
-                    }
-            }}
-          </span>
+            <span *ngIf="discount.percentageCost"> {{ discount.percentageCost * -1 }} % </span>
+          </td>
+        </ng-container>
 
-          <span *ngIf="discount.percentageCost"> {{ discount.percentageCost * -1 }} % </span>
-        </td>
-      </ng-container>
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>{{ 'menuDiscountPage.tableDateCol' | translate }}</th>
+          <td mat-cell *matCellDef="let discount">
+            <span *ngIf="discount.fromDate && discount.toDate">
+              {{
+                'app.fromTo'
+                  | translate
+                    : {
+                        from: (discount.fromDate | pdate: 'YYYY/MM/DD'),
+                        to: (discount.toDate | pdate: 'YYYY/MM/DD')
+                      }
+              }}
+            </span>
 
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef class="fixed-width">
-          {{ 'app.status' | translate }}
-        </th>
-        <td mat-cell *matCellDef="let discount" class="form-theme">
-          <mat-slide-toggle
-            [disabled]="discount.status === Status.Pending"
-            [checked]="discount.status != Status.Inactive"
-            (change)="changeStatus(discount, $event)"
-          >
-            {{ (discount.status ? 'app.active' : 'app.inactive') | translate }}
-          </mat-slide-toggle>
-        </td>
-      </ng-container>
+            <span *ngIf="discount.percentageCost"> {{ discount.percentageCost * -1 }} % </span>
+          </td>
+        </ng-container>
 
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let discount">
-          <div style="justify-content: end; display: flex">
-            <button
-              mat-icon-button
-              matTooltip="{{ 'app.edit' | translate }}"
-              routerLink="edit"
-              [queryParams]="{ id: discount.id }"
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef class="fixed-width">
+            {{ 'app.status' | translate }}
+          </th>
+          <td mat-cell *matCellDef="let discount" class="form-theme">
+            <mat-slide-toggle
+              [disabled]="discount.status === Status.Pending"
+              [checked]="discount.status != Status.Inactive"
+              (change)="changeStatus(discount, $event)"
             >
-              <i class="fa-regular fa-pencil-alt"></i>
-            </button>
-            <button mat-icon-button matTooltip="{{ 'app.remove' | translate }}" (click)="remove(discount)">
-              <i class="fa-regular fa-trash-alt"></i>
-            </button>
-          </div>
-        </td>
-      </ng-container>
+              {{ (discount.status ? 'app.active' : 'app.inactive') | translate }}
+            </mat-slide-toggle>
+          </td>
+        </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-  </mat-card-content>
-</mat-card>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let discount">
+            <div style="justify-content: end; display: flex">
+              <button
+                mat-icon-button
+                matTooltip="{{ 'app.edit' | translate }}"
+                routerLink="edit"
+                [queryParams]="{ id: discount.id }"
+              >
+                <i class="fa-regular fa-pencil-alt"></i>
+              </button>
+              <button mat-icon-button matTooltip="{{ 'app.remove' | translate }}" (click)="remove(discount)">
+                <i class="fa-regular fa-trash-alt"></i>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</main>

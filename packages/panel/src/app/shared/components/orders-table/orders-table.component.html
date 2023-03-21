@@ -17,7 +17,7 @@
         [disabled]="order._settingCustomer"
         (click)="openSelectMember(order)"
       >
-        <i class="fa-solid fa-user-plus fa-lg"></i>
+        <i class="fa-solid fa-user-plus fa-large"></i>
         <span spacer-sm></span>
         {{ 'ordersTable.addCustomer' | translate }}
       </button>
@@ -106,7 +106,7 @@
 
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let order" style="text-align: end;">
+    <td mat-cell *matCellDef="let order" style="text-align: end">
       <button mat-icon-button (click)="print(order)" stopPropagation>
         <i class="fa-regular fa-print"></i>
       </button>

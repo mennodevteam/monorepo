@@ -1,11 +1,24 @@
-<mat-toolbar class="content-toolbar">
-  <h2 flex>{{ 'menu.itemsTab' | translate }}</h2>
+<mat-toolbar class="page-toolbar">
+  <h1 flex>
+    {{ 'menu.pageTitle' | translate }}
+  </h1>
+  <button mat-stroked-button routerLink="discounts">
+    <i class="fa-regular fa-badge-percent"></i>
+    {{ 'menuDiscountPage.pageTitle' | translate }}
+  </button>
+  <button mat-stroked-button routerLink="costs">
+    <i class="fa-regular fa-grid-2-plus"></i>
+    {{ 'menuCostPage.pageTitle' | translate }}
+  </button>
   <button mat-flat-button color="primary" (click)="addCategory()">
-    {{ 'menuList.addCategory' | translate }}
+    {{ 'menu.addCategory' | translate }}
   </button>
 </mat-toolbar>
 
-<div *ngFor="let cat of categories">
-  <menu-category-container [category]="cat"></menu-category-container>
-  <span spacer-2x></span>
-</div>
+<mat-tab-group mat-stretch-tabs="false">
+  <mat-tab *ngFor="let cat of categories" [label]="cat.title">
+    <div class="content-wrapper">
+      <menu-category-container [category]="cat"></menu-category-container>
+    </div>
+  </mat-tab>
+</mat-tab-group>

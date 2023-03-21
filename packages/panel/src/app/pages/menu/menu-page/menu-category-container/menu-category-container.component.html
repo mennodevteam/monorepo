@@ -5,18 +5,10 @@
         <i *ngIf="category.faIcon" class="fa-solid fa-{{ category.faIcon }}"></i>
         {{ category.title }}
       </h3>
-      <button
-        mat-icon-button
-        matTooltip="{{ 'menuList.editCategory' | translate }}"
-        (click)="editCategory()"
-      >
+      <button mat-icon-button matTooltip="{{ 'menu.editCategory' | translate }}" (click)="editCategory()">
         <i class="fa-regular fa-pencil-alt"></i>
       </button>
-      <button
-        mat-icon-button
-        matTooltip="{{ 'menuList.deleteCategory' | translate }}"
-        (click)="deleteCategory()"
-      >
+      <button mat-icon-button matTooltip="{{ 'menu.deleteCategory' | translate }}" (click)="deleteCategory()">
         <i class="fa-regular fa-trash-alt"></i>
       </button>
     </mat-toolbar-row>
@@ -28,19 +20,14 @@
     </ng-container>
     <div *ngIf="!category.products?.length" class="empty-state">
       <i *ngIf="category.faIcon" empty-state-icon class="fa-solid fa-{{ category.faIcon }}"></i>
-      <p>{{ 'menuList.emptyProductsDescription' | translate }}</p>
+      <p>{{ 'menu.emptyProductsDescription' | translate }}</p>
     </div>
   </mat-card-content>
   <mat-divider></mat-divider>
   <mat-card-actions>
-    <button
-      mat-button
-      color="primary"
-      routerLink="product"
-      [queryParams]="{ categoryId: category.id }"
-    >
+    <button mat-button color="primary" routerLink="product" [queryParams]="{ categoryId: category.id }">
       <i class="fa-regular fa-plus"></i>
-      {{ 'menuList.addProduct' | translate }}
+      {{ 'menu.addProduct' | translate }}
     </button>
   </mat-card-actions>
 </mat-card>

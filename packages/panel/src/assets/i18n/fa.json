@@ -42,18 +42,21 @@
     "addOrder": "سفارش جدید",
     "logout": "خروج از حساب کاربری"
   },
-  "menu": {
-    "itemsTab": "آیتم‌های منو",
-    "discountsTab": "تخفیف جشنواره",
-    "costsTab": "هزینه‌های مازاد"
-  },
   "menuDiscountPage": {
+    "pageTitle": "تخفیف‌ها",
     "pageDescription": "این تخفیف به صورت مستقیم با علامت تخفیف روی آیتم نمایش داده میشود.",
     "tableTitleCol": "عنوان",
     "tableDiscountCol": "میزان تخفیف",
     "tableDateCol": "بازه زمانی"
   },
-  "menuList": {
+  "menuCostPage": {
+    "pageTitle": "هزینه مازاد",
+    "pageDescription": "هزینه مازاد مثل مالیات، بسته بندی خاص، سرویس دهی و یا هر چیز دیگری می‌شود.",
+    "tableTitleCol": "عنوان",
+    "tableCostCol": "هزینه اضافی"
+  },
+  "menu": {
+    "pageTitle": "آیتم‌های منو",
     "addCategory": "ایجاد دسته‌بندی",
     "editCategory": "ویرایش دسته‌بندی",
     "deleteCategory": "حذف دسته‌بندی",
@@ -206,11 +209,6 @@
   "removeDialog": {
     "title": "حذف {{value}}",
     "description": "در صورت اطمینان از حذف {{value}} لطفا تایید کنید."
-  },
-  "menuCostPage": {
-    "pageDescription": "هزینه مازاد مثل مالیات، بسته بندی خاص، سرویس دهی و یا هر چیز دیگری می‌شود.",
-    "tableTitleCol": "عنوان",
-    "tableCostCol": "هزینه اضافی"
   },
   "ordersTable": {
     "customer": "مشتری",

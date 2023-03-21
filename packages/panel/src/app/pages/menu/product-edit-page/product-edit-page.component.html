@@ -1,14 +1,14 @@
 <form [formGroup]="form" class="form-theme">
-  <mat-toolbar class="content-toolbar">
+  <mat-toolbar class="page-toolbar">
     <button mat-icon-button goBack>
-      <i class="fa-regular fa-arrow-right"></i>
+      <i class="fa-regular fa-arrow-right fa-large"></i>
     </button>
     <h2 flex>{{ 'productEdit.newProductPageTitle' | translate }}</h2>
     <button mat-flat-button color="accent" (click)="save()" [disabled]="!form.dirty">
       {{ 'app.save' | translate }}
     </button>
   </mat-toolbar>
-  <main>
+  <main class="content-wrapper">
     <div class="form-page-layout">
       <div class="flex-col">
         <mat-card>

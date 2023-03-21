@@ -6,7 +6,8 @@
     "deploy-panel": "liara deploy --path=dist/packages/panel",
     "deploy-app": "liara deploy --path=dist/packages/app",
     "deploy-backend": "liara deploy --path=dist/packages/backend",
-    "build-all": "nx run-many --target=build --projects=backend,panel,app"
+    "build": "nx run-many --target=build --projects=backend,panel,app",
+    "serve": "nx run-many --target=serve --projects=backend,panel,app"
   },
   "private": true,
   "dependencies": {

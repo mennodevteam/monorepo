@@ -1,5 +1,5 @@
 <form [formGroup]="form" class="form-theme">
-  <mat-toolbar class="content-toolbar">
+  <mat-toolbar class="page-toolbar">
     <button mat-icon-button goBack>
       <i class="fa-regular fa-arrow-right"></i>
     </button>
@@ -8,7 +8,7 @@
       {{ 'app.save' | translate }}
     </button>
   </mat-toolbar>
-  <main>
+  <main class="content-wrapper">
     <div class="form-page-layout">
       <div class="flex-col">
         <mat-card>

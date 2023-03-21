@@ -12,13 +12,12 @@ export const menuRoutes: Route[] = [
     path: '',
     component: MenuComponent,
     children: [
-      { path: 'items', component: MenuPageComponent },
-      { path: 'items/product', component: ProductEditPageComponent },
+      { path: '', component: MenuPageComponent },
+      { path: 'product', component: ProductEditPageComponent },
       { path: 'discounts', component: DiscountsPageComponent },
       { path: 'discounts/edit', component: EditDiscountComponent },
       { path: 'costs', component: CostsPageComponent },
       { path: 'costs/edit', component: EditCostComponent },
-      { path: '', redirectTo: 'items', pathMatch: 'full' },
     ],
   },
 ];
