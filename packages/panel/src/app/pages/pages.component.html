@@ -1,17 +1,14 @@
 <mat-toolbar color="accent" [hidden]="getRouteData()?.hideShell">
   <img src="assets/icons/logo.png" id="logo" />
   <span spacer-2x></span>
-  <span spacer-2x></span>
   <button mat-button routerLink="menu">
     <i class="fa-solid fa-large fa-book-open"></i>
     {{ 'shell.menu' | translate }}
   </button>
-  <span spacer></span>
   <button mat-button routerLink="orders">
     <i class="fa-solid fa-large fa-utensils"></i>
     {{ 'shell.orders' | translate }}
   </button>
-  <span spacer></span>
   <button mat-button routerLink="club" [disabled]="isClubDisabled">
     <i class="fa-solid fa-large fa-crown"></i>
     {{ 'shell.club' | translate }}
@@ -21,11 +18,9 @@
     <i class="fa-solid fa-plus-circle"></i>
     {{ 'shell.addOrder' | translate }}
   </button>
-  <span spacer></span>
   <button mat-icon-button routerLink="settings">
     <i class="fa-solid fa-large fa-gear"></i>
   </button>
-  <span spacer></span>
   <button mat-icon-button id="user-button" [matMenuTriggerFor]="userMenu">
     <img [imageLoader]="shop?.logo" />
   </button>

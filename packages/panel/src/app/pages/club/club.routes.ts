@@ -7,8 +7,7 @@ export const clubRoutes: Route[] = [
     path: '',
     component: ClubComponent,
     children: [
-      { path: 'members', component: MemberListComponent },
-      { path: '', redirectTo: 'members', pathMatch: 'full' },
+      { path: '', component: MemberListComponent },
     ],
   },
 ];

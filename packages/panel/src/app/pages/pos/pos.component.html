@@ -1,6 +1,5 @@
-<mat-toolbar class="main-toolbar form-theme">
+<mat-toolbar class="main-toolbar mat-elevation-z3 form-theme">
   <button mat-icon-button class="fa-regular fa-close" goBack></button>
-  <span spacer></span>
   <h1 flex *ngIf="!queryParamId">{{ 'pos.newTitle' | translate }}</h1>
   <h1 flex *ngIf="queryParamId && POS.editOrder">
     {{ 'pos.editTitle' | translate: { value: POS.editOrder.qNumber } }}
@@ -8,16 +7,9 @@
   <button mat-button [disabled]="POS.saving" (click)="POS.clear()" color="warn">
     {{ 'app.clear' | translate }}
   </button>
-  <span spacer></span>
-  <button
-    mat-flat-button
-    [disabled]="POS.saving || !POS.items.length"
-    (click)="save(true)"
-    color="accent"
-  >
+  <button mat-flat-button [disabled]="POS.saving || !POS.items.length" (click)="save(true)" color="accent">
     {{ 'pos.saveAndPrint' | translate }}
   </button>
-  <span spacer></span>
   <button mat-flat-button [disabled]="POS.saving || !POS.items.length" (click)="save()" color="accent">
     {{ 'app.save' | translate }}
   </button>

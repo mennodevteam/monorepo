@@ -1,15 +1,13 @@
-<mat-toolbar class="content-toolbar" *ngIf="!selection.hasValue()">
+<mat-toolbar class="page-toolbar" *ngIf="!selection.hasValue()">
   <h2 flex>{{ 'members.title' | translate }}</h2>
   <button mat-button color="primary" (click)="sendSmsToAll()">
     <i matListIcon class="far fa-comment-alt-lines"></i>
     <span spacer-sm></span>
     <span>{{ 'members.sendSmsAll' | translate }}</span>
   </button>
-  <span spacer></span>
   <button mat-flat-button color="primary" [matMenuTriggerFor]="addMenu">
     {{ 'members.add' | translate }}
   </button>
-  <span spacer></span>
   <a mat-icon-button routerLink="/settings/club" matTooltip="{{ 'members.settingTootltip' | translate }}">
     <i class="fas fa-cog"></i>
   </a>
@@ -35,7 +33,7 @@
   <input style="display: none" #fileInput type="file" (change)="excelInputFileChanged($event)" />
 </mat-toolbar>
 
-<main>
+<main class="content-wrapper">
   <div class="dark-theme" *ngIf="selection.hasValue()">
     <mat-card>
       <mat-toolbar>
