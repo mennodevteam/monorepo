@@ -1,0 +1,10 @@
+.form-theme {
+  padding: 24px;
+}
+
+.filter-card {
+  mat-card-content {
+    display: flex;
+    flex-direction: column;
+  }
+}

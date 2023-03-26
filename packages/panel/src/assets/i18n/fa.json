@@ -448,5 +448,12 @@
       "state": "وضعیت",
       "type": "نوع‌سفارش"
     }
+  },
+  "orderFilter": {
+    "pageTitle": "جستجوی پیشرفته سفارشات",
+    "typesLabel": "نوع سفارش",
+    "statesLabel": "وضعیت سفارش",
+    "paymentsLabel": "وضعیت پرداخت",
+    "submit": "جستجو"
   }
 }

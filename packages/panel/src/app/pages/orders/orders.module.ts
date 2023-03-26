@@ -11,9 +11,10 @@ import { OrderTypePipe } from '../../shared/pipes/order-type.pipe';
 import { OrderStatePipe } from '../../shared/pipes/order-state.pipe';
 import { OrderPaymentPipe } from '../../shared/pipes/order-payment.pipe';
 import { MenuCurrencyPipe } from '../../shared/pipes/menu-currency.pipe';
+import { OrderFilterComponent } from './order-filter/order-filter.component';
 
 @NgModule({
-  declarations: [OrdersComponent, OrderDetailsComponent, OrderReportsComponent],
+  declarations: [OrdersComponent, OrderDetailsComponent, OrderReportsComponent, OrderFilterComponent],
   imports: [CommonModule, RouterModule.forChild(ordersRoutes), SharedModule, NgChartsModule],
   providers: [OrderTypePipe, OrderStatePipe, OrderPaymentPipe, MenuCurrencyPipe],
 })
