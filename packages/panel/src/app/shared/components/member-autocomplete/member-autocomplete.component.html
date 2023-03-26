@@ -1,0 +1,15 @@
+<mat-form-field appearance="fill">
+  <mat-label>{{ 'memberAutocomplete.label' | translate }}</mat-label>
+  <input
+    type="search"
+    placeholder="{{ 'memberAutocomplete.placeholder' | translate }}"
+    matInput
+    [formControl]="control"
+    [matAutocomplete]="auto"
+  />
+  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+    <mat-option *ngFor="let member of filteredMembers | async" [value]="member">
+      {{ User.fullName(member.user) }} ({{ member.user.mobilePhone | phone }})
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

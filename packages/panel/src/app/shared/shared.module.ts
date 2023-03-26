@@ -25,6 +25,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DateAdapter, MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { PromptDialogComponent } from './dialogs/prompt-dialog/prompt-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
@@ -56,6 +57,7 @@ import { EmptyStateComponent } from './components/empty-state/empty-state.compon
 import { RouterLink } from '@angular/router';
 import { MemberDialogComponent } from './dialogs/member-dialog/member-dialog.component';
 import { MessageTemplateSelectorDialogComponent } from './dialogs/message-template-selector-dialog/message-template-selector-dialog.component';
+import { MemberAutocompleteComponent } from './components/member-autocomplete/member-autocomplete.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +69,7 @@ import { MessageTemplateSelectorDialogComponent } from './dialogs/message-templa
     MenuCurrencyPipe,
     PdatePipe,
     PhonePipe,
+    MemberAutocompleteComponent,
     SelectDialogComponent,
     AlertDialogComponent,
     ImageLoaderDirective,
@@ -93,6 +96,7 @@ import { MessageTemplateSelectorDialogComponent } from './dialogs/message-templa
     ImageCropperModule,
     TranslateModule,
     MatToolbarModule,
+    MatAutocompleteModule,
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
@@ -143,12 +147,14 @@ import { MessageTemplateSelectorDialogComponent } from './dialogs/message-templa
     TranslateModule,
     ImageLoaderDirective,
     FormBuilderComponent,
+    MemberAutocompleteComponent,
     OrdersTableComponent,
 
     FormsModule,
     ReactiveFormsModule,
     LayoutModule,
     MatToolbarModule,
+    MatAutocompleteModule,
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
@@ -180,6 +186,7 @@ import { MessageTemplateSelectorDialogComponent } from './dialogs/message-templa
     { provide: MAT_DATE_FORMATS, useValue: PERSIAN_DATE_FORMATS },
     DatePipe,
     DecimalPipe,
+    PhonePipe,
   ],
 })
 export class SharedModule {}

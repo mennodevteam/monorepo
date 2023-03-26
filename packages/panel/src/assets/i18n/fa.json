@@ -449,6 +449,10 @@
       "type": "نوع‌سفارش"
     }
   },
+  "memberAutocomplete": {
+    "label": "جستجوی مشتری",
+    "placeholder": "جستجوی نام و یا شماره همراه..."
+  },
   "orderFilter": {
     "pageTitle": "جستجوی پیشرفته سفارشات",
     "typesLabel": "نوع سفارش",

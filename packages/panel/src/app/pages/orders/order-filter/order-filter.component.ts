@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { OrderPaymentType, OrderState, OrderType } from '@menno/types';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FilterOrderDto, OrderPaymentType, OrderState, OrderType } from '@menno/types';
 import { OrdersService } from '../../../core/services/orders.service';
 
 @Component({
@@ -15,10 +15,7 @@ export class OrderFilterComponent {
   OrderState = OrderState;
   loading = false;
 
-  constructor(
-    private fb: FormBuilder,
-    private ordersService: OrdersService,
-  ) {
+  constructor(private fb: FormBuilder, private ordersService: OrdersService) {
     this.form = this.fb.group({
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), Validators.required],
@@ -34,13 +31,29 @@ export class OrderFilterComponent {
       ],
       types: [[OrderType.Delivery, OrderType.DineIn, OrderType.Takeaway], Validators.required],
       waiterId: [undefined],
+      customer: [],
       groupBy: 'date',
     });
+  }
+
+  get filterDto(): FilterOrderDto {
+    const data = this.form.getRawValue();
+    if (data.customer) {
+      data.customerId = data.customer?.id;
+      delete data.customer;
+    }
+    return data;
+  }
+
+  get customerControl() {
+    return this.form.controls['customer'] as FormControl;
   }
 
   ngAfterViewInit(): void {
     this.submit();
   }
 
-  async submit() {}
+  async submit() {
+    console.log(this.filterDto);
+  }
 }
