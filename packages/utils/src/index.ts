@@ -1,1 +1,1 @@
-export * from './lib/persian-number.service';
+export * from './lib';

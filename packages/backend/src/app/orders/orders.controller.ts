@@ -1,4 +1,4 @@
-import { FilterOrderDto, ManualSettlementDto, Order, OrderDto, User } from '@menno/types';
+import { FilterOrderDto, ManualSettlementDto, Order, OrderDto, OrderReportDto, User } from '@menno/types';
 import {
   Body,
   Controller,
@@ -114,6 +114,14 @@ export class OrdersController {
   @Post('manualSettlement')
   async manualSettlement(@Body() body: ManualSettlementDto, @LoginUser() user: AuthPayload): Promise<Order> {
     return this.ordersService.manualSettlement(body);
+  }
+
+  @Post('report')
+  @Roles(Role.Panel)
+  async report(@Body() body: OrderReportDto, @LoginUser() user: AuthPayload) {
+    const shop = await this.auth.getPanelUserShop(user);
+    body.shopId = shop.id;
+    return this.ordersService.report(body);
   }
 
   @Get('setCustomer/:orderId/:memberId')

@@ -1,0 +1,106 @@
+<mat-toolbar class="page-toolbar">
+  <button mat-icon-button goBack>
+    <i class="fa-regular fa-arrow-right"></i>
+  </button>
+  <h1 flex> {{'orderReport.pageTitle' | translate}} </h1>
+</mat-toolbar>
+
+<form class="form-theme" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="form-page-layout">
+    <div class="static-col">
+      <mat-card class="filter-card">
+        <mat-card-content>
+          <mat-form-field appearance="fill">
+            <mat-label>{{ 'app.dateRange' | translate }}</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input matStartDate formControlName="fromDate" placeholder="{{ 'app.from' | translate }}" />
+              <input matEndDate formControlName="toDate" placeholder="{{ 'app.to' | translate }}" />
+            </mat-date-range-input>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>{{ 'orderReport.typesLabel' | translate }}</mat-label>
+            <mat-select formControlName="types" multiple>
+              <mat-option [value]="OrderType.DineIn"> {{ OrderType.DineIn | orderType }} </mat-option>
+              <mat-option [value]="OrderType.Delivery"> {{ OrderType.Delivery | orderType }} </mat-option>
+              <mat-option [value]="OrderType.Takeaway"> {{ OrderType.Takeaway | orderType }} </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>{{ 'orderReport.statesLabel' | translate }}</mat-label>
+            <mat-select formControlName="states" multiple>
+              <mat-option [value]="OrderState.Pending"> {{ OrderState.Pending | orderState }} </mat-option>
+              <mat-option [value]="OrderState.Processing">
+                {{ OrderState.Processing | orderState }}
+              </mat-option>
+              <mat-option [value]="OrderState.Ready"> {{ OrderState.Ready | orderState }} </mat-option>
+              <mat-option [value]="OrderState.Shipping">
+                {{ OrderState.Shipping | orderState }}
+              </mat-option>
+              <mat-option [value]="OrderState.Completed">
+                {{ OrderState.Completed | orderState }}
+              </mat-option>
+              <mat-option [value]="OrderState.Canceled">
+                {{ OrderState.Canceled | orderState }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>{{ 'orderReport.paymentsLabel' | translate }}</mat-label>
+            <mat-select formControlName="payments" multiple>
+              <mat-option [value]="OrderPaymentType.NotPayed">
+                {{ OrderPaymentType.NotPayed | orderPayment }}
+              </mat-option>
+              <mat-option [value]="OrderPaymentType.Cash">
+                {{ OrderPaymentType.Cash | orderPayment }}
+              </mat-option>
+              <mat-option [value]="OrderPaymentType.Online">
+                {{ OrderPaymentType.Online | orderPayment }}
+              </mat-option>
+              <mat-option [value]="OrderPaymentType.ClubWallet">
+                {{ OrderPaymentType.ClubWallet | orderPayment }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-flat-button color="accent" flex type="submit">
+            {{ 'orderReport.submit' | translate }}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <div class="flex-col">
+      <mat-card>
+        <mat-card-content>
+          <label>{{ 'orderReport.groupBy.label' | translate }}</label>
+          <mat-button-toggle-group formControlName="groupBy" (change)="submit()">
+            <mat-button-toggle value="date">{{ 'orderReport.groupBy.date' | translate }}</mat-button-toggle>
+            <mat-button-toggle value="product">{{
+              'orderReport.groupBy.product' | translate
+            }}</mat-button-toggle>
+            <mat-button-toggle value="category">{{
+              'orderReport.groupBy.category' | translate
+            }}</mat-button-toggle>
+            <mat-button-toggle value="payment">{{
+              'orderReport.groupBy.payment' | translate
+            }}</mat-button-toggle>
+            <mat-button-toggle value="state">{{ 'orderReport.groupBy.state' | translate }}</mat-button-toggle>
+            <mat-button-toggle value="type">{{ 'orderReport.groupBy.type' | translate }}</mat-button-toggle>
+          </mat-button-toggle-group>
+          <span spacer-2x></span>
+          <div [hidden]="loading">
+            <div>
+              <canvas baseChart [data]="chartData" [options]="chartOptions" [type]="chartType"></canvas>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</form>

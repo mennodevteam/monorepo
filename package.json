@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "deploy-panel": "liara deploy --path=dist/packages/panel",
-    "deploy-app": "liara deploy --path=dist/packages/app",
-    "deploy-backend": "liara deploy --path=dist/packages/backend",
+    "deploy-panel": "nx run panel:build; liara deploy --path=dist/packages/panel",
+    "deploy-app": "nx run app:build; liara deploy --path=dist/packages/app",
+    "deploy-backend": "nx run backend:build; liara deploy --path=dist/packages/backend",
     "build": "nx run-many --target=build --projects=backend,panel,app",
     "serve": "nx run-many --target=serve --projects=backend,panel,app"
   },
@@ -39,7 +39,8 @@
     "jalali-moment": "^3.3.11",
     "kavenegar": "^1.1.4",
     "md5": "^2.3.0",
-    "ng2-charts": "^4.0.1",
+    "chart.js": "^4.1.1",
+    "ng2-charts": "^4.1.1",
     "ngx-image-cropper": "^6.3.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",

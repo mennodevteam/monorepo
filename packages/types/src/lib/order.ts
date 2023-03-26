@@ -1,6 +1,5 @@
 import { Address } from './address';
 import { DiscountCoupon } from './discount-coupon';
-import { Menu } from './menu';
 import { OrderItem } from './order-item';
 import { OrderPaymentType } from './order-payment-type.enum';
 import { OrderReview } from './order-review';

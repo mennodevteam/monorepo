@@ -1,6 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FilterOrderDto, ManualSettlementDto, Order, OrderDto, OrderState } from '@menno/types';
+import {
+  FilterOrderDto,
+  ManualSettlementDto,
+  Order,
+  OrderDto,
+  OrderReportDto,
+  OrderState,
+} from '@menno/types';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -21,6 +28,12 @@ export class OrdersService {
 
   async getById(id: string) {
     return this.http.get<Order>(`orders/panel/${id}`).toPromise();
+  }
+
+  async report(dto: OrderReportDto) {
+    return this.http
+      .post<{ [key: string]: { count: number; sum: number } }>(`orders/report`, dto)
+      .toPromise();
   }
 
   async changeState(order: Order, state: OrderState) {

@@ -14,6 +14,7 @@
     "save": "ذخیره",
     "next": "مرحله بعد",
     "date": "تاریخ",
+    "dateRange": "بازه زمانی",
     "time": "ساعت",
     "dateTime": "زمان",
     "count": "تعداد",
@@ -29,6 +30,8 @@
     "saving": "درحال ذخیره کردن...",
     "sum": "جمع کل",
     "totalPrice": "مبلغ کل",
+    "from": "از",
+    "to": "تا",
     "fromTo": "از {{from}} تا {{to}}",
     "savedSuccessfully": "با موفقیت ذخیره شد",
     "edit": "ویرایش",
@@ -429,5 +432,21 @@
   },
   "club": {
     "members": "اعضای باشگاه"
+  },
+  "orderReport": {
+    "pageTitle": "گزارش تفکیکی سفارشات",
+    "typesLabel": "نوع سفارش",
+    "statesLabel": "وضعیت سفارش",
+    "paymentsLabel": "وضعیت پرداخت",
+    "submit": "دریافت گزارش",
+    "groupBy": {
+      "label": "به تفکیک",
+      "date": "تاریخ",
+      "product": "محصول",
+      "category": "دسته‌بندی",
+      "payment": "پرداخت",
+      "state": "وضعیت",
+      "type": "نوع‌سفارش"
+    }
   }
 }

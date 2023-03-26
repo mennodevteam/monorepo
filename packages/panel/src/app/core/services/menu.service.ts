@@ -93,6 +93,13 @@ export class MenuService {
     return undefined;
   }
 
+  getCategoryById(id: number) {
+    if (this.menu?.categories) {
+      return this.menu.categories.find(x => x.id === id);
+    }
+    return undefined;
+  }
+
   filterProductsByIds(ids: string[]) {
     const res = [];
     if (this.menu?.categories) {

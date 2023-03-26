@@ -9,10 +9,13 @@ import {
   OrderDto,
   OrderItem,
   OrderPaymentType,
+  OrderReportDto,
   Product,
+  ProductCategory,
   Shop,
   User,
 } from '@menno/types';
+import { groupBy, groupBySum } from '@menno/utils';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
@@ -101,6 +104,134 @@ export class OrdersService {
     } else order.qNumber = 1;
 
     return await this.ordersRepo.save(order);
+  }
+
+  async report(dto: OrderReportDto) {
+    const condition: FindOptionsWhere<Order> = {};
+
+    condition.shop = { id: dto.shopId };
+
+    if (dto.fromDate && dto.toDate) {
+      condition.createdAt = Between(dto.fromDate, dto.toDate);
+    } else if (dto.fromDate) {
+      condition.createdAt = MoreThanOrEqual(dto.fromDate);
+    } else if (dto.toDate) {
+      condition.createdAt = LessThanOrEqual(dto.toDate);
+    }
+
+    if (dto.waiterId) {
+      condition.waiter = { id: dto.waiterId };
+    }
+
+    condition.state = In(dto.states);
+    condition.type = In(dto.types);
+    condition.paymentType = In(dto.payments);
+
+    const relations = [];
+    switch (dto.groupBy) {
+      case 'product':
+        relations.push('items.product');
+        break;
+      case 'category':
+        relations.push('items.product.category');
+        break;
+      default:
+        relations.push('items');
+    }
+
+    const orders = await this.ordersRepo.find({
+      where: condition,
+      order: {
+        createdAt: 'ASC',
+      },
+      relations: relations,
+    });
+
+    const orderItems = orders.reduce((items: OrderItem[], order: Order) => {
+      return [...items, ...order.items];
+    }, []);
+
+    let data: ReturnType<typeof groupBySum> = {};
+    const dateDefaultKeys = {};
+    if (dto.groupBy === 'date') {
+      const date = new Date(dto.fromDate);
+      while (date.toDateString() != new Date(dto.toDate).toDateString()) {
+        dateDefaultKeys[date.toDateString()] = { sum: 0, count: 0 };
+        date.setDate(date.getDate() + 1);
+      }
+    }
+
+    switch (dto.groupBy) {
+      case 'date':
+        data = groupBySum<Order>(
+          orders,
+          (order) => {
+            return new Date(order.createdAt).toDateString();
+          },
+          (order) => {
+            return order.totalPrice;
+          },
+          dateDefaultKeys
+        );
+        break;
+      case 'payment':
+        data = groupBySum<Order>(
+          orders,
+          (order) => {
+            return order.paymentType.toString();
+          },
+          (order) => {
+            return order.totalPrice;
+          }
+        );
+        break;
+      case 'state':
+        data = groupBySum<Order>(
+          orders,
+          (order) => {
+            return order.state.toString();
+          },
+          (order) => {
+            return order.totalPrice;
+          }
+        );
+        break;
+      case 'type':
+        data = groupBySum<Order>(
+          orders,
+          (order) => {
+            return order.type.toString();
+          },
+          (order) => {
+            return order.totalPrice;
+          }
+        );
+        break;
+      case 'category':
+        data = groupBySum<OrderItem>(
+          orderItems.filter((x) => x.product?.category),
+          (item) => {
+            return item.product.category.id.toString();
+          },
+          (item) => {
+            return item.price;
+          }
+        );
+        break;
+      case 'product':
+        data = groupBySum<OrderItem>(
+          orderItems.filter((x) => x.product),
+          (item) => {
+            return item.product.id;
+          },
+          (item) => {
+            return item.quantity * item.price;
+          }
+        );
+        break;
+    }
+
+    return data;
   }
 
   async editOrder(dto: OrderDto) {
