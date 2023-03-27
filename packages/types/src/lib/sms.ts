@@ -5,6 +5,7 @@ export class Sms {
   id: string;
   kavenegarId?: string;
   message: string;
+  groupId?: string;
   account: SmsAccount;
   receptor: string;
   cost: number;

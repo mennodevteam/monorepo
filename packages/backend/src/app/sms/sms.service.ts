@@ -3,6 +3,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Guid } from 'guid-typescript';
 import {
   Repository,
   Between,
@@ -42,6 +43,8 @@ export class SmsService {
       }
     }
 
+    const groupId = Guid.create().toString();
+
     return new Promise((resolve, reject) => {
       const kavenegarDtos: any[] = [];
       while (dto.receptors.length) {
@@ -56,7 +59,6 @@ export class SmsService {
         };
         kavenegarDtos.push(kavenegarDto);
       }
-      console.log(kavenegarDtos);
       for (const kavenegarDto of kavenegarDtos) {
         kavenegarApi.SendArray(kavenegarDto, async (response, status) => {
           if (status == 200) {
@@ -69,6 +71,7 @@ export class SmsService {
                 message: entry.message,
                 receptor: entry.receptor,
                 sentAt: dto.sentAt,
+                groupId,
                 status: this.getStatus(entry.status),
                 statusDescription: entry.statustext,
                 kavenegarId: entry.messageid,
@@ -109,7 +112,6 @@ export class SmsService {
       messages.push(message);
     }
     dto.messages = messages;
-    console.log(dto);
     return this.send(dto);
   }
 

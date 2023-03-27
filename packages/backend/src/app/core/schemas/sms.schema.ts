@@ -16,6 +16,10 @@ export const SmsSchema = new EntitySchema<Sms>({
     message: {
       type: String,
     },
+    groupId: {
+      type: String,
+      nullable: true,
+    },
     cost: {
       type: 'real',
     },
