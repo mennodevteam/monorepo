@@ -82,16 +82,12 @@ export class PrinterService {
     try {
       if (isLocalPrinterConnected && savedPrintActions) {
         this.makeLocalPrinterRequest(`printActions/${this.shopsService.shop!.id}`, savedPrintActions)
-          .then((res) => {
-            console.log(res);
-          })
+          .then((res) => {})
           .catch((error) => {
             const pids: string = savedPrintActions.map((x) => 'paid=' + x.id).join('&');
             this.makeLocalPrinterRequest(
               `printActions/${this.shopsService.shop!.id}?shopId=${this.shopsService.shop!.id}&${pids}`
-            ).then((res) => {
-              console.log(res);
-            });
+            ).then((res) => {});
           });
       }
     } catch (error) {}

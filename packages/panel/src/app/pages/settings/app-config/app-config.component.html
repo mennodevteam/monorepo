@@ -1,11 +1,14 @@
 <form [formGroup]="form">
-  <mat-toolbar class="content-toolbar">
-    <span flex></span>
+  <mat-toolbar class="page-toolbar">
+    <button mat-icon-button goBack>
+      <i class="fa-regular fa-arrow-right fa-large"></i>
+    </button>
+    <h1 flex>{{ 'settings.appConfig' | translate }}</h1>
     <button mat-flat-button color="primary" (click)="save()" [disabled]="saving || !form.dirty">
       {{ 'app.save' | translate }}
     </button>
   </mat-toolbar>
-  <main class="form-page-layout">
+  <main class="form-page-layout content-wrapper">
     <div class="flex-col">
       <mat-card>
         <mat-card-header>
@@ -52,8 +55,6 @@
         </mat-card-content>
       </mat-card>
 
-      <span spacer></span>
-
       <mat-card>
         <mat-card-header>
           <mat-card-title>{{ 'appConfig.menuSection' | translate }}</mat-card-title>
@@ -93,8 +94,6 @@
         </mat-card-content>
       </mat-card>
     </div>
-
-    <span spacer></span>
 
     <div class="flex-col">
       <mat-card>

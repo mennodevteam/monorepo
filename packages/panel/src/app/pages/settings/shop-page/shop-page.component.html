@@ -1,11 +1,14 @@
 <form [formGroup]="form">
-  <mat-toolbar class="content-toolbar">
-    <span flex></span>
+  <mat-toolbar class="page-toolbar">
+    <button mat-icon-button goBack>
+      <i class="fa-regular fa-arrow-right fa-large"></i>
+    </button>
+    <h1 flex>{{ 'settings.shop' | translate }}</h1>
     <button mat-flat-button color="primary" (click)="save()" [disabled]="saving">
       {{ 'app.save' | translate }}
     </button>
   </mat-toolbar>
-  <div class="form-page-layout">
+  <main class="form-page-layout content-wrapper">
     <div class="flex-col">
       <mat-card>
         <mat-card-header>
@@ -111,5 +114,5 @@
         </mat-card-content>
       </mat-card>
     </div>
-  </div>
+  </main>
 </form>

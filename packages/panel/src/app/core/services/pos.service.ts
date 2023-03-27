@@ -75,7 +75,6 @@ export class PosService extends OrderDto {
     if (orderId) {
       const order = this.todayOrders.getById(orderId) || (await this.orderService.getById(orderId));
       if (order) {
-        console.log(Order.productItems(order));
         this.editOrder = order;
         this.note = order.note;
         this.productItems = Order.productItems(order).map((x) => ({

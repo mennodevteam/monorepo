@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { FilterOrderDto, OrderPaymentType, OrderState, OrderType } from '@menno/types';
+import { FilterOrderDto, Order, OrderPaymentType, OrderState, OrderType } from '@menno/types';
+import { BehaviorSubject } from 'rxjs';
 import { OrdersService } from '../../../core/services/orders.service';
 
 @Component({
@@ -14,6 +15,7 @@ export class OrderFilterComponent {
   OrderPaymentType = OrderPaymentType;
   OrderState = OrderState;
   loading = false;
+  orders = new BehaviorSubject<Order[]>([]);
 
   constructor(private fb: FormBuilder, private ordersService: OrdersService) {
     this.form = this.fb.group({
@@ -31,8 +33,7 @@ export class OrderFilterComponent {
       ],
       types: [[OrderType.Delivery, OrderType.DineIn, OrderType.Takeaway], Validators.required],
       waiterId: [undefined],
-      customer: [],
-      groupBy: 'date',
+      customer: [undefined],
     });
   }
 
@@ -41,7 +42,10 @@ export class OrderFilterComponent {
     if (data.customer) {
       data.customerId = data.customer?.id;
       delete data.customer;
+    } else {
+      delete data.customerId;
     }
+    if (!data.waiterId) delete data.waiterId;
     return data;
   }
 
@@ -54,6 +58,10 @@ export class OrderFilterComponent {
   }
 
   async submit() {
-    console.log(this.filterDto);
+    if (!this.form.valid) return;
+    const data = await this.ordersService.filter(this.filterDto);
+    if (data) {
+      this.orders.next(data);
+    }
   }
 }

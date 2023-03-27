@@ -115,9 +115,10 @@
     "edit": "ویرایش محصول"
   },
   "settings": {
-    "shopTab": "اطلاعات مجموعه",
-    "appConfig": "اپ سفارش‌گیری",
-    "printers": "پرینتر‌ها"
+    "pageTitle": "تنظیمات",
+    "shop": "ویرایش اطلاعات مجموعه",
+    "appConfig": "تنظیمات اپ سفارش‌گیری",
+    "printers": "نصب و راه‌اندازی پرینتر‌ها"
   },
   "shopPage": {
     "baseSection": "اطلاعات پایه",
@@ -234,7 +235,7 @@
     },
     "emptyState": "هیچ سفارش در این تاریخ ثبت نشده",
     "report": "گزارشات",
-    "advancedFilter": "فیلتر پیشرفته"
+    "advancedFilter": "جستجوی پیشرفته"
   },
   "pos": {
     "saveAndPrint": "ذخیره و چاپ",

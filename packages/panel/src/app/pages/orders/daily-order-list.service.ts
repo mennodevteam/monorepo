@@ -70,7 +70,6 @@ export class DailyOrderListService {
     if (this.isToday) {
       this._loading = true;
       if (!this.todayOrders.orders) {
-        console.log(1111);
         await this.todayOrders.ordersObservable
           .pipe(filter((x) => x != null))
           .pipe(take(1))

@@ -10,19 +10,16 @@ export const settingsRoutes: Route[] = [
   {
     path: '',
     component: SettingsComponent,
+  },
+  { path: 'shop', component: ShopPageComponent },
+  { path: 'app-config', component: AppConfigComponent },
+  {
+    path: 'printers',
+    component: PrintersComponent,
     children: [
-      { path: 'shop', component: ShopPageComponent },
-      { path: 'app-config', component: AppConfigComponent },
-      {
-        path: 'printers',
-        component: PrintersComponent,
-        children: [
-          { path: 'list', component: PrinterListComponent },
-          { path: 'help', component: PrinterHelpComponent },
-          { path: '', redirectTo: 'list', pathMatch: 'full' },
-        ],
-      },
-      { path: '', redirectTo: 'shop', pathMatch: 'full' },
+      { path: 'list', component: PrinterListComponent },
+      { path: 'help', component: PrinterHelpComponent },
+      { path: '', redirectTo: 'list', pathMatch: 'full' },
     ],
   },
 ];

@@ -235,6 +235,12 @@ i[empty-state-icon] {
 
 // material components
 
+.mat-mdc-list-item-icon {
+  text-align: center !important;
+  line-height: 24px !important;
+  color: black !important;
+}
+
 .mdc-button {
   letter-spacing: normal !important;
   border-radius: 32px !important;

@@ -395,6 +395,7 @@ export class OrdersService {
     }
     if (dto.isManual === true || dto.isManual === false) condition.isManual = dto.isManual;
 
+    
     const relations = ['items.product', 'mergeTo', 'reviews', 'customer', 'creator', 'waiter'];
     let orders = await this.ordersRepo.find({
       where: condition,
@@ -402,11 +403,11 @@ export class OrdersService {
       relations,
       withDeleted: dto.withDeleted,
     });
-
+    
     if (dto.hasReview) {
       orders = orders.filter((x) => x.reviews.length > 0);
     }
-
+    
     return orders;
   }
 
