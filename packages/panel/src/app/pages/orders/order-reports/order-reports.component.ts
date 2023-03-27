@@ -83,7 +83,9 @@ export class OrderReportsComponent implements AfterViewInit {
     this.loading = true;
     const dto: OrderReportDto = this.form.getRawValue();
     dto.fromDate.setHours(0, 0, 0, 0);
+    dto.fromDate.setHours(dto.fromDate.getHours() + 3);
     dto.toDate.setHours(23, 59, 59, 999);
+    dto.toDate.setHours(dto.toDate.getHours() + 3);
     switch (dto.groupBy) {
       case 'date':
         this.chartType = 'line';

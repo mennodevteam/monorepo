@@ -166,7 +166,9 @@ export class OrdersService {
         data = groupBySum<Order>(
           orders,
           (order) => {
-            return new Date(order.createdAt).toDateString();
+            const date = new Date(order.createdAt);
+            date.setHours(date.getHours() - 3);
+            return date.toDateString();
           },
           (order) => {
             return order.totalPrice;
