@@ -1,3 +1,47 @@
+<mat-toolbar class="page-toolbar">
+  <button mat-icon-button goBack>
+    <i class="fa-regular fa-arrow-right"></i>
+  </button>
+  <h1 flex>{{ 'deliveryAreas.pageTitle' | translate }}</h1>
+</mat-toolbar>
+
+<mat-drawer-container>
+  <mat-drawer mode="side" opened disableClose>
+    <mat-list>
+      <ng-container *ngFor="let area of deliveryAreas">
+        <mat-list-item>
+          <span matListItemTitle>{{ area.title }}</span>
+          <span matListItemLine>{{ area.price | menuCurrency }}</span>
+          <button mat-icon-button matListItemMeta [matMenuTriggerFor]="actionMenu">
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+          </button>
+          <mat-menu #actionMenu="matMenu">
+            <button mat-menu-item (click)="openEditDialog(area)">
+              <i class="far fa-pencil-alt mat-icon"></i>
+              {{ 'app.edit' | translate }}
+            </button>
+            <button mat-menu-item (click)="openDeletePrompt(area)">
+              <i class="far fa-trash-alt mat-icon"></i>
+              {{ 'app.remove' | translate }}
+            </button>
+          </mat-menu>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </ng-container>
+    </mat-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div *ngIf="deliveryAreas">
+      <app-delivery-map
+        class="map"
+        [deliveryAreas]="deliveryAreas"
+        (onAdd)="openEditDialog(undefined, $event)"
+        (onEdit)="onEditDraw($event)"
+      ></app-delivery-map>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>
+<!-- 
 <div class="content-wrapper" *ngIf="deliveryAreas">
   <mat-toolbar>
     <mat-chip>
@@ -28,4 +72,4 @@
     (onAdd)="openEditDialog(undefined, $event)"
     (onEdit)="onEditDraw($event)"
   ></app-delivery-map>
-</div>
+</div> -->

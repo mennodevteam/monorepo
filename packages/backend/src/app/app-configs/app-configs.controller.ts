@@ -1,6 +1,5 @@
 import { AppConfig, Shop, Theme } from '@menno/types';
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';

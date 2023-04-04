@@ -1,21 +1,13 @@
-@import 'theme';
+@import "theme";
 
-.page-container {
-    height: calc(100vh - 64px);
-    display: flex;
-    flex-direction: column;
-}
+mat-drawer-container {
+    height: calc(100vh - 128px);
 
-.mat-toolbar {
-    background-color: white;
-    padding: 8px;
-    height: auto;
+    mat-drawer {
+        width: 280px;
+    }
 }
 
 .map {
-    flex: 1;
-}
-
-.isDisabled {
-    background: lighten($red, 24)
+    height: 400px;
 }

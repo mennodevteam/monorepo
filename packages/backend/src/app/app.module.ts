@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { ClubsModule } from './clubs/clubs.module';
 import { SchemasModule } from './core/schemas.module';
+import { DeliveryAreasModule } from './delivery-areas/delivery-areas.module';
 import { FilesModule } from './files/files.module';
 import { MenusModule } from './menus/menus.module';
 import { OrdersModule } from './orders/orders.module';
@@ -42,6 +43,7 @@ import { UsersModule } from './users/users.module';
     OrdersModule,
     PaymentsModule,
     AppConfigsModule,
+    DeliveryAreasModule,
   ],
   controllers: [AppController],
   providers: [AppService],
