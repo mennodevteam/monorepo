@@ -1,0 +1,21 @@
+@import 'theme';
+
+.page-container {
+    height: calc(100vh - 64px);
+    display: flex;
+    flex-direction: column;
+}
+
+.mat-toolbar {
+    background-color: white;
+    padding: 8px;
+    height: auto;
+}
+
+.map {
+    flex: 1;
+}
+
+.isDisabled {
+    background: lighten($red, 24)
+}

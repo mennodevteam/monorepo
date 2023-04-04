@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
 import { AppConfigComponent } from './app-config/app-config.component';
+import { DeliveryAreasPageComponent } from './delivery-areas-page/delivery-areas-page.component';
 import { PrinterHelpComponent } from './printers/printer-help/printer-help.component';
 import { PrinterListComponent } from './printers/printer-list/printer-list.component';
 import { PrintersComponent } from './printers/printers.component';
@@ -12,6 +13,7 @@ export const settingsRoutes: Route[] = [
     component: SettingsComponent,
   },
   { path: 'shop', component: ShopPageComponent },
+  { path: 'delivery-areas', component: DeliveryAreasPageComponent },
   { path: 'app-config', component: AppConfigComponent },
   {
     path: 'printers',
