@@ -84,7 +84,7 @@ export class EditDiscountComponent {
 
   async save() {
     if (this.form.invalid) return;
-    const dto = this.form.getRawValue();
+    const dto: MenuCost = this.form.getRawValue();
     if (!dto.fixedCost && !dto.percentageCost) {
       this.snack.open(this.translate.instant('discountEdit.priceWarning'), '', {
         duration: 4000,
@@ -97,6 +97,7 @@ export class EditDiscountComponent {
     if (dto.fixedCost) dto.fixedCost = Math.abs(dto.fixedCost) * -1;
     if (dto.percentageCost) dto.percentageCost = Math.abs(dto.percentageCost) * -1;
     if (this.discount) dto.id = this.discount.id;
+    dto.showOnItem = true;
     await this.menuService.saveMenuCost(dto);
     this.snack.open(this.translate.instant('app.savedSuccessfully'), '', {
       duration: 3000,

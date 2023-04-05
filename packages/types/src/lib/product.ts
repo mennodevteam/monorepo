@@ -74,14 +74,14 @@ export class Product {
     return 0;
   }
 
-  static percentageDiscount(product: Product) {
+  static percentageDiscount(product: Product, round = 5) {
     const cost = Product.realPrice(product) - Product.totalPrice(product);
-    if (cost > 0) return Math.round((cost / product.price) * 100);
+    if (cost > 0) return Math.round((cost / product.price) * 100 / round) * round;
     return 0;
   }
 
   static hasDiscount(product: Product) {
-    if (this.totalPrice(product) < Product.realPrice(product)) return true;
+    if (Product.totalPrice(product) < Product.realPrice(product)) return true;
     return false;
   }
 }
