@@ -1,8 +1,11 @@
 <div class="wrapper">
-  <h1 id="title" class="ppp">{{ shop?.title }}</h1>
-  <img [imageLoader]="shop?.logo" id="logo" />
-
-  <span spacer-2x></span>
+  <header>
+    <img [imageLoader]="shop?.logo" id="logo" />
+    <div class="header-texts">
+      <h1 id="title">{{ shop?.title }}</h1>
+      <p *ngIf="shop?.description" id="description">{{ shop?.description }}</p>
+    </div>
+  </header>
 
   <mat-nav-list>
     <a mat-list-item>
