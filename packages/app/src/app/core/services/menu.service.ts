@@ -12,6 +12,7 @@ import { ShopService } from './shop.service';
 export class MenuService {
   private _menu = new BehaviorSubject<Menu | null>(null);
   private _type = new BehaviorSubject<OrderType | null>(null);
+  private _baseMenu: Menu | undefined;
 
   constructor(
     private http: HttpClient,
@@ -23,12 +24,15 @@ export class MenuService {
 
   async load() {
     const query = this.shopService.getShopUsernameFromQuery();
-    const menu = await this.http.get<Menu>(`menus/${query}`).toPromise();
+    this._baseMenu = await this.http.get<Menu>(`menus/${query}`).toPromise();
 
-    if (menu) {
+    if (this._baseMenu) {
+      const menu = this.baseMenu;
       Menu.setRefsAndSort(menu);
+      this._menu.next(menu);
+    } else {
+      this._menu.next(null);
     }
-    this._menu.next(menu || null);
   }
 
   get menu() {
@@ -39,10 +43,16 @@ export class MenuService {
     return this._menu.asObservable();
   }
 
+  private get baseMenu() {
+    return JSON.parse(JSON.stringify(this._baseMenu));
+  }
+
   set type(val: OrderType | null) {
     this._type.next(val);
     if (this.menu) {
-      Menu.setRefsAndSort(this.menu, val || undefined);
+      const menu = this.baseMenu;
+      Menu.setRefsAndSort(menu, val == null ? undefined : val);
+      this._menu.next(menu);
     }
   }
 

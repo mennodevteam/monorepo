@@ -14,6 +14,22 @@
     <span spacer></span>
     <h1>{{ shop?.title }}</h1>
   </mat-toolbar-row>
+  <mat-toolbar-row>
+    <mat-button-toggle-group class="select-type" [value]="orderType" (change)="changeType($event)">
+      <mat-button-toggle flex [value]="OrderType.DineIn">
+        <i matListItemIcon class="fa-solid fa-mug-hot"></i>
+        {{ 'orderType.dineIn' | translate }}
+      </mat-button-toggle>
+      <mat-button-toggle flex [value]="OrderType.Takeaway">
+        <i matListItemIcon class="fa-solid fa-cup-togo"></i>
+        {{ 'orderType.takeaway' | translate }}
+      </mat-button-toggle>
+      <mat-button-toggle flex [value]="OrderType.Delivery">
+        <i matListItemIcon class="fa-solid fa-moped"></i>
+        {{ 'orderType.delivery' | translate }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </mat-toolbar-row>
 </mat-toolbar>
 
 <section class="order-disable" *ngIf="appConfig?.disableOrderingText && appConfig?.disableOrdering">

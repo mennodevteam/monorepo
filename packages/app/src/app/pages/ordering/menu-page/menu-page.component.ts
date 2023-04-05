@@ -1,18 +1,10 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  HostListener,
-  QueryList,
-  ViewChild,
-  ViewChildren,
-} from '@angular/core';
-import { MenuViewType } from '@menno/types';
-import { BehaviorSubject, debounceTime } from 'rxjs';
+import { AfterViewInit, Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { MenuViewType, OrderType } from '@menno/types';
 import { BasketService } from '../../../core/services/basket.service';
 import { MenuService } from '../../../core/services/menu.service';
 import { ShopService } from '../../../core/services/shop.service';
 import { MenuCategoriesComponent } from './menu-categories/menu-categories.component';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
 
 @Component({
   selector: 'menu-page',
@@ -25,6 +17,7 @@ export class MenuPageComponent implements AfterViewInit {
   menuCategoriesComponent: MenuCategoriesComponent;
   MenuViewType = MenuViewType;
   viewType: MenuViewType;
+  OrderType = OrderType;
 
   constructor(
     private menuService: MenuService,
@@ -78,6 +71,10 @@ export class MenuPageComponent implements AfterViewInit {
     }
   }
 
+  get orderType() {
+    return this.menuService.type;
+  }
+
   get shop() {
     return this.shopService.shop;
   }
@@ -101,5 +98,10 @@ export class MenuPageComponent implements AfterViewInit {
   toggleView() {
     if (this.viewType === MenuViewType.Card) this.viewType = MenuViewType.Grid;
     else if (this.viewType === MenuViewType.Grid) this.viewType = MenuViewType.Card;
+  }
+
+  changeType(ev: MatButtonToggleChange) {
+    this.menuService.type = ev.value;
+    this.basket.clear();
   }
 }
