@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { MenuViewType, OrderType, ShopTable } from '@menno/types';
+import { DELIVERY_COST_TITLE, MenuViewType, OrderType, ShopTable } from '@menno/types';
 import { BasketService } from '../../../core/services/basket.service';
 import { MenuService } from '../../../core/services/menu.service';
 import { ShopService } from '../../../core/services/shop.service';
@@ -106,23 +106,23 @@ export class MenuPageComponent implements AfterViewInit {
     this.menuService.openSelectOrderType();
   }
 
-  selectDeliveryAddress() {
-    this.bottomSheet
-      .open(LocationsBottomSheetComponent)
-      .afterDismissed()
-      .subscribe((address) => {
-        if (address) this.basket.address = address;
-        else if (address === null) {
-          this.bottomSheet
-            .open(LocationEditBottomSheetComponent, {
-              data: { shop: this.shop },
-            })
-            .afterDismissed()
-            .subscribe((address) => {
-              if (address) this.basket.address = address;
-            });
-        }
-      });
+  async selectDeliveryAddress() {
+    let address = await this.bottomSheet.open(LocationsBottomSheetComponent).afterDismissed().toPromise();
+    if (address === null) {
+      address = await this.bottomSheet
+        .open(LocationEditBottomSheetComponent, {
+          data: { shop: this.shop },
+        })
+        .afterDismissed()
+        .toPromise();
+    }
+    if (address) {
+      this.basket.address = address;
+    }
+  }
+
+  get deliveryCost() {
+    return this.basket.abstractItems.find(x => x.title === DELIVERY_COST_TITLE);
   }
 
   selectDineInTable() {

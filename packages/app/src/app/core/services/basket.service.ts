@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { OrderDto, OrderItem, Product, ProductItem } from '@menno/types';
+import { DeliveryArea, OrderDto, OrderItem, Product, ProductItem } from '@menno/types';
 import { MenuService } from './menu.service';
 import { OrdersService } from './orders.service';
 import { ShopService } from './shop.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,8 @@ export class BasketService extends OrderDto {
   constructor(
     private menuService: MenuService,
     private shopService: ShopService,
-    private ordersService: OrdersService
+    private ordersService: OrdersService,
+    private http: HttpClient
   ) {
     super();
     this.menuService.typeObservable.subscribe((type) => {
@@ -84,6 +86,24 @@ export class BasketService extends OrderDto {
       return OrderDto.total(this, this.menuService.menu);
     }
     return 0;
+  }
+
+  async setAddressDeliveryArea() {
+    if (this.address && this.address.latitude && this.address.longitude) {
+      try {
+        this.address.deliveryArea = undefined;
+        const d = await this.http
+          .get<DeliveryArea>(
+            `deliveryAreas/${this.shopService.shop?.id}/${this.address.latitude}/${this.address.longitude}`
+          )
+          .toPromise();
+        if (d) {
+          this.address.deliveryArea = d;
+        }
+      } catch (error) {
+        this.address.deliveryArea = null;
+      }
+    }
   }
 
   complete() {

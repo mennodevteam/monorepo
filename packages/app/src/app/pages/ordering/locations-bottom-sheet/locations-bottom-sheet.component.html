@@ -13,8 +13,11 @@
       <span matListItemLine>
         {{ location.description }}
       </span>
+      <span matListItemMeta *ngIf="location.deliveryArea" class="tertiary-text">
+        {{ location.deliveryArea.price | menuCurrency }}
+      </span>
     </a>
-    <mat-divider *ngIf="!last"></mat-divider>
+    <mat-divider></mat-divider>
   </ng-container>
 </mat-nav-list>
 <mat-spinner [diameter]="36" mode="indeterminate" *ngIf="loading"></mat-spinner>

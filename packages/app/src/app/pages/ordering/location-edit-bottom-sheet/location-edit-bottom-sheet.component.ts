@@ -158,7 +158,13 @@ export class LocationEditBottomSheetComponent implements OnInit {
       dto.latitude = mapCenter.lat;
       dto.longitude = mapCenter.lng;
       if (this.shop.region) dto.region = <Region>{ id: this.shop.region.id };
-      const location = await this.http.post('addresses', dto).toPromise();
+      const location = await this.http
+        .post('addresses', dto, {
+          params: {
+            shopId: this.shop.id,
+          },
+        })
+        .toPromise();
       this.sheetRef.dismiss(location);
     }
   }

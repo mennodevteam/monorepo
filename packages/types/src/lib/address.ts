@@ -8,6 +8,6 @@ export class Address {
   longitude: number;
   description: string;
   user: User;
-  deliveryArea?: DeliveryArea;
+  deliveryArea?: DeliveryArea | null;
   region: Region;
 }

@@ -12,6 +12,8 @@ import { Payment } from './payment';
 const FLOOR = 500;
 export const MANUAL_DISCOUNT_TITLE = 'تخفیف دستی';
 export const MANUAL_COST_TITLE = 'هزینه مازاد';
+export const DISCOUNT_CODE_TITLE = 'کد تخفیف';
+export const DELIVERY_COST_TITLE = 'هزینه ارسال';
 
 export type ProductItem = {
   productId: string;
@@ -90,7 +92,7 @@ export class OrderDto {
         isAbstract: true,
         quantity: 1,
         price: Math.floor(price / FLOOR) * FLOOR,
-        title: 'کد تخفیف',
+        title: DISCOUNT_CODE_TITLE,
       });
     }
 
@@ -101,7 +103,7 @@ export class OrderDto {
           isAbstract: true,
           quantity: 1,
           price: Math.floor(area.price / FLOOR) * FLOOR,
-          title: 'هزینه ارسال',
+          title: DELIVERY_COST_TITLE,
         });
       }
     }
@@ -132,6 +134,6 @@ export class OrderDto {
     for (const item of abstractItems) {
       total += item.quantity * item.price;
     }
-    return Math.max((Math.floor(total / FLOOR) * FLOOR), 0);
+    return Math.max(Math.floor(total / FLOOR) * FLOOR, 0);
   }
 }
