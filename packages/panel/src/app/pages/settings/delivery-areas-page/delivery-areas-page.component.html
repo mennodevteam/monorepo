@@ -31,14 +31,14 @@
     </mat-list>
   </mat-drawer>
   <mat-drawer-content>
-    <div *ngIf="deliveryAreas">
+    <ng-container *ngIf="deliveryAreas">
       <app-delivery-map
         class="map"
         [deliveryAreas]="deliveryAreas"
         (onAdd)="openEditDialog(undefined, $event)"
         (onEdit)="onEditDraw($event)"
       ></app-delivery-map>
-    </div>
+    </ng-container>
   </mat-drawer-content>
 </mat-drawer-container>
 <!-- 

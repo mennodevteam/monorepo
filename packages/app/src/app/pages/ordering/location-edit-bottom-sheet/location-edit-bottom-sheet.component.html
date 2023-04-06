@@ -43,7 +43,7 @@
       color="accent"
       [disabled]="noMoveYet"
       (click)="disableMap()"
-      *ngIf="map.dragging.enabled()"
+      *ngIf="map?.dragging?.enabled()"
       class="submit-button"
     >
       {{ 'locationEditBottomSheet.setLocation' | translate }}

@@ -16,10 +16,19 @@
         "inlineStyleLanguage": "scss",
         "assets": [
           "packages/panel/src/favicon.ico",
+          {
+            "glob": "**/*",
+            "input": "node_modules/leaflet/dist/images",
+            "output": "leaflet/"
+          },
           "packages/panel/src/assets",
           "packages/panel/src/liara.json"
         ],
-        "styles": ["packages/panel/src/styles.scss"],
+        "styles": [
+          "packages/panel/src/styles.scss",
+          "./node_modules/leaflet/dist/leaflet.css",
+          "./node_modules/leaflet-draw/dist/leaflet.draw.css"
+        ],
         "stylePreprocessorOptions": {
           "includePaths": ["packages/panel/src/theme/"]
         },

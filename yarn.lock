@@ -375,6 +375,13 @@
   resolved "https://registry.npmjs.org/@assemblyscript/loader/-/loader-0.10.1.tgz"
   integrity sha512-H71nDOOL8Y7kWRLqf6Sums+01Q5msqBW2KhDUTemh1tvY04eSkSXrK0uj/4mmY0Xr16/3zyZmsrxN7CKuRbNRg==
 
+"@asymmetrik/ngx-leaflet-draw@^15.0.1":
+  version "15.0.1"
+  resolved "https://registry.yarnpkg.com/@asymmetrik/ngx-leaflet-draw/-/ngx-leaflet-draw-15.0.1.tgz#9592c9e24f365c983febbe16a2c8422097a63043"
+  integrity sha512-KLcIoYdTSlsxGb+Mwfjv1uSEizVJJswhMzKMWTX3hmKANT0qXuEwYnmIEKGITxPIEbAZZL3Cnp0/Sf9/1cR6FA==
+  dependencies:
+    tslib "^2.3.0"
+
 "@asymmetrik/ngx-leaflet@^15.0.1":
   version "15.0.1"
   resolved "https://registry.yarnpkg.com/@asymmetrik/ngx-leaflet/-/ngx-leaflet-15.0.1.tgz#7041b4841ac854089f21d644cece16389588c1b8"
@@ -3437,7 +3444,14 @@
   dependencies:
     "@types/node" "*"
 
-"@types/leaflet@^1.9.3":
+"@types/leaflet-draw@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@types/leaflet-draw/-/leaflet-draw-1.0.6.tgz#7d6388d517494df769bfda39fe638a61eea0f211"
+  integrity sha512-MetIzhPfUVypp742iRV2Tg/JTnjaloJzBDuMzFglodfYrPaDxNhkm1PueN8KAUmV/aWxvicwHVsfrVc6MCFAWA==
+  dependencies:
+    "@types/leaflet" "*"
+
+"@types/leaflet@*", "@types/leaflet@^1.9.3":
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/@types/leaflet/-/leaflet-1.9.3.tgz#7aac302189eb3aa283f444316167995df42a5467"
   integrity sha512-Caa1lYOgKVqDkDZVWkto2Z5JtVo09spEaUt2S69LiugbBpoqQu92HYFMGUbYezZbnBkyOxMNPXHSgRrRY5UyIA==
@@ -7916,6 +7930,11 @@ lazy-ass@^1.6.0:
   version "1.6.0"
   resolved "https://registry.npmjs.org/lazy-ass/-/lazy-ass-1.6.0.tgz"
   integrity sha512-cc8oEVoctTvsFZ/Oje/kGnHbpWHYBe8IAJe4C0QNc3t8uM/0Y8+erSz/7Y1ALuXTEZTMvxXwO6YbX1ey3ujiZw==
+
+leaflet-draw@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/leaflet-draw/-/leaflet-draw-1.0.4.tgz#45be92f378ed253e7202fdeda1fcc71885198d46"
+  integrity sha512-rsQ6saQO5ST5Aj6XRFylr5zvarWgzWnrg46zQ1MEOEIHsppdC/8hnN8qMoFvACsPvTioAuysya/TVtog15tyAQ==
 
 leaflet-geosearch@^3.7.0:
   version "3.7.0"

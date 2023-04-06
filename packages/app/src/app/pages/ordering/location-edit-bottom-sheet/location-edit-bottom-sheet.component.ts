@@ -24,7 +24,7 @@ export class LocationEditBottomSheetComponent implements OnInit {
     zoomControl: false,
     zoom: 15,
   };
-  map: Map;
+  map?: Map;
   shopMarker: Marker;
   query: string;
   queryChanged: Subject<string> = new Subject<string>();
@@ -92,17 +92,19 @@ export class LocationEditBottomSheetComponent implements OnInit {
   }
 
   disableMap() {
-    this.map.dragging.disable();
-    this.map.touchZoom.disable();
-    this.map.doubleClickZoom.disable();
-    this.map.scrollWheelZoom.disable();
-    this.map.boxZoom.disable();
-    this.map.keyboard.disable();
-    if (this.map.tap) this.map.tap.disable();
+    if (this.map) {
+      this.map.dragging.disable();
+      this.map.touchZoom.disable();
+      this.map.doubleClickZoom.disable();
+      this.map.scrollWheelZoom.disable();
+      this.map.boxZoom.disable();
+      this.map.keyboard.disable();
+      if (this.map.tap) this.map.tap.disable();
+    }
   }
 
   enableMap() {
-    if (!this.map.dragging.enabled()) {
+    if (this.map && !this.map.dragging.enabled()) {
       this.map.dragging.enable();
       this.map.touchZoom.enable();
       this.map.doubleClickZoom.enable();
@@ -125,7 +127,7 @@ export class LocationEditBottomSheetComponent implements OnInit {
 
   async search(query: string): Promise<void> {
     this.query = query;
-    const mapCenter: LatLng = <LatLng>this.map.getCenter();
+    const mapCenter: LatLng = <LatLng>this.map?.getCenter();
     const provider = new OpenStreetMapProvider({
       params: {
         'accept-language': 'ir',
@@ -145,11 +147,11 @@ export class LocationEditBottomSheetComponent implements OnInit {
 
   selectAddress(searchResult: any): void {
     this.searchControl.setValue('');
-    this.map.panTo(latLng(searchResult.raw.lat, searchResult.raw.lon));
+    if (this.map) this.map.panTo(latLng(searchResult.raw.lat, searchResult.raw.lon));
   }
 
   async save() {
-    if (this.address) {
+    if (this.address && this.map) {
       const dto = new Address();
       const mapCenter = this.map.getCenter();
       dto.description = this.address;
