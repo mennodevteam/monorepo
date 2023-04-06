@@ -52,13 +52,14 @@
     <div *ngIf="!map?.dragging?.enabled()" class="form-theme" ngClass="wrapper">
       <mat-form-field appearance="outline">
         <mat-label>{{ 'locationEditBottomSheet.addressLabel' | translate }}</mat-label>
-        <input
+        <textarea
           placeholder="{{ 'locationEditBottomSheet.addressPlaceholder' | translate }}"
           matInput
           [(ngModel)]="address"
           required
+          rows="3"
           autocomplete="off"
-        />
+        ></textarea>
       </mat-form-field>
 
       <button

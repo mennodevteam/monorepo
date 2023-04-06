@@ -7,15 +7,14 @@
     </span>
     <mat-divider></mat-divider>
   </a>
-  <a
-    mat-list-item
-    *ngFor="let location of locations | async; let last = last"
-    (click)="sheetRef.dismiss(location)"
-  >
-    <span matListItemTitle>
-      {{ location.description }}
-    </span>
+  <ng-container *ngFor="let location of locations | async; let last = last">
+    <a mat-list-item (click)="sheetRef.dismiss(location)">
+      <i matListItemIcon class="fa-regular fa-location-dot"></i>
+      <span matListItemLine>
+        {{ location.description }}
+      </span>
+    </a>
     <mat-divider *ngIf="!last"></mat-divider>
-  </a>
+  </ng-container>
 </mat-nav-list>
 <mat-spinner [diameter]="36" mode="indeterminate" *ngIf="loading"></mat-spinner>

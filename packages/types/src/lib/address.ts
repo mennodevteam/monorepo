@@ -1,12 +1,13 @@
 import { DeliveryArea } from './delivery-area';
 import { Region } from './region';
+import { User } from './user';
 
 export class Address {
-  id: string;
+  id: number;
   latitude: number;
   longitude: number;
   description: string;
-  userId: string;
+  user: User;
   deliveryArea?: DeliveryArea;
   region: Region;
 }

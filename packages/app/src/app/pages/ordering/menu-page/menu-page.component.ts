@@ -31,27 +31,20 @@ export class MenuPageComponent implements AfterViewInit {
   ) {
     this.menuService.checkSelectedOrderType();
 
-    // this.onScrollMenu.pipe(debounceTime(200)).subscribe(() => {
-    //   const selectedCatElem = this.categoryElements.reduce((a, b) => {
-    //     const aView = this.elementViewportCapacity(a);
-    //     const bView = this.elementViewportCapacity(b);
-    //     if (aView > bView) return a;
-    //     return b;
-    //   }, this.categoryElements.first);
-
-    //   const selectedIndex = this.categoryElements.toArray().indexOf(selectedCatElem);
-
-    //   if (selectedIndex > -1) {
-    //     this.menuCategoriesComponent.selectChip(selectedIndex);
-    //   }
-    // });
-
     if (this.menu) {
       this.viewType =
         this.appConfig?.menuViewType === MenuViewType.Manual
           ? MenuViewType.Card
           : this.appConfig?.menuViewType || MenuViewType.Card;
     }
+
+    this.menuService.typeObservable.subscribe((type) => {
+      if (type === OrderType.DineIn && !this.basket.details?.table && this.shop?.details?.tables?.length) {
+        this.selectDineInTable();
+      } else if (type === OrderType.Delivery && !this.basket.address) {
+        this.selectDeliveryAddress();
+      }
+    });
   }
 
   ngAfterViewInit(): void {

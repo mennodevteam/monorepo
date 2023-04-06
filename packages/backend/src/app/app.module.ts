@@ -17,6 +17,7 @@ import { RegionsModule } from './regions/regions.module';
 import { ShopsModule } from './shops/shops.module';
 import { SmsModule } from './sms/sms.module';
 import { UsersModule } from './users/users.module';
+import { AddressesModule } from './addresses/addresses.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { UsersModule } from './users/users.module';
     PaymentsModule,
     AppConfigsModule,
     DeliveryAreasModule,
+    AddressesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

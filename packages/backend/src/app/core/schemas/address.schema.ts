@@ -22,11 +22,12 @@ export const AddressSchema = new EntitySchema<Address>({
       type: 'real',
       nullable: true,
     },
-    userId: {
-      type: String,
-    },
   },
   relations: {
+    user: {
+      type: 'many-to-one',
+      target: 'User',
+    },
     region: {
       type: 'many-to-one',
       target: 'Region',
