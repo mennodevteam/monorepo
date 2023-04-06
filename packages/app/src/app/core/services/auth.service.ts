@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { User } from '@menno/types';
+import { Address, User } from '@menno/types';
 import * as md5 from 'md5';
 import { Guid } from 'guid-typescript';
 
@@ -100,5 +100,9 @@ export class AuthService {
       sessionStorage.setItem('appLoginUser', JSON.stringify(user));
       this._user.next(user);
     }
+  }
+
+  get addresses() {
+    return this.http.get<Address[]>('addresses').toPromise();
   }
 }

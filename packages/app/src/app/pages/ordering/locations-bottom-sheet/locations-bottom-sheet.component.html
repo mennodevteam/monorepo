@@ -1,0 +1,21 @@
+<h3>{{ 'menu.selectDeliveryAddress' | translate }}</h3>
+<mat-nav-list>
+  <a mat-list-item (click)="sheetRef.dismiss(null)">
+    <i matListItemIcon class="fa-regular fa-plus-circle"></i>
+    <span matListItemTitle>
+      {{ 'app.add' | translate }}
+    </span>
+    <mat-divider></mat-divider>
+  </a>
+  <a
+    mat-list-item
+    *ngFor="let location of locations | async; let last = last"
+    (click)="sheetRef.dismiss(location)"
+  >
+    <span matListItemTitle>
+      {{ location.description }}
+    </span>
+    <mat-divider *ngIf="!last"></mat-divider>
+  </a>
+</mat-nav-list>
+<mat-spinner [diameter]="36" mode="indeterminate" *ngIf="loading"></mat-spinner>

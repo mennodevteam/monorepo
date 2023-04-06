@@ -75,15 +75,15 @@ export class MenuService {
       if (!selectableOrderTypes || selectableOrderTypes.length === 0)
         selectableOrderTypes = [OrderType.DineIn];
       if (selectableOrderTypes.length === 1) this._type.next(selectableOrderTypes[0]);
-      else this.selectOrderType();
+      else this.openSelectOrderType();
     }
   }
 
-  selectOrderType() {
+  openSelectOrderType() {
     this.bottomSheet
       .open(SelectOrderTypeModalComponent, {
         closeOnNavigation: true,
-        disableClose: true,
+        disableClose: this.type == undefined,
       })
       .afterDismissed()
       .subscribe((type) => {

@@ -1,0 +1,77 @@
+<span spacer></span>
+<ng-container *ngIf="mapOptions">
+  <div class="wrapper">
+    <mat-form-field appearance="outline" *ngIf="map?.dragging?.enabled()">
+      <mat-label>{{ 'locationEditBottomSheet.searchLabel' | translate }}</mat-label>
+      <input
+        type="search"
+        placeholder="{{ 'locationEditBottomSheet.searchPlaceholder' | translate }}"
+        matInput
+        [formControl]="searchControl"
+        [matAutocomplete]="auto"
+      />
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option *ngFor="let s of searchResults | async" (click)="selectAddress(s)">
+          <span class="search-result-text">
+            {{ s.label }}
+          </span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <p class="gray" *ngIf="map?.dragging?.enabled()">
+      {{ 'locationEditBottomSheet.description' | translate }}
+    </p>
+
+    <div class="map-container" [class.disabled]="!map?.dragging?.enabled()">
+      <div
+        id="map"
+        leaflet
+        [leafletOptions]="mapOptions"
+        (leafletMapReady)="onMapReady($event)"
+        (leafletClick)="enableMap()"
+        (leafletMapMoveStart)="noMoveYet = false"
+      >
+        <div *ngIf="shopMarker" [leafletLayer]="shopMarker"></div>
+      </div>
+
+      <img src="assets/icons/user-pin.png" id="user-pin" />
+    </div>
+    <br />
+    <button
+      mat-flat-button
+      color="accent"
+      [disabled]="noMoveYet"
+      (click)="disableMap()"
+      *ngIf="map.dragging.enabled()"
+      class="submit-button"
+    >
+      {{ 'locationEditBottomSheet.setLocation' | translate }}
+    </button>
+
+    <div *ngIf="!map?.dragging?.enabled()" class="form-theme" ngClass="wrapper">
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'locationEditBottomSheet.addressLabel' | translate }}</mat-label>
+        <input
+          placeholder="{{ 'locationEditBottomSheet.addressPlaceholder' | translate }}"
+          matInput
+          [(ngModel)]="address"
+          required
+          autocomplete="off"
+        />
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="accent"
+        class="submit-button"
+        (click)="disableMap()"
+        [disabled]="saving"
+        (click)="save()"
+      >
+        {{ 'app.save' | translate }}
+        <i class="fad fa-spinner-third" *ngIf="saving"></i>
+      </button>
+    </div>
+  </div>
+</ng-container>

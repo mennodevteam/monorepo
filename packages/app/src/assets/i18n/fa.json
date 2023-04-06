@@ -6,6 +6,7 @@
     "add": "افزودن",
     "price": "قیمت",
     "free": "رایگان",
+    "save": "ذخیره",
     "continue": "ادامه"
   },
   "discount": {
@@ -13,7 +14,8 @@
     "fixed": "{{value}} تخفیف"
   },
   "orderType": {
-    "select": "نوع سفارش خود را انتخاب کنید:",
+    "title": "نوع سفارش",
+    "select": "نوع سفارش خود را انتخاب کنید",
     "dineIn": "داخل مجموعه",
     "dineInDescription": "داخل مجموعه هستم و همینجا سرو می‌کنم",
     "delivery": "ارسال با پیک",
@@ -27,6 +29,8 @@
   },
   "menu": {
     "complete": "تکمیل سفارش",
+    "selectDeliveryAddress": "آدرس خود را جهت ارسال مشخص کنید",
+    "selectDineInTable": "لطفا میز خود را انتخاب کنید",
     "disableOrderingTitle": "امکان ثبت آنلاین سفارش وجود ندارد"
   },
   "basket": {
@@ -59,5 +63,18 @@
     "completed": "تحویل داده شده",
     "canceled": "لغو شده",
     "ready": "آماده شده"
+  },
+  "locationEditBottomSheet": {
+    "title": "ایجاد آدرس جدید",
+    "description": "با جابجا کردن نقشه، موقعیت دقیق خود را مشخص کنید",
+    "searchLabel": "جستجوی منطقه",
+    "searchPlaceholder": "خیابان...",
+    "addressLabel": "آدرس دقیق",
+    "addressPlaceholder": "خیابان، کوچه، پلاک، واحد",
+    "setLocation": "انتخاب موقعیت"
+  },
+  "locationsBottomSheet": {
+    "title": "انتخاب آدرس",
+    "new": "ایجاد آدرس جدید"
   }
 }

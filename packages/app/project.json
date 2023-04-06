@@ -17,12 +17,18 @@
         "inlineStyleLanguage": "scss",
         "assets": [
           "packages/app/src/favicon.ico",
+          {
+            "glob": "**/*",
+            "input": "node_modules/leaflet/dist/images",
+            "output": "leaflet/"
+          },
           "packages/app/src/assets",
           "packages/app/src/liara_nginx.conf",
           "packages/app/src/liara.json"
         ],
         "styles": [
           "packages/app/src/styles.scss",
+          "./node_modules/leaflet/dist/leaflet.css",
           {
             "input": "packages/app/src/theme/amber-theme.scss",
             "inject": false,

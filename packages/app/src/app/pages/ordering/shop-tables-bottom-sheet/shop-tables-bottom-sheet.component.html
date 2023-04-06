@@ -1,0 +1,10 @@
+<h2>{{ 'menu.selectDineInTable' | translate }}</h2>
+<mat-nav-list>
+  <a mat-list-item *ngFor="let table of tables; let last = last" (click)="sheetRef.dismiss(table)">
+    <h3 matLine>
+      {{ table.code }}
+      <span *ngIf="table.title">({{ table.title }})</span>
+    </h3>
+    <mat-divider *ngIf="!last"></mat-divider>
+  </a>
+</mat-nav-list>

@@ -11,7 +11,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { PdatePipe } from './pipes/pdate.pipe';
+import { OrderTypePipe } from './pipes/order-type.pipe';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,7 @@ import { PdatePipe } from './pipes/pdate.pipe';
     CountSelectorComponent,
     LoginBottomSheetComponent,
     PdatePipe,
+    OrderTypePipe,
   ],
   imports: [
     CommonModule,
@@ -30,14 +33,17 @@ import { PdatePipe } from './pipes/pdate.pipe';
     MatFormFieldModule,
     MatInputModule,
     MatSnackBarModule,
+    MatAutocompleteModule,
   ],
   exports: [
     GoBackDirective,
     PdatePipe,
+    OrderTypePipe,
     ImageLoaderDirective,
     MenuCurrencyPipe,
     TranslateModule,
     CountSelectorComponent,
+    MatAutocompleteModule,
   ],
   providers: [DecimalPipe],
 })

@@ -8,6 +8,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MenuPageComponent } from './menu-page/menu-page.component';
 import { ShopHomeComponent } from './shop-home/shop-home.component';
@@ -22,9 +23,13 @@ import { DiscountBadgeComponent } from './discount-badge/discount-badge.componen
 import { BasketPageComponent } from './basket-page/basket-page.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectOrderTypeModalComponent } from './select-order-type-modal/select-order-type-modal.component';
 import { DisableOrderingCardComponent } from './disable-ordering-card/disable-ordering-card.component';
+import { LocationsBottomSheetComponent } from './locations-bottom-sheet/locations-bottom-sheet.component';
+import { LocationEditBottomSheetComponent } from './location-edit-bottom-sheet/location-edit-bottom-sheet.component';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { ShopTablesBottomSheetComponent } from './shop-tables-bottom-sheet/shop-tables-bottom-sheet.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +40,9 @@ import { DisableOrderingCardComponent } from './disable-ordering-card/disable-or
     CategoryGridViewComponent,
     CategoryCardViewComponent,
     DiscountBadgeComponent,
+    LocationsBottomSheetComponent,
+    ShopTablesBottomSheetComponent,
+    LocationEditBottomSheetComponent,
     BasketPageComponent,
     SelectOrderTypeModalComponent,
     DisableOrderingCardComponent,
@@ -42,6 +50,7 @@ import { DisableOrderingCardComponent } from './disable-ordering-card/disable-or
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forChild(orderingRoutes),
     MatFormFieldModule,
     MatInputModule,
@@ -55,6 +64,8 @@ import { DisableOrderingCardComponent } from './disable-ordering-card/disable-or
     MatBadgeModule,
     MatGridListModule,
     MatRippleModule,
-  ],
+    MatProgressSpinnerModule,
+    LeafletModule,
+  ]
 })
 export class OrderingModule {}

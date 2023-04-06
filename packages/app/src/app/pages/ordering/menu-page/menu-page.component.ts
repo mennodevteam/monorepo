@@ -1,10 +1,14 @@
 import { AfterViewInit, Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { MenuViewType, OrderType } from '@menno/types';
+import { MenuViewType, OrderType, ShopTable } from '@menno/types';
 import { BasketService } from '../../../core/services/basket.service';
 import { MenuService } from '../../../core/services/menu.service';
 import { ShopService } from '../../../core/services/shop.service';
 import { MenuCategoriesComponent } from './menu-categories/menu-categories.component';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { LocationEditBottomSheetComponent } from '../location-edit-bottom-sheet/location-edit-bottom-sheet.component';
+import { LocationsBottomSheetComponent } from '../locations-bottom-sheet/locations-bottom-sheet.component';
+import { ShopTablesBottomSheetComponent } from '../shop-tables-bottom-sheet/shop-tables-bottom-sheet.component';
 
 @Component({
   selector: 'menu-page',
@@ -22,7 +26,8 @@ export class MenuPageComponent implements AfterViewInit {
   constructor(
     private menuService: MenuService,
     public basket: BasketService,
-    private shopService: ShopService
+    private shopService: ShopService,
+    private bottomSheet: MatBottomSheet
   ) {
     this.menuService.checkSelectedOrderType();
 
@@ -91,6 +96,10 @@ export class MenuPageComponent implements AfterViewInit {
     return this.menuService.menu?.categories;
   }
 
+  get tables() {
+    return this.shop?.details.tables;
+  }
+
   categoryClick(index: number) {
     this.categoryElements.toArray()[index].nativeElement.scrollIntoView(true);
   }
@@ -100,8 +109,39 @@ export class MenuPageComponent implements AfterViewInit {
     else if (this.viewType === MenuViewType.Grid) this.viewType = MenuViewType.Card;
   }
 
-  changeType(ev: MatButtonToggleChange) {
-    this.menuService.type = ev.value;
-    this.basket.clear();
+  changeType() {
+    this.menuService.openSelectOrderType();
+  }
+
+  selectDeliveryAddress() {
+    this.bottomSheet
+      .open(LocationsBottomSheetComponent)
+      .afterDismissed()
+      .subscribe((address) => {
+        if (address) this.basket.address = address;
+        else if (address === null) {
+          this.bottomSheet
+            .open(LocationEditBottomSheetComponent, {
+              data: { shop: this.shop },
+            })
+            .afterDismissed()
+            .subscribe((address) => {
+              if (address) this.basket.address = address;
+            });
+        }
+      });
+  }
+
+  selectDineInTable() {
+    this.bottomSheet
+      .open(ShopTablesBottomSheetComponent)
+      .afterDismissed()
+      .subscribe((table?: ShopTable) => {
+        if (table) {
+          let tableText = table.code;
+          if (table.title) tableText += ` (${table.title})`;
+          this.basket.details = { ...this.basket.details, table: tableText };
+        }
+      });
   }
 }
