@@ -29,6 +29,7 @@ export class MenuPageComponent {
       });
   }
   get categories() {
+    console.log(this.menuService.menu);
     return this.menuService.menu?.categories;
   }
 }

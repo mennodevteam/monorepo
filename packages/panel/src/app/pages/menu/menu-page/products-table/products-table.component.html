@@ -13,7 +13,18 @@
 
   <ng-container matColumnDef="price">
     <th mat-header-cell *matHeaderCellDef>{{ 'productTable.price' | translate }}</th>
-    <td mat-cell *matCellDef="let product">{{ product.price | menuCurrency }}</td>
+    <td mat-cell *matCellDef="let product">
+      {{ product.price | menuCurrency }}
+
+      <mat-chip-listbox *ngIf="product.costs?.length" class="cost-chips">
+        <mat-chip-option [selectable]="false" *ngFor="let c of product.costs">
+          {{ c.title }}
+          (<span *ngIf="c.percentageCost">{{ abs(c.percentageCost) }}%</span>
+          <span *ngIf="c.fixedCost">{{ abs(c.fixedCost) | menuCurrency }}</span
+          >)
+        </mat-chip-option>
+      </mat-chip-listbox>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="stock">
@@ -23,7 +34,7 @@
 
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let product" style="display: flex; justify-content: end;">
+    <td mat-cell *matCellDef="let product" style="display: flex; justify-content: end">
       <button
         mat-icon-button
         routerLink="product"

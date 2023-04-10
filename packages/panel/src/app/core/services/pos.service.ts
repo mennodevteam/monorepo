@@ -23,6 +23,8 @@ import { TodayOrdersService } from './today-orders.service';
 export class PosService extends OrderDto {
   saving = false;
   editOrder?: Order;
+  menu: Menu;
+
   constructor(
     private menuService: MenuService,
     private orderService: OrdersService,
@@ -36,13 +38,13 @@ export class PosService extends OrderDto {
   }
 
   get categories() {
-    return this.menuService.menu?.categories;
+    return this.menu?.categories;
   }
 
   setType(val: OrderType) {
-    const menu = this.menuService.menu!;
+    this.menu = this.menuService.baseMenu;
     this.type = val;
-    Menu.setRefsAndSort(menu, this.type, true);
+    Menu.setRefsAndSort(this.menu, this.type, true);
   }
 
   plus(productId: string) {
@@ -82,6 +84,7 @@ export class PosService extends OrderDto {
 
   async init(orderId?: string) {
     this.clear();
+    this.setType(this.type);
     if (orderId) {
       const order = this.todayOrders.getById(orderId) || (await this.orderService.getById(orderId));
       if (order) {
@@ -97,7 +100,7 @@ export class PosService extends OrderDto {
         );
         this.manualCost = Order.abstractItems(order).find((x) => x.title === MANUAL_COST_TITLE)?.price;
         this.address = order.address;
-        this.type = order.type;
+        this.setType(order.type);
         this.discountCoupon = order.discountCoupon;
       }
     }
@@ -113,29 +116,29 @@ export class PosService extends OrderDto {
   }
 
   get items(): OrderItem[] {
-    if (this.menuService.menu) {
-      return OrderDto.productItems(this, this.menuService.menu);
+    if (this.menu) {
+      return OrderDto.productItems(this, this.menu);
     }
     return [];
   }
 
   get abstractItems(): OrderItem[] {
-    if (this.menuService.menu) {
-      return OrderDto.abstractItems(this, this.menuService.menu);
+    if (this.menu) {
+      return OrderDto.abstractItems(this, this.menu);
     }
     return [];
   }
 
   get sum() {
-    if (this.menuService.menu) {
-      return OrderDto.sum(this, this.menuService.menu);
+    if (this.menu) {
+      return OrderDto.sum(this, this.menu);
     }
     return 0;
   }
 
   get total() {
-    if (this.menuService.menu) {
-      return OrderDto.total(this, this.menuService.menu);
+    if (this.menu) {
+      return OrderDto.total(this, this.menu);
     }
     return 0;
   }

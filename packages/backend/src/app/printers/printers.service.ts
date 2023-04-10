@@ -38,6 +38,7 @@ export class PrintersService {
         'reviews',
         'customer',
         'creator',
+        'address'
       ],
       withDeleted: true,
     });
@@ -78,7 +79,7 @@ export class PrintersService {
         count: p.count || view.defaultCount || 1,
         data: {
           currency: order.details.currency,
-          customerAddress: order.details.address,
+          customerAddress: order.address?.description,
           customerName: order.customer ? User.fullName(order.customer) : undefined,
           customerPhone: order.customer ? order.customer.mobilePhone : undefined,
           date: order.createdAt,

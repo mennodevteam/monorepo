@@ -9,4 +9,6 @@ import { Product } from '@menno/types';
 export class ProductsTableComponent {
   displayedColumns = ['image', 'title', 'price', 'stock', 'actions'];
   @Input() products: Product[];
+
+  abs = Math.abs;
 }

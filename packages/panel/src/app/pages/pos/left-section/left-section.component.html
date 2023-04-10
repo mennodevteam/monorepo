@@ -1,5 +1,5 @@
 <div class="container">
-  <mat-button-toggle-group [(ngModel)]="POS.type" [disabled]="POS.saving || !!POS.editOrder">
+  <mat-button-toggle-group [value]="POS.type" [disabled]="POS.saving || !!POS.editOrder" (valueChange)="POS.setType($event)">
     <mat-button-toggle [value]="OrderType.DineIn">{{ 'orderType.dineIn' | translate }}</mat-button-toggle>
     <mat-button-toggle [value]="OrderType.Takeaway">{{ 'orderType.takeaway' | translate }}</mat-button-toggle>
     <mat-button-toggle [value]="OrderType.Delivery">{{ 'orderType.delivery' | translate }}</mat-button-toggle>

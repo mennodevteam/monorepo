@@ -4,3 +4,12 @@ img {
   border-radius: 8px;
   vertical-align: middle;
 }
+
+.cost-chips {
+  vertical-align: middle;
+  display: inline-flex;
+
+  mat-chip-option {
+    font-size: 12px;
+  }
+}

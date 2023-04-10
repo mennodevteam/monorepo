@@ -1,15 +1,35 @@
 <mat-toolbar color="accent" [hidden]="getRouteData()?.hideShell">
-  <img src="assets/icons/logo.png" id="logo" />
-  <span spacer-2x></span>
-  <button mat-button routerLink="menu">
+  <button mat-icon-button class="show-xs" [matMenuTriggerFor]="menu">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item routerLink="menu">
+      <i class="fa-solid mat-icon fa-book-open"></i>
+      {{ 'shell.menu' | translate }}
+    </button>
+    <button mat-menu-item routerLink="orders">
+      <i class="fa-solid mat-icon fa-utensils"></i>
+      {{ 'shell.orders' | translate }}
+    </button>
+    <button mat-menu-item routerLink="club" [disabled]="isClubDisabled">
+      <i class="fa-solid mat-icon fa-crown"></i>
+      {{ 'shell.club' | translate }}
+    </button>
+    <button mat-menu-item routerLink="settings">
+      <i class="fa-solid mat-icon fa-gear"></i>
+      {{ 'shell.settings' | translate }}
+    </button>
+  </mat-menu>
+  <img src="assets/icons/logo.png" id="logo" class="hide-xs" />
+  <button mat-button routerLink="menu" class="hide-xs">
     <i class="fa-solid fa-large fa-book-open"></i>
     {{ 'shell.menu' | translate }}
   </button>
-  <button mat-button routerLink="orders">
+  <button mat-button routerLink="orders" class="hide-xs">
     <i class="fa-solid fa-large fa-utensils"></i>
     {{ 'shell.orders' | translate }}
   </button>
-  <button mat-button routerLink="club" [disabled]="isClubDisabled">
+  <button mat-button routerLink="club" [disabled]="isClubDisabled" class="hide-xs">
     <i class="fa-solid fa-large fa-crown"></i>
     {{ 'shell.club' | translate }}
   </button>
@@ -18,7 +38,7 @@
     <i class="fa-solid fa-plus-circle"></i>
     {{ 'shell.addOrder' | translate }}
   </button>
-  <button mat-icon-button routerLink="settings">
+  <button mat-icon-button routerLink="settings" class="hide-xs">
     <i class="fa-solid fa-large fa-gear"></i>
   </button>
   <button mat-icon-button id="user-button" [matMenuTriggerFor]="userMenu">
