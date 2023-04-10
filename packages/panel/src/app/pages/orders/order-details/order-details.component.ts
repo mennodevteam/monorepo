@@ -3,12 +3,13 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute } from '@angular/router';
-import { Member, Order, OrderState, OrderType, User } from '@menno/types';
+import { Member, Order, OrderState, OrderType, ShopPrintView, User } from '@menno/types';
 import { BehaviorSubject } from 'rxjs';
 import { OrdersService } from '../../../core/services/orders.service';
 import { TodayOrdersService } from '../../../core/services/today-orders.service';
 import { MemberSelectDialogComponent } from '../../../shared/dialogs/member-select-dialog/member-select-dialog.component';
 import { SettlementDialogComponent } from '../../../shared/dialogs/settlement-dialog/settlement-dialog.component';
+import { PrinterService } from '../../../core/services/printer.service';
 
 @Component({
   selector: 'order-details',
@@ -28,7 +29,8 @@ export class OrderDetailsComponent {
     private route: ActivatedRoute,
     private orderService: OrdersService,
     private dialog: MatDialog,
-    private todayOrders: TodayOrdersService
+    private todayOrders: TodayOrdersService,
+    private printService: PrinterService
   ) {
     this.loadOrder();
   }
@@ -109,6 +111,14 @@ export class OrderDetailsComponent {
     if (member) {
       await this.orderService.setCustomer(order, member.id);
     }
+  }
+
+  get printers() {
+    return this.printService.printers;
+  }
+
+  print(view?: ShopPrintView) {
+    if (this.order) this.printService.printOrder(this.order.id, view);
   }
 
   removeOrder() {}

@@ -2,13 +2,30 @@
   <button mat-icon-button goBack>
     <i class="fa-regular fa-arrow-right"></i>
   </button>
-  <h1>
+  <h1 flex class="title">
     <b>{{ 'orderDetails.qNumber' | translate: { value: order?.qNumber } }}</b>
-    <span spacer></span>
     <span class="date">
       {{ order?.createdAt | pdate }}
     </span>
   </h1>
+  <button mat-stroked-button routerLink="/pos" [queryParams]="{ id: order?.id }">
+    <i class="fa-regular fa-pencil"></i>
+    {{ 'app.edit' | translate }}
+  </button>
+  <button mat-stroked-button [matMenuTriggerFor]="printMenu">
+    <i class="fa-regular fa-print"></i>
+    {{ 'app.print' | translate }}
+  </button>
+  <mat-menu #printMenu="matMenu">
+    <button mat-menu-item (click)="print()">
+      <span>{{ 'app.default' | translate }}</span>
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item *ngFor="let p of printers" (click)="print(p)">
+      <i class="fa-solid fa-print mat-icon"></i>
+      <span>{{ p.title }}</span>
+    </button>
+  </mat-menu>
 </mat-toolbar>
 <main *ngIf="order">
   <div class="form-page-layout">

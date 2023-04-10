@@ -36,7 +36,9 @@
     "savedSuccessfully": "با موفقیت ذخیره شد",
     "edit": "ویرایش",
     "remove": "حذف",
-    "notSet": "ثبت نشده"
+    "notSet": "ثبت نشده",
+    "print": "پرینت",
+    "default": "پیش‌فرض"
   },
   "shell": {
     "menu": "منو",
