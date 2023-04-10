@@ -3,7 +3,11 @@
     <i class="fa-regular fa-arrow-right"></i>
   </button>
   <h1>
-    {{ 'orderDetails.qNumber' | translate: { value: order?.qNumber } }}
+    <b>{{ 'orderDetails.qNumber' | translate: { value: order?.qNumber } }}</b>
+    <span spacer></span>
+    <span class="date">
+      {{ order?.createdAt | pdate }}
+    </span>
   </h1>
 </mat-toolbar>
 <main *ngIf="order">
@@ -124,11 +128,10 @@
     </div>
 
     <div class="flex-col">
-      <header>
+      <!-- <header>
         <mat-card class="info-card">
           <mat-card-content>
             <i mat-card-avatar class="fa-solid fa-clock"></i>
-            <!-- <b class="eng" style="font-size: 36px">5</b> -->
             <div class="info-card__texts">
               <p>{{ 'app.dateTime' | translate }}</p>
               <h4>{{ order.createdAt | pdate }}</h4>
@@ -167,14 +170,10 @@
             </div>
           </mat-card-content>
         </mat-card>
-      </header>
+      </header> -->
       <mat-card>
         <mat-card-content>
-          <h1 style="font-size: 18px">
-            {{ 'orderDetails.qNumber' | translate: { value: order.qNumber } }}
-          </h1>
-
-          <table mat-table [dataSource]="order.items">
+          <table mat-table [dataSource]="productItems">
             <ng-container matColumnDef="row">
               <th mat-header-cell *matHeaderCellDef>{{ 'app.row' | translate }}</th>
               <td mat-cell *matCellDef="let element; let i = index" style="width: 40px">
@@ -217,29 +216,82 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
           </table>
-          <mat-list>
-            <mat-list-item class="total-row">
-              <h4 matListItemLine>
-                {{ 'app.totalPrice' | translate }}
-              </h4>
-              <b matListItemMeta>
-                <button
-                  mat-button
-                  color="warn"
-                  [disabled]="order._settlementing"
-                  *ngIf="!order.paymentType"
-                  (click)="settlement(order)"
-                >
-                  <i class="fa-regular fa-cash-register"></i>
-                  {{ 'orderDetails.settlement' | translate }}
-                </button>
+          <p class="note" *ngIf="order?.note">{{ order?.note }}</p>
+        </mat-card-content>
+      </mat-card>
 
-                <span *ngIf="order.paymentType" class="green-color">
-                  <i class="fa-solid fa-circle-check"></i>
-                  {{ order.paymentType | orderPayment }}
-                </span>
-                {{ order.totalPrice | menuCurrency }}
+      <mat-card>
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item>
+              <span matListItemTitle>{{ 'app.sum' | translate }}</span>
+              <span matListItemMeta>{{ sum | menuCurrency }}</span>
+            </mat-list-item>
+            <mat-list-item *ngFor="let item of abstractItems">
+              <span matListItemTitle>{{ item.title }}</span>
+              <span matListItemMeta>{{ item.quantity * item.price | menuCurrency }}</span>
+            </mat-list-item>
+            <mat-list-item class="total-row">
+              <b matListItemTitle>{{ 'app.totalPrice' | translate }}</b>
+              <b matListItemMeta>{{ total | menuCurrency }}</b>
+            </mat-list-item>
+          </mat-list>
+          <mat-toolbar>
+            <i *ngIf="order.paymentType" class="fa-solid fa-circle-check green"></i>
+            <i *ngIf="!order.paymentType" class="fa-solid fa-circle-xmark red"></i>
+            <span flex [ngClass]="{ green: order.paymentType, red: !order.paymentType }">
+              {{ order.paymentType | orderPayment }}
+            </span>
+            <button
+              mat-stroked-button
+              [disabled]="order._settlementing"
+              *ngIf="!order.paymentType"
+              (click)="settlement(order)"
+            >
+              <i class="fa-regular fa-cash-register"></i>
+              {{ 'orderDetails.settlement' | translate }}
+            </button>
+          </mat-toolbar>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="static-col">
+      <mat-card>
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item [ngSwitch]="order.type" [lines]="order.type === OrderType.Delivery ? 3 : 1">
+              <b matListItemTitle>
+                <i *ngSwitchCase="OrderType.DineIn" class="fa-solid fa-mug-hot"></i>
+                <i *ngSwitchCase="OrderType.Takeaway" class="fa-solid fa-cup-togo"></i>
+                <i *ngSwitchCase="OrderType.Delivery" class="fa-solid fa-moped"></i>
+                {{ order.type | orderType }}
               </b>
+              <span matListItemMeta *ngSwitchCase="OrderType.DineIn">{{ order.details.table }}</span>
+              <ng-container *ngSwitchCase="OrderType.Delivery">{{ order.address?.description }}</ng-container>
+            </mat-list-item>
+            <span spacer></span>
+            <mat-list-item lines="1">
+              <ng-container *ngIf="order.customer">
+                <b matListItemTitle>
+                  <i class="fa-solid fa-user"></i>
+                  {{ User.fullName(order.customer) }}
+                </b>
+                <span matListItemLine>{{ order.customer.mobilePhone }}</span>
+              </ng-container>
+              <button *ngIf="order.customer" mat-icon-button matListItemMeta color="primary">
+                <i class="fas fa-circle-info"></i>
+              </button>
+              <ng-container *ngIf="!order.customer">
+                <b matListItemTitle>
+                  <i class="fa-solid fa-user"></i>
+                  {{ 'ordersTable.customer' | translate }}
+                </b>
+                <span matListItemLine>{{ 'app.notSet' | translate }}</span>
+              </ng-container>
+              <button *ngIf="!order.customer" mat-icon-button matListItemMeta color="primary">
+                <i class="fas fa-circle-plus"></i>
+              </button>
             </mat-list-item>
           </mat-list>
         </mat-card-content>

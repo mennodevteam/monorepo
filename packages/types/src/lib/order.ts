@@ -11,11 +11,6 @@ import { User } from './user';
 export interface OrderDetails {
   customerPhone?: string;
   table?: string;
-  address?: string;
-  latitude?: number;
-  longitude?: number;
-  deliveryAreaId?: number;
-  discountCouponId?: string;
   posPayed?: number[];
   deletionReason?: string;
   currency?: string;

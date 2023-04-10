@@ -36,7 +36,7 @@
     "savedSuccessfully": "با موفقیت ذخیره شد",
     "edit": "ویرایش",
     "remove": "حذف",
-    "noSet": "ثبت نشده"
+    "notSet": "ثبت نشده"
   },
   "shell": {
     "menu": "منو",

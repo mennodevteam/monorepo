@@ -38,6 +38,16 @@
       <span matListItemTitle *ngIf="basket.address">
         {{ basket.address.description }}
       </span>
+      <span matListItemMeta *ngIf="basket.address && !basket.address?.deliveryArea" class="error-text">
+        {{ 'locationsBottomSheet.outsideArea' | translate }}
+      </span>
+      <span
+        matListItemMeta
+        *ngIf="basket.address?.deliveryArea && basket.address?.deliveryArea?.status !== Status.Active"
+        class="error-text"
+      >
+        {{ 'locationsBottomSheet.disabled' | translate }}
+      </span>
       <span matListItemMeta *ngIf="deliveryCost" class="tertiary-text">
         {{ deliveryCost.price | menuCurrency }}
       </span>

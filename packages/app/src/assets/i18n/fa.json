@@ -30,6 +30,7 @@
   "menu": {
     "title": "منوی {{value}}",
     "complete": "تکمیل سفارش",
+
     "selectDeliveryAddress": "آدرس خود را جهت ارسال مشخص کنید",
     "selectDineInTable": "لطفا میز خود را انتخاب کنید",
     "disableOrderingTitle": "امکان ثبت آنلاین سفارش وجود ندارد"
@@ -76,6 +77,8 @@
   },
   "locationsBottomSheet": {
     "title": "انتخاب آدرس",
-    "new": "ایجاد آدرس جدید"
+    "new": "ایجاد آدرس جدید",
+    "outsideArea": "خارج از محدوده",
+    "disabled": "موقتا غیرفعال"
   }
 }

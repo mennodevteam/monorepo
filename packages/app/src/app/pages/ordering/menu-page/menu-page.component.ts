@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { DELIVERY_COST_TITLE, MenuViewType, OrderType, ShopTable } from '@menno/types';
+import { DELIVERY_COST_TITLE, MenuViewType, OrderType, ShopTable, Status } from '@menno/types';
 import { BasketService } from '../../../core/services/basket.service';
 import { MenuService } from '../../../core/services/menu.service';
 import { ShopService } from '../../../core/services/shop.service';
@@ -22,6 +22,7 @@ export class MenuPageComponent implements AfterViewInit {
   MenuViewType = MenuViewType;
   viewType: MenuViewType;
   OrderType = OrderType;
+  Status = Status;
 
   constructor(
     private menuService: MenuService,

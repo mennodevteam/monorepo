@@ -65,6 +65,26 @@ export class OrderDetailsComponent {
     return 0;
   }
 
+  get sum() {
+    if (this.order) return Order.sum(this.order);
+    return;
+  }
+
+  get total() {
+    if (this.order) return Order.total(this.order);
+    return;
+  }
+
+  get productItems() {
+    if (this.order) return Order.productItems(this.order);
+    return [];
+  }
+
+  get abstractItems() {
+    if (this.order) return Order.abstractItems(this.order);
+    return [];
+  }
+
   async nextState() {
     if (this.order) {
       const selectedIndex = this.states.indexOf(this.order?.state);

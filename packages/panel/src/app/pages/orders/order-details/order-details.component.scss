@@ -1,3 +1,5 @@
+@import "theme";
+
 main {
   padding: 24px;
   margin: auto;
@@ -13,10 +15,23 @@ header {
   }
 }
 
+.note {
+  font-size: 14px;
+}
+
 h1,
 h4,
 p {
   margin: 0;
+}
+
+span[matListItemMeta] {
+  color: black;
+}
+
+.date {
+  color: $gray;
+  font-size: 14px;
 }
 
 .info-card {
@@ -47,7 +62,6 @@ p {
 }
 
 .total-row {
-  h4,
   b {
     color: black;
     font-size: 18px;

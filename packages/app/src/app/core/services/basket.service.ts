@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DeliveryArea, OrderDto, OrderItem, Product, ProductItem } from '@menno/types';
+import { DeliveryArea, OrderDto, OrderItem, OrderType, Product, ProductItem, Status } from '@menno/types';
 import { MenuService } from './menu.service';
 import { OrdersService } from './orders.service';
 import { ShopService } from './shop.service';
@@ -109,19 +109,35 @@ export class BasketService extends OrderDto {
     }
   }
 
-  complete() {
-    if (this.type != undefined && this.shopService.shop) {
-      const dto: OrderDto = {
-        productItems: this.productItems.filter((x) => x.quantity),
-        type: this.type,
-        note: this.note,
-        shopId: this.shopService.shop.id,
-      };
-      if (this.isPaymentRequired) {
-        this.ordersService.payAndAddOrder(dto);
-      } else {
-        return this.ordersService.save(dto);
-      }
+  async complete() {
+    if (this.type == undefined || !this.shopService.shop) return;
+    if (
+      this.type === OrderType.Delivery &&
+      (!this.address ||
+        this.address.deliveryArea == null ||
+        this.address.deliveryArea.status != Status.Active)
+    )
+      return;
+    if (
+      this.type === OrderType.DineIn &&
+      this.shopService.shop.details?.tables?.length &&
+      !this.details?.table
+    )
+      return;
+    const dto: OrderDto = {
+      productItems: this.productItems.filter((x) => x.quantity),
+      type: this.type,
+      note: this.note,
+      shopId: this.shopService.shop.id,
+      address: this.address,
+      details: this.details,
+    };
+    if (this.isPaymentRequired) {
+      this.ordersService.payAndAddOrder(dto);
+    } else {
+      const order = await this.ordersService.save(dto);
+      this.clear();
+      return order;
     }
     return null;
   }

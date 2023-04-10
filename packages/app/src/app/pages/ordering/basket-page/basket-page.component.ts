@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { BasketService } from '../../../core/services/basket.service';
 import { ShopService } from '../../../core/services/shop.service';
-import { OrderType } from '@menno/types';
+import { OrderType, Status } from '@menno/types';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -20,25 +20,32 @@ export class BasketPageComponent {
     private snack: MatSnackBar,
     private translate: TranslateService
   ) {
+    let valid = true;
     if (!this.basket.items?.length) {
-      this.router.navigate(['/menu'], {
-        replaceUrl: true,
-      });
+      valid = false;
     } else if (this.basket.type === OrderType.Delivery && !this.basket.address) {
-      this.router.navigate(['/menu'], {
-        replaceUrl: true,
-      });
+      valid = false;
+      this.snack.open(this.translate.instant('menu.selectDeliveryAddress'), '', { duration: 2000 });
+    } else if (
+      this.basket.type === OrderType.Delivery &&
+      this.basket.address &&
+      (!this.basket.address.deliveryArea || this.basket.address.deliveryArea.status != Status.Active)
+    ) {
+      valid = false;
       this.snack.open(this.translate.instant('menu.selectDeliveryAddress'), '', { duration: 2000 });
     } else if (
       this.basket.type === OrderType.DineIn &&
       !this.basket.details?.table &&
       this.shopService.shop?.details.tables?.length
     ) {
+      valid = false;
+      this.snack.open(this.translate.instant('menu.selectDineInTable'), '', { duration: 2000 });
+    }
+
+    if (!valid)
       this.router.navigate(['/menu'], {
         replaceUrl: true,
       });
-      this.snack.open(this.translate.instant('menu.selectDineInTable'), '', { duration: 2000 });
-    }
   }
 
   get items() {

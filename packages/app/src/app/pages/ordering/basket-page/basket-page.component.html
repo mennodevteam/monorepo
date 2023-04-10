@@ -65,7 +65,7 @@
   *ngIf="basket.items?.length && !disableOrdering"
   routerLink="/basket"
 >
-  <button mat-raised-button color="primary" (click)="complete()">
+  <button mat-raised-button [disabled]="saving" color="primary" (click)="complete()">
     {{ 'basket.complete' | translate }}
   </button>
 </mat-toolbar>

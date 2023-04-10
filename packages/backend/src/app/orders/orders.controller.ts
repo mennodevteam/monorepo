@@ -81,7 +81,7 @@ export class OrdersController {
       where: {
         id,
       },
-      relations: ['shop', 'shop.appConfig', 'items', 'customer', 'waiter', 'creator'],
+      relations: ['shop', 'shop.appConfig', 'items', 'customer', 'waiter', 'creator', 'address'],
     });
   }
 
@@ -92,7 +92,7 @@ export class OrdersController {
       where: {
         id,
       },
-      relations: ['items.product', 'customer', 'waiter', 'creator', 'reviews', 'payment'],
+      relations: ['items.product', 'customer', 'waiter', 'creator', 'reviews', 'payment', 'address'],
     });
   }
 
