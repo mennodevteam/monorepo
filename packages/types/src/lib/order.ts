@@ -23,17 +23,17 @@ export interface OrderDetails {
 
 export class Order {
   id: string;
-  customer: User;
+  customer?: User;
   creator: User;
-  waiter: User;
+  waiter?: User;
   qNumber?: number;
   mergeTo?: Order;
   mergeFrom?: string[];
   shop?: Shop;
   state: OrderState;
   type: OrderType;
-  address: Address;
-  discountCoupon: DiscountCoupon;
+  address?: Address;
+  discountCoupon?: DiscountCoupon;
   paymentType: OrderPaymentType;
   note?: string;
   isManual: boolean;
