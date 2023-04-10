@@ -1,6 +1,16 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Menu, Order, OrderDto, OrderItem, OrderType, Product, ProductItem } from '@menno/types';
+import {
+  MANUAL_COST_TITLE,
+  MANUAL_DISCOUNT_TITLE,
+  Menu,
+  Order,
+  OrderDto,
+  OrderItem,
+  OrderType,
+  Product,
+  ProductItem,
+} from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuService } from './menu.service';
 import { OrdersService } from './orders.service';
@@ -81,6 +91,11 @@ export class PosService extends OrderDto {
           productId: x.product!.id,
           quantity: x.quantity,
         }));
+        this.note = order.note;
+        this.manualDiscount = Math.abs(
+          Order.abstractItems(order).find((x) => x.title === MANUAL_DISCOUNT_TITLE)?.price || 0
+        );
+        this.manualCost = Order.abstractItems(order).find((x) => x.title === MANUAL_COST_TITLE)?.price;
         this.address = order.address;
         this.type = order.type;
         this.discountCoupon = order.discountCoupon;

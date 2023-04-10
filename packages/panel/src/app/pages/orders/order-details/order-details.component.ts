@@ -54,7 +54,7 @@ export class OrderDetailsComponent {
         return [OrderState.Pending, OrderState.Processing, OrderState.Shipping, OrderState.Completed];
       case OrderType.DineIn:
         return [OrderState.Pending, OrderState.Processing, OrderState.Ready, OrderState.Completed];
-      case OrderType.Delivery:
+      case OrderType.Takeaway:
         return [OrderState.Pending, OrderState.Processing, OrderState.Completed];
     }
     return [];
@@ -88,6 +88,7 @@ export class OrderDetailsComponent {
   }
 
   async nextState() {
+    debugger;
     if (this.order) {
       const selectedIndex = this.states.indexOf(this.order?.state);
       if (selectedIndex < this.states.length - 1) {
