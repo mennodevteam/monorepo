@@ -1,26 +1,21 @@
-<mat-toolbar>
-  <mat-toolbar-row>
-    <button mat-icon-button goBack>
-      <i class="fa-regular fa-arrow-right"></i>
-    </button>
-    <span flex></span>
-    <button mat-icon-button *ngIf="appConfig?.menuViewType === MenuViewType.Manual" (click)="toggleView()">
-      <i class="fa-solid fa-list" *ngIf="viewType === MenuViewType.Card"></i>
-      <i class="fa-solid fa-grid-2" *ngIf="viewType === MenuViewType.Grid"></i>
-    </button>
-  </mat-toolbar-row>
-  <mat-toolbar-row>
-    <img [imageLoader]="shop?.logo" id="logo" />
-    <span spacer></span>
-    <h1>{{ shop?.title }}</h1>
-  </mat-toolbar-row>
-</mat-toolbar>
-
-<section class="order-disable" *ngIf="appConfig?.disableOrderingText && appConfig?.disableOrdering">
-  <disable-ordering-card></disable-ordering-card>
-</section>
-
 <div class="wrapper">
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <button mat-icon-button goBack>
+        <i class="fa-regular fa-arrow-right"></i>
+      </button>
+      <h1 flex>{{ 'menu.title' | translate: { value: shop?.title } }}</h1>
+      <button mat-icon-button *ngIf="appConfig?.menuViewType === MenuViewType.Manual" (click)="toggleView()">
+        <i class="fa-solid fa-list" *ngIf="viewType === MenuViewType.Card"></i>
+        <i class="fa-solid fa-grid-2" *ngIf="viewType === MenuViewType.Grid"></i>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <section class="order-disable" *ngIf="appConfig?.disableOrderingText && appConfig?.disableOrdering">
+    <disable-ordering-card></disable-ordering-card>
+  </section>
+
   <mat-nav-list [ngSwitch]="orderType">
     <a mat-list-item [ngSwitch]="orderType" (click)="changeType()">
       <i matListItemIcon *ngSwitchCase="OrderType.DineIn" class="fa-solid fa-mug-hot"></i>
@@ -60,32 +55,34 @@
     </a>
   </mat-nav-list>
 
-  <menu-categories (chipClick)="categoryClick($event)"></menu-categories>
+  <div class="menu">
+    <menu-categories (chipClick)="categoryClick($event)"></menu-categories>
 
-  <div
-    *ngFor="let c of categories; let last = last"
-    id="category_{{ c.id }}"
-    #category
-    class="category-wrapper"
-  >
-    <h3>
-      <i *ngIf="c.faIcon" class="fa-solid fa-{{ c.faIcon }}"></i>
-      {{ c.title }}
-    </h3>
-    <ng-container *ngIf="viewType === MenuViewType.Card">
-      <category-card-view [category]="c"></category-card-view>
-    </ng-container>
-    <ng-container *ngIf="viewType === MenuViewType.Grid">
-      <category-grid-view [category]="c" [menu]="menu" [appConfig]="appConfig"></category-grid-view>
-    </ng-container>
-    <span spacer-2x *ngIf="!last"></span>
+    <div
+      *ngFor="let c of categories; let last = last"
+      id="category_{{ c.id }}"
+      #category
+      class="category-wrapper"
+    >
+      <h3>
+        <i *ngIf="c.faIcon" class="fa-solid fa-{{ c.faIcon }}"></i>
+        {{ c.title }}
+      </h3>
+      <ng-container *ngIf="viewType === MenuViewType.Card">
+        <category-card-view [category]="c"></category-card-view>
+      </ng-container>
+      <ng-container *ngIf="viewType === MenuViewType.Grid">
+        <category-grid-view [category]="c" [menu]="menu" [appConfig]="appConfig"></category-grid-view>
+      </ng-container>
+      <span spacer-2x *ngIf="!last"></span>
+    </div>
   </div>
+
+  <mat-toolbar class="actions-toolbar background" *ngIf="basket.items?.length" routerLink="/basket">
+    <button mat-raised-button color="primary">
+      {{ 'menu.complete' | translate }}
+    </button>
+  </mat-toolbar>
+
+  <div style="height: 72px"></div>
 </div>
-
-<mat-toolbar class="actions-toolbar background" *ngIf="basket.items?.length" routerLink="/basket">
-  <button mat-raised-button color="primary">
-    {{ 'menu.complete' | translate }}
-  </button>
-</mat-toolbar>
-
-<div style="height: 72px"></div>

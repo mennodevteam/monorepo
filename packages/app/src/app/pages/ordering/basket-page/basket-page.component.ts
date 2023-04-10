@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { BasketService } from '../../../core/services/basket.service';
 import { ShopService } from '../../../core/services/shop.service';
+import { OrderType } from '@menno/types';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'basket-page',
@@ -10,11 +13,32 @@ import { ShopService } from '../../../core/services/shop.service';
 })
 export class BasketPageComponent {
   saving = false;
-  constructor(public basket: BasketService, private router: Router, private shopService: ShopService) {
-    if (!this.basket.items?.length)
+  constructor(
+    public basket: BasketService,
+    private router: Router,
+    private shopService: ShopService,
+    private snack: MatSnackBar,
+    private translate: TranslateService
+  ) {
+    if (!this.basket.items?.length) {
       this.router.navigate(['/menu'], {
         replaceUrl: true,
       });
+    } else if (this.basket.type === OrderType.Delivery && !this.basket.address) {
+      this.router.navigate(['/menu'], {
+        replaceUrl: true,
+      });
+      this.snack.open(this.translate.instant('menu.selectDeliveryAddress'), '', { duration: 2000 });
+    } else if (
+      this.basket.type === OrderType.DineIn &&
+      !this.basket.details?.table &&
+      this.shopService.shop?.details.tables?.length
+    ) {
+      this.router.navigate(['/menu'], {
+        replaceUrl: true,
+      });
+      this.snack.open(this.translate.instant('menu.selectDineInTable'), '', { duration: 2000 });
+    }
   }
 
   get items() {

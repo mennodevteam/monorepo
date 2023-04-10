@@ -1,3 +1,9 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 #logo {
   width: 48px;
   height: 48px;
@@ -8,8 +14,8 @@
   width: -webkit-fill-available;
 }
 
-.wrapper {
-  padding: 16px 24px;
+.menu {
+  padding: 0 24px;
 }
 
 .category-wrapper {

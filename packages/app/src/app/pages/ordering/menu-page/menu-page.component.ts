@@ -122,7 +122,7 @@ export class MenuPageComponent implements AfterViewInit {
   }
 
   get deliveryCost() {
-    return this.basket.abstractItems.find(x => x.title === DELIVERY_COST_TITLE);
+    return this.basket.abstractItems.find((x) => x.title === DELIVERY_COST_TITLE);
   }
 
   selectDineInTable() {

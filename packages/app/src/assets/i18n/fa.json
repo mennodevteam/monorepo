@@ -28,6 +28,7 @@
     "backMenu": "برگشت به منو"
   },
   "menu": {
+    "title": "منوی {{value}}",
     "complete": "تکمیل سفارش",
     "selectDeliveryAddress": "آدرس خود را جهت ارسال مشخص کنید",
     "selectDineInTable": "لطفا میز خود را انتخاب کنید",

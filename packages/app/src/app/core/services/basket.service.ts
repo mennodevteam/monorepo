@@ -18,6 +18,7 @@ export class BasketService extends OrderDto {
     super();
     this.menuService.typeObservable.subscribe((type) => {
       if (type != undefined) {
+        if (this.type != type) this.clear();
         this.type = type;
       }
     });
@@ -25,8 +26,10 @@ export class BasketService extends OrderDto {
 
   plus(product: Product) {
     const item = this.productItems?.find((x) => x.productId === product.id);
-    if (item) item.quantity ? item.quantity++ : (item.quantity = 1);
-    else {
+    if (item) {
+      item.quantity ? item.quantity++ : (item.quantity = 1);
+      product._orderItem = item;
+    } else {
       const item: ProductItem = {
         productId: product.id,
         quantity: 1,
