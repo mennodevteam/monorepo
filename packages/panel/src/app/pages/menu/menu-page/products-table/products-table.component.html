@@ -34,15 +34,17 @@
 
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let product" style="display: flex; justify-content: end">
-      <button
-        mat-icon-button
-        routerLink="product"
-        [queryParams]="{ id: product.id }"
-        [matTooltip]="'productTable.edit' | translate"
-      >
-        <i class="fa-regular fa-pencil"></i>
-      </button>
+    <td mat-cell *matCellDef="let product">
+      <div style="display: flex; justify-content: end">
+        <button
+          mat-icon-button
+          routerLink="product"
+          [queryParams]="{ id: product.id }"
+          [matTooltip]="'productTable.edit' | translate"
+        >
+          <i class="fa-regular fa-pencil"></i>
+        </button>
+      </div>
     </td>
   </ng-container>
 

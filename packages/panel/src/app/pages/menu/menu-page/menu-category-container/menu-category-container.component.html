@@ -5,7 +5,12 @@
         <i *ngIf="category.faIcon" class="fa-solid fa-{{ category.faIcon }}"></i>
         {{ category.title }}
       </h3>
-      <button mat-icon-button matTooltip="{{ 'menu.editCategory' | translate }}" (click)="editCategory()">
+      <button
+        mat-icon-button
+        matTooltip="{{ 'menu.editCategory' | translate }}"
+        routerLink="category"
+        [queryParams]="{ id: category.id }"
+      >
         <i class="fa-regular fa-pencil-alt"></i>
       </button>
       <button mat-icon-button matTooltip="{{ 'menu.deleteCategory' | translate }}" (click)="deleteCategory()">

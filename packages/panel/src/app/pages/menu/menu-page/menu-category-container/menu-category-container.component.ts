@@ -4,7 +4,6 @@ import { ProductCategory } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuService } from 'packages/panel/src/app/core/services/menu.service';
 import { AlertDialogComponent } from 'packages/panel/src/app/shared/dialogs/alert-dialog/alert-dialog.component';
-import { CategoryEditDialogComponent } from '../category-edit-dialog/category-edit-dialog.component';
 
 @Component({
   selector: 'menu-category-container',
@@ -19,14 +18,6 @@ export class MenuCategoryContainerComponent {
     private menuService: MenuService,
     private translate: TranslateService
   ) {}
-
-  editCategory() {
-    this.dialog.open(CategoryEditDialogComponent, {
-      data: {
-        category: this.category,
-      },
-    });
-  }
 
   deleteCategory() {
     this.dialog

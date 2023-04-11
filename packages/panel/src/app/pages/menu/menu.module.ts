@@ -6,7 +6,6 @@ import { MenuPageComponent } from './menu-page/menu-page.component';
 import { SharedModule } from '../../shared/shared.module';
 import { MenuCategoryContainerComponent } from './menu-page/menu-category-container/menu-category-container.component';
 import { ProductsTableComponent } from './menu-page/products-table/products-table.component';
-import { CategoryEditDialogComponent } from './menu-page/category-edit-dialog/category-edit-dialog.component';
 import { ProductEditPageComponent } from './product-edit-page/product-edit-page.component';
 import { MenuComponent } from './menu.component';
 import { DiscountsPageComponent } from './discounts-page/discounts-page.component';
@@ -16,13 +15,13 @@ import { EditCostComponent } from './costs-page/edit-cost/edit-cost.component';
 import { SelectProductCardComponent } from './select-product-card/select-product-card.component';
 import { SelectStatusCardComponent } from './select-status-card/select-status-card.component';
 import { SelectOrderTypeCardComponent } from './select-order-type-card/select-order-type-card.component';
+import { CategoryEditPageComponent } from './category-edit-page/category-edit-page.component';
 
 @NgModule({
   declarations: [
     MenuPageComponent,
     MenuCategoryContainerComponent,
     ProductsTableComponent,
-    CategoryEditDialogComponent,
     ProductEditPageComponent,
     MenuComponent,
     DiscountsPageComponent,
@@ -32,6 +31,7 @@ import { SelectOrderTypeCardComponent } from './select-order-type-card/select-or
     SelectProductCardComponent,
     SelectStatusCardComponent,
     SelectOrderTypeCardComponent,
+    CategoryEditPageComponent,
   ],
   imports: [CommonModule, RouterModule.forChild(menuRoutes), SharedModule],
 })

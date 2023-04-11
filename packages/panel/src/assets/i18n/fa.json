@@ -67,13 +67,6 @@
     "editCategory": "ویرایش دسته‌بندی",
     "deleteCategory": "حذف دسته‌بندی",
     "addProduct": "افزودن آیتم",
-    "categoryDialog": {
-      "newTitle": "ایجاد دسته‌بندی جدید",
-      "editTitle": "ویرایش {{value}}",
-      "titleLabel": "عنوان دسته‌بندی",
-      "icon": "آیکون دسته‌بندی",
-      "descriptionLabel": "توضیحات دسته‌بندی"
-    },
     "deleteCategoryAlert": {
       "title": "حذف دسته‌بندی {{value}}",
       "description": "در صورت اطمینان از حذف، لطفا تایید کنید"
@@ -81,7 +74,8 @@
     "emptyProductsDescription": "هنوز هیچ آیتمی درج نشده"
   },
   "productEdit": {
-    "newProductPageTitle": "ایجاد آیتم",
+    "editTitle": "ویرایش {{value}}",
+    "newTitle": "ایجاد آیتم",
     "baseSectionTitle": "اطلاعات پایه",
     "titleLabel": "عنوان آیتم",
     "categoryLabel": "دسته‌بندی",
@@ -90,6 +84,14 @@
     "priceLabel": "قیمت آیتم",
     "inactiveHint": "آیتم غیرفعال است و در منو به کاربر نمایش داده نمی‌شود",
     "orderTypes": "نمایش در انواع سفارش زیر"
+  },
+  "categoryEdit": {
+    "editTitle": "ویرایش {{value}}",
+    "newTitle": "ایجاد دسته بندی جدید",
+    "baseSectionTitle": "اطلاعات پایه",
+    "titleLabel": "عنوان دسته بندی",
+    "icon": "آیکون دسته‌بندی",
+    "descriptionLabel": "توضیحات"
   },
   "orderType": {
     "dineIn": "داخل مجموعه",

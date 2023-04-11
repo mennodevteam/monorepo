@@ -3,7 +3,8 @@
     <button mat-icon-button goBack>
       <i class="fa-regular fa-arrow-right fa-large"></i>
     </button>
-    <h2 flex>{{ 'productEdit.newProductPageTitle' | translate }}</h2>
+    <h2 flex *ngIf="!product">{{ 'productEdit.newTitle' | translate }}</h2>
+    <h2 flex *ngIf="product">{{ 'productEdit.editTitle' | translate: { value: product.title } }}</h2>
     <button mat-flat-button color="accent" (click)="save()" [disabled]="!form.dirty">
       {{ 'app.save' | translate }}
     </button>
