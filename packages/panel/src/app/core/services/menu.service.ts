@@ -17,8 +17,9 @@ export class MenuService {
   async loadMenu() {
     this._baseMenu = await this.http.get<Menu>(`menus`).toPromise();
     if (this._baseMenu) {
-      Menu.setRefsAndSort(this.baseMenu, undefined, true);
-      this.menu$.next(this.baseMenu);
+      const m = this.baseMenu;
+      Menu.setRefsAndSort(m, undefined, true, true);
+      this.menu$.next(m);
     }
   }
 

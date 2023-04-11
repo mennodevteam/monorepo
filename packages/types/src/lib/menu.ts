@@ -11,26 +11,26 @@ export class Menu {
   costs: MenuCost[];
   categories?: ProductCategory[];
 
-  static setRefsAndSort(menu: Menu, orderType?: OrderType, skipStatus?: boolean) {
+  static setRefsAndSort(menu: Menu, orderType?: OrderType, showInactive?: boolean, showEmpty?: boolean) {
     if (orderType != undefined) {
       menu.categories = menu.categories?.filter(
-        (x) => (skipStatus || x.status === Status.Active) && x.orderTypes && x.orderTypes.includes(orderType)
+        (x) => (showInactive || x.status === Status.Active) && x.orderTypes && x.orderTypes.includes(orderType)
       );
       menu.costs = menu.costs?.filter(
-        (x) => (skipStatus || x.status === Status.Active) && x.orderTypes && x.orderTypes.includes(orderType)
+        (x) => (showInactive || x.status === Status.Active) && x.orderTypes && x.orderTypes.includes(orderType)
       );
     }
     if (menu.costs) {
       MenuCost.sort(menu.costs);
     }
     if (menu?.categories) {
-      menu.categories = menu.categories.filter((x) => x.products?.length);
+      menu.categories = menu.categories.filter((x) => showEmpty || x.products?.length);
       ProductCategory.sort(menu.categories);
       for (const cat of menu.categories) {
         if (orderType != undefined) {
           cat.products = cat.products?.filter(
             (x) =>
-              (skipStatus || x.status === Status.Active) && x.orderTypes && x.orderTypes.includes(orderType)
+              (showInactive || x.status === Status.Active) && x.orderTypes && x.orderTypes.includes(orderType)
           );
         }
         cat.costs = menu.costs?.filter(

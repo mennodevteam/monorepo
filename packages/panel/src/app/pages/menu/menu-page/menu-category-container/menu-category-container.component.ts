@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ProductCategory } from '@menno/types';
+import { ProductCategory, Status } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuService } from 'packages/panel/src/app/core/services/menu.service';
 import { AlertDialogComponent } from 'packages/panel/src/app/shared/dialogs/alert-dialog/alert-dialog.component';
@@ -11,6 +11,7 @@ import { AlertDialogComponent } from 'packages/panel/src/app/shared/dialogs/aler
   styleUrls: ['./menu-category-container.component.scss'],
 })
 export class MenuCategoryContainerComponent {
+  Status = Status;
   @Input() category: ProductCategory;
 
   constructor(

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Product } from '@menno/types';
+import { OrderType, Product, Status } from '@menno/types';
 
 @Component({
   selector: 'products-table',
@@ -9,6 +9,8 @@ import { Product } from '@menno/types';
 export class ProductsTableComponent {
   displayedColumns = ['image', 'title', 'price', 'stock', 'actions'];
   @Input() products: Product[];
+  Status = Status;
+  OrderType = OrderType;
 
   abs = Math.abs;
 }
