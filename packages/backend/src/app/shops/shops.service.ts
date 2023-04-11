@@ -167,10 +167,11 @@ export class ShopsService {
         users: OldTypes.ShopUser[];
         printViews: OldTypes.ShopPrintView[];
         deliveryAreas: OldTypes.DeliveryArea[];
+        plugins: OldTypes.ShopPlugin[];
       }>(`https://new-admin-api.menno.ir/shops/complete-data/xmje/${code}`)
       .toPromise();
 
-    const { shop, menu, appConfig, users, printViews, deliveryAreas } = res.data;
+    const { shop, menu, appConfig, users, printViews, deliveryAreas, plugins } = res.data;
 
     const newShop = await this.shopsRepository.save({
       id: shop.id,
@@ -190,6 +191,7 @@ export class ShopsService {
       username: shop.username,
       region: shop.region,
       phones: shop.phones,
+      plugins: [{ plugins: plugins.map((x) => x.plugin), expiredAt: plugins[0].expiredAt }],
       deliveryAreas,
       users,
     });

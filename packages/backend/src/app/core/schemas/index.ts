@@ -24,6 +24,7 @@ export * from './product.schema';
 export * from './purchase.schema';
 export * from './region.schema';
 export * from './shop-group.schema';
+export * from './shop-plugins.schema';
 export * from './shop-print-view.schema';
 export * from './shop-printer.schema';
 export * from './shop-user.schema';

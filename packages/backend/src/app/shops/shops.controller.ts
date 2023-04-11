@@ -27,6 +27,7 @@ export class ShopsController {
       'appConfig.theme',
       'shopGroup',
       'club',
+      'plugins'
     ]);
   }
 

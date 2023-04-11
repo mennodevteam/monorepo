@@ -18,6 +18,7 @@ import { ShopsModule } from './shops/shops.module';
 import { SmsModule } from './sms/sms.module';
 import { UsersModule } from './users/users.module';
 import { AddressesModule } from './addresses/addresses.module';
+import { ShopPluginsModule } from './shop-plugins/shop-plugins.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { AddressesModule } from './addresses/addresses.module';
     AppConfigsModule,
     DeliveryAreasModule,
     AddressesModule,
+    ShopPluginsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

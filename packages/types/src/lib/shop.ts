@@ -5,6 +5,7 @@ import { Menu } from './menu';
 import { PaymentGateway } from './payment-gateway';
 import { Region } from './region';
 import { ShopGroup } from './shop-group';
+import { ShopPlugins } from './shop-plugin';
 import { ShopUser } from './shop-user';
 import { SmsAccount } from './sms-account';
 
@@ -45,6 +46,7 @@ export class Shop {
   connectionAt: Date;
   shopGroup?: ShopGroup;
   options: any;
+  plugins: ShopPlugins[];
   users: ShopUser[];
   details: ShopDetails;
   createdAt: Date;
