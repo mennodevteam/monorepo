@@ -6,7 +6,7 @@
       </button>
       <h1 flex>{{ 'menu.title' | translate: { value: shop?.title } }}</h1>
       <button mat-icon-button *ngIf="appConfig?.menuViewType === MenuViewType.Manual" (click)="toggleView()">
-        <i class="fa-solid fa-rectangle-wide" *ngIf="menuService.viewType === MenuViewType.Card"></i>
+        <i class="fa-solid fa-rectangle" *ngIf="menuService.viewType === MenuViewType.Card"></i>
         <i class="fa-solid fa-grid-2" *ngIf="menuService.viewType === MenuViewType.Grid"></i>
         <i class="fa-solid fa-list" *ngIf="menuService.viewType === MenuViewType.Compact"></i>
       </button>
