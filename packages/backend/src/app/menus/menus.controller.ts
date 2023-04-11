@@ -17,6 +17,30 @@ export class MenusController {
     private menuService: MenusService
   ) {}
 
+  @Get()
+  async getPanelMenu(@LoginUser() user: AuthPayload): Promise<Menu> {
+    const shop = await this.auth.getPanelUserShop(user, [
+      'menu.categories.products',
+      'menu.costs',
+      'menu.costs.includeProductCategory',
+      'menu.costs.includeProduct',
+    ]);
+    return shop.menu;
+  }
+
+  @Public()
+  @Get('sync/:prevCode')
+  async syncMenu(@Param('prevCode') prevCode: string) {
+    const shop = await this.shopsRepo.findOne({
+      where: { prevServerCode: prevCode },
+      relations: [
+        'menu',
+      ],
+    });
+
+    this.menuService.syncMenu(shop.menu.id, prevCode);
+  }
+
   @Public()
   @Get(':query')
   async findOne(@Param('query') query: string): Promise<Menu> {
@@ -33,28 +57,5 @@ export class MenusController {
     if (shop.menu?.costs) shop.menu.costs = shop.menu.costs.filter((x) => x.status === Status.Active);
 
     return shop.menu;
-  }
-
-  @Get()
-  async getPanelMenu(@LoginUser() user: AuthPayload): Promise<Menu> {
-    const shop = await this.auth.getPanelUserShop(user, [
-      'menu.categories.products',
-      'menu.costs',
-      'menu.costs.includeProductCategory',
-      'menu.costs.includeProduct',
-    ]);
-    return shop.menu;
-  }
-
-  @Get('sync/:prevCode')
-  async syncMenu(@LoginUser() user: AuthPayload, @Param('prevCode') prevCode: string) {
-    const shop = await this.auth.getPanelUserShop(user, [
-      'menu.categories.products',
-      'menu.costs',
-      'menu.costs.includeProductCategory',
-      'menu.costs.includeProduct',
-    ]);
-
-    this.menuService.syncMenu(shop.menu.id, prevCode);
   }
 }

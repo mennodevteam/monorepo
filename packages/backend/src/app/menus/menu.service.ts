@@ -29,7 +29,6 @@ export class MenusService {
         position: i,
       });
     }
-    console.log(categories);
     return await this.categoriesRepo.save(categories);
   }
 
@@ -68,14 +67,17 @@ export class MenusService {
 
     for (const cat of menu.categories) {
       cat.menu = { id: menuId } as Menu;
+      cat.deletedAt = null;
       if (cat.products) {
         for (const p of cat.products) {
           if (p.images && p.images[0]) {
             const binary = await fetch(`https://new-app-api.menno.ir/files/${p.images[0]}`);
             const blob = await binary.buffer();
+            
 
-            const savedImage: any = await this.filesService.upload(<any>{ buffer: blob }, p.title);
+            const savedImage: any = await this.filesService.upload(<any>{ buffer: blob }, p.id);
             p.images = [savedImage.key];
+            p.deletedAt = null;
           }
         }
       }
