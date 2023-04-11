@@ -53,6 +53,16 @@ export class MenuService {
     await this.loadMenu();
   }
 
+  async sortCategories(ids: number[]) {
+    await this.http.post(`productCategories/sort`, ids).toPromise();
+    await this.loadMenu();
+  }
+
+  async sortProducts(ids: string[]) {
+    await this.http.post(`products/sort`, ids).toPromise();
+    await this.loadMenu();
+  }
+
   async saveProduct(dto: Product) {
     if (dto.category) {
       dto.category = <ProductCategory>{ id: dto.category.id };
@@ -101,7 +111,7 @@ export class MenuService {
 
   getCategoryById(id: number) {
     if (this.menu?.categories) {
-      return this.menu.categories.find(x => x.id === id);
+      return this.menu.categories.find((x) => x.id === id);
     }
     return undefined;
   }

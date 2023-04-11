@@ -29,6 +29,7 @@ export class MenusService {
         position: i,
       });
     }
+    console.log(categories);
     return await this.categoriesRepo.save(categories);
   }
 

@@ -67,6 +67,8 @@
     "editCategory": "ویرایش دسته‌بندی",
     "deleteCategory": "حذف دسته‌بندی",
     "addProduct": "افزودن آیتم",
+    "sortCategories": "ترتیب دسته‌بندی‌ها",
+    "sortProducts": "ترتیب آیتم‌ها",
     "deleteCategoryAlert": {
       "title": "حذف دسته‌بندی {{value}}",
       "description": "در صورت اطمینان از حذف، لطفا تایید کنید"
@@ -92,6 +94,9 @@
     "titleLabel": "عنوان دسته بندی",
     "icon": "آیکون دسته‌بندی",
     "descriptionLabel": "توضیحات"
+  },
+  "sortDialog": {
+    "title": "آیتم‌ها را جابجا کنید"
   },
   "orderType": {
     "dineIn": "داخل مجموعه",

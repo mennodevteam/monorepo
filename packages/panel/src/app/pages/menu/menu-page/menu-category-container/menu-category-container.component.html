@@ -27,6 +27,15 @@
       <button mat-icon-button matTooltip="{{ 'menu.deleteCategory' | translate }}" (click)="deleteCategory()">
         <i class="fa-regular fa-trash-alt"></i>
       </button>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <i class="fa-regular fa-ellipsis-vertical"></i>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="openSort()">
+          <i class="fa-solid fa-sort mat-icon"></i>
+          <span>{{ 'menu.sortProducts' | translate }}</span>
+        </button>
+      </mat-menu>
     </mat-toolbar-row>
   </mat-toolbar>
   <mat-divider></mat-divider>

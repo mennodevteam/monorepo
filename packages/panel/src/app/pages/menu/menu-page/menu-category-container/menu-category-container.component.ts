@@ -4,6 +4,7 @@ import { ProductCategory, Status } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuService } from 'packages/panel/src/app/core/services/menu.service';
 import { AlertDialogComponent } from 'packages/panel/src/app/shared/dialogs/alert-dialog/alert-dialog.component';
+import { SortDialogComponent } from 'packages/panel/src/app/shared/dialogs/sort-dialog/sort-dialog.component';
 
 @Component({
   selector: 'menu-category-container',
@@ -34,6 +35,20 @@ export class MenuCategoryContainerComponent {
       .subscribe((val) => {
         if (val) {
           this.menuService.deleteCategory(this.category.id);
+        }
+      });
+  }
+
+  openSort() {
+    this.dialog
+      .open(SortDialogComponent, {
+        data: this.category.products?.map((x) => ({ key: x.id, value: x.title })),
+        disableClose: true,
+      })
+      .afterClosed()
+      .subscribe((items) => {
+        if (items) {
+          this.menuService.sortProducts(items.map((x: any) => x.key));
         }
       });
   }

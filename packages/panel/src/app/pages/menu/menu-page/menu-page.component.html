@@ -13,16 +13,24 @@
   <button mat-flat-button color="primary" routerLink="category">
     {{ 'menu.addCategory' | translate }}
   </button>
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <i class="fa-regular fa-ellipsis-vertical"></i>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="openSort()">
+      <i class="fa-solid fa-sort mat-icon"></i>
+      <span>{{ 'menu.sortCategories' | translate }}</span>
+    </button>
+  </mat-menu>
 </mat-toolbar>
 
 <mat-tab-group mat-stretch-tabs="false">
   <mat-tab *ngFor="let cat of categories">
     <ng-template mat-tab-label>
-      <ng-container *ngIf="cat.status !== Status.Active">
-        <i class="fa-solid fa-circle-exclamation red"></i>
-        <span spacer-sm></span>
-      </ng-container>
       {{ cat.title }}
+      <ng-container *ngIf="cat.status !== Status.Active">
+        <i class="fa-solid fa-period red"></i>
+      </ng-container>
     </ng-template>
     <div class="content-wrapper">
       <menu-category-container [category]="cat"></menu-category-container>

@@ -58,6 +58,8 @@ import { RouterLink } from '@angular/router';
 import { MemberDialogComponent } from './dialogs/member-dialog/member-dialog.component';
 import { MessageTemplateSelectorDialogComponent } from './dialogs/message-template-selector-dialog/message-template-selector-dialog.component';
 import { MemberAutocompleteComponent } from './components/member-autocomplete/member-autocomplete.component';
+import { SortDialogComponent } from './dialogs/sort-dialog/sort-dialog.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -86,11 +88,13 @@ import { MemberAutocompleteComponent } from './components/member-autocomplete/me
     MessageTemplateSelectorDialogComponent,
     PhonePipe,
     EmptyStateComponent,
+    SortDialogComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     RouterLink,
+    DragDropModule,
     ReactiveFormsModule,
     LayoutModule,
     ImageCropperModule,
