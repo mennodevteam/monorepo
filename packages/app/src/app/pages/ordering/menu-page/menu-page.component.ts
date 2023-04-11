@@ -20,23 +20,22 @@ export class MenuPageComponent implements AfterViewInit {
   @ViewChild(MenuCategoriesComponent)
   menuCategoriesComponent: MenuCategoriesComponent;
   MenuViewType = MenuViewType;
-  viewType: MenuViewType;
   OrderType = OrderType;
   Status = Status;
 
   constructor(
-    private menuService: MenuService,
+    public menuService: MenuService,
     public basket: BasketService,
     private shopService: ShopService,
     private bottomSheet: MatBottomSheet
   ) {
     this.menuService.checkSelectedOrderType();
 
-    if (this.menu) {
-      this.viewType =
+    if (this.menu && this.menuService.viewType === undefined) {
+      this.menuService.viewType =
         this.appConfig?.menuViewType === MenuViewType.Manual
-          ? MenuViewType.Card
-          : this.appConfig?.menuViewType || MenuViewType.Card;
+          ? MenuViewType.Grid
+          : this.appConfig?.menuViewType || MenuViewType.Grid;
     }
 
     this.menuService.typeObservable.subscribe((type) => {
@@ -99,8 +98,11 @@ export class MenuPageComponent implements AfterViewInit {
   }
 
   toggleView() {
-    if (this.viewType === MenuViewType.Card) this.viewType = MenuViewType.Grid;
-    else if (this.viewType === MenuViewType.Grid) this.viewType = MenuViewType.Card;
+    if (this.menuService.viewType === MenuViewType.Card) this.menuService.viewType = MenuViewType.Grid;
+    else if (this.menuService.viewType === MenuViewType.Grid)
+      this.menuService.viewType = MenuViewType.Compact;
+    else if (this.menuService.viewType === MenuViewType.Compact)
+      this.menuService.viewType = MenuViewType.Card;
   }
 
   changeType() {

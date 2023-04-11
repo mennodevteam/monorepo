@@ -12,6 +12,7 @@ export enum MenuViewType {
   Manual,
   Card,
   Grid,
+  Compact,
 }
 export class AppConfig {
   id: string;

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { Menu, OrderType, Product, ProductCategory } from '@menno/types';
+import { Menu, MenuViewType, OrderType, Product, ProductCategory } from '@menno/types';
 import { BehaviorSubject } from 'rxjs';
 import { SelectOrderTypeModalComponent } from '../../pages/ordering/select-order-type-modal/select-order-type-modal.component';
 import { ShopService } from './shop.service';
@@ -13,6 +13,7 @@ export class MenuService {
   private _menu = new BehaviorSubject<Menu | null>(null);
   private _type = new BehaviorSubject<OrderType | null>(null);
   private _baseMenu: Menu | undefined;
+  viewType: MenuViewType;
 
   constructor(
     private http: HttpClient,

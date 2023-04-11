@@ -30,6 +30,7 @@ import { LocationsBottomSheetComponent } from './locations-bottom-sheet/location
 import { LocationEditBottomSheetComponent } from './location-edit-bottom-sheet/location-edit-bottom-sheet.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { ShopTablesBottomSheetComponent } from './shop-tables-bottom-sheet/shop-tables-bottom-sheet.component';
+import { CategoryCompactViewComponent } from './menu-page/category-compact-view/category-compact-view.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { ShopTablesBottomSheetComponent } from './shop-tables-bottom-sheet/shop-
     BasketPageComponent,
     SelectOrderTypeModalComponent,
     DisableOrderingCardComponent,
+    CategoryCompactViewComponent,
   ],
   imports: [
     CommonModule,
@@ -66,6 +68,6 @@ import { ShopTablesBottomSheetComponent } from './shop-tables-bottom-sheet/shop-
     MatRippleModule,
     MatProgressSpinnerModule,
     LeafletModule,
-  ]
+  ],
 })
 export class OrderingModule {}

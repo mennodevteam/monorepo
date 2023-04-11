@@ -6,8 +6,9 @@
       </button>
       <h1 flex>{{ 'menu.title' | translate: { value: shop?.title } }}</h1>
       <button mat-icon-button *ngIf="appConfig?.menuViewType === MenuViewType.Manual" (click)="toggleView()">
-        <i class="fa-solid fa-list" *ngIf="viewType === MenuViewType.Card"></i>
-        <i class="fa-solid fa-grid-2" *ngIf="viewType === MenuViewType.Grid"></i>
+        <i class="fa-solid fa-rectangle-wide" *ngIf="menuService.viewType === MenuViewType.Card"></i>
+        <i class="fa-solid fa-grid-2" *ngIf="menuService.viewType === MenuViewType.Grid"></i>
+        <i class="fa-solid fa-list" *ngIf="menuService.viewType === MenuViewType.Compact"></i>
       </button>
     </mat-toolbar-row>
   </mat-toolbar>
@@ -78,11 +79,14 @@
         <i *ngIf="c.faIcon" class="fa-solid fa-{{ c.faIcon }}"></i>
         {{ c.title }}
       </h3>
-      <ng-container *ngIf="viewType === MenuViewType.Card">
+      <ng-container *ngIf="menuService.viewType === MenuViewType.Card">
         <category-card-view [category]="c"></category-card-view>
       </ng-container>
-      <ng-container *ngIf="viewType === MenuViewType.Grid">
+      <ng-container *ngIf="menuService.viewType === MenuViewType.Grid">
         <category-grid-view [category]="c" [menu]="menu" [appConfig]="appConfig"></category-grid-view>
+      </ng-container>
+      <ng-container *ngIf="menuService.viewType === MenuViewType.Compact">
+        <category-compact-view [category]="c" [menu]="menu"></category-compact-view>
       </ng-container>
       <span spacer-2x *ngIf="!last"></span>
     </div>
