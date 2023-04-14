@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { ClientsModule } from '@nestjs/microservices';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ShopsController } from './shops.controller';
 import { ShopsService } from './shops.service';
 import { SmsModule } from '../sms/sms.module';

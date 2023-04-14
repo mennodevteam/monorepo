@@ -46,7 +46,7 @@ export class Shop {
   connectionAt: Date;
   shopGroup?: ShopGroup;
   options: any;
-  plugins: ShopPlugins[];
+  plugins?: ShopPlugins;
   users: ShopUser[];
   details: ShopDetails;
   createdAt: Date;

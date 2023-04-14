@@ -1,0 +1,73 @@
+<main class="content-wrapper">
+  <mat-toolbar>
+    <h1 flex>{{ shop.title }}</h1>
+    <span class="blue eng">#{{ shop.code }}</span>
+  </mat-toolbar>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        {{ 'home.planTitle' | translate }}
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="form-theme">
+      <p>
+        {{ 'home.renewAt' | translate }}:
+        <span class="ltr"> {{ plugin?.renewAt | pdate: 'YYYY/MM/DD' }}</span>
+      </p>
+      <div class="row gray">
+        <label>{{ 'home.remainDays' | translate: { value: (remainingDays | number: '1.0-0') } }}</label>
+        <span flex></span>
+        <label>
+          {{ 'home.expireAt' | translate }}:
+          <span class="ltr"> {{ plugin?.expiredAt | pdate: 'YYYY/MM/DD' }}</span>
+        </label>
+      </div>
+      <mat-progress-bar
+        [value]="(remainingDays / totalDays) * 100"
+        [color]="remainingDays > 20 ? 'accent' : 'warn'"
+      ></mat-progress-bar>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-content>
+      <mat-nav-list>
+        <a mat-list-item routerLink="/menu">
+          <i matListItemIcon class="fa-solid mat-icon fa-book-open"></i>
+          <h3 matListItemTitle>{{ 'home.menu' | translate }}</h3>
+          <span matListItemMeta class="red" *ngIf="plugin?.plugins?.indexOf(Plugin.Menu) == -1">
+            {{ 'home.upgradePlan' | translate }}
+          </span>
+          <i matListItemMeta class="fa-regular fa-angle-left"></i>
+        </a>
+        <mat-divider></mat-divider>
+        <a mat-list-item routerLink="/orders">
+          <i matListItemIcon class="fa-solid mat-icon fa-utensils"></i>
+          <h3 matListItemTitle>{{ 'home.order' | translate }}</h3>
+          <span matListItemMeta class="red" *ngIf="plugin?.plugins?.indexOf(Plugin.Ordering) == -1">
+            {{ 'home.upgradePlan' | translate }}
+          </span>
+          <i matListItemMeta class="fa-regular fa-angle-left"></i>
+        </a>
+        <mat-divider></mat-divider>
+        <a mat-list-item routerLink="/club">
+          <i matListItemIcon class="fa-solid mat-icon fa-crown"></i>
+          <h3 matListItemTitle>{{ 'home.club' | translate }}</h3>
+          <span matListItemMeta class="red" *ngIf="plugin?.plugins?.indexOf(Plugin.Club) == -1">
+            {{ 'home.upgradePlan' | translate }}
+          </span>
+          <i matListItemMeta class="fa-regular fa-angle-left"></i>
+        </a>
+      </mat-nav-list>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- <mat-card>
+    <mat-nav-list>
+      <a mat-list-item>
+        <h3 matListItemTitle>{{'home.openApp' | translate}}</h3>
+      </a>
+    </mat-nav-list>
+  </mat-card> -->
+</main>

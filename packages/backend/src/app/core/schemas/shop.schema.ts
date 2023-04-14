@@ -142,9 +142,11 @@ export const ShopSchema = new EntitySchema<Shop>({
       cascade: ['insert'],
     },
     plugins: {
-      type: 'one-to-many',
+      type: 'one-to-one',
       target: 'ShopPlugins',
+      nullable: true,
       inverseSide: 'shop',
+      joinColumn: true,
       cascade: ['insert'],
     },
   },

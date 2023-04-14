@@ -191,7 +191,7 @@ export class ShopsService {
       username: shop.username,
       region: shop.region,
       phones: shop.phones,
-      plugins: [{ plugins: plugins.map((x) => x.plugin), expiredAt: plugins[0].expiredAt }],
+      plugins: { plugins: plugins.map((x) => x.plugin), expiredAt: plugins[0].expiredAt },
       deliveryAreas,
       users,
     });

@@ -22,7 +22,7 @@ export class PluginGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const plugin = this.shopsService.shop?.plugins ? this.shopsService.shop?.plugins[0] : undefined;
+    const plugin = this.shopsService.shop?.plugins ? this.shopsService.shop?.plugins : undefined;
     if (route.data && route.data['plugins']) {
       for (const p of route.data['plugins']) {
         if (
@@ -30,7 +30,7 @@ export class PluginGuard implements CanActivate {
           (plugin?.expiredAt && new Date(plugin.expiredAt).valueOf() < Date.now()) ||
           plugin?.status !== Status.Active
         ) {
-          this.router.navigate(['/settings'], {
+          this.router.navigate(['/'], {
             skipLocationChange: true,
           });
           this.dialog.open(AlertDialogComponent, {

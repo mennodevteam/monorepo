@@ -3,6 +3,10 @@
     <i class="fa-solid fa-bars"></i>
   </button>
   <mat-menu #menu="matMenu">
+    <button mat-menu-item routerLink="/">
+      <i class="fa-solid mat-icon fa-home"></i>
+      {{ 'shell.home' | translate }}
+    </button>
     <button mat-menu-item routerLink="menu">
       <i class="fa-solid mat-icon fa-book-open"></i>
       {{ 'shell.menu' | translate }}
@@ -20,7 +24,11 @@
       {{ 'shell.settings' | translate }}
     </button>
   </mat-menu>
-  <img src="assets/icons/logo.png" id="logo" class="hide-xs" />
+  <!-- <img src="assets/icons/logo.png" id="logo" class="hide-xs" /> -->
+  <button mat-button routerLink="/" class="hide-xs">
+    <i class="fa-solid fa-large fa-home"></i>
+    {{ 'shell.home' | translate }}
+  </button>
   <button mat-button routerLink="menu" class="hide-xs">
     <i class="fa-solid fa-large fa-book-open"></i>
     {{ 'shell.menu' | translate }}

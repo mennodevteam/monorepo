@@ -19,6 +19,10 @@ export const ShopPluginsSchema = new EntitySchema<ShopPlugins>({
       type: 'timestamptz',
       nullable: true,
     },
+    renewAt: {
+      type: 'timestamptz',
+      nullable: true,
+    },
     plugins: {
       type: 'enum',
       enum: Plugin,
@@ -28,9 +32,9 @@ export const ShopPluginsSchema = new EntitySchema<ShopPlugins>({
   },
   relations: {
     shop: {
-      type: 'many-to-one',
+      type: 'one-to-one',
       target: 'Shop',
-      inverseSide: 'plugins'
+      inverseSide: 'plugins',
     },
   },
 });

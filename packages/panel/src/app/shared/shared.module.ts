@@ -60,6 +60,7 @@ import { MessageTemplateSelectorDialogComponent } from './dialogs/message-templa
 import { MemberAutocompleteComponent } from './components/member-autocomplete/member-autocomplete.component';
 import { SortDialogComponent } from './dialogs/sort-dialog/sort-dialog.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -112,6 +113,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatCardModule,
     MatStepperModule,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
     MatFormFieldModule,
     MatDatepickerModule,
     MatSlideToggleModule,
@@ -170,6 +172,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatCardModule,
     MatStepperModule,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
     MatFormFieldModule,
     MatDatepickerModule,
     MatSlideToggleModule,
