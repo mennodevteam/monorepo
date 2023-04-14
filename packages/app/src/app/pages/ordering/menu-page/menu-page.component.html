@@ -18,7 +18,7 @@
   </section>
 
   <mat-nav-list [ngSwitch]="orderType">
-    <a mat-list-item [ngSwitch]="orderType" (click)="changeType()">
+    <a mat-list-item *ngIf="menuService.selectableOrderTypes.length > 1" (click)="changeType()">
       <i matListItemIcon *ngSwitchCase="OrderType.DineIn" class="fa-solid fa-mug-hot"></i>
       <i matListItemIcon *ngSwitchCase="OrderType.Takeaway" class="fa-solid fa-cup-togo"></i>
       <i matListItemIcon *ngSwitchCase="OrderType.Delivery" class="fa-solid fa-moped"></i>
@@ -30,7 +30,6 @@
       </span>
       <i matListItemMeta class="fa-regular fa-chevron-left"></i>
     </a>
-    <mat-divider *ngIf="orderType !== OrderType.Takeaway"></mat-divider>
     <a mat-list-item *ngSwitchCase="OrderType.Delivery" (click)="selectDeliveryAddress()">
       <i matListItemIcon class="fa-solid fa-map-location-dot"></i>
       <span matListItemTitle *ngIf="!basket.address" class="error-text">
@@ -54,16 +53,18 @@
       </span>
       <i matListItemMeta *ngIf="!basket.address" class="fa-regular fa-chevron-left"></i>
     </a>
-    <a mat-list-item *ngSwitchCase="OrderType.DineIn" (click)="selectDineInTable()">
-      <i matListItemIcon class="fa-solid fa-chair"></i>
-      <span matListItemTitle *ngIf="!basket.details?.table" class="error-text">
-        {{ 'menu.selectDineInTable' | translate }}
-      </span>
-      <span matListItemTitle *ngIf="basket.details?.table">
-        {{ basket.details?.table }}
-      </span>
-      <i matListItemMeta class="fa-regular fa-chevron-left"></i>
-    </a>
+    <ng-container *ngIf="tables?.length && !shop?.appConfig?.disableOrdering">
+      <a mat-list-item *ngSwitchCase="OrderType.DineIn" (click)="selectDineInTable()">
+        <i matListItemIcon class="fa-solid fa-chair"></i>
+        <span matListItemTitle *ngIf="!basket.details?.table" class="error-text">
+          {{ 'menu.selectDineInTable' | translate }}
+        </span>
+        <span matListItemTitle *ngIf="basket.details?.table">
+          {{ basket.details?.table }}
+        </span>
+        <i matListItemMeta class="fa-regular fa-chevron-left"></i>
+      </a>
+    </ng-container>
   </mat-nav-list>
 
   <div class="menu">

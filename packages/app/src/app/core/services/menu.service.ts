@@ -14,6 +14,7 @@ export class MenuService {
   private _type = new BehaviorSubject<OrderType | null>(null);
   private _baseMenu: Menu | undefined;
   viewType: MenuViewType;
+  selectableOrderTypes: OrderType[];
 
   constructor(
     private http: HttpClient,
@@ -72,10 +73,17 @@ export class MenuService {
 
   checkSelectedOrderType() {
     if (this.type == undefined) {
-      let selectableOrderTypes = this.shopService.shop?.appConfig?.selectableOrderTypes;
-      if (!selectableOrderTypes || selectableOrderTypes.length === 0)
-        selectableOrderTypes = [OrderType.DineIn];
-      if (selectableOrderTypes.length === 1) this._type.next(selectableOrderTypes[0]);
+      this.selectableOrderTypes = this.shopService.shop?.appConfig?.selectableOrderTypes || [];
+      if (!this.selectableOrderTypes || this.selectableOrderTypes.length === 0)
+        this.selectableOrderTypes = [OrderType.DineIn];
+
+      if (
+        this.shopService.shop?.appConfig?.disableOrdering &&
+        !this.menu?.costs.find((x) => x.orderTypes.length < 3)
+      )
+        this.selectableOrderTypes = [OrderType.DineIn];
+      
+      if (this.selectableOrderTypes.length === 1) this._type.next(this.selectableOrderTypes[0]);
       else this.openSelectOrderType();
     }
   }

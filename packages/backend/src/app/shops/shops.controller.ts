@@ -1,4 +1,4 @@
-import { Shop, Sms } from '@menno/types';
+import { Plugin, Shop, Sms } from '@menno/types';
 import { Body, Controller, Get, Param, Put, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -47,11 +47,14 @@ export class ShopsController {
 
   @Public()
   @Get(':query')
-  findByUsernameOrCode(@Param('query') query: string, @Req() req): Promise<Shop> {
-    return this.shopsRepo.findOne({
+  async findByUsernameOrCode(@Param('query') query: string, @Req() req): Promise<Shop> {
+    const shop = await this.shopsRepo.findOne({
       where: [{ domain: query }, { username: query }, { code: query }],
-      relations: ['region', 'shopGroup', 'appConfig.theme', 'paymentGateway'],
+      relations: ['region', 'shopGroup', 'appConfig.theme', 'paymentGateway', 'plugins'],
     });
+
+    if (!(shop.plugins[0].plugins?.indexOf(Plugin.Ordering) >= 0)) shop.appConfig.disableOrdering = true;
+    return shop;
   }
 
   @Public()

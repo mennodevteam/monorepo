@@ -1,5 +1,6 @@
 mat-nav-list {
   padding: 0;
+  margin: 0 -16px;
 
   a[mat-list-item] {
     height: 56px !important;
@@ -12,11 +13,11 @@ mat-nav-list {
 
   .title {
     margin-top: -8px;
-    font-size: 14px !important;
+    font-size: 12px !important;
   }
 
   .subtitle {
-    font-size: 12px !important;
+    font-size: 10px !important;
 
     .line-through {
       text-decoration: line-through;

@@ -39,9 +39,18 @@ export class MenuPageComponent implements AfterViewInit {
     }
 
     this.menuService.typeObservable.subscribe((type) => {
-      if (type === OrderType.DineIn && !this.basket.details?.table && this.shop?.details?.tables?.length) {
+      if (
+        type === OrderType.DineIn &&
+        !this.basket.details?.table &&
+        this.tables?.length &&
+        !this.shop?.appConfig?.disableOrdering
+      ) {
         this.selectDineInTable();
-      } else if (type === OrderType.Delivery && !this.basket.address) {
+      } else if (
+        type === OrderType.Delivery &&
+        !this.basket.address &&
+        !this.shop?.appConfig?.disableOrdering
+      ) {
         this.selectDeliveryAddress();
       }
     });
@@ -90,7 +99,7 @@ export class MenuPageComponent implements AfterViewInit {
   }
 
   get tables() {
-    return this.shop?.details.tables;
+    return this.shop?.details?.tables;
   }
 
   categoryClick(index: number) {
