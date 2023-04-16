@@ -1,6 +1,8 @@
 <mat-grid-list [cols]="menuCols" gutterSize="4px" rowHeight="1:1">
   <mat-grid-tile
     matRipple
+    [rowspan]="product.details?.rowspan || 1"
+    [colspan]="product.details?.colspan || 1"
     class="product-tile"
     *ngFor="let product of category.products"
     routerLink="product/{{ product.id }}"
@@ -15,11 +17,12 @@
         {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
       </span>
     </discount-badge>
-    <mat-grid-tile-footer>
-      <span class="product-title cut-text">
+    <mat-grid-tile-footer *ngIf="!product.details?.hideTitle || !product.details?.hidePrice">
+      <span class="product-title cut-text" [hidden]="product.details?.hideTitle">
         {{ product.title }}
       </span>
-      <span class="product-price">
+      <span flex *ngIf="product.details?.hideTitle"></span>
+      <span class="product-price" [hidden]="product.details?.hidePrice">
         {{ Product.totalPrice(product, 1000) / 1000 }}
       </span>
     </mat-grid-tile-footer>

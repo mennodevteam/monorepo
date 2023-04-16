@@ -53,7 +53,7 @@ export class ShopsController {
       relations: ['region', 'shopGroup', 'appConfig.theme', 'paymentGateway', 'plugins'],
     });
 
-    if (!(shop.plugins[0].plugins?.indexOf(Plugin.Ordering) >= 0)) shop.appConfig.disableOrdering = true;
+    if (!(shop.plugins?.plugins?.indexOf(Plugin.Ordering) >= 0)) shop.appConfig.disableOrdering = true;
     return shop;
   }
 

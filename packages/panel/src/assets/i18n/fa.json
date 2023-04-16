@@ -85,6 +85,10 @@
     "descriptionLabel": "توضیحات",
     "priceSectionTitle": "قیمت‌گذاری",
     "priceLabel": "قیمت آیتم",
+    "viewSectionTitle": "نحوه نمایش",
+    "hideTitle": "مخفی کردن عنوان",
+    "hidePrice": "مخفی کردن قیمت",
+    "viewSectionHint": "این تغییرات فقط در حالت گریدی اعمال میشود",
     "inactiveHint": "آیتم غیرفعال است و در منو به کاربر نمایش داده نمی‌شود",
     "orderTypes": "نمایش در انواع سفارش زیر"
   },
@@ -128,7 +132,7 @@
   "settings": {
     "pageTitle": "تنظیمات",
     "shop": "ویرایش اطلاعات مجموعه",
-    "appConfig": "تنظیمات اپ سفارش‌گیری",
+    "appConfig": "تنظیمات منوی دیجیتال مشتری",
     "printers": "نصب و راه‌اندازی پرینتر‌ها",
     "deliveryAreas": "محدوده ارسال پیک"
   },
@@ -158,11 +162,13 @@
     "themeModeAuto": "خودکار",
     "menuSection": "نحوه نمایش آیتم‌ها",
     "menuViewType": "نوع آیتم‌ها",
+    "menuViewTypeCompact": "به صورت فشرده",
     "menuViewTypeCard": "به صورت کارتی",
     "menuViewTypeGrid": "به صورت گرید",
     "menuViewTypeManual": "به انتخاب کاربر",
     "menuCols": "تعداد ستون",
     "menuColsText": "{{value}} ستون",
+    "menuColsHint": "قابل استفاده در حالت گریدی",
     "orderingSection": "محدودیت سفارش‌گیری",
     "disablePayment": "امکان پرداخت آنلاین",
     "disableOrdering": "امکان ثبت سفارش",

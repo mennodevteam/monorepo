@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  // apiUrl: 'https://api.boorantech.com/api',
-  // apiHost: 'https://api.boorantech.com'
+  // apiUrl: 'https://api.menno.pro/api',
+  // apiHost: 'https://api.menno.pro',
   apiUrl: 'http://localhost:3000/api',
   apiHost: 'http://localhost:3000',
   systemHostNames: ['localhost'],

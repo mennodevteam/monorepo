@@ -17,8 +17,8 @@
     <disable-ordering-card></disable-ordering-card>
   </section>
 
-  <mat-nav-list [ngSwitch]="orderType">
-    <a mat-list-item *ngIf="menuService.selectableOrderTypes.length > 1" (click)="changeType()">
+  <mat-nav-list [ngSwitch]="orderType" *ngIf="showSelectOrderType">
+    <a mat-list-item (click)="changeType()">
       <i matListItemIcon *ngSwitchCase="OrderType.DineIn" class="fa-solid fa-mug-hot"></i>
       <i matListItemIcon *ngSwitchCase="OrderType.Takeaway" class="fa-solid fa-cup-togo"></i>
       <i matListItemIcon *ngSwitchCase="OrderType.Delivery" class="fa-solid fa-moped"></i>

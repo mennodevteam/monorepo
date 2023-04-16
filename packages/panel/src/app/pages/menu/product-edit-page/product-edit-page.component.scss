@@ -1,3 +1,9 @@
+@import "theme";
+
+main {
+  max-width: none;
+}
+
 mat-card-content {
   display: flex;
   flex-direction: column;
@@ -5,4 +11,24 @@ mat-card-content {
 
 mat-button-toggle {
   flex: 1;
+}
+
+.span-view {
+  .device-container {
+    width: 160px;
+    border: $border;
+    padding: 16px;
+    border-radius: 16px;
+    margin: 0px auto;
+
+    .mat-grid-tile {
+      background-color: $background;
+      border-radius: 8px;
+      cursor: pointer;
+
+      &.selected {
+        background: #b3e5fc;
+      }
+    }
+  }
 }

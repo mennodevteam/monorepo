@@ -85,6 +85,59 @@
           </mat-card-actions>
         </mat-card>
       </div>
+
+      <div class="static-col">
+        <mat-card class="span-view">
+          <mat-card-header>
+            <mat-card-title>{{ 'productEdit.viewSectionTitle' | translate }}</mat-card-title>
+            <mat-card-subtitle class="red">{{ 'productEdit.viewSectionHint' | translate }}</mat-card-subtitle>
+          </mat-card-header>
+          <span spacer></span>
+          <mat-card-content>
+            <div class="device-container">
+              <mat-grid-list cols="2" rowHeight="1:1" gutterSize="8">
+                <mat-grid-tile
+                  (click)="setSpan([1, 1])"
+                  [class.selected]="form.controls['spans'].value[0] == 1"
+                >
+                  1x1
+                </mat-grid-tile>
+                <mat-grid-tile
+                  (click)="setSpan([2, 1])"
+                  colspan="2"
+                  [class.selected]="
+                    form.controls['spans'].value[0] == 2 && form.controls['spans'].value[1] == 1
+                  "
+                >
+                  2x1
+                </mat-grid-tile>
+                <mat-grid-tile
+                  (click)="setSpan([2, 2])"
+                  colspan="2"
+                  rowspan="2"
+                  [class.selected]="
+                    form.controls['spans'].value[0] == 2 && form.controls['spans'].value[1] == 2
+                  "
+                >
+                  2x2
+                </mat-grid-tile>
+              </mat-grid-list>
+            </div>
+            <span spacer></span>
+            <div>
+              <mat-checkbox color="warn" formControlName="hideTitle">{{
+                'productEdit.hideTitle' | translate
+              }}</mat-checkbox>
+            </div>
+
+            <div>
+              <mat-checkbox color="warn" formControlName="hidePrice">{{
+                'productEdit.hidePrice' | translate
+              }}</mat-checkbox>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
   </main>
 </form>

@@ -82,8 +82,8 @@ export class MenuService {
         !this.menu?.costs.find((x) => x.orderTypes.length < 3)
       )
         this.selectableOrderTypes = [OrderType.DineIn];
-      
-      if (this.selectableOrderTypes.length === 1) this._type.next(this.selectableOrderTypes[0]);
+
+      if (this.selectableOrderTypes.length === 1) this.type = this.selectableOrderTypes[0];
       else this.openSelectOrderType();
     }
   }

@@ -70,4 +70,22 @@ export class Menu {
     }
     return null;
   }
+
+  static getProductList(menu: Menu) {
+    const products: Product[] = [];
+    if (menu.categories) {
+      for (const cat of menu.categories) {
+        if (cat.products)
+        products.push(...cat.products);
+      }
+    }
+    return products;
+  }
+
+  static isBasedOrderType(menu: Menu){
+    if (menu.costs.find(x => x.orderTypes.length > 0 && x.orderTypes.length < 3)) return true;
+    if (menu.categories?.find(x => x.orderTypes.length > 0 && x.orderTypes.length < 3)) return true;
+    if (Menu.getProductList(menu).find(x => x.orderTypes.length > 0 && x.orderTypes.length < 3)) return true;
+    return false;
+  }
 }

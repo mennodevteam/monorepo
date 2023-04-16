@@ -46,12 +46,16 @@ export class ProductEditPageComponent {
         Validators.required
       ),
       images: new FormControl([]),
+      spans: new FormControl([1, 1], Validators.required),
+      hideTitle: new FormControl(false),
+      hidePrice: new FormControl(false),
     });
 
     this.route.queryParams.subscribe(async (params) => {
       const categories = this.menuService?.menu?.categories;
       if (params['id']) {
         this.product = this.menuService.getProductById(params['id']);
+        debugger;
         if (this.product) {
           this.form.setValue({
             title: this.product.title,
@@ -61,6 +65,11 @@ export class ProductEditPageComponent {
             status: this.product.status,
             orderTypes: this.product.orderTypes,
             images: this.product.images,
+            hideTitle: this.product.details?.hideTitle || false,
+            hidePrice: this.product.details?.hidePrice || false,
+            spans: this.product.details
+              ? [this.product.details.colspan || 1, this.product.details.rowspan || 1]
+              : [1, 1],
           });
         }
       }
@@ -91,12 +100,15 @@ export class ProductEditPageComponent {
     if (this.product) dto.id = this.product.id;
     if (this.imageCropperResult) {
       this.snack.open(this.translate.instant('app.uploading'), '', { duration: 5000 });
-      const savedFile = await this.fileService.upload(
-        this.imageCropperResult.file,
-        `${dto.title}.jpeg`
-      );
+      const savedFile = await this.fileService.upload(this.imageCropperResult.file, `${dto.title}.jpeg`);
       dto.images = [savedFile?.key];
     }
+    dto.details = {
+      colspan: dto.spans[0],
+      rowspan: dto.spans[1],
+      hideTitle: dto.hideTitle,
+      hidePrice: dto.hidePrice,
+    };
     this.snack.open(this.translate.instant('app.saving'), '', { duration: 5000 });
     await this.menuService.saveProduct(dto);
     this.snack.open(this.translate.instant('app.savedSuccessfully'), '', {
@@ -105,6 +117,11 @@ export class ProductEditPageComponent {
     });
     this.saving = false;
     this.location.back();
+  }
+
+  setSpan(val: [number, number]) {
+    this.form.get('spans')?.setValue(val);
+    this.form.markAsDirty();
   }
 
   upload() {

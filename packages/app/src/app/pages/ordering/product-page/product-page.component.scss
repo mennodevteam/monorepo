@@ -13,9 +13,8 @@ main {
   }
 
   #product-image {
-    width: 100%;
-    border-radius: 36px;
-    margin: auto;
+    width: -webkit-fill-available;
+    margin: 0 -24px;
   }
 }
 
@@ -42,6 +41,7 @@ main {
   left: 0;
   right: 0;
   height: 64px;
+  z-index: 1000;
 
   button {
     height: 48px !important;

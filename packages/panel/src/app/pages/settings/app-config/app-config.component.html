@@ -64,18 +64,21 @@
           <mat-form-field>
             <mat-label>{{ 'appConfig.menuViewType' | translate }}</mat-label>
             <mat-select formControlName="menuViewType">
-              <mat-option [value]="MenuViewType.Card">
-                {{ 'appConfig.menuViewTypeCard' | translate }}
+              <mat-option [value]="MenuViewType.Manual">
+                {{ 'appConfig.menuViewTypeManual' | translate }}
               </mat-option>
               <mat-option [value]="MenuViewType.Grid">
                 {{ 'appConfig.menuViewTypeGrid' | translate }}
               </mat-option>
-              <mat-option [value]="MenuViewType.Manual">
-                {{ 'appConfig.menuViewTypeManual' | translate }}
+              <mat-option [value]="MenuViewType.Card">
+                {{ 'appConfig.menuViewTypeCard' | translate }}
+              </mat-option>
+              <mat-option [value]="MenuViewType.Compact">
+                {{ 'appConfig.menuViewTypeCompact' | translate }}
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <ng-container *ngIf="form.controls['menuViewType']?.value === MenuViewType.Grid">
+          <ng-container>
             <mat-form-field>
               <mat-label>{{ 'appConfig.menuCols' | translate }}</mat-label>
               <mat-select formControlName="menuCols">
@@ -89,6 +92,7 @@
                   {{ 'appConfig.menuColsText' | translate: { value: 4 } }}
                 </mat-option>
               </mat-select>
+              <mat-hint>{{ 'appConfig.menuColsHint' | translate }}</mat-hint>
             </mat-form-field>
           </ng-container>
         </mat-card-content>

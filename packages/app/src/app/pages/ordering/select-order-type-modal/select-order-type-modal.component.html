@@ -1,20 +1,41 @@
 <h3>{{ 'orderType.select' | translate }}</h3>
 <mat-nav-list>
-  <a mat-list-item (click)="select(OrderType.DineIn)">
+  <a
+    mat-list-item
+    (click)="select(OrderType.DineIn)"
+    [disabled]="selectableOrderTypes.indexOf(OrderType.DineIn) === -1"
+  >
     <i matListItemIcon class="fa-solid fa-mug-hot fa-large"></i>
     <span matListItemTitle>{{ 'orderType.dineIn' | translate }}</span>
-    <span matLine>{{ 'orderType.dineInDescription' | translate }}</span>
+    <span matListItemLine>{{ 'orderType.dineInDescription' | translate }}</span>
+    <span matListItemMeta *ngIf="selectableOrderTypes.indexOf(OrderType.DineIn) === -1" class="error-text">
+      {{ 'app.inactive' | translate }}
+    </span>
   </a>
 
-  <a mat-list-item (click)="select(OrderType.Takeaway)">
+  <a
+    mat-list-item
+    (click)="select(OrderType.Takeaway)"
+    [disabled]="selectableOrderTypes.indexOf(OrderType.Takeaway) === -1"
+  >
     <i matListItemIcon class="fa-solid fa-cup-togo fa-large"></i>
     <span matListItemTitle>{{ 'orderType.takeaway' | translate }}</span>
-    <span matLine>{{ 'orderType.takeawayDescription' | translate }}</span>
+    <span matListItemLine>{{ 'orderType.takeawayDescription' | translate }}</span>
+    <span matListItemMeta *ngIf="selectableOrderTypes.indexOf(OrderType.Takeaway) === -1" class="error-text">
+      {{ 'app.inactive' | translate }}
+    </span>
   </a>
 
-  <a mat-list-item (click)="select(OrderType.Delivery)">
+  <a
+    mat-list-item
+    (click)="select(OrderType.Delivery)"
+    [disabled]="selectableOrderTypes.indexOf(OrderType.Delivery) === -1"
+  >
     <i matListItemIcon class="fa-solid fa-moped fa-large"></i>
     <span matListItemTitle>{{ 'orderType.delivery' | translate }}</span>
-    <span matLine>{{ 'orderType.deliveryDescription' | translate }}</span>
+    <span matListItemLine>{{ 'orderType.deliveryDescription' | translate }}</span>
+    <span matListItemMeta *ngIf="selectableOrderTypes.indexOf(OrderType.Delivery) === -1" class="error-text">
+      {{ 'app.inactive' | translate }}
+    </span>
   </a>
 </mat-nav-list>
