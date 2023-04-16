@@ -4,8 +4,28 @@
     <meta charset="utf-8" />
     <title>App</title>
     <base href="/" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <link rel="icon" id="app-favicon" type="image/x-icon" href="favicon.ico" />
+    <link rel="manifest" href="manifest.webmanifest" id="my-manifest-placeholder" />
+    <meta name="theme-color" content="#ffffff" />
+    <script>
+      document.addEventListener(
+        'touchmove',
+        function (event) {
+          event = event.originalEvent || event;
+          if (event.scale > 1) {
+            event.preventDefault();
+          }
+        },
+        false
+      );
+      document.addEventListener('gesturestart', function (e) {
+        e.preventDefault();
+      });
+    </script>
   </head>
   <body>
     <menno-root></menno-root>

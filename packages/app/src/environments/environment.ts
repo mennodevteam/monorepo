@@ -8,6 +8,8 @@ export const environment = {
   // apiHost: 'https://api.menno.pro',
   apiUrl: 'http://localhost:3000/api',
   apiHost: 'http://localhost:3000',
+  appBaseUrl: 'https://app.menno.pro',
+  appDomain: 'menno.pro',
   systemHostNames: ['localhost'],
   bucketUrl: 'https://menno.storage.iran.liara.space',
 };

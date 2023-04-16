@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Shop, ThemeMode } from '@menno/types';
 import { BehaviorSubject } from 'rxjs';
 import { ThemeService } from './theme.service';
+import { PwaService } from './pwa.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +12,7 @@ import { ThemeService } from './theme.service';
 export class ShopService {
   private _shop: BehaviorSubject<Shop | null> = new BehaviorSubject<Shop | null>(null);
 
-  constructor(private http: HttpClient, private themeService: ThemeService) {
+  constructor(private http: HttpClient, private themeService: ThemeService, private pwa: PwaService) {
     this.load();
   }
 
@@ -40,6 +42,19 @@ export class ShopService {
             break;
         }
       }
+
+      if (shop) {
+        if (shop.appConfig?.theme) {
+          this.pwa.setManifest(
+            shop,
+            this.url,
+            shop.appConfig.theme.primaryColor,
+            shop.appConfig.themeMode === ThemeMode.Dark ? '#333333' : '#ffffff'
+          );
+        } else {
+          this.pwa.setManifest(shop, this.url);
+        }
+      }
     }
   }
 
@@ -55,5 +70,9 @@ export class ShopService {
 
   get shop() {
     return this._shop.value;
+  }
+
+  get url() {
+    return this.shop?.domain || `https://${this.shop?.username}.${environment.appDomain}`;
   }
 }
