@@ -33,6 +33,7 @@
       <span style="flex: 1"></span>
       <count-selector [count]="1" (plusClick)="plus()" (minusClick)="minus()"></count-selector>
     </mat-toolbar-row>
+    <span #selectButtonRow></span>
   </mat-toolbar>
   <button mat-stroked-button *ngIf="!product?._orderItem?.quantity" (click)="plus()" class="add-button">
     {{ 'app.select' | translate }}
@@ -45,8 +46,11 @@
       {{ 'productPage.backMenu' | translate }}
     </button>
     <span spacer></span>
-    <button flex mat-raised-button color="primary" routerLink="/basket" [disabled]="!basket.items.length">
+    <button flex mat-raised-button *ngIf="product?._orderItem?.quantity" color="primary" routerLink="/basket" [disabled]="!basket.items.length">
       {{ 'productPage.complete' | translate }}
+    </button>
+    <button flex mat-raised-button *ngIf="!product?._orderItem?.quantity" color="primary" (click)="plus(true)">
+      {{ 'app.select' | translate }}
     </button>
   </mat-toolbar>
 </main>

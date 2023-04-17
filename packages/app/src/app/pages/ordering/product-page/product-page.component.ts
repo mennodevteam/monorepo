@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '@menno/types';
 import { BasketService } from '../../../core/services/basket.service';
@@ -12,13 +12,10 @@ import { MenuService } from '../../../core/services/menu.service';
 export class ProductPageComponent {
   product: Product | null;
   Product = Product;
+  @ViewChild('selectButtonRow') selectButtonRow: ElementRef;
   initCount = 0;
 
-  constructor(
-    private menuService: MenuService,
-    private route: ActivatedRoute,
-    public basket: BasketService
-  ) {
+  constructor(private menuService: MenuService, private route: ActivatedRoute, public basket: BasketService) {
     this.route.params.subscribe((params) => {
       this.product = this.menuService.getProductById(params['id']);
 
@@ -33,8 +30,11 @@ export class ProductPageComponent {
     return this.product?.images ? this.product?.images[0] : '';
   }
 
-  plus() {
+  plus(scrollEnd?: boolean) {
     if (this.product) this.basket.plus(this.product);
+    if (scrollEnd) {
+      this.selectButtonRow.nativeElement.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    }
   }
 
   minus() {
