@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -31,6 +32,7 @@ import { LocationEditBottomSheetComponent } from './location-edit-bottom-sheet/l
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { ShopTablesBottomSheetComponent } from './shop-tables-bottom-sheet/shop-tables-bottom-sheet.component';
 import { CategoryCompactViewComponent } from './menu-page/category-compact-view/category-compact-view.component';
+import { OrderCompleteComponent } from './order-complete/order-complete.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +50,7 @@ import { CategoryCompactViewComponent } from './menu-page/category-compact-view/
     SelectOrderTypeModalComponent,
     DisableOrderingCardComponent,
     CategoryCompactViewComponent,
+    OrderCompleteComponent,
   ],
   imports: [
     CommonModule,
@@ -61,6 +64,7 @@ import { CategoryCompactViewComponent } from './menu-page/category-compact-view/
     MatListModule,
     MatToolbarModule,
     MatButtonToggleModule,
+    MatProgressBarModule,
     MatChipsModule,
     MatCardModule,
     MatBadgeModule,

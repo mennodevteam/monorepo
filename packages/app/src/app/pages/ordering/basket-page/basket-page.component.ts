@@ -57,7 +57,7 @@ export class BasketPageComponent {
     try {
       const order = await this.basket.complete();
       if (order) {
-        this.router.navigateByUrl(`/orders/details/${order.id}`);
+        this.router.navigateByUrl(`/complete/${order.id}`);
       } else {
         this.saving = false;
       }

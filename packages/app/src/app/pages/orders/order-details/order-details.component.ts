@@ -11,12 +11,20 @@ import { OrdersService } from '../../../core/services/orders.service';
 export class OrderDetailsComponent {
   order: Order | undefined;
   OrderState = OrderState;
+  interval: any;
 
   constructor(private route: ActivatedRoute, private ordersService: OrdersService) {
     this.route.params.subscribe((params) => {
       this.order = undefined;
       this.loadOrder(params['id']);
     });
+
+    this.interval = setInterval(() => {
+      if (this.order) {
+        const diffInHour = (Date.now() - new Date(this.order.createdAt).valueOf()) / 3600000;
+        if (diffInHour < 3) this.loadOrder(this.order.id);
+      }
+    }, 10000);
   }
 
   get showStateCard() {
@@ -33,8 +41,7 @@ export class OrderDetailsComponent {
   }
 
   loadOrder(id: string) {
-    const order = 
-    this.ordersService.getById(id).subscribe((order) => {
+    const order = this.ordersService.getById(id).subscribe((order) => {
       if (order) this.order = order;
     });
   }

@@ -5,6 +5,7 @@ import { BasketPageComponent } from './basket-page/basket-page.component';
 import { MenuPageComponent } from './menu-page/menu-page.component';
 import { ProductPageComponent } from './product-page/product-page.component';
 import { ShopHomeComponent } from './shop-home/shop-home.component';
+import { OrderCompleteComponent } from './order-complete/order-complete.component';
 
 export const orderingRoutes: Routes = [
   {
@@ -23,6 +24,10 @@ export const orderingRoutes: Routes = [
       {
         path: 'menu',
         component: MenuPageComponent,
+      },
+      {
+        path: 'complete/:orderId',
+        component: OrderCompleteComponent,
       },
       {
         path: 'menu/product/:id',

@@ -172,6 +172,9 @@ export class ShopsService {
       .toPromise();
 
     const { shop, menu, appConfig, users, printViews, deliveryAreas, plugins } = res.data;
+    const validPlugins = plugins.filter((x) => new Date(x.expiredAt).valueOf() > Date.now());
+    const renewAt = new Date(validPlugins[0].expiredAt);
+    renewAt.setDate(renewAt.getDate() - 365);
 
     const newShop = await this.shopsRepository.save({
       id: shop.id,
@@ -191,7 +194,11 @@ export class ShopsService {
       username: shop.username,
       region: shop.region,
       phones: shop.phones,
-      plugins: { plugins: plugins.map((x) => x.plugin), expiredAt: plugins[0].expiredAt },
+      plugins: {
+        plugins: validPlugins.map((x) => x.plugin),
+        expiredAt: validPlugins[0].expiredAt,
+        renewAt,
+      },
       deliveryAreas,
       users,
     });
