@@ -187,7 +187,7 @@ export class PaymentsController {
         // const redirectUrl = `${process.env.APP_URL}/${shop.username}`;
         // return res.redirect(redirectUrl);
       } else if (payment.details.chargeSmsAccount) {
-        const amount = payment.amount / 1.09;
+        const amount = payment.amount / 10 / 1.09;
         await this.smsAccountsRepository.increment(
           { id: payment.details.chargeSmsAccount.smsAccountId },
           'charge',

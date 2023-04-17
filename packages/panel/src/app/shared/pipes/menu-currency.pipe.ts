@@ -12,11 +12,11 @@ export class MenuCurrencyPipe implements PipeTransform {
     private decimal: DecimalPipe,
     private translateService: TranslateService
   ) {}
-  transform(value: any, digitsInfo?: string): string {
+  transform(value: any, digitsInfo?: string, skipFree?: boolean): string {
     const currency = this.menuService.menu?.currency || 'تومان';
     try {
       if (value !== '' && value != null && !isNaN(value)) {
-        if (value != 0) {
+        if (value != 0 || skipFree) {
           return this.decimal.transform(value, digitsInfo || '1.0-0') + ' ' + currency;
         } else {
           return this.translateService.instant('app.free');
