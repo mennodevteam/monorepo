@@ -53,7 +53,7 @@ export class ShopsService {
     });
     if (shop) {
       const tokens: string[] = [];
-      tokens[0] = shop.username;
+      tokens[0] = shop.domain || `${shop.username}.${process.env.APP_ORIGIN}`;
       tokens[4] = shop.title;
       return this.smsService.lookup(
         shop.smsAccount.id,

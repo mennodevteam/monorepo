@@ -17,13 +17,15 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { PaginatorIntl } from './core/mat-paginator-intl';
+import { NotificationsComponent } from './pages/notifications/notifications.component';
+import { MenuCurrencyPipe } from './shared/pipes/menu-currency.pipe';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/');
 }
 
 @NgModule({
-  declarations: [AppComponent, PagesComponent],
+  declarations: [AppComponent, PagesComponent, NotificationsComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -50,6 +52,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
     { provide: MatPaginatorIntl, useClass: PaginatorIntl },
+    MenuCurrencyPipe,
   ],
   bootstrap: [AppComponent],
 })

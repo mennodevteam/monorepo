@@ -1,0 +1,40 @@
+<div class="container">
+  <mat-card class="shadow mat-elevation-z8" *ngFor="let notif of service.notifications | async">
+    <mat-toolbar>
+      <h5>{{ notif.title }}</h5>
+      <button mat-icon-button class="close" (click)="close(notif)">
+        <i class="far fa-times"></i>
+      </button>
+    </mat-toolbar>
+    <mat-card-content>
+      <p *ngFor="let c of notif.contents">{{ c }}</p>
+    </mat-card-content>
+    <mat-card-actions *ngIf="notif.actions && notif.actions.length">
+      <ng-container *ngFor="let action of notif.actions; let i = index">
+        <button
+          *ngIf="action.text"
+          mat-button
+          color="{{ action.color ? action.color : '' }}"
+          matTooltip="{{ action.tooltip }}"
+          (click)="actionClick(notif, i)"
+          [disabled]="notif.disabled"
+        >
+          <i *ngIf="action.icon" class="{{ action.icon }}"></i>
+          {{ action.text }}
+        </button>
+        <button
+          *ngIf="!action.text"
+          mat-icon-button
+          color="{{ action.color ? action.color : '' }}"
+          matTooltip="{{ action.tooltip }}"
+          (click)="actionClick(notif, i)"
+          [disabled]="notif.disabled"
+        >
+          <i *ngIf="action.icon" class="{{ action.icon }}"></i>
+        </button>
+        <span spacer></span>
+      </ng-container>
+    </mat-card-actions>
+    <p class="time">{{ notif.createdAt | date: 'HH:mm' }}</p>
+  </mat-card>
+</div>

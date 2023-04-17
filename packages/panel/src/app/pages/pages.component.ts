@@ -6,6 +6,7 @@ import { map, Observable, shareReplay } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../core/services/auth.service';
 import { ShopService } from '../core/services/shop.service';
+import { TodayOrdersService } from '../core/services/today-orders.service';
 
 @Component({
   selector: 'menno-pages',
@@ -22,6 +23,7 @@ export class PagesComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private auth: AuthService,
+    public todayOrders: TodayOrdersService,
   ) {
     this.isHandset$ = this.breakpointObserver.observe('(max-width: 1024px)').pipe(
       map((result) => result.matches),

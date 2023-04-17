@@ -16,6 +16,7 @@
         "inlineStyleLanguage": "scss",
         "assets": [
           "packages/panel/src/favicon.ico",
+          "packages/panel/src/manifest.webmanifest",
           {
             "glob": "**/*",
             "input": "node_modules/leaflet/dist/images",

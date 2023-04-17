@@ -61,6 +61,7 @@ export class BasketService extends OrderDto {
     this.address = undefined;
     this.discountCoupon = undefined;
     if (this.menuService.type != undefined) this.type = this.menuService.type;
+    this.menuService.load();
   }
 
   get items(): OrderItem[] {

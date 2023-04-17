@@ -14,13 +14,19 @@
     <i class="fa-regular fa-angles-left"></i>
   </button>
   <span flex></span>
-  <button mat-stroked-button routerLink="filter">
+  <button mat-stroked-button routerLink="filter" class="hide-xs">
     <i class="fa-regular fa-filter-list fa-sm"></i>
     {{ 'dailyOrder.advancedFilter' | translate }}
   </button>
-  <button mat-stroked-button routerLink="report">
+  <button mat-stroked-button routerLink="report" class="hide-xs">
     <i class="fa-regular fa-chart-line fa-sm"></i>
     {{ 'dailyOrder.report' | translate }}
+  </button>
+  <button mat-icon-button routerLink="filter" class="show-xs">
+    <i class="fa-regular fa-filter-list fa-sm"></i>
+  </button>
+  <button mat-icon-button routerLink="report" class="show-xs">
+    <i class="fa-regular fa-chart-line fa-sm"></i>
   </button>
 </mat-toolbar>
 <nav mat-tab-nav-bar mat-stretch-tabs="false" class="border-bottom" [tabPanel]="tabPanel">
@@ -49,7 +55,7 @@
 <main class="content-wrapper">
   <mat-tab-nav-panel #tabPanel>
     <mat-card>
-      <mat-card-content>
+      <mat-card-content style="overflow-x: auto;">
         <ng-container *ngIf="orders && !loading">
           <orders-table [orders]="orders" (orderClicked)="orderClicked($event)"></orders-table>
           <empty-state

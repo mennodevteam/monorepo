@@ -1,0 +1,47 @@
+@import "theme";
+
+.container {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+mat-card {
+    margin: 8px;
+    border: 2px solid $yellow !important;
+    width: 260px !important;
+    position: relative;
+
+    mat-toolbar {
+        background-color: transparent;
+        h5 {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        button.close {
+            margin: 0 -16px;
+        }
+    }
+
+    mat-card-content {
+        font-size: 12px;
+        margin: 0;
+    }
+
+    mat-card-actions {
+        margin-bottom: -12px !important;
+    }
+
+    .time {
+        color: $gray;
+        position: absolute;
+        left: 8px;
+        bottom: 2px;
+        font-size: 10px;
+        text-align: left;
+    }
+}
