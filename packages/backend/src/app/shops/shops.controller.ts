@@ -27,6 +27,7 @@ export class ShopsController {
       'appConfig.theme',
       'shopGroup',
       'club',
+      'smsAccount',
       'plugins'
     ]);
   }
@@ -42,7 +43,8 @@ export class ShopsController {
   @Get('sendLink/:mobile')
   @Roles(Role.Panel)
   async sendLink(@Param('mobile') mobile: string, @LoginUser() user: AuthPayload): Promise<Sms> {
-    return this.shopsService.sendShopLink(user.shopId, mobile);
+    const shop = await this.auth.getPanelUserShop(user);
+    return this.shopsService.sendShopLink(shop.id, mobile);
   }
 
   @Public()

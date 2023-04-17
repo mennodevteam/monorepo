@@ -1,5 +1,4 @@
 main {
-  max-width: 800px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -10,6 +9,7 @@ h1 {
   font-weight: 600;
 }
 
-label {
+mat-list span {
+  color: black !important;
   font-size: 13px;
 }

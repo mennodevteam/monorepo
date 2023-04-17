@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Shop } from '@menno/types';
+import { environment } from '../../../environments/environment';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -32,5 +33,13 @@ export class ShopService {
     dto.id = this.shop!.id;
     await this.http.put(`shops`, dto).toPromise();
     await this.loadShop();
+  }
+  
+  smsLink(phone: string): Promise<void> {
+    return this.http.get<void>('shops/sendLink/' + phone).toPromise();
+  }
+
+  get appLink() {
+    return this.shop?.domain || `https://${this.shop?.username}.${environment.appDomain}`;
   }
 }

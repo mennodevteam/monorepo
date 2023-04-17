@@ -7,6 +7,7 @@ export const environment = {
   // apiUrl: 'https://menno-backend.iran.liara.run/api',
   apiUrl: 'http://localhost:3000/api',
   localStorageUserKey: 'mennoPanelUser',
+  appDomain: 'menno.pro',
   localPrintServiceUrl: 'http://127.0.0.1:5072/',
   bucketUrl: 'https://menno.storage.iran.liara.space',
   printerZipUrl: 'https://drive.google.com/file/d/1ZmCKS8KqaaoCkHXFSEbHe3jmoAS5rDyv/view?usp=sharing',
