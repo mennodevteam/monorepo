@@ -14,3 +14,22 @@
     font-size: 96px;
   }
 }
+
+.progress-bar {
+  position: fixed;
+  display: flex;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  animation: progress-bar-animation 6s linear;
+}
+
+@keyframes progress-bar-animation {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

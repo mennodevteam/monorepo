@@ -3,8 +3,8 @@
   <h2>{{ 'orderComplete.title' | translate }}</h2>
   <a mat-flat-button color="primary" (click)="goToOrderPage()">
     {{ 'orderComplete.action' | translate }}
-    <span *ngIf="timer > 0">
-      ({{timer}})
-    </span>
+    <span *ngIf="timer > 0"> ({{ timer }}) </span>
   </a>
 </div>
+
+<div class="progress-bar tertiary-container"></div>
