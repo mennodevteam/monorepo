@@ -10,4 +10,5 @@ import { Status } from '@menno/types';
 export class SelectStatusCardComponent {
   Status = Status;
   @Input() control: FormControl;
+  @Input() showBlocked = false;
 }

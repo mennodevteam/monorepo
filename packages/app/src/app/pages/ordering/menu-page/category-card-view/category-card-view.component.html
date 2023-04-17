@@ -10,6 +10,7 @@
           <img
             mat-card-sm-image
             class="product__image"
+            [ngClass]="{ finished: product.status === Status.Blocked }"
             [imageLoader]="product.images ? product.images[0] : undefined"
           />
           <mat-card-title class="product__title">{{ product.title }}</mat-card-title>
@@ -39,8 +40,18 @@
           (plusClick)="plus(product, $event)"
           (minusClick)="minus(product, $event)"
         ></count-selector>
-        <button mat-stroked-button (click)="plus(product, $event)" *ngIf="!product._orderItem?.quantity">
-          {{ 'app.add' | translate }}
+        <button
+          mat-stroked-button
+          (click)="plus(product, $event)"
+          *ngIf="!product._orderItem?.quantity"
+          [disabled]="product.status === Status.Blocked"
+        >
+          <span *ngIf="product.status === Status.Blocked">
+            {{ 'app.finished' | translate }}
+          </span>
+          <span class="error-text" *ngIf="product.status === Status.Active">
+            {{ 'app.add' | translate }}
+          </span>
         </button>
       </mat-card-actions>
     </mat-card>

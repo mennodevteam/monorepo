@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Menu, Product, ProductCategory } from '@menno/types';
+import { Menu, Product, ProductCategory, Status } from '@menno/types';
 
 @Component({
   selector: 'category-compact-view',
@@ -9,5 +9,6 @@ import { Menu, Product, ProductCategory } from '@menno/types';
 export class CategoryCompactViewComponent {
   @Input() menu?: Menu | null;
   @Input() category: ProductCategory;
+  Status = Status;
   Product = Product;
 }

@@ -23,6 +23,7 @@ export class MenuPageComponent implements AfterViewInit {
   OrderType = OrderType;
   Status = Status;
   showSelectOrderType = true;
+  private _viewType: MenuViewType;
 
   constructor(
     public menuService: MenuService,
@@ -32,11 +33,13 @@ export class MenuPageComponent implements AfterViewInit {
   ) {
     this.menuService.checkSelectedOrderType();
 
-    if (this.menu && this.menuService.viewType === undefined) {
-      this.menuService.viewType =
-        this.appConfig?.menuViewType === MenuViewType.Manual
-          ? MenuViewType.Grid
-          : this.appConfig?.menuViewType || MenuViewType.Grid;
+    if (this.menu && this.viewType === undefined) {
+      if (!this.appConfig || this.appConfig.menuViewType === MenuViewType.Manual) {
+        const localViewType = localStorage.getItem('ui-menuViewType');
+        this.viewType = localViewType ? Number(localViewType) : MenuViewType.Card;
+      } else {
+        this.viewType = this.appConfig.menuViewType;
+      }
     }
 
     this.menuService.typeObservable.subscribe((type) => {
@@ -54,6 +57,10 @@ export class MenuPageComponent implements AfterViewInit {
       ) {
         this.selectDeliveryAddress();
       }
+
+      setTimeout(() => {
+        this.setScrolling();
+      }, 1000);
     });
 
     if (this.appConfig?.disableOrdering && this.menu && !Menu.isBasedOrderType(this.menu)) {
@@ -62,6 +69,19 @@ export class MenuPageComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.setScrolling();
+  }
+
+  get viewType() {
+    return this._viewType;
+  }
+
+  set viewType(val: MenuViewType) {
+    this._viewType = val;
+    localStorage.setItem('ui-menuViewType', val.toString());
+  }
+
+  setScrolling() {
     for (const cat of this.categoryElements) {
       const topMargin = 60 + 120;
       const bottomMargin = window.innerHeight - topMargin - 120;
@@ -112,11 +132,9 @@ export class MenuPageComponent implements AfterViewInit {
   }
 
   toggleView() {
-    if (this.menuService.viewType === MenuViewType.Card) this.menuService.viewType = MenuViewType.Grid;
-    else if (this.menuService.viewType === MenuViewType.Grid)
-      this.menuService.viewType = MenuViewType.Compact;
-    else if (this.menuService.viewType === MenuViewType.Compact)
-      this.menuService.viewType = MenuViewType.Card;
+    if (this.viewType === MenuViewType.Card) this.viewType = MenuViewType.Grid;
+    else if (this.viewType === MenuViewType.Grid) this.viewType = MenuViewType.Compact;
+    else if (this.viewType === MenuViewType.Compact) this.viewType = MenuViewType.Card;
   }
 
   changeType() {

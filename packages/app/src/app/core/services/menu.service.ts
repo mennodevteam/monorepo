@@ -13,7 +13,6 @@ export class MenuService {
   private _menu = new BehaviorSubject<Menu | null>(null);
   private _type = new BehaviorSubject<OrderType | null>(null);
   private _baseMenu: Menu | undefined;
-  viewType: MenuViewType;
   selectableOrderTypes: OrderType[];
 
   constructor(

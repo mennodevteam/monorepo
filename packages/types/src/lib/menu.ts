@@ -14,10 +14,12 @@ export class Menu {
   static setRefsAndSort(menu: Menu, orderType?: OrderType, showInactive?: boolean, showEmpty?: boolean) {
     if (orderType != undefined) {
       menu.categories = menu.categories?.filter(
-        (x) => (showInactive || x.status === Status.Active) && x.orderTypes && x.orderTypes.includes(orderType)
+        (x) =>
+          (showInactive || x.status !== Status.Inactive) && x.orderTypes && x.orderTypes.includes(orderType)
       );
       menu.costs = menu.costs?.filter(
-        (x) => (showInactive || x.status === Status.Active) && x.orderTypes && x.orderTypes.includes(orderType)
+        (x) =>
+          (showInactive || x.status !== Status.Inactive) && x.orderTypes && x.orderTypes.includes(orderType)
       );
     }
     if (menu.costs) {
@@ -30,7 +32,9 @@ export class Menu {
         if (orderType != undefined) {
           cat.products = cat.products?.filter(
             (x) =>
-              (showInactive || x.status === Status.Active) && x.orderTypes && x.orderTypes.includes(orderType)
+              (showInactive || x.status !== Status.Inactive) &&
+              x.orderTypes &&
+              x.orderTypes.includes(orderType)
           );
         }
         cat.costs = menu.costs?.filter(
@@ -42,6 +46,12 @@ export class Menu {
           Product.sort(cat.products);
           for (const p of cat.products) {
             p.category = cat;
+            if (
+              cat.status === Status.Inactive ||
+              (cat.status === Status.Blocked && p.status === Status.Active)
+            )
+              p.status = cat.status;
+
             p.costs = menu.costs?.filter(
               (x) =>
                 (!x.includeProduct?.length && !x.includeProductCategory?.length) ||
@@ -75,17 +85,17 @@ export class Menu {
     const products: Product[] = [];
     if (menu.categories) {
       for (const cat of menu.categories) {
-        if (cat.products)
-        products.push(...cat.products);
+        if (cat.products) products.push(...cat.products);
       }
     }
     return products;
   }
 
-  static isBasedOrderType(menu: Menu){
-    if (menu.costs.find(x => x.orderTypes.length > 0 && x.orderTypes.length < 3)) return true;
-    if (menu.categories?.find(x => x.orderTypes.length > 0 && x.orderTypes.length < 3)) return true;
-    if (Menu.getProductList(menu).find(x => x.orderTypes.length > 0 && x.orderTypes.length < 3)) return true;
+  static isBasedOrderType(menu: Menu) {
+    if (menu.costs.find((x) => x.orderTypes.length > 0 && x.orderTypes.length < 3)) return true;
+    if (menu.categories?.find((x) => x.orderTypes.length > 0 && x.orderTypes.length < 3)) return true;
+    if (Menu.getProductList(menu).find((x) => x.orderTypes.length > 0 && x.orderTypes.length < 3))
+      return true;
     return false;
   }
 }

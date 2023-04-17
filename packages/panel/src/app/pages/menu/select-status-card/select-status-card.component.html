@@ -6,6 +6,7 @@
   <mat-card-content>
     <mat-button-toggle-group [formControl]="control">
       <mat-button-toggle [value]="Status.Active">{{ 'app.active' | translate }} </mat-button-toggle>
+      <mat-button-toggle *ngIf="showBlocked" [value]="Status.Blocked">{{ 'app.finished' | translate }} </mat-button-toggle>
       <mat-button-toggle [value]="Status.Inactive">{{ 'app.inactive' | translate }} </mat-button-toggle>
     </mat-button-toggle-group>
     <ng-container *ngIf="control?.value === Status.Inactive">

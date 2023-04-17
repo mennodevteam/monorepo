@@ -4,6 +4,7 @@
     [rowspan]="product.details?.rowspan || 1"
     [colspan]="product.details?.colspan || 1"
     class="product-tile"
+    [ngClass]="{ finished: product.status === Status.Blocked }"
     *ngFor="let product of category.products"
     routerLink="product/{{ product.id }}"
     [imageLoader]="product.images ? product.images[0] : undefined"
@@ -22,8 +23,15 @@
         {{ product.title }}
       </span>
       <span flex *ngIf="product.details?.hideTitle"></span>
-      <span class="product-price" [hidden]="product.details?.hidePrice">
+      <span
+        class="product-price"
+        *ngIf="product.status === Status.Active"
+        [hidden]="product.details?.hidePrice"
+      >
         {{ Product.totalPrice(product, 1000) / 1000 }}
+      </span>
+      <span class="product-price" *ngIf="product.status === Status.Blocked">
+        {{ 'app.finished' | translate }}
       </span>
     </mat-grid-tile-footer>
   </mat-grid-tile>

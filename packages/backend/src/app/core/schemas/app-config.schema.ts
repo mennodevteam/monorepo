@@ -48,7 +48,7 @@ export const AppConfigSchema = new EntitySchema<AppConfig>({
     menuViewType: {
       type: 'enum',
       enum: MenuViewType,
-      default: MenuViewType.Card,
+      default: MenuViewType.Manual,
     },
     menuCols: {
       type: Number,

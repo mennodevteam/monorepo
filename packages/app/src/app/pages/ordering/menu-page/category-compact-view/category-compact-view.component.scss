@@ -9,6 +9,10 @@ mat-nav-list {
   img[matListItemAvatar] {
     border-radius: 8px;
     margin-top: 8px;
+
+    &.finished {
+      filter: grayscale(1);
+    }
   }
 
   .title {

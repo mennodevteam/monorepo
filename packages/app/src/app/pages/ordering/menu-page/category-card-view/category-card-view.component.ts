@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Product, ProductCategory } from '@menno/types';
+import { Product, ProductCategory, Status } from '@menno/types';
 import { BasketService } from '../../../../core/services/basket.service';
 
 @Component({
@@ -10,6 +10,7 @@ import { BasketService } from '../../../../core/services/basket.service';
 export class CategoryCardViewComponent {
   @Input() category: ProductCategory;
   Product = Product;
+  Status = Status;
 
   constructor(private basket: BasketService) {}
   
