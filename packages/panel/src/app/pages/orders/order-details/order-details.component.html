@@ -34,7 +34,6 @@
         <mat-card-content>
           <mat-stepper
             orientation="vertical"
-            [linear]="true"
             #stepper
             [selectedIndex]="selectedIndex"
             class="order-state-stepper"
@@ -69,7 +68,7 @@
               </div>
             </mat-step>
 
-            <mat-step *ngIf="states.includes(OrderState.Ready)" state="done">
+            <mat-step *ngIf="states.includes(OrderState.Ready)">
               <ng-template matStepLabel>{{ OrderState.Processing | orderState }}</ng-template>
               <p class="gray-color">
                 {{ 'orderDetails.stateDescription.processing' | translate }}
@@ -83,7 +82,7 @@
               </div>
             </mat-step>
 
-            <mat-step *ngIf="states.includes(OrderState.Ready)" state="done">
+            <mat-step *ngIf="states.includes(OrderState.Ready)">
               <ng-template matStepLabel>{{ OrderState.Ready | orderState }}</ng-template>
               <p class="gray-color">
                 {{ 'orderDetails.stateDescription.ready' | translate }}
@@ -103,7 +102,7 @@
               </div>
             </mat-step>
 
-            <mat-step *ngIf="states.includes(OrderState.Shipping)" state="done">
+            <mat-step *ngIf="states.includes(OrderState.Shipping)">
               <ng-template matStepLabel>{{ OrderState.Shipping | orderState }}</ng-template>
               <p class="gray-color">
                 {{ 'orderDetails.stateDescription.shipping' | translate }}
@@ -123,7 +122,7 @@
               </div>
             </mat-step>
 
-            <mat-step *ngIf="states.includes(OrderState.Completed)" state="done">
+            <mat-step *ngIf="states.includes(OrderState.Completed)">
               <ng-template matStepLabel>
                 {{ OrderState.Completed | orderState }}
               </ng-template>
@@ -306,7 +305,7 @@
                 </b>
                 <span matListItemLine>{{ 'app.notSet' | translate }}</span>
               </ng-container>
-              <button *ngIf="!order.customer" mat-icon-button matListItemMeta color="primary">
+              <button *ngIf="!order.customer" mat-icon-button matListItemMeta color="primary" (click)="openSelectMember()">
                 <i class="fas fa-circle-plus"></i>
               </button>
             </mat-list-item>

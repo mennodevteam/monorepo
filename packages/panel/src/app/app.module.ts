@@ -19,6 +19,7 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 import { PaginatorIntl } from './core/mat-paginator-intl';
 import { NotificationsComponent } from './pages/notifications/notifications.component';
 import { MenuCurrencyPipe } from './shared/pipes/menu-currency.pipe';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/');
@@ -52,6 +53,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
     { provide: MatPaginatorIntl, useClass: PaginatorIntl },
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 4000 } },
     MenuCurrencyPipe,
   ],
   bootstrap: [AppComponent],

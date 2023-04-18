@@ -88,12 +88,11 @@ export class OrderDetailsComponent {
   }
 
   async nextState() {
-    debugger;
     if (this.order) {
       const selectedIndex = this.states.indexOf(this.order?.state);
       if (selectedIndex < this.states.length - 1) {
         await this.orderService.changeState(this.order, this.states[selectedIndex + 1]);
-        this.stepper.selectedIndex = this.selectedIndex;
+        // this.stepper.selectedIndex = this.selectedIndex;
       }
     }
   }
@@ -106,11 +105,11 @@ export class OrderDetailsComponent {
     });
   }
 
-  async openSelectMember(order: Order) {
-    if (order.deletedAt || order.state == OrderState.Canceled) return;
+  async openSelectMember() {
+    if (!this.order || this.order.deletedAt || this.order.state == OrderState.Canceled) return;
     let member: Member = await this.dialog.open(MemberSelectDialogComponent).afterClosed().toPromise();
     if (member) {
-      await this.orderService.setCustomer(order, member.id);
+      await this.orderService.setCustomer(this.order, member.id);
     }
   }
 

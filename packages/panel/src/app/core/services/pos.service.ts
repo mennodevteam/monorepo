@@ -7,6 +7,7 @@ import {
   Order,
   OrderDto,
   OrderItem,
+  OrderState,
   OrderType,
   Product,
   ProductItem,
@@ -148,6 +149,7 @@ export class PosService extends OrderDto {
       id: this.editOrder?.id,
       productItems: this.productItems,
       type: this.type,
+      state: OrderState.Processing,
       details: this.details,
       manualCost: this.manualCost,
       manualDiscount: this.manualDiscount,
@@ -161,6 +163,7 @@ export class PosService extends OrderDto {
     });
     this.clear();
     this.saving = false;
+    this.todayOrders.loadData();
 
     if (print && savedOrder) this.printer.printOrder(savedOrder?.id);
   }
