@@ -1,10 +1,8 @@
 <div class="container">
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <mat-card>
-      <mat-card-header>
-        <mat-card-title>پنل مدیریت بوران</mat-card-title>
-      </mat-card-header>
       <mat-card-content>
+        <img src="assets/icons/icon-192x192.png" alt="menno" />
         <br />
         <mat-form-field appearance="fill">
           <mat-label> نام کاربری </mat-label>
@@ -27,7 +25,7 @@
             [attr.aria-pressed]="hide"
             type="button"
           >
-            <i class="fa-regular fa-{{hide ? 'eye-slash' : 'eye'}}"></i>
+            <i class="fa-regular fa-{{ hide ? 'eye-slash' : 'eye' }}"></i>
           </button>
         </mat-form-field>
         <mat-checkbox color="primary" formControlName="save">ورود مرا ذخیره کن</mat-checkbox>

@@ -26,7 +26,6 @@ export class Menu {
       MenuCost.sort(menu.costs);
     }
     if (menu?.categories) {
-      menu.categories = menu.categories.filter((x) => showEmpty || x.products?.length);
       ProductCategory.sort(menu.categories);
       for (const cat of menu.categories) {
         if (orderType != undefined) {
@@ -60,7 +59,9 @@ export class Menu {
             );
           }
         }
+        cat.products = cat.products?.filter((x) => x.status !== Status.Inactive);
       }
+      menu.categories = menu.categories.filter((x) => showEmpty || x.products?.length);
     }
   }
 

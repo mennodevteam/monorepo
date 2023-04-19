@@ -33,9 +33,7 @@ export class MenusController {
   async syncMenu(@Param('prevCode') prevCode: string) {
     const shop = await this.shopsRepo.findOne({
       where: { prevServerCode: prevCode },
-      relations: [
-        'menu',
-      ],
+      relations: ['menu'],
     });
 
     this.menuService.syncMenu(shop.menu.id, prevCode);
@@ -54,7 +52,13 @@ export class MenusController {
       ],
     });
 
-    if (shop.menu?.costs) shop.menu.costs = shop.menu.costs.filter((x) => x.status === Status.Active);
+    if (shop.menu?.costs) shop.menu.costs = shop.menu.costs.filter((x) => x.status !== Status.Inactive);
+    if (shop.menu?.categories) {
+      shop.menu.categories = shop.menu.categories.filter((x) => x.status !== Status.Inactive);
+      for (const cat of shop.menu.categories) {
+        if (cat.products) cat.products = cat.products.filter((x) => x.status !== Status.Inactive);
+      }
+    }
 
     return shop.menu;
   }

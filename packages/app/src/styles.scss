@@ -67,6 +67,16 @@ mat-toolbar {
   }
 }
 
+.mdc-button[mat-flat-button][color=primary],
+.mdc-button[mat-raised-button][color=primary] {
+  color: var(--md-sys-color-on-primary) !important;
+}
+
+.mdc-button[mat-flat-button][color=accent],
+.mdc-button[mat-raised-button][color=accent] {
+  color: var(--md-sys-color-on-tertiary) !important;
+}
+
 [mat-button],
 [mat-raised-button],
 [mat-stroked-button],

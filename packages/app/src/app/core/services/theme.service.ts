@@ -5,7 +5,7 @@ export const LOCAL_STORAGE_THEME_COLOR_KEY = 'appThemeString';
 export const LOCAL_STORAGE_THEME_MODE_KEY = 'appThemeModeString';
 export const DEFAULT_THEME_COLOR = 'amber';
 
-export const COLORS = ['default', 'red', 'blue', 'green', 'amber'];
+export const COLORS = ['default', 'red', 'blue', 'green', 'amber', 'teal', 'indigo', 'yellow'];
 
 @Injectable({
   providedIn: 'root',

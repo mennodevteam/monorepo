@@ -50,6 +50,21 @@
             "bundleName": "green-theme"
           },
           {
+            "input": "packages/app/src/theme/indigo-theme.scss",
+            "inject": false,
+            "bundleName": "indigo-theme"
+          },
+          {
+            "input": "packages/app/src/theme/teal-theme.scss",
+            "inject": false,
+            "bundleName": "teal-theme"
+          },
+          {
+            "input": "packages/app/src/theme/yellow-theme.scss",
+            "inject": false,
+            "bundleName": "yellow-theme"
+          },
+          {
             "input": "packages/app/src/theme/red-theme.scss",
             "inject": false,
             "bundleName": "red-theme"

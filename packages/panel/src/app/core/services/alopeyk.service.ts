@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ShopService } from './shop.service';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Order, User } from '@menno/types';
+import { Order, ThirdPartyApp, User } from '@menno/types';
 import { BehaviorSubject } from 'rxjs';
 
 const BASE_API = environment.alopeykBaseUrl;
@@ -38,7 +38,7 @@ export class AlopeykService {
   }
 
   private get token() {
-    return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzMjI4MTM5LCJpc3MiOiJsb2NhbGhvc3Q6MTMzNy9nZW5lcmF0ZV90b2tlbj9sYW5nPWZhIiwianRpIjoiYWd5WFc5U0RVajl2TDN1IiwiaWF0IjoxNjc0Mzg1NDgzLCJleHAiOjE3MDU5MjE0ODN9.IZ5d6xVilR_qWldXdvJoLGWMW9LLHYxgMQWkvRjVof4';
+    return this.shopService.shop?.thirdParties?.find(x => x.app === ThirdPartyApp.Alopeyk)?.token;
   }
 
   async addOrder(dest: [number, number], order?: Order): Promise<DeliveryOrder | undefined> {
