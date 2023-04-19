@@ -96,6 +96,7 @@ export class OrdersController {
     });
   }
 
+  @Roles(Role.Panel)
   @Get('changeState/:id/:state')
   async changeState(
     @Param('id') id: string,
@@ -107,6 +108,24 @@ export class OrdersController {
       state: Number(state),
     };
     if (!order.waiter) update.waiter = { id: user.id } as User;
+    await this.ordersRepo.update(order.id, update);
+    return { ...order, ...update };
+  }
+
+  @Roles(Role.Panel)
+  @Put('details/:id')
+  async updateOrderDetails(
+    @LoginUser() user: AuthPayload,
+    @Param('id') id: string,
+    @Body() body: any
+  ): Promise<Order> {
+    const order = await this.ordersRepo.findOne({ where: { id } });
+    const update: Partial<Order> = {
+      details: {
+        ...order.details,
+        ...body,
+      },
+    };
     await this.ordersRepo.update(order.id, update);
     return { ...order, ...update };
   }

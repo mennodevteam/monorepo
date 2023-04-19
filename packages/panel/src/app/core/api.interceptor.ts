@@ -8,7 +8,7 @@ import {
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-const IGNORE_CASES = [
+export const IGNORE_CASES = [
   new RegExp('^https?:\\/\\/?'),
   new RegExp('assets/i18n/'),
 ];

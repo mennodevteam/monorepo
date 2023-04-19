@@ -40,6 +40,7 @@ export class OrdersService {
     @InjectRepository(Order)
     private ordersRepo: Repository<Order>
   ) {}
+  
   async dtoToOrder(dto: OrderDto) {
     const order = new Order();
     const shop = await this.shopsRepo.findOne({

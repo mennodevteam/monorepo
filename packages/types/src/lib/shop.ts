@@ -8,6 +8,7 @@ import { ShopGroup } from './shop-group';
 import { ShopPlugins } from './shop-plugin';
 import { ShopUser } from './shop-user';
 import { SmsAccount } from './sms-account';
+import { ThirdParty } from './third-party';
 
 export interface ShopTable {
   code: string;
@@ -47,6 +48,7 @@ export class Shop {
   shopGroup?: ShopGroup;
   options: any;
   plugins?: ShopPlugins;
+  thirdParties?: ThirdParty[];
   users: ShopUser[];
   details: ShopDetails;
   createdAt: Date;

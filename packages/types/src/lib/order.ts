@@ -14,6 +14,7 @@ export interface OrderDetails {
   posPayed?: number[];
   deletionReason?: string;
   currency?: string;
+  deliveryId?: string | null;
   itemChanges?: {
     title: string;
     change: number;

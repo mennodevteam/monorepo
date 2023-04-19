@@ -135,6 +135,11 @@ export const ShopSchema = new EntitySchema<Shop>({
       inverseSide: 'shop',
       cascade: ['insert'],
     },
+    thirdParties: {
+      type: 'one-to-many',
+      target: 'ThirdParty',
+      inverseSide: 'shop',
+    },
     deliveryAreas: {
       type: 'one-to-many',
       target: 'DeliveryArea',

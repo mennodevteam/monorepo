@@ -28,7 +28,8 @@ export class ShopsController {
       'shopGroup',
       'club',
       'smsAccount',
-      'plugins'
+      'plugins',
+      'thirdParties',
     ]);
   }
 
@@ -62,6 +63,6 @@ export class ShopsController {
   @Public()
   @Get('createNewFromPrev/:code')
   createNewShopFromPrev(@Param('code') code: string): Promise<Shop> {
-    return this.shopsService.createNewShopFromPrev(code)
+    return this.shopsService.createNewShopFromPrev(code);
   }
 }

@@ -67,6 +67,7 @@ export * from './sms';
 export * from './status.enum';
 export * from './stock-item';
 export * from './theme';
+export * from './third-party';
 export * from './user';
 export * from './wallet-log-type';
 export * from './wallet-log';

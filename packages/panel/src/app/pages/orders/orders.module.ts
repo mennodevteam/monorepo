@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { OrdersComponent } from './orders.component';
 import { RouterModule } from '@angular/router';
 import { ordersRoutes } from './orders.routes';
@@ -16,6 +16,6 @@ import { OrderFilterComponent } from './order-filter/order-filter.component';
 @NgModule({
   declarations: [OrdersComponent, OrderDetailsComponent, OrderReportsComponent, OrderFilterComponent],
   imports: [CommonModule, RouterModule.forChild(ordersRoutes), SharedModule, NgChartsModule],
-  providers: [OrderTypePipe, OrderStatePipe, OrderPaymentPipe, MenuCurrencyPipe],
+  providers: [OrderTypePipe, OrderStatePipe, OrderPaymentPipe, MenuCurrencyPipe, DecimalPipe],
 })
 export class OrdersModule {}

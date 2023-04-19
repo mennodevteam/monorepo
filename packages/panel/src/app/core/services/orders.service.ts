@@ -4,6 +4,7 @@ import {
   FilterOrderDto,
   ManualSettlementDto,
   Order,
+  OrderDetails,
   OrderDto,
   OrderReportDto,
   OrderState,
@@ -46,6 +47,13 @@ export class OrdersService {
     } finally {
       order._changingState = false;
     }
+  }
+
+  async setDetails(order: Order, details: OrderDetails) {
+    try {
+      const result = await this.http.put<Order>(`orders/details/${order.id}`, details).toPromise();
+      if (result) order.details = result.details;
+    } catch (error) {}
   }
 
   async settlement(order: Order, dto: ManualSettlementDto): Promise<void> {

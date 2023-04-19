@@ -18,6 +18,12 @@ export class ErrorInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    // for (const cases of IGNORE_CASES) {
+    //   if (cases.test(request.url)) {
+    //     ignore = true;
+    //     break;
+    //   }
+    // }
     return next.handle(request).pipe(
       catchError((err) => {
         if (err.status === 401 || err.error?.message == 'Unauthorized') {

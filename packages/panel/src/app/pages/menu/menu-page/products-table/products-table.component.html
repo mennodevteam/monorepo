@@ -44,10 +44,10 @@
             <mat-divider vertical *ngIf="!last"></mat-divider>
           </ng-container>
         </span>
-        <span *ngIf="product.status !== Status.Active" class="inactive-badge">
+        <span *ngIf="product.status === Status.Inactive" class="inactive-badge">
           {{ 'app.inactive' | translate }}
         </span>
-        <span *ngIf="product.status !== Status.Blocked" class="inactive-badge">
+        <span *ngIf="product.status === Status.Blocked" class="inactive-badge">
           {{ 'app.finished' | translate }}
         </span>
         <button
