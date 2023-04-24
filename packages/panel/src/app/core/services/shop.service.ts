@@ -9,12 +9,14 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ShopService {
   private shop$: BehaviorSubject<Shop | null>;
+  private _loading = true;
   constructor(private http: HttpClient) {
     this.shop$ = new BehaviorSubject<Shop | null>(null);
     this.loadShop();
   }
 
   get shopObservable() {
+    if (!this.shop && !this._loading) this.loadShop();
     return this.shop$.asObservable();
   }
 
@@ -23,9 +25,14 @@ export class ShopService {
   }
 
   async loadShop() {
-    const shop = await this.http.get<Shop>('shops').toPromise();
-    if (shop) {
-      this.shop$.next(shop);
+    this._loading = true;
+    try {
+      const shop = await this.http.get<Shop>('shops').toPromise();
+      if (shop) {
+        this.shop$.next(shop);
+      }
+    } finally {
+      this._loading = false;
     }
   }
 
@@ -34,7 +41,7 @@ export class ShopService {
     await this.http.put(`shops`, dto).toPromise();
     await this.loadShop();
   }
-  
+
   smsLink(phone: string): Promise<void> {
     return this.http.get<void>('shops/sendLink/' + phone).toPromise();
   }

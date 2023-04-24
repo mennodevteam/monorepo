@@ -9,17 +9,23 @@ import { BehaviorSubject } from 'rxjs';
 export class MenuService {
   private menu$: BehaviorSubject<Menu | null>;
   private _baseMenu: Menu | undefined;
+  private _loading = true;
   constructor(private http: HttpClient) {
     this.menu$ = new BehaviorSubject<Menu | null>(null);
     this.loadMenu();
   }
 
   async loadMenu() {
-    this._baseMenu = await this.http.get<Menu>(`menus`).toPromise();
-    if (this._baseMenu) {
-      const m = this.baseMenu;
-      Menu.setRefsAndSort(m, undefined, true, true);
-      this.menu$.next(m);
+    this._loading = true;
+    try {
+      this._baseMenu = await this.http.get<Menu>(`menus`).toPromise();
+      if (this._baseMenu) {
+        const m = this.baseMenu;
+        Menu.setRefsAndSort(m, undefined, true, true);
+        this.menu$.next(m);
+      }
+    } finally {
+      this._loading = false;
     }
   }
 
@@ -28,6 +34,7 @@ export class MenuService {
   }
 
   get menuObservable() {
+    if (!this.menu && !this._loading) this.loadMenu();
     return this.menu$.asObservable();
   }
 
