@@ -73,9 +73,8 @@ export class MenusService {
           if (p.images && p.images[0]) {
             const binary = await fetch(`https://new-app-api.menno.ir/files/${p.images[0]}`);
             const blob = await binary.buffer();
-            
 
-            const savedImage: any = await this.filesService.upload(<any>{ buffer: blob }, p.id);
+            const savedImage: any = await this.filesService.upload(<any>{ buffer: blob }, p.id, prevCode);
             p.images = [savedImage.key];
             p.deletedAt = null;
           }

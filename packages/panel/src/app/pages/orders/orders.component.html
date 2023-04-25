@@ -28,34 +28,47 @@
   <button mat-icon-button routerLink="report" class="show-xs">
     <i class="fa-regular fa-chart-line fa-sm"></i>
   </button>
+  <button mat-icon-button [matMenuTriggerFor]="moreMenu">
+    <i class="fa-ellipsis-vertical fa-regular"></i>
+  </button>
+  <mat-menu #moreMenu="matMenu">
+    <button mat-menu-item (click)="toggleTableFilter()">
+      <i *ngIf="tableFilter" class="fa-solid mat-icon fa-square-check"></i>
+      <i *ngIf="!tableFilter" class="fa-regular mat-icon fa-square"></i>
+      {{ 'dailyOrder.tableFilter' | translate }}
+    </button>
+  </mat-menu>
 </mat-toolbar>
 <nav mat-tab-nav-bar mat-stretch-tabs="false" class="border-bottom" [tabPanel]="tabPanel">
-  <a mat-tab-link (click)="filter = 'all'" [active]="filter === 'all'">
+  <a mat-tab-link (click)="stateFilter = 'all'" [active]="stateFilter === 'all'">
     {{ 'dailyOrder.filter.all' | translate }}
   </a>
-  <a mat-tab-link (click)="filter = 'pending'" [active]="filter === 'pending'">
+  <a mat-tab-link (click)="stateFilter = 'pending'" [active]="stateFilter === 'pending'">
     {{ 'dailyOrder.filter.pending' | translate }}
   </a>
-  <a mat-tab-link (click)="filter = 'complete'" [active]="filter === 'complete'">
+  <a mat-tab-link (click)="stateFilter = 'complete'" [active]="stateFilter === 'complete'">
     {{ 'dailyOrder.filter.complete' | translate }}
   </a>
-  <a mat-tab-link (click)="filter = 'notPayed'" [active]="filter === 'notPayed'">
+  <a mat-tab-link (click)="stateFilter = 'notPayed'" [active]="stateFilter === 'notPayed'">
     {{ 'dailyOrder.filter.notPayed' | translate }}
   </a>
-  <a mat-tab-link (click)="filter = 'payed'" [active]="filter === 'payed'">
+  <a mat-tab-link (click)="stateFilter = 'payed'" [active]="stateFilter === 'payed'">
     {{ 'dailyOrder.filter.payed' | translate }}
   </a>
-  <a mat-tab-link (click)="filter = 'edited'" [active]="filter === 'edited'">
+  <a mat-tab-link (click)="stateFilter = 'edited'" [active]="stateFilter === 'edited'">
     {{ 'dailyOrder.filter.edited' | translate }}
   </a>
-  <a mat-tab-link (click)="filter = 'deleted'" [active]="filter === 'deleted'">
+  <a mat-tab-link (click)="stateFilter = 'deleted'" [active]="stateFilter === 'deleted'">
     {{ 'dailyOrder.filter.deleted' | translate }}
   </a>
 </nav>
 <main class="content-wrapper">
+  <mat-chip-listbox (change)="tableFilter = $event.value" [value]="tableFilter" *ngIf="tableFilter">
+    <mat-chip-option [value]="t.code" *ngFor="let t of tables">{{ t.code }}</mat-chip-option>
+  </mat-chip-listbox>
   <mat-tab-nav-panel #tabPanel>
     <mat-card>
-      <mat-card-content style="overflow-x: auto;">
+      <mat-card-content style="overflow-x: auto">
         <ng-container *ngIf="orders && !loading">
           <orders-table [orders]="orders" (orderClicked)="orderClicked($event)"></orders-table>
           <empty-state

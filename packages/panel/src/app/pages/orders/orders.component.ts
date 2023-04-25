@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Order } from '@menno/types';
 import { BehaviorSubject } from 'rxjs';
 import { OrdersService } from '../../core/services/orders.service';
-import { DailyOrderFilter, DailyOrderListService } from './daily-order-list.service';
+import { DailyOrderFilter, DailyOrderListService, DailyOrderStateFilter } from './daily-order-list.service';
+import { ShopService } from '../../core/services/shop.service';
 
+const LOCAL_STORAGE_TABLE_KEY = 'ui.dailyOrderTable';
 @Component({
   selector: 'orders',
   templateUrl: './orders.component.html',
@@ -13,33 +15,61 @@ import { DailyOrderFilter, DailyOrderListService } from './daily-order-list.serv
 })
 export class OrdersComponent {
   dateControl = new FormControl(this.OS.date);
-  filterControl = new FormControl<DailyOrderFilter>(this.OS.filter);
-  constructor(public OS: DailyOrderListService, private router: Router, private route: ActivatedRoute) {
+  filterGroup = new FormGroup({
+    state: new FormControl(this.OS.filter.state, Validators.required),
+    type: new FormControl(this.OS.filter.type),
+    table: new FormControl(this.OS.filter.table),
+  });
+
+  constructor(
+    public OS: DailyOrderListService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private shopService: ShopService
+  ) {
+    const localStorageTable = localStorage.getItem(LOCAL_STORAGE_TABLE_KEY);
+    if (localStorageTable) {
+      this.tableFilter = localStorageTable;
+    }
+
     this.dateControl.valueChanges.subscribe((value: any) => {
       if (value) {
         this.OS.date = value._d || value || new Date();
         this.setQueryParams();
       }
     });
-    this.filterControl.valueChanges.subscribe((value) => {
+    this.filterGroup.valueChanges.subscribe((value) => {
       if (value) {
-        this.OS.filter = value;
+        if (value.state != undefined) this.OS.filter.state = value.state;
+        if (value.type !== undefined) this.OS.filter.type = value.type || undefined;
+        if (value.table !== undefined) this.OS.filter.table = value.table || undefined;
         this.setQueryParams();
       }
     });
 
     this.route.queryParams.subscribe((params) => {
       this.dateControl.setValue(params['date'] ? new Date(params['date']) : this.OS.today);
-      if (params['filter']) this.filterControl.setValue(params['filter']);
+      const paramFilter = params['filter'];
+      if (paramFilter) this.filterGroup.controls['state'].setValue(paramFilter);
     });
   }
 
-  get filter() {
-    return this.OS.filter;
+  get stateFilter() {
+    return this.OS.filter.state;
   }
 
-  set filter(value: DailyOrderFilter) {
-    this.filterControl.setValue(value);
+  set stateFilter(value: DailyOrderStateFilter) {
+    this.filterGroup.controls['state'].setValue(value);
+  }
+
+  get tableFilter() {
+    return this.OS.filter.table;
+  }
+
+  set tableFilter(value: string | undefined) {
+    if (value) localStorage.setItem(LOCAL_STORAGE_TABLE_KEY, value);
+    else localStorage.removeItem(LOCAL_STORAGE_TABLE_KEY);
+    this.filterGroup.controls['table'].setValue(value || null);
   }
 
   get orders() {
@@ -50,6 +80,10 @@ export class OrdersComponent {
     return this.OS.date;
   }
 
+  get tables() {
+    return this.shopService.shop?.details.tables || [];
+  }
+
   get loading() {
     return this.OS.loading;
   }
@@ -57,7 +91,7 @@ export class OrdersComponent {
   setQueryParams() {
     const qp = JSON.parse(JSON.stringify(this.route.snapshot.queryParams || {}));
     qp.date = `${this.date.getFullYear()}-${this.date.getMonth() + 1}-${this.date.getDate()}`;
-    qp.filter = this.filter;
+    qp.filter = this.stateFilter;
     this.router.navigate([], {
       queryParams: qp,
       replaceUrl: true,
@@ -83,5 +117,10 @@ export class OrdersComponent {
 
   orderClicked(order: Order) {
     this.router.navigateByUrl(`/orders/details/${order.id}`);
+  }
+
+  toggleTableFilter() {
+    if (this.tableFilter) this.tableFilter = undefined;
+    else this.tableFilter = this.tables[0].code;
   }
 }

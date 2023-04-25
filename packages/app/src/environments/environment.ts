@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://api.menno.pro/api',
+  apiUrl: 'https://api.menno.pro',
   apiHost: 'https://api.menno.pro',
-  // apiUrl: 'http://localhost:3000/api',
+  // apiUrl: 'http://localhost:3000',
   // apiHost: 'http://localhost:3000',
   appBaseUrl: 'https://app.menno.pro',
   appDomain: 'menno.pro',

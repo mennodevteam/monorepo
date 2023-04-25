@@ -1,17 +1,24 @@
 import { Injectable } from '@angular/core';
-import { Order, OrderState } from '@menno/types';
+import { Order, OrderState, OrderType } from '@menno/types';
 import { BehaviorSubject, filter, map, take } from 'rxjs';
 import { OrdersService } from '../../core/services/orders.service';
 import { TodayOrdersService } from '../../core/services/today-orders.service';
 
-export type DailyOrderFilter = 'all' | 'pending' | 'complete' | 'notPayed' | 'payed' | 'edited' | 'deleted';
+export type DailyOrderStateFilter = 'all' | 'pending' | 'complete' | 'notPayed' | 'payed' | 'edited' | 'deleted';
+export type DailyOrderFilter = {
+  state: DailyOrderStateFilter;
+  type?: OrderType;
+  table?: string;
+};
 
 @Injectable({
   providedIn: 'root',
 })
 export class DailyOrderListService {
   private _date = this.today;
-  private _filter: DailyOrderFilter = 'all';
+  private _filter: DailyOrderFilter = {
+    state: 'all',
+  };
   private _loading = false;
 
   allOrders: Order[] = [];
@@ -102,28 +109,32 @@ export class DailyOrderListService {
   }
 
   private setData() {
-    switch (this.filter) {
+    let orders: Order[];
+    switch (this.filter.state) {
       case 'all':
-        this.orders.next(this.allOrders.filter((x) => !x.deletedAt));
+        orders = this.allOrders.filter((x) => !x.deletedAt);
         break;
       case 'pending':
-        this.orders.next(this.allOrders.filter((x) => !x.deletedAt && x.state === OrderState.Pending));
+        orders = this.allOrders.filter((x) => !x.deletedAt && x.state === OrderState.Pending);
         break;
       case 'complete':
-        this.orders.next(this.allOrders.filter((x) => !x.deletedAt && x.state === OrderState.Completed));
+        orders = this.allOrders.filter((x) => !x.deletedAt && x.state === OrderState.Completed);
         break;
       case 'notPayed':
-        this.orders.next(this.allOrders.filter((x) => !x.deletedAt && !x.paymentType));
+        orders = this.allOrders.filter((x) => !x.deletedAt && !x.paymentType);
         break;
       case 'payed':
-        this.orders.next(this.allOrders.filter((x) => !x.deletedAt && x.paymentType));
+        orders = this.allOrders.filter((x) => !x.deletedAt && x.paymentType);
         break;
       case 'edited':
-        this.orders.next(this.allOrders.filter((x) => !x.deletedAt));
+        orders = this.allOrders.filter((x) => !x.deletedAt);
         break;
       case 'deleted':
-        this.orders.next(this.allOrders.filter((x) => x.deletedAt));
+        orders = this.allOrders.filter((x) => x.deletedAt);
         break;
     }
+
+    if (this.filter.table) orders = orders.filter((x) => x.details.table === this.filter.table);
+    if (this.filter.type != undefined) orders = orders.filter((x) => x.type === this.filter.type);
   }
 }

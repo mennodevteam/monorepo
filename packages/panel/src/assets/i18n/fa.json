@@ -254,6 +254,7 @@
       "deleted": "حذف شده"
     },
     "emptyState": "هیچ سفارش در این تاریخ ثبت نشده",
+    "tableFilter": "فیلتر میز",
     "report": "گزارشات",
     "advancedFilter": "جستجوی پیشرفته"
   },
@@ -440,6 +441,8 @@
     "helpDownloadNetFrameworkAction": "دانلود .netFramework 4.7.2",
     "helpLoginText": "پس از اجرای برنامه روی دکمه مقابل کلید کنید تا خودکار وارد شود",
     "helpLoginAction": "ورود خودکار",
+    "helpLoginKeyText": "درصورت عدم ورود خودکار در مرحله قبل، توکن زیر را وارد کنید",
+    "helpLoginKeyAction": "کپی کردن",
     "type": "قالب",
     "kitchen": "آشپزخانه",
     "cash": "مشتری",

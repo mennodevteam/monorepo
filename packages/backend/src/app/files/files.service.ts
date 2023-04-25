@@ -23,7 +23,7 @@ export class FilesService {
         key += path;
         if (!key.endsWith('/')) key += '/';
       }
-      key += `${Date.now()}_${name}`;
+      key += `${Date.now()}_${name.replace('/', '_')}`;
       this.client.upload(
         {
           Bucket: process.env.LIARA_BUCKET_NAME,

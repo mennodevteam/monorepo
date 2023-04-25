@@ -29,6 +29,14 @@
           {{ 'printers.helpLoginAction' | translate }}
         </button>
       </mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <p matListItemLine>{{ 'printers.helpLoginKeyText' | translate }}</p>
+        <p matListItemLine class="eng">{{ shop?.id }}</p>
+        <button matListItemMeta mat-button (click)="copyId()" color="primary">
+          {{ 'printers.helpLoginKeyAction' | translate }}
+        </button>
+      </mat-list-item>
     </mat-list>
   </mat-card-content>
 </mat-card>

@@ -4,7 +4,6 @@ import { environment } from 'packages/panel/src/environments/environment';
 import { map } from 'rxjs';
 import { ShopService } from './shop.service';
 
-const BASE_PATH = 'shops';
 const API_PATH = 'files';
 
 @Injectable({
@@ -15,7 +14,7 @@ export class FilesService {
 
   upload(file: File, name: string): Promise<{ key: string; url: string } | undefined> {
     const formData = new FormData();
-    formData.append('path', `${BASE_PATH}/${this.shopsService?.shop?.id}`);
+    formData.append('path', `${this.shopsService?.shop?.code}`);
     formData.append('name', name);
     formData.append('file', file);
     return this.http
