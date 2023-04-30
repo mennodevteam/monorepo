@@ -6,6 +6,7 @@
     "yes": "بله",
     "no": "خیر",
     "currency": "تومان",
+    "all": "همه",
     "add": "ایجاد کردن",
     "status": "وضعیت",
     "finished": "ناموجود",
@@ -255,6 +256,7 @@
     },
     "emptyState": "هیچ سفارش در این تاریخ ثبت نشده",
     "tableFilter": "فیلتر میز",
+    "removeTableFilter": "حذف فیلتر میز",
     "report": "گزارشات",
     "advancedFilter": "جستجوی پیشرفته"
   },

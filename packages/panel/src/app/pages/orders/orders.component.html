@@ -28,7 +28,7 @@
   <button mat-icon-button routerLink="report" class="show-xs">
     <i class="fa-regular fa-chart-line fa-sm"></i>
   </button>
-  <button mat-icon-button [matMenuTriggerFor]="moreMenu">
+  <!-- <button mat-icon-button [matMenuTriggerFor]="moreMenu">
     <i class="fa-ellipsis-vertical fa-regular"></i>
   </button>
   <mat-menu #moreMenu="matMenu">
@@ -37,7 +37,7 @@
       <i *ngIf="!tableFilter" class="fa-regular mat-icon fa-square"></i>
       {{ 'dailyOrder.tableFilter' | translate }}
     </button>
-  </mat-menu>
+  </mat-menu> -->
 </mat-toolbar>
 <nav mat-tab-nav-bar mat-stretch-tabs="false" class="border-bottom" [tabPanel]="tabPanel">
   <a mat-tab-link (click)="stateFilter = 'all'" [active]="stateFilter === 'all'">
@@ -63,9 +63,14 @@
   </a>
 </nav>
 <main class="content-wrapper">
-  <mat-chip-listbox (change)="tableFilter = $event.value" [value]="tableFilter" *ngIf="tableFilter">
+  <mat-chip-listbox (change)="tableFilter = $event.value" [value]="tableFilter" *ngIf="tables && tables.length">
+    <mat-chip-option [value]="null" color="warn" *ngIf="tableFilter">
+      <i class="fa-solid fa-close"></i>
+      {{ 'dailyOrder.removeTableFilter' | translate }}
+    </mat-chip-option>
     <mat-chip-option [value]="t.code" *ngFor="let t of tables">{{ t.code }}</mat-chip-option>
   </mat-chip-listbox>
+  <span spacer-sm></span>
   <mat-tab-nav-panel #tabPanel>
     <mat-card>
       <mat-card-content style="overflow-x: auto">

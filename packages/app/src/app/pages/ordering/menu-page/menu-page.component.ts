@@ -166,8 +166,7 @@ export class MenuPageComponent implements AfterViewInit {
       .afterDismissed()
       .subscribe((table?: ShopTable) => {
         if (table) {
-          let tableText = table.code;
-          if (table.title) tableText += ` (${table.title})`;
+          const tableText = table.code;
           this.basket.details = { ...this.basket.details, table: tableText };
         }
       });

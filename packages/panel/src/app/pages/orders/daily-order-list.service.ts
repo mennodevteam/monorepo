@@ -4,8 +4,16 @@ import { BehaviorSubject, filter, map, take } from 'rxjs';
 import { OrdersService } from '../../core/services/orders.service';
 import { TodayOrdersService } from '../../core/services/today-orders.service';
 
-export type DailyOrderStateFilter = 'all' | 'pending' | 'complete' | 'notPayed' | 'payed' | 'edited' | 'deleted';
+export type DailyOrderStateFilter =
+  | 'all'
+  | 'pending'
+  | 'complete'
+  | 'notPayed'
+  | 'payed'
+  | 'edited'
+  | 'deleted';
 export type DailyOrderFilter = {
+  date: Date;
   state: DailyOrderStateFilter;
   type?: OrderType;
   table?: string;
@@ -15,8 +23,8 @@ export type DailyOrderFilter = {
   providedIn: 'root',
 })
 export class DailyOrderListService {
-  private _date = this.today;
   private _filter: DailyOrderFilter = {
+    date: this.today,
     state: 'all',
   };
   private _loading = false;
@@ -40,12 +48,7 @@ export class DailyOrderListService {
   }
 
   get date() {
-    return this._date;
-  }
-
-  set date(value: Date) {
-    this._date = value;
-    this.loadData();
+    return this._filter.date;
   }
 
   get filter() {
@@ -68,9 +71,13 @@ export class DailyOrderListService {
     return this.date.toDateString() === date.toDateString();
   }
 
-  set filter(value) {
-    this._filter = value;
-    this.setData();
+  setFilter(value: Partial<DailyOrderFilter>) {
+    this._filter = { ...this.filter, ...value };
+    if (value.date) {
+      this.loadData();
+    } else {
+      this.setData();
+    }
   }
 
   async loadData() {
@@ -136,5 +143,6 @@ export class DailyOrderListService {
 
     if (this.filter.table) orders = orders.filter((x) => x.details.table === this.filter.table);
     if (this.filter.type != undefined) orders = orders.filter((x) => x.type === this.filter.type);
+    this.orders.next(orders);
   }
 }
