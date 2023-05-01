@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Shop, ThemeMode } from '@menno/types';
+import { Plugin, Shop, ThemeMode } from '@menno/types';
 import { BehaviorSubject } from 'rxjs';
 import { ThemeService } from './theme.service';
 import { PwaService } from './pwa.service';
@@ -66,6 +66,10 @@ export class ShopService {
 
   get shopObservable() {
     return this._shop.asObservable();
+  }
+
+  hasOrderingPlugin() {
+    return this.shop?.plugins?.plugins ? this.shop?.plugins?.plugins.indexOf(Plugin.Ordering) > -1 : false;
   }
 
   get shop() {

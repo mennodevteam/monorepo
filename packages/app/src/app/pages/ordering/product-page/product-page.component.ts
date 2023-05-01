@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Product } from '@menno/types';
 import { BasketService } from '../../../core/services/basket.service';
 import { MenuService } from '../../../core/services/menu.service';
+import { ShopService } from '../../../core/services/shop.service';
 
 @Component({
   selector: 'product-page',
@@ -15,7 +16,7 @@ export class ProductPageComponent {
   @ViewChild('selectButtonRow') selectButtonRow: ElementRef;
   initCount = 0;
 
-  constructor(private menuService: MenuService, private route: ActivatedRoute, public basket: BasketService) {
+  constructor(private menuService: MenuService, private route: ActivatedRoute, public basket: BasketService, public shopService: ShopService) {
     this.route.params.subscribe((params) => {
       this.product = this.menuService.getProductById(params['id']);
 

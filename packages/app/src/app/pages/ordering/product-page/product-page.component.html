@@ -35,22 +35,38 @@
     </mat-toolbar-row>
     <span #selectButtonRow></span>
   </mat-toolbar>
-  <button mat-stroked-button *ngIf="!product?._orderItem?.quantity" (click)="plus()" class="add-button">
-    {{ 'app.select' | translate }}
-  </button>
 
-  <div style="height: 72px"></div>
-
-  <mat-toolbar class="actions background mat-elevation-z5">
-    <button mat-stroked-button color="primary" goBack>
-      {{ 'productPage.backMenu' | translate }}
-    </button>
-    <span spacer></span>
-    <button flex mat-raised-button *ngIf="product?._orderItem?.quantity" color="primary" routerLink="/basket" [disabled]="!basket.items.length">
-      {{ 'productPage.complete' | translate }}
-    </button>
-    <button flex mat-raised-button *ngIf="!product?._orderItem?.quantity" color="primary" (click)="plus(true)">
+  <ng-container *ngIf="shopService.hasOrderingPlugin()">
+    <button mat-stroked-button *ngIf="!product?._orderItem?.quantity" (click)="plus()" class="add-button">
       {{ 'app.select' | translate }}
     </button>
-  </mat-toolbar>
+
+    <div style="height: 72px"></div>
+
+    <mat-toolbar class="actions background mat-elevation-z5">
+      <button mat-stroked-button color="primary" goBack>
+        {{ 'productPage.backMenu' | translate }}
+      </button>
+      <span spacer></span>
+      <button
+        flex
+        mat-raised-button
+        *ngIf="product?._orderItem?.quantity"
+        color="primary"
+        routerLink="/basket"
+        [disabled]="!basket.items.length"
+      >
+        {{ 'productPage.complete' | translate }}
+      </button>
+      <button
+        flex
+        mat-raised-button
+        *ngIf="!product?._orderItem?.quantity"
+        color="primary"
+        (click)="plus(true)"
+      >
+        {{ 'app.select' | translate }}
+      </button>
+    </mat-toolbar>
+  </ng-container>
 </main>

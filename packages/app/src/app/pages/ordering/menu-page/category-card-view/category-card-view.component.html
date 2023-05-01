@@ -20,6 +20,7 @@
         </mat-card-title-group>
       </mat-card-header>
       <mat-card-actions class="price-section">
+        <span flex *ngIf="!shopService.hasOrderingPlugin()"></span>
         <span class="price-section__text">
           <span class="price-section__text__old error-text" *ngIf="Product.hasDiscount(product)">
             {{ Product.realPrice(product) | menuCurrency }}
@@ -32,27 +33,29 @@
             {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
           </discount-badge>
         </ng-container>
-        <span flex></span>
 
-        <count-selector
-          *ngIf="product._orderItem?.quantity"
-          [count]="product._orderItem?.quantity || 0"
-          (plusClick)="plus(product, $event)"
-          (minusClick)="minus(product, $event)"
-        ></count-selector>
-        <button
-          mat-stroked-button
-          (click)="plus(product, $event)"
-          *ngIf="!product._orderItem?.quantity"
-          [disabled]="product.status === Status.Blocked"
-        >
-          <span *ngIf="product.status === Status.Blocked">
-            {{ 'app.finished' | translate }}
-          </span>
-          <span class="error-text" *ngIf="product.status === Status.Active">
-            {{ 'app.add' | translate }}
-          </span>
-        </button>
+        <ng-container *ngIf="shopService.hasOrderingPlugin()">
+          <span flex></span>
+          <count-selector
+            *ngIf="product._orderItem?.quantity"
+            [count]="product._orderItem?.quantity || 0"
+            (plusClick)="plus(product, $event)"
+            (minusClick)="minus(product, $event)"
+          ></count-selector>
+          <button
+            mat-stroked-button
+            (click)="plus(product, $event)"
+            *ngIf="!product._orderItem?.quantity"
+            [disabled]="product.status === Status.Blocked"
+          >
+            <span *ngIf="product.status === Status.Blocked">
+              {{ 'app.finished' | translate }}
+            </span>
+            <span class="error-text" *ngIf="product.status === Status.Active">
+              {{ 'app.add' | translate }}
+            </span>
+          </button>
+        </ng-container>
       </mat-card-actions>
     </mat-card>
     <span spacer *ngIf="!last"></span>
