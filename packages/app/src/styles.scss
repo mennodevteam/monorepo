@@ -77,6 +77,10 @@ mat-toolbar {
   color: var(--md-sys-color-on-tertiary) !important;
 }
 
+@media (prefers-color-scheme: dark) {
+  @import "./config/theme.dark.scss";
+}
+
 [mat-button],
 [mat-raised-button],
 [mat-stroked-button],

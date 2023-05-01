@@ -68,6 +68,10 @@ $app-typography: mat.define-typography-config(
       typography: $app-typography,
     )
   );
+
+  $primary: mat.define-palette($md-primary-palette, 800);
+  $accent: mat.define-palette($md-accent-palette, 800);
+  $warn: mat.define-palette($md-warn-palette, 800);
   $dark-theme: mat.define-dark-theme(
     (
       color: (
