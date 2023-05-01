@@ -1,7 +1,19 @@
 <div class="container">
-  <mat-button-toggle-group [value]="POS.type" [disabled]="POS.saving || !!POS.editOrder" (valueChange)="POS.setType($event)">
+  <mat-button-toggle-group
+    [value]="POS.type"
+    [disabled]="POS.saving || !!POS.editOrder"
+    (valueChange)="POS.setType($event)"
+  >
     <mat-button-toggle [value]="OrderType.DineIn">{{ 'orderType.dineIn' | translate }}</mat-button-toggle>
     <mat-button-toggle [value]="OrderType.Takeaway">{{ 'orderType.takeaway' | translate }}</mat-button-toggle>
     <mat-button-toggle [value]="OrderType.Delivery">{{ 'orderType.delivery' | translate }}</mat-button-toggle>
   </mat-button-toggle-group>
+  <mat-nav-list>
+    <a mat-list-item (click)="selectTable()">
+      <span matListItemTitle>{{ 'pos.table' | translate }}</span>
+      <span matListItemLine>
+        {{ POS.details?.table }}
+      </span>
+    </a>
+  </mat-nav-list>
 </div>

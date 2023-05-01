@@ -17,6 +17,7 @@ import { MenuService } from './menu.service';
 import { OrdersService } from './orders.service';
 import { PrinterService } from './printer.service';
 import { TodayOrdersService } from './today-orders.service';
+import { ShopService } from './shop.service';
 
 @Injectable({
   providedIn: 'root',
@@ -32,7 +33,8 @@ export class PosService extends OrderDto {
     private snack: MatSnackBar,
     private translate: TranslateService,
     private printer: PrinterService,
-    private todayOrders: TodayOrdersService
+    private todayOrders: TodayOrdersService,
+    private shopService: ShopService
   ) {
     super();
     this.clear();
@@ -46,6 +48,9 @@ export class PosService extends OrderDto {
     this.menu = this.menuService.baseMenu;
     this.type = val;
     Menu.setRefsAndSort(this.menu, this.type, true);
+    if (val === OrderType.DineIn && this.shopService.shop?.details?.tables?.length) {
+      this.details = { ...this.details, table: this.shopService.shop.details.tables[0].code };
+    }
   }
 
   plus(productId: string) {
@@ -112,8 +117,8 @@ export class PosService extends OrderDto {
     this.note = undefined;
     this.address = undefined;
     this.discountCoupon = undefined;
-    this.type = OrderType.DineIn;
     this.editOrder = undefined;
+    this.setType(OrderType.DineIn);
   }
 
   get items(): OrderItem[] {

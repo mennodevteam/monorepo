@@ -61,6 +61,7 @@ import { MemberAutocompleteComponent } from './components/member-autocomplete/me
 import { SortDialogComponent } from './dialogs/sort-dialog/sort-dialog.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { TableSelectorDialogComponent } from './dialogs/table-selector-dialog/table-selector-dialog.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     OrderPaymentPipe,
     StopPropagationDirective,
     ManualDiscountAndCostDialogComponent,
+    TableSelectorDialogComponent,
     MemberDialogComponent,
     MemberSelectDialogComponent,
     SettlementDialogComponent,
@@ -146,6 +148,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     AlertDialogComponent,
     SelectDialogComponent,
     ManualDiscountAndCostDialogComponent,
+    TableSelectorDialogComponent,
     MemberDialogComponent,
     MemberSelectDialogComponent,
     SettlementDialogComponent,
