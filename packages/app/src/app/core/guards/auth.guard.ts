@@ -38,9 +38,11 @@ export class AuthGuard implements CanActivate {
   private needLogin() {
     const t = this.menuService.type;
     if (!this.shopService.hasOrderingPlugin()) return false;
-    if (!this.shopService.shop?.appConfig?.disableOrdering) return false;
-    if (t != undefined && this.shopService.shop?.appConfig?.requiredPayment.indexOf(t) > -1) return true;
-    if (t != undefined && this.shopService.shop?.appConfig?.requiredRegister.indexOf(t) > -1) return true;
+    if (this.shopService.shop?.appConfig?.requiredPayment) {
+      if (this.shopService.shop?.appConfig?.disableOrdering) return false;
+      if (t != undefined && this.shopService.shop?.appConfig?.requiredPayment.indexOf(t) > -1) return true;
+      if (t != undefined && this.shopService.shop?.appConfig?.requiredRegister.indexOf(t) > -1) return true;
+    }
     return false;
   }
 }

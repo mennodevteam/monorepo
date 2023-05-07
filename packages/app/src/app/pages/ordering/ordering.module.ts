@@ -33,6 +33,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { ShopTablesBottomSheetComponent } from './shop-tables-bottom-sheet/shop-tables-bottom-sheet.component';
 import { CategoryCompactViewComponent } from './menu-page/category-compact-view/category-compact-view.component';
 import { OrderCompleteComponent } from './order-complete/order-complete.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { OrderCompleteComponent } from './order-complete/order-complete.componen
     MatInputModule,
     SharedModule,
     MatButtonModule,
+    MatIconModule,
     MatListModule,
     MatToolbarModule,
     MatButtonToggleModule,

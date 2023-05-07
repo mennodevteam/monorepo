@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { LoginBottomSheetComponent } from './dialogs/login-bottom-sheet/login-bottom-sheet.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -34,6 +35,7 @@ import { OrderTypePipe } from './pipes/order-type.pipe';
     MatInputModule,
     MatSnackBarModule,
     MatAutocompleteModule,
+    MatIconModule,
   ],
   exports: [
     GoBackDirective,
@@ -44,6 +46,7 @@ import { OrderTypePipe } from './pipes/order-type.pipe';
     TranslateModule,
     CountSelectorComponent,
     MatAutocompleteModule,
+    MatIconModule,
   ],
   providers: [DecimalPipe],
 })
