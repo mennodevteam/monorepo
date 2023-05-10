@@ -3,8 +3,7 @@ import { AuthService } from '../auth/auth.service';
 import { Roles } from '../auth/roles.decorators';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
-import { Role } from '../core/types/role.enum';
-import { Address, DeliveryArea, Shop } from '@menno/types';
+import { Address, DeliveryArea, Shop, UserRole } from '@menno/types';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -19,7 +18,7 @@ export class DeliveryAreasController {
   ) {}
 
   @Get()
-  @Roles(Role.Panel)
+  @Roles(UserRole.Panel)
   async getDeliveryAreas(@LoginUser() user: AuthPayload) {
     const shop = await this.auth.getPanelUserShop(user, ['deliveryAreas']);
     return shop?.deliveryAreas;

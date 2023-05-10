@@ -8,7 +8,6 @@ import {
 import { ShopUser, User, UserRole } from '@menno/types';
 import { JwtService } from '@nestjs/jwt';
 import { AuthPayload } from '../core/types/auth-payload';
-import { Role } from '../core/types/role.enum';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as md5 from 'md5';
@@ -56,7 +55,7 @@ export class AuthService {
     return savedUser;
   }
 
-  private login(user: User, role: Role, expireTokenIn = '15d') {
+  private login(user: User, role: UserRole, expireTokenIn = '15d') {
     const payload: AuthPayload = {
       id: user.id,
       mobilePhone: user.mobilePhone,
@@ -73,7 +72,7 @@ export class AuthService {
   }
 
   async loginApp(user: User) {
-    return this.login(user, Role.App, '90d');
+    return this.login(user, UserRole.App, '90d');
   }
 
   async sendToken(mobilePhone: string) {
@@ -104,13 +103,13 @@ export class AuthService {
   }
 
   async loginPanel(user: User) {
-    return this.login(user, Role.Panel);
+    return this.login(user, UserRole.Panel);
   }
 
   async loginAdmin(user: User) {
     console.log(user);
     if (user.role !== UserRole.Admin) throw new HttpException('forbidden', HttpStatus.FORBIDDEN);
-    return this.login(user, Role.Admin);
+    return this.login(user, UserRole.Admin);
   }
 
   async getUserData(user: AuthPayload) {

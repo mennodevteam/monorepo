@@ -1,13 +1,12 @@
-import { Address, DeliveryArea, Shop, User } from '@menno/types';
+import { Address, DeliveryArea, Shop, User, UserRole } from '@menno/types';
 import { Body, Controller, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 import { Roles } from '../auth/roles.decorators';
-import { Role } from '../core/types/role.enum';
 
-@Roles(Role.App)
+@Roles(UserRole.App)
 @Controller('addresses')
 export class AddressesController {
   constructor(

@@ -1,4 +1,4 @@
-import { MemberTag } from '@menno/types';
+import { MemberTag, UserRole } from '@menno/types';
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -6,10 +6,9 @@ import { AuthService } from '../auth/auth.service';
 import { Roles } from '../auth/roles.decorators';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
-import { Role } from '../core/types/role.enum';
 
 @Controller('tags')
-@Roles(Role.Panel)
+@Roles(UserRole.Panel)
 export class TagsController {
   constructor(
     private auth: AuthService,

@@ -1,4 +1,4 @@
-import { FilterOrderDto, ManualSettlementDto, Order, OrderDto, OrderReportDto, User } from '@menno/types';
+import { FilterOrderDto, ManualSettlementDto, Order, OrderDto, OrderReportDto, User, UserRole } from '@menno/types';
 import {
   Body,
   Controller,
@@ -16,7 +16,6 @@ import { Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
-import { Role } from '../core/types/role.enum';
 import { Roles } from '../auth/roles.decorators';
 import { OrdersService } from './orders.service';
 
@@ -33,11 +32,11 @@ export class OrdersController {
   async save(@Body() dto: OrderDto, @LoginUser() user: AuthPayload) {
     if (user) {
       dto.creatorId = user.id;
-      if (user.role === Role.App) {
+      if (user.role === UserRole.App) {
         dto.customerId = user.id;
         delete dto.manualDiscount;
         delete dto.manualCost;
-      } else if (user.role === Role.Panel) {
+      } else if (user.role === UserRole.Panel) {
         const shop = await this.auth.getPanelUserShop(user);
         if (!shop) throw new HttpException('no shop found', HttpStatus.NOT_FOUND);
         dto.shopId = shop.id;
@@ -59,7 +58,7 @@ export class OrdersController {
   }
 
   @Get()
-  @Roles(Role.App)
+  @Roles(UserRole.App)
   getMyOrders(@LoginUser() user: AuthPayload, @Query('skip', ParseIntPipe) skip = 0) {
     return this.ordersRepo.find({
       take: 25,
@@ -75,7 +74,7 @@ export class OrdersController {
   }
 
   @Get(':id')
-  @Roles(Role.App)
+  @Roles(UserRole.App)
   getOrderDetailsApp(@Param('id') id: string) {
     return this.ordersRepo.findOne({
       where: {
@@ -86,7 +85,7 @@ export class OrdersController {
   }
 
   @Get('panel/:id')
-  @Roles(Role.Panel)
+  @Roles(UserRole.Panel)
   getOrderDetailsPanel(@Param('id') id: string) {
     return this.ordersRepo.findOne({
       where: {
@@ -96,7 +95,7 @@ export class OrdersController {
     });
   }
 
-  @Roles(Role.Panel)
+  @Roles(UserRole.Panel)
   @Get('changeState/:id/:state')
   async changeState(
     @Param('id') id: string,
@@ -112,7 +111,7 @@ export class OrdersController {
     return { ...order, ...update };
   }
 
-  @Roles(Role.Panel)
+  @Roles(UserRole.Panel)
   @Put('details/:id')
   async updateOrderDetails(
     @LoginUser() user: AuthPayload,
@@ -136,7 +135,7 @@ export class OrdersController {
   }
 
   @Post('report')
-  @Roles(Role.Panel)
+  @Roles(UserRole.Panel)
   async report(@Body() body: OrderReportDto, @LoginUser() user: AuthPayload) {
     const shop = await this.auth.getPanelUserShop(user);
     body.shopId = shop.id;

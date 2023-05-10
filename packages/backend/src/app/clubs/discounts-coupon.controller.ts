@@ -1,4 +1,4 @@
-import { DiscountCoupon, FilterDiscountCouponsDto } from '@menno/types';
+import { DiscountCoupon, FilterDiscountCouponsDto, UserRole } from '@menno/types';
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -6,7 +6,6 @@ import { AuthService } from '../auth/auth.service';
 import { Roles } from '../auth/roles.decorators';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
-import { Role } from '../core/types/role.enum';
 import { ClubsService } from './clubs.service';
 
 @Controller('discountCoupons')
@@ -18,7 +17,7 @@ export class DiscountsCouponController {
   ) {}
 
   @Post()
-  @Roles(Role.Panel)
+  @Roles(UserRole.Panel)
   async save(@Body() discountsCoupon: DiscountCoupon, @LoginUser() user: AuthPayload): Promise<DiscountCoupon> {
     const { club } = await this.auth.getPanelUserShop(user, ['club']);
     discountsCoupon.club = club;

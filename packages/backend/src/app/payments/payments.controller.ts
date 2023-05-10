@@ -8,6 +8,7 @@ import {
   Shop,
   SmsAccount,
   User,
+  UserRole,
 } from '@menno/types';
 import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Req, Response } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -20,7 +21,6 @@ import { AuthPayload } from '../core/types/auth-payload';
 import { OrdersService } from '../orders/orders.service';
 import { PaymentsService } from './payments.service';
 import { Roles } from '../auth/roles.decorators';
-import { Role } from '../core/types/role.enum';
 import { environment } from '../../environments/environment';
 @Controller('payments')
 export class PaymentsController {
@@ -40,7 +40,7 @@ export class PaymentsController {
     private ordersRepository: Repository<Order>
   ) {}
 
-  @Roles(Role.App)
+  @Roles(UserRole.App)
   @Post('addOrder')
   async addOrder(@LoginUser() user: AuthPayload, @Body() dto: OrderDto, @Req() req: Request) {
     const shop: Shop = await this.shopsRepository.findOne({
@@ -67,7 +67,7 @@ export class PaymentsController {
     );
   }
 
-  @Roles(Role.Panel)
+  @Roles(UserRole.Panel)
   @Get('chargeSmsAccount/:amount')
   async chargeSmsAccount(
     @LoginUser() user: AuthPayload,
@@ -93,7 +93,7 @@ export class PaymentsController {
     );
   }
 
-  @Roles(Role.App)
+  @Roles(UserRole.App)
   @Get('payOrder/:orderId')
   async payOrder(@LoginUser() user: AuthPayload, @Param('orderId') orderId: string, @Req() req: Request) {
     const order = await this.ordersRepository.findOne({

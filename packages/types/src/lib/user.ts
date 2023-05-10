@@ -2,8 +2,9 @@ import { GenderType } from './gender-type.enum';
 import { Member } from './member';
 
 export enum UserRole {
-  Shop,
   Admin,
+  Panel,
+  App,
 }
 
 export class User {

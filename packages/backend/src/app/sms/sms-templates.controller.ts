@@ -1,4 +1,4 @@
-import { SmsTemplate } from '@menno/types';
+import { SmsTemplate, UserRole } from '@menno/types';
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -7,7 +7,6 @@ import { Public } from '../auth/public.decorator';
 import { Roles } from '../auth/roles.decorators';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
-import { Role } from '../core/types/role.enum';
 import { SmsTemplatesService } from './sms-templates.service';
 
 @Controller('smsTemplates')
@@ -20,7 +19,7 @@ export class SmsTemplatesController {
   ) {}
 
   @Post()
-  @Roles(Role.Panel)
+  @Roles(UserRole.Panel)
   async save(@Body() smsTemplate: SmsTemplate, @LoginUser() user: AuthPayload): Promise<SmsTemplate> {
     const { smsAccount } = await this.auth.getPanelUserShop(user, ['smsAccount']);
 

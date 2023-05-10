@@ -1,4 +1,4 @@
-import { Plugin, Shop, Sms } from '@menno/types';
+import { Plugin, Shop, Sms, UserRole } from '@menno/types';
 import { Body, Controller, Get, Param, Put, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -7,7 +7,6 @@ import { Public } from '../auth/public.decorator';
 import { Roles } from '../auth/roles.decorators';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
-import { Role } from '../core/types/role.enum';
 import { ShopsService } from './shops.service';
 
 @Controller('shops')
@@ -20,7 +19,7 @@ export class ShopsController {
   ) {}
 
   @Get()
-  @Roles(Role.Panel)
+  @Roles(UserRole.Panel)
   findOne(@LoginUser() user: AuthPayload): Promise<Shop> {
     return this.auth.getPanelUserShop(user, [
       'region',
@@ -34,7 +33,7 @@ export class ShopsController {
   }
 
   @Put()
-  @Roles(Role.Panel)
+  @Roles(UserRole.Panel)
   async edit(@Body() dto: Shop, @LoginUser() user: AuthPayload): Promise<Shop> {
     const shop = await this.auth.getPanelUserShop(user);
     dto.id = shop.id;
@@ -42,7 +41,7 @@ export class ShopsController {
   }
 
   @Get('sendLink/:mobile')
-  @Roles(Role.Panel)
+  @Roles(UserRole.Panel)
   async sendLink(@Param('mobile') mobile: string, @LoginUser() user: AuthPayload): Promise<Sms> {
     const shop = await this.auth.getPanelUserShop(user);
     return this.shopsService.sendShopLink(shop.id, mobile);

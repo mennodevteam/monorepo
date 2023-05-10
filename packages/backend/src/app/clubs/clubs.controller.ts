@@ -1,4 +1,4 @@
-import { Club, ClubConfig, User } from '@menno/types';
+import { Club, ClubConfig, User, UserRole } from '@menno/types';
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -7,7 +7,6 @@ import { Public } from '../auth/public.decorator';
 import { Roles } from '../auth/roles.decorators';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
-import { Role } from '../core/types/role.enum';
 import { ClubsService } from './clubs.service';
 
 @Controller('clubs')
@@ -20,7 +19,7 @@ export class ClubsController {
   ) {}
 
   @Post('config')
-  @Roles(Role.Panel)
+  @Roles(UserRole.Panel)
   async saveConfig(@Body() config: ClubConfig, @LoginUser() user: AuthPayload): Promise<Club> {
     const { club } = await this.auth.getPanelUserShop(user, ['club']);
     club.config = config;
@@ -28,14 +27,14 @@ export class ClubsController {
   }
 
   @Get()
-  @Roles(Role.Panel)
+  @Roles(UserRole.Panel)
   async findConfig(@LoginUser() user: User): Promise<Club> {
     const { club } = await this.auth.getPanelUserShop(user, ['club']);
     return club;
   }
 
   @Get('join/:clubId')
-  @Roles(Role.App)
+  @Roles(UserRole.App)
   async joinClub(@Param('clubId') clubId: string, @LoginUser() user: AuthPayload) {
     this.clubsService.join(clubId, user.id);
   }

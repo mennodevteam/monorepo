@@ -1,13 +1,12 @@
-import { ProductCategory } from '@menno/types';
+import { ProductCategory, UserRole } from '@menno/types';
 import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Roles } from '../auth/roles.decorators';
-import { Role } from '../core/types/role.enum';
 import { MenusService } from './menu.service';
 
 @Controller('productCategories')
-@Roles(Role.Panel)
+@Roles(UserRole.Panel)
 export class ProductCategoriesController {
   constructor(
     private menuService: MenusService,
