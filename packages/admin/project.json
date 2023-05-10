@@ -17,7 +17,7 @@
         "assets": ["packages/admin/src/favicon.ico", "packages/admin/src/assets"],
         "styles": ["packages/admin/src/styles.scss"],
         "stylePreprocessorOptions": {
-          "includePaths": ["packages/panel/src/theme/"]
+          "includePaths": ["packages/admin/src/theme/"]
         },
         "scripts": ["node_modules/persian-date/dist/persian-date.min.js"]
       },
