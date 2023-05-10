@@ -12,7 +12,7 @@
       <button
         stopPropagation
         mat-flat-button
-        *ngIf="!order.customer"
+        *ngIf="!order.customer?.mobilePhone"
         class="add-customer"
         [disabled]="order._settingCustomer"
         (click)="openSelectMember(order)"
@@ -21,7 +21,7 @@
         <span spacer-sm></span>
         {{ 'ordersTable.addCustomer' | translate }}
       </button>
-      <span *ngIf="order.customer">
+      <span *ngIf="order.customer?.mobilePhone">
         {{ User.fullName(order.customer) }}
         <a
           stopPropagation

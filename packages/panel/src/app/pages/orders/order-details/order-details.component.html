@@ -299,17 +299,17 @@
               </mat-list-item>
             </ng-container>
             <mat-list-item lines="1">
-              <ng-container *ngIf="order.customer">
+              <ng-container *ngIf="order.customer && order.customer.mobilePhone">
                 <b matListItemTitle>
                   <i class="fa-solid fa-user"></i>
                   {{ User.fullName(order.customer) }}
                 </b>
                 <span matListItemLine>{{ order.customer.mobilePhone }}</span>
               </ng-container>
-              <button *ngIf="order.customer" mat-icon-button matListItemMeta color="primary">
+              <button *ngIf="order.customer?.mobilePhone" mat-icon-button matListItemMeta color="primary">
                 <i class="fas fa-circle-info"></i>
               </button>
-              <ng-container *ngIf="!order.customer">
+              <ng-container *ngIf="!order.customer?.mobilePhone">
                 <b matListItemTitle>
                   <i class="fa-solid fa-user"></i>
                   {{ 'ordersTable.customer' | translate }}
@@ -317,7 +317,7 @@
                 <span matListItemLine>{{ 'app.notSet' | translate }}</span>
               </ng-container>
               <button
-                *ngIf="!order.customer"
+                *ngIf="!order.customer?.mobilePhone"
                 mat-icon-button
                 matListItemMeta
                 color="primary"

@@ -485,7 +485,7 @@ export class OrdersService {
 
   async setCustomer(orderId: string, memberId: string) {
     const order = await this.ordersRepo.findOne({ where: { id: orderId }, relations: ['customer'] });
-    if (order?.customer) throw new HttpException('order has customer', HttpStatus.CONFLICT);
+    if (order?.customer?.mobilePhone) throw new HttpException('order has customer', HttpStatus.CONFLICT);
     const member = await this.membersRepo.findOne({ where: { id: memberId }, relations: ['user'] });
     if (order && member)
       await this.ordersRepo.update(order.id, {
