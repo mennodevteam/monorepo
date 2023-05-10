@@ -1,0 +1,32 @@
+@use "@angular/material" as mat;
+
+$app-primary: mat.define-palette(mat.$red-palette);
+$app-accent: mat.define-palette(mat.$amber-palette, 300);
+$app-warn: mat.define-palette(mat.$red-palette);
+
+$primary: mat.get-color-from-palette($app-primary);
+$accent: mat.get-color-from-palette($app-accent);
+$warn: mat.get-color-from-palette($app-warn);
+
+$app-form-primary: mat.define-palette(mat.$blue-palette);
+$app-form-accent: mat.define-palette(mat.$green-palette, A700);
+$app-form-warn: mat.define-palette(mat.$red-palette);
+
+$form-primary: mat.get-color-from-palette($app-form-primary);
+$form-accent: mat.get-color-from-palette($app-form-accent);
+$form-warn: mat.get-color-from-palette($app-form-warn);
+
+$gray: #757575;
+$gray-l1: #bdbdbd;
+$gray-l2: #e0e0e0;
+$background: #f5f5f5;
+$border-color: rgba(0, 0, 0, 0.12);
+$dark-background: #1c212d;
+
+$green: #00c853;
+$yellow: #fdd835;
+$red: #f44336;
+$blue-gray: #90a4ae;
+$blue: #2196f3;
+
+$border: 1px solid $border-color;

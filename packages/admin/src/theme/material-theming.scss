@@ -1,0 +1,89 @@
+@use "@angular/material" as mat;
+@import "theme.scss";
+
+$app-typography: mat.define-typography-config(
+  $font-family: "IRANSans",
+);
+
+$app-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $app-primary,
+      accent: $app-accent,
+      warn: $app-warn,
+    ),
+    typography: $app-typography,
+  )
+);
+
+$app-dark-theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: $app-primary,
+      accent: $app-accent,
+      warn: $app-warn,
+    ),
+    typography: $app-typography,
+  )
+);
+
+$app-form-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $app-form-primary,
+      accent: $app-form-accent,
+      warn: $app-form-warn,
+    ),
+    typography: $app-typography,
+  )
+);
+
+@include mat.core();
+
+@include mat.all-component-themes($app-theme);
+
+.dark-theme {
+  @include mat.all-component-colors($app-dark-theme);
+}
+
+.form-theme {
+  @include mat.all-component-colors($app-form-theme);
+}
+
+@mixin mix-app-theme($app-theme) {
+  $primary: map-get($app-theme, primary);
+  $accent: map-get($app-theme, accent);
+
+  mat-button-toggle-group {
+    .mat-button-toggle {
+      font-family: inherit;
+      flex: 1;
+    }
+
+    .mat-button-toggle-checked {
+      background-color: mat.get-color-from-palette($primary) !important;
+      color: mat.get-color-from-palette($primary, default-contrast) !important;
+    }
+
+    &[color="accent"] .mat-button-toggle-checked {
+      background-color: mat.get-color-from-palette($accent) !important;
+      color: mat.get-color-from-palette($accent, default-contrast) !important;
+    }
+  }
+
+  .mat-button-toggle-label-content {
+    line-height: 36px !important;
+  }
+
+  .mat-button-toggle-group {
+    height: 36px;
+  }
+
+  .mat-step-header .mat-step-icon-state-edit,
+  .mat-step-header .mat-step-icon-selected {
+    background-color: mat.get-color-from-palette($accent);
+    color: mat.get-color-from-palette($accent, default-contrast);
+  }
+}
+
+@include mix-app-theme($app-theme);

@@ -25,6 +25,13 @@ export class AuthController {
   }
 
   @Public()
+  @UseGuards(PanelLocalAuthGuard)
+  @Post('login/admin')
+  async loginAdmin(@Request() req) {
+    return this.auth.loginAdmin(req.user);
+  }
+
+  @Public()
   @UseGuards(AppLocalAuthGuard)
   @Post('login/app')
   async loginApp(@Request() req) {

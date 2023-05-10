@@ -1,0 +1,30 @@
+@import "theme.scss";
+
+mat-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 501;
+  height: 64px;
+}
+
+#add-order {
+  border-radius: 40px;
+  height: 32px;
+  background-color: black;
+  color: white;
+  padding: 0 8px;
+}
+
+#logo {
+  height: 64px;
+}
+
+#user-button {
+  border: 1px solid $border-color;
+
+  img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+  }
+}

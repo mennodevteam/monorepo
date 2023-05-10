@@ -1,6 +1,11 @@
 import { GenderType } from './gender-type.enum';
 import { Member } from './member';
 
+export enum UserRole {
+  Shop,
+  Admin,
+}
+
 export class User {
   id: string;
   username: string;
@@ -14,7 +19,7 @@ export class User {
   birthDate: Date;
   marriageDate: Date;
   businessId: string;
-  role: number;
+  role: UserRole;
   extraInfo: any;
   instagram: string;
   localPhone: string;

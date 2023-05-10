@@ -1,0 +1,64 @@
+@use "@angular/material" as mat;
+
+@import "assets/fonts/iransans/iransans.scss";
+@import "assets/fonts/fontawesome/scss/fontawesome.scss";
+@import "assets/fonts/fontawesome/scss/regular.scss";
+@import "assets/fonts/fontawesome/scss/brands.scss";
+@import "assets/fonts/fontawesome/scss/solid.scss";
+
+@import "theming-class.scss";
+@import "material-theming.scss";
+
+html[dir="rtl"] {
+  .mat-button-ripple {
+    position: absolute;
+  }
+
+  i.rtl-dir {
+    transform: scaleX(-1);
+  }
+}
+
+html,
+body {
+  min-height: 100vh;
+}
+
+body {
+  overflow-y: scroll;
+  margin: 0;
+  font-family: "IRANSans";
+  background-color: $background;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+.spacer,
+*[spacer] {
+  padding: 8px;
+  flex: none !important;
+}
+
+.spacer-2x,
+*[spacer-2x] {
+  padding: 16px;
+  flex: none !important;
+}
+
+.spacer-sm,
+*[spacer-sm] {
+  padding: 4px;
+  flex: none !important;
+}
+
+[flex] {
+  flex: 1;
+}
+
+*[hidden] {
+  display: none !important;
+}

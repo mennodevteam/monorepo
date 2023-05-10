@@ -1,0 +1,45 @@
+@import "theme.scss";
+
+.green {
+  color: $green !important;
+}
+
+.yellow {
+  color: $yellow !important;
+}
+
+.red {
+  color: $red !important;
+}
+
+.blue-gray {
+  color: $blue-gray;
+}
+
+.blue {
+  color: $blue;
+}
+
+.gray {
+  color: $gray;
+}
+
+.green-background {
+  background-color: $green;
+}
+
+.yellow-background {
+  background-color: $yellow;
+}
+
+.red-background {
+  background-color: $red;
+}
+
+.blue-gray-background {
+  background-color: $blue-gray;
+}
+
+.blue-background {
+  background-color: $blue;
+}

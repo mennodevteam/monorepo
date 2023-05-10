@@ -5,7 +5,7 @@ import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
-import { ShopUser, User } from '@menno/types';
+import { ShopUser, User, UserRole } from '@menno/types';
 import { JwtService } from '@nestjs/jwt';
 import { AuthPayload } from '../core/types/auth-payload';
 import { Role } from '../core/types/role.enum';
@@ -105,6 +105,12 @@ export class AuthService {
 
   async loginPanel(user: User) {
     return this.login(user, Role.Panel);
+  }
+
+  async loginAdmin(user: User) {
+    console.log(user);
+    if (user.role !== UserRole.Admin) throw new HttpException('forbidden', HttpStatus.FORBIDDEN);
+    return this.login(user, Role.Admin);
   }
 
   async getUserData(user: AuthPayload) {

@@ -1,5 +1,5 @@
 import { EntitySchema } from 'typeorm';
-import { GenderType, User } from '@menno/types';
+import { GenderType, User, UserRole } from '@menno/types';
 
 export const UserSchema = new EntitySchema<User>({
   name: 'User',
@@ -50,7 +50,8 @@ export const UserSchema = new EntitySchema<User>({
       nullable: true,
     },
     role: {
-      type: Number,
+      type: 'simple-enum',
+      enum: UserRole,
       nullable: true,
     },
     extraInfo: {
@@ -88,6 +89,6 @@ export const UserSchema = new EntitySchema<User>({
       type: 'one-to-many',
       target: 'Member',
       inverseSide: 'user',
-    }
-  }
+    },
+  },
 });
