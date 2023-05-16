@@ -21,7 +21,6 @@ import {
   MemberTag,
   Mission,
   NewSmsDto,
-  Purchase,
   Sms,
   SmsAccount,
   User,
@@ -166,12 +165,6 @@ export class ClubService {
     let url = 'discountCoupons';
     if (memberId) url += `/${memberId}`;
     const res = await this.http.get<DiscountCoupon[]>(url).toPromise();
-    if (!res) throw new Error();
-    return res;
-  }
-
-  async filterPurchases(dto: FilterPurchasesDto): Promise<Purchase[]> {
-    const res = await this.http.post<Purchase[]>('purchases/filter', dto).toPromise();
     if (!res) throw new Error();
     return res;
   }

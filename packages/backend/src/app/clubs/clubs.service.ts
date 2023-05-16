@@ -1,17 +1,25 @@
 import {
   Club,
   DiscountCoupon,
-  DiscountUsage,
   FilterDiscountCouponsDto,
   FilterMemberDto,
   Member,
   NewSmsDto,
+  Order,
   Shop,
   User,
 } from '@menno/types';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, FindOptionsWhere, In, LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
+import {
+  Between,
+  FindOptionsWhere,
+  IsNull,
+  LessThanOrEqual,
+  MoreThanOrEqual,
+  Not,
+  Repository,
+} from 'typeorm';
 import * as moment from 'jalali-moment';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { SmsService } from '../sms/sms.service';
@@ -23,20 +31,22 @@ export class ClubsService {
   constructor(
     private smsService: SmsService,
     private http: HttpService,
+    @InjectRepository(Order) private ordersRepo: Repository<Order>,
     @InjectRepository(Shop) private shopsRepo: Repository<Shop>,
     @InjectRepository(Club) private clubsRepo: Repository<Club>,
     @InjectRepository(Member) private membersRepo: Repository<Member>,
     @InjectRepository(User) private usersRepo: Repository<User>,
-    @InjectRepository(DiscountCoupon) private discountCouponsRepo: Repository<DiscountCoupon>,
-    @InjectRepository(DiscountUsage) private discountCouponUsagesRepo: Repository<DiscountUsage>
+    @InjectRepository(DiscountCoupon) private discountCouponsRepo: Repository<DiscountCoupon>
   ) {}
 
   async saveMember(member: Member): Promise<Member> {
-    if (member.user && member.user.id) {
-      delete member.user.mobilePhone;
-    } else if (member.user.mobilePhone) {
-      const existUser = await this.usersRepo.findOneBy({ mobilePhone: member.user.mobilePhone });
-      if (existUser) member.user.id = existUser.id;
+    if (member.user) {
+      if (member.user.id) {
+        delete member.user.mobilePhone;
+      } else if (member.user.mobilePhone) {
+        const existUser = await this.usersRepo.findOneBy({ mobilePhone: member.user.mobilePhone });
+        if (existUser) member.user.id = existUser.id;
+      }
     }
     const exist = member.user?.id
       ? await this.membersRepo.findOne({
@@ -46,16 +56,17 @@ export class ClubsService {
           },
           withDeleted: true,
         })
-      : undefined;
-    if (exist) {
-      if (exist.deletedAt) {
-        await this.membersRepo.restore(exist.id);
-        delete exist.deletedAt;
-      }
-      return exist;
-    } else {
-      return this.membersRepo.save(member);
+      : await this.membersRepo.findOne({
+          where: {
+            id: member.id,
+            club: { id: member.club.id },
+          },
+          withDeleted: true,
+        });
+    if (exist && exist.deletedAt) {
+      await this.membersRepo.restore(exist.id);
     }
+    return this.membersRepo.save(member);
   }
 
   async join(clubId: string, userId: string) {
@@ -84,6 +95,7 @@ export class ClubsService {
   async filterMembers(filter: FilterMemberDto): Promise<[Member[], number]> {
     const conditions: FindOptionsWhere<Member> = {
       club: { id: filter.clubId },
+      user: { mobilePhone: Not(IsNull()) },
     };
 
     if (filter.userId) {
@@ -114,10 +126,6 @@ export class ClubsService {
       conditions.publicKey = filter.publicKey;
     }
 
-    if (filter.tagIds && filter.tagIds.length) {
-      conditions.tags = In(filter.tagIds.map((x) => ({ id: x })));
-    }
-
     if (filter.mobilePhone) {
       conditions.user = {
         mobilePhone: filter.mobilePhone,
@@ -144,6 +152,10 @@ export class ClubsService {
         }
         return false;
       });
+    }
+
+    if (filter.tagIds && filter.tagIds.length) {
+      members = members.filter((m) => m.tags.find((t) => filter.tagIds.indexOf(t.id) > -1));
     }
 
     switch (filter.sortBy) {
@@ -187,19 +199,12 @@ export class ClubsService {
     return [res, members.length];
   }
 
-  async filterDiscountCoupons(discountsCouponFilter: FilterDiscountCouponsDto): Promise<DiscountCoupon[]> {
-    let couponUsage: DiscountUsage[];
-    if (discountsCouponFilter.memberId) {
-      couponUsage = await this.discountCouponUsagesRepo.find({
-        where: { member: { id: discountsCouponFilter.memberId } },
-        relations: ['member', 'discountCoupon'],
-      });
-    }
+  async filterDiscountCoupons(dto: FilterDiscountCouponsDto): Promise<DiscountCoupon[]> {
     const options: FindOptionsWhere<DiscountCoupon> = {};
-    if (discountsCouponFilter.clubId) {
-      options.club = { id: discountsCouponFilter.clubId };
+    if (dto.clubId) {
+      options.club = { id: dto.clubId };
     }
-    if (discountsCouponFilter.isEnabled) {
+    if (dto.isEnabled) {
       options.isEnabled = true;
       options.startedAt = LessThanOrEqual(new Date());
       options.expiredAt = MoreThanOrEqual(new Date());
@@ -209,15 +214,27 @@ export class ClubsService {
       where: options,
       relations: ['member', 'member.user'],
     });
-    if (discountsCouponFilter.memberId) {
-      coupons = coupons.filter(
-        (x) =>
-          (!x.member || x.member.id === discountsCouponFilter.memberId) &&
-          couponUsage.find((y) => y.discountCoupon && y.discountCoupon.id === x.id) == undefined
-      );
-    }
-    if (discountsCouponFilter.star) {
-      coupons = coupons.filter((x) => x.star != undefined && x.star >= discountsCouponFilter.star);
+    coupons = coupons.filter(
+      async (c) => {
+        if (c.maxUse) {
+          const totalUse = await this.ordersRepo.count({ where: { discountCoupon: { id: c.id } } });
+          if (totalUse >= c.maxUse) return false;
+        }
+        if (c.maxUsePerUser && dto.memberId) {
+          const { user } = await this.membersRepo.findOne({
+            where: { id: dto.memberId },
+            relations: ['user'],
+          });
+          const userUse = await this.ordersRepo.count({
+            where: { discountCoupon: { id: c.id }, customer: { id: user.id } },
+          });
+          if (userUse >= c.maxUsePerUser) return false;
+        }
+        return true;
+      }
+    );
+    if (dto.star) {
+      coupons = coupons.filter((x) => x.star != undefined && x.star >= dto.star);
     }
 
     return coupons;

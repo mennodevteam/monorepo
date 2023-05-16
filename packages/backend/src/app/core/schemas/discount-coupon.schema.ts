@@ -1,4 +1,4 @@
-import { DiscountCoupon } from '@menno/types';
+import { DiscountCoupon, OrderType } from '@menno/types';
 import { EntitySchema } from 'typeorm';
 
 export const DiscountCouponSchema = new EntitySchema<DiscountCoupon>({
@@ -30,6 +30,14 @@ export const DiscountCouponSchema = new EntitySchema<DiscountCoupon>({
       type: Number,
       nullable: true,
     },
+    maxUsePerUser: {
+      type: Number,
+      default: 1,
+    },
+    maxUse: {
+      type: Number,
+      nullable: true,
+    },
     isEnabled: {
       type: Boolean,
       default: true,
@@ -37,6 +45,12 @@ export const DiscountCouponSchema = new EntitySchema<DiscountCoupon>({
     code: {
       type: String,
       nullable: true,
+    },
+    orderTypes: {
+      type: 'simple-enum',
+      enum: OrderType,
+      array: true,
+      default: [],
     },
     star: {
       type: Number,

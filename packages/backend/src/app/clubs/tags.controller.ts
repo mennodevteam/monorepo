@@ -21,7 +21,7 @@ export class TagsController {
     const { club } = await this.auth.getPanelUserShop(user, ['club']);
     return this.tagsRepo.find({
       where: {
-        club,
+        club: { id: club.id },
       },
     });
   }
@@ -34,7 +34,8 @@ export class TagsController {
         where: { id: tag.id },
         relations: ['club'],
       });
-      if (existTag?.club?.id !== club.id) throw new HttpException('this is not your club tag', HttpStatus.FORBIDDEN);
+      if (existTag?.club?.id !== club.id)
+        throw new HttpException('this is not your club tag', HttpStatus.FORBIDDEN);
     }
     tag.club = club;
     return this.tagsRepo.save(tag);
@@ -45,11 +46,12 @@ export class TagsController {
     const { club } = await this.auth.getPanelUserShop(user, ['club']);
 
     const existTag = await this.tagsRepo.findOne({
-      where: { id: Number(tagId) },
+      where: { id: tagId },
       relations: ['club'],
     });
 
-    if (existTag?.club?.id !== club.id) throw new HttpException('this is not your club tag', HttpStatus.FORBIDDEN);
+    if (existTag?.club?.id !== club.id)
+      throw new HttpException('this is not your club tag', HttpStatus.FORBIDDEN);
     await this.tagsRepo.remove(existTag);
   }
 }
