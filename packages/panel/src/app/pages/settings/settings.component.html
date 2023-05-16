@@ -1,6 +1,6 @@
 <mat-toolbar class="page-toolbar">
-  <button mat-icon-button>
-    <i class="fa-regular fa-arrow-right fa-lg" goBack></i>
+  <button mat-icon-button goBack>
+    <i class="fa-regular fa-arrow-right fa-lg"></i>
   </button>
   <h1>{{ 'settings.pageTitle' | translate }}</h1>
 </mat-toolbar>
@@ -26,6 +26,11 @@
         <a mat-list-item routerLink="delivery-areas">
           <i matListItemIcon class="fa-solid fa-map-location-dot"></i>
           <span matListItemTitle>{{ 'settings.deliveryAreas' | translate }}</span>
+        </a>
+        <mat-divider></mat-divider>
+        <a mat-list-item routerLink="users">
+          <i matListItemIcon class="fa-solid fa-users"></i>
+          <span matListItemTitle>{{ 'settings.users' | translate }}</span>
         </a>
       </mat-nav-list>
     </mat-card-content>

@@ -13,6 +13,8 @@ import { DeliveryAreasPageComponent } from './delivery-areas-page/delivery-areas
 import { DeliveryMapComponent } from './delivery-areas-page/delivery-map/delivery-map.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
+import { UserManagementComponent } from './user-management/user-management.component';
+import { UserManagementTableComponent } from './user-management/user-management-table/user-management-table.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
     AppConfigComponent,
     PrintersComponent,
     PrinterListComponent,
+    UserManagementComponent,
+    UserManagementTableComponent,
     PrinterHelpComponent,
     DeliveryAreasPageComponent,
     DeliveryMapComponent,

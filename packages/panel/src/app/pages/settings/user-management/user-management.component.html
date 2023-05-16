@@ -1,0 +1,25 @@
+<mat-toolbar class="page-toolbar">
+  <button mat-icon-button goBack>
+    <i class="fa-regular fa-arrow-right"></i>
+  </button>
+  <h2 flex>{{ 'shopUsers.pageTitle' | translate }}</h2>
+  <button mat-flat-button color="primary" (click)="openAddShopUsersDialog(undefined)">
+    {{ 'shopUsers.add' | translate }}
+  </button>
+</mat-toolbar>
+
+<main class="content-wrapper">
+  <mat-card>
+    <mat-card-content>
+      <app-user-management-table
+        [hidden]="!shopUsers"
+        [shopUsers]="shopUsers"
+        (onChange)="load()"
+        (editEmit)="openAddShopUsersDialog($event)"
+        (removeEmit)="removeShopUsers($event)"
+      ></app-user-management-table>
+      <mat-spinner *ngIf="!shopUsers" [diameter]="32" color="primary"></mat-spinner>
+      <empty-state *ngIf="shopUsers?.length === 0" icon="fa-users"></empty-state>
+    </mat-card-content>
+  </mat-card>
+</main>

@@ -26,7 +26,7 @@ export const ShopUserSchema = new EntitySchema<ShopUser>({
     user: {
       type: 'many-to-one',
       target: 'User',
-      cascade: ['insert'],
+      cascade: ['insert', 'update'],
     },
     shop: {
       type: 'many-to-one',

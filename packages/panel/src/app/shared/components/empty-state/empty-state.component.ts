@@ -7,5 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class EmptyStateComponent {
   @Input() icon: string;
-  @Input() text: string;
+  @Input() text?: string;
 }

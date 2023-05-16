@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Shop } from '@menno/types';
+import { Shop, ShopUser } from '@menno/types';
 import { environment } from '../../../environments/environment';
 import { BehaviorSubject } from 'rxjs';
 
@@ -48,5 +48,17 @@ export class ShopService {
 
   get appLink() {
     return this.shop?.domain || `https://${this.shop?.username}.${environment.appDomain}`;
+  }
+
+  getShopUsers(): Promise<ShopUser[] | undefined> {
+    return this.http.get<ShopUser[]>('shopUsers').toPromise();
+  }
+
+  saveShopUser(shopUser: ShopUser): Promise<ShopUser | undefined> {
+    return this.http.post<ShopUser>(`shopUsers`, shopUser).toPromise();
+  }
+
+  async removeShopUser(shopUserId: string): Promise<void> {
+    await this.http.delete(`shopUsers/${shopUserId}`).toPromise();
   }
 }

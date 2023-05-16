@@ -138,7 +138,8 @@
     "shop": "ویرایش اطلاعات مجموعه",
     "appConfig": "تنظیمات منوی دیجیتال مشتری",
     "printers": "نصب و راه‌اندازی پرینتر‌ها",
-    "deliveryAreas": "محدوده ارسال پیک"
+    "deliveryAreas": "محدوده ارسال پیک",
+    "users": "مدیریت کاربران"
   },
   "shopPage": {
     "baseSection": "اطلاعات پایه",
@@ -569,5 +570,40 @@
     "percentageDiscount": "درصد تخفیف",
     "couponDetails": "جزئیات کد تخفیف",
     "maxDiscount": "حداکثر مبلغ تخفیف"
+  },
+  "shopUsers": {
+    "pageTitle": "کاربران",
+    "add": "ایجاد کاربر جدید",
+    "removeDialogTitle": "حذف کاربر",
+    "removeDialogDescription": "شما در حال حذف آیتم {{value}} هستید. در صورت اطمینان لطفا تایید کنید."
+  },
+  "addShopUserDialog": {
+    "newTitle": "ایجاد کاربر جدید",
+    "firstName": "نام",
+    "lastName": "نام خانوادگی",
+    "username": "نام کاربر برای ورود",
+    "usernameHint": "به ابتدای نام کاربری به صورت پیشفرض {{value}} اضافه میشود.",
+    "password": "رمز عبور",
+    "mobile": "شماره موبایل (اختیاری)",
+    "menu": "مدیریت منو",
+    "order": "مدیریت سفارشات",
+    "hideDailyTotal": "عدم نمایش جمع کل فروش روز",
+    "club": "باشگاه مشتریان",
+    "chargeMemberWallet": "افزایش اعتبار کیف پول مشتری",
+    "sms": "پیام ها",
+    "coupons": "مدیریت کدهای تخفیف",
+    "marketing": "مارکتینگ و تبلیغات",
+    "report": "گزارشات",
+    "payment": "مالی",
+    "setting": "تنظیمات",
+    "actions": "سطح دسترسی ها",
+    "conflictUsernameError": "نام کاربری وارد شده قبلا در سامانه ثبت شده است",
+    "conflictPhoneError": "شماره موبایل وارد شده قبلا در سامانه ثبت شده است"
+  },
+  "shopUserTable": {
+    "name": "نام و نام خانوادگی",
+    "username": "نام کاربری",
+    "mobile": "تلفن همراه",
+    "actions": "دسترسی ها"
   }
 }

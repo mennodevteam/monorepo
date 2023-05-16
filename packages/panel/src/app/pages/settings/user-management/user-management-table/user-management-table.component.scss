@@ -1,0 +1,15 @@
+@import "theme";
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.mat-table {
+  width: 100%;
+  min-width: 400px;
+}
+
+.mat-chip {
+  background-color: $background;
+}

@@ -6,6 +6,7 @@ import { PrinterListComponent } from './printers/printer-list/printer-list.compo
 import { PrintersComponent } from './printers/printers.component';
 import { SettingsComponent } from './settings.component';
 import { ShopPageComponent } from './shop-page/shop-page.component';
+import { UserManagementComponent } from './user-management/user-management.component';
 
 export const settingsRoutes: Route[] = [
   {
@@ -15,6 +16,7 @@ export const settingsRoutes: Route[] = [
   { path: 'shop', component: ShopPageComponent },
   { path: 'delivery-areas', component: DeliveryAreasPageComponent },
   { path: 'app-config', component: AppConfigComponent },
+  { path: 'users', component: UserManagementComponent },
   {
     path: 'printers',
     component: PrintersComponent,
