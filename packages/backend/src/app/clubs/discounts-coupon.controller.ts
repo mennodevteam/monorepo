@@ -26,7 +26,7 @@ export class DiscountsCouponController {
 
   @Get(':memberId?')
   async filter(@LoginUser() user: AuthPayload, @Param('memberId') memberId: string): Promise<DiscountCoupon[]> {
-    const { club } = await this.auth.getPanelUserShop(user);
+    const { club } = await this.auth.getPanelUserShop(user, ['club']);
     return this.clubsService.filterDiscountCoupons(<FilterDiscountCouponsDto>{
       clubId: club.id,
       memberId,

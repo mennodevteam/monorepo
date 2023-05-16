@@ -1,0 +1,143 @@
+<form *ngIf="form && !loading" [formGroup]="form" (ngSubmit)="save()">
+  <mat-toolbar class="page-toolbar form-theme">
+    <h2 *ngIf="discountCoupon?.id" flex>
+      {{ 'discountCouponEdit.editTitle' | translate }} - {{ discountCoupon.title }}
+    </h2>
+    <h2 *ngIf="!discountCoupon?.id" flex>{{ 'discountCouponEdit.newTitle' | translate }}</h2>
+    <button mat-button secondary goBack type="button">
+      {{ 'app.cancel' | translate }}
+    </button>
+    <button mat-flat-button secondary color="accent" type="submit" [disabled]="!form.dirty || saving">
+      {{ 'app.save' | translate }}
+      <i class="fad fa-spinner-third fa-spin" *ngIf="saving"></i>
+    </button>
+  </mat-toolbar>
+
+  <main class="content-wrapper">
+    <div id="form" class="form-page-layout">
+      <div class="flex-col">
+        <mat-card>
+          <mat-card-content>
+            <mat-form-field appearance="fill">
+              <mat-label> {{ 'app.title' | translate }} </mat-label>
+              <input matInput formControlName="title" required />
+            </mat-form-field>
+            <p>{{ 'discountCouponEdit.userCodeDescription' | translate }}</p>
+            <mat-radio-group formControlName="useCode" color="primary">
+              <mat-radio-button [value]="false">{{
+                'discountCouponEdit.userCodeFalse' | translate
+              }}</mat-radio-button>
+              <mat-form-field appearance="fill" *ngIf="form.controls['useCode'].value === false">
+                <mat-label>{{ 'discountCouponEdit.star' | translate }}</mat-label>
+                <mat-select formControlName="star">
+                  <mat-option [value]="-1">{{ 'discountCouponEdit.starAll' | translate }}</mat-option>
+                  <mat-option [value]="0">{{ 'discountCouponEdit.starMembers' | translate }}</mat-option>
+                  <mat-option [value]="1">{{ 'discountCouponEdit.starMembers1' | translate }}</mat-option>
+                  <mat-option [value]="2">{{ 'discountCouponEdit.starMembers2' | translate }}</mat-option>
+                  <mat-option [value]="3">{{ 'discountCouponEdit.starMembers3' | translate }}</mat-option>
+                  <mat-option [value]="4">{{ 'discountCouponEdit.starMembers4' | translate }}</mat-option>
+                  <mat-option [value]="5">{{ 'discountCouponEdit.starMembers5' | translate }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-radio-button [value]="true">{{
+                'discountCouponEdit.userCodeTrue' | translate
+              }}</mat-radio-button>
+              <mat-form-field appearance="fill" *ngIf="form.controls['useCode'].value === true">
+                <mat-label> {{ 'discountCouponEdit.code' | translate }} </mat-label>
+                <input matInput formControlName="code" required />
+              </mat-form-field>
+            </mat-radio-group>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title> {{ 'discountCouponEdit.couponDetails' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="row">
+              <mat-form-field appearance="fill" flex>
+                <mat-label>
+                  {{ 'discountCouponEdit.type' | translate }}
+                </mat-label>
+                <mat-select (selectionChange)="typeChanged()" formControlName="type" required>
+                  <mat-option value="percentage">{{
+                    'discountCouponEdit.percentageCoupon' | translate
+                  }}</mat-option>
+                  <mat-option value="fixed">{{ 'discountCouponEdit.fixedCoupon' | translate }} </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <span spacer-2x></span>
+              <mat-form-field appearance="fill" flex *ngIf="form.controls['type'].value === 'fixed'">
+                <mat-label>
+                  {{ 'discountCouponEdit.fixedDiscount' | translate }}
+                </mat-label>
+                <input matInput formControlName="fixedDiscount" type="number" />
+                <mat-hint>
+                  {{ form.controls['fixedDiscount']?.value | menuCurrency: undefined:true }}
+                </mat-hint>
+              </mat-form-field>
+              <mat-form-field appearance="fill" flex *ngIf="form.controls['type'].value === 'percentage'">
+                <mat-label>
+                  {{ 'discountCouponEdit.percentageDiscount' | translate }}
+                </mat-label>
+                <input matInput formControlName="percentageDiscount" type="number" />
+              </mat-form-field>
+            </div>
+            <div class="row">
+              <mat-form-field appearance="fill" flex>
+                <mat-label>
+                  {{ 'discountCouponEdit.minPrice' | translate }}
+                </mat-label>
+                <input matInput formControlName="minPrice" type="number" />
+                <mat-hint>
+                  {{ form.controls['minPrice']?.value | menuCurrency: undefined:true }}
+                </mat-hint>
+              </mat-form-field>
+              <span spacer-2x></span>
+              <mat-form-field appearance="fill" flex>
+                <mat-label>
+                  {{ 'discountCouponEdit.maxDiscount' | translate }}
+                </mat-label>
+                <input
+                  matInput
+                  *ngIf="discountCoupon"
+                  [readonly]="form.controls['type'].value === 'fixed'"
+                  formControlName="maxDiscount"
+                  type="number"
+                />
+                <mat-hint>
+                  {{ form.controls['maxDiscount']?.value | menuCurrency: undefined:true }}
+                </mat-hint>
+              </mat-form-field>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="static-col">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title> {{ 'app.dateRange' | translate }} </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-form-field appearance="fill">
+              <mat-label>{{ 'app.dateRange' | translate }}</mat-label>
+              <mat-date-range-input [rangePicker]="picker">
+                <input
+                  matStartDate
+                  formControlName="startedAt"
+                  placeholder="{{ 'app.fromDate' | translate }}"
+                />
+                <input matEndDate formControlName="expiredAt" placeholder="{{ 'app.toDate' | translate }}" />
+              </mat-date-range-input>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+        <select-status-card [control]="statusControl"></select-status-card>
+      </div>
+    </div>
+  </main>
+</form>

@@ -1,0 +1,75 @@
+<mat-toolbar class="page-toolbar">
+  <button mat-icon-button goBack><i class="fa-regular fa-arrow-right"></i></button>
+  <h2 flex>{{ 'discountCouponList.pageTitle' | translate }}</h2>
+  <a mat-flat-button color="primary" routerLink="edit">{{ 'discountCouponList.add' | translate }}</a>
+</mat-toolbar>
+
+<main class="content-wrapper">
+  <mat-card>
+    <mat-card-content>
+      <mat-spinner *ngIf="loading" class="loading" [diameter]="32"></mat-spinner>
+      <ng-container *ngIf="!loading">
+        <table mat-table [dataSource]="coupons">
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef>
+              {{ 'app.title' | translate }}
+            </th>
+            <td mat-cell *matCellDef="let coupon">{{ coupon.title }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="discount">
+            <th mat-header-cell *matHeaderCellDef class="fixed-width">
+              {{ 'discountCouponList.discountPrice' | translate }}
+            </th>
+            <td mat-cell *matCellDef="let coupon">
+              <span *ngIf="coupon.fixedDiscount">
+                {{ coupon.fixedDiscount | menuCurrency }}
+              </span>
+
+              <span *ngIf="coupon.percentageDiscount"> {{ coupon.percentageDiscount }} % </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef class="fixed-width">
+              {{ 'app.status' | translate }}
+            </th>
+            <td mat-cell *matCellDef="let coupon" class="form-theme">
+              <mat-slide-toggle
+                [disabled]="coupon.status === Status.Pending"
+                [checked]="coupon.status == Status.Active"
+                (change)="changeStatus(coupon, $event)"
+              >
+                {{ (coupon.status ? 'app.active' : 'app.inactive') | translate }}
+              </mat-slide-toggle>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let coupon">
+              <div style="justify-content: end; display: flex">
+                <a
+                  mat-icon-button
+                  matTooltip="{{ 'app.edit' | translate }}"
+                  routerLink="edit"
+                  [queryParams]="{ id: coupon.id }"
+                >
+                  <i class="fa-regular fa-pencil-alt"></i>
+                </a>
+                <button mat-icon-button matTooltip="{{ 'app.remove' | translate }}" (click)="remove(coupon)">
+                  <i class="fa-regular fa-trash-alt"></i>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <empty-state *ngIf="!coupons?.length" icon="fa-tags" text="{{ 'app.noData' | translate }}">
+        </empty-state>
+      </ng-container>
+    </mat-card-content>
+  </mat-card>
+</main>

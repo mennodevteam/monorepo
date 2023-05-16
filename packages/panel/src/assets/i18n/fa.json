@@ -41,7 +41,8 @@
     "remove": "حذف",
     "notSet": "ثبت نشده",
     "print": "پرینت",
-    "default": "پیش‌فرض"
+    "default": "پیش‌فرض",
+    "noData": "هیچ داده ای ثبت نشده"
   },
   "shell": {
     "home": "خانه",
@@ -281,6 +282,7 @@
   "members": {
     "title": "اعضای باشگاه مشتریان",
     "add": "افزودن عضو",
+    "discountCodes": "کد‌های تخفیف",
     "addOne": "افزودن تکی",
     "instagramRobot": "ربات اینستاگرام",
     "settingTootltip": "تنظیمات باشگاه مشتریان",
@@ -538,5 +540,34 @@
       "finished": "تحویل شده به مشتری"
     },
     "priceDialogDescription": "هزینه پیک درخواستی شما {{value}} تومان است. در صورت اطمینان از درخواست لطفا تایید کنید."
+  },
+  "discountCouponList": {
+    "pageTitle": "لیست کد‌های تخفیف",
+    "add": "افزودن کد تخفیف",
+    "discountPrice": "میزان تخفیف"
+  },
+  "discountCouponEdit": {
+    "newTitle": "ایجاد کد تخفیف جدید",
+    "editTitle": "ویرایش کد تخفیف",
+    "star": "قابل استفاده برای",
+    "starAll": "همه کاربران",
+    "starMembers": "فقط اعضای باشگاه",
+    "starMembers1": "اعضای 1 ستاره و بیشتر",
+    "starMembers2": "اعضای 2 ستاره و بیشتر",
+    "starMembers3": "اعضای 3 ستاره و بیشتر",
+    "starMembers4": "اعضای 4 ستاره و بیشتر",
+    "starMembers5": "اعضای 5 ستاره",
+    "minPrice": "حداقل سفارش",
+    "userCodeDescription": "نحوه دسترسی کاربر به کد تخفیف چگونه است؟",
+    "userCodeFalse": "به صورت خودکار و بدون نیاز به ثبت کد تخفیف برای مشتری قابل استفاده باشد",
+    "userCodeTrue": "نیاز به داشتن کد تخفیف و ثبت کد تخفیف توسط مشتری",
+    "code": "کد کاراکتری کد تخفیف",
+    "type": "نوع کد تخفیف",
+    "percentageCoupon": "درصدی",
+    "fixedCoupon": "مقدار ثابت",
+    "fixedDiscount": "مبلغ تخفیف",
+    "percentageDiscount": "درصد تخفیف",
+    "couponDetails": "جزئیات کد تخفیف",
+    "maxDiscount": "حداکثر مبلغ تخفیف"
   }
 }

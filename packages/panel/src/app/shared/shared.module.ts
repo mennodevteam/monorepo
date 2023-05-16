@@ -62,6 +62,8 @@ import { SortDialogComponent } from './dialogs/sort-dialog/sort-dialog.component
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TableSelectorDialogComponent } from './dialogs/table-selector-dialog/table-selector-dialog.component';
+import { SelectStatusCardComponent } from './components/select-status-card/select-status-card.component';
+import { SelectOrderTypeCardComponent } from './components/select-order-type-card/select-order-type-card.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +78,8 @@ import { TableSelectorDialogComponent } from './dialogs/table-selector-dialog/ta
     MemberAutocompleteComponent,
     SelectDialogComponent,
     AlertDialogComponent,
+    SelectOrderTypeCardComponent,
+    SelectStatusCardComponent,
     ImageLoaderDirective,
     FormBuilderComponent,
     OrdersTableComponent,
@@ -146,6 +150,8 @@ import { TableSelectorDialogComponent } from './dialogs/table-selector-dialog/ta
     PhonePipe,
     EmptyStateComponent,
     AlertDialogComponent,
+    SelectOrderTypeCardComponent,
+    SelectStatusCardComponent,
     SelectDialogComponent,
     ManualDiscountAndCostDialogComponent,
     TableSelectorDialogComponent,

@@ -1,6 +1,7 @@
 import { Club } from './club';
 import { Member } from './member';
 import { OrderType } from './order-type.enum';
+import { Status } from './status.enum';
 
 export class DiscountCoupon {
   id: string;
@@ -9,7 +10,7 @@ export class DiscountCoupon {
   expiredAt: Date;
   startedAt: Date;
   fixedDiscount: number;
-  isEnabled: boolean;
+  status: Status;
   orderTypes?: OrderType[];
   star?: number;
   deletedAt?: Date;

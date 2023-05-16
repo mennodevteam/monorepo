@@ -7,9 +7,18 @@ import { RouterModule } from '@angular/router';
 import { clubRoutes } from './club.routes';
 import { MembersTableComponent } from './member-list/members-table/members-table.component';
 import { TagEditDialogComponent } from './member-list/tag-edit-dialog/tag-edit-dialog.component';
+import { DiscountCouponsComponent } from './discount-coupons/discount-coupons.component';
+import { DiscountCouponsEditComponent } from './discount-coupons-edit/discount-coupons-edit.component';
 
 @NgModule({
-  declarations: [MemberListComponent, ClubComponent, TagEditDialogComponent, MembersTableComponent],
+  declarations: [
+    MemberListComponent,
+    ClubComponent,
+    TagEditDialogComponent,
+    MembersTableComponent,
+    DiscountCouponsComponent,
+    DiscountCouponsEditComponent,
+  ],
   imports: [CommonModule, SharedModule, RouterModule.forChild(clubRoutes)],
 })
 export class ClubModule {}

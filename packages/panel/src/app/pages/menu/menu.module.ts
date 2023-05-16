@@ -13,8 +13,6 @@ import { EditDiscountComponent } from './discounts-page/edit-discount/edit-disco
 import { CostsPageComponent } from './costs-page/costs-page.component';
 import { EditCostComponent } from './costs-page/edit-cost/edit-cost.component';
 import { SelectProductCardComponent } from './select-product-card/select-product-card.component';
-import { SelectStatusCardComponent } from './select-status-card/select-status-card.component';
-import { SelectOrderTypeCardComponent } from './select-order-type-card/select-order-type-card.component';
 import { CategoryEditPageComponent } from './category-edit-page/category-edit-page.component';
 
 @NgModule({
@@ -29,8 +27,6 @@ import { CategoryEditPageComponent } from './category-edit-page/category-edit-pa
     CostsPageComponent,
     EditCostComponent,
     SelectProductCardComponent,
-    SelectStatusCardComponent,
-    SelectOrderTypeCardComponent,
     CategoryEditPageComponent,
   ],
   imports: [CommonModule, RouterModule.forChild(menuRoutes), SharedModule],

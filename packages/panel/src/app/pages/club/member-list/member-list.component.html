@@ -1,6 +1,11 @@
 <mat-toolbar class="page-toolbar" *ngIf="!selection.hasValue()">
   <h2 flex>{{ 'members.title' | translate }}</h2>
-  <button mat-button color="primary" (click)="sendSmsToAll()">
+  <button mat-stroked-button routerLink="discount-coupons">
+    <i matListIcon class="far fa-tags"></i>
+    <span spacer-sm></span>
+    <span>{{ 'members.discountCodes' | translate }}</span>
+  </button>
+  <button mat-stroked-button (click)="sendSmsToAll()">
     <i matListIcon class="far fa-comment-alt-lines"></i>
     <span spacer-sm></span>
     <span>{{ 'members.sendSmsAll' | translate }}</span>

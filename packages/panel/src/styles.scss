@@ -221,6 +221,11 @@ i[empty-state-icon] {
 
 // material components
 
+mat-spinner.loading {
+  display: block;
+  margin: 24px auto;
+}
+
 .mat-mdc-list-item-icon {
   text-align: center !important;
   line-height: 24px !important;
