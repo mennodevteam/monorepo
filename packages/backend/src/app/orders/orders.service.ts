@@ -40,7 +40,7 @@ export class OrdersService {
     @InjectRepository(Order)
     private ordersRepo: Repository<Order>
   ) {}
-  
+
   async dtoToOrder(dto: OrderDto) {
     const order = new Order();
     const shop = await this.shopsRepo.findOne({
@@ -125,9 +125,13 @@ export class OrdersService {
       condition.waiter = { id: dto.waiterId };
     }
 
-    condition.state = In(dto.states);
-    condition.type = In(dto.types);
-    condition.paymentType = In(dto.payments);
+    if (dto.customerId) {
+      condition.customer = { id: dto.customerId };
+    }
+
+    if (dto.states) condition.state = In(dto.states);
+    if (dto.types) condition.type = In(dto.types);
+    if (dto.payments) condition.paymentType = In(dto.payments);
 
     const relations = [];
     switch (dto.groupBy) {
@@ -397,7 +401,6 @@ export class OrdersService {
     }
     if (dto.isManual === true || dto.isManual === false) condition.isManual = dto.isManual;
 
-    
     const relations = ['items.product', 'mergeTo', 'reviews', 'customer', 'creator', 'waiter'];
     let orders = await this.ordersRepo.find({
       where: condition,
@@ -405,11 +408,11 @@ export class OrdersService {
       relations,
       withDeleted: dto.withDeleted,
     });
-    
+
     if (dto.hasReview) {
       orders = orders.filter((x) => x.reviews.length > 0);
     }
-    
+
     return orders;
   }
 

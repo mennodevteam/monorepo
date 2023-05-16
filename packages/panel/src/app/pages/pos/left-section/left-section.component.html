@@ -8,12 +8,73 @@
     <mat-button-toggle [value]="OrderType.Takeaway">{{ 'orderType.takeaway' | translate }}</mat-button-toggle>
     <mat-button-toggle [value]="OrderType.Delivery">{{ 'orderType.delivery' | translate }}</mat-button-toggle>
   </mat-button-toggle-group>
-  <mat-nav-list>
+  <mat-nav-list *ngIf="POS.type === OrderType.DineIn && tables?.length">
     <a mat-list-item (click)="selectTable()">
       <span matListItemTitle>{{ 'pos.table' | translate }}</span>
       <span matListItemLine>
         {{ POS.details?.table }}
       </span>
+      <i matListItemMeta class="fa-regular fa-angle-left"></i>
+    </a>
+  </mat-nav-list>
+  <mat-divider></mat-divider>
+  <form *ngIf="!POS.customer" (ngSubmit)="searchMember()" [formGroup]="userQueryForm">
+    <input
+      class="search-input"
+      flex
+      matInput
+      autofocus
+      formControlName="query"
+      placeholder="{{ 'pos.searchUser' | translate }}"
+    />
+    <button mat-icon-button>
+      <i class="fa-regular fa-search"></i>
+    </button>
+  </form>
+
+  <mat-nav-list>
+    <a mat-list-item *ngIf="POS.customer">
+      <i matListItemIcon class="fa-solid fa-user"></i>
+      <span matListItemTitle>{{ User.fullName(POS.customer) }}</span>
+      <span matListItemLine>{{ POS.customer.mobilePhone | phone }}</span>
+      <button
+        *ngIf="!POS.customerId"
+        mat-icon-button
+        color="warn"
+        matListItemMeta
+        style="margin-top: 12px"
+        stopPropagation
+        (click)="removeMember()"
+      >
+        <i class="fa-solid fa-times-circle"></i>
+      </button>
+    </a>
+    <a mat-list-item *ngFor="let m of searchMembers || []" (click)="selectMember(m)">
+      <i matListItemIcon class="fa-solid fa-user"></i>
+      <span matListItemTitle>{{ User.fullName(m.user) }}</span>
+      <span matListItemLine>{{ m.user.mobilePhone | phone }}</span>
+    </a>
+
+    <a mat-list-item *ngIf="POS.customer">
+      <h3 matListItemTitle>{{ 'pos.thisWeekOrders' | translate }}</h3>
+      <p matListItemLine>{{ POS.thisWeekPurchases?.total | menuCurrency: undefined:true }}</p>
+      <b matListItemMeta>
+        {{ 'app.number' | translate: { value: (POS.thisWeekPurchases?.count | number) } }}
+      </b>
+    </a>
+    <a mat-list-item *ngIf="POS.customer">
+      <h3 matListItemTitle>{{ 'pos.thisMonthOrder' | translate }}</h3>
+      <p matListItemLine>{{ POS.thisMonthPurchases?.total | menuCurrency }}</p>
+      <b matListItemMeta>
+        {{ 'app.number' | translate: { value: (POS.thisMonthPurchases?.count | number) } }}
+      </b>
+    </a>
+    <a mat-list-item *ngIf="POS.customer">
+      <h3 matListItemTitle>{{ 'pos.thisYearOrder' | translate }}</h3>
+      <p matListItemLine>{{ POS.thisYearPurchases?.total | menuCurrency }}</p>
+      <b matListItemMeta>
+        {{ 'app.number' | translate: { value: (POS.thisYearPurchases?.count | number) } }}
+      </b>
     </a>
   </mat-nav-list>
 </div>

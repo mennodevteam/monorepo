@@ -7,8 +7,9 @@ export class OrderReportDto {
   waiterId?: string;
   fromDate: Date;
   toDate: Date;
-  states: OrderState[];
-  payments: OrderPaymentType[];
-  types: OrderType[];
+  customerId?: string;
+  states?: OrderState[];
+  payments?: OrderPaymentType[];
+  types?: OrderType[];
   groupBy: 'date' | 'product' | 'category' | 'payment' | 'state' | 'type';
 }

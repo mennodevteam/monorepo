@@ -1,3 +1,5 @@
+@import "theme";
+
 .container {
   height: 100%;
   display: flex;
@@ -8,4 +10,20 @@
     margin: 8px;
     font-size: 11px;
   }
+}
+
+.search-input {
+  padding: 8px;
+  background-color: $gray-l2;
+  display: block;
+  outline: none;
+  border: $border;
+  border-radius: 8px;
+}
+
+form {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  margin: 8px 0;
 }

@@ -267,7 +267,12 @@
     "showMoreFactorDetails": "جزئیات بیشتر فاکتور",
     "noteDialogTitle": "توضیحات سفارش",
     "noteDialogLabel": "توضیحات",
-    "noteDialogPlaceholder": "متن وارد شده چاپ خواهد شد"
+    "noteDialogPlaceholder": "متن وارد شده چاپ خواهد شد",
+    "table": "انتخاب میز",
+    "searchUser": "جستجوی اعضا...",
+    "thisWeekOrders": "سفارشات این هفته",
+    "thisMonthOrder": "سفارشات این ماه",
+    "thisYearOrder": "سفارشات امسال"
   },
   "memberSelectDialog": {
     "noData": "هیچ عضوی یافت نشد",
