@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { User } from '@menno/types';
+import { ShopUser, ShopUserRole, User, UserAction } from '@menno/types';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -10,13 +10,24 @@ import { environment } from '../../../environments/environment';
 })
 export class AuthService {
   private user$: BehaviorSubject<User | null>;
+  shopUser: ShopUser;
 
   constructor(private http: HttpClient) {
     const _item: any =
       sessionStorage?.getItem(environment.localStorageUserKey) ||
       localStorage?.getItem(environment.localStorageUserKey);
 
-    this.user$ = new BehaviorSubject<User | null>(JSON.parse(_item));
+      if (_item) {
+        this.user$ = new BehaviorSubject<User | null>(JSON.parse(_item));
+        this.loadShopUser();
+      } else{
+        this.user$ = new BehaviorSubject<User | null>(null);
+      }
+
+
+    this.user$.subscribe((u) => {
+      this.loadShopUser();
+    })
   }
 
   login(username: string, password: string, saveLoginUser?: boolean) {
@@ -57,5 +68,18 @@ export class AuthService {
       sessionStorage.setItem(environment.localStorageUserKey, JSON.stringify(user));
       this.user$.next(user);
     }
+  }
+
+  private async loadShopUser() {
+    const s = await this.http.get<ShopUser>('shopUsers/info').toPromise();
+    if (s) this.shopUser = s;
+  }
+
+  get actions() {
+    return this.shopUser.actions || [];
+  }
+
+  hasAccess(action: UserAction) {
+    return this.actions.indexOf(action) > -1 || this.shopUser.role === ShopUserRole.Admin;
   }
 }

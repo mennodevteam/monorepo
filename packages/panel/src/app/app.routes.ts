@@ -6,7 +6,8 @@ import { TodayOrdersGuard } from './core/guards/today-orders.guard';
 import { TranslateGuard } from './core/guards/translate.guard';
 import { PagesComponent } from './pages/pages.component';
 import { PluginGuard } from './core/guards/plugin.guard';
-import { Plugin } from '@menno/types';
+import { Plugin, UserAction } from '@menno/types';
+import { UserActionsGuard } from './core/guards/user-actions.guard';
 
 export const appRoutes: Route[] = [
   {
@@ -23,30 +24,32 @@ export const appRoutes: Route[] = [
         canActivate: [ShopGuard, MenuGuard],
         children: [
           {
-            canActivate: [PluginGuard],
-            data: { plugins: [Plugin.Menu] },
+            canActivate: [PluginGuard, UserActionsGuard],
+            data: { plugins: [Plugin.Menu], userActions: [UserAction.Menu] },
             path: 'menu',
             loadChildren: () => import('./pages/menu/menu.module').then((m) => m.MenuModule),
           },
           {
-            canActivate: [PluginGuard],
-            data: { plugins: [Plugin.Ordering] },
+            canActivate: [PluginGuard, UserActionsGuard],
+            data: { plugins: [Plugin.Ordering], userActions: [UserAction.Order] },
             path: 'pos',
             loadChildren: () => import('./pages/pos/pos.module').then((m) => m.PosModule),
           },
           {
-            canActivate: [PluginGuard],
-            data: { plugins: [Plugin.Ordering] },
+            canActivate: [PluginGuard, UserActionsGuard],
+            data: { plugins: [Plugin.Ordering], userActions: [UserAction.Order] },
             path: 'orders',
             loadChildren: () => import('./pages/orders/orders.module').then((m) => m.OrdersModule),
           },
           {
-            canActivate: [PluginGuard],
-            data: { plugins: [Plugin.Club] },
+            canActivate: [PluginGuard, UserActionsGuard],
+            data: { plugins: [Plugin.Club], userActions: [UserAction.Club] },
             path: 'club',
             loadChildren: () => import('./pages/club/club.module').then((m) => m.ClubModule),
           },
           {
+            canActivate: [UserActionsGuard],
+            data: { userActions: [UserAction.Setting] },
             path: 'settings',
             loadChildren: () => import('./pages/settings/settings.module').then((m) => m.SettingsModule),
           },

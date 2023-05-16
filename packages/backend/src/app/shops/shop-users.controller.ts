@@ -13,21 +13,30 @@ export class ShopUsersController {
   constructor(
     @InjectRepository(ShopUser)
     private shopUsersRepo: Repository<ShopUser>,
-    private auth: AuthService,
+    private auth: AuthService
   ) {}
 
   @Get()
   async getAll(@LoginUser() user: AuthPayload): Promise<ShopUser[]> {
-    const shop = await this.auth.getPanelUserShop(user)
+    const shop = await this.auth.getPanelUserShop(user);
     return this.shopUsersRepo.find({
-      where: { shop: {id: shop.id} },
+      where: { shop: { id: shop.id } },
+      relations: ['user'],
+    });
+  }
+
+  @Get('info')
+  async myInfo(@LoginUser() user: AuthPayload): Promise<ShopUser> {
+    const shop = await this.auth.getPanelUserShop(user);
+    return this.shopUsersRepo.findOne({
+      where: { shop: { id: shop.id }, user: { id: user.id } },
       relations: ['user'],
     });
   }
 
   @Post()
   async save(@Body() dto: ShopUser, @LoginUser() user: AuthPayload): Promise<ShopUser> {
-    const shop = await this.auth.getPanelUserShop(user)
+    const shop = await this.auth.getPanelUserShop(user);
     dto.shop = shop;
     dto.role = ShopUserRole.Waiter;
     return this.shopUsersRepo.save(dto);

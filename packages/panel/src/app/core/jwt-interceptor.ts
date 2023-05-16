@@ -3,10 +3,12 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/c
 import { Observable } from 'rxjs';
 import { AuthService } from './services/auth.service';
 import { IGNORE_CASES } from './api.interceptor';
+import { environment } from '../../environments/environment';
+import { User } from '@menno/types';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-  constructor(private auth: AuthService) {}
+  constructor() {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let ignore = false;
@@ -18,7 +20,7 @@ export class JwtInterceptor implements HttpInterceptor {
     }
     // add authorization header with jwt token if available
     if (!ignore) {
-      const user = this.auth.instantUser;
+      const user = this.user;
       if (user && user.token) {
         request = request.clone({
           setHeaders: {
@@ -29,5 +31,13 @@ export class JwtInterceptor implements HttpInterceptor {
     }
 
     return next.handle(request);
+  }
+
+  get user() {
+    const u =
+      sessionStorage?.getItem(environment.localStorageUserKey) ||
+      localStorage?.getItem(environment.localStorageUserKey);
+    if (u) return JSON.parse(u) as User;
+    return;
   }
 }

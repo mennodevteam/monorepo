@@ -8,14 +8,17 @@ import { AuthPayload } from '../core/types/auth-payload';
 
 @Controller('missions')
 export class MissionsController {
-  constructor(private auth: AuthService, @InjectRepository(Mission) private missionsRepo: Repository<Mission>) {}
+  constructor(
+    private auth: AuthService,
+    @InjectRepository(Mission) private missionsRepo: Repository<Mission>
+  ) {}
 
   @Get()
   async find(@LoginUser() user: AuthPayload): Promise<Mission[]> {
     const { club } = await this.auth.getPanelUserShop(user, ['panel']);
     return this.missionsRepo.find({
       where: {
-        club,
+        club: { id: club?.id },
       },
       order: {
         createdAt: 'DESC',
