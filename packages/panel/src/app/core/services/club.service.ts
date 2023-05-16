@@ -243,7 +243,7 @@ export class ClubService {
     }
   }
 
-  async saveDiscountCoupon(discountCoupon: DiscountCoupon): Promise<DiscountCoupon> {
+  async saveDiscountCoupon(discountCoupon: Partial<DiscountCoupon>): Promise<DiscountCoupon> {
     const res = await this.http.post<DiscountCoupon>('discountCoupons', discountCoupon).toPromise();
     if (!res) throw new Error();
     return res;

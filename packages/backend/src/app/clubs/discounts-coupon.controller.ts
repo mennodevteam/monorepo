@@ -30,11 +30,13 @@ export class DiscountsCouponController {
     return this.clubsService.filterDiscountCoupons(<FilterDiscountCouponsDto>{
       clubId: club.id,
       memberId,
+      isEnabled: memberId ? true : false,
     });
   }
 
+  @Roles(UserRole.Panel)
   @Delete('/:couponId')
   async delete(@Param('couponId') couponId: string): Promise<void> {
-    await this.discountCouponsRepo.delete(couponId);
+    await this.discountCouponsRepo.softDelete(couponId);
   }
 }

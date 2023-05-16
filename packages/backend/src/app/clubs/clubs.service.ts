@@ -7,6 +7,7 @@ import {
   NewSmsDto,
   Order,
   Shop,
+  Status,
   User,
 } from '@menno/types';
 import { Injectable } from '@nestjs/common';
@@ -205,7 +206,7 @@ export class ClubsService {
       options.club = { id: dto.clubId };
     }
     if (dto.isEnabled) {
-      options.isEnabled = true;
+      options.status = Status.Active;
       options.startedAt = LessThanOrEqual(new Date());
       options.expiredAt = MoreThanOrEqual(new Date());
     }
