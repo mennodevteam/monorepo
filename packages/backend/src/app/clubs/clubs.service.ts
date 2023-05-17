@@ -215,25 +215,28 @@ export class ClubsService {
       where: options,
       relations: ['member', 'member.user'],
     });
-    coupons = coupons.filter(
-      async (c) => {
-        if (c.maxUse) {
-          const totalUse = await this.ordersRepo.count({ where: { discountCoupon: { id: c.id } } });
-          if (totalUse >= c.maxUse) return false;
-        }
-        if (c.maxUsePerUser && dto.memberId) {
-          const { user } = await this.membersRepo.findOne({
-            where: { id: dto.memberId },
-            relations: ['user'],
-          });
-          const userUse = await this.ordersRepo.count({
-            where: { discountCoupon: { id: c.id }, customer: { id: user.id } },
-          });
-          if (userUse >= c.maxUsePerUser) return false;
-        }
-        return true;
+
+    if (dto.memberId) {
+      coupons = coupons.filter((x) => (!x.member && x.code) || x.member?.id === dto.memberId);
+    }
+
+    coupons = coupons.filter(async (c) => {
+      if (c.maxUse) {
+        const totalUse = await this.ordersRepo.count({ where: { discountCoupon: { id: c.id } } });
+        if (totalUse >= c.maxUse) return false;
       }
-    );
+      if (c.maxUsePerUser && dto.memberId) {
+        const { user } = await this.membersRepo.findOne({
+          where: { id: dto.memberId },
+          relations: ['user'],
+        });
+        const userUse = await this.ordersRepo.count({
+          where: { discountCoupon: { id: c.id }, customer: { id: user.id } },
+        });
+        if (userUse >= c.maxUsePerUser) return false;
+      }
+      return true;
+    });
     if (dto.star) {
       coupons = coupons.filter((x) => x.star != undefined && x.star >= dto.star);
     }

@@ -68,13 +68,13 @@ export class BasketService extends OrderDto {
     return this.productItems?.find((x) => x.productId === productId);
   }
 
-  clear() {
+  clear(deep?: boolean) {
     this.productItems = [];
     this.note = undefined;
     this.address = undefined;
-    this.discountCoupon = undefined;
     if (this.menuService.type != undefined) this.type = this.menuService.type;
     this.menuService.load();
+    if (deep) this.discountCoupon = undefined;
   }
 
   get items(): OrderItem[] {
@@ -178,7 +178,7 @@ export class BasketService extends OrderDto {
       this.ordersService.payAndAddOrder(dto);
     } else {
       const order = await this.ordersService.save(dto);
-      this.clear();
+      this.clear(true);
       return order;
     }
     return null;

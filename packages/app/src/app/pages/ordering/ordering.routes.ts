@@ -6,6 +6,7 @@ import { MenuPageComponent } from './menu-page/menu-page.component';
 import { ProductPageComponent } from './product-page/product-page.component';
 import { ShopHomeComponent } from './shop-home/shop-home.component';
 import { OrderCompleteComponent } from './order-complete/order-complete.component';
+import { DiscountCouponListPageComponent } from './discount-coupon-list-page/discount-coupon-list-page.component';
 
 export const orderingRoutes: Routes = [
   {
@@ -20,6 +21,11 @@ export const orderingRoutes: Routes = [
         canActivate: [AuthGuard],
         path: 'basket',
         component: BasketPageComponent,
+      },
+      {
+        canActivate: [AuthGuard],
+        path: 'coupons',
+        component: DiscountCouponListPageComponent,
       },
       {
         path: 'menu',

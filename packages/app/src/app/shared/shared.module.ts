@@ -17,11 +17,13 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { PdatePipe } from './pipes/pdate.pipe';
 import { OrderTypePipe } from './pipes/order-type.pipe';
 import { PromptDialogComponent } from './dialogs/prompt-dialog/prompt-dialog.component';
+import { EmptyStateComponent } from './components/empty-state/empty-state.component';
 
 @NgModule({
   declarations: [
     GoBackDirective,
     ImageLoaderDirective,
+    EmptyStateComponent,
     MenuCurrencyPipe,
     CountSelectorComponent,
     LoginBottomSheetComponent,
@@ -47,6 +49,7 @@ import { PromptDialogComponent } from './dialogs/prompt-dialog/prompt-dialog.com
     PdatePipe,
     OrderTypePipe,
     ImageLoaderDirective,
+    EmptyStateComponent,
     MenuCurrencyPipe,
     TranslateModule,
     CountSelectorComponent,

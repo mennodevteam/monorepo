@@ -1,0 +1,52 @@
+<mat-toolbar>
+  <button mat-icon-button goBack>
+    <i class="fa-regular fa-arrow-right"></i>
+  </button>
+</mat-toolbar>
+
+<main *ngIf="coupons">
+  <mat-card *ngFor="let c of coupons">
+    <mat-card-header>
+      <mat-card-title>{{ c.title }}</mat-card-title>
+      <mat-card-subtitle>
+        <span *ngIf="c.fixedDiscount">{{ c.fixedDiscount | menuCurrency }}</span>
+        <span *ngIf="c.percentageDiscount">{{ c.percentageDiscount }}%</span>
+        {{ 'discountCouponList.discount' | translate }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <ul>
+        <li>{{ 'discountCouponList.expire' | translate }}: {{ c.expiredAt | pdate: 'YYYY/MM/DD' }}</li>
+        <li *ngIf="c.minPrice">
+          {{ 'discountCouponList.minPrice' | translate }}: {{ c.minPrice | menuCurrency }}
+        </li>
+        <li *ngIf="c.maxDiscount">
+          {{ 'discountCouponList.maxDiscount' | translate }}: {{ c.maxDiscount | menuCurrency }}
+        </li>
+        <li *ngIf="c.orderTypes?.length">
+          {{ 'discountCouponList.types' | translate }}:
+          <span *ngFor="let t of c.orderTypes"> {{ t | orderType }} </span>
+        </li>
+      </ul>
+    </mat-card-content>
+    <mat-divider></mat-divider>
+    <mat-card-actions>
+      <button
+        mat-flat-button
+        color="primary"
+        [disabled]="basket.discountCoupon?.id === c.id"
+        (click)="basket.discountCoupon = c"
+      >
+        <span *ngIf="basket.discountCoupon?.id !== c.id">
+          {{ 'app.set' | translate }}
+        </span>
+        <span *ngIf="basket.discountCoupon?.id === c.id" class="success-text">
+          <i class="fa-regular fa-check"></i>
+          {{ 'discountCouponList.set' | translate }}
+        </span>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <empty-state *ngIf="coupons.length === 0" icon="fa-tag"></empty-state>
+</main>

@@ -1,4 +1,12 @@
-import { DiscountCoupon, FilterDiscountCouponsDto, Order, Shop, Status, UserRole } from '@menno/types';
+import {
+  DiscountCoupon,
+  FilterDiscountCouponsDto,
+  Member,
+  Order,
+  Shop,
+  Status,
+  UserRole,
+} from '@menno/types';
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
@@ -15,6 +23,7 @@ export class DiscountsCouponController {
     private clubsService: ClubsService,
     @InjectRepository(DiscountCoupon) private discountCouponsRepo: Repository<DiscountCoupon>,
     @InjectRepository(Shop) private shopsRepo: Repository<Shop>,
+    @InjectRepository(Member) private membersRepo: Repository<Member>,
     @InjectRepository(Order) private ordersRepo: Repository<Order>
   ) {}
 
@@ -60,6 +69,22 @@ export class DiscountsCouponController {
     return coupon;
   }
 
+  @Roles(UserRole.App)
+  @Get('app/:shopId')
+  async filterApp(
+    @LoginUser() user: AuthPayload,
+    @Param('shopId') shopId: string
+  ): Promise<DiscountCoupon[]> {
+    const { club } = await this.shopsRepo.findOne({ where: { id: shopId }, relations: ['club'] });
+    const member = await this.membersRepo.findOneBy({ club: { id: club.id }, user: { id: user.id } });
+    return this.clubsService.filterDiscountCoupons(<FilterDiscountCouponsDto>{
+      clubId: club.id,
+      memberId: member?.id,
+      isEnabled: true,
+    });
+  }
+
+  @Roles(UserRole.Panel)
   @Get(':memberId?')
   async filter(
     @LoginUser() user: AuthPayload,

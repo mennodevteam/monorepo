@@ -35,6 +35,7 @@ import { CategoryCompactViewComponent } from './menu-page/category-compact-view/
 import { OrderCompleteComponent } from './order-complete/order-complete.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
+import { DiscountCouponListPageComponent } from './discount-coupon-list-page/discount-coupon-list-page.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     DisableOrderingCardComponent,
     CategoryCompactViewComponent,
     OrderCompleteComponent,
+    DiscountCouponListPageComponent,
   ],
   imports: [
     CommonModule,

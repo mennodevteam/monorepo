@@ -11,6 +11,8 @@
     "save": "ذخیره",
     "inactive": "غیرفعال",
     "finished": "ناموجود",
+    "set": "اعمال",
+    "noData": "هیچ آیتمی وجود ندارد",
     "continue": "ادامه"
   },
   "discount": {
@@ -94,5 +96,14 @@
   "orderComplete": {
     "title": "سفارش شما با موفقیت ثبت شد",
     "action": "رفتن به صفحه جزئیات سفارش"
+  },
+  "discountCouponList": {
+    "pageTitle": "لیست تخفیف‌ها",
+    "expire": "تاریخ انقضا",
+    "discount": "تخفیف",
+    "minPrice": "حداقل سفارش",
+    "maxDiscount": "حداکثر تخفیف",
+    "set": "اعمال شده",
+    "types": "نوع سفارش"
   }
 }
