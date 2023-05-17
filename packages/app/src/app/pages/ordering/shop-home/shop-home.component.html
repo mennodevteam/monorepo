@@ -17,7 +17,12 @@
         <i class="fa-solid fa-phone"></i>
       </button>
     </a>
-    <a mat-list-item *ngIf="shop?.instagram" href="https://www.instagram.com/{{ shop?.instagram }}" target="_blank">
+    <a
+      mat-list-item
+      *ngIf="shop?.instagram"
+      href="https://www.instagram.com/{{ shop?.instagram }}"
+      target="_blank"
+    >
       <span matListItemTitle>اینستاگرام</span>
       <span matListItemLine>
         {{ shop?.instagram }}
@@ -39,7 +44,10 @@
     <mat-divider></mat-divider>
 
     <a mat-list-item routerLink="/coupons">
-      <span matListItemTitle>کد‌های تخفیف شما</span>
+      <span matListItemTitle>
+        کد‌های تخفیف شما
+        <span *ngIf="couponCount" style="font-size: 11px;" class="error-text">({{ 'app.number' | translate: { value: couponCount } }})</span>
+      </span>
       <button mat-icon-button matListItemMeta>
         <i class="fa-sharp fa-solid fa-tags"></i>
       </button>

@@ -34,6 +34,7 @@ import { ShopTablesBottomSheetComponent } from './shop-tables-bottom-sheet/shop-
 import { CategoryCompactViewComponent } from './menu-page/category-compact-view/category-compact-view.component';
 import { OrderCompleteComponent } from './order-complete/order-complete.component';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DiscountCouponListPageComponent } from './discount-coupon-list-page/discount-coupon-list-page.component';
 
@@ -68,6 +69,7 @@ import { DiscountCouponListPageComponent } from './discount-coupon-list-page/dis
     MatIconModule,
     MatListModule,
     MatToolbarModule,
+    MatTooltipModule,
     MatButtonToggleModule,
     MatProgressBarModule,
     MatChipsModule,
