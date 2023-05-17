@@ -1,9 +1,20 @@
 import { Injectable } from '@angular/core';
-import { DeliveryArea, OrderDto, OrderItem, OrderType, Product, ProductItem, Status } from '@menno/types';
+import {
+  DeliveryArea,
+  DiscountCoupon,
+  OrderDto,
+  OrderItem,
+  OrderType,
+  Product,
+  ProductItem,
+  Status,
+} from '@menno/types';
 import { MenuService } from './menu.service';
 import { OrdersService } from './orders.service';
 import { ShopService } from './shop.service';
 import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +24,9 @@ export class BasketService extends OrderDto {
     private menuService: MenuService,
     private shopService: ShopService,
     private ordersService: OrdersService,
-    private http: HttpClient
+    private http: HttpClient,
+    private snack: MatSnackBar,
+    private translate: TranslateService
   ) {
     super();
     this.menuService.typeObservable.subscribe((type) => {
@@ -110,6 +123,14 @@ export class BasketService extends OrderDto {
     }
   }
 
+  async checkDiscountCouponCode(code: string) {
+    const coupon = await this.http
+      .get<DiscountCoupon | undefined>(`discountCoupons/check/${this.shopService.shop?.id}/${code}`)
+      .toPromise();
+    if (coupon) this.discountCoupon = coupon;
+    else this.snack.open(this.translate.instant('basket.discountCouponNotFound'));
+  }
+
   async complete() {
     if (this.type == undefined || !this.shopService.shop) return;
     if (
@@ -125,6 +146,26 @@ export class BasketService extends OrderDto {
       !this.details?.table
     )
       return;
+
+    if (this.discountCoupon) {
+      if (this.discountCoupon.minPrice && this.sum < this.discountCoupon.minPrice) {
+        this.snack.open(
+          this.translate.instant('basket.discountCouponMinPriceWarning', {
+            value: this.discountCoupon.minPrice,
+          })
+        );
+        return;
+      }
+
+      if (
+        this.discountCoupon.orderTypes?.length &&
+        this.discountCoupon.orderTypes.indexOf(this.type) === -1
+      ) {
+        this.snack.open(this.translate.instant('basket.discountCouponOrderTypeWarning'));
+        return;
+      }
+    }
+
     const dto: OrderDto = {
       productItems: this.productItems.filter((x) => x.quantity),
       type: this.type,

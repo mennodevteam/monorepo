@@ -1,7 +1,7 @@
-import { DiscountCoupon, FilterDiscountCouponsDto, UserRole } from '@menno/types';
+import { DiscountCoupon, FilterDiscountCouponsDto, Order, Shop, Status, UserRole } from '@menno/types';
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
 import { Roles } from '../auth/roles.decorators';
 import { LoginUser } from '../auth/user.decorator';
@@ -13,19 +13,58 @@ export class DiscountsCouponController {
   constructor(
     private auth: AuthService,
     private clubsService: ClubsService,
-    @InjectRepository(DiscountCoupon) private discountCouponsRepo: Repository<DiscountCoupon>
+    @InjectRepository(DiscountCoupon) private discountCouponsRepo: Repository<DiscountCoupon>,
+    @InjectRepository(Shop) private shopsRepo: Repository<Shop>,
+    @InjectRepository(Order) private ordersRepo: Repository<Order>
   ) {}
 
   @Post()
   @Roles(UserRole.Panel)
-  async save(@Body() discountsCoupon: DiscountCoupon, @LoginUser() user: AuthPayload): Promise<DiscountCoupon> {
+  async save(
+    @Body() discountsCoupon: DiscountCoupon,
+    @LoginUser() user: AuthPayload
+  ): Promise<DiscountCoupon> {
     const { club } = await this.auth.getPanelUserShop(user, ['club']);
     discountsCoupon.club = club;
     return this.discountCouponsRepo.save(discountsCoupon);
   }
 
+  @Roles(UserRole.App)
+  @Get('check/:shopId/:code')
+  async check(
+    @LoginUser() user: AuthPayload,
+    @Param('shopId') shopId: string,
+    @Param('code') code: string
+  ): Promise<DiscountCoupon | undefined> {
+    const { club } = await this.shopsRepo.findOne({ where: { id: shopId }, relations: ['club'] });
+    const coupon = await this.discountCouponsRepo.findOneBy({
+      club: { id: club.id },
+      startedAt: LessThanOrEqual(new Date()),
+      expiredAt: MoreThanOrEqual(new Date()),
+      status: Status.Active,
+      code,
+    });
+
+    if (coupon?.maxUse) {
+      const totalCount = await this.ordersRepo.count({ where: { discountCoupon: { id: coupon.id } } });
+      if (totalCount >= coupon.maxUse) return;
+    }
+
+    if (coupon?.maxUsePerUser) {
+      const totalCount = await this.ordersRepo.count({
+        where: { discountCoupon: { id: coupon.id }, customer: { id: user.id } },
+      });
+      if (totalCount >= coupon.maxUsePerUser) return;
+    }
+
+    return coupon;
+  }
+
   @Get(':memberId?')
-  async filter(@LoginUser() user: AuthPayload, @Param('memberId') memberId: string): Promise<DiscountCoupon[]> {
+  async filter(
+    @LoginUser() user: AuthPayload,
+    @Param('memberId') memberId: string
+  ): Promise<DiscountCoupon[]> {
     const { club } = await this.auth.getPanelUserShop(user, ['club']);
     return this.clubsService.filterDiscountCoupons(<FilterDiscountCouponsDto>{
       clubId: club.id,

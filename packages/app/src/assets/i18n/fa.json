@@ -2,6 +2,8 @@
   "app": {
     "number": "{{value}} عدد",
     "count": "تعداد",
+    "ok": "تایید",
+    "cancel": "انصراف",
     "select": "انتخاب",
     "add": "افزودن",
     "price": "قیمت",
@@ -43,6 +45,12 @@
     "emptyDescription": "هیچ آیتمی انتخاب نشده است",
     "noteLabel": "توضیحات شما",
     "notePlaceholder": "توضیحاتی درباره سفارش دارید اینجا بنویسید...",
+    "discountCoupon": "کد تخفیف",
+    "setDiscountCoupon": "ثبت کد",
+    "discountCouponAddDescription": "کد تخفیف را وارد کنید",
+    "discountCouponNotFound": "کد وارد شده اشتباه است",
+    "discountCouponMinPriceWarning": "حداقل سفارش برای کد تخفیف {{value}} است",
+    "discountCouponOrderTypeWarning": "این کد تخفیف برای نوع سفارش دیگری است",
     "complete": "ثبت سفارش"
   },
   "loginBottomSheet": {

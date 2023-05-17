@@ -2,9 +2,14 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { BasketService } from '../../../core/services/basket.service';
 import { ShopService } from '../../../core/services/shop.service';
-import { OrderType, Status } from '@menno/types';
+import { DISCOUNT_CODE_TITLE, OrderType, Status } from '@menno/types';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
+import { MatDialog } from '@angular/material/dialog';
+import { PromptDialogComponent } from '../../../shared/dialogs/prompt-dialog/prompt-dialog.component';
+import { AuthService } from '../../../core/services/auth.service';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { LoginBottomSheetComponent } from '../../../shared/dialogs/login-bottom-sheet/login-bottom-sheet.component';
 
 @Component({
   selector: 'basket-page',
@@ -13,12 +18,17 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class BasketPageComponent {
   saving = false;
+  DISCOUNT_CODE_TITLE = DISCOUNT_CODE_TITLE;
+  Math = Math;
   constructor(
     public basket: BasketService,
     private router: Router,
     private shopService: ShopService,
     private snack: MatSnackBar,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private dialog: MatDialog,
+    private auth: AuthService,
+    private bottomSheet: MatBottomSheet
   ) {
     let valid = true;
     if (!this.basket.items?.length) {
@@ -68,5 +78,25 @@ export class BasketPageComponent {
 
   get disableOrdering() {
     return this.shopService.shop?.appConfig?.disableOrdering;
+  }
+
+  async getNewDiscountCouponCode() {
+    if (!this.auth.user?.mobilePhone) {
+      const complete = await this.bottomSheet.open(LoginBottomSheetComponent).afterDismissed().toPromise();
+      if (!complete) return;
+    }
+    this.dialog
+      .open(PromptDialogComponent, {
+        data: {
+          title: this.translate.instant('basket.discountCoupon'),
+          description: this.translate.instant('basket.discountCouponAddDescription'),
+        },
+      })
+      .afterClosed()
+      .subscribe((code) => {
+        if (code) {
+          this.basket.checkDiscountCouponCode(code);
+        }
+      });
   }
 }

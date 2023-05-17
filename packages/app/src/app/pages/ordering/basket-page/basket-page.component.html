@@ -30,9 +30,30 @@
       <mat-divider></mat-divider>
       <mat-list-item *ngFor="let item of basket.abstractItems">
         <h3 matListItemTitle>{{ item.title }}</h3>
-        <div matListItemMeta>
-          <p>{{ item.price | menuCurrency }}</p>
+        <div matListItemMeta style="display: flex;" [class.error-text]="item.price < 0">
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="basket.discountCoupon = undefined"
+            *ngIf="item.title === DISCOUNT_CODE_TITLE"
+          >
+            <i class="fa-regular fa-times-circle"></i>
+          </button>
+          <p>{{ Math.abs(item.price) | menuCurrency }}</p>
         </div>
+      </mat-list-item>
+      <mat-list-item *ngIf="!basket.discountCoupon">
+        <h3 matListItemTitle>{{ 'basket.discountCoupon' | translate }}</h3>
+        <button
+          mat-button
+          color="accent"
+          matListItemMeta
+          class="primary-text"
+          (click)="getNewDiscountCouponCode()"
+        >
+          {{ 'basket.setDiscountCoupon' | translate }}
+          <i class="fa-regular fa-angle-left"></i>
+        </button>
       </mat-list-item>
       <mat-list-item class="total">
         <h3 matListItemTitle>

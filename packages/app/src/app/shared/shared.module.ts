@@ -7,14 +7,16 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CountSelectorComponent } from './components/count-selector/count-selector.component';
 import { MatButtonModule } from '@angular/material/button';
 import { LoginBottomSheetComponent } from './dialogs/login-bottom-sheet/login-bottom-sheet.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { PdatePipe } from './pipes/pdate.pipe';
 import { OrderTypePipe } from './pipes/order-type.pipe';
+import { PromptDialogComponent } from './dialogs/prompt-dialog/prompt-dialog.component';
 
 @NgModule({
   declarations: [
@@ -23,16 +25,19 @@ import { OrderTypePipe } from './pipes/order-type.pipe';
     MenuCurrencyPipe,
     CountSelectorComponent,
     LoginBottomSheetComponent,
+    PromptDialogComponent,
     PdatePipe,
     OrderTypePipe,
   ],
   imports: [
     CommonModule,
     TranslateModule,
+    FormsModule,
     MatButtonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatDialogModule,
     MatSnackBarModule,
     MatAutocompleteModule,
     MatIconModule,

@@ -34,6 +34,7 @@ import { ShopTablesBottomSheetComponent } from './shop-tables-bottom-sheet/shop-
 import { CategoryCompactViewComponent } from './menu-page/category-compact-view/category-compact-view.component';
 import { OrderCompleteComponent } from './order-complete/order-complete.component';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatBadgeModule,
     MatGridListModule,
     MatRippleModule,
+    MatDialogModule,
     MatProgressSpinnerModule,
     LeafletModule,
   ],
