@@ -14,6 +14,7 @@ import {
   ProductCategory,
   Shop,
   User,
+  DiscountCoupon,
 } from '@menno/types';
 import { groupBy, groupBySum } from '@menno/utils';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -38,7 +39,9 @@ export class OrdersService {
     @InjectRepository(Shop)
     private shopsRepo: Repository<Shop>,
     @InjectRepository(Order)
-    private ordersRepo: Repository<Order>
+    private ordersRepo: Repository<Order>,
+    @InjectRepository(DiscountCoupon)
+    private discountCouponsRepo: Repository<DiscountCoupon>
   ) {}
 
   async dtoToOrder(dto: OrderDto) {
@@ -67,6 +70,8 @@ export class OrdersService {
     if (dto.paymentType != undefined) order.paymentType = dto.paymentType;
     if (dto.state != undefined) order.state = dto.state;
     if (dto.type != undefined) order.type = dto.type;
+    if (dto.discountCoupon)
+      dto.discountCoupon = await this.discountCouponsRepo.findOneBy({ id: dto.discountCoupon.id });
 
     const menu = shop.menu;
     Menu.setRefsAndSort(menu, dto.type);

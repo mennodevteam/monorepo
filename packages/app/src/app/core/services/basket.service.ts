@@ -73,8 +73,10 @@ export class BasketService extends OrderDto {
     this.note = undefined;
     this.address = undefined;
     if (this.menuService.type != undefined) this.type = this.menuService.type;
-    this.menuService.load();
-    if (deep) this.discountCoupon = undefined;
+    if (deep) {
+      this.menuService.load();
+      this.discountCoupon = undefined;
+    }
   }
 
   get items(): OrderItem[] {
@@ -173,6 +175,7 @@ export class BasketService extends OrderDto {
       shopId: this.shopService.shop.id,
       address: this.address,
       details: this.details,
+      discountCoupon: this.discountCoupon ? ({ id: this.discountCoupon.id } as DiscountCoupon) : undefined,
     };
     if (this.isPaymentRequired) {
       this.ordersService.payAndAddOrder(dto);
