@@ -37,8 +37,15 @@
   </mat-toolbar>
 
   <ng-container *ngIf="shopService.hasOrderingPlugin()">
-    <button mat-stroked-button *ngIf="!product?._orderItem?.quantity" (click)="plus()" class="add-button">
-      {{ 'app.select' | translate }}
+    <button
+      mat-stroked-button
+      [disabled]="product.status === Status.Blocked"
+      *ngIf="!product?._orderItem?.quantity"
+      (click)="plus()"
+      class="add-button"
+    >
+      <span *ngIf="product.status === Status.Active">{{ 'app.select' | translate }}</span>
+      <span *ngIf="product.status === Status.Blocked">{{ 'app.finished' | translate }}</span>
     </button>
 
     <div style="height: 72px"></div>
@@ -61,11 +68,13 @@
       <button
         flex
         mat-raised-button
+        [disabled]="product.status === Status.Blocked"
         *ngIf="!product?._orderItem?.quantity"
         color="primary"
         (click)="plus(true)"
       >
-        {{ 'app.select' | translate }}
+        <span *ngIf="product.status === Status.Active">{{ 'app.select' | translate }}</span>
+        <span *ngIf="product.status === Status.Blocked">{{ 'app.finished' | translate }}</span>
       </button>
     </mat-toolbar>
   </ng-container>

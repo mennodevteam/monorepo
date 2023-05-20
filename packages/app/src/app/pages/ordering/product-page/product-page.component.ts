@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Product } from '@menno/types';
+import { Product, Status } from '@menno/types';
 import { BasketService } from '../../../core/services/basket.service';
 import { MenuService } from '../../../core/services/menu.service';
 import { ShopService } from '../../../core/services/shop.service';
@@ -12,6 +12,7 @@ import { ShopService } from '../../../core/services/shop.service';
 })
 export class ProductPageComponent {
   product: Product | null;
+  Status = Status;
   Product = Product;
   @ViewChild('selectButtonRow') selectButtonRow: ElementRef;
   initCount = 0;

@@ -78,13 +78,13 @@ mat-toolbar {
   }
 }
 
-.mdc-button[mat-flat-button][color="primary"],
-.mdc-button[mat-raised-button][color="primary"] {
+.mdc-button[mat-flat-button][color="primary"]:not([disabled]),
+.mdc-button[mat-raised-button][color="primary"]:not([disabled]) {
   color: var(--md-sys-color-on-primary) !important;
 }
 
-.mdc-button[mat-flat-button][color="accent"],
-.mdc-button[mat-raised-button][color="accent"] {
+.mdc-button[mat-flat-button][color="accent"]:not([disabled]),
+.mdc-button[mat-raised-button][color="accent"]:not([disabled]) {
   color: var(--md-sys-color-on-tertiary) !important;
 }
 
