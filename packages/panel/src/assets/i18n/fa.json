@@ -33,6 +33,7 @@
     "saving": "درحال ذخیره کردن...",
     "sum": "جمع کل",
     "totalPrice": "مبلغ کل",
+    "customer": "مشتری",
     "from": "از",
     "to": "تا",
     "fromTo": "از {{from}} تا {{to}}",
@@ -424,6 +425,10 @@
   "orderDetails": {
     "qNumber": "فیش شماره {{value}}",
     "settlement": "تسویه کردن",
+    "sendLinkToCustomer": "ارسال لینک جزئیات",
+    "sendLinkToPeyk": "ارسال آدرس برای پیک",
+    "customerInfo": "اطلاعات مشتری",
+    "addCustomer": "ثبت مشتری",
     "stateDescription": {
       "pending": "سفارش ثبت شده و مشتری در انتظار تایید سفارش توسط شما است.",
       "processing": "سفارش در حال آماده سازی توسط مجموعه است.",
@@ -431,7 +436,12 @@
       "shipping": "سفارش به پیک تحویل شده و پیک در حال حرکت به سمت مشتری است.",
       "completed": "سفارش به مشتری تحویل داده شده است.",
       "canceled": "سفارش توسط مجموعه لغو شده"
-    }
+    },
+    "complete": "تحویل به مشتری",
+    "ready": "آماده شد",
+    "ship": "تحویل به پیک",
+    "estimateTime": "زمان تحویل",
+    "setDelayOnComplete": "تاخیر در تحویل"
   },
   "printers": {
     "listTab": "لیست پرینتر‌ها",

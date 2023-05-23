@@ -4,9 +4,10 @@ import { SchemasModule } from '../core/schemas.module';
 import { OrderSubscriber } from './order.subscriber';
 import { OrdersController } from './orders.controller';
 import { OrdersService } from './orders.service';
+import { SmsModule } from '../sms/sms.module';
 
 @Module({
-  imports: [SchemasModule, AuthModule],
+  imports: [SchemasModule, AuthModule, SmsModule],
   controllers: [OrdersController],
   providers: [OrdersService, OrderSubscriber],
   exports: [OrdersService],

@@ -23,7 +23,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           // auto logout if 401 response returned from api
           localStorage.removeItem(environment.localStorageUserKey);
           sessionStorage.removeItem(environment.localStorageUserKey);
-          location.reload();
+          // location.reload();
         }
         const apiError = new ApiError();
         apiError.message = err.error?.message;

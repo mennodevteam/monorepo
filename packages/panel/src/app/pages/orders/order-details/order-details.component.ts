@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute } from '@angular/router';
-import { Member, Order, OrderState, OrderType, ShopPrintView, ThirdPartyApp, User } from '@menno/types';
+import { Member, Order, OrderDetails, OrderState, OrderType, ShopPrintView, ThirdPartyApp, User } from '@menno/types';
 import { BehaviorSubject, map } from 'rxjs';
 import { OrdersService } from '../../../core/services/orders.service';
 import { TodayOrdersService } from '../../../core/services/today-orders.service';
@@ -16,6 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DecimalPipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ShopService } from '../../../core/services/shop.service';
+import { PromptDialogComponent } from '../../../shared/dialogs/prompt-dialog/prompt-dialog.component';
 
 @Component({
   selector: 'order-details',
@@ -28,7 +29,6 @@ export class OrderDetailsComponent implements OnDestroy {
   displayedColumns = ['row', 'title', 'price', 'quantity', 'sum'];
   OrderType = OrderType;
   OrderState = OrderState;
-  @ViewChild('stepper') stepper: MatStepper;
   form = new FormGroup({});
   deliveryOrder?: DeliveryOrder;
   interval: any;
@@ -46,11 +46,14 @@ export class OrderDetailsComponent implements OnDestroy {
     private decimalPipe: DecimalPipe,
     private shopService: ShopService
   ) {
-    this.order = this.todayOrders.getById(this.orderId);
-    this.loadOrder();
-    this.interval = setInterval(() => {
+    this.route.params.subscribe((params) => {
+      this.order = this.todayOrders.getById(this.orderId);
       this.loadOrder();
-    }, 10000);
+      if (this.interval) clearInterval(this.interval);
+      this.interval = setInterval(() => {
+        this.loadOrder();
+      }, 10000);
+    });
   }
 
   async loadOrder() {
@@ -89,13 +92,6 @@ export class OrderDetailsComponent implements OnDestroy {
     return [];
   }
 
-  get selectedIndex() {
-    if (this.order) {
-      return this.states.indexOf(this.order.state);
-    }
-    return 0;
-  }
-
   get sum() {
     if (this.order) return Order.sum(this.order);
     return;
@@ -116,13 +112,20 @@ export class OrderDetailsComponent implements OnDestroy {
     return [];
   }
 
-  async nextState() {
+  get nextState() {
     if (this.order) {
       const selectedIndex = this.states.indexOf(this.order?.state);
       if (selectedIndex < this.states.length - 1) {
-        await this.orderService.changeState(this.order, this.states[selectedIndex + 1]);
-        // this.stepper.selectedIndex = this.selectedIndex;
+        return this.states[selectedIndex + 1];
       }
+    }
+    return;
+  }
+
+  async goNextState() {
+    const nextState = this.nextState;
+    if (nextState !== undefined && this.order) {
+      await this.orderService.changeState(this.order, nextState);
     }
   }
 
@@ -132,6 +135,26 @@ export class OrderDetailsComponent implements OnDestroy {
         order,
       },
     });
+  }
+
+  async setEstimate() {
+    const val = await this.dialog
+      .open(PromptDialogComponent, {
+        data: {
+          title: this.translate.instant('estimateOrderCompleteDialog.title'),
+          description: this.translate.instant('estimateOrderCompleteDialog.description'),
+          type: 'number',
+        },
+      })
+      .afterClosed()
+      .toPromise();
+
+    if (val && this.order) {
+      const estimateDate = new Date();
+      estimateDate.setMinutes(estimateDate.getMinutes() + Number(val));
+      const details: OrderDetails = { ...this.order?.details, ...{ estimateCompletedAt: estimateDate } };
+      this.orderService.setDetails(this.order, details);
+    }
   }
 
   async openSelectMember() {

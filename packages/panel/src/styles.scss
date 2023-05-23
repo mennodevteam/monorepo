@@ -165,7 +165,7 @@ i[empty-state-icon] {
     flex-direction: column;
 
     .static-col {
-      width: initial;
+      width: initial !important;
     }
   }
 }

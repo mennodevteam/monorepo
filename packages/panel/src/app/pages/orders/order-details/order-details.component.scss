@@ -74,8 +74,13 @@ span[matListItemMeta] {
   }
 }
 
+mat-card-actions {
+  display: flex;
+  gap: 8px;
+}
+
 .static-col {
-  width: 320px;
+  width: 360px;
 }
 
 .total-row {

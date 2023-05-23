@@ -99,7 +99,7 @@ export class TodayOrdersService {
           notif.close();
           break;
         case 2:
-          this.router.navigate(['/orders', order.id]);
+          this.router.navigate(['/orders/details', order.id]);
           notif.close();
           break;
       }
