@@ -3,4 +3,5 @@ export const environment = {
   apiUrl: 'https://api.menno.pro',
   localStorageUserKey: 'mennoAdminUser',
   bucketUrl: 'https://menno.storage.iran.liara.space',
+  panelLoginLink: 'https://panel.menno.pro/#/auth/login'
 };

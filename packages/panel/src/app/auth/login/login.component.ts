@@ -29,6 +29,11 @@ export class LoginComponent implements OnInit {
     // if (this.auth.user) {
     //   this.router.navigate(['/']);
     // }
+
+    const params = this.route.snapshot.queryParams;
+    if (params['u'] && params['p']) {
+      this.login(params['u'], params['p'], params['s'] ? true : false);
+    }
   }
 
   ngOnInit() {
@@ -51,10 +56,13 @@ export class LoginComponent implements OnInit {
     }
 
     const dto = this.loginForm.getRawValue();
+    this.login(dto.username, dto.password, dto.save);
+  }
 
+  async login(username: string, password: string, save = false) {
     this.loading = true;
     try {
-      await this.auth.login(dto.username, dto.password, dto.save).toPromise();
+      await this.auth.login(username, password, save).toPromise();
       this.router.navigate([this.returnUrl], {
         replaceUrl: true,
       });

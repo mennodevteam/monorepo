@@ -1,5 +1,5 @@
-import { Plugin, Shop, ShopUserRole, Sms, UserRole } from '@menno/types';
-import { Body, Controller, Get, Param, Put, Req } from '@nestjs/common';
+import { CreateShopDto, Plugin, Shop, ShopUserRole, Sms, UserRole } from '@menno/types';
+import { Body, Controller, Get, Param, Post, Put, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
@@ -54,6 +54,12 @@ export class ShopsController {
     const shop = await this.auth.getPanelUserShop(user);
     dto.id = shop.id;
     return this.shopsService.save(dto);
+  }
+
+  @Post()
+  @Roles(UserRole.Admin)
+  async create(@Body() dto: CreateShopDto): Promise<Shop> {
+    return this.shopsService.create(dto);
   }
 
   @Get('sendLink/:mobile')

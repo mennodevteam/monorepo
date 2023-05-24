@@ -15,6 +15,8 @@ import {
   SmsAccount,
   User,
   Plugin,
+  ShopPlugins,
+  Theme,
 } from '@menno/types';
 import { OldTypes } from '@menno/old-types';
 import { HttpService } from '@nestjs/axios';
@@ -41,6 +43,8 @@ export class ShopsService {
     private printViewsRepository: Repository<ShopPrintView>,
     @InjectRepository(Region)
     private regionsRepository: Repository<Region>,
+    @InjectRepository(Theme)
+    private themesRepository: Repository<Theme>,
     private smsService: SmsService,
     private usersService: UsersService,
     private http: HttpService,
@@ -72,7 +76,7 @@ export class ShopsService {
     return await this.shopsRepository.save(shop);
   }
 
-  async privateInsert(dto: CreateShopDto) {
+  async create(dto: CreateShopDto) {
     if (!Shop.isUsernameValid(dto.loginUsername))
       throw new HttpException('the loginUsername is invalid', HttpStatus.NOT_ACCEPTABLE);
     let existUser = await this.usersService.findOneByUsername(dto.loginUsername);
@@ -92,37 +96,24 @@ export class ShopsService {
       if (existingShop) throw new HttpException('Duplicated Shop link', HttpStatus.CONFLICT);
     }
 
-    if (dto.prevServerCode) {
-      const existingShop = await this.shopsRepository.findOne({
-        where: { prevServerCode: dto.prevServerCode },
+    let code = 2100;
+    try {
+      const allShops = await this.shopsRepository.find({
+        where: {
+          code: Not(IsNull()),
+        },
       });
-      if (existingShop) throw new HttpException('Duplicated Shop prev sever code', HttpStatus.CONFLICT);
-    }
-    if (dto.code) {
-      const existingShop = await this.shopsRepository.findOne({
-        where: { code: dto.code },
-      });
-      if (existingShop) throw new HttpException('Duplicated Shop code', HttpStatus.CONFLICT);
-    } else {
-      try {
-        const allShops = await this.shopsRepository.find({
-          where: {
-            code: Not(IsNull()),
-          },
-        });
-        allShops.sort((a, b) => Number(b.code) - Number(a.code));
-        const lastShopCode = allShops[0];
-        if (lastShopCode) dto.code = (Number(lastShopCode.code) + 1).toString();
-      } catch (error) {
-        // do nothing
-      }
+      allShops.sort((a, b) => Number(b.code) - Number(a.code));
+      const lastShopCode = allShops[0];
+      if (lastShopCode) code = Math.max(Number(lastShopCode.code) + 1, code);
+    } catch (error) {
+      // do nothing
     }
 
     const shop = new Shop();
     shop.username = dto.username;
     shop.title = dto.title;
-    shop.code = dto.code;
-    shop.prevServerCode = dto.prevServerCode ? dto.prevServerCode : undefined;
+    shop.code = code.toString();
 
     if (dto.regionId) shop.region = <Region>{ id: dto.regionId };
     else if (dto.regionTitle) {
@@ -141,6 +132,10 @@ export class ShopsService {
     shop.club = new Club();
     shop.club.title = dto.title;
 
+    shop.appConfig = {
+      theme: await this.themesRepository.findOneBy({ key: 'yellow' }),
+    } as AppConfig;
+
     shop.users = [new ShopUser()];
     shop.users[0].user = <User>{
       mobilePhone: dto.mobilePhone,
@@ -150,6 +145,11 @@ export class ShopsService {
       password: dto.loginPassword,
     };
     shop.users[0].role = ShopUserRole.Admin;
+
+    shop.plugins = {
+      expiredAt: dto.expiredAt,
+      renewAt: new Date(),
+    } as ShopPlugins;
 
     const savedShopInfo = await this.shopsRepository.save(shop);
 
@@ -182,7 +182,9 @@ export class ShopsService {
     const renewAt = new Date(validPlugins[0].expiredAt);
     renewAt.setDate(renewAt.getDate() - 365);
 
-    const region = shop.region ? await this.regionsRepository.findOneBy({title: shop.region.title}) : undefined;
+    const region = shop.region
+      ? await this.regionsRepository.findOneBy({ title: shop.region.title })
+      : undefined;
 
     const dto = {
       id: shop.id,
@@ -200,7 +202,7 @@ export class ShopsService {
         tables: shop.details?.tables,
       },
       username: shop.username,
-      region: region ? {id: region.id} : shop.region,
+      region: region ? { id: region.id } : shop.region,
       phones: shop.phones,
       plugins: {
         plugins: validPlugins.map((x) => x.plugin),
@@ -209,7 +211,7 @@ export class ShopsService {
       },
       deliveryAreas,
       users,
-    }
+    };
 
     const newShop = await this.shopsRepository.save(dto);
 

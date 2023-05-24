@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { ShopsService } from '../../core/services/shops.service';
 import { Plugin, Shop } from '@menno/types';
 import { MatTableDataSource } from '@angular/material/table';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'menno-shops',
@@ -10,7 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class ShopsComponent {
   dataSource = new MatTableDataSource<Shop>();
-  columns = ['code', 'image', 'title', 'plugins', 'expiredAt', 'username', 'password', 'connectionAt'];
+  columns = ['code', 'image', 'title', 'plugins', 'expiredAt', 'username', 'password', 'connectionAt', 'actions'];
   Plugin = Plugin;
 
   constructor(public shopsService: ShopsService, private cdr: ChangeDetectorRef) {
@@ -25,5 +26,9 @@ export class ShopsComponent {
 
   get shops() {
     return this.shopsService.shops;
+  }
+
+  get panelLink() {
+    return environment.panelLoginLink
   }
 }

@@ -1,7 +1,11 @@
 <mat-toolbar>
-  <h1 flex>{{'shops.pageTitle' | translate}}</h1>
+  <h1 flex>{{ 'shops.pageTitle' | translate }}</h1>
   <button mat-stroked-button color="primary" (click)="shopsService.migrateFromPrev()">
-    {{'shops.migrate' | translate}}
+    {{ 'shops.migrate' | translate }}
+  </button>
+  <span spacer></span>
+  <button mat-stroked-button color="primary" (click)="shopsService.create()">
+    {{ 'shops.create' | translate }}
   </button>
 </mat-toolbar>
 <main>
@@ -74,7 +78,20 @@
         <ng-container matColumnDef="connectionAt">
           <th mat-header-cell *matHeaderCellDef>{{ 'shops.connectionAt' | translate }}</th>
           <td mat-cell *matCellDef="let shop">
-              {{ shop.connectionAt | pdate }}
+            {{ shop.connectionAt ? (shop.connectionAt | pdate) : '-' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let shop" style="text-align: end">
+            <a
+              mat-icon-button
+              target="_blank"
+              href="{{ panelLink }}?u={{ shop.users[0]?.user.username }}&p={{ shop.users[0]?.user.password }}"
+            >
+              <i class="fa-regular fa-desktop fa-xs"></i>
+            </a>
           </td>
         </ng-container>
 

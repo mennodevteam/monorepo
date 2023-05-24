@@ -15,6 +15,7 @@
   "shops": {
     "pageTitle": "لیست مجموعه‌ها",
     "migrate": "انتقال مجموعه",
+    "create": "ایجاد مجموعه",
     "connectionAt": "آخرین ارتباط پنل"
   },
   "migrateDialog": {
@@ -24,5 +25,19 @@
     "loading": "درحال انتقال، چند دقیقه منتظر بمانید...",
     "conflictError": "خطا، کد وارد شده تکراری",
     "success": "عملیات با موفقیت انجام شد"
+  },
+  "createShopDialog": {
+    "title": "ایجاد مجموعه جدید",
+    "titleLabel": "عنوان مجموعه",
+    "firstNameLabel": "نام مدیر",
+    "lastNameLabel": "نام خانوادگی مدیر",
+    "mobilePhoneLabel": "تلفن همراه مدیر",
+    "usernameLabel": "لینک منوی مجموعه",
+    "loginUsernameLabel": "نام کابری برای ورود به پنل",
+    "loginPasswordLabel": "رمز عبور برای ورود به پنل",
+    "pluginsLabel": "پلاگین‌ها",
+    "expiredAtLabel": "تاریخ انقضا",
+    "regionIdLabel": "انتخاب شهر",
+    "regionTitleLabel": "شهر جدید"
   }
 }
