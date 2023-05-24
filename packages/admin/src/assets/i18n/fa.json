@@ -1,3 +1,15 @@
 {
-  "admin": "ادمین"
+  "admin": "ادمین",
+  "app": {
+    "code": "کد",
+    "title": "عنوان",
+    "logo": "لوگو",
+    "plugins": "ماژول‌ها",
+    "expiredAt": "تاریخ سررسید",
+    "username": "نام‌کاریری",
+    "password": "رمز‌عبور"
+  },
+  "shops": {
+    "connectionAt": "آخرین ارتباط پنل"
+  }
 }

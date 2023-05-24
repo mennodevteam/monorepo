@@ -1,0 +1,80 @@
+<main>
+  <mat-card>
+    <mat-card-content>
+      <table mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="code">
+          <th mat-header-cell *matHeaderCellDef style="width: 64px">{{ 'app.code' | translate }}</th>
+          <td mat-cell *matCellDef="let shop">
+            <b class="eng blue">{{ shop.code }}</b>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="image">
+          <th mat-header-cell *matHeaderCellDef style="width: 64px">{{ 'app.logo' | translate }}</th>
+          <td mat-cell *matCellDef="let shop">
+            <img class="shop-logo" [imageLoader]="shop.logo" />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>{{ 'app.title' | translate }}</th>
+          <td mat-cell *matCellDef="let shop">
+            {{ shop.title }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="plugins">
+          <th mat-header-cell *matHeaderCellDef>{{ 'app.plugins' | translate }}</th>
+          <td mat-cell *matCellDef="let shop">
+            <div class="plugins-wrapper">
+              <i
+                class="fa-solid"
+                *ngFor="let p of shop.plugins?.plugins"
+                [ngClass]="{
+                  'fa-book-open': p === Plugin.Menu,
+                  'fa-utensils': p === Plugin.Ordering,
+                  'fa-crown': p === Plugin.Club
+                }"
+              ></i>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="expiredAt">
+          <th mat-header-cell *matHeaderCellDef>{{ 'app.expiredAt' | translate }}</th>
+          <td mat-cell *matCellDef="let shop">
+            {{ shop.plugins?.expiredAt | pdate: 'YYYY/MM/DD' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="username">
+          <th mat-header-cell *matHeaderCellDef>{{ 'app.username' | translate }}</th>
+          <td mat-cell *matCellDef="let shop">
+            <span class="eng">
+              {{ shop.users[0]?.user?.username }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="password">
+          <th mat-header-cell *matHeaderCellDef>{{ 'app.password' | translate }}</th>
+          <td mat-cell *matCellDef="let shop">
+            <span class="eng">
+              {{ shop.users[0]?.user?.password }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="connectionAt">
+          <th mat-header-cell *matHeaderCellDef>{{ 'shops.connectionAt' | translate }}</th>
+          <td mat-cell *matCellDef="let shop">
+              {{ shop.connectionAt | pdate }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns" class="clickable"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</main>

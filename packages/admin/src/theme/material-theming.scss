@@ -27,7 +27,7 @@ $app-dark-theme: mat.define-dark-theme(
   )
 );
 
-$app-form-theme: mat.define-light-theme(
+$app-form-theme: mat.define-dark-theme(
   (
     color: (
       primary: $app-form-primary,
@@ -40,7 +40,7 @@ $app-form-theme: mat.define-light-theme(
 
 @include mat.core();
 
-@include mat.all-component-themes($app-theme);
+@include mat.all-component-themes($app-dark-theme);
 
 .dark-theme {
   @include mat.all-component-colors($app-dark-theme);

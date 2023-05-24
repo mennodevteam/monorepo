@@ -1,7 +1,7 @@
 @use "@angular/material" as mat;
 
-$app-primary: mat.define-palette(mat.$blue-gray-palette);
-$app-accent: mat.define-palette(mat.$amber-palette, 300);
+$app-primary: mat.define-palette(mat.$amber-palette, 400);
+$app-accent: mat.define-palette(mat.$blue-palette, 300);
 $app-warn: mat.define-palette(mat.$red-palette);
 
 $primary: mat.get-color-from-palette($app-primary);
@@ -19,7 +19,7 @@ $form-warn: mat.get-color-from-palette($app-form-warn);
 $gray: #757575;
 $gray-l1: #bdbdbd;
 $gray-l2: #e0e0e0;
-$background: #f5f5f5;
+$background: #222;
 $border-color: rgba(0, 0, 0, 0.12);
 $dark-background: #1c212d;
 

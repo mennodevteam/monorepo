@@ -1,4 +1,4 @@
-import { Plugin, Shop, Sms, UserRole } from '@menno/types';
+import { Plugin, Shop, ShopUserRole, Sms, UserRole } from '@menno/types';
 import { Body, Controller, Get, Param, Put, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -19,17 +19,33 @@ export class ShopsController {
   ) {}
 
   @Get()
-  @Roles(UserRole.Panel)
-  findOne(@LoginUser() user: AuthPayload): Promise<Shop> {
-    return this.auth.getPanelUserShop(user, [
-      'region',
-      'appConfig.theme',
-      'shopGroup',
-      'club',
-      'smsAccount',
-      'plugins',
-      'thirdParties',
-    ]);
+  @Roles(UserRole.Panel, UserRole.Admin)
+  async findOne(@LoginUser() user: AuthPayload): Promise<Shop | Shop[]> {
+    if (user.role === UserRole.Panel) {
+      const shop = await this.auth.getPanelUserShop(user, [
+        'region',
+        'appConfig.theme',
+        'shopGroup',
+        'club',
+        'smsAccount',
+        'plugins',
+        'thirdParties',
+      ]);
+      this.shopsRepo.update(shop.id, { connectionAt: new Date() });
+      return shop;
+    } else {
+      return this.shopsRepo.find({
+        relations: ['region', 'plugins', 'users.user'],
+        where: {
+          users: {
+            role: ShopUserRole.Admin,
+          },
+        },
+        order: {
+          createdAt: 'DESC',
+        },
+      });
+    }
   }
 
   @Put()

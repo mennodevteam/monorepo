@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'packages/panel/src/environments/environment';
+import { environment } from '../../../environments/environment';
 import { map } from 'rxjs';
 
 const API_PATH = 'files';
