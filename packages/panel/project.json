@@ -23,6 +23,7 @@
             "output": "leaflet/"
           },
           "packages/panel/src/assets",
+          "packages/panel/src/liara_nginx.conf",
           "packages/panel/src/liara.json"
         ],
         "styles": [

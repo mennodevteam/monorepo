@@ -43,7 +43,8 @@
     "notSet": "ثبت نشده",
     "print": "پرینت",
     "default": "پیش‌فرض",
-    "noData": "هیچ داده ای ثبت نشده"
+    "noData": "هیچ داده ای ثبت نشده",
+    "smsSent": "پیامک ارسال شد"
   },
   "shell": {
     "home": "خانه",
@@ -427,6 +428,7 @@
     "settlement": "تسویه کردن",
     "sendLinkToCustomer": "ارسال لینک جزئیات",
     "sendLinkToPeyk": "ارسال آدرس برای پیک",
+    "sendLinkToPeykDialogDescription": "شماره تلفن همراه پیک را وارد کنید",
     "customerInfo": "اطلاعات مشتری",
     "addCustomer": "ثبت مشتری",
     "stateDescription": {
@@ -441,6 +443,7 @@
     "ready": "آماده شد",
     "ship": "تحویل به پیک",
     "estimateTime": "زمان تحویل",
+    "estimateTimeDialogDescription": "چند دقیقه دیگر سفارش به مشتری تحویل داده می‌شود؟",
     "setDelayOnComplete": "تاخیر در تحویل"
   },
   "printers": {

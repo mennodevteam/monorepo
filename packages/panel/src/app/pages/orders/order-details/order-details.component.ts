@@ -32,11 +32,15 @@ export class OrderDetailsComponent implements OnDestroy {
   form = new FormGroup({});
   deliveryOrder?: DeliveryOrder;
   interval: any;
-  checkingDeliveryPriceLoading = false;
+  loading = {
+    alopeykDeliveryPrice: false,
+    sendingLinkToCustomer: false,
+    sendingLinkToPayk: false,
+  }
 
   constructor(
     private route: ActivatedRoute,
-    private orderService: OrdersService,
+    public orderService: OrdersService,
     private dialog: MatDialog,
     private todayOrders: TodayOrdersService,
     private printService: PrinterService,
@@ -141,8 +145,8 @@ export class OrderDetailsComponent implements OnDestroy {
     const val = await this.dialog
       .open(PromptDialogComponent, {
         data: {
-          title: this.translate.instant('estimateOrderCompleteDialog.title'),
-          description: this.translate.instant('estimateOrderCompleteDialog.description'),
+          title: this.translate.instant('orderDetails.estimateTime'),
+          description: this.translate.instant('orderDetails.estimateTimeDialogDescription'),
           type: 'number',
         },
       })
@@ -154,6 +158,22 @@ export class OrderDetailsComponent implements OnDestroy {
       estimateDate.setMinutes(estimateDate.getMinutes() + Number(val));
       const details: OrderDetails = { ...this.order?.details, ...{ estimateCompletedAt: estimateDate } };
       this.orderService.setDetails(this.order, details);
+    }
+  }
+
+  async sendLinkToPeyk() {
+    const val = await this.dialog
+      .open(PromptDialogComponent, {
+        data: {
+          title: this.translate.instant('orderDetails.sendLinkToPeyk'),
+          description: this.translate.instant('orderDetails.sendLinkToPeykDialogDescription'),
+        },
+      })
+      .afterClosed()
+      .toPromise();
+
+    if (val && this.order) {
+      this.orderService.sendLinkToPayk(this.order.id, val);
     }
   }
 
@@ -193,9 +213,9 @@ export class OrderDetailsComponent implements OnDestroy {
   async addAlopeyk() {
     if (this.order && this.order?.type === OrderType.Delivery && this.order.address) {
       const dest: [number, number] = [this.order.address.latitude, this.order.address.longitude];
-      this.checkingDeliveryPriceLoading = true;
+      this.loading.alopeykDeliveryPrice = true;
       const price = await this.alopeyk.calcPrice(dest);
-      this.checkingDeliveryPriceLoading = false;
+      this.loading.alopeykDeliveryPrice = false;
       this.dialog
         .open(AlertDialogComponent, {
           data: {

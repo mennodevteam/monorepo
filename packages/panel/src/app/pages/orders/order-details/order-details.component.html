@@ -148,7 +148,7 @@
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content *ngIf="order.details?.estimateCompletedAt">
-          <p class="gray" style="margin: 8px; font-size: 12px;">
+          <p class="gray" style="margin: 8px; font-size: 12px">
             {{ 'orderDetails.estimateTime' | translate }}: {{ order.details?.estimateCompletedAt | pdate }}
           </p>
         </mat-card-content>
@@ -226,7 +226,11 @@
           </button>
         </mat-card-actions>
         <mat-card-actions *ngIf="order.customer?.mobilePhone">
-          <button mat-stroked-button>
+          <button
+            mat-stroked-button
+            (click)="orderService.sendLinkToCustomer(order.id)"
+            [disabled]="loading.sendingLinkToCustomer"
+          >
             <i class="fa-regular fa-message"></i>
             {{ 'orderDetails.sendLinkToCustomer' | translate }}
           </button>
@@ -253,7 +257,7 @@
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-actions *ngSwitchCase="OrderType.Delivery">
-          <button mat-stroked-button>
+          <button mat-stroked-button (click)="sendLinkToPeyk()" [disabled]="loading.sendingLinkToPayk">
             <i class="fa-regular fa-message"></i>
             {{ 'orderDetails.sendLinkToPeyk' | translate }}
           </button>

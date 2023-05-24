@@ -1,4 +1,12 @@
-import { FilterOrderDto, ManualSettlementDto, Order, OrderDto, OrderReportDto, User, UserRole } from '@menno/types';
+import {
+  FilterOrderDto,
+  ManualSettlementDto,
+  Order,
+  OrderDto,
+  OrderReportDto,
+  User,
+  UserRole,
+} from '@menno/types';
 import {
   Body,
   Controller,
@@ -18,6 +26,7 @@ import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 import { Roles } from '../auth/roles.decorators';
 import { OrdersService } from './orders.service';
+import { SmsService } from '../sms/sms.service';
 
 @Controller('orders')
 export class OrdersController {
@@ -25,7 +34,8 @@ export class OrdersController {
     @InjectRepository(Order)
     private ordersRepo: Repository<Order>,
     private ordersService: OrdersService,
-    private auth: AuthService
+    private auth: AuthService,
+    private sms: SmsService
   ) {}
 
   @Post()
@@ -70,17 +80,6 @@ export class OrdersController {
       order: {
         createdAt: 'DESC',
       },
-    });
-  }
-
-  @Get(':id')
-  @Roles(UserRole.App)
-  getOrderDetailsApp(@Param('id') id: string) {
-    return this.ordersRepo.findOne({
-      where: {
-        id,
-      },
-      relations: ['shop', 'shop.appConfig', 'items', 'customer', 'waiter', 'creator', 'address'],
     });
   }
 
@@ -134,6 +133,42 @@ export class OrdersController {
     return this.ordersService.manualSettlement(body);
   }
 
+  @Get('sendLinkToCustomer/:orderId')
+  @Roles(UserRole.Panel)
+  async sendLinkToCustomer(@Param('orderId') orderId: string, @LoginUser() user: AuthPayload) {
+    const shop = await this.auth.getPanelUserShop(user, ['smsAccount']);
+    const order = await this.ordersRepo.findOne({ where: { id: orderId }, relations: ['customer'] });
+    if (order.customer?.mobilePhone && shop.smsAccount) {
+      const shopLink = shop.domain || `${shop.username}.${process.env.APP_ORIGIN}`;
+      return this.sms.send({
+        accountId: shop.smsAccount.id,
+        receptors: [order.customer.mobilePhone],
+        messages: [
+          `${order.customer?.firstName} عزیز، جهت مشاهده جزئیات و پیگیری سفارش خود در مجموعه ${shop.title} می‌توانید به لینک زیر مراجعه کنید. \n ${shopLink}`,
+        ],
+      });
+    }
+  }
+
+  @Get('sendLinkToPeyk/:orderId/:phone')
+  @Roles(UserRole.Panel)
+  async sendLinkToPeyk(@Param('orderId') orderId: string, @Param('phone') phone: string, @LoginUser() user: AuthPayload) {
+    const shop = await this.auth.getPanelUserShop(user, ['smsAccount']);
+    const order = await this.ordersRepo.findOne({
+      where: { id: orderId },
+      relations: ['address', 'customer'],
+    });
+    if (order.address && shop.smsAccount && order.customer.mobilePhone) {
+      return this.sms.send({
+        accountId: shop.smsAccount.id,
+        receptors: [phone],
+        messages: [
+          `فیش ${order.qNumber}\nمشتری: ${User.fullName(order.customer)}\nتلفن: ${order.customer.mobilePhone}\nآدرس: ${order.address.description}\nمسیریابی:\nmaps.google.com/?q=${order.address.latitude},${order.address.longitude}`,
+        ],
+      });
+    }
+  }
+
   @Post('report')
   @Roles(UserRole.Panel)
   async report(@Body() body: OrderReportDto, @LoginUser() user: AuthPayload) {
@@ -145,5 +180,16 @@ export class OrdersController {
   @Get('setCustomer/:orderId/:memberId')
   async setCustomer(@Param('orderId') orderId: string, @Param('memberId') memberId: string) {
     return this.ordersService.setCustomer(orderId, memberId);
+  }
+
+  @Get(':id')
+  @Roles(UserRole.App)
+  getOrderDetailsApp(@Param('id') id: string) {
+    return this.ordersRepo.findOne({
+      where: {
+        id,
+      },
+      relations: ['shop', 'shop.appConfig', 'items', 'customer', 'waiter', 'creator', 'address'],
+    });
   }
 }

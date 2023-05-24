@@ -10,12 +10,14 @@ import {
   OrderState,
 } from '@menno/types';
 import { AuthService } from './auth.service';
+import { TranslateService } from '@ngx-translate/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrdersService {
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  constructor(private http: HttpClient, private auth: AuthService, private translate: TranslateService, private snack: MatSnackBar) {}
 
   async filter(dto: FilterOrderDto) {
     const orders = await this.http.post<Order[]>(`orders/filter`, dto).toPromise();
@@ -54,6 +56,16 @@ export class OrdersService {
       const result = await this.http.put<Order>(`orders/details/${order.id}`, details).toPromise();
       if (result) order.details = result.details;
     } catch (error) {}
+  }
+
+  async sendLinkToCustomer(orderId: string) {
+    await this.http.get(`orders/sendLinkToCustomer/${orderId}`).toPromise();
+    this.snack.open(this.translate.instant('app.smsSent'), '', {panelClass: 'success'});
+  }
+  
+  async sendLinkToPayk(orderId: string, phone: string) {
+    await this.http.get(`orders/sendLinkToPeyk/${orderId}/${phone}`).toPromise();
+    this.snack.open(this.translate.instant('app.smsSent'), '', {panelClass: 'success'});
   }
 
   async settlement(order: Order, dto: ManualSettlementDto): Promise<void> {
