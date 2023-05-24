@@ -14,6 +14,7 @@ import {
   Sms,
   SmsAccount,
   User,
+  Plugin,
 } from '@menno/types';
 import { OldTypes } from '@menno/old-types';
 import { HttpService } from '@nestjs/axios';
@@ -170,13 +171,20 @@ export class ShopsService {
         plugins: OldTypes.ShopPlugin[];
       }>(`https://new-admin-api.menno.ir/shops/complete-data/xmje/${code}`)
       .toPromise();
-
     const { shop, menu, appConfig, users, printViews, deliveryAreas, plugins } = res.data;
     const validPlugins = plugins.filter((x) => new Date(x.expiredAt).valueOf() > Date.now());
+    if (validPlugins.length === 0) {
+      validPlugins.push({
+        expiredAt: new Date(new Date().setDate(new Date().getDate() + 7)),
+        plugin: Plugin.Menu,
+      } as any);
+    }
     const renewAt = new Date(validPlugins[0].expiredAt);
     renewAt.setDate(renewAt.getDate() - 365);
 
-    const newShop = await this.shopsRepository.save({
+    const region = shop.region ? await this.regionsRepository.findOneBy({title: shop.region.title}) : undefined;
+
+    const dto = {
       id: shop.id,
       title: shop.title,
       description: shop.details?.description,
@@ -192,7 +200,7 @@ export class ShopsService {
         tables: shop.details?.tables,
       },
       username: shop.username,
-      region: shop.region,
+      region: region ? {id: region.id} : shop.region,
       phones: shop.phones,
       plugins: {
         plugins: validPlugins.map((x) => x.plugin),
@@ -201,7 +209,9 @@ export class ShopsService {
       },
       deliveryAreas,
       users,
-    });
+    }
+
+    const newShop = await this.shopsRepository.save(dto);
 
     if (shop.logo) {
       const savedImage: any = await this.filesService.uploadFromUrl(

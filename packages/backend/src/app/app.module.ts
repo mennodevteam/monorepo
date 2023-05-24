@@ -19,6 +19,7 @@ import { SmsModule } from './sms/sms.module';
 import { UsersModule } from './users/users.module';
 import { AddressesModule } from './addresses/addresses.module';
 import { ShopPluginsModule } from './shop-plugins/shop-plugins.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { ShopPluginsModule } from './shop-plugins/shop-plugins.module';
       autoLoadEntities: true,
     }),
     SchemasModule,
+    HttpModule,
     AuthModule,
     UsersModule,
     ShopsModule,

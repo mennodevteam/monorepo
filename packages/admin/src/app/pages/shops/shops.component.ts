@@ -13,7 +13,7 @@ export class ShopsComponent {
   columns = ['code', 'image', 'title', 'plugins', 'expiredAt', 'username', 'password', 'connectionAt'];
   Plugin = Plugin;
 
-  constructor(private shopsService: ShopsService, private cdr: ChangeDetectorRef) {
+  constructor(public shopsService: ShopsService, private cdr: ChangeDetectorRef) {
     if (this.shops) {
       this.dataSource = new MatTableDataSource(this.shops);
       // this.cdr.detectChanges();

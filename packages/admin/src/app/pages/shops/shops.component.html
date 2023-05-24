@@ -1,3 +1,9 @@
+<mat-toolbar>
+  <h1 flex>{{'shops.pageTitle' | translate}}</h1>
+  <button mat-stroked-button color="primary" (click)="shopsService.migrateFromPrev()">
+    {{'shops.migrate' | translate}}
+  </button>
+</mat-toolbar>
 <main>
   <mat-card>
     <mat-card-content>

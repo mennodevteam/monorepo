@@ -30,7 +30,6 @@ export const ShopSchema = new EntitySchema<Shop>({
     instagram: {
       type: String,
       nullable: true,
-      unique: true,
     },
     domain: {
       type: String,
