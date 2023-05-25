@@ -12,8 +12,6 @@ export class AppComponent {
   title = 'panel';
 
   constructor(
-    private regions: RegionsService,
-    private todayOrders: TodayOrdersService,
     private auth: AuthService
   ) {}
 }

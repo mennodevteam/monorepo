@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 import { AuthService } from '../core/services/auth.service';
 import { ShopService } from '../core/services/shop.service';
 import { TodayOrdersService } from '../core/services/today-orders.service';
+import { RegionsService } from '../core/services/regions.service';
 
 @Component({
   selector: 'menno-pages',
@@ -17,6 +18,7 @@ export class PagesComponent implements OnInit {
   isHandset$: Observable<boolean>;
 
   constructor(
+    private regions: RegionsService,
     public shopService: ShopService,
     private breakpointObserver: BreakpointObserver,
     public translateService: TranslateService,

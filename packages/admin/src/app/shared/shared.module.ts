@@ -50,6 +50,7 @@ import { StopPropagationDirective } from './directives/stop-propagation.directiv
 import { RouterLink } from '@angular/router';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CopyClipboardDirective } from './directives/copy-clipboard.directive';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     OrderStatePipe,
     OrderPaymentPipe,
     StopPropagationDirective,
+    CopyClipboardDirective,
     PhonePipe,
   ],
   imports: [
@@ -117,6 +119,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     OrderStatePipe,
     OrderPaymentPipe,
     StopPropagationDirective,
+    CopyClipboardDirective,
     PdatePipe,
     PhonePipe,
     AlertDialogComponent,

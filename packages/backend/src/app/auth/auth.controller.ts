@@ -8,6 +8,7 @@ import { AuthService } from './auth.service';
 import { PanelLocalAuthGuard } from './panel-local-auth.guard';
 import { Public } from './public.decorator';
 import { LoginUser } from './user.decorator';
+import { AdminLocalAuthGuard } from './admin-local-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -25,7 +26,7 @@ export class AuthController {
   }
 
   @Public()
-  @UseGuards(PanelLocalAuthGuard)
+  @UseGuards(AdminLocalAuthGuard)
   @Post('login/admin')
   async loginAdmin(@Request() req) {
     return this.auth.loginAdmin(req.user);

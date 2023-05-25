@@ -3,6 +3,7 @@
   "app": {
     "ok": "تایید",
     "cancel": "انصراف",
+    "id": "آی‌دی",
     "code": "کد",
     "title": "عنوان",
     "logo": "لوگو",
@@ -10,12 +11,16 @@
     "expiredAt": "تاریخ سررسید",
     "username": "نام‌کاریری",
     "password": "رمز‌عبور",
+    "copied": "کپی شد",
     "serverError": "خطای نامشخص از سرور"
   },
   "shops": {
     "pageTitle": "لیست مجموعه‌ها",
     "migrate": "انتقال مجموعه",
     "create": "ایجاد مجموعه",
+    "manager": "مدیر",
+    "managerPhone": "تلفن مدیر",
+    "appLink": "اپ سفارشگیری",
     "connectionAt": "آخرین ارتباط پنل"
   },
   "migrateDialog": {

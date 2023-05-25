@@ -10,6 +10,7 @@ import { AuthController } from './auth.controller';
 import { RolesGuard } from './roles.guard';
 import { SchemasModule } from '../core/schemas.module';
 import { AppLocalStrategy } from './app-local.strategy';
+import { AdminLocalStrategy } from './admin-local.strategy';
 
 @Module({
   imports: [SchemasModule, PassportModule, JwtModule.register({})],
@@ -17,6 +18,7 @@ import { AppLocalStrategy } from './app-local.strategy';
     AuthService,
     PanelLocalStrategy,
     AppLocalStrategy,
+    AdminLocalStrategy,
     JwtStrategy,
     {
       provide: APP_GUARD,

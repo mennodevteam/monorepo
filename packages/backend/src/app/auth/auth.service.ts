@@ -107,8 +107,6 @@ export class AuthService {
   }
 
   async loginAdmin(user: User) {
-    console.log(user);
-    if (user.role !== UserRole.Admin) throw new HttpException('forbidden', HttpStatus.FORBIDDEN);
     return this.login(user, UserRole.Admin);
   }
 

@@ -14,7 +14,12 @@
         "polyfills": ["zone.js"],
         "tsConfig": "packages/admin/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["packages/admin/src/favicon.ico", "packages/admin/src/assets"],
+        "assets": [
+          "packages/admin/src/favicon.ico",
+          "packages/admin/src/assets",
+          "packages/admin/src/liara_nginx.conf",
+          "packages/admin/src/liara.json"
+        ],
         "styles": ["packages/admin/src/styles.scss"],
         "stylePreprocessorOptions": {
           "includePaths": ["packages/admin/src/theme/"]
@@ -26,13 +31,19 @@
           "budgets": [
             {
               "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "1mb"
+              "maximumWarning": "1mb",
+              "maximumError": "4mb"
             },
             {
               "type": "anyComponentStyle",
               "maximumWarning": "2kb",
               "maximumError": "4kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "packages/admin/src/environments/environment.ts",
+              "with": "packages/admin/src/environments/environment.prod.ts"
             }
           ],
           "outputHashing": "all"

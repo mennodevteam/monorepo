@@ -7,8 +7,8 @@
     "deploy-admin": "nx run admin:build --skip-nx-cache; liara deploy --path=dist/packages/admin",
     "deploy-app": "nx run app:build --skip-nx-cache; liara deploy --path=dist/packages/app",
     "deploy-backend": "nx run backend:build --skip-nx-cache; liara deploy --path=dist/packages/backend",
-    "build": "nx run-many --target=build --projects=backend,panel,app,admin",
-    "dev": "nx run-many --target=serve --projects=backend,panel,app,admin"
+    "build": "nx run-many --target=build --all --maxParallel=100",
+    "dev": "nx run-many --target=serve --all --maxParallel=100"
   },
   "private": true,
   "dependencies": {

@@ -83,4 +83,8 @@ export class Shop {
     const regex = /^[a-zA-Z0-9_]{3,}$/.test(username);
     return regex;
   }
+
+  static appLink(shop: Shop, origin: string) {
+    return shop.domain || `https://${shop.username}.${origin}`;
+  }
 }

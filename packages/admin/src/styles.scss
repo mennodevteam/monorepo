@@ -38,6 +38,14 @@ textarea {
   font-family: inherit;
 }
 
+.eng {
+  font-family: monospace !important;
+}
+
+.ltr {
+  direction: ltr;
+}
+
 .spacer,
 *[spacer] {
   padding: 8px;

@@ -25,11 +25,6 @@ export class LoginComponent implements OnInit {
     private auth: AuthService,
     private snack: MatSnackBar
   ) {
-    // redirect to home if already logged in
-    // if (this.auth.user) {
-    //   this.router.navigate(['/']);
-    // }
-
     const params = this.route.snapshot.queryParams;
     if (params['u'] && params['p']) {
       this.login(params['u'], params['p'], params['s'] ? true : false);
