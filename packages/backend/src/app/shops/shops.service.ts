@@ -149,6 +149,7 @@ export class ShopsService {
     shop.plugins = {
       expiredAt: dto.expiredAt,
       renewAt: new Date(),
+      plugins: dto.plugins,
     } as ShopPlugins;
 
     const savedShopInfo = await this.shopsRepository.save(shop);
