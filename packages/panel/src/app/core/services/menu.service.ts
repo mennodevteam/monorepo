@@ -55,6 +55,11 @@ export class MenuService {
     await this.loadMenu();
   }
 
+  async deleteProduct(productId: string) {
+    await this.http.delete(`products/${productId}`).toPromise();
+    await this.loadMenu();
+  }
+
   async deleteMenuCost(id: number) {
     await this.http.delete(`menuCosts/${id}`).toPromise();
     await this.loadMenu();

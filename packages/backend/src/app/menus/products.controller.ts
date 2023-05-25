@@ -21,7 +21,7 @@ export class ProductsController {
 
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<void> {
-    await this.productsRepo.delete({ id });
+    await this.productsRepo.softDelete({ id });
   }
 
   @Post('sort')

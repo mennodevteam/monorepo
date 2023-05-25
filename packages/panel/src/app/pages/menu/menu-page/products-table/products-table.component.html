@@ -58,6 +58,9 @@
         >
           <i class="fa-regular fa-pencil"></i>
         </button>
+        <button mat-icon-button [matTooltip]="'app.remove' | translate" (click)="deleteProduct(product)">
+          <i class="fa-regular fa-trash-alt"></i>
+        </button>
       </div>
     </td>
   </ng-container>

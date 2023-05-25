@@ -57,23 +57,23 @@
 
     <a mat-list-item *ngIf="POS.customer">
       <h3 matListItemTitle>{{ 'pos.thisWeekOrders' | translate }}</h3>
-      <p matListItemLine>{{ POS.thisWeekPurchases?.total | menuCurrency: undefined:true }}</p>
+      <p matListItemLine>{{ POS.thisWeekPurchases.total | menuCurrency: undefined:true }}</p>
       <b matListItemMeta>
-        {{ 'app.number' | translate: { value: (POS.thisWeekPurchases?.count | number) } }}
+        {{ 'app.number' | translate: { value: (POS.thisWeekPurchases.count | number) } }}
       </b>
     </a>
     <a mat-list-item *ngIf="POS.customer">
       <h3 matListItemTitle>{{ 'pos.thisMonthOrder' | translate }}</h3>
-      <p matListItemLine>{{ POS.thisMonthPurchases?.total | menuCurrency }}</p>
+      <p matListItemLine>{{ POS.thisMonthPurchases.total | menuCurrency }}</p>
       <b matListItemMeta>
-        {{ 'app.number' | translate: { value: (POS.thisMonthPurchases?.count | number) } }}
+        {{ 'app.number' | translate: { value: (POS.thisMonthPurchases.count | number) } }}
       </b>
     </a>
     <a mat-list-item *ngIf="POS.customer">
       <h3 matListItemTitle>{{ 'pos.thisYearOrder' | translate }}</h3>
-      <p matListItemLine>{{ POS.thisYearPurchases?.total | menuCurrency }}</p>
+      <p matListItemLine>{{ POS.thisYearPurchases.total | menuCurrency }}</p>
       <b matListItemMeta>
-        {{ 'app.number' | translate: { value: (POS.thisYearPurchases?.count | number) } }}
+        {{ 'app.number' | translate: { value: (POS.thisYearPurchases.count | number) } }}
       </b>
     </a>
   </mat-nav-list>

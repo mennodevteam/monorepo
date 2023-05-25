@@ -144,12 +144,12 @@
           </mat-card-subtitle>
           <mat-card-subtitle *ngSwitchCase="OrderState.Canceled">
             {{ 'orderDetails.stateDescription.canceled' | translate }}
-            {{ order.details?.deletionReason }}
+            {{ order.details.deletionReason }}
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content *ngIf="order.details?.estimateCompletedAt">
           <p class="gray" style="margin: 8px; font-size: 12px">
-            {{ 'orderDetails.estimateTime' | translate }}: {{ order.details?.estimateCompletedAt | pdate }}
+            {{ 'orderDetails.estimateTime' | translate }}: {{ order.details.estimateCompletedAt | pdate }}
           </p>
         </mat-card-content>
         <mat-card-actions class="form-theme" *ngIf="order.state !== OrderState.Completed">
@@ -194,7 +194,7 @@
             <button mat-stroked-button (click)="setEstimate()">
               <i class="fa-regular fa-timer"></i>
               {{
-                (order.details?.estimateCompletedAt
+                (order.details.estimateCompletedAt
                   ? 'orderDetails.setDelayOnComplete'
                   : 'orderDetails.estimateTime'
                 ) | translate

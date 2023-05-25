@@ -74,7 +74,7 @@
                 </mat-label>
                 <input matInput formControlName="fixedDiscount" type="number" />
                 <mat-hint>
-                  {{ form.controls['fixedDiscount']?.value | menuCurrency: undefined:true }}
+                  {{ form.controls['fixedDiscount'].value | menuCurrency: undefined:true }}
                 </mat-hint>
               </mat-form-field>
               <mat-form-field appearance="fill" flex *ngIf="form.controls['type'].value === 'percentage'">
@@ -91,7 +91,7 @@
                 </mat-label>
                 <input matInput formControlName="minPrice" type="number" />
                 <mat-hint>
-                  {{ form.controls['minPrice']?.value | menuCurrency: undefined:true }}
+                  {{ form.controls['minPrice'].value | menuCurrency: undefined:true }}
                 </mat-hint>
               </mat-form-field>
               <span spacer-2x></span>
@@ -107,7 +107,7 @@
                   type="number"
                 />
                 <mat-hint>
-                  {{ form.controls['maxDiscount']?.value | menuCurrency: undefined:true }}
+                  {{ form.controls['maxDiscount'].value | menuCurrency: undefined:true }}
                 </mat-hint>
               </mat-form-field>
             </div>
