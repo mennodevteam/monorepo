@@ -141,6 +141,7 @@
     "appConfig": "تنظیمات منوی دیجیتال مشتری",
     "printers": "نصب و راه‌اندازی پرینتر‌ها",
     "deliveryAreas": "محدوده ارسال پیک",
+    "qr": "مدیریت qr code و میز‌ها",
     "users": "مدیریت کاربران"
   },
   "shopPage": {
@@ -543,7 +544,8 @@
     "club": "باشگاه مشتریان",
     "upgradePlan": "نیاز به ارتقا پلن",
     "openApp": "بازکردن اپ منوی دیجیتال",
-    "sendAppLink": "ارسال لینک منوی دیجیتال (sms)"
+    "sendAppLink": "ارسال لینک منوی دیجیتال (sms)",
+    "qr": "دانلود qr code ها"
   },
   "alopeyk": {
     "title": "الوپیک",
@@ -622,5 +624,19 @@
     "username": "نام کاربری",
     "mobile": "تلفن همراه",
     "actions": "دسترسی ها"
+  },
+  "qrPage": {
+    "pageTitle": "مدیریت qr code و میز‌ها",
+    "mainQr": "کد اصلی",
+    "mainQrDescription": "انتخاب نوع سفارش و میز توسط خود مشتری",
+    "tables": "میزهای مجموعه",
+    "download": "مشاهده و دانلود QR"
+  },
+  "tableEdit": {
+    "codeLabel": "کد میز",
+    "codeHint": "فقط شامل اعداد",
+    "titleLabel": "عنوان میز (اختیاری)",
+    "dialogEditTitle": "ویرایش میز",
+    "dialogNewTitle": "ایجاد میز"
   }
 }

@@ -15,6 +15,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
 import { UserManagementComponent } from './user-management/user-management.component';
 import { UserManagementTableComponent } from './user-management/user-management-table/user-management-table.component';
+import { QrComponent } from './qr/qr.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { UserManagementTableComponent } from './user-management/user-management-
     PrinterHelpComponent,
     DeliveryAreasPageComponent,
     DeliveryMapComponent,
+    QrComponent,
   ],
   imports: [
     CommonModule,

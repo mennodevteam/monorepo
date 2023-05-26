@@ -1,0 +1,87 @@
+<mat-toolbar class="page-toolbar">
+  <button mat-icon-button goBack>
+    <i class="fa-regular fa-arrow-right"></i>
+  </button>
+  <h1>{{ 'qrPage.pageTitle' | translate }}</h1>
+</mat-toolbar>
+
+<main class="content-wrapper">
+  <mat-card>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item>
+          <i matListItemIcon class="mat-icon fa-solid fa-qrcode"></i>
+          <span matListItemTitle>{{ 'qrPage.mainQr' | translate }}</span>
+          <span matListItemLine>{{ 'qrPage.mainQrDescription' | translate }}</span>
+          <a matListItemMeta mat-button color="primary" target="_blank" [href]="getLink()">
+            {{ 'qrPage.download' | translate }}
+          </a>
+        </mat-list-item>
+        <mat-list-item>
+          <i matListItemIcon class="mat-icon fa-solid fa-qrcode"></i>
+          <span matListItemTitle>{{ 'orderType.delivery' | translate }}</span>
+          <a
+            matListItemMeta
+            mat-button
+            color="primary"
+            target="_blank"
+            [href]="getLink('type=' + OrderType.Delivery)"
+          >
+            {{ 'qrPage.download' | translate }}
+          </a>
+        </mat-list-item>
+        <mat-list-item>
+          <i matListItemIcon class="mat-icon fa-solid fa-qrcode"></i>
+          <span matListItemTitle>{{ 'orderType.takeaway' | translate }}</span>
+          <a
+            matListItemMeta
+            mat-button
+            color="primary"
+            target="_blank"
+            [href]="getLink('type=' + OrderType.Takeaway)"
+          >
+            {{ 'qrPage.download' | translate }}
+          </a>
+        </mat-list-item>
+        <mat-list-item>
+          <i matListItemIcon class="mat-icon fa-solid fa-qrcode"></i>
+          <span matListItemTitle>{{ 'orderType.dineIn' | translate }}</span>
+          <a
+            matListItemMeta
+            mat-button
+            color="primary"
+            target="_blank"
+            [href]="getLink('type=' + OrderType.DineIn)"
+          >
+            {{ 'qrPage.download' | translate }}
+          </a>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-toolbar>
+          <span mat-subheader flex>{{ 'qrPage.tables' | translate }}</span>
+          <button mat-flat-button color="primary" (click)="editTable()">
+            {{ 'tableEdit.dialogNewTitle' | translate }}
+          </button>
+        </mat-toolbar>
+        <mat-list-item *ngFor="let t of tables">
+          <i matListItemIcon class="mat-icon fa-solid fa-qrcode"></i>
+          <span matListItemTitle>
+            {{ t.code }}
+            <span *ngIf="t.title">({{ t.title }})</span>
+          </span>
+          <div class="actions" matListItemMeta>
+            <a matListItemMeta mat-button color="primary" target="_blank" [href]="getLink('table=' + t.code)">
+              {{ 'qrPage.download' | translate }}
+            </a>
+            <button mat-icon-button (click)="editTable(t)">
+              <i class="fa-regular fa-pencil-alt"></i>
+            </button>
+            <button mat-icon-button (click)="remove(t)">
+              <i class="fa-regular fa-trash-alt"></i>
+            </button>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+</main>

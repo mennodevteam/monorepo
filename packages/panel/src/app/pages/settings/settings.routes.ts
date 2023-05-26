@@ -7,6 +7,7 @@ import { PrintersComponent } from './printers/printers.component';
 import { SettingsComponent } from './settings.component';
 import { ShopPageComponent } from './shop-page/shop-page.component';
 import { UserManagementComponent } from './user-management/user-management.component';
+import { QrComponent } from './qr/qr.component';
 
 export const settingsRoutes: Route[] = [
   {
@@ -17,6 +18,7 @@ export const settingsRoutes: Route[] = [
   { path: 'delivery-areas', component: DeliveryAreasPageComponent },
   { path: 'app-config', component: AppConfigComponent },
   { path: 'users', component: UserManagementComponent },
+  { path: 'qr', component: QrComponent },
   {
     path: 'printers',
     component: PrintersComponent,
