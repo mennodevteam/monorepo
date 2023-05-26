@@ -56,7 +56,9 @@
               "with": "packages/panel/src/environments/environment.prod.ts"
             }
           ],
-          "outputHashing": "all"
+          "outputHashing": "all",
+          "serviceWorker": true,
+          "ngswConfigPath": "packages/panel/ngsw-config.json"
         },
         "development": {
           "buildOptimizer": false,

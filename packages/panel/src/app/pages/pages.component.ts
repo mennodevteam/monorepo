@@ -8,6 +8,7 @@ import { AuthService } from '../core/services/auth.service';
 import { ShopService } from '../core/services/shop.service';
 import { TodayOrdersService } from '../core/services/today-orders.service';
 import { RegionsService } from '../core/services/regions.service';
+import { UpdateService } from '../core/services/update.service';
 
 @Component({
   selector: 'menno-pages',
@@ -26,6 +27,7 @@ export class PagesComponent implements OnInit {
     private router: Router,
     private auth: AuthService,
     public todayOrders: TodayOrdersService,
+    private updateService: UpdateService,
   ) {
     this.isHandset$ = this.breakpointObserver.observe('(max-width: 1024px)').pipe(
       map((result) => result.matches),

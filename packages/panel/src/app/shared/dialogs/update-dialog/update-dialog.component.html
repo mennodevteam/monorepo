@@ -1,0 +1,25 @@
+<h3 matDialogTitle class="green">
+    <i class="far fa-lightbulb-on green"></i>
+    <span spacer-sm style="display: inline-block;"></span>
+    {{'updateDialog.title' | translate}}
+</h3>
+<mat-dialog-content>
+    <p>{{'updateDialog.description' | translate}}</p>
+    <mat-list>
+        <mat-list-item *ngFor="let change of changes; let i = index">
+            <i matListItemIcon class="far fa-check fa-sm"></i>
+            <span matListItemTitle> {{change}} </span>
+        </mat-list-item>
+    </mat-list>
+    <a mat-button color="primary" target="_blank" [href]="link">
+        {{'updateDialog.link' | translate}}
+    </a>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-flat-button color="primary" [mat-dialog-close]="true">
+        {{'updateDialog.update' | translate}}
+    </button>
+    <button mat-button *ngIf="!isForced" mat-dialog-close>
+        {{'updateDialog.skip' | translate}}
+    </button>
+</mat-dialog-actions>

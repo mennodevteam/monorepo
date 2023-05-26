@@ -64,6 +64,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TableSelectorDialogComponent } from './dialogs/table-selector-dialog/table-selector-dialog.component';
 import { SelectStatusCardComponent } from './components/select-status-card/select-status-card.component';
 import { SelectOrderTypeCardComponent } from './components/select-order-type-card/select-order-type-card.component';
+import { UpdateDialogComponent } from './dialogs/update-dialog/update-dialog.component';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { SelectOrderTypeCardComponent } from './components/select-order-type-car
     ManualDiscountAndCostDialogComponent,
     TableSelectorDialogComponent,
     MemberDialogComponent,
+    UpdateDialogComponent,
     MemberSelectDialogComponent,
     SettlementDialogComponent,
     MessageTemplateSelectorDialogComponent,
@@ -156,6 +158,7 @@ import { SelectOrderTypeCardComponent } from './components/select-order-type-car
     ManualDiscountAndCostDialogComponent,
     TableSelectorDialogComponent,
     MemberDialogComponent,
+    UpdateDialogComponent,
     MemberSelectDialogComponent,
     SettlementDialogComponent,
     MessageTemplateSelectorDialogComponent,
