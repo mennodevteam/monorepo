@@ -35,4 +35,14 @@ export class OrdersService {
 
     if (link) await this.payService.redirect(link);
   }
+
+  async payOrder(orderId: string) {
+    const link: string | undefined = await this.http
+      .get(`payments/payOrder/${orderId}`, {
+        responseType: 'text',
+      })
+      .toPromise();
+
+    if (link) await this.payService.redirect(link);
+  }
 }

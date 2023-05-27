@@ -16,27 +16,64 @@
     <label class="surface-variant-text">{{ order.createdAt | pdate }}</label>
   </header>
 
-  <ng-container *ngIf="showStateCard">
-    <mat-card class="state-card secondary-container on-secondary-container-text" [ngSwitch]="state">
-      <mat-card-content>
-        <p *ngSwitchCase="OrderState.Canceled">
+  <mat-card
+    *ngIf="order.state !== OrderState.Completed"
+    [ngSwitch]="order.state"
+    class="state-card secondary-container on-secondary-container-text"
+  >
+    <mat-card-header>
+      <mat-card-title>
+        <i *ngSwitchCase="OrderState.Pending" class="fa-solid fa-spinner fa-spin"></i>
+        <i *ngSwitchCase="OrderState.Processing" class="fa-solid fa-hat-chef"></i>
+        <i *ngSwitchCase="OrderState.Ready" class="fa-solid fa-check"></i>
+        <i *ngSwitchCase="OrderState.Shipping" class="fa-solid fa-moped"></i>
+        <i *ngSwitchCase="OrderState.Completed" class="fa-solid fa-circle-check green"></i>
+        <i *ngSwitchCase="OrderState.Canceled" class="fa-solid fa-circle-check red"></i>
+        <span *ngSwitchCase="OrderState.Canceled">
           {{ 'orderState.canceled' | translate }}
-        </p>
-        <p *ngSwitchCase="OrderState.Pending">
+        </span>
+        <span *ngSwitchCase="OrderState.Pending">
           {{ 'orderState.pending' | translate }}
-        </p>
-        <p *ngSwitchCase="OrderState.Processing">
+        </span>
+        <span *ngSwitchCase="OrderState.Processing">
           {{ 'orderState.processing' | translate }}
-        </p>
-        <p *ngSwitchCase="OrderState.Ready">
+        </span>
+        <span *ngSwitchCase="OrderState.Ready">
           {{ 'orderState.ready' | translate }}
-        </p>
-        <p *ngSwitchCase="OrderState.Shipping">
+        </span>
+        <span *ngSwitchCase="OrderState.Shipping">
           {{ 'orderState.shipping' | translate }}
-        </p>
-      </mat-card-content>
-    </mat-card>
-  </ng-container>
+        </span>
+      </mat-card-title>
+      <mat-card-subtitle *ngSwitchCase="OrderState.Pending">
+        {{ 'orderDetails.stateDescription.pending' | translate }}
+      </mat-card-subtitle>
+      <mat-card-subtitle *ngSwitchCase="OrderState.Processing">
+        {{ 'orderDetails.stateDescription.processing' | translate }}
+      </mat-card-subtitle>
+      <mat-card-subtitle *ngSwitchCase="OrderState.Ready">
+        {{ 'orderDetails.stateDescription.ready' | translate }}
+      </mat-card-subtitle>
+      <mat-card-subtitle *ngSwitchCase="OrderState.Shipping">
+        {{ 'orderDetails.stateDescription.shipping' | translate }}
+      </mat-card-subtitle>
+      <mat-card-subtitle *ngSwitchCase="OrderState.Canceled">
+        {{ 'orderDetails.stateDescription.canceled' | translate }}
+        {{ order.details.deletionReason }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p style="margin: 8px; font-size: 12px" *ngIf="order.details?.estimateCompletedAt">
+        {{ 'orderDetails.estimateTime' | translate }}: {{ order.details.estimateCompletedAt | pdate }}
+      </p>
+      <p style="margin: 8px; font-size: 12px">
+        {{ 'orderDetails.followup' | translate }}
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <a mat-button color="primary" *ngFor="let p of shop?.phones" href="tel:{{ p }}">{{ p }}</a>
+    </mat-card-actions>
+  </mat-card>
 
   <mat-list>
     <mat-list-item *ngFor="let item of items">
@@ -54,8 +91,9 @@
   </mat-list>
 </main>
 
-<!-- <mat-toolbar class="actions-toolbar">
-  <button mat-raised-button color="primary">
+<mat-toolbar class="actions-toolbar" *ngIf="isPaymentAvailable">
+  <button mat-raised-button color="primary" (click)="pay()" [disabled]="paying">
     {{ 'orderDetails.pay' | translate }}
+    <span *ngIf="paying">...</span>
   </button>
-</mat-toolbar> -->
+</mat-toolbar>

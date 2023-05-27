@@ -152,7 +152,11 @@ export class OrdersController {
 
   @Get('sendLinkToPeyk/:orderId/:phone')
   @Roles(UserRole.Panel)
-  async sendLinkToPeyk(@Param('orderId') orderId: string, @Param('phone') phone: string, @LoginUser() user: AuthPayload) {
+  async sendLinkToPeyk(
+    @Param('orderId') orderId: string,
+    @Param('phone') phone: string,
+    @LoginUser() user: AuthPayload
+  ) {
     const shop = await this.auth.getPanelUserShop(user, ['smsAccount']);
     const order = await this.ordersRepo.findOne({
       where: { id: orderId },
@@ -163,7 +167,11 @@ export class OrdersController {
         accountId: shop.smsAccount.id,
         receptors: [phone],
         messages: [
-          `فیش ${order.qNumber}\nمشتری: ${User.fullName(order.customer)}\nتلفن: ${order.customer.mobilePhone}\nآدرس: ${order.address.description}\nمسیریابی:\nmaps.google.com/?q=${order.address.latitude},${order.address.longitude}`,
+          `فیش ${order.qNumber}\nمشتری: ${User.fullName(order.customer)}\nتلفن: ${
+            order.customer.mobilePhone
+          }\nآدرس: ${order.address.description}\nمسیریابی:\nmaps.google.com/?q=${order.address.latitude},${
+            order.address.longitude
+          }`,
         ],
       });
     }
@@ -189,7 +197,16 @@ export class OrdersController {
       where: {
         id,
       },
-      relations: ['shop', 'shop.appConfig', 'items', 'customer', 'waiter', 'creator', 'address'],
+      relations: [
+        'shop',
+        'shop.appConfig',
+        'items',
+        'customer',
+        'waiter',
+        'creator',
+        'address',
+        'shop.paymentGateway',
+      ],
     });
   }
 }

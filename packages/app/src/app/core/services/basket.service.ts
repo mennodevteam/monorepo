@@ -7,6 +7,7 @@ import {
   OrderType,
   Product,
   ProductItem,
+  Shop,
   Status,
 } from '@menno/types';
 import { MenuService } from './menu.service';
@@ -188,7 +189,8 @@ export class BasketService extends OrderDto {
   }
 
   private get isPaymentAvailable() {
-    return this.shopService.shop?.paymentGateway && !this.shopService.shop.appConfig?.disablePayment;
+    if (this.shopService.shop) return Shop.isPaymentAvailable(this.shopService.shop);
+    return false;
   }
 
   private get isPaymentRequired() {

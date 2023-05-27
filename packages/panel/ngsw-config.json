@@ -1,6 +1,7 @@
 {
   "appData": {
     "forceReload": false,
+    "lazyReload": false,
     "changes": []
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",

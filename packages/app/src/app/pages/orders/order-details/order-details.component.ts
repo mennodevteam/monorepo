@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Order, OrderState } from '@menno/types';
+import { Order, OrderState, Shop } from '@menno/types';
 import { OrdersService } from '../../../core/services/orders.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'order-details',
@@ -12,8 +14,14 @@ export class OrderDetailsComponent {
   order: Order | undefined;
   OrderState = OrderState;
   interval: any;
+  paying = false;
 
-  constructor(private route: ActivatedRoute, private ordersService: OrdersService) {
+  constructor(
+    private route: ActivatedRoute,
+    private ordersService: OrdersService,
+    private snack: MatSnackBar,
+    private translate: TranslateService
+  ) {
     this.route.params.subscribe((params) => {
       this.order = undefined;
       this.loadOrder(params['id']);
@@ -25,19 +33,6 @@ export class OrderDetailsComponent {
         if (diffInHour < 3) this.loadOrder(this.order.id);
       }
     }, 10000);
-  }
-
-  get showStateCard() {
-    if (this.order?.state != undefined) {
-      return [
-        OrderState.Canceled,
-        OrderState.Pending,
-        OrderState.Shipping,
-        OrderState.Processing,
-        OrderState.Ready,
-      ].includes(this.order.state);
-    }
-    return false;
   }
 
   loadOrder(id: string) {
@@ -56,5 +51,24 @@ export class OrderDetailsComponent {
 
   get items() {
     return this.order?.items || [];
+  }
+
+  pay() {
+    if (!this.shop || !this.order || !this.isPaymentAvailable) return;
+    if (this.order?.state === OrderState.Pending) {
+      this.snack.open(this.translate.instant('orderDetails.paymentAfterAccept'));
+      return;
+    }
+    this.paying = true;
+    try {
+      this.ordersService.payOrder(this.order.id);
+    } catch (error) {
+      this.paying = false;
+    }
+  }
+
+  get isPaymentAvailable() {
+    if (this.shop) return Shop.isPaymentAvailable(this.shop);
+    return false;
   }
 }
