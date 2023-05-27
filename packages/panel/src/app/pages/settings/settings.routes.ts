@@ -20,6 +20,10 @@ export const settingsRoutes: Route[] = [
   { path: 'users', component: UserManagementComponent },
   { path: 'qr', component: QrComponent },
   {
+    path: 'third-parties',
+    loadChildren: () => import('./third-parties/third-parties.module').then((m) => m.ThirdPartiesModule),
+  },
+  {
     path: 'printers',
     component: PrintersComponent,
     children: [

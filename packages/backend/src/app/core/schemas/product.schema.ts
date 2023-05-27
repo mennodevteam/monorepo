@@ -33,6 +33,10 @@ export const ProductSchema = new EntitySchema<Product>({
     price: {
       type: 'real',
     },
+    hamiId: {
+      type: Number,
+      nullable: true,
+    },
     createdAt: {
       type: 'timestamptz',
       createDate: true,

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Shop, ShopUser } from '@menno/types';
+import { Shop, ShopUser, ThirdParty } from '@menno/types';
 import { environment } from '../../../environments/environment';
 import { BehaviorSubject } from 'rxjs';
 
@@ -56,6 +56,11 @@ export class ShopService {
 
   saveShopUser(shopUser: ShopUser): Promise<ShopUser | undefined> {
     return this.http.post<ShopUser>(`shopUsers`, shopUser).toPromise();
+  }
+
+  async saveThirdParty(dto: ThirdParty) {
+    await this.http.post(`thirdParties`, dto).toPromise();
+    await this.loadShop();
   }
 
   async removeShopUser(shopUserId: string): Promise<void> {

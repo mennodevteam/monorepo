@@ -15,6 +15,7 @@ export class ProductCategory {
   position?: number;
   star?: number;
   menu: Menu;
+  hamiId: number;
   costs?: MenuCost[];
   createdAt?: Date;
   deletedAt?: Date;

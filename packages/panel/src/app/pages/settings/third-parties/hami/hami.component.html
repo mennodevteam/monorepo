@@ -1,0 +1,67 @@
+<mat-toolbar class="page-toolbar">
+  <button mat-icon-button goBack>
+    <i class="fa-regular fa-arrow-right"></i>
+  </button>
+  <h1>{{ 'thirdParties.hami.title' | translate }}</h1>
+</mat-toolbar>
+<main class="content-wrapper form-page-layout">
+  <div class="static-col form-theme">
+    <mat-card>
+      <mat-card-header>
+        <img src="assets/images/hami.jpeg" mat-card-avatar />
+        <mat-card-title>{{ 'thirdParties.hami.title' | translate }}</mat-card-title>
+        <mat-card-subtitle>{{ 'thirdParties.hami.description' | translate }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        <p>{{ 'thirdParties.hami.formDescription' | translate }}</p>
+        <form [formGroup]="thirdPartyForm">
+          <mat-form-field appearance="fill">
+            <mat-label>{{ 'thirdParties.hami.apiPath' | translate }}</mat-label>
+            <input matInput formControlName="apiPath" class="ltr eng" />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>{{ 'thirdParties.hami.token' | translate }}</mat-label>
+            <input matInput formControlName="token" class="ltr eng" />
+          </mat-form-field>
+        </form>
+      </mat-card-content>
+      <mat-card-actions>
+        <button
+          mat-stroked-button
+          color="primary"
+          *ngIf="thirdPartyForm.disabled"
+          (click)="thirdPartyForm.enable()"
+        >
+          {{ 'app.edit' | translate }}
+        </button>
+        <ng-container *ngIf="!thirdPartyForm.disabled">
+          <button mat-flat-button color="accent" (click)="save()">
+            {{ 'app.save' | translate }}
+          </button>
+          <button mat-button (click)="initForm()">
+            {{ 'app.cancel' | translate }}
+          </button>
+        </ng-container>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <div class="flex-col">
+    <mat-card
+      ><mat-card-content>
+        <empty-state
+          *ngIf="!thirdParty"
+          icon="fa-triangle-exclamation"
+          text="{{ 'thirdParties.notConnectedDescription' | translate }}"
+        ></empty-state>
+
+        <mat-nav-list *ngIf="thirdParty">
+          <a mat-list-item (click)="syncMenu()">
+            <span matListItemTitle>{{ 'thirdParties.hami.syncMenu' | translate }}</span>
+            <span matListItemLine>{{ 'thirdParties.hami.syncMenuDescription' | translate }}</span>
+          </a>
+        </mat-nav-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</main>

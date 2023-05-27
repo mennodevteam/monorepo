@@ -20,6 +20,7 @@ import { UsersModule } from './users/users.module';
 import { AddressesModule } from './addresses/addresses.module';
 import { ShopPluginsModule } from './shop-plugins/shop-plugins.module';
 import { HttpModule } from '@nestjs/axios';
+import { ThirdPartiesModule } from './third-parties/third-parties.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { HttpModule } from '@nestjs/axios';
     DeliveryAreasModule,
     AddressesModule,
     ShopPluginsModule,
+    ThirdPartiesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

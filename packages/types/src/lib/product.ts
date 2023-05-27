@@ -20,6 +20,7 @@ export class Product {
   limitQuantity: boolean;
   stockItem: StockItem;
   costs?: MenuCost[];
+  hamiId: number;
   _orderItem?: ProductItem;
   createdAt?: Date;
   deletedAt?: Date;

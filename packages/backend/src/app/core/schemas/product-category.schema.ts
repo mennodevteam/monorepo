@@ -26,6 +26,10 @@ export const ProductCategorySchema = new EntitySchema<ProductCategory>({
       type: Number,
       nullable: true,
     },
+    hamiId: {
+      type: Number,
+      nullable: true,
+    },
     faIcon: {
       type: String,
       nullable: true,
@@ -55,7 +59,7 @@ export const ProductCategorySchema = new EntitySchema<ProductCategory>({
       type: 'one-to-many',
       target: 'Product',
       inverseSide: 'category',
-      cascade: ['insert', 'update']
+      cascade: ['insert', 'update'],
     },
     menu: {
       type: 'many-to-one',

@@ -646,5 +646,22 @@
     "titleLabel": "عنوان میز (اختیاری)",
     "dialogEditTitle": "ویرایش میز",
     "dialogNewTitle": "ایجاد میز"
+  },
+  "thirdParties": {
+    "pageTitle": "اتصال به سرویس‌های جانبی",
+    "setup": "نصب و اتصال",
+    "notConnectedDescription": "برای استفاده از امکانات باید به سرویس متصل شوید",
+    "sizpay": {
+      "title": "سیزپی",
+      "description": "درگاه پرداخت آنلاین",
+      "formDescription": ""
+    },
+    "hami": {
+      "title": "حامی",
+      "description": "نرم‌افزار حسابداری",
+      "apiPath": "url",
+      "token": "token",
+      "formDescription": "برای اتصال به نرم‌افزار به آدرس و توکن نرم‌افزار نیازمندیم. جهت دریافت با پشتیبانی حامی تماس بگیرید."
+    }
   }
 }
