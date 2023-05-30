@@ -5,6 +5,7 @@
     "cancel": "انصراف",
     "yes": "بله",
     "no": "خیر",
+    "price": "مبلغ",
     "currency": "تومان",
     "all": "همه",
     "add": "ایجاد کردن",
@@ -550,6 +551,27 @@
     "thirdParties": "اتصال به سرویس‌های جانبی",
     "thirdPartiesDescription": "درگاه‌پرداخت سیزپی، الوپیک، حسابداری حامی",
     "appConfig": "رنگبندی و سایر تنظیمات منوی دیجیتال"
+  },
+  "deliveryArea": {
+    "pageTitle": "محدوده ارسال پیک",
+    "drawPolygonErrorTooltip": "امکان درج نقطه در این مکان وجود ندارد",
+    "drawPolygonTooltipCont": "نقطه دیگری از لبه منطقه را روی نقشه کلیک کنید",
+    "drawPolygonTooltipStart": "یکی از لبه های منطقه خود را روی نقشه کلیک کنید",
+    "drawPolygonTooltipEnd": "برای تکمیل روی نقطه اول کلیک کنید",
+    "removeTooltip": "برای حذف کافیست یک منطقه را از روی نقشه انتخاب کنید",
+    "undo": "حدف آخرین نقطه درج شده",
+    "removeDialogTitle": "حذف محدوده سرویس دهی",
+    "removeDialogDescription": "درصورت اطمینان از حذف {{value}}، تایید کنید.",
+    "clearAll": "حدف همه",
+    "add": "ایجاد منطقه جدید"
+  },
+  "deliveryAreaDialog": {
+    "editTitle": "ویرایش محدوده",
+    "newTitle": "درج محدوده جدید",
+    "minOrderPrice": "حداقل سفارش جهت ارسال",
+    "minOrderPriceHint": "درصورت کمتر بودن از مبلغ مشخص شده، امکان ثبت سفارش وجود ندارد",
+    "minPriceForFree": "حداقل سفارش ارسال رایگان",
+    "minPriceForFreeHint": "درصورت بیشتر بودن از مبلغ مشخص شده هزینه پیک رایگان است"
   },
   "alopeyk": {
     "title": "الوپیک",

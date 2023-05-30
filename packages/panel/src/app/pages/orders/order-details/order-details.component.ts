@@ -17,6 +17,7 @@ import { DecimalPipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ShopService } from '../../../core/services/shop.service';
 import { PromptDialogComponent } from '../../../shared/dialogs/prompt-dialog/prompt-dialog.component';
+import { MemberDialogComponent } from '../../../shared/dialogs/member-dialog/member-dialog.component';
 
 @Component({
   selector: 'order-details',
@@ -130,6 +131,14 @@ export class OrderDetailsComponent implements OnDestroy {
     const nextState = this.nextState;
     if (nextState !== undefined && this.order) {
       await this.orderService.changeState(this.order, nextState);
+    }
+  }
+
+  memberInfo() {
+    if (this.order?.customer?.mobilePhone) {
+      this.dialog.open(MemberDialogComponent, {
+        data: { mobilePhone: this.order?.customer?.mobilePhone },
+      });
     }
   }
 
