@@ -55,7 +55,6 @@ export class ProductEditPageComponent {
       const categories = this.menuService?.menu?.categories;
       if (params['id']) {
         this.product = this.menuService.getProductById(params['id']);
-        debugger;
         if (this.product) {
           this.form.setValue({
             title: this.product.title,
