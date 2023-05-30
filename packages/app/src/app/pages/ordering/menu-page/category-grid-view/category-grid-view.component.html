@@ -22,17 +22,18 @@
       <span class="product-title cut-text" [hidden]="product.details?.hideTitle">
         {{ product.title }}
       </span>
-      <span flex *ngIf="product.details?.hideTitle"></span>
-      <span
-        class="product-price"
-        *ngIf="product.status === Status.Active"
-        [hidden]="product.details?.hidePrice"
-      >
-        {{ Product.totalPrice(product, 1000) / 1000 }}
-      </span>
-      <span class="product-price" *ngIf="product.status === Status.Blocked">
-        {{ 'app.finished' | translate }}
-      </span>
+      <ng-container *ngIf="menuCols === 2">
+        <span
+          class="product-price"
+          *ngIf="product.status === Status.Active"
+          [hidden]="product.details?.hidePrice"
+        >
+          {{ Product.totalPrice(product) | menuCurrency }}
+        </span>
+        <span class="product-price" *ngIf="product.status === Status.Blocked">
+          {{ 'app.finished' | translate }}
+        </span>
+      </ng-container>
     </mat-grid-tile-footer>
   </mat-grid-tile>
 </mat-grid-list>
