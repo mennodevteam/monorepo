@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PaymentGateway, ThirdPartyApp } from '@menno/types';
-import { ShopService } from 'packages/panel/src/app/core/services/shop.service';
+import { ShopService } from '../../../../core/services/shop.service';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'sizpay',
@@ -36,5 +37,9 @@ export class SizpayComponent {
     dto.keys = fv;
     this.gateway = await this.http.post<PaymentGateway>(`paymentGateways`, dto).toPromise();
     this.initForm();
+  }
+
+  get sizpayDocLink() {
+    return environment.sizpayDocLink;
   }
 }

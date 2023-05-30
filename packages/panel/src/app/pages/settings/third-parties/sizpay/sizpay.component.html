@@ -16,7 +16,6 @@
       <mat-card-content>
         <p>
           {{ 'thirdParties.sizpay.formDescription' | translate }}
-          <a mat-button color="primary">{{ 'thirdParties.sizpay.help' | translate }}</a>
         </p>
         <form [formGroup]="gatewayForm">
           <mat-form-field appearance="fill">
@@ -55,6 +54,34 @@
           </button>
         </ng-container>
       </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div class="flex-col">
+    <mat-card>
+      <mat-card-content>
+        <mat-nav-list>
+          <a mat-list-item href="{{sizpayDocLink}}" target="_blank">
+            <span matListItemTitle>{{ 'thirdParties.sizpay.help' | translate }}</span>
+            <span matListItemLine>{{ 'thirdParties.sizpay.helpDescription' | translate }}</span>
+          </a>
+          <mat-divider></mat-divider>
+          <a mat-list-item>
+            <span matListItemTitle>{{ 'thirdParties.sizpay.register' | translate }}</span>
+            <span matListItemLine>{{ 'thirdParties.sizpay.registerDescription' | translate }}</span>
+          </a>
+          <mat-divider></mat-divider>
+          <a mat-list-item href="https://www.sizpay.ir/" target="_blank">
+            <span matListItemTitle>{{ 'thirdParties.sizpay.site' | translate }}</span>
+            <span matListItemLine>{{ 'thirdParties.sizpay.siteDescription' | translate }}</span>
+          </a>
+          <mat-divider></mat-divider>
+          <a mat-list-item href="https://merchant.sizpay.ir/" target="_blank">
+            <span matListItemTitle>{{ 'thirdParties.sizpay.portal' | translate }}</span>
+            <span matListItemLine>{{ 'thirdParties.sizpay.portalDescription' | translate }}</span>
+          </a>
+        </mat-nav-list>
+      </mat-card-content>
     </mat-card>
   </div>
 </main>

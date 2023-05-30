@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ThirdParty, ThirdPartyApp } from '@menno/types';
-import { ShopService } from 'packages/panel/src/app/core/services/shop.service';
+import { ShopService } from '../../../../core/services/shop.service';
 
 @Component({
   selector: 'hami',
