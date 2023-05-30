@@ -654,7 +654,12 @@
     "sizpay": {
       "title": "سیزپی",
       "description": "درگاه پرداخت آنلاین",
-      "formDescription": ""
+      "formDescription": "",
+      "help": "راهنمای بیشتر",
+      "merchantId": "کد پذیرنده",
+      "terminalId": "کد ترمینال",
+      "username": "نام کاربری",
+      "password": "رمز"
     },
     "hami": {
       "title": "حامی",
