@@ -2,7 +2,10 @@
   "appData": {
     "forceReload": false,
     "lazyReload": false,
-    "changes": []
+    "changes": [
+      "اتصال به سرویس‌های جانبی",
+      "راه‌اندازی درگاه سیزپی از طریق پنل"
+    ]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",
