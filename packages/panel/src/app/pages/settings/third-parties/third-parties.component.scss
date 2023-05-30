@@ -3,7 +3,8 @@ main {
 }
 
 .actions {
-  display: flex;
+  display: flex !important;
   align-items: center;
   gap: 8px;
+  height: 100%;
 }
