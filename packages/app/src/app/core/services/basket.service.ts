@@ -194,6 +194,6 @@ export class BasketService extends OrderDto {
   }
 
   private get isPaymentRequired() {
-    return this.isPaymentAvailable && this.shopService.shop?.appConfig?.requiredPayment?.includes(this.type);
+    return this.isPaymentAvailable && this.total > 0 && this.shopService.shop?.appConfig?.requiredPayment?.includes(this.type);
   }
 }
