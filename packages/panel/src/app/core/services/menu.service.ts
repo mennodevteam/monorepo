@@ -42,7 +42,7 @@ export class MenuService {
     return this.menu$.value;
   }
 
-  async saveCategory(dto: ProductCategory) {
+  async saveCategory(dto: Partial<ProductCategory>) {
     dto.menu = <Menu>{ id: this.menu?.id };
     const newCat = await this.http.post<ProductCategory>(`productCategories`, dto).toPromise();
     await this.loadMenu();
@@ -75,7 +75,7 @@ export class MenuService {
     await this.loadMenu();
   }
 
-  async saveProduct(dto: Product) {
+  async saveProduct(dto: Partial<Product>) {
     if (dto.category) {
       dto.category = <ProductCategory>{ id: dto.category.id };
     }
@@ -106,6 +106,18 @@ export class MenuService {
     const saved = await this.http.post<MenuCost>(`menuCosts`, dto).toPromise();
     await this.loadMenu();
     return saved;
+  }
+
+  allProducts() {
+    const p: Product[] = [];
+    if (this.menu?.categories) {
+      for (const cat of this.menu?.categories) {
+        if (cat.products) {
+          p.push(...cat.products);
+        }
+      }
+    }
+    return p;
   }
 
   getProductById(id: string) {

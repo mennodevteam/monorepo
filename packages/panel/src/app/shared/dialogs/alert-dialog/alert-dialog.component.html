@@ -1,6 +1,6 @@
-<h3 mat-dialog-title *ngIf="title" [ngClass]="status === 'error' ? 'warn-color' : 'primary-color'">
-  <i class="fa-regular fa-circle-check accent-color" *ngIf="status === 'success'"></i>
-  <i class="fa-regular fa-circle-xmark warn-color" *ngIf="status === 'error'"></i>
+<h3 mat-dialog-title *ngIf="title" [class.red]="status === 'error'" [class.green]="status === 'success'">
+  <i class="fa-regular fa-circle-check green" *ngIf="status === 'success'"></i>
+  <i class="fa-regular fa-circle-xmark red" *ngIf="status === 'error'"></i>
   {{ title }}
 </h3>
 

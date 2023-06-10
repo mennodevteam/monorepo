@@ -26,8 +26,8 @@ export const ProductCategorySchema = new EntitySchema<ProductCategory>({
       type: Number,
       nullable: true,
     },
-    hamiId: {
-      type: Number,
+    thirdPartyId: {
+      type: String,
       nullable: true,
     },
     faIcon: {
@@ -43,6 +43,10 @@ export const ProductCategorySchema = new EntitySchema<ProductCategory>({
       enum: OrderType,
       array: true,
       default: [OrderType.Delivery, OrderType.DineIn, OrderType.Takeaway],
+    },
+    updatedAt: {
+      type: 'timestamptz',
+      updateDate: true,
     },
     createdAt: {
       type: 'timestamptz',

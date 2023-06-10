@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ThirdParty, ThirdPartyApp } from '@menno/types';
 import { ShopService } from '../../../../core/services/shop.service';
+import { HamiService } from 'packages/panel/src/app/core/services/hami.service';
 
 @Component({
   selector: 'hami',
@@ -12,7 +12,7 @@ import { ShopService } from '../../../../core/services/shop.service';
 export class HamiComponent {
   thirdPartyForm: FormGroup;
 
-  constructor(private shopService: ShopService, private http: HttpClient) {
+  constructor(private shopService: ShopService, private hamiService: HamiService) {
     this.initForm();
   }
 
@@ -40,7 +40,7 @@ export class HamiComponent {
     this.initForm();
   }
 
-  syncMenu() {
-    this.http.get('thirdParties/hami/syncMenu').toPromise();
+  async syncMenu() {
+    this.hamiService.syncMenu();
   }
 }

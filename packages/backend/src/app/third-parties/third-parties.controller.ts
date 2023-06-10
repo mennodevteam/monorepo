@@ -24,18 +24,4 @@ export class ThirdPartiesController {
     dto.shop = { id: shop.id } as Shop;
     return this.repo.save(dto);
   }
-
-  @Get('hami/syncMenu')
-  async hamiSyncMenu(@LoginUser() user: AuthPayload, @Query('clear') clear: string) {
-    const shop = await this.auth.getPanelUserShop(user, ['menu.categories.products']);
-    const thirdParty = await this.repo.findOneBy({ app: ThirdPartyApp.Hami, shop: { id: shop.id } });
-    if (thirdParty) {
-      const groupResponse = await this.http
-        .get(`${thirdParty.keys.apiPath}/HamiOrder/GetGoodsGroup.aspx?SecurityKey=${thirdParty.token}`)
-        .toPromise();
-      const goodResponse = await this.http
-        .get(`${thirdParty.keys.apiPath}/HamiOrder/GetGoodsGroup.aspx?SecurityKey=${thirdParty.token}`)
-        .toPromise();
-    }
-  }
 }
