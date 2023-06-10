@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ShopService } from './shop.service';
 import { HttpClient } from '@angular/common/http';
-import { Product, ProductCategory, ThirdPartyApp } from '@menno/types';
+import { Order, Product, ProductCategory, ThirdPartyApp } from '@menno/types';
 import { MenuService } from './menu.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from '../../shared/dialogs/alert-dialog/alert-dialog.component';
@@ -23,6 +23,15 @@ export class HamiService {
 
   get thirdParty() {
     return this.shopService.shop?.thirdParties?.find((x) => x.app === ThirdPartyApp.Hami);
+  }
+
+  async saveOrder(order: Order) {
+    if (!order.thirdPartyId) {
+      // const dto = {
+      //   OrderId: Date.now(),
+      //   BranchId: 
+      // }
+    }
   }
 
   async syncMenu() {

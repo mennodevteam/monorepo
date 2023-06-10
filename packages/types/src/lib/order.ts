@@ -41,6 +41,7 @@ export class Order {
   items: OrderItem[];
   totalPrice: number;
   reviews: OrderReview[];
+  thirdPartyId?: string;
   packOrderId?: string;
   payment?: Payment;
   details: OrderDetails;

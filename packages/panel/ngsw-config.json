@@ -3,8 +3,7 @@
     "forceReload": false,
     "lazyReload": false,
     "changes": [
-      "اتصال به سرویس‌های جانبی",
-      "راه‌اندازی درگاه سیزپی از طریق پنل"
+      "اتصال به نرم‌افزار حسابداری حامی"
     ]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",

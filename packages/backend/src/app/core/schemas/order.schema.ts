@@ -27,6 +27,10 @@ export const OrderSchema = new EntitySchema<Order>({
       type: Boolean,
       default: false,
     },
+    thirdPartyId: {
+      type: String,
+      nullable: true,
+    },
     paymentType: {
       type: 'enum',
       enum: OrderPaymentType,
