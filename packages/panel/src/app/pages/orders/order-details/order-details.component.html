@@ -257,10 +257,66 @@
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-actions *ngSwitchCase="OrderType.Delivery">
-          <button mat-stroked-button (click)="sendLinkToPeyk()" [disabled]="loading.sendingLinkToPayk">
+          <button
+            *ngIf="!hasAlopeyk"
+            mat-stroked-button
+            (click)="sendLinkToPeyk()"
+            [disabled]="loading.sendingLinkToPayk"
+          >
             <i class="fa-regular fa-message"></i>
             {{ 'orderDetails.sendLinkToPeyk' | translate }}
           </button>
+          <ng-container *ngIf="hasAlopeyk">
+            <button
+              mat-stroked-button
+              color="primary"
+              class="alopeyk-button"
+              *ngIf="!deliveryOrder"
+              (click)="addAlopeyk()"
+            >
+              <img src="assets/icons/alopeyk.svg" />
+              {{ 'alopeyk.requestPeyk' | translate }}
+            </button>
+
+            <button
+              mat-stroked-button
+              class="alopeyk-button"
+              *ngIf="deliveryOrder"
+              [ngSwitch]="deliveryOrder.status"
+              [matMenuTriggerFor]="alopeykMenu"
+            >
+              <i *ngSwitchCase="'new'" class="fa-solid fa-spinner fa-spin mat-icon"></i>
+              <i *ngSwitchCase="'searching'" class="fa-solid fa-spinner fa-spin mat-icon"></i>
+              <i *ngSwitchCase="'accepted'" class="fa-solid fa-moped mat-icon"></i>
+              <i *ngSwitchCase="'picking'" class="fa-solid fa-moped mat-icon"></i>
+              <i *ngSwitchCase="'delivering'" class="fa-solid fa-moped mat-icon"></i>
+              <i *ngSwitchCase="'delivered'" class="fa-solid fa-check-circle mat-icon"></i>
+              <i *ngSwitchCase="'finished'" class="fa-solid fa-check-circle mat-icon"></i>
+              <span *ngSwitchCase="'new'">{{ 'alopeyk.status.new' | translate }}</span>
+              <span *ngSwitchCase="'searching'">{{ 'alopeyk.status.new' | translate }}</span>
+              <span *ngSwitchCase="'accepted'">
+                {{ 'alopeyk.status.accepted' | translate }}
+              </span>
+              <span *ngSwitchCase="'picking'">
+                {{ 'alopeyk.status.delivering' | translate }}
+              </span>
+              <span *ngSwitchCase="'delivering'">
+                {{ 'alopeyk.status.delivering' | translate }}
+              </span>
+              <span *ngSwitchCase="'delivered'">
+                {{ 'alopeyk.status.finished' | translate }}
+              </span>
+              <span *ngSwitchCase="'finished'">
+                {{ 'alopeyk.status.finished' | translate }}
+              </span>
+            </button>
+            <mat-menu #alopeykMenu="matMenu">
+              <button mat-menu-item (click)="cancelAlopeyk()">
+                <i class="fa-solid fa-circle-close mat-icon"></i>
+                <span>{{ 'alopeyk.cancel' | translate }}</span>
+              </button>
+            </mat-menu>
+          </ng-container>
         </mat-card-actions>
       </mat-card>
 

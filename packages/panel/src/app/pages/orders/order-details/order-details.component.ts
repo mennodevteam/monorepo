@@ -69,10 +69,12 @@ export class OrderDetailsComponent implements OnDestroy {
 
   async loadDeliveryOrder() {
     if (this.order?.details?.deliveryId) {
-      this.deliveryOrder = await this.alopeyk.getOrderDetails(Number(this.order.details.deliveryId));
-      if (this.deliveryOrder && ['expired', 'cancelled'].indexOf(this.deliveryOrder.status) > -1) {
+      const res = await this.alopeyk.getOrderDetails(Number(this.order.details.deliveryId));
+      if (res && ['expired', 'cancelled'].indexOf(res.status) > -1) {
         this.orderService.setDetails(this.order!, { deliveryId: null });
         this.order.details.deliveryId = undefined;
+      } else {
+        this.deliveryOrder = res;
       }
     }
   }

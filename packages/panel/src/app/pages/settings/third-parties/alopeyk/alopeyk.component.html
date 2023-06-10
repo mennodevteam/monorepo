@@ -52,9 +52,14 @@
         ></empty-state>
 
         <mat-nav-list *ngIf="thirdParty">
-          <a mat-list-item>
-            <span matListItemTitle>{{ 'thirdParties.alopeyk.syncMenu' | translate }}</span>
-            <span matListItemLine>{{ 'thirdParties.alopeyk.syncMenuDescription' | translate }}</span>
+          <a mat-list-item target="_blank" href="https://alopeyk.com/">
+            <span matListItemTitle>{{ 'thirdParties.alopeyk.site' | translate }}</span>
+            <span matListItemLine>{{ 'thirdParties.alopeyk.siteDescription' | translate }}</span>
+          </a>
+          <mat-divider></mat-divider>
+          <a mat-list-item target="_blank" href="https://app.alopeyk.com/">
+            <span matListItemTitle>{{ 'thirdParties.alopeyk.panel' | translate }}</span>
+            <span matListItemLine>{{ 'thirdParties.alopeyk.panelDescription' | translate }}</span>
           </a>
         </mat-nav-list>
       </mat-card-content>
