@@ -1,37 +1,33 @@
 <div class="container">
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <mat-card>
-      <mat-card-content>
-        <img src="assets/icons/icon-192x192.png" alt="menno" />
-        <br />
-        <mat-form-field appearance="fill">
-          <mat-label> نام کاربری </mat-label>
-          <input autofocus [disabled]="loading" matInput formControlName="username" required />
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label> رمز عبور </mat-label>
-          <input
-            [disabled]="loading"
-            matInput
-            [type]="hide ? 'password' : 'text'"
-            formControlName="password"
-            required
-          />
-          <button
-            mat-icon-button
-            matSuffix
-            (click)="hide = !hide"
-            [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hide"
-            type="button"
-          >
-            <i class="fa-regular fa-{{ hide ? 'eye-slash' : 'eye' }}"></i>
-          </button>
-        </mat-form-field>
-        <mat-checkbox color="primary" formControlName="save">ورود مرا ذخیره کن</mat-checkbox>
-        <br />
-        <button mat-flat-button [disabled]="loading" type="submit" color="primary">ورود به پنل</button>
-      </mat-card-content>
-    </mat-card>
+    <img src="assets/icons/logo.svg" alt="menno" />
+    <h3 style="text-align: center;">ورود به حساب کاربری</h3>
+    <mat-form-field appearance="outline">
+      <mat-label> نام کاربری </mat-label>
+      <input autofocus [disabled]="loading" matInput formControlName="username" required />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label> رمز عبور </mat-label>
+      <input
+        [disabled]="loading"
+        matInput
+        [type]="hide ? 'password' : 'text'"
+        formControlName="password"
+        required
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hide = !hide"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide"
+        type="button"
+      >
+        <i class="fa-regular fa-{{ hide ? 'eye-slash' : 'eye' }}"></i>
+      </button>
+    </mat-form-field>
+    <mat-checkbox color="primary" formControlName="save">ورود مرا ذخیره کن</mat-checkbox>
+    <button mat-flat-button [disabled]="loading" type="submit" color="primary" class="submit-button">ورود به پنل</button>
+    <button mat-button [disabled]="loading" type="button" color="primary">ثبت‌نام و دریافت رایگان منوی دیجیتال</button>
   </form>
 </div>

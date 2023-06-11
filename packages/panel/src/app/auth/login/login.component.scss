@@ -10,16 +10,15 @@
 
   form {
     max-width: 90vw;
-    width: 300px;
+    width: 400px;
+    display: flex;
+    gap: 16px;
+    flex-direction: column;
 
     img {
       margin: auto;
       display: block;
-    }
-
-    mat-card-content {
-      display: flex;
-      flex-direction: column;
+      width: 320px;
     }
   }
 }
