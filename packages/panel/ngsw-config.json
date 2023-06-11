@@ -3,7 +3,8 @@
     "forceReload": false,
     "lazyReload": false,
     "changes": [
-      "اتصال به نرم‌افزار حسابداری حامی"
+      "اتصال به نرم‌افزار حسابداری حامی",
+      "اتصال به نرم‌افزار الوپیک"
     ]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
