@@ -20,7 +20,7 @@
           {
             "glob": "**/*",
             "input": "node_modules/leaflet/dist/images",
-            "output": "leaflet/"
+            "output": "/"
           },
           "packages/panel/src/assets",
           "packages/panel/src/liara_nginx.conf",

@@ -154,6 +154,8 @@
     "addressSection": "آدرس",
     "region": "شهر",
     "address": "آدرس متنی",
+    "locationDraft": "با کلیک روی نقشه موقعیت را مشخص کنید و سپس ذخیره کنید",
+    "location": "موقعیت مکانی",
     "logo": "لوگو مجموعه",
     "connectionSection": "راه‌های ارتباطی",
     "phonesLabel": "شماره‌های تماس",
@@ -563,7 +565,13 @@
     "removeDialogTitle": "حذف محدوده سرویس دهی",
     "removeDialogDescription": "درصورت اطمینان از حذف {{value}}، تایید کنید.",
     "clearAll": "حدف همه",
-    "add": "ایجاد منطقه جدید"
+    "add": "ایجاد منطقه جدید",
+    "shopNotSetDialog": {
+      "title": "موقعیت مکانی مجموعه",
+      "description": "موقعیت مکانی مجموعه مشخص نشده است و برای استفاده از این بخش نیاز به موقعیت مکانی مجموعه روی نقشه داریم.",
+      "okText": "ثبت موقعیت",
+      "cancelText": "بعدا ثبت میکنم"
+    }
   },
   "deliveryAreaDialog": {
     "editTitle": "ویرایش محدوده",

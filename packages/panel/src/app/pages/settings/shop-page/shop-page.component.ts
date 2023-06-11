@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,6 +13,7 @@ import { FilesService } from '../../../core/services/files.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RegionsService } from '../../../core/services/regions.service';
 import { filter } from 'rxjs';
+import * as L from 'leaflet';
 
 @Component({
   selector: 'shop-page',
@@ -25,6 +26,27 @@ export class ShopPageComponent implements OnInit {
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   formBuilderData: FieldSection[];
   saving = false;
+  mapEdit = false;
+  mapOptions: L.MapOptions = {
+    layers: [
+      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' }),
+    ],
+    zoom:
+      this.shop?.latitude && this.shop.longitude
+        ? 16
+        : this.shop?.region?.latitude && this.shop.region?.longitude
+        ? 13
+        : 6,
+    center:
+      this.shop?.latitude && this.shop.longitude
+        ? L.latLng(this.shop.latitude, this.shop.longitude)
+        : this.shop?.region?.latitude && this.shop.region?.longitude
+        ? L.latLng(this.shop?.region?.latitude, this.shop.region?.longitude)
+        : L.latLng(32.723, 53.682),
+  };
+  marker: L.Marker;
+
+  map: L.Map;
 
   constructor(
     private shopService: ShopService,
@@ -36,6 +58,8 @@ export class ShopPageComponent implements OnInit {
     private regionsService: RegionsService
   ) {
     const shop = this.shopService.shop;
+
+    if (shop?.latitude && shop.longitude) this.marker = new L.Marker(L.latLng(shop.latitude, shop.longitude));
 
     this.form = this.fb.group({
       title: [shop?.title, Validators.required],
@@ -49,16 +73,39 @@ export class ShopPageComponent implements OnInit {
       logo: [shop?.logo],
     });
 
-    this.regionsService.regionsObservable
-      .pipe(filter((x) => x != undefined))
-      .subscribe((regions) => {
-        if (shop?.region) {
-          this.form.get('region')?.setValue(regions?.find((x) => x.id === shop.region.id));
+    this.regionsService.regionsObservable.pipe(filter((x) => x != undefined)).subscribe((regions) => {
+      if (shop?.region) {
+        this.form.get('region')?.setValue(regions?.find((x) => x.id === shop.region.id));
+      }
+      this.form.get('region')?.valueChanges.subscribe((r) => {
+        console.log(r);
+        if (r?.latitude && r?.longitude && this.map) {
+          this.map.flyTo([r.latitude, r.longitude], 13);
         }
       });
+    });
   }
 
   ngOnInit(): void {}
+
+  mapClick(ev: L.LeafletMouseEvent) {
+    if (this.mapEdit) {
+      this.form.get('latitude')?.setValue(ev.latlng.lat);
+      this.form.get('longitude')?.setValue(ev.latlng.lng);
+      this.map.flyTo(ev.latlng, 16);
+      this.form.markAsDirty();
+      this.marker.setLatLng(ev.latlng);
+      this.mapEdit = false;
+    }
+  }
+
+  mapReady(ev: L.Map) {
+    this.map = ev;
+  }
+
+  get shop() {
+    return this.shopService.shop;
+  }
 
   addPhone(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
@@ -102,10 +149,7 @@ export class ShopPageComponent implements OnInit {
     const dto = this.form.getRawValue();
     if (this.imageCropperResult) {
       this.snack.open(this.translate.instant('app.uploading'), '', { duration: 5000 });
-      const savedFile = await this.fileService.upload(
-        this.imageCropperResult.file,
-        `${dto.title}.jpeg`
-      );
+      const savedFile = await this.fileService.upload(this.imageCropperResult.file, `${dto.title}.jpeg`);
       dto.logo = savedFile?.key;
     }
     this.snack.open(this.translate.instant('app.saving'), '', { duration: 5000 });

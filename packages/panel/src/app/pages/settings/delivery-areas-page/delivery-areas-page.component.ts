@@ -6,6 +6,8 @@ import { DeliveryArea, Status } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { AdvancedPromptDialogComponent } from '../../../shared/dialogs/advanced-prompt-dialog/advanced-prompt-dialog.component';
 import { AlertDialogComponent } from '../../../shared/dialogs/alert-dialog/alert-dialog.component';
+import { ShopService } from '../../../core/services/shop.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-delivery-areas-page',
@@ -16,10 +18,32 @@ export class DeliveryAreasPageComponent implements OnInit {
   deliveryAreas?: DeliveryArea[];
   Status = Status;
 
-  constructor(private http: HttpClient, private dialog: MatDialog, private translate: TranslateService) {}
+  constructor(
+    private http: HttpClient,
+    private dialog: MatDialog,
+    private translate: TranslateService,
+    private shopService: ShopService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.load();
+    if (!this.shopService.shop?.latitude || !this.shopService.shop?.longitude) {
+      this.dialog
+        .open(AlertDialogComponent, {
+          data: {
+            title: this.translate.instant('deliveryArea.shopNotSetDialog.title'),
+            description: this.translate.instant('deliveryArea.shopNotSetDialog.description'),
+            okText: this.translate.instant('deliveryArea.shopNotSetDialog.okText'),
+            hideCancel: true,
+          },
+          disableClose: true,
+        })
+        .afterClosed()
+        .subscribe(() => {
+          this.router.navigateByUrl('/settings/shop');
+        });
+    }
   }
 
   async load() {

@@ -4,7 +4,7 @@
       <i class="fa-regular fa-arrow-right fa-large"></i>
     </button>
     <h1 flex>{{ 'settings.shop' | translate }}</h1>
-    <button mat-flat-button color="primary" (click)="save()" [disabled]="saving">
+    <button mat-flat-button color="primary" (click)="save()" [disabled]="saving || !form.dirty">
       {{ 'app.save' | translate }}
     </button>
   </mat-toolbar>
@@ -44,6 +44,21 @@
             <mat-label>{{ 'shopPage.address' | translate }}</mat-label>
             <input matInput formControlName="address" />
           </mat-form-field>
+
+          <mat-toolbar>
+            <span flex *ngIf="mapEdit">
+              {{ 'shopPage.locationDraft' | translate }}
+            </span>
+            <ng-container *ngIf="!mapEdit">
+              <span flex>
+                {{ 'shopPage.location' | translate }}
+              </span>
+              <button mat-stroked-button (click)="mapEdit = true">{{'app.edit' | translate}}</button>
+            </ng-container>
+          </mat-toolbar>
+          <div class="map-container" leaflet [leafletOptions]="mapOptions" (leafletClick)="mapClick($event)" (leafletMapReady)="mapReady($event)">
+            <div *ngIf="marker" [leafletLayer]="marker"></div>
+          </div>
         </mat-card-content>
       </mat-card>
     </div>
