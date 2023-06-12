@@ -4,6 +4,7 @@ import {
   AppConfigSchema,
   AddressSchema,
   ClubSchema,
+  DingSchema,
   DiscountCouponSchema,
   GemLogSchema,
   MemberSchema,
@@ -38,6 +39,7 @@ import {
   UserSchema,
   WalletLogSchema,
   WalletSchema,
+  WebPushSubscriptionSchema,
 } from './schemas';
 
 @Module({
@@ -46,6 +48,7 @@ import {
       AppConfigSchema,
       AddressSchema,
       ClubSchema,
+      DingSchema,
       DiscountCouponSchema,
       GemLogSchema,
       MemberTagSchema,
@@ -80,6 +83,7 @@ import {
       UserSchema,
       WalletLogSchema,
       WalletSchema,
+      WebPushSubscriptionSchema,
     ]),
   ],
   exports: [TypeOrmModule],

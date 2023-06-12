@@ -21,6 +21,8 @@ import { AddressesModule } from './addresses/addresses.module';
 import { ShopPluginsModule } from './shop-plugins/shop-plugins.module';
 import { HttpModule } from '@nestjs/axios';
 import { ThirdPartiesModule } from './third-parties/third-parties.module';
+import { WebPushNotificationModule } from './web-push-notifications/web-push-notifications.module';
+import { DingModule } from './ding/ding.module';
 
 @Module({
   imports: [
@@ -52,6 +54,8 @@ import { ThirdPartiesModule } from './third-parties/third-parties.module';
     AddressesModule,
     ShopPluginsModule,
     ThirdPartiesModule,
+    WebPushNotificationModule,
+    DingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

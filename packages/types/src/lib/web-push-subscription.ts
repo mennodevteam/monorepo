@@ -1,7 +1,10 @@
+import { Shop } from "./shop";
+import { User } from "./user";
+
 export class WebPushSubscription {
   id: string;
-  businessId: string;
-  userId: string;
+  shop?: Shop;
+  user?: User;
   endpoint: string;
   keys: {
     auth: string;
