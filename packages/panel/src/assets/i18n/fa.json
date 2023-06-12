@@ -188,7 +188,11 @@
     "disableOrderingText": "نمایش علت غیرفعالی به کاربر",
     "selectableOrderTypes": "انواع سفارش قابل انتخاب",
     "requiredRegister": "لزوم ثبت نام کامل قبل از ثبت سفارش",
-    "requiredPayment": "لزوم پرداخت آنلاین قبل از ثبت سفارش"
+    "requiredPayment": "لزوم پرداخت آنلاین قبل از ثبت سفارش",
+    "ding": "امکان دینگ داخل مجموعه",
+    "dingsLabel": "آیتم‌های دینگ (اختیاری)",
+    "dingsPlaceholder": "مثلا: زیر سگاری لطفا...",
+    "dingsHint": "با enter آیتم‌ها را از هم جدا کنید"
   },
   "discountEdit": {
     "pageTitle": "تخفیف و جشنواره",

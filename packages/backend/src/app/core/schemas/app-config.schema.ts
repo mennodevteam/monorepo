@@ -23,6 +23,15 @@ export const AppConfigSchema = new EntitySchema<AppConfig>({
       type: Boolean,
       default: false,
     },
+    ding: {
+      type: Boolean,
+      default: true,
+    },
+    dings: {
+      type: String,
+      array: true,
+      nullable: true,
+    },
     disableOrderingText: {
       type: String,
       nullable: true,

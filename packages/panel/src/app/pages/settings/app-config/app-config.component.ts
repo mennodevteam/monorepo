@@ -5,6 +5,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MenuViewType, OrderType, Theme, ThemeMode } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { ShopService } from '../../../core/services/shop.service';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { ENTER } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-config',
@@ -18,6 +20,7 @@ export class AppConfigComponent {
   ThemeMode = ThemeMode;
   MenuViewType = MenuViewType;
   OrderType = OrderType;
+  readonly separatorKeysCodes = [ENTER] as const;
 
   constructor(
     private shopService: ShopService,
@@ -35,6 +38,8 @@ export class AppConfigComponent {
       requiredPayment: new FormControl(this.appConfig.requiredPayment),
       requiredRegister: new FormControl(this.appConfig.requiredRegister),
       menuViewType: new FormControl(this.appConfig.menuViewType),
+      ding: new FormControl(this.appConfig.ding),
+      dings: new FormControl(this.appConfig.dings || []),
       menuCols: new FormControl(this.appConfig.menuCols, [Validators.min(2), Validators.max(4)]),
     });
 
@@ -61,5 +66,23 @@ export class AppConfigComponent {
     });
     this.saving = false;
     this.form.markAsUntouched();
+  }
+
+  addDing(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (value) {
+      this.form.get('dings')?.value.push(value);
+    }
+    event.chipInput!.clear();
+    this.form.markAsDirty();
+  }
+
+  removeDing(phone: string): void {
+    const index = this.form.get('dings')?.value?.indexOf(phone);
+
+    if (index >= 0) {
+      this.form.get('dings')?.value.splice(index, 1);
+    }
+    this.form.markAsDirty();
   }
 }

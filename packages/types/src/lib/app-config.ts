@@ -25,5 +25,7 @@ export class AppConfig {
   requiredPayment: OrderType[];
   requiredRegister: OrderType[];
   menuViewType: MenuViewType;
+  ding: boolean;
+  dings: string[]
   menuCols: number;
 }
