@@ -35,8 +35,15 @@
   },
   "menu": {
     "title": "منوی {{value}}",
+    "viewType": {
+      "card": "کارتی",
+      "grid": "جدولی",
+      "compact": "فشرده"
+    },
+    "ding": "دینگ",
+    "searchPlaceholder": "جستجو...",
+    "searchNotFound": "هیچ آیتمی یافت نشد",
     "complete": "تکمیل سفارش",
-
     "selectDeliveryAddress": "آدرس خود را جهت ارسال مشخص کنید",
     "selectDineInTable": "لطفا میز خود را انتخاب کنید",
     "disableOrderingTitle": "امکان ثبت آنلاین سفارش وجود ندارد"

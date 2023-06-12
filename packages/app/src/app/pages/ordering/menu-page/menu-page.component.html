@@ -5,11 +5,6 @@
         <i class="fa-regular fa-arrow-right"></i>
       </button>
       <h1 flex>{{ 'menu.title' | translate: { value: shop?.title } }}</h1>
-      <button mat-icon-button *ngIf="appConfig?.menuViewType === MenuViewType.Manual" (click)="toggleView()">
-        <i class="fa-solid fa-rectangle" *ngIf="viewType === MenuViewType.Card"></i>
-        <i class="fa-solid fa-grid-2" *ngIf="viewType === MenuViewType.Grid"></i>
-        <i class="fa-solid fa-list" *ngIf="viewType === MenuViewType.Compact"></i>
-      </button>
     </mat-toolbar-row>
   </mat-toolbar>
 
@@ -67,7 +62,57 @@
     </ng-container>
   </mat-nav-list>
 
-  <div class="menu">
+  <mat-toolbar class="toolbar">
+    <div id="search-wrapper" flex>
+      <input
+        placeholder="{{ 'menu.searchPlaceholder' | translate }}"
+        flex
+        [formControl]="searchQueryControl"
+        class="surface-variant on-surface-variant-text"
+        type="query"
+      />
+      <i class="fa-regular fa-search fa-xs"></i>
+    </div>
+    <button
+      mat-icon-button
+      color="warn"
+      *ngIf="searchQueryControl.value"
+      (click)="searchQueryControl.setValue(undefined)"
+    >
+      <i class="fa-regular fa-close fa-xs"></i>
+    </button>
+    <button
+      mat-stroked-button
+      *ngIf="appConfig?.menuViewType === MenuViewType.Manual && !searchQueryControl.value"
+      (click)="toggleView()"
+    >
+      <ng-container *ngIf="viewType === MenuViewType.Card">
+        <i class="fa-solid fa-rectangle"></i>
+        {{ 'menu.viewType.card' | translate }}
+      </ng-container>
+      <ng-container *ngIf="viewType === MenuViewType.Grid">
+        <i class="fa-solid fa-grid-2"></i>
+        {{ 'menu.viewType.grid' | translate }}
+      </ng-container>
+      <ng-container *ngIf="viewType === MenuViewType.Compact">
+        <i class="fa-solid fa-list"></i>
+        {{ 'menu.viewType.compact' | translate }}
+      </ng-container>
+    </button>
+    <button
+      id="ding"
+      mat-flat-button
+      [disabled]="dingTimer > 0"
+      color="primary"
+      (click)="ding()"
+      *ngIf="orderType === OrderType.DineIn && !!basket.details?.table && !searchQueryControl.value"
+    >
+      <i class="fa-solid fa-bell"></i>
+      {{ dingTimer ? dingTimer : ('menu.ding' | translate) }}
+    </button>
+  </mat-toolbar>
+
+  <div class="menu" *ngIf="!searchQueryControl.value">
     <menu-categories (chipClick)="categoryClick($event)"></menu-categories>
 
     <div
@@ -91,6 +136,19 @@
       </ng-container>
       <span spacer-2x *ngIf="!last"></span>
     </div>
+  </div>
+
+  <div class="menu" *ngIf="searchQueryControl.value">
+    <div class="category-wrapper" *ngFor="let c of searchCategories; let last = last">
+      <h3>
+        <i *ngIf="c.faIcon" class="fa-solid fa-{{ c.faIcon }}"></i>
+        {{ c.title }}
+      </h3>
+      <category-compact-view [category]="c" [menu]="menu"></category-compact-view>
+      <span spacer-2x *ngIf="!last"></span>
+    </div>
+
+    <empty-state icon="fa-face-woozy" text="{{ 'menu.searchNotFound' | translate }}"></empty-state>
   </div>
 
   <mat-toolbar class="actions-toolbar background" *ngIf="basket.items?.length" routerLink="/basket">

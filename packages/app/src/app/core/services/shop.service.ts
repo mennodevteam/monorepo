@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Plugin, Shop, ThemeMode } from '@menno/types';
+import { Ding, Plugin, Shop, ThemeMode } from '@menno/types';
 import { BehaviorSubject } from 'rxjs';
 import { ThemeService } from './theme.service';
 import { PwaService } from './pwa.service';
@@ -11,6 +11,8 @@ import { environment } from '../../../environments/environment';
 })
 export class ShopService {
   private _shop: BehaviorSubject<Shop | null> = new BehaviorSubject<Shop | null>(null);
+  dingInterval: any;
+  dingTimer = 0;
 
   constructor(private http: HttpClient, private themeService: ThemeService, private pwa: PwaService) {
     this.load();
@@ -78,5 +80,23 @@ export class ShopService {
 
   get url() {
     return this.shop?.domain || `https://${this.shop?.username}.${environment.appDomain}`;
+  }
+
+  ding(table: string, description?: string) {
+    const params: { [param: string]: string } = {};
+    if (this.shop && this.dingTimer <= 0) {
+      if (description) params['description'] = description;
+      if (this.dingInterval) clearInterval(this.dingInterval);
+      this.dingTimer = 60;
+      this.dingInterval = setInterval(() => {
+        if (this.dingTimer > 0) this.dingTimer--;
+      }, 1000);
+      return this.http
+        .get<Ding>(`ding/${this.shop.id}/${table}`, {
+          params,
+        })
+        .toPromise();
+    }
+    return;
   }
 }

@@ -1,5 +1,13 @@
 import { AfterViewInit, Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { DELIVERY_COST_TITLE, Menu, MenuViewType, OrderType, ShopTable, Status } from '@menno/types';
+import {
+  DELIVERY_COST_TITLE,
+  Menu,
+  MenuViewType,
+  OrderType,
+  ProductCategory,
+  ShopTable,
+  Status,
+} from '@menno/types';
 import { BasketService } from '../../../core/services/basket.service';
 import { MenuService } from '../../../core/services/menu.service';
 import { ShopService } from '../../../core/services/shop.service';
@@ -9,6 +17,8 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { LocationEditBottomSheetComponent } from '../location-edit-bottom-sheet/location-edit-bottom-sheet.component';
 import { LocationsBottomSheetComponent } from '../locations-bottom-sheet/locations-bottom-sheet.component';
 import { ShopTablesBottomSheetComponent } from '../shop-tables-bottom-sheet/shop-tables-bottom-sheet.component';
+import { FormControl } from '@angular/forms';
+import { DingBottomSheetComponent } from '../ding-bottom-sheet/ding-bottom-sheet.component';
 
 @Component({
   selector: 'menu-page',
@@ -22,8 +32,12 @@ export class MenuPageComponent implements AfterViewInit {
   MenuViewType = MenuViewType;
   OrderType = OrderType;
   Status = Status;
+  searchQueryControl = new FormControl();
   showSelectOrderType = true;
   private _viewType: MenuViewType;
+  
+
+  searchCategories: ProductCategory[] = [];
 
   constructor(
     public menuService: MenuService,
@@ -61,6 +75,13 @@ export class MenuPageComponent implements AfterViewInit {
       setTimeout(() => {
         this.setScrolling();
       }, 1000);
+
+      this.searchQueryControl.valueChanges.subscribe((value) => {
+        this.searchCategories = [];
+        if (this.menu) {
+          this.searchCategories = Menu.search(this.menu, value);
+        }
+      });
     });
 
     if (this.appConfig?.disableOrdering && this.menu && !Menu.isBasedOrderType(this.menu)) {
@@ -170,5 +191,20 @@ export class MenuPageComponent implements AfterViewInit {
           this.basket.details = { ...this.basket.details, table: tableText };
         }
       });
+  }
+
+  async ding() {
+    if (this.basket.details?.table) {
+      let description = '';
+      if (this.appConfig?.dings?.length) {
+        description = await this.bottomSheet.open(DingBottomSheetComponent).afterDismissed().toPromise();
+        if (!description) return;
+      }
+      this.shopService.ding(this.basket.details?.table, description);
+    }
+  }
+
+  get dingTimer() {
+    return this.shopService.dingTimer;
   }
 }

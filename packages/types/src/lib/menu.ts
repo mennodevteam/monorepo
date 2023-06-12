@@ -65,6 +65,24 @@ export class Menu {
     }
   }
 
+  static search(menu: Menu, query: string): ProductCategory[] {
+    const cats: ProductCategory[] = [];
+    if (menu.categories) {
+      for (const cat of menu.categories) {
+        if (cat.title.search(query) > -1) cats.push(cat);
+        else {
+          const products = cat.products?.filter((x) => x.title.search(query) > -1);
+          if (products?.length)
+            cats.push({
+              ...cat,
+              products,
+            });
+        }
+      }
+    }
+    return cats;
+  }
+
   static getProductById(menu: Menu, productId: string) {
     try {
       if (menu && menu.categories) {
