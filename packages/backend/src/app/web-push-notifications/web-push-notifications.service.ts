@@ -35,6 +35,8 @@ export class WebPushNotificationsService {
       notification: dto.options,
     };
     payload.notification.title = dto.title;
-    return webpush.sendNotification(sub, JSON.stringify(payload), { TTL: 180 });
+    webpush.sendNotification(sub, JSON.stringify(payload), { TTL: 180 }).catch((error) => {
+      console.log('errrrrrrrr', error);
+    });
   }
 }
