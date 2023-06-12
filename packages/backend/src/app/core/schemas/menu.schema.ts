@@ -21,6 +21,7 @@ export const MenuSchema = new EntitySchema<Menu>({
   },
   relations: {
     categories: {
+      cascade: ['insert'],
       type: 'one-to-many',
       target: 'ProductCategory',
       inverseSide: 'menu',

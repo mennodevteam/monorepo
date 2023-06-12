@@ -4,6 +4,7 @@ import { Plugin } from './plugin.enum';
 
 export class ShopPlugins {
   id: number;
+  description?: string;
   expiredAt: Date;
   renewAt: Date;
   status: Status;

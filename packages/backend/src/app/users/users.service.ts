@@ -13,4 +13,8 @@ export class UsersService {
   findOneByUsername(username: string) {
     return this.usersRepository.findOneBy({ username });
   }
+
+  findOneByMobilePhone(mobilePhone: string) {
+    return this.usersRepository.findOneBy({ mobilePhone });
+  }
 }

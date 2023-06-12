@@ -26,6 +26,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           // location.reload();
         }
         const apiError = new ApiError();
+        apiError.data = err.error;
         apiError.message = err.error?.message;
         apiError.status = err.status;
         return throwError(apiError);

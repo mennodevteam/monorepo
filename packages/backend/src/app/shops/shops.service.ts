@@ -78,22 +78,22 @@ export class ShopsService {
 
   async create(dto: CreateShopDto) {
     if (!Shop.isUsernameValid(dto.loginUsername))
-      throw new HttpException('the loginUsername is invalid', HttpStatus.NOT_ACCEPTABLE);
+      throw new HttpException({loginUsername: 'the loginUsername is invalid'}, HttpStatus.NOT_ACCEPTABLE);
     let existUser = await this.usersService.findOneByUsername(dto.loginUsername);
-    if (existUser) throw new HttpException('Duplicated Shop loginUsername', HttpStatus.CONFLICT);
+    if (existUser) throw new HttpException({loginUsername: 'Duplicated Shop loginUsername'}, HttpStatus.CONFLICT);
 
     if (dto.mobilePhone) {
-      existUser = await this.usersService.findOneByUsername(dto.mobilePhone);
-      if (existUser) throw new HttpException('Duplicated Shop mobile phone', HttpStatus.CONFLICT);
+      existUser = await this.usersService.findOneByMobilePhone(dto.mobilePhone);
+      if (existUser && existUser.username) throw new HttpException({mobilePhone: 'Duplicated Shop mobile phone'}, HttpStatus.CONFLICT);
     }
 
     if (dto.username) {
       if (!Shop.isUsernameValid(dto.username))
-        throw new HttpException('the username is invalid', HttpStatus.NOT_ACCEPTABLE);
+        throw new HttpException({username: 'the username is invalid'}, HttpStatus.NOT_ACCEPTABLE);
       const existingShop = await this.shopsRepository.findOne({
         where: { username: dto.username },
       });
-      if (existingShop) throw new HttpException('Duplicated Shop link', HttpStatus.CONFLICT);
+      if (existingShop) throw new HttpException({username: 'Duplicated Shop link'}, HttpStatus.CONFLICT);
     }
 
     let code = 2100;
@@ -138,6 +138,7 @@ export class ShopsService {
 
     shop.users = [new ShopUser()];
     shop.users[0].user = <User>{
+      id: existUser?.id,
       mobilePhone: dto.mobilePhone,
       firstName: dto.firstName,
       lastName: dto.lastName,
@@ -147,6 +148,7 @@ export class ShopsService {
     shop.users[0].role = ShopUserRole.Admin;
 
     shop.plugins = {
+      description: dto.pluginDescription,
       expiredAt: dto.expiredAt,
       renewAt: new Date(),
       plugins: dto.plugins,

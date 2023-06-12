@@ -75,14 +75,19 @@ export class AuthService {
     return this.login(user, UserRole.App, '90d');
   }
 
-  async sendToken(mobilePhone: string) {
+  async sendToken(mobilePhone: string, validateTime = 70000) {
     const phone = PersianNumberService.toEnglish(mobilePhone);
     const token = Math.floor(Math.random() * 8000 + 1000).toString();
     await this.lookup(phone, process.env.KAVENEGAR_CONFIRM_PHONE_TEMPLATE, token);
     this.mobilePhoneTokens[phone] = token;
     setTimeout(() => {
       delete this.mobilePhoneTokens[phone];
-    }, 70000);
+    }, validateTime);
+  }
+
+  checkToken(mobile: string, token): boolean {
+    const mobilePhone = PersianNumberService.toEnglish(mobile);
+    return this.mobilePhoneTokens[mobilePhone] === PersianNumberService.toEnglish(token);
   }
 
   async loginAppWithToken(userId: string, mobile: string, token: string): Promise<User> {

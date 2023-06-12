@@ -1,5 +1,5 @@
 import { User } from '@menno/types';
-import { Controller, Get, HttpException, HttpStatus, Param, Post, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, HttpException, HttpStatus, Param, Post, Req, Request, UseGuards } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthPayload } from '../core/types/auth-payload';
@@ -39,8 +39,9 @@ export class AuthController {
     return this.auth.loginApp(req.user);
   }
 
+  @Public()
   @Get('sendToken/:mobile')
-  async sendToken(@Param() params) {
+  async sendToken(@Param() params, @Req() req: Request) {
     return this.auth.sendToken(params.mobile);
   }
 

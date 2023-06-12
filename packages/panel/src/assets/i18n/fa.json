@@ -529,6 +529,7 @@
     "numberError": "شماره وارد شده نامعتبر"
   },
   "home": {
+    "welcome": "{{value}}, خوش آمدید",
     "planTitle": "اعتبار پلن شما",
     "smsAccount": "پنل پیامکی",
     "chargeDialogTitle": "افزایش شارژ پنل پیامک",

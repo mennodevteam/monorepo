@@ -1,6 +1,6 @@
 <main class="content-wrapper">
   <mat-toolbar>
-    <h1 flex>{{ shop.title }}</h1>
+    <h1 flex>{{ 'home.welcome' | translate: { value: shop.title } }}</h1>
     <span class="blue eng">#{{ shop.code }}</span>
   </mat-toolbar>
 
@@ -13,6 +13,7 @@
             <span spacer-sm></span>
             {{ 'home.planTitle' | translate }}
           </mat-card-title>
+          <mat-card-subtitle *ngIf="plugin?.description">{{ plugin?.description }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content class="form-theme">
           <mat-list>
@@ -56,7 +57,7 @@
           <mat-list *ngIf="shop.smsAccount">
             <mat-list-item>
               <span matListItemLine>{{ 'home.smsAccountCharge' | translate }}</span>
-              <span matListItemMeta [ngClass]="{ 'red': shop.smsAccount.charge <= 1000 }">{{
+              <span matListItemMeta [ngClass]="{ red: shop.smsAccount.charge <= 1000 }">{{
                 shop.smsAccount.charge | menuCurrency: '1.0-0':true
               }}</span>
             </mat-list-item>

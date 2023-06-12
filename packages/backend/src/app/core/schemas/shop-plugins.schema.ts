@@ -10,6 +10,10 @@ export const ShopPluginsSchema = new EntitySchema<ShopPlugins>({
       generated: 'uuid',
       primary: true,
     },
+    description: {
+      type: String,
+      nullable: true,
+    },
     status: {
       type: 'enum',
       enum: Status,

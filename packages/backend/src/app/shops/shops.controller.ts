@@ -1,5 +1,5 @@
 import { CreateShopDto, Plugin, Shop, ShopUserRole, Sms, UserRole } from '@menno/types';
-import { Body, Controller, Get, Param, Post, Put, Req } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Put, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
@@ -61,6 +61,18 @@ export class ShopsController {
   @Roles(UserRole.Admin)
   async create(@Body() dto: CreateShopDto): Promise<Shop> {
     return this.shopsService.create(dto);
+  }
+
+  @Public()
+  @Post('register')
+  async register(@Body() dto: CreateShopDto): Promise<Shop> {
+    if (this.auth.checkToken(dto.mobilePhone, dto.otp)) {
+      dto.plugins = [Plugin.Menu, Plugin.Ordering, Plugin.Club];
+      dto.expiredAt = new Date();
+      dto.pluginDescription = 'نسخه آزمایشی رایگان';
+      dto.expiredAt.setDate(dto.expiredAt.getDate() + 7);
+      return this.shopsService.create(dto);
+    } else throw new HttpException({ otp: 'token invalid' }, HttpStatus.FORBIDDEN);
   }
 
   @Get('sendLink/:mobile')
