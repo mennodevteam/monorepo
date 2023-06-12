@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertDialogComponent } from '../../shared/dialogs/alert-dialog/alert-dialog.component';
 import { PUBLIC_URLS } from '../../core/public-urls.consts';
 import { PayService } from '../../core/services/pay.service';
+import { WebPushNotificationsService } from '../../core/services/web-push-notifications.service';
 
 @Component({
   selector: 'home',
@@ -28,6 +29,7 @@ export class HomeComponent {
     private translate: TranslateService,
     private snack: MatSnackBar,
     private payService: PayService,
+    public webPush: WebPushNotificationsService,
   ) {
     const fromDate = new Date(this.plugin?.renewAt || 0).valueOf();
     const toDate = new Date(this.plugin?.expiredAt || 0).valueOf();

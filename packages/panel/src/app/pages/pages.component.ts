@@ -9,6 +9,8 @@ import { ShopService } from '../core/services/shop.service';
 import { TodayOrdersService } from '../core/services/today-orders.service';
 import { RegionsService } from '../core/services/regions.service';
 import { UpdateService } from '../core/services/update.service';
+import { WebPushNotificationsService } from '../core/services/web-push-notifications.service';
+import { DingService } from '../core/services/ding.service';
 
 @Component({
   selector: 'menno-pages',
@@ -28,6 +30,8 @@ export class PagesComponent implements OnInit {
     private auth: AuthService,
     public todayOrders: TodayOrdersService,
     private updateService: UpdateService,
+    private notif: WebPushNotificationsService,
+    private dingService: DingService,
   ) {
     this.isHandset$ = this.breakpointObserver.observe('(max-width: 1024px)').pipe(
       map((result) => result.matches),

@@ -18,7 +18,6 @@ export class WebPushNotificationsService {
   }
 
   async notifToShop(shopId: string, dto: WebPushNotificationDto) {
-    if (!dto.options.dir) dto.options.dir = 'rtl';
     const subs = await this.repo.find({ where: { shop: { id: shopId } }, order: { createdAt: 'desc' } });
     for (const sub of subs) {
       this.webPushSend(sub, dto);
@@ -26,6 +25,12 @@ export class WebPushNotificationsService {
   }
 
   private webPushSend(sub: WebPushSubscription, dto: WebPushNotificationDto) {
+    dto.options = {
+      ...dto.options,
+      dir: dto.options.dir || 'rtl',
+      badge: dto.options.badge || process.env.NOTIFICATION_BADGE,
+      icon: dto.options.icon || process.env.NOTIFICATION_ICON,
+    };
     const payload: any = {
       notification: dto.options,
     };

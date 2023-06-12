@@ -29,7 +29,7 @@ export const WebPushSubscriptionSchema = new EntitySchema<WebPushSubscription>({
         },
         user: {
             type: 'many-to-one',
-            target: 'user',
+            target: 'User',
             nullable: true,
         }
     }

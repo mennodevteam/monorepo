@@ -45,7 +45,7 @@ export class DingController {
       title: 'درخواست سالن‌دار',
       options: {
         body,
-        data: ding,
+        data: {ding},
       },
     });
     return ding;

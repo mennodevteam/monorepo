@@ -38,12 +38,6 @@ export class TodayOrdersService {
         if (message.notification.data.newOrder) this.loadData();
       } catch (error) {}
     });
-
-    // this.newOrders.subscribe((orders) => {
-    //   for (const order of orders) {
-    //     this.notifOrder(order);
-    //   }
-    // });
   }
 
   notifOrder(order: Order) {

@@ -1,6 +1,7 @@
 import { Member, Order, Shop } from '@menno/types';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, EntitySubscriberInterface, EventSubscriber, InsertEvent, Repository } from 'typeorm';
+import { WebPushNotificationsService } from '../web-push-notifications/web-push-notifications.service';
 
 @EventSubscriber()
 export class OrderSubscriber implements EntitySubscriberInterface<Order> {
@@ -9,7 +10,8 @@ export class OrderSubscriber implements EntitySubscriberInterface<Order> {
     @InjectRepository(Member)
     private membersRepo: Repository<Member>,
     @InjectRepository(Shop)
-    private shopsRepo: Repository<Shop>
+    private shopsRepo: Repository<Shop>,
+    private webPush: WebPushNotificationsService
   ) {
     dataSource.subscribers.push(this);
   }
@@ -41,5 +43,13 @@ export class OrderSubscriber implements EntitySubscriberInterface<Order> {
         });
       }
     }
+
+    this.webPush.notifToShop(order.shop.id, {
+      title: 'سفارش جدید',
+      options: {
+        body: `فیش شماره ${order.qNumber}`,
+        data: { newOrder: order },
+      },
+    });
   }
 }

@@ -4,6 +4,14 @@
     <span class="blue eng">#{{ shop.code }}</span>
   </mat-toolbar>
 
+  <mat-card class="warning" *ngIf="!webPush.isSubscribed && webPush.isEnabled">
+    <mat-card-content>
+      {{ 'home.enableNotificationDescription' | translate }}
+      <button mat-button color="primary" (click)="webPush.subscribe()">
+        {{ 'home.enableNotificationAction' | translate }}
+      </button>
+    </mat-card-content>
+  </mat-card>
   <div class="form-page-layout">
     <div class="flex-col">
       <mat-card>
