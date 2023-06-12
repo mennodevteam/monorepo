@@ -37,3 +37,5 @@
     </div>
   </mat-tab>
 </mat-tab-group>
+
+<empty-state *ngIf="!categories?.length" text="{{'menu.noCategory' | translate}}" icon="fa-face-smile-tongue"></empty-state>
