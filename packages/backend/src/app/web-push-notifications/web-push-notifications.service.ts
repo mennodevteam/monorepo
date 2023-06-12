@@ -36,7 +36,11 @@ export class WebPushNotificationsService {
     };
     payload.notification.title = dto.title;
     webpush.sendNotification(sub, JSON.stringify(payload), { TTL: 180 }).catch((error) => {
-      console.log('errrrrrrrr', error);
+      try {
+        if (error.statusCode === 410) {
+          this.repo.delete(sub.id);
+        }
+      } catch (error) {}
     });
   }
 }
