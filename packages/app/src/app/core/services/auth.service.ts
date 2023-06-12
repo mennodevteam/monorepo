@@ -13,7 +13,6 @@ export class AuthService {
   private _user = new BehaviorSubject<User | null>(null);
 
   constructor(private http: HttpClient) {
-    console.log('init auth')
     this.init();
   }
 

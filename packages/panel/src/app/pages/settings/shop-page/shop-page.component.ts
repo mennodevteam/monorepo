@@ -78,7 +78,6 @@ export class ShopPageComponent implements OnInit {
         this.form.get('region')?.setValue(regions?.find((x) => x.id === shop.region.id));
       }
       this.form.get('region')?.valueChanges.subscribe((r) => {
-        console.log(r);
         if (r?.latitude && r?.longitude && this.map) {
           this.map.flyTo([r.latitude, r.longitude], 13);
         }

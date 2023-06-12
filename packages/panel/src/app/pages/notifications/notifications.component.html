@@ -9,7 +9,7 @@
     <mat-card-content>
       <p *ngFor="let c of notif.contents">{{ c }}</p>
     </mat-card-content>
-    <mat-card-actions *ngIf="notif.actions && notif.actions.length">
+    <mat-card-actions>
       <ng-container *ngFor="let action of notif.actions; let i = index">
         <button
           *ngIf="action.text"

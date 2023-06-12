@@ -24,7 +24,6 @@ export class PayService {
         document.body.removeChild(form);
       }
     } catch (error) {
-      console.log(error);
     }
   }
 }

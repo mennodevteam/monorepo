@@ -4,7 +4,8 @@
     "lazyReload": false,
     "changes": [
       "اتصال به نرم‌افزار حسابداری حامی",
-      "اتصال به نرم‌افزار الوپیک"
+      "اتصال به نرم‌افزار الوپیک",
+      "امکان درخواست سالن‌دار (دینگ)"
     ]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",

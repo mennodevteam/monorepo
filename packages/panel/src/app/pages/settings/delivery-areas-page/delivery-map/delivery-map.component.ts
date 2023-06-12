@@ -107,8 +107,6 @@ export class DeliveryMapComponent implements OnInit {
 
   onDrawEdited(e: any) {
     const layers: any = (e as L.DrawEvents.Edited).layers.getLayers();
-    console.log(layers);
-    console.log();
     let res: any = {};
     for (const l of layers) {
       res[this.drawItems.getLayers().indexOf(l)] = l.getLatLngs()[0].map((x: any) => [x.lat, x.lng]);
@@ -117,14 +115,10 @@ export class DeliveryMapComponent implements OnInit {
   }
 
   onDrawDeleted(e: any) {
-    console.log(e);
     const layers: any = (e as L.DrawEvents.Edited).layers.getLayers();
-    console.log(layers);
-    console.log();
     let res: any = {};
     for (const l of layers) {
       res[this.drawItems.getLayers().indexOf(l)] = l.getLatLngs()[0].map((x: any) => [x.lat, x.lng]);
     }
-    console.log(res);
   }
 }
