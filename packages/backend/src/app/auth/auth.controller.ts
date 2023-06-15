@@ -1,5 +1,5 @@
-import { User } from '@menno/types';
-import { Controller, Get, HttpException, HttpStatus, Param, Post, Req, Request, UseGuards } from '@nestjs/common';
+import { ChangePasswordDto, User, UserRole } from '@menno/types';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Req, Request, UseGuards } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthPayload } from '../core/types/auth-payload';
@@ -9,6 +9,7 @@ import { PanelLocalAuthGuard } from './panel-local-auth.guard';
 import { Public } from './public.decorator';
 import { LoginUser } from './user.decorator';
 import { AdminLocalAuthGuard } from './admin-local-auth.guard';
+import { Roles } from './roles.decorators';
 
 @Controller('auth')
 export class AuthController {
@@ -23,6 +24,13 @@ export class AuthController {
   @Post('login/panel')
   async loginPanel(@Request() req) {
     return this.auth.loginPanel(req.user);
+  }
+
+  @Roles(UserRole.Panel)
+  @Post('changePassword')
+  async changePanelPassword(@Body() dto: ChangePasswordDto, @LoginUser() user: AuthPayload) {
+    dto.id = user.id;
+    return this.auth.changePanelPassword(dto);
   }
 
   @Public()

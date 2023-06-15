@@ -38,6 +38,16 @@
           <span matListItemTitle>{{ 'settings.qr' | translate }}</span>
         </a>
         <mat-divider></mat-divider>
+        <a mat-list-item (click)="openChangePassword()">
+          <i matListItemIcon class="fa-solid fa-key"></i>
+          <span matListItemTitle>{{ 'settings.changePassword' | translate }}</span>
+        </a>
+        <mat-divider></mat-divider>
+        <a mat-list-item (click)="setPos()">
+          <i matListItemIcon class="fa-solid fa-credit-card"></i>
+          <span matListItemTitle>{{ 'settings.poses' | translate }}</span>
+        </a>
+        <mat-divider></mat-divider>
         <a mat-list-item routerLink="third-parties">
           <i matListItemIcon class="fa-solid fa-puzzle-piece"></i>
           <span matListItemTitle>{{ 'settings.thirdParties' | translate }}</span>

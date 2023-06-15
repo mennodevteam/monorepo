@@ -144,6 +144,8 @@
     "printers": "نصب و راه‌اندازی پرینتر‌ها",
     "deliveryAreas": "محدوده ارسال پیک",
     "qr": "مدیریت qr code و میز‌ها",
+    "poses": "مدیریت پوز‌ها",
+    "changePassword": "تغییر رمز ورود به سیستم",
     "thirdParties": "اتصال به سرویس‌های جانبی",
     "users": "مدیریت کاربران"
   },
@@ -708,6 +710,21 @@
     "titleLabel": "عنوان میز (اختیاری)",
     "dialogEditTitle": "ویرایش میز",
     "dialogNewTitle": "ایجاد میز"
+  },
+  "changePassword": {
+    "dialogTitle": "تغییر رمز ورود",
+    "prevPasswordLabel": "رمز ورود قبلی",
+    "newPassword": "رمز ورود جدید",
+    "newPasswordRepeat": "تکرار رمز ورود جدید",
+    "success": "رمز عبور با موفقیت تغییر کرد",
+    "notSamePassWarning": "رمز عبور و تکرار آن باهم یکسان نیست",
+    "wrongPrevPassWarning": "رمز عبور قبلی نادرست است",
+    "tooShortWarning": "رمز جدید شما خیلی کوتاه است"
+  },
+  "posesSettingDialog": {
+    "title": "ویرایش پوزها",
+    "label": "پوزها",
+    "description": "نام هر دستگاه کارتخوان را در یک سطر وارد کنید"
   },
   "thirdParties": {
     "pageTitle": "اتصال به سرویس‌های جانبی",

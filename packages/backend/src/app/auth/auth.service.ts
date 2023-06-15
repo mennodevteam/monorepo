@@ -5,7 +5,7 @@ import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
-import { ShopUser, User, UserRole } from '@menno/types';
+import { ChangePasswordDto, ShopUser, User, UserRole } from '@menno/types';
 import { JwtService } from '@nestjs/jwt';
 import { AuthPayload } from '../core/types/auth-payload';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -88,6 +88,16 @@ export class AuthService {
   checkToken(mobile: string, token): boolean {
     const mobilePhone = PersianNumberService.toEnglish(mobile);
     return this.mobilePhoneTokens[mobilePhone] === PersianNumberService.toEnglish(token);
+  }
+
+  async changePanelPassword(dto: ChangePasswordDto) {
+    const user = await this.usersRepo.findOneBy({ id: dto.id, password: dto.prevPassword });
+    if (!user) throw new HttpException('user not found', HttpStatus.NOT_FOUND);
+    else if (dto.newPassword !== dto.newPasswordRepeat)
+      throw new HttpException('passwords are not same', HttpStatus.CONFLICT);
+    else {
+      await this.usersRepo.update(user.id, { password: dto.newPassword });
+    }
   }
 
   async loginAppWithToken(userId: string, mobile: string, token: string): Promise<User> {

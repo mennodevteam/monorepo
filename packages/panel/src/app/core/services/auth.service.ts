@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ShopUser, ShopUserRole, User, UserAction } from '@menno/types';
+import { ChangePasswordDto, ShopUser, ShopUserRole, User, UserAction } from '@menno/types';
 import { environment } from '../../../environments/environment';
+import { ApiError } from '../api-error';
 
 @Injectable({
   providedIn: 'root',
@@ -17,17 +18,16 @@ export class AuthService {
       sessionStorage?.getItem(environment.localStorageUserKey) ||
       localStorage?.getItem(environment.localStorageUserKey);
 
-      if (_item) {
-        this.user$ = new BehaviorSubject<User | null>(JSON.parse(_item));
-        this.loadShopUser();
-      } else{
-        this.user$ = new BehaviorSubject<User | null>(null);
-      }
-
+    if (_item) {
+      this.user$ = new BehaviorSubject<User | null>(JSON.parse(_item));
+      this.loadShopUser();
+    } else {
+      this.user$ = new BehaviorSubject<User | null>(null);
+    }
 
     this.user$.subscribe((u) => {
       this.loadShopUser();
-    })
+    });
   }
 
   login(username: string, password: string, saveLoginUser?: boolean) {
@@ -68,6 +68,10 @@ export class AuthService {
       sessionStorage.setItem(environment.localStorageUserKey, JSON.stringify(user));
       this.user$.next(user);
     }
+  }
+
+  changePassword(dto: ChangePasswordDto) {
+    return this.http.post<void>(`auth/changePassword`, dto).toPromise();
   }
 
   private async loadShopUser() {
