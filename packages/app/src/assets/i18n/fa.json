@@ -44,6 +44,7 @@
     "searchPlaceholder": "جستجو...",
     "searchNotFound": "هیچ آیتمی یافت نشد",
     "complete": "تکمیل سفارش",
+    "shopIsClosed": "خارج از ساعت کاری مجموعه دریافت سفارش امکان‌پذیر نیست",
     "selectDeliveryAddress": "آدرس خود را جهت ارسال مشخص کنید",
     "selectDineInTable": "لطفا میز خود را انتخاب کنید",
     "disableOrderingTitle": "امکان ثبت آنلاین سفارش وجود ندارد"
