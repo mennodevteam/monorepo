@@ -76,7 +76,7 @@ export class ShopService {
 
   get isOpen() {
     if (!this.shop?.details.openingHours?.length) return false;
-    return Shop.isOpen(this.shop.details.openingHours);
+    return !this.shop.appConfig?.disableOrderingOnClose || Shop.isOpen(this.shop.details.openingHours);
   }
 
   get shop() {

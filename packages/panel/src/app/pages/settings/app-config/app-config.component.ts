@@ -38,6 +38,7 @@ export class AppConfigComponent {
       requiredPayment: new FormControl(this.appConfig.requiredPayment),
       requiredRegister: new FormControl(this.appConfig.requiredRegister),
       menuViewType: new FormControl(this.appConfig.menuViewType),
+      disableOrderingOnClose: new FormControl(this.appConfig.disableOrderingOnClose),
       ding: new FormControl(this.appConfig.ding),
       dings: new FormControl(this.appConfig.dings || []),
       menuCols: new FormControl(this.appConfig.menuCols, [Validators.min(2), Validators.max(4)]),

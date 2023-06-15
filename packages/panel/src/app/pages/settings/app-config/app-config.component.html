@@ -220,6 +220,20 @@
             </mat-chip-grid>
             <mat-hint>{{ 'appConfig.dingsHint' | translate }}</mat-hint>
           </mat-form-field>
+
+          <span spacer></span>
+
+          <div class="row">
+            <p class="flex">
+              {{ 'appConfig.disableOrderingOnClose' | translate }}
+            </p>
+            <mat-button-toggle-group formControlName="disableOrderingOnClose">
+              <mat-button-toggle [value]="false">{{ 'app.active' | translate }}</mat-button-toggle>
+              <mat-button-toggle [value]="true" color="warn">{{
+                'app.inactive' | translate
+              }}</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
         </mat-card-content>
       </mat-card>
     </div>

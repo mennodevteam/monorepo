@@ -188,6 +188,7 @@
     "disablePayment": "امکان پرداخت آنلاین",
     "disableOrdering": "امکان ثبت سفارش",
     "disableOrderingText": "نمایش علت غیرفعالی به کاربر",
+    "disableOrderingOnClose": "امکان ثبت سفارش خارج از تایم کاری",
     "selectableOrderTypes": "انواع سفارش قابل انتخاب",
     "requiredRegister": "لزوم ثبت نام کامل قبل از ثبت سفارش",
     "requiredPayment": "لزوم پرداخت آنلاین قبل از ثبت سفارش",
