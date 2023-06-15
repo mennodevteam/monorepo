@@ -14,6 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { RegionsService } from '../../../core/services/regions.service';
 import { filter } from 'rxjs';
 import * as L from 'leaflet';
+import { OpeningHoursDialogComponent } from './opening-hours-dialog/opening-hours-dialog.component';
 
 @Component({
   selector: 'shop-page',
@@ -138,6 +139,13 @@ export class ShopPageComponent implements OnInit {
           this.form.markAsDirty();
         }
       });
+  }
+
+  openOpeningHoursDialog() {
+    this.dialog.open(OpeningHoursDialogComponent, {
+      disableClose: true,
+      width: '420px'
+    });
   }
 
   removePhoto() {}

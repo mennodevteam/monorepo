@@ -74,6 +74,11 @@ export class ShopService {
     return this.shop?.plugins?.plugins ? this.shop?.plugins?.plugins.indexOf(Plugin.Ordering) > -1 : false;
   }
 
+  get isOpen() {
+    if (!this.shop?.details.openingHours?.length) return false;
+    return Shop.isOpen(this.shop.details.openingHours);
+  }
+
   get shop() {
     return this._shop.value;
   }

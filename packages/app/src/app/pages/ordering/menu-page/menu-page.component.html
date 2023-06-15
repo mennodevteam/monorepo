@@ -8,7 +8,7 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <section class="order-disable" *ngIf="appConfig?.disableOrderingText && appConfig?.disableOrdering">
+  <section class="order-disable" *ngIf="(appConfig?.disableOrderingText && appConfig?.disableOrdering) || isClosed">
     <disable-ordering-card></disable-ordering-card>
   </section>
 

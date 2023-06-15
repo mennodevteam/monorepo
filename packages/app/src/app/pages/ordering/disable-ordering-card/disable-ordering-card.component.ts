@@ -12,4 +12,8 @@ export class DisableOrderingCardComponent {
   get appConfig() {
     return this.shopService.shop?.appConfig;
   }
+
+  get isClosed() {
+    return !this.shopService.isOpen;
+  }
 }

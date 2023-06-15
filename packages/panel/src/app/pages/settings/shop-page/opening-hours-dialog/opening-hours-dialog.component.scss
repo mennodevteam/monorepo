@@ -1,0 +1,17 @@
+@import 'theme';
+
+.mat-list-icon {
+    font-size: 13px !important;
+    line-height: 24px !important;
+    text-align: center;
+    color: $gray;
+}
+
+.no-time {
+    font-size: 11px;
+    text-align: center;
+}
+
+.mat-subheader {
+    justify-content: space-between;
+}

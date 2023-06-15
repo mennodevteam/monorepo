@@ -296,6 +296,13 @@ mat-card {
     }
   }
 
+  .mat-mdc-list-item {
+    .secondary {
+      display: flex;
+      align-items: center;
+    }
+  }
+
   mat-card-title {
     font-size: 16px !important;
     font-weight: 600 !important;
@@ -381,7 +388,6 @@ mat-snack-bar-container {
     @include colorizeSnackbar($red, white, "\f071");
   }
 }
-
 
 .show-xs {
   display: none !important;

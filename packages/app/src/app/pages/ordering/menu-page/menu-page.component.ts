@@ -35,7 +35,6 @@ export class MenuPageComponent implements AfterViewInit {
   searchQueryControl = new FormControl();
   showSelectOrderType = true;
   private _viewType: MenuViewType;
-  
 
   searchCategories: ProductCategory[] = [];
 
@@ -206,5 +205,9 @@ export class MenuPageComponent implements AfterViewInit {
 
   get dingTimer() {
     return this.shopService.dingTimer;
+  }
+
+  get isClosed() {
+    return !this.shopService.isOpen;
   }
 }

@@ -65,12 +65,7 @@ export class PwaService {
   onDefferedPromped = new Subject<void>();
   deferredPrompt: any;
 
-  constructor(
-    private fileService: FilesService,
-    private update: SwUpdate,
-    private themeService: ThemeService,
-    private Title: Title
-  ) {
+  constructor(private fileService: FilesService, private themeService: ThemeService, private Title: Title) {
     window.addEventListener('beforeinstallprompt', (e) => {
       // Prevent Chrome 67 and earlier from automatically showing the prompt
       e.preventDefault();
@@ -78,13 +73,6 @@ export class PwaService {
       this.deferredPrompt = e;
       this.onDefferedPromped.next();
     });
-
-    this.update.available.subscribe((evt) => {
-      window.location.reload();
-    });
-    if (this.update.isEnabled) {
-      this.update.checkForUpdate();
-    }
   }
 
   async setManifest(shop: Shop, url: string, theme = '#000000', themeBackground = '#ffffff'): Promise<void> {

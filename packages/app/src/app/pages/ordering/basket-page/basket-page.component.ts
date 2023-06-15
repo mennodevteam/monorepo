@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { BasketService } from '../../../core/services/basket.service';
 import { ShopService } from '../../../core/services/shop.service';
-import { DISCOUNT_CODE_TITLE, OrderType, Status } from '@menno/types';
+import { DISCOUNT_CODE_TITLE, OrderType, Shop, Status } from '@menno/types';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -77,7 +77,7 @@ export class BasketPageComponent {
   }
 
   get disableOrdering() {
-    return this.shopService.shop?.appConfig?.disableOrdering;
+    return this.shopService.shop?.appConfig?.disableOrdering || !this.shopService.isOpen;
   }
 
   async getNewDiscountCouponCode() {

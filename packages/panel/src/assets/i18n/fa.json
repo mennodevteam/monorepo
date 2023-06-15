@@ -163,7 +163,9 @@
     "phonesPlaceholder": "همراه با پیش شماره...",
     "phonesHint": "با enter شماره جدید وارد کنید",
     "instagram": "آی‌دی اینستاگرام",
-    "instagramHint": "بدون @"
+    "instagramHint": "بدون @",
+    "moreSection": "سایر اطلاعات",
+    "openingHours": "ساعات کاری مجموعه"
   },
   "appConfig": {
     "themeSection": "رنگبندی اپلیکیشن",
@@ -193,6 +195,24 @@
     "dingsLabel": "آیتم‌های دینگ (اختیاری)",
     "dingsPlaceholder": "مثلا: زیر سگاری لطفا...",
     "dingsHint": "با enter آیتم‌ها را از هم جدا کنید"
+  },
+  "dayOfWeeks": {
+    "saturday": "شنبه",
+    "sunday": "یک شنبه",
+    "monday": "دوشبه",
+    "tuesday": "سه شنبه",
+    "wednesday": "چهارشنبه",
+    "thursday": "پنجشنبه",
+    "friday": "جمعه"
+  },
+  "openingHoursDialog": {
+    "title": "ساعات کاری مجموعه",
+    "syncSaturday": "مطابق شنبه",
+    "selectRangeTitle": "بازه زمانی را مشخص کنید:",
+    "fromTime": "از ساعت:",
+    "toTime": "تا ساعت:",
+    "noTimeAdded": "ساعت کاری ثبت نشده",
+    "addTime": "افزودن تایم جدید"
   },
   "discountEdit": {
     "pageTitle": "تخفیف و جشنواره",

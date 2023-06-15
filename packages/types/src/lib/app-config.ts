@@ -22,6 +22,7 @@ export class AppConfig {
   disableOrdering: boolean;
   disablePayment: boolean;
   disableOrderingText: string;
+  disableOrderingOnClose: boolean;
   requiredPayment: OrderType[];
   requiredRegister: OrderType[];
   menuViewType: MenuViewType;

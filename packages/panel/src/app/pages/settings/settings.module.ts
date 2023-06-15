@@ -16,6 +16,7 @@ import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
 import { UserManagementComponent } from './user-management/user-management.component';
 import { UserManagementTableComponent } from './user-management/user-management-table/user-management-table.component';
 import { QrComponent } from './qr/qr.component';
+import { OpeningHoursDialogComponent } from './shop-page/opening-hours-dialog/opening-hours-dialog.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { QrComponent } from './qr/qr.component';
     PrinterHelpComponent,
     DeliveryAreasPageComponent,
     DeliveryMapComponent,
+    OpeningHoursDialogComponent,
     QrComponent,
   ],
   imports: [

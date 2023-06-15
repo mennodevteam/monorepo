@@ -36,6 +36,10 @@ export const AppConfigSchema = new EntitySchema<AppConfig>({
       type: String,
       nullable: true,
     },
+    disableOrderingOnClose: {
+      type: Boolean,
+      default: false,
+    },
     requiredPayment: {
       type: 'enum',
       array: true,

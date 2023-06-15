@@ -7,6 +7,11 @@
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    {{ appConfig?.disableOrderingText }}
+    <span *ngIf="!isClosed">
+      {{ appConfig?.disableOrderingText }}
+    </span>
+    <span *ngIf="isClosed">
+      {{ 'menu.shopIsClosed' | translate }}
+    </span>
   </mat-card-content>
 </mat-card>
