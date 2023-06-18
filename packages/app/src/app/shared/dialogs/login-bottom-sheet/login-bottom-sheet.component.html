@@ -21,21 +21,31 @@
   </button>
 </form>
 <form *ngIf="mobilePhone | async" [formGroup]="codeForm" (ngSubmit)="login()">
+  <ng-container *ngIf="!isRegistered">
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'profile.firstName' | translate }}</mat-label>
+      <input matInput formControlName="firstName" required />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'profile.lastName' | translate }}</mat-label>
+      <input matInput formControlName="lastName" required />
+    </mat-form-field>
+  </ng-container>
   <p>{{ 'loginBottomSheet.codeDescription' | translate: { value: (mobilePhone | async) } }}</p>
   <mat-form-field appearance="outline">
     <mat-label>{{ 'loginBottomSheet.codeLabel' | translate }}</mat-label>
     <input
-      #codeInput
-      type="tel"
-      autofocus="true"
-      autocomplete="off"
+    #codeInput
+    type="tel"
+    autofocus="true"
+    autocomplete="off"
       class="ltr"
       matInput
       formControlName="code"
       required
     />
   </mat-form-field>
-  <button mat-button [disabled]="(timer | async)! > 0" (click)="sendAgain()">
+  <button mat-button [disabled]="(timer | async)! > 0" (click)="sendAgain()" type="button">
     {{ 'loginBottomSheet.sendAgain' | translate }}
     <span spacer></span>
     <span class="ltr" *ngIf="timer | async">({{ timer | async }})</span>

@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
+import { User } from '@menno/types';
 
 @Component({
   selector: 'login-bottom-sheet',
@@ -16,6 +17,8 @@ export class LoginBottomSheetComponent {
     mobile: new FormControl('', [Validators.required, Validators.minLength(10)]),
   });
   codeForm = new FormGroup({
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
     code: new FormControl('', [Validators.required]),
   });
   timer = new BehaviorSubject<number | undefined>(undefined);
@@ -23,6 +26,7 @@ export class LoginBottomSheetComponent {
   mobilePhone = new BehaviorSubject<string | undefined>(undefined);
   loading = false;
   abortController = new AbortController();
+  isRegistered: boolean;
 
   @ViewChild('mobileInput') mobileInput: ElementRef;
   @ViewChild('codeInput') codeInput: ElementRef;
@@ -69,7 +73,6 @@ export class LoginBottomSheetComponent {
         if (this.mobilePhone.value) {
           try {
             this.codeForm.get('code')?.setValue(otp.code);
-            this.login();
           } catch (error) {}
         }
       })
@@ -83,11 +86,11 @@ export class LoginBottomSheetComponent {
       if (mobile) {
         if (mobile.length === 10 && mobile[0] === '9') mobile = `0${mobile}`;
         try {
-          await this.auth.sendToken(mobile).toPromise();
+          this.isRegistered = await this.auth.sendToken(mobile).toPromise();
           this.mobilePhone.next(mobile);
           this.loading = false;
           setTimeout(() => {
-            this.codeInput.nativeElement.focus();
+            if (this.isRegistered) this.codeInput.nativeElement.focus();
           }, 1000);
           this.timer.next(60);
         } catch (error) {}
@@ -109,7 +112,16 @@ export class LoginBottomSheetComponent {
       if (code && this.mobilePhone.value) {
         this.loading = true;
         try {
-          const user = await this.auth.loginWithToken(this.mobilePhone.value, code);
+          const user = await this.auth.loginWithToken(
+            this.mobilePhone.value,
+            code,
+            !this.isRegistered
+              ? ({
+                  firstName: this.codeForm.get('firstName')?.value,
+                  lastName: this.codeForm.get('lastName')?.value,
+                } as User)
+              : undefined
+          );
           if (user) {
             this.sheetRef.dismiss(user);
             this.abortController.abort();
@@ -122,7 +134,7 @@ export class LoginBottomSheetComponent {
             }
           } else {
             this.loading = false;
-            this.codeForm.reset();
+            this.codeForm.get('code')?.reset();
             this.snack.open(this.translate.instant('loginBottomSheet.incorrectCode'), '', {
               panelClass: 'warning',
             });

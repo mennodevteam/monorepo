@@ -5,6 +5,8 @@ import { map } from 'rxjs/operators';
 import { User } from '@menno/types';
 import * as md5 from 'md5';
 import { Guid } from 'guid-typescript';
+import { LoginBottomSheetComponent } from '../../shared/dialogs/login-bottom-sheet/login-bottom-sheet.component';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +14,7 @@ import { Guid } from 'guid-typescript';
 export class AuthService {
   private _user = new BehaviorSubject<User | null>(null);
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private bottomSheet: MatBottomSheet) {
     this.init();
   }
 
@@ -60,12 +62,17 @@ export class AuthService {
     return this.http.get<any>('auth/sendToken/' + mobilePhone);
   }
 
-  async loginWithToken(mobile: string, token: string) {
+  async loginWithToken(mobile: string, token: string, userDto?: User) {
     if (this.user) {
       const user = await this.http
         .get<User | undefined>(`auth/login/app/${this.user.id}/${mobile}/${token}`)
         .toPromise();
       if (user) {
+        if (userDto) {
+          await this.update(userDto);
+          user.firstName = userDto.firstName;
+          user.lastName = userDto.lastName;
+        }
         this._user.next(user);
         this.saveLocal();
         return user;
@@ -100,5 +107,11 @@ export class AuthService {
         this.saveLocal();
       }
     }
+  }
+
+  async openLoginPrompt(disableClose = false) {
+    const complete = await this.bottomSheet.open(LoginBottomSheetComponent, {
+      disableClose,
+    }).afterDismissed().toPromise();
   }
 }

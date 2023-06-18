@@ -83,6 +83,9 @@ export class AuthService {
     setTimeout(() => {
       delete this.mobilePhoneTokens[phone];
     }, validateTime);
+    const user = await this.usersRepo.findOneBy({ mobilePhone });
+    if (user && user.firstName) return true;
+    return false;
   }
 
   checkToken(mobile: string, token): boolean {
