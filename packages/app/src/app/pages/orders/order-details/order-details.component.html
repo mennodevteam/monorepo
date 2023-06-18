@@ -88,10 +88,16 @@
         {{ order.totalPrice | menuCurrency }}
       </b>
     </mat-list-item>
+    <mat-list-item *ngIf="order?.paymentType !== OrderPaymentType.NotPayed">
+      <h4 matListItemTitle class="success-text">{{ 'orderDetails.isPayed' | translate }}</h4>
+    </mat-list-item>
   </mat-list>
 </main>
 
-<mat-toolbar class="actions-toolbar" *ngIf="isPaymentAvailable">
+<mat-toolbar
+  class="actions-toolbar"
+  *ngIf="isPaymentAvailable && order?.paymentType === OrderPaymentType.NotPayed"
+>
   <button mat-raised-button color="primary" (click)="pay()" [disabled]="paying">
     {{ 'orderDetails.pay' | translate }}
     <span *ngIf="paying">...</span>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Order, OrderState, Shop } from '@menno/types';
+import { Order, OrderPaymentType, OrderState, Shop } from '@menno/types';
 import { OrdersService } from '../../../core/services/orders.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
@@ -15,6 +15,7 @@ export class OrderDetailsComponent {
   OrderState = OrderState;
   interval: any;
   paying = false;
+  OrderPaymentType = OrderPaymentType;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,7 +55,13 @@ export class OrderDetailsComponent {
   }
 
   pay() {
-    if (!this.shop || !this.order || !this.isPaymentAvailable) return;
+    if (
+      !this.shop ||
+      !this.order ||
+      !this.isPaymentAvailable ||
+      this.order.paymentType !== OrderPaymentType.NotPayed
+    )
+      return;
     if (this.order?.state === OrderState.Pending) {
       this.snack.open(this.translate.instant('orderDetails.paymentAfterAccept'));
       return;
