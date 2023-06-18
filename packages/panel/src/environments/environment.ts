@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  // apiUrl: 'https://menno-backend.iran.liara.run/api',
+  // apiUrl: 'https://api.menno.pro',
   apiUrl: 'http://localhost:3000',
   localStorageUserKey: 'mennoPanelUser',
   appDomain: 'localhost:4300',

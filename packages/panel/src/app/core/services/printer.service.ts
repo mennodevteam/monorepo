@@ -124,9 +124,10 @@ export class PrinterService {
   }
 
   async openSaveDialog(printView?: ShopPrintView) {
+    debugger
     const printers = await this.http.get<ShopPrinter[]>(`printers/${this.shopsService.shop!.id}`).toPromise();
     if (!printers) return;
-    const printerOptions = printers.map((x) => ({ text: x.name, value: { id: x.id } }));
+    const printerOptions = printers.map((x) => (({ text: x.name, value: { id: x.id } })));
     const fields: { [key: string]: PromptField } = {
       title: {
         label: this.translate.instant('app.title'),
@@ -135,7 +136,7 @@ export class PrinterService {
       printer: {
         label: this.translate.instant('printers.printers'),
         control: new FormControl(
-          printView ? printerOptions.find((x) => x.value.id === printView.printer.id) : undefined,
+          printView ? printerOptions.find((x) => x.value.id === printView.printer.id)?.value : undefined,
           Validators.required
         ),
         type: 'select',
@@ -194,6 +195,7 @@ export class PrinterService {
         ],
       },
     };
+    console.log(fields);
     const shopPrintView = await this.dialog
       .open(AdvancedPromptDialogComponent, {
         data: {

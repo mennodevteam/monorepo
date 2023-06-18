@@ -44,12 +44,14 @@ export class OrderSubscriber implements EntitySubscriberInterface<Order> {
       }
     }
 
-    this.webPush.notifToShop(order.shop.id, {
-      title: 'سفارش جدید',
-      options: {
-        body: `فیش شماره ${order.qNumber}`,
-        data: { newOrder: order },
-      },
-    });
+    if (!order.isManual) {
+      this.webPush.notifToShop(order.shop.id, {
+        title: 'سفارش جدید',
+        options: {
+          body: `فیش شماره ${order.qNumber}`,
+          data: { newOrder: order },
+        },
+      });
+    }
   }
 }
