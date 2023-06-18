@@ -89,47 +89,33 @@ export class PaymentsService {
     payment.token = data.Token;
 
     if (data.ResCod == '0' || data.ResCod == '00') {
-      payment.isCompleted = true;
+      if (await this.confirm(token.gateway.id, token.id)) {
+        payment.isCompleted = true;
+        payment.confirmedAt = new Date();
+      }
     } else {
       payment.isCompleted = false;
     }
     const savedPayment = await this.paymentsRepository.save(payment);
     savedPayment.gateway = undefined;
     savedPayment.token = undefined;
-
-    if (savedPayment.isCompleted && !data._manualConfirm) {
-      this.paymentsRepository.findOneBy({ id: savedPayment.id }).then((p) => {
-        if (!p.confirmedAt && !p.reversedAt) {
-          this.confirm(p.id);
-        }
-      });
-    }
-
     return savedPayment;
   }
 
-  async confirm(paymentId: string): Promise<any> {
-    const payment = await this.paymentsRepository.findOne({
-      where: {
-        id: paymentId,
-        isCompleted: true,
-      },
-      relations: ['gateway'],
-    });
-    const gateway = await this.gatewaysRepository.findOne({ where: { id: payment.gateway.id }, select: ['keys'] });
-    const PaymentBody = {
+  async confirm(gatewayId: string, tokenId: string): Promise<any> {
+    const gateway = await this.gatewaysRepository.findOne({ where: { id: gatewayId }, select: ['keys'] });
+    const token = await this.tokensRepository.findOne({ where: { id: tokenId } });
+    const body = {
       UserName: gateway.keys.username,
       Password: gateway.keys.password,
       MerchantID: gateway.keys.merchantId,
       TerminalID: gateway.keys.terminalId,
-      Token: payment.token,
+      Token: token.id,
       SignData: '',
     };
-    const confirmResponse: any = (await this.http.post(CONFIRM_PAYMENT_URL, PaymentBody).toPromise()).data;
+    const confirmResponse: any = (await this.http.post(CONFIRM_PAYMENT_URL, body).toPromise()).data;
     if (confirmResponse.ResCOd == '0' || confirmResponse.ResCod == '00') {
-      payment.confirmedAt = new Date();
-      this.paymentsRepository.save(payment);
-      return payment;
+      return true;
     } else {
       throw new HttpException(confirmResponse.Message, HttpStatus.BAD_REQUEST);
     }
@@ -144,7 +130,10 @@ export class PaymentsService {
       },
       relations: ['gateway'],
     });
-    const gateway = await this.gatewaysRepository.findOne({ where: { id: payment.gateway.id }, select: ['keys'] });
+    const gateway = await this.gatewaysRepository.findOne({
+      where: { id: payment.gateway.id },
+      select: ['keys'],
+    });
     const RevertBody = {
       UserName: gateway.keys.username,
       Password: gateway.keys.password,
