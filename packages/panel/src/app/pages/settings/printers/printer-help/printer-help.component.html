@@ -2,40 +2,31 @@
   <mat-card-content>
     <mat-list dense>
       <mat-list-item>
-        <p matListItemLine>{{ 'printers.helpDownloadText' | translate }}</p>
-        <a matListItemMeta mat-button color="primary" [href]="env.printerZipUrl" target="_blank">{{
-          'printers.helpDownloadAction' | translate
-        }}</a>
+        <p matListItemTitle>{{ 'printers.helpOpenDoc' | translate }}</p>
+        <div matListItemMeta class="secondary">
+          <a mat-button target="_blank" [href]="env.printerDocLink" color="primary">
+            {{ 'printers.helpOpenDocAction' | translate }}
+          </a>
+        </div>
       </mat-list-item>
       <mat-divider></mat-divider>
       <mat-list-item>
-        <p matListItemLine>{{ 'printers.helpFontText' | translate }}</p>
+        <p matListItemTitle>{{ 'printers.helpLoginText' | translate }}</p>
+        <div matListItemMeta class="secondary">
+          <button mat-button (click)="PS.loginLocal()" color="primary">
+            {{ 'printers.helpLoginAction' | translate }}
+          </button>
+        </div>
       </mat-list-item>
       <mat-divider></mat-divider>
       <mat-list-item>
-        <p matListItemLine>{{ 'printers.helpRunApp' | translate }}</p>
-      </mat-list-item>
-      <mat-divider></mat-divider>
-      <mat-list-item>
-        <p matListItemLine>{{ 'printers.helpDownloadNetFramework' | translate }}</p>
-        <a matListItemMeta mat-button color="primary" [href]="env.netFrameworkUrl" target="_blank">{{
-          'printers.helpDownloadNetFrameworkAction' | translate
-        }}</a>
-      </mat-list-item>
-      <mat-divider></mat-divider>
-      <mat-list-item>
-        <p matListItemLine>{{ 'printers.helpLoginText' | translate }}</p>
-        <button matListItemMeta mat-button (click)="PS.loginLocal()" color="primary">
-          {{ 'printers.helpLoginAction' | translate }}
-        </button>
-      </mat-list-item>
-      <mat-divider></mat-divider>
-      <mat-list-item>
-        <p matListItemLine>{{ 'printers.helpLoginKeyText' | translate }}</p>
+        <p matListItemTitle>{{ 'printers.helpLoginKeyText' | translate }}</p>
         <p matListItemLine class="eng">{{ shop?.id }}</p>
-        <button matListItemMeta mat-button (click)="copyId()" color="primary">
-          {{ 'printers.helpLoginKeyAction' | translate }}
-        </button>
+        <div matListItemMeta class="secondary">
+          <button mat-button (click)="copyId()" color="primary">
+            {{ 'printers.helpLoginKeyAction' | translate }}
+          </button>
+        </div>
       </mat-list-item>
     </mat-list>
   </mat-card-content>
