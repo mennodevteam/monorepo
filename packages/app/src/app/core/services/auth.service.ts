@@ -94,11 +94,11 @@ export class AuthService {
   async update(dto: User) {
     const user = await this.http.put<User>(`auth/edit`, dto).toPromise();
     if (user) {
-      if (user) {
-        localStorage.setItem('appLoginUser', JSON.stringify(user));
+      const prevUser = sessionStorage.getItem('appLoginUser') || localStorage.getItem('appLoginUser');
+      if (user && prevUser) {
+        this._user.next({ ...JSON.parse(prevUser), ...user });
+        this.saveLocal();
       }
-      sessionStorage.setItem('appLoginUser', JSON.stringify(user));
-      this._user.next(user);
     }
   }
 }

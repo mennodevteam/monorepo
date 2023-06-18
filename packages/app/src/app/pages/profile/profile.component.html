@@ -1,0 +1,62 @@
+<mat-toolbar>
+  <button mat-icon-button goBack>
+    <i class="fa-regular fa-arrow-right"></i>
+  </button>
+</mat-toolbar>
+
+<main>
+  <form [formGroup]="profileForm" *ngIf="profileForm" (ngSubmit)="submit()">
+    <mat-button-toggle-group formControlName="gender">
+      <mat-button-toggle [value]="GenderType.Male">
+        <i class="fa-solid fa-person"></i>
+        {{ 'profile.male' | translate }}
+      </mat-button-toggle>
+      <mat-button-toggle [value]="GenderType.Female">
+        <i class="fa-solid fa-person-dress"></i>
+        {{ 'profile.female' | translate }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+    <span spacer></span>
+    <mat-form-field>
+      <mat-label>{{ 'profile.firstName' | translate }}</mat-label>
+      <input matInput formControlName="firstName" required />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>{{ 'profile.lastName' | translate }}</mat-label>
+      <input matInput formControlName="lastName" required />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>{{ 'profile.birthDate' | translate }}</mat-label>
+      <input
+        (click)="birthDatePicker.open()"
+        matInput
+        formControlName="birthDate"
+        [matDatepicker]="birthDatePicker"
+      />
+      <mat-datepicker-toggle matSuffix [for]="birthDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #birthDatePicker></mat-datepicker>
+    </mat-form-field>
+    <mat-button-toggle-group formControlName="isMarried">
+      <mat-button-toggle [value]="false">
+        {{ 'profile.notMarried' | translate }}
+      </mat-button-toggle>
+      <mat-button-toggle [value]="true">
+        {{ 'profile.married' | translate }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+    <span spacer></span>
+    <mat-form-field *ngIf="profileForm.controls['isMarried'].value">
+      <mat-label>{{ 'profile.marriageDate' | translate }}</mat-label>
+      <input
+        (click)="marriageDatePicker.open()"
+        matInput
+        formControlName="marriageDate"
+        [matDatepicker]="marriageDatePicker"
+      />
+      <mat-datepicker-toggle matSuffix [for]="marriageDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #marriageDatePicker></mat-datepicker>
+    </mat-form-field>
+    <span spacer></span>
+    <button mat-flat-button color="primary" class="submit-button">{{ 'profile.save' | translate }}</button>
+  </form>
+</main>

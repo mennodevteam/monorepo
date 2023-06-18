@@ -1,5 +1,17 @@
 import { ChangePasswordDto, User, UserRole } from '@menno/types';
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Req, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Req,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthPayload } from '../core/types/auth-payload';
@@ -47,6 +59,13 @@ export class AuthController {
     return this.auth.loginApp(req.user);
   }
 
+  @Roles(UserRole.App)
+  @Put('edit')
+  async editUser(@Body() dto: User, @LoginUser() user: AuthPayload) {
+    dto.id = user.id;
+    return this.usersRepo.save(dto);
+  }
+
   @Public()
   @Get('sendToken/:mobile')
   async sendToken(@Param() params, @Req() req: Request) {
@@ -56,7 +75,7 @@ export class AuthController {
   @Get('info')
   async info(@LoginUser() user: AuthPayload) {
     if (user && user.id) {
-      const dbUser = await this.usersRepo.findOneBy({id: user.id});
+      const dbUser = await this.usersRepo.findOneBy({ id: user.id });
       if (dbUser) return dbUser;
     }
     throw new HttpException('no user found', HttpStatus.NOT_FOUND);
