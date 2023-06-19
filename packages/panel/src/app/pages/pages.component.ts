@@ -11,6 +11,10 @@ import { RegionsService } from '../core/services/regions.service';
 import { UpdateService } from '../core/services/update.service';
 import { WebPushNotificationsService } from '../core/services/web-push-notifications.service';
 import { DingService } from '../core/services/ding.service';
+import { PromptDialogComponent } from '../shared/dialogs/prompt-dialog/prompt-dialog.component';
+import { PersianNumberService } from '@menno/utils';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'menno-pages',
@@ -32,6 +36,9 @@ export class PagesComponent implements OnInit {
     private updateService: UpdateService,
     private notif: WebPushNotificationsService,
     private dingService: DingService,
+    private dialog: MatDialog,
+    private snack: MatSnackBar,
+    private translate: TranslateService
   ) {
     this.isHandset$ = this.breakpointObserver.observe('(max-width: 1024px)').pipe(
       map((result) => result.matches),
@@ -65,5 +72,31 @@ export class PagesComponent implements OnInit {
   logout() {
     this.auth.logout();
     window.location.reload();
+  }
+
+  openApp() {
+    window.open(this.shopService.appLink, this.shopService.shop?.title, 'width=400,height=700');
+  }
+
+  async sendLink() {
+    let phone: string = await this.dialog
+      .open(PromptDialogComponent, {
+        data: {
+          title: this.translate.instant('sendShopLink.dialogTitle'),
+          description: this.translate.instant('sendShopLink.dialogDescription'),
+          label: this.translate.instant('sendShopLink.dialogLabel'),
+          placeholder: this.translate.instant('sendShopLink.dialogPlaceholder'),
+        },
+      })
+      .afterClosed()
+      .toPromise();
+    let engPhone = PersianNumberService.toEnglish(phone);
+    if (engPhone && engPhone.length === 10 && engPhone[0] === '9') engPhone = '0' + engPhone;
+    if (engPhone && engPhone.length == 11 && engPhone.search('09') === 0) {
+      await this.shopService.smsLink(engPhone);
+      this.snack.open(this.translate.instant('sendShopLink.sentSuccess'), '', { panelClass: 'success' });
+    } else {
+      this.snack.open(this.translate.instant('sendShopLink.numberError'), '', { panelClass: 'warning' });
+    }
   }
 }

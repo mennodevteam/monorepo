@@ -32,6 +32,7 @@ export class PosService extends OrderDto {
   saving = false;
   editOrder?: Order;
   menu: Menu;
+  override isManual = true;
   discountCoupons?: DiscountCoupon[];
   selectedDiscountCoupon?: DiscountCoupon;
   private _customer?: User;

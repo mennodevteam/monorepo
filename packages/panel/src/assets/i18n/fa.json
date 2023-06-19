@@ -54,6 +54,9 @@
     "club": "باشگاه مشتریان",
     "settings": "تنظیمات",
     "addOrder": "سفارش جدید",
+    "openApp": "بازکردن اپ",
+    "sendAppLink": "ارسال لینک به مشتری",
+    "appConfig": "تنظیمات سفارشگیری",
     "logout": "خروج از حساب کاربری"
   },
   "menuDiscountPage": {

@@ -26,19 +26,19 @@
   </mat-menu>
   <!-- <img src="assets/icons/logo.png" id="logo" class="hide-xs" /> -->
   <button mat-button routerLink="/" class="hide-xs">
-    <i class="fa-solid fa-large fa-home"></i>
+    <i class="fa-solid fa-home"></i>
     {{ 'shell.home' | translate }}
   </button>
   <button mat-button routerLink="menu" class="hide-xs">
-    <i class="fa-solid fa-large fa-book-open"></i>
+    <i class="fa-solid fa-book-open"></i>
     {{ 'shell.menu' | translate }}
   </button>
   <button mat-button routerLink="orders" class="hide-xs">
-    <i class="fa-solid fa-large fa-utensils"></i>
+    <i class="fa-solid fa-utensils"></i>
     {{ 'shell.orders' | translate }}
   </button>
   <button mat-button routerLink="club" [disabled]="isClubDisabled" class="hide-xs">
-    <i class="fa-solid fa-large fa-crown"></i>
+    <i class="fa-solid fa-crown"></i>
     {{ 'shell.club' | translate }}
   </button>
   <div flex></div>
@@ -46,8 +46,27 @@
     <i class="fa-solid fa-plus-circle"></i>
     {{ 'shell.addOrder' | translate }}
   </button>
+  <button mat-icon-button routerLink="settings" class="hide-xs" [matMenuTriggerFor]="mobileMenu">
+    <i class="fa-solid fa-mobile"></i>
+  </button>
+  <mat-menu #mobileMenu="matMenu">
+    <button mat-menu-item (click)="openApp()">
+      <i class="fa-solid mat-icon fa-mobile-screen-button"></i>
+      {{ 'shell.openApp' | translate }}
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item (click)="sendLink()">
+      <i class="fa-solid mat-icon fa-message-sms"></i>
+      {{ 'shell.sendAppLink' | translate }}
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item routerLink="/settings/app-config">
+      <i class="fa-solid mat-icon fa-gear"></i>
+      {{ 'shell.appConfig' | translate }}
+    </button>
+  </mat-menu>
   <button mat-icon-button routerLink="settings" class="hide-xs">
-    <i class="fa-solid fa-large fa-gear"></i>
+    <i class="fa-solid fa-gear"></i>
   </button>
   <button mat-icon-button id="user-button" [matMenuTriggerFor]="userMenu">
     <img [imageLoader]="shop?.logo" />
