@@ -11,9 +11,10 @@ import { RolesGuard } from './roles.guard';
 import { SchemasModule } from '../core/schemas.module';
 import { AppLocalStrategy } from './app-local.strategy';
 import { AdminLocalStrategy } from './admin-local.strategy';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [SchemasModule, PassportModule, JwtModule.register({})],
+  imports: [SchemasModule, PassportModule, HttpModule, JwtModule.register({})],
   providers: [
     AuthService,
     PanelLocalStrategy,

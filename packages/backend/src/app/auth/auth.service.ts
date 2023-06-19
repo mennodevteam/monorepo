@@ -5,7 +5,7 @@ import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
-import { ChangePasswordDto, ShopUser, User, UserRole } from '@menno/types';
+import { Address, ChangePasswordDto, Region, ShopUser, User, UserRole } from '@menno/types';
 import { JwtService } from '@nestjs/jwt';
 import { AuthPayload } from '../core/types/auth-payload';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,6 +14,8 @@ import * as md5 from 'md5';
 import { PersianNumberService } from '@menno/utils';
 
 import * as Kavenegar from 'kavenegar';
+import { HttpService } from '@nestjs/axios';
+import { OldTypes } from '@menno/old-types';
 
 let kavenegarApi;
 
@@ -25,7 +27,12 @@ export class AuthService {
     private usersRepo: Repository<User>,
     private jwtService: JwtService,
     @InjectRepository(ShopUser)
-    private shopUsersRepo: Repository<ShopUser>
+    private shopUsersRepo: Repository<ShopUser>,
+    @InjectRepository(Region)
+    private regionsRepo: Repository<Region>,
+    @InjectRepository(Address)
+    private addressesRepo: Repository<Address>,
+    private http: HttpService
   ) {
     kavenegarApi = Kavenegar.KavenegarApi({
       apikey: process.env.KAVENEGAR_API_KEY,
@@ -83,7 +90,31 @@ export class AuthService {
     setTimeout(() => {
       delete this.mobilePhoneTokens[phone];
     }, validateTime);
-    const user = await this.usersRepo.findOneBy({ mobilePhone });
+    let user = await this.usersRepo.findOneBy({ mobilePhone });
+    if (!user) {
+      try {
+        const res = await this.http
+          .get<{ user: OldTypes.User; addresses: OldTypes.Address[] }>(
+            `https://new-admin-api.menno.ir/auth/getUserPhone/${mobilePhone}`
+          )
+          .toPromise();
+        if (res && res.data) {
+          user = await this.usersRepo.save(res.data.user);
+          const regions = await this.regionsRepo.find();
+          this.addressesRepo.save(
+            res.data.addresses.map(
+              (add) =>
+                ({
+                  latitude: add.latitude,
+                  longitude: add.longitude,
+                  region: regions.find((x) => x.id === add.region?.id || x.title === add.region?.title),
+                  user: { id: user.id },
+                } as Address)
+            )
+          );
+        }
+      } catch (error) {}
+    }
     if (user && user.firstName) return true;
     return false;
   }
