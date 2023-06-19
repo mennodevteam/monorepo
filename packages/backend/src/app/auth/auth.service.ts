@@ -100,18 +100,20 @@ export class AuthService {
           .toPromise();
         if (res && res.data) {
           user = await this.usersRepo.save(res.data.user);
-          const regions = await this.regionsRepo.find();
-          this.addressesRepo.save(
-            res.data.addresses.map(
-              (add) =>
-                ({
-                  latitude: add.latitude,
-                  longitude: add.longitude,
-                  region: regions.find((x) => x.id === add.region?.id || x.title === add.region?.title),
-                  user: { id: user.id },
-                } as Address)
-            )
-          );
+          this.regionsRepo.find().then((regions) => {
+            this.addressesRepo.save(
+              res.data.addresses.map(
+                (add) =>
+                  ({
+                    description: add.description,
+                    latitude: add.latitude,
+                    longitude: add.longitude,
+                    region: regions.find((x) => x.id === add.region?.id || x.title === add.region?.title),
+                    user: { id: user.id },
+                  } as Address)
+              )
+            );
+          });
         }
       } catch (error) {}
     }
