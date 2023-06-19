@@ -179,7 +179,7 @@ export class BasketService extends OrderDto {
       discountCoupon: this.discountCoupon ? ({ id: this.discountCoupon.id } as DiscountCoupon) : undefined,
     };
     if (this.isPaymentRequired) {
-      this.ordersService.payAndAddOrder(dto);
+      await this.ordersService.payAndAddOrder(dto);
     } else {
       const order = await this.ordersService.save(dto);
       this.clear(true);
@@ -194,6 +194,10 @@ export class BasketService extends OrderDto {
   }
 
   private get isPaymentRequired() {
-    return this.isPaymentAvailable && this.total > 0 && this.shopService.shop?.appConfig?.requiredPayment?.includes(this.type);
+    return (
+      this.isPaymentAvailable &&
+      this.total > 0 &&
+      this.shopService.shop?.appConfig?.requiredPayment?.includes(this.type)
+    );
   }
 }

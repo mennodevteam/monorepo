@@ -109,9 +109,14 @@ export class AuthService {
     }
   }
 
+  get isGuestUser() {
+    return this.user?.mobilePhone === undefined;
+  }
+
   async openLoginPrompt(disableClose = false) {
     const complete = await this.bottomSheet.open(LoginBottomSheetComponent, {
       disableClose,
     }).afterDismissed().toPromise();
+    return complete;
   }
 }

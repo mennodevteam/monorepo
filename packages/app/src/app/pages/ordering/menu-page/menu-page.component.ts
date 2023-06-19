@@ -19,6 +19,7 @@ import { LocationsBottomSheetComponent } from '../locations-bottom-sheet/locatio
 import { ShopTablesBottomSheetComponent } from '../shop-tables-bottom-sheet/shop-tables-bottom-sheet.component';
 import { FormControl } from '@angular/forms';
 import { DingBottomSheetComponent } from '../ding-bottom-sheet/ding-bottom-sheet.component';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'menu-page',
@@ -42,7 +43,8 @@ export class MenuPageComponent implements AfterViewInit {
     public menuService: MenuService,
     public basket: BasketService,
     private shopService: ShopService,
-    private bottomSheet: MatBottomSheet
+    private bottomSheet: MatBottomSheet,
+    private auth: AuthService
   ) {
     this.menuService.checkSelectedOrderType();
 
@@ -63,12 +65,6 @@ export class MenuPageComponent implements AfterViewInit {
         !this.shop?.appConfig?.disableOrdering
       ) {
         this.selectDineInTable();
-      } else if (
-        type === OrderType.Delivery &&
-        !this.basket.address &&
-        !this.shop?.appConfig?.disableOrdering
-      ) {
-        this.selectDeliveryAddress();
       }
 
       setTimeout(() => {
@@ -162,6 +158,10 @@ export class MenuPageComponent implements AfterViewInit {
   }
 
   async selectDeliveryAddress() {
+    if (this.auth.isGuestUser) {
+      const complete = await this.auth.openLoginPrompt();
+      if (!complete) return;
+    }
     let address = await this.bottomSheet.open(LocationsBottomSheetComponent).afterDismissed().toPromise();
     if (address === null) {
       address = await this.bottomSheet
