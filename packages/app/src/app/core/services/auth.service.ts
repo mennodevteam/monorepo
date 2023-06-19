@@ -110,13 +110,16 @@ export class AuthService {
   }
 
   get isGuestUser() {
-    return this.user?.mobilePhone === undefined;
+    return !this.user?.mobilePhone;
   }
 
   async openLoginPrompt(disableClose = false) {
-    const complete = await this.bottomSheet.open(LoginBottomSheetComponent, {
-      disableClose,
-    }).afterDismissed().toPromise();
+    const complete = await this.bottomSheet
+      .open(LoginBottomSheetComponent, {
+        disableClose,
+      })
+      .afterDismissed()
+      .toPromise();
     return complete;
   }
 }

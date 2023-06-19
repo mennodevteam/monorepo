@@ -125,5 +125,16 @@
     "maxDiscount": "حداکثر تخفیف",
     "set": "اعمال شده",
     "types": "نوع سفارش"
+  },
+  "profile": {
+    "male": "آقا",
+    "female": "خانم",
+    "firstName": "نام",
+    "lastName": "نام‌خانوادگی",
+    "birthDate": "تاریخ تولد",
+    "notMarried": "مجرد",
+    "married": "متاهل",
+    "marriageDate": "تاریخ ازدواج",
+    "save": "ذخیره"
   }
 }

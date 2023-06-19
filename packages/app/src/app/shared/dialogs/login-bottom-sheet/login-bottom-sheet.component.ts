@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, Optional, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, Optional, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatBottomSheet, MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -12,7 +12,7 @@ import { User } from '@menno/types';
   templateUrl: './login-bottom-sheet.component.html',
   styleUrls: ['./login-bottom-sheet.component.scss'],
 })
-export class LoginBottomSheetComponent {
+export class LoginBottomSheetComponent implements OnDestroy {
   mobileForm = new FormGroup({
     mobile: new FormControl('', [Validators.required, Validators.minLength(10)]),
   });
@@ -39,6 +39,7 @@ export class LoginBottomSheetComponent {
     private translate: TranslateService,
     private snack: MatSnackBar
   ) {
+    document.body.style.overflowY = 'hidden';
     try {
       if (this.auth.user?.extraInfo.mobilePhone) {
         this.mobileForm.get('mobile')?.setValue(this.auth.user.extraInfo.mobilePhone);
@@ -151,6 +152,7 @@ export class LoginBottomSheetComponent {
   }
 
   ngOnDestroy() {
+    document.body.style.overflowY = 'auto';
     if (this.timerTimeout) {
       clearTimeout(this.timerTimeout);
     }
