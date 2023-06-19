@@ -1,15 +1,8 @@
 {
   "appData": {
     "forceReload": false,
-    "lazyReload": false,
-    "changes": [
-      "اتصال به نرم‌افزار حسابداری حامی",
-      "اتصال به نرم‌افزار الوپیک",
-      "امکان درخواست سالن‌دار (دینگ)",
-      "امکان ثبت ساعات کاری مجموعه",
-      "امکان تغییر رمز ورود به پنل",
-      "امکان تعریف دستگاه‌های کارتخوان"
-    ]
+    "lazyReload": true,
+    "changes": []
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",

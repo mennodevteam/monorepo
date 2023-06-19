@@ -21,23 +21,23 @@ table {
   border-radius: 24px;
   height: 32px;
   &.red {
-    background-color: lighten($red, 35);
-    color: $red;
+    background-color: lighten($red, 35) !important;
+    color: $red !important;
   }
 
   &.yellow {
-    background-color: lighten($yellow, 30);
-    color: darken($yellow, 30);
+    background-color: lighten($yellow, 30) !important;
+    color: darken($yellow, 30) !important;
   }
 
   &.blue {
-    background-color: lighten($blue, 30);
-    color: $blue;
+    background-color: lighten($blue, 30) !important;
+    color: $blue !important;
   }
 
   &.green {
-    background-color: lighten($green, 50);
-    color: $green;
+    background-color: lighten($green, 50) !important;
+    color: $green !important;
   }
 }
 
