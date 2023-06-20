@@ -2,7 +2,7 @@
   "appData": {
     "forceReload": false,
     "lazyReload": false,
-    "changes": ["امکان حذف سفارش"]
+    "changes": ["امکان حذف سفارش", "رفع مشکل شماره فیش تکراری", "امکان غیرفعال کردن یک نوع سفارش‌گیری"]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",
