@@ -139,12 +139,17 @@ export class OrdersController {
     const shop = await this.auth.getPanelUserShop(user, ['smsAccount']);
     const order = await this.ordersRepo.findOne({ where: { id: orderId }, relations: ['customer'] });
     if (order.customer?.mobilePhone && shop.smsAccount) {
-      const shopLink = shop.domain || `${shop.username}.${process.env.APP_ORIGIN}`;
+      const orderLink = Order.getLink(
+        order.id,
+        shop,
+        process.env.APP_ORIGIN,
+        process.env.APP_ORDER_PAGE_PATH
+      );
       return this.sms.send({
         accountId: shop.smsAccount.id,
         receptors: [order.customer.mobilePhone],
         messages: [
-          `${order.customer?.firstName} عزیز، جهت مشاهده جزئیات و پیگیری سفارش خود در مجموعه ${shop.title} می‌توانید به لینک زیر مراجعه کنید. \n ${shopLink}`,
+          `${order.customer?.firstName} عزیز، جهت مشاهده جزئیات و پیگیری سفارش خود در مجموعه ${shop.title} می‌توانید به لینک زیر مراجعه کنید. \n ${orderLink}`,
         ],
       });
     }

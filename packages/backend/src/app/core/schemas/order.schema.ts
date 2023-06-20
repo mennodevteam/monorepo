@@ -12,6 +12,7 @@ export const OrderSchema = new EntitySchema<Order>({
     },
     qNumber: {
       type: Number,
+      default: 1,
       nullable: true,
     },
     state: {

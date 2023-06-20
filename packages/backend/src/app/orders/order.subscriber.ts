@@ -92,7 +92,7 @@ export class OrderSubscriber implements EntitySubscriberInterface<Order> {
               dto.templateId = message.smsTemplate.id;
               dto.templateParams = SmsTemplate.getTemplateParams([customer], shop, process.env.APP_ORIGIN);
               dto.templateParams['###'] = [
-                Order.getAppDetailsLink(
+                Order.getLink(
                   order.id,
                   shop,
                   process.env.APP_ORIGIN,

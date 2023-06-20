@@ -195,7 +195,6 @@ export class PrinterService {
         ],
       },
     };
-    console.log(fields);
     const shopPrintView = await this.dialog
       .open(AdvancedPromptDialogComponent, {
         data: {
