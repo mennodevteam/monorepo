@@ -85,7 +85,7 @@ export class Shop {
   }
 
   static appLink(shop: Shop, origin: string) {
-    return shop.domain ? `${shop.domain}` : `${shop.username}.${origin}`;
+    return shop.domain ? `https://${shop.domain}` : `https://${shop.username}.${origin}`;
   }
 
   static isPaymentAvailable(shop: Shop) {
