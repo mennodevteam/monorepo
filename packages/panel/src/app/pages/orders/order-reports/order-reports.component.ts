@@ -26,6 +26,7 @@ export class OrderReportsComponent implements AfterViewInit {
   OrderState = OrderState;
   chartType: ChartType = 'bar';
   loading = false;
+  isRangeCorrect = false;
   chartOptions: ChartConfiguration['options'] = {
     aspectRatio: 3,
     animation: false,
@@ -43,6 +44,12 @@ export class OrderReportsComponent implements AfterViewInit {
     datasets: [],
     labels: [],
   };
+  tableData: {
+    label: string;
+    count: number;
+    sum: number;
+  }[];
+  tableColumns = ['label', 'count', 'sum'];
 
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
@@ -73,6 +80,13 @@ export class OrderReportsComponent implements AfterViewInit {
       waiterId: [undefined],
       groupBy: 'date',
     });
+
+    this.form.get('fromDate')?.valueChanges.subscribe(() => {
+      this.isRangeCorrect = false;
+    });
+    this.form.get('toDate')?.valueChanges.subscribe(() => {
+      this.isRangeCorrect = false;
+    });
   }
 
   ngAfterViewInit(): void {
@@ -82,10 +96,15 @@ export class OrderReportsComponent implements AfterViewInit {
   async submit() {
     this.loading = true;
     const dto: OrderReportDto = this.form.getRawValue();
-    dto.fromDate.setHours(0, 0, 0, 0);
-    dto.fromDate.setHours(dto.fromDate.getHours() + 3);
-    dto.toDate.setHours(23, 59, 59, 999);
-    dto.toDate.setHours(dto.toDate.getHours() + 3);
+    dto.fromDate = (dto.fromDate as any)._d || dto.fromDate;
+    dto.toDate = (dto.toDate as any)._d || dto.toDate;
+    if (!this.isRangeCorrect) {
+      dto.fromDate.setHours(0, 0, 0, 0);
+      dto.fromDate.setHours(dto.fromDate.getHours() + 3);
+      dto.toDate.setHours(23, 59, 59, 999);
+      dto.toDate.setHours(dto.toDate.getHours() + 3);
+      this.isRangeCorrect = true;
+    }
     switch (dto.groupBy) {
       case 'date':
         this.chartType = 'line';
@@ -140,9 +159,21 @@ export class OrderReportsComponent implements AfterViewInit {
           this.chartData.labels = keys.map((x) => this.orderTypePipe.transform(Number(x)));
           break;
       }
-      dto.groupBy === 'date'
-        ? keys.map((x) => new persianDate(new Date(x)).format('YYYY/MM/DD'))
-        : keys;
+      // dto.groupBy === 'date' ? keys.map((x) => new persianDate(new Date(x)).format('YYYY/MM/DD')) : keys;
+
+      this.tableData = keys.map((key, i) => ({
+        label: this.chartData.labels ? (this.chartData.labels[i] as string) : '',
+        count: data[key].count,
+        sum: data[key].sum,
+      }));
+      const totalRow = this.tableData.reduce(
+        (t, o) => {
+          return { ...t, count: t.count + o.count, sum: t.sum + o.sum };
+        },
+        { label: this.translate.instant('app.sum'), count: 0, sum: 0 }
+      );
+      this.tableData.unshift(totalRow);
+
       this.chart?.update();
     }
     this.loading = false;
