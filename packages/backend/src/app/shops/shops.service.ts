@@ -17,6 +17,9 @@ import {
   Plugin,
   ShopPlugins,
   Theme,
+  OrderMessage,
+  SmsTemplate,
+  OrderMessageEvent,
 } from '@menno/types';
 import { OldTypes } from '@menno/old-types';
 import { HttpService } from '@nestjs/axios';
@@ -33,6 +36,10 @@ export class ShopsService {
   constructor(
     @InjectRepository(Shop)
     private shopsRepository: Repository<Shop>,
+    @InjectRepository(SmsTemplate)
+    private smsTemplatesRepository: Repository<SmsTemplate>,
+    @InjectRepository(OrderMessage)
+    private orderMessagesRepository: Repository<OrderMessage>,
     @InjectRepository(AppConfig)
     private appConfigsRepository: Repository<AppConfig>,
     @InjectRepository(Menu)
@@ -58,7 +65,7 @@ export class ShopsService {
     });
     if (shop) {
       const tokens: string[] = [];
-      tokens[0] = shop.domain || `${shop.username}.${process.env.APP_ORIGIN}`;
+      tokens[0] = Shop.appLink(shop, process.env.APP_ORIGIN);
       tokens[4] = shop.title;
       return this.smsService.lookup(
         shop.smsAccount.id,
@@ -78,22 +85,24 @@ export class ShopsService {
 
   async create(dto: CreateShopDto) {
     if (!Shop.isUsernameValid(dto.loginUsername))
-      throw new HttpException({loginUsername: 'the loginUsername is invalid'}, HttpStatus.NOT_ACCEPTABLE);
+      throw new HttpException({ loginUsername: 'the loginUsername is invalid' }, HttpStatus.NOT_ACCEPTABLE);
     let existUser = await this.usersService.findOneByUsername(dto.loginUsername);
-    if (existUser) throw new HttpException({loginUsername: 'Duplicated Shop loginUsername'}, HttpStatus.CONFLICT);
+    if (existUser)
+      throw new HttpException({ loginUsername: 'Duplicated Shop loginUsername' }, HttpStatus.CONFLICT);
 
     if (dto.mobilePhone) {
       existUser = await this.usersService.findOneByMobilePhone(dto.mobilePhone);
-      if (existUser && existUser.username) throw new HttpException({mobilePhone: 'Duplicated Shop mobile phone'}, HttpStatus.CONFLICT);
+      if (existUser && existUser.username)
+        throw new HttpException({ mobilePhone: 'Duplicated Shop mobile phone' }, HttpStatus.CONFLICT);
     }
 
     if (dto.username) {
       if (!Shop.isUsernameValid(dto.username))
-        throw new HttpException({username: 'the username is invalid'}, HttpStatus.NOT_ACCEPTABLE);
+        throw new HttpException({ username: 'the username is invalid' }, HttpStatus.NOT_ACCEPTABLE);
       const existingShop = await this.shopsRepository.findOne({
         where: { username: dto.username },
       });
-      if (existingShop) throw new HttpException({username: 'Duplicated Shop link'}, HttpStatus.CONFLICT);
+      if (existingShop) throw new HttpException({ username: 'Duplicated Shop link' }, HttpStatus.CONFLICT);
     }
 
     let code = 2100;
@@ -155,6 +164,19 @@ export class ShopsService {
     } as ShopPlugins;
 
     const savedShopInfo = await this.shopsRepository.save(shop);
+
+    if (process.env.DEFAULT_ADD_ORDER_SMS_TEMPLATE_TITLE) {
+      const template = await this.smsTemplatesRepository.findOneBy({
+        title: process.env.DEFAULT_ADD_ORDER_SMS_TEMPLATE_TITLE,
+      });
+      if (template) {
+        this.orderMessagesRepository.save({
+          event: OrderMessageEvent.OnAdd,
+          shop: { id: savedShopInfo.id },
+          smsTemplate: { id: template.id },
+        });
+      }
+    }
 
     return savedShopInfo;
   }

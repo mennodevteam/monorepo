@@ -81,4 +81,9 @@ export class Order {
   static total(order: Order) {
     return Math.max(order.totalPrice, 0);
   }
+
+  static getAppDetailsLink(orderId: string, shop: Shop, appOrigin: string, orderDetailsPath: string) {
+    const shopLink = Shop.appLink(shop, appOrigin);
+    return `${shopLink}${orderDetailsPath}/${orderId}`;
+  }
 }

@@ -31,6 +31,7 @@ export * from './new-sms.dto';
 export * from './order-config';
 export * from './order-customer-message';
 export * from './order-item';
+export * from './order-message';
 export * from './order-payment-type.enum';
 export * from './order-report.dto';
 export * from './order-review';

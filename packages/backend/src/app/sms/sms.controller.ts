@@ -1,4 +1,4 @@
-import { FilterSmsDto, Member, NewSmsDto, Sms, User, UserRole } from '@menno/types';
+import { FilterSmsDto, Member, NewSmsDto, Shop, Sms, SmsTemplate, User, UserRole } from '@menno/types';
 import { Body, Controller, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
@@ -33,15 +33,12 @@ export class SmsController {
       where: { id: In(dto.memberIds), club: { id: shop.club.id } },
       relations: ['user'],
     });
-    dto.receptors = members.map(x => x.user.mobilePhone);
-    const shopLink = shop.domain
-      ? `https://${shop.domain}`
-      : `https://${shop.username}.${process.env.APP_ORIGIN}`;
-    dto.templateParams = {
-      '@@@': members.map((x) => User.fullName(x.user)),
-      '###': members.map((x) => shopLink),
-      '***': members.map((x) => shop.title),
-    };
+    dto.receptors = members.map((x) => x.user.mobilePhone);
+    dto.templateParams = SmsTemplate.getTemplateParams(
+      members.map((x) => x.user),
+      shop,
+      process.env.APP_ORIGIN
+    );
 
     return this.smsService.sendTemplate(dto);
   }

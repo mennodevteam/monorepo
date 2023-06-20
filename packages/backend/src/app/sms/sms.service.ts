@@ -61,6 +61,7 @@ export class SmsService {
       }
       for (const kavenegarDto of kavenegarDtos) {
         kavenegarApi.SendArray(kavenegarDto, async (response, status) => {
+          console.log(response, status);
           if (status == 200) {
             const entries = response;
             const sentSms: Sms[] = [];
@@ -95,7 +96,7 @@ export class SmsService {
     const template = await this.smsTemplatesRepo.findOneBy({
       id: dto.templateId,
     });
-    if (!template) {
+    if (!template || !template.isVerified) {
       throw new HttpException('template id not found.', HttpStatus.NOT_FOUND);
     }
 

@@ -16,7 +16,7 @@
     <a mat-list-item *ngFor="let template of templates | async" (click)="select(template)">
       <b matListItemTitle>{{ template.title }}</b>
       <span matListItemLine>{{ template.message }}</span>
-      <div matListItemMeta>
+      <div matListItemMeta class="secondary">
         <i class="fas fa-check-circle green" *ngIf="template.isVerified"></i>
         <i class="fas fa-times-circle red" *ngIf="!template.isVerified && template.responseText"></i>
         <button mat-icon-button color="warn" (click)="remove(template, $event)">

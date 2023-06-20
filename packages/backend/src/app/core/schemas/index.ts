@@ -13,6 +13,7 @@ export * from './mission-complete.schema';
 export * from './mission.schema';
 export * from './order-customer-message.schema';
 export * from './order-item.schema';
+export * from './order-message.schema';
 export * from './order-review.schema';
 export * from './order.schema';
 export * from './payment-gateway.schema';

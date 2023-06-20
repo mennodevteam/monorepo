@@ -68,13 +68,13 @@ export class AuthService {
         .get<User | undefined>(`auth/login/app/${this.user.id}/${mobile}/${token}`)
         .toPromise();
       if (user) {
+        this._user.next(user);
+        this.saveLocal();
         if (userDto) {
           await this.update(userDto);
           user.firstName = userDto.firstName;
           user.lastName = userDto.lastName;
         }
-        this._user.next(user);
-        this.saveLocal();
         return user;
       }
     }

@@ -57,7 +57,7 @@ export class Shop {
     try {
       const dayOfWeek = (new Date(time).getDay() + 1) % 7;
       if (openingHours[dayOfWeek] && openingHours[dayOfWeek].length) {
-        const now = new Date(time).getHours() + (new Date().getMinutes() / 60);
+        const now = new Date(time).getHours() + new Date().getMinutes() / 60;
         for (const time of openingHours[dayOfWeek]) {
           const fromTo = time.split('-');
           const from = Number(fromTo[0].split(':')[0]) + Number(fromTo[0].split(':')[1]) / 60;
@@ -85,7 +85,7 @@ export class Shop {
   }
 
   static appLink(shop: Shop, origin: string) {
-    return shop.domain || `https://${shop.username}.${origin}`;
+    return shop.domain ? `${shop.domain}` : `${shop.username}.${origin}`;
   }
 
   static isPaymentAvailable(shop: Shop) {

@@ -142,7 +142,7 @@ export class LoginBottomSheetComponent implements OnDestroy {
           }
         } catch (error) {
           this.loading = false;
-          this.codeForm.reset();
+          this.codeForm.get('code')?.reset();
           this.snack.open(this.translate.instant('loginBottomSheet.incorrectCode'), '', {
             panelClass: 'warning',
           });
