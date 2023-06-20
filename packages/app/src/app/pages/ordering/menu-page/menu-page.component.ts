@@ -49,9 +49,9 @@ export class MenuPageComponent implements AfterViewInit {
     this.menuService.checkSelectedOrderType();
 
     if (this.menu && this.viewType === undefined) {
-      if (!this.appConfig || this.appConfig.menuViewType === MenuViewType.Manual) {
+      if (!this.appConfig?.menuViewType) {
         const localViewType = localStorage.getItem('ui-menuViewType');
-        this.viewType = localViewType ? Number(localViewType) : MenuViewType.Card;
+        this.viewType = localViewType ? Number(localViewType) : MenuViewType.Grid;
       } else {
         this.viewType = this.appConfig.menuViewType;
       }
