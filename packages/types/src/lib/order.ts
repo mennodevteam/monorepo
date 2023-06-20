@@ -84,6 +84,6 @@ export class Order {
 
   static getLink(orderId: string, shop: Shop, appOrigin: string, orderDetailsPath: string) {
     const shopLink = Shop.appLink(shop, appOrigin);
-    return `https://${shopLink}${orderDetailsPath}/${orderId}`;
+    return `${shopLink}${orderDetailsPath}/${orderId}`;
   }
 }

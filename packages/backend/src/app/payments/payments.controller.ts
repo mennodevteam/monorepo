@@ -159,8 +159,7 @@ export class PaymentsController {
     if (payment?.isCompleted) {
       if (payment.details.newOrder) {
         payment.details.newOrder.payment = { id: payment.id };
-        const order = await this.ordersService.dtoToOrder(payment.details.newOrder);
-        const newOrder = await this.ordersRepository.save(order);
+        const newOrder = await this.ordersService.addOrder(payment.details.newOrder);
         const redirectUrl = `${payment.appReturnUrl}/${environment.appOrderCompletePath}/${newOrder.id}`;
         return res.redirect(redirectUrl);
       } else if (payment.details.payOrder) {

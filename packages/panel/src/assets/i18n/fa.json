@@ -195,7 +195,7 @@
     "disableOrdering": "امکان ثبت سفارش",
     "orderingTypes": "امکان ثبت سفارش برای انواع زیر",
     "disableOrderingText": "نمایش علت غیرفعالی به کاربر",
-    "disableOrderingOnClose": "امکان ثبت سفارش خارج از تایم کاری",
+    "disableOrderingOnClose": "غیرفعال کردن سفارش‌گیری خارج تایم کاری",
     "selectableOrderTypes": "انواع سفارش قابل انتخاب",
     "requiredRegister": "لزوم ثبت نام کامل قبل از ثبت سفارش",
     "requiredPayment": "لزوم پرداخت آنلاین قبل از ثبت سفارش",
