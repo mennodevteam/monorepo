@@ -8,7 +8,12 @@
       {{ order?.createdAt | pdate }}
     </span>
   </h1>
-  <button mat-stroked-button routerLink="/pos" [queryParams]="{ id: order?.id }">
+  <button
+    mat-stroked-button
+    routerLink="/pos"
+    [queryParams]="{ id: order?.id }"
+    [disabled]="order?.deletedAt"
+  >
     <i class="fa-regular fa-pencil"></i>
     {{ 'app.edit' | translate }}
   </button>
@@ -103,7 +108,7 @@
             </span>
             <button
               mat-stroked-button
-              [disabled]="order._settlementing"
+              [disabled]="order._settlementing || order.deletedAt"
               *ngIf="!order.paymentType"
               (click)="settlement(order)"
             >
@@ -124,7 +129,7 @@
             <i *ngSwitchCase="OrderState.Ready" class="fa-solid fa-check"></i>
             <i *ngSwitchCase="OrderState.Shipping" class="fa-solid fa-moped"></i>
             <i *ngSwitchCase="OrderState.Completed" class="fa-solid fa-circle-check green"></i>
-            <i *ngSwitchCase="OrderState.Canceled" class="fa-solid fa-circle-check red"></i>
+            <i *ngSwitchCase="OrderState.Canceled" class="fa-solid fa-circle-xmark red"></i>
             {{ order.state | orderState }}
           </mat-card-title>
           <mat-card-subtitle *ngSwitchCase="OrderState.Pending">
@@ -191,7 +196,7 @@
             {{ 'orderDetails.complete' | translate }}
           </button>
           <ng-container *ngIf="order.state !== OrderState.Pending">
-            <button mat-stroked-button (click)="setEstimate()">
+            <button mat-stroked-button (click)="setEstimate()" [disabled]="order.deletedAt">
               <i class="fa-regular fa-timer"></i>
               {{
                 (order.details.estimateCompletedAt

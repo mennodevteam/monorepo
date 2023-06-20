@@ -14,7 +14,7 @@
         mat-flat-button
         *ngIf="!order.customer?.mobilePhone"
         class="add-customer"
-        [disabled]="order._settingCustomer"
+        [disabled]="order._settingCustomer || order.deletedAt"
         (click)="openSelectMember(order)"
       >
         <i class="fa-solid fa-user-plus fa-large"></i>
@@ -57,7 +57,7 @@
         mat-button
         stopPropagation
         class="state-button"
-        [disabled]="order._changingState"
+        [disabled]="order._changingState || order.deletedAt"
         (click)="changeState(order)"
         [ngClass]="{
           red: order.state === OrderState.Pending,
@@ -83,7 +83,7 @@
         stopPropagation
         mat-icon-button
         color="warn"
-        [disabled]="order._settlementing"
+        [disabled]="order._settlementing || order.deletedAt"
         *ngIf="!order.paymentType"
         (click)="settlement(order)"
       >
@@ -107,12 +107,18 @@
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let order" style="text-align: end">
-      <button mat-icon-button (click)="print(order)" stopPropagation>
-        <i class="fa-regular fa-print"></i>
-      </button>
-      <button mat-icon-button routerLink="/pos" [queryParams]="{ id: order.id }" stopPropagation>
-        <i class="fa-regular fa-pencil"></i>
-      </button>
+      <ng-container *ngIf="!order.deletedAt">
+        <button mat-icon-button (click)="print(order)" stopPropagation>
+          <i class="fa-regular fa-print"></i>
+        </button>
+        <button mat-icon-button routerLink="/pos" [queryParams]="{ id: order.id }" stopPropagation>
+          <i class="fa-regular fa-pencil"></i>
+        </button>
+        <button mat-icon-button stopPropagation (click)="remove(order)">
+          <i class="fa-regular fa-trash-alt"></i>
+        </button>
+      </ng-container>
+      <span class="red" *ngIf="order.deletedAt">{{ 'app.removed' | translate }}</span>
     </td>
   </ng-container>
 

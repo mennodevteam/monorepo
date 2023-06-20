@@ -10,6 +10,7 @@ import {
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
@@ -60,11 +61,24 @@ export class OrdersController {
     }
   }
 
+  @Roles(UserRole.Panel)
   @Post('filter')
   async filterPanelOrders(@Body() dto: FilterOrderDto, @LoginUser() user: AuthPayload) {
     const shop = await this.auth.getPanelUserShop(user);
     dto.shopId = shop.id;
+    dto.withDeleted = true;
     return this.ordersService.filter(dto);
+  }
+
+  @Roles(UserRole.Panel)
+  @Delete(':id')
+  async deleteOrder(
+    @Param('id') id: string,
+    @Query('description') description: string,
+    @LoginUser() user: AuthPayload
+  ) {
+    const shop = await this.auth.getPanelUserShop(user);
+    return this.ordersService.remove(id, shop?.id, description);
   }
 
   @Get()
@@ -73,6 +87,7 @@ export class OrdersController {
     return this.ordersRepo.find({
       take: 25,
       skip,
+      withDeleted: true,
       where: {
         customer: { id: user.id },
       },
@@ -90,6 +105,7 @@ export class OrdersController {
       where: {
         id,
       },
+      withDeleted: true,
       relations: ['items.product', 'customer', 'waiter', 'creator', 'reviews', 'payment', 'address'],
     });
   }
@@ -202,6 +218,7 @@ export class OrdersController {
       where: {
         id,
       },
+      withDeleted: true,
       relations: [
         'shop',
         'shop.appConfig',

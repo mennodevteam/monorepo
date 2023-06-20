@@ -1,8 +1,8 @@
 {
   "appData": {
     "forceReload": false,
-    "lazyReload": true,
-    "changes": []
+    "lazyReload": false,
+    "changes": ["امکان حذف سفارش"]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",

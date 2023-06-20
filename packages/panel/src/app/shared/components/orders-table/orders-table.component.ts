@@ -8,6 +8,8 @@ import { OrdersService } from '../../../core/services/orders.service';
 import { PrinterService } from '../../../core/services/printer.service';
 import { MemberSelectDialogComponent } from '../../dialogs/member-select-dialog/member-select-dialog.component';
 import { SettlementDialogComponent } from '../../dialogs/settlement-dialog/settlement-dialog.component';
+import { PromptDialogComponent } from '../../dialogs/prompt-dialog/prompt-dialog.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'orders-table',
@@ -29,7 +31,8 @@ export class OrdersTableComponent implements AfterViewInit {
     private dialog: MatDialog,
     private cdr: ChangeDetectorRef,
     private ordersService: OrdersService,
-    private printService: PrinterService
+    private printService: PrinterService,
+    private translate: TranslateService
   ) {}
 
   ngAfterViewInit() {
@@ -80,5 +83,24 @@ export class OrdersTableComponent implements AfterViewInit {
 
   print(order: Order, view?: ShopPrintView) {
     this.printService.printOrder(order.id, view);
+  }
+
+  remove(order: Order) {
+    this.dialog
+      .open(PromptDialogComponent, {
+        data: {
+          title: this.translate.instant('deleteOrderDialog.title'),
+          description: this.translate.instant('deleteOrderDialog.description'),
+          label: this.translate.instant('deleteOrderDialog.label'),
+          type: 'textarea',
+        },
+        disableClose: true,
+      })
+      .afterClosed()
+      .subscribe((reason) => {
+        if (reason !== null) {
+          this.ordersService.remove(order, reason);
+        }
+      });
   }
 }

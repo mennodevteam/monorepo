@@ -46,27 +46,30 @@ export class DiscountsCouponController {
     @Param('code') code: string
   ): Promise<DiscountCoupon | undefined> {
     const { club } = await this.shopsRepo.findOne({ where: { id: shopId }, relations: ['club'] });
-    const coupon = await this.discountCouponsRepo.findOneBy({
-      club: { id: club.id },
-      startedAt: LessThanOrEqual(new Date()),
-      expiredAt: MoreThanOrEqual(new Date()),
-      status: Status.Active,
-      code,
-    });
-
-    if (coupon?.maxUse) {
-      const totalCount = await this.ordersRepo.count({ where: { discountCoupon: { id: coupon.id } } });
-      if (totalCount >= coupon.maxUse) return;
-    }
-
-    if (coupon?.maxUsePerUser) {
-      const totalCount = await this.ordersRepo.count({
-        where: { discountCoupon: { id: coupon.id }, customer: { id: user.id } },
+    if (club) {
+      const coupon = await this.discountCouponsRepo.findOneBy({
+        club: { id: club.id },
+        startedAt: LessThanOrEqual(new Date()),
+        expiredAt: MoreThanOrEqual(new Date()),
+        status: Status.Active,
+        code,
       });
-      if (totalCount >= coupon.maxUsePerUser) return;
-    }
 
-    return coupon;
+      if (coupon?.maxUse) {
+        const totalCount = await this.ordersRepo.count({ where: { discountCoupon: { id: coupon.id } } });
+        if (totalCount >= coupon.maxUse) return;
+      }
+
+      if (coupon?.maxUsePerUser) {
+        const totalCount = await this.ordersRepo.count({
+          where: { discountCoupon: { id: coupon.id }, customer: { id: user.id } },
+        });
+        if (totalCount >= coupon.maxUsePerUser) return;
+      }
+
+      return coupon;
+    }
+    return;
   }
 
   @Roles(UserRole.App)
@@ -76,12 +79,15 @@ export class DiscountsCouponController {
     @Param('shopId') shopId: string
   ): Promise<DiscountCoupon[]> {
     const { club } = await this.shopsRepo.findOne({ where: { id: shopId }, relations: ['club'] });
-    const member = await this.membersRepo.findOneBy({ club: { id: club.id }, user: { id: user.id } });
-    return this.clubsService.filterDiscountCoupons(<FilterDiscountCouponsDto>{
-      clubId: club.id,
-      memberId: member?.id,
-      isEnabled: true,
-    });
+    if (club) {
+      const member = await this.membersRepo.findOneBy({ club: { id: club.id }, user: { id: user.id } });
+      return this.clubsService.filterDiscountCoupons(<FilterDiscountCouponsDto>{
+        clubId: club.id,
+        memberId: member?.id,
+        isEnabled: true,
+      });
+    }
+    return [];
   }
 
   @Roles(UserRole.Panel)

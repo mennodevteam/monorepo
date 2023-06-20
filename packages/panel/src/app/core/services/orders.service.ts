@@ -17,7 +17,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   providedIn: 'root',
 })
 export class OrdersService {
-  constructor(private http: HttpClient, private auth: AuthService, private translate: TranslateService, private snack: MatSnackBar) {}
+  constructor(
+    private http: HttpClient,
+    private auth: AuthService,
+    private translate: TranslateService,
+    private snack: MatSnackBar
+  ) {}
 
   async filter(dto: FilterOrderDto) {
     const orders = await this.http.post<Order[]>(`orders/filter`, dto).toPromise();
@@ -60,12 +65,12 @@ export class OrdersService {
 
   async sendLinkToCustomer(orderId: string) {
     await this.http.get(`orders/sendLinkToCustomer/${orderId}`).toPromise();
-    this.snack.open(this.translate.instant('app.smsSent'), '', {panelClass: 'success'});
+    this.snack.open(this.translate.instant('app.smsSent'), '', { panelClass: 'success' });
   }
-  
+
   async sendLinkToPayk(orderId: string, phone: string) {
     await this.http.get(`orders/sendLinkToPeyk/${orderId}/${phone}`).toPromise();
-    this.snack.open(this.translate.instant('app.smsSent'), '', {panelClass: 'success'});
+    this.snack.open(this.translate.instant('app.smsSent'), '', { panelClass: 'success' });
   }
 
   async settlement(order: Order, dto: ManualSettlementDto): Promise<void> {
@@ -98,5 +103,15 @@ export class OrdersService {
       order._settingCustomer = false;
     }
     return;
+  }
+
+  async remove(order: Order, description?: string) {
+    const params: any = {};
+    if (description) params.description = description;
+    await this.http.delete(`orders/${order.id}`, {
+      params,
+    }).toPromise();
+    order.deletedAt = new Date();
+    order.state = OrderState.Canceled;
   }
 }

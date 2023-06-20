@@ -3,7 +3,16 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute } from '@angular/router';
-import { Member, Order, OrderDetails, OrderState, OrderType, ShopPrintView, ThirdPartyApp, User } from '@menno/types';
+import {
+  Member,
+  Order,
+  OrderDetails,
+  OrderState,
+  OrderType,
+  ShopPrintView,
+  ThirdPartyApp,
+  User,
+} from '@menno/types';
 import { BehaviorSubject, map } from 'rxjs';
 import { OrdersService } from '../../../core/services/orders.service';
 import { TodayOrdersService } from '../../../core/services/today-orders.service';
@@ -37,7 +46,7 @@ export class OrderDetailsComponent implements OnDestroy {
     alopeykDeliveryPrice: false,
     sendingLinkToCustomer: false,
     sendingLinkToPayk: false,
-  }
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -204,7 +213,25 @@ export class OrderDetailsComponent implements OnDestroy {
     if (this.order) this.printService.printOrder(this.order.id, view);
   }
 
-  removeOrder() {}
+  removeOrder() {
+    if (!this.order) return;
+    this.dialog
+      .open(PromptDialogComponent, {
+        data: {
+          title: this.translate.instant('deleteOrderDialog.title'),
+          description: this.translate.instant('deleteOrderDialog.description'),
+          label: this.translate.instant('deleteOrderDialog.label'),
+          type: 'textarea',
+        },
+        disableClose: true,
+      })
+      .afterClosed()
+      .subscribe((reason) => {
+        if (reason !== null) {
+          this.orderService.remove(this.order!, reason);
+        }
+      });
+  }
 
   alopeykLoadOrders() {
     this.alopeyk.loadOrders();

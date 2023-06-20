@@ -15,6 +15,7 @@ import {
   Shop,
   User,
   DiscountCoupon,
+  OrderState,
 } from '@menno/types';
 import { groupBy, groupBySum } from '@menno/utils';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -501,5 +502,18 @@ export class OrdersService {
       });
     order.customer = member.user;
     return order;
+  }
+
+  async remove(orderId: string, shopId: string, description?: string) {
+    const order = await this.ordersRepo.findOneBy({ id: orderId, shop: { id: shopId } });
+    if (order) {
+      if (description) order.details = { ...order.details, deletionReason: description };
+      await this.ordersRepo.update(orderId, {
+        state: OrderState.Canceled,
+        details: order.details,
+      });
+      await this.ordersRepo.softDelete(orderId);
+      console.log('deleted');
+    }
   }
 }
