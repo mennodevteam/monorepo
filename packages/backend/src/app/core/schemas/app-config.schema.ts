@@ -58,6 +58,12 @@ export const AppConfigSchema = new EntitySchema<AppConfig>({
       enum: OrderType,
       default: [OrderType.Delivery, OrderType.DineIn, OrderType.Takeaway],
     },
+    orderingTypes: {
+      type: 'enum',
+      array: true,
+      enum: OrderType,
+      default: [OrderType.Delivery, OrderType.DineIn, OrderType.Takeaway],
+    },
     menuViewType: {
       type: 'enum',
       enum: MenuViewType,

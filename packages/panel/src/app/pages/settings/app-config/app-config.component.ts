@@ -34,6 +34,7 @@ export class AppConfigComponent {
       disableOrdering: new FormControl(this.appConfig.disableOrdering),
       disablePayment: new FormControl(this.appConfig.disablePayment),
       disableOrderingText: new FormControl(this.appConfig.disableOrderingText),
+      orderingTypes: new FormControl(this.appConfig.orderingTypes),
       selectableOrderTypes: new FormControl(this.appConfig.selectableOrderTypes),
       requiredPayment: new FormControl(this.appConfig.requiredPayment),
       requiredRegister: new FormControl(this.appConfig.requiredRegister),

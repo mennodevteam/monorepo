@@ -193,6 +193,7 @@
     "orderingSection": "محدودیت سفارش‌گیری",
     "disablePayment": "امکان پرداخت آنلاین",
     "disableOrdering": "امکان ثبت سفارش",
+    "orderingTypes": "امکان ثبت سفارش برای انواع زیر",
     "disableOrderingText": "نمایش علت غیرفعالی به کاربر",
     "disableOrderingOnClose": "امکان ثبت سفارش خارج از تایم کاری",
     "selectableOrderTypes": "انواع سفارش قابل انتخاب",

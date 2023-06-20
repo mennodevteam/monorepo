@@ -77,7 +77,11 @@ export class BasketPageComponent {
   }
 
   get disableOrdering() {
-    return this.shopService.shop?.appConfig?.disableOrdering || !this.shopService.isOpen;
+    return (
+      this.shopService.shop?.appConfig?.disableOrdering ||
+      !this.shopService.isOpen ||
+      !this.shopService.shop?.appConfig?.orderingTypes?.includes(this.basket.type)
+    );
   }
 
   async getNewDiscountCouponCode() {

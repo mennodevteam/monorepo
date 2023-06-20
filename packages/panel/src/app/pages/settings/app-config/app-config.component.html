@@ -126,6 +126,24 @@
 
           <span spacer-2x></span>
 
+          <ng-container *ngIf="!form.controls['disableOrdering']?.value">
+            <mat-form-field>
+              <mat-label>{{ 'appConfig.orderingTypes' | translate }}</mat-label>
+              <mat-select formControlName="orderingTypes" multiple>
+                <mat-option [value]="OrderType.DineIn">
+                  {{ 'orderType.dineIn' | translate }}
+                </mat-option>
+                <mat-option [value]="OrderType.Takeaway">
+                  {{ 'orderType.takeaway' | translate }}
+                </mat-option>
+                <mat-option [value]="OrderType.Delivery">
+                  {{ 'orderType.delivery' | translate }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <span spacer></span>
+          </ng-container>
+
           <mat-form-field>
             <mat-label>{{ 'appConfig.selectableOrderTypes' | translate }}</mat-label>
             <mat-select formControlName="selectableOrderTypes" multiple>

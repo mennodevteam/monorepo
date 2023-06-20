@@ -20,6 +20,7 @@ export class AppConfig {
   themeMode: ThemeMode;
   selectableOrderTypes: OrderType[];
   disableOrdering: boolean;
+  orderingTypes: OrderType[];
   disablePayment: boolean;
   disableOrderingText: string;
   disableOrderingOnClose: boolean;
