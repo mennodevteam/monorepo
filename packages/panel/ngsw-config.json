@@ -1,6 +1,6 @@
 {
   "appData": {
-    "forceReload": false,
+    "forceReload": true,
     "lazyReload": false,
     "changes": ["امکان حذف سفارش", "رفع مشکل شماره فیش تکراری", "امکان غیرفعال کردن یک نوع سفارش‌گیری"]
   },

@@ -69,6 +69,7 @@ export class CategoryEditPageComponent {
     if (this.form.invalid) return;
     this.saving = true;
     const dto = this.form.getRawValue();
+    if (this.category) dto.id = this.category.id;
     this.snack.open(this.translate.instant('app.saving'), '', { duration: 5000 });
     await this.menuService.saveCategory(dto);
     this.snack.open(this.translate.instant('app.savedSuccessfully'), '', {

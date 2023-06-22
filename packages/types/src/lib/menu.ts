@@ -59,7 +59,7 @@ export class Menu {
             );
           }
         }
-        cat.products = cat.products?.filter((x) => x.status !== Status.Inactive);
+        cat.products = cat.products?.filter((x) => showInactive || x.status !== Status.Inactive);
       }
       menu.categories = menu.categories.filter((x) => showEmpty || x.products?.length);
     }
