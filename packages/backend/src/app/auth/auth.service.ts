@@ -95,7 +95,10 @@ export class AuthService {
       try {
         const res = await this.http
           .get<{ user: OldTypes.User; addresses: OldTypes.Address[] }>(
-            `https://new-admin-api.menno.ir/auth/getUserPhone/${mobilePhone}`
+            `https://new-admin-api.menno.ir/auth/getUserPhone/${mobilePhone}`,
+            {
+              timeout: 4000,
+            }
           )
           .toPromise();
         if (res && res.data) {
