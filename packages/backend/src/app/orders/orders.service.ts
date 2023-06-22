@@ -513,7 +513,6 @@ export class OrdersService {
         details: order.details,
       });
       await this.ordersRepo.softDelete(orderId);
-      console.log('deleted');
     }
   }
 }

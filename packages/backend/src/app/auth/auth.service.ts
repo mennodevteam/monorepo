@@ -143,14 +143,14 @@ export class AuthService {
     const mobilePhone = PersianNumberService.toEnglish(mobile);
     if (this.mobilePhoneTokens[mobilePhone] === PersianNumberService.toEnglish(token)) {
       delete this.mobilePhoneTokens[mobilePhone];
-      const user = await this.usersRepo.findOneBy({ mobilePhone });
+      let user = await this.usersRepo.findOneBy({ mobilePhone });
       if (!user) {
         await this.usersRepo.update(userId, {
           mobilePhone: mobile,
         });
-      } else {
-        return this.loginApp(user);
+        user = await this.usersRepo.findOneBy({ mobilePhone });
       }
+      return this.loginApp(user);
     } else {
       throw new HttpException('code is not valid', HttpStatus.FORBIDDEN);
     }

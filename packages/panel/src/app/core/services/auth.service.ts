@@ -80,7 +80,7 @@ export class AuthService {
   }
 
   get actions() {
-    return this.shopUser.actions || [];
+    return this.shopUser?.actions || [];
   }
 
   hasAccess(action: UserAction) {
