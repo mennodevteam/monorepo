@@ -30,6 +30,7 @@ import { SmsService } from '../sms/sms.service';
 import { UsersService } from '../users/users.service';
 import fetch from 'node-fetch';
 import { FilesService } from '../files/files.service';
+import { ClubsService } from '../clubs/clubs.service';
 
 @Injectable()
 export class ShopsService {
@@ -46,6 +47,8 @@ export class ShopsService {
     private menusRepository: Repository<Menu>,
     @InjectRepository(ProductCategory)
     private categoriesRepository: Repository<ProductCategory>,
+    @InjectRepository(Product)
+    private productsRepository: Repository<Product>,
     @InjectRepository(ShopPrintView)
     private printViewsRepository: Repository<ShopPrintView>,
     @InjectRepository(Region)
@@ -55,7 +58,8 @@ export class ShopsService {
     private smsService: SmsService,
     private usersService: UsersService,
     private http: HttpService,
-    private filesService: FilesService
+    private filesService: FilesService,
+    private clubsService: ClubsService
   ) {}
 
   async sendShopLink(shopId: string, mobilePhone: string): Promise<Sms> {
@@ -257,19 +261,23 @@ export class ShopsService {
     });
     for (const cat of menu.categories) {
       cat.menu = { id: newMenu.id } as OldTypes.Menu;
+      await this.categoriesRepository.save(cat);
+
       if (cat.products) {
         for (const p of cat.products) {
           if (p.images && p.images[0]) {
-            const savedImage: any = await this.filesService.uploadFromUrl(
-              `https://new-app-api.menno.ir/files/${p.images[0]}`,
-              p.title,
-              shop.code
-            );
-            p.images = [savedImage.key];
+            this.filesService
+              .uploadFromUrl(`https://new-app-api.menno.ir/files/${p.images[0]}`, p.title, shop.code)
+              .then((savedImage: any) => {
+                this.productsRepository
+                  .update(p.id, {
+                    images: [savedImage],
+                  })
+                  .catch((er) => {});
+              });
           }
         }
       }
-      await this.categoriesRepository.save(cat);
     }
     await this.shopsRepository.update(newShop.id, { menu: { id: newMenu.id } });
 
@@ -282,7 +290,11 @@ export class ShopsService {
       printViews.forEach((pv) => {
         pv.printer.shop = { id: newShop.id } as any;
       });
-      await this.printViewsRepository.save(printViews);
+      this.printViewsRepository.save(printViews);
+    }
+
+    if (newShop.plugins?.plugins.indexOf(Plugin.Club) > -1) {
+      this.clubsService.syncClub(code).catch((er) => {});
     }
 
     return newShop;

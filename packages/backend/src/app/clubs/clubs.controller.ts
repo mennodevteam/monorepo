@@ -42,6 +42,6 @@ export class ClubsController {
   @Public()
   @Get('sync/:code')
   async syncClub(@Param('code') code: string) {
-    this.clubsService.syncClub(code);
+    return this.clubsService.syncClub(code);
   }
 }

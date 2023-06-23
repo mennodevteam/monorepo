@@ -344,7 +344,7 @@ export class ClubsService {
   }
 
   async syncClub(code: string) {
-    const shop = await this.shopsRepo.findOneBy({ code });
+    const shop = await this.shopsRepo.findOne({ where: { code }, relations: ['club'] });
     if (!shop) return;
     const res = await this.http
       .get<{ club: OldTypes.Club; members: [OldTypes.Member[], number] }>(
@@ -353,22 +353,32 @@ export class ClubsService {
       .toPromise();
 
     const { members, club } = res.data;
-    const newClub = await this.clubsRepo.save({
-      id: club.id,
-      createdAt: club.createdAt,
-      title: shop.title,
-    });
+    console.log(members[1]);
+    let shopClub = shop.club;
+    if (!shopClub) {
+      console.log('add club');
+      shopClub = await this.clubsRepo.save({
+        id: club.id,
+        createdAt: club.createdAt,
+        title: shop.title,
+      });
 
-    await this.shopsRepo.update(shop.id, {
-      club: { id: club.id },
-    });
+      await this.shopsRepo.update(shop.id, {
+        club: { id: club.id },
+      });
+    }
 
-    members[0].forEach((member) => {
-      member.club = { id: club.id } as OldTypes.Club;
-    });
+    const currentMembers = shop.club
+      ? await this.membersRepo.find({ where: { club: { id: shop.club.id } }, relations: ['user'] })
+      : [];
 
-    const newMembers = await this.membersRepo.save(
-      members[0].map((m) => {
+    const newMembers = members[0].filter(
+      (nm) => !currentMembers.find((om) => om.user.mobilePhone === nm.user.mobilePhone)
+    );
+
+    console.log(newMembers.length);
+    const saved = await this.membersRepo.save(
+      newMembers.map((m) => {
         return <Member>{
           club: { id: club.id },
           description: m.description,
@@ -384,6 +394,6 @@ export class ClubsService {
       })
     );
 
-    return { club, members: newMembers };
+    return { club, members: saved.length };
   }
 }

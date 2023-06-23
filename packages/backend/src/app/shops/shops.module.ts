@@ -8,9 +8,10 @@ import { AuthModule } from '../auth/auth.module';
 import { HttpModule } from '@nestjs/axios';
 import { FilesModule } from '../files/files.module';
 import { ShopUsersController } from './shop-users.controller';
+import { ClubsModule } from '../clubs/clubs.module';
 
 @Module({
-  imports: [SchemasModule, SmsModule, UsersModule, AuthModule, HttpModule, FilesModule],
+  imports: [SchemasModule, SmsModule, UsersModule, ClubsModule, AuthModule, HttpModule, FilesModule],
   controllers: [ShopsController, ShopUsersController],
   providers: [ShopsService],
   exports: [ShopsService],
