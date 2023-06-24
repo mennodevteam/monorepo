@@ -9,6 +9,10 @@
   <mat-card>
     <mat-toolbar class="card-toolbar">
       {{ 'smsSettings.orderSms' | translate }}
+      <span flex></span>
+      <button mat-flat-button color="primary" (click)="openOrderMessageEditDialog()">
+        {{ 'app.add' | translate }}
+      </button>
     </mat-toolbar>
     <mat-card-content>
       <order-messages-table *ngIf="orderMessages" [orderMessages]="orderMessages"></order-messages-table>

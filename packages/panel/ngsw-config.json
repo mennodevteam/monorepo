@@ -2,7 +2,12 @@
   "appData": {
     "forceReload": true,
     "lazyReload": false,
-    "changes": ["امکان حذف سفارش", "رفع مشکل شماره فیش تکراری", "امکان غیرفعال کردن یک نوع سفارش‌گیری"]
+    "changes": [
+      "گزارش روزانه فروش",
+      "گزارش پیامک‌های ارسالی به صورت گروه بندی",
+      "بهبود رابط کاربری در موبایل",
+      "امکان محدود کردن تعداد استفاده از کد تخفیف"
+    ]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",
