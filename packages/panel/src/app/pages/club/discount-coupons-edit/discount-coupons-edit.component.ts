@@ -82,6 +82,8 @@ export class DiscountCouponsEditComponent implements OnInit {
   }
 
   async save() {
+    debugger
+    if (!this.form.get('useCode')?.value) this.form.get('code')?.setValue(' ');
     if (this.form.valid) {
       this.saving = true;
       const dto = this.discountCouponDto;
@@ -99,7 +101,7 @@ export class DiscountCouponsEditComponent implements OnInit {
     discountCoupon.startedAt = formVal.startedAt._d || formVal.startedAt;
     discountCoupon.expiredAt = formVal.expiredAt._d || formVal.expiredAt;
     discountCoupon.minPrice = formVal.minPrice || 0;
-    if (!formVal.useCode) discountCoupon.code = undefined;
+    if (!formVal.useCode) discountCoupon.code = null;
     return discountCoupon;
   }
 
