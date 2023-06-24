@@ -354,10 +354,8 @@ export class ClubsService {
       .toPromise();
 
     const { members, club } = res.data;
-    console.log(members[1]);
     let shopClub = shop.club;
     if (!shopClub) {
-      console.log('add club');
       shopClub = await this.clubsRepo.save({
         id: club.id,
         createdAt: club.createdAt,
@@ -381,10 +379,10 @@ export class ClubsService {
       where: { mobilePhone: In(members[0].map((x) => x.user.mobilePhone)) },
     });
 
-    console.log(newMembers.length);
     const saved = await this.membersRepo.save(
       newMembers.map((m) => {
-        const user = users.find((x) => x.mobilePhone === m.user.mobilePhone) || m.user;
+        const existUser = users.find((x) => x.mobilePhone === m.user.mobilePhone);
+        const user = existUser ? { id: existUser.id } : m.user;
         return <Member>{
           club: { id: club.id },
           description: m.description,
