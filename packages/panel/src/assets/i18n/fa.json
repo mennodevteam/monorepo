@@ -303,7 +303,9 @@
     "tableFilter": "فیلتر میز",
     "removeTableFilter": "حذف فیلتر میز",
     "report": "گزارشات",
-    "advancedFilter": "جستجوی پیشرفته"
+    "advancedReport": "گزارشات پیشرفته",
+    "totalPrice": "فروش امروز",
+    "advancedFilter": "فیلتر پیشرفته"
   },
   "pos": {
     "saveAndPrint": "ذخیره و چاپ",

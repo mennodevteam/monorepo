@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Order } from '@menno/types';
+import { Order, UserAction } from '@menno/types';
 import { DailyOrderListService, DailyOrderStateFilter } from './daily-order-list.service';
 import { ShopService } from '../../core/services/shop.service';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'orders',
@@ -17,7 +18,8 @@ export class OrdersComponent {
     public OS: DailyOrderListService,
     private router: Router,
     private route: ActivatedRoute,
-    private shopService: ShopService
+    private shopService: ShopService,
+    public auth: AuthService
   ) {
     this.dateControl.valueChanges.subscribe((value: any) => {
       if (value) {
@@ -61,6 +63,10 @@ export class OrdersComponent {
 
   get loading() {
     return this.OS.loading;
+  }
+
+  get accessReport() {
+    return this.auth.hasAccess(UserAction.Report);
   }
 
   setQueryParams() {

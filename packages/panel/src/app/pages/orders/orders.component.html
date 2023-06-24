@@ -14,30 +14,29 @@
     <i class="fa-regular fa-angles-left"></i>
   </button>
   <span flex></span>
-  <button mat-stroked-button routerLink="filter" class="hide-xs">
+  <button mat-stroked-button routerLink="filter" class="hide-xs" [disabled]="!accessReport">
     <i class="fa-regular fa-filter-list fa-sm"></i>
     {{ 'dailyOrder.advancedFilter' | translate }}
   </button>
-  <button mat-stroked-button routerLink="report" class="hide-xs">
+  <button mat-stroked-button [matMenuTriggerFor]="reportMenu" class="hide-xs" [disabled]="!accessReport">
     <i class="fa-regular fa-chart-line fa-sm"></i>
     {{ 'dailyOrder.report' | translate }}
   </button>
-  <button mat-icon-button routerLink="filter" class="show-xs">
+  <button mat-icon-button routerLink="filter" class="show-xs" [disabled]="!accessReport">
     <i class="fa-regular fa-filter-list fa-sm"></i>
   </button>
-  <button mat-icon-button routerLink="report" class="show-xs">
+  <button mat-icon-button [matMenuTriggerFor]="reportMenu" class="show-xs" [disabled]="!accessReport">
     <i class="fa-regular fa-chart-line fa-sm"></i>
   </button>
-  <!-- <button mat-icon-button [matMenuTriggerFor]="moreMenu">
-    <i class="fa-ellipsis-vertical fa-regular"></i>
-  </button>
-  <mat-menu #moreMenu="matMenu">
-    <button mat-menu-item (click)="toggleTableFilter()">
-      <i *ngIf="tableFilter" class="fa-solid mat-icon fa-square-check"></i>
-      <i *ngIf="!tableFilter" class="fa-regular mat-icon fa-square"></i>
-      {{ 'dailyOrder.tableFilter' | translate }}
+  <mat-menu #reportMenu="matMenu">
+    <button mat-menu-item disabled>
+      {{ 'dailyOrder.totalPrice' | translate }}: {{ OS.totalPrice | menuCurrency: undefined:true }}
     </button>
-  </mat-menu> -->
+    <mat-divider></mat-divider>
+    <button mat-menu-item routerLink="report">
+      {{ 'dailyOrder.advancedReport' | translate }}
+    </button>
+  </mat-menu>
 </mat-toolbar>
 <nav mat-tab-nav-bar mat-stretch-tabs="false" class="border-bottom" [tabPanel]="tabPanel">
   <a mat-tab-link (click)="stateFilter = 'all'" [active]="stateFilter === 'all'">
@@ -63,7 +62,11 @@
   </a>
 </nav>
 <main class="content-wrapper">
-  <mat-chip-listbox (change)="tableFilter = $event.value" [value]="tableFilter" *ngIf="tables && tables.length">
+  <mat-chip-listbox
+    (change)="tableFilter = $event.value"
+    [value]="tableFilter"
+    *ngIf="tables && tables.length"
+  >
     <mat-chip-option [value]="null" color="warn" *ngIf="tableFilter">
       <i class="fa-solid fa-close"></i>
       {{ 'dailyOrder.removeTableFilter' | translate }}

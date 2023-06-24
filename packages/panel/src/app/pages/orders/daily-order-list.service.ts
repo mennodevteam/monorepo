@@ -145,4 +145,12 @@ export class DailyOrderListService {
     if (this.filter.type != undefined) orders = orders.filter((x) => x.type === this.filter.type);
     this.orders.next(orders);
   }
+
+  get totalPrice() {
+    let total = 0;
+    for (const o of this.allOrders) {
+      if (!o.deletedAt && o.state != OrderState.Canceled) total += o.totalPrice;
+    }
+    return total;
+  }
 }

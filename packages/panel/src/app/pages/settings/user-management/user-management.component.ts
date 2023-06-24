@@ -50,10 +50,6 @@ export class UserManagementComponent implements OnInit {
               options: [
                 { value: UserAction.Menu, text: this.translate.instant('addShopUserDialog.menu') },
                 { value: UserAction.Order, text: this.translate.instant('addShopUserDialog.order') },
-                {
-                  value: UserAction.HideDailyTotal,
-                  text: this.translate.instant('addShopUserDialog.hideDailyTotal'),
-                },
                 { value: UserAction.Club, text: this.translate.instant('addShopUserDialog.club') },
                 {
                   value: UserAction.ChargeMemberWallet,
@@ -102,8 +98,10 @@ export class UserManagementComponent implements OnInit {
       .toPromise();
     if (dto) {
       const shopUser = new ShopUser();
-      if (item) shopUser.user = item.user;
-      else {
+      if (item) {
+        shopUser.user = item.user;
+        shopUser.id = item.id;
+      } else {
         shopUser.user = dto;
         if (shopUser.user.username)
           shopUser.user.username = `${this.auth.instantUser?.username}_${shopUser.user.username}`;
