@@ -15,6 +15,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {
   Between,
   FindOptionsWhere,
+  In,
   IsNull,
   LessThanOrEqual,
   MoreThanOrEqual,
@@ -376,9 +377,14 @@ export class ClubsService {
       (nm) => !currentMembers.find((om) => om.user.mobilePhone === nm.user.mobilePhone)
     );
 
+    const users = await this.usersRepo.find({
+      where: { mobilePhone: In(members[0].map((x) => x.user.mobilePhone)) },
+    });
+
     console.log(newMembers.length);
     const saved = await this.membersRepo.save(
       newMembers.map((m) => {
+        const user = users.find((x) => x.mobilePhone === m.user.mobilePhone) || m.user;
         return <Member>{
           club: { id: club.id },
           description: m.description,
@@ -388,7 +394,7 @@ export class ClubsService {
           id: m.id,
           publicKey: m.publicKey,
           star: m.star,
-          user: m.user,
+          user,
           wallet: m.wallet,
         };
       })
