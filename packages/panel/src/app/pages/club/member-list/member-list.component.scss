@@ -20,17 +20,8 @@ mat-paginator {
   height: 100%;
 }
 
-.count-cards {
-  display: flex;
-  gap: 16px;
-}
-
 .info-card {
   flex: 1;
-  @media only screen and (max-width: 960px) {
-    flex: none;
-  }
-
   mat-card-content {
     display: flex;
     flex-direction: row;

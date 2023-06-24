@@ -46,6 +46,9 @@
     "print": "پرینت",
     "default": "پیش‌فرض",
     "noData": "هیچ داده ای ثبت نشده",
+    "addExcel": "افزودن با اکسل",
+    "downloadSampleExcel": "دانلود اکسل نمونه",
+    "uploadExcel": "آپلود اکسل",
     "smsSent": "پیامک ارسال شد"
   },
   "shell": {

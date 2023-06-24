@@ -1,14 +1,31 @@
 <mat-toolbar class="page-toolbar">
-  <h1 flex>
+  <h1 class="hide-xs">
     {{ 'menu.pageTitle' | translate }}
   </h1>
-  <button mat-stroked-button routerLink="discounts">
+  <span flex></span>
+  <button mat-stroked-button routerLink="discounts" class="hide-xs">
     <i class="fa-regular fa-badge-percent"></i>
     {{ 'menuDiscountPage.pageTitle' | translate }}
   </button>
-  <button mat-stroked-button routerLink="costs">
+  <button mat-stroked-button routerLink="costs" class="hide-xs">
     <i class="fa-regular fa-grid-2-plus"></i>
     {{ 'menuCostPage.pageTitle' | translate }}
+  </button>
+  <button
+    mat-icon-button
+    routerLink="discounts"
+    class="show-xs"
+    matTooltip="{{ 'menuDiscountPage.pageTitle' | translate }}"
+  >
+    <i class="fa-regular fa-badge-percent"></i>
+  </button>
+  <button
+    mat-icon-button
+    routerLink="costs"
+    class="show-xs"
+    matTooltip="{{ 'menuCostPage.pageTitle' | translate }}"
+  >
+    <i class="fa-regular fa-grid-2-plus"></i>
   </button>
   <button mat-flat-button color="primary" routerLink="category">
     {{ 'menu.addCategory' | translate }}
@@ -38,4 +55,8 @@
   </mat-tab>
 </mat-tab-group>
 
-<empty-state *ngIf="!categories?.length" text="{{'menu.noCategory' | translate}}" icon="fa-face-smile-tongue"></empty-state>
+<empty-state
+  *ngIf="!categories?.length"
+  text="{{ 'menu.noCategory' | translate }}"
+  icon="fa-face-smile-tongue"
+></empty-state>

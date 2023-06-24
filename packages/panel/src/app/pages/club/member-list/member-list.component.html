@@ -1,19 +1,44 @@
 <mat-toolbar class="page-toolbar" *ngIf="!selection.hasValue()">
-  <h2 flex>{{ 'members.title' | translate }}</h2>
-  <button mat-stroked-button routerLink="sms/group">
-    <i matListIcon class="far fa-tags"></i>
-    <span spacer-sm></span>
-    <span>{{ 'smsList.pageTitle' | translate }}</span>
-  </button>
-  <button mat-stroked-button routerLink="discount-coupons">
+  <h2 class="hide-xs">{{ 'members.title' | translate }}</h2>
+  <span flex></span>
+  <button mat-stroked-button routerLink="discount-coupons" class="hide-xs">
     <i matListIcon class="far fa-tags"></i>
     <span spacer-sm></span>
     <span>{{ 'members.discountCodes' | translate }}</span>
   </button>
-  <button mat-stroked-button (click)="sendSmsToAll()">
-    <i matListIcon class="far fa-comment-alt-lines"></i>
+  <button mat-stroked-button routerLink="sms/group" class="hide-xs">
+    <i matListIcon class="far fa-message-check"></i>
+    <span spacer-sm></span>
+    <span>{{ 'smsList.pageTitle' | translate }}</span>
+  </button>
+  <button mat-stroked-button (click)="sendSmsToAll()" class="hide-xs">
+    <i matListIcon class="far fa-message-lines"></i>
     <span spacer-sm></span>
     <span>{{ 'members.sendSmsAll' | translate }}</span>
+  </button>
+  <button
+    mat-icon-button
+    routerLink="discount-coupons"
+    matTooltip="{{ 'members.discountCodes' | translate }}"
+    class="show-xs"
+  >
+    <i matListIcon class="far fa-tags"></i>
+  </button>
+  <button
+    mat-icon-button
+    routerLink="sms/group"
+    matTooltip="{{ 'smsList.pageTitle' | translate }}"
+    class="show-xs"
+  >
+    <i matListIcon class="far fa-message-check"></i>
+  </button>
+  <button
+    mat-icon-button
+    (click)="sendSmsToAll()"
+    matTooltip="{{ 'members.sendSmsAll' | translate }}"
+    class="show-xs"
+  >
+    <i matListIcon class="far fa-message-lines"></i>
   </button>
   <button mat-flat-button color="primary" [matMenuTriggerFor]="addMenu">
     {{ 'members.add' | translate }}
@@ -113,8 +138,8 @@
     </mat-card>
   </form>
 
-  <div class="count-cards">
-    <mat-card class="info-card">
+  <div class="form-page-layout count-cards">
+    <mat-card class="info-card" flex-col>
       <mat-card-content>
         <i mat-card-avatar class="fa-solid fa-user"></i>
         <div class="info-card__texts">
@@ -125,12 +150,12 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="info-card">
+    <mat-card class="info-card" flex-col>
       <mat-card-content>
         <i mat-card-avatar class="fa-solid fa-wallet"></i>
         <div class="info-card__texts">
           <p>{{ 'members.walletCharge' | translate }}</p>
-          <h4>{{ totalWalletCharge != undefined ? (totalWalletCharge | menuCurrency) : '-' }}</h4>
+          <h4>{{ totalWalletCharge != undefined ? (totalWalletCharge | menuCurrency : undefined : true) : '-' }}</h4>
         </div>
       </mat-card-content>
     </mat-card>
