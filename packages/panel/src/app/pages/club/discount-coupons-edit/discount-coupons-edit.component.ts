@@ -61,6 +61,8 @@ export class DiscountCouponsEditComponent implements OnInit {
       percentageDiscount: new FormControl(0, [Validators.min(0), Validators.max(100), Validators.required]),
       minPrice: new FormControl(0),
       maxDiscount: new FormControl(undefined),
+      maxUse: new FormControl(undefined),
+      maxUsePerUser: new FormControl(this.discountCoupon ? this.discountCoupon.maxUsePerUser : 1),
     });
 
     if (this.discountCoupon) {
@@ -82,7 +84,6 @@ export class DiscountCouponsEditComponent implements OnInit {
   }
 
   async save() {
-    debugger
     if (!this.form.get('useCode')?.value) this.form.get('code')?.setValue(' ');
     if (this.form.valid) {
       this.saving = true;
@@ -96,11 +97,13 @@ export class DiscountCouponsEditComponent implements OnInit {
     const formVal = this.form.getRawValue();
     const discountCoupon = this.form.getRawValue();
     if (this.discountCoupon) discountCoupon.id = this.discountCoupon.id;
-    if (discountCoupon.code) discountCoupon.star = null;
+    if (discountCoupon.code && formVal.useCode) discountCoupon.star = null;
     if (discountCoupon.star === -1) discountCoupon.star = null;
     discountCoupon.startedAt = formVal.startedAt._d || formVal.startedAt;
     discountCoupon.expiredAt = formVal.expiredAt._d || formVal.expiredAt;
     discountCoupon.minPrice = formVal.minPrice || 0;
+    discountCoupon.maxUse = formVal.maxUse || null;
+    discountCoupon.maxUsePerUser = formVal.maxUsePerUser || null;
     if (!formVal.useCode) discountCoupon.code = null;
     return discountCoupon;
   }

@@ -10,6 +10,7 @@ import { OrderStatePipe } from '../../../shared/pipes/order-state.pipe';
 import { MenuService } from '../../../core/services/menu.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuCurrencyPipe } from '../../../shared/pipes/menu-currency.pipe';
+import { sortByCreatedAt } from '@menno/utils';
 Chart.defaults.font.family = 'IRANSans';
 
 declare let persianDate: any;
@@ -121,7 +122,7 @@ export class OrderReportsComponent implements AfterViewInit {
     if (data) {
       const keys = Object.keys(data);
       if (dto.groupBy === 'date') {
-        keys.sort((a, b) => new Date(a).valueOf() - new Date(b).valueOf());
+        keys.sort(sortByCreatedAt);
       }
       const chartSumData = keys.map((key) => data[key].sum);
       const chartCountData = keys.map((key) => data[key].count);

@@ -3,6 +3,7 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { DiscountCoupon, Status } from '@menno/types';
 import { ClubService } from '../../../core/services/club.service';
 import { AlertDialogService } from '../../../core/services/alert-dialog.service';
+import { sortByCreatedAt, sortByCreatedAtDesc } from '@menno/utils';
 
 @Component({
   selector: 'discount-coupons',
@@ -24,6 +25,7 @@ export class DiscountCouponsComponent {
     this.club.getDiscountCoupons().then((c) => {
       if (c) {
         this.coupons = c;
+        this.coupons.sort(sortByCreatedAtDesc);
       }
       this.loading = false;
     });

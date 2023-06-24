@@ -203,6 +203,9 @@ export class ClubsService {
 
   async filterDiscountCoupons(dto: FilterDiscountCouponsDto): Promise<DiscountCoupon[]> {
     const options: FindOptionsWhere<DiscountCoupon> = {};
+    const member = dto.userId
+      ? await this.membersRepo.findOneBy({ user: { id: dto.userId }, club: { id: dto.clubId } })
+      : undefined;
     if (dto.clubId) {
       options.club = { id: dto.clubId };
     }
@@ -218,22 +221,27 @@ export class ClubsService {
     });
 
     if (dto.userId) {
-      coupons = coupons.filter((x) => (!x.user && x.code) || x.user?.id === dto.userId);
+      if (!member) {
+        coupons = coupons.filter((x) => !x.user && !x.code && !x.star);
+      } else {
+        coupons = coupons.filter((x) => (!x.user || x.user?.id === dto.userId) && x.star <= member.star);
+      }
     }
 
-    coupons = coupons.filter(async (c) => {
+    const orders = await this.ordersRepo.find({
+      where: { discountCoupon: In(coupons.map((x) => x.id)) },
+      relations: ['customer', 'discountCoupon'],
+    });
+
+    coupons = coupons.filter((c) => {
       if (c.maxUse) {
-        const totalUse = await this.ordersRepo.count({ where: { discountCoupon: { id: c.id } } });
+        const totalUse = orders.length;
         if (totalUse >= c.maxUse) return false;
       }
       if (c.maxUsePerUser && dto.userId) {
-        const user = await this.usersRepo.findOne({
-          where: { id: dto.userId },
-        });
-        if (!user) return false;
-        const userUse = await this.ordersRepo.count({
-          where: { discountCoupon: { id: c.id }, customer: { id: user.id } },
-        });
+        const userUse = orders.filter(
+          (x) => x.customer.id === dto.userId && x.discountCoupon?.id === c.id
+        ).length;
         if (userUse >= c.maxUsePerUser) return false;
       }
       return true;

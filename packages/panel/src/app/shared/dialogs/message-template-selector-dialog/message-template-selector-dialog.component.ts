@@ -9,6 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 import { MessageTemplateService } from '../../../core/services/messageTemplate.service';
 import { AdvancedPromptDialogComponent } from '../advanced-prompt-dialog/advanced-prompt-dialog.component';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
+import { sortByCreatedAtDesc } from '@menno/utils';
 
 @Component({
   selector: 'app-message-template-selector-dialog',
@@ -39,7 +40,7 @@ export class MessageTemplateSelectorDialogComponent implements OnInit {
     const templates = await this.templateService.getMessageTemplates();
     if (templates) {
       this.allTemplates = templates;
-      this.allTemplates.sort((a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf());
+      this.allTemplates.sort(sortByCreatedAtDesc);
       this.set();
     }
   }

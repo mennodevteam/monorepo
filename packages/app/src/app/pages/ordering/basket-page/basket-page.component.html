@@ -28,9 +28,12 @@
         </div>
       </mat-list-item>
       <mat-divider></mat-divider>
-      <mat-list-item *ngFor="let item of basket.abstractItems">
+      <mat-list-item *ngFor="let item of abstractItems">
         <h3 matListItemTitle>{{ item.title }}</h3>
-        <div matListItemMeta style="display: flex;" [class.error-text]="item.price < 0">
+        <span matListItemLine *ngIf="item.title === DISCOUNT_CODE_TITLE && basket.discountCoupon">
+          {{ 'basket.discountCouponTitle' | translate: { value: basket.discountCoupon.title } }}
+        </span>
+        <div matListItemMeta style="display: flex" [class.error-text]="item.price < 0">
           <button
             mat-icon-button
             color="warn"

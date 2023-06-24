@@ -56,6 +56,7 @@
     "noteLabel": "توضیحات شما",
     "notePlaceholder": "توضیحاتی درباره سفارش دارید اینجا بنویسید...",
     "discountCoupon": "کد تخفیف",
+    "discountCouponTitle": "تخفیف {{value}} فعال شده است",
     "setDiscountCoupon": "ثبت کد",
     "discountCouponAddDescription": "کد تخفیف را وارد کنید",
     "discountCouponNotFound": "کد وارد شده اشتباه است",

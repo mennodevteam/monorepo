@@ -137,6 +137,38 @@
           </mat-card-content>
         </mat-card>
         <select-status-card [control]="statusControl"></select-status-card>
+
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>{{ 'discountCouponEdit.usage' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              {{ 'discountCouponEdit.maxUsePerUserDescription' | translate }}
+            </p>
+            <mat-form-field appearance="fill" flex>
+              <mat-label>
+                {{ 'discountCouponEdit.maxUse' | translate }}
+              </mat-label>
+              <input matInput formControlName="maxUsePerUser" type="number" />
+              <mat-hint>
+                {{ 'discountCouponEdit.maxUseEmptyHint' | translate }}
+              </mat-hint>
+            </mat-form-field>
+            <p>
+              {{ 'discountCouponEdit.maxUseDescription' | translate }}
+            </p>
+            <mat-form-field appearance="fill" flex>
+              <mat-label>
+                {{ 'discountCouponEdit.maxUse' | translate }}
+              </mat-label>
+              <input matInput formControlName="maxUse" type="number" />
+              <mat-hint>
+                {{ 'discountCouponEdit.maxUseEmptyHint' | translate }}
+              </mat-hint>
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
       </div>
     </div>
   </main>

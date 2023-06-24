@@ -72,7 +72,7 @@ export class OrdersService {
     if (dto.state != undefined) order.state = dto.state;
     if (dto.type != undefined) order.type = dto.type;
     if (dto.discountCoupon)
-      dto.discountCoupon = await this.discountCouponsRepo.findOneBy({ id: dto.discountCoupon.id });
+      order.discountCoupon = await this.discountCouponsRepo.findOneBy({ id: dto.discountCoupon.id });
 
     const menu = shop.menu;
     Menu.setRefsAndSort(menu, dto.type);

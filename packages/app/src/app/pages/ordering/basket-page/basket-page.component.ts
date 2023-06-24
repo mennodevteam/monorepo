@@ -62,6 +62,10 @@ export class BasketPageComponent {
     return this.basket.items || [];
   }
 
+  get abstractItems() {
+    return this.basket.abstractItems || [];
+  }
+
   async complete() {
     this.saving = true;
     try {
