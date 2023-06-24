@@ -1,0 +1,17 @@
+<mat-toolbar class="page-toolbar">
+  <button mat-icon-button goBack>
+    <i class="fa-regular fa-arrow-right"></i>
+  </button>
+  <h2 flex>{{ 'smsSettings.pageTitle' | translate }}</h2>
+</mat-toolbar>
+
+<main class="content-wrapper">
+  <mat-card>
+    <mat-toolbar class="card-toolbar">
+      {{ 'smsSettings.orderSms' | translate }}
+    </mat-toolbar>
+    <mat-card-content>
+      <order-messages-table *ngIf="orderMessages" [orderMessages]="orderMessages"></order-messages-table>
+    </mat-card-content>
+  </mat-card>
+</main>

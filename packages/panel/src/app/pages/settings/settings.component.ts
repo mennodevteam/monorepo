@@ -86,6 +86,7 @@ export class SettingsComponent implements OnInit {
       })
       .afterClosed()
       .subscribe(async (dto) => {
+        if (!dto) return;
         try {
           await this.auth.changePassword(dto);
           this.snack.open(this.translate.instant('changePassword.success'), '', { panelClass: 'success' });

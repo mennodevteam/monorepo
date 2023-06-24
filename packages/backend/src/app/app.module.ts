@@ -23,6 +23,7 @@ import { HttpModule } from '@nestjs/axios';
 import { ThirdPartiesModule } from './third-parties/third-parties.module';
 import { WebPushNotificationModule } from './web-push-notifications/web-push-notifications.module';
 import { DingModule } from './ding/ding.module';
+import { OrderMessagesModule } from './order-messages/order-messages.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { DingModule } from './ding/ding.module';
     PaymentsModule,
     AppConfigsModule,
     DeliveryAreasModule,
+    OrderMessagesModule,
     AddressesModule,
     ShopPluginsModule,
     ThirdPartiesModule,

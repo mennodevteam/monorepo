@@ -17,6 +17,8 @@ import { UserManagementComponent } from './user-management/user-management.compo
 import { UserManagementTableComponent } from './user-management/user-management-table/user-management-table.component';
 import { QrComponent } from './qr/qr.component';
 import { OpeningHoursDialogComponent } from './shop-page/opening-hours-dialog/opening-hours-dialog.component';
+import { SmsComponent } from './sms/sms.component';
+import { OrderMessagesTableComponent } from './sms/order-messages-table/order-messages-table.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,8 @@ import { OpeningHoursDialogComponent } from './shop-page/opening-hours-dialog/op
     DeliveryMapComponent,
     OpeningHoursDialogComponent,
     QrComponent,
+    SmsComponent,
+    OrderMessagesTableComponent,
   ],
   imports: [
     CommonModule,

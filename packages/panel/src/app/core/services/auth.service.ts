@@ -84,6 +84,6 @@ export class AuthService {
   }
 
   hasAccess(action: UserAction) {
-    return this.actions.indexOf(action) > -1 || this.shopUser.role === ShopUserRole.Admin;
+    return this.actions.indexOf(action) > -1 || this.shopUser?.role === ShopUserRole.Admin;
   }
 }

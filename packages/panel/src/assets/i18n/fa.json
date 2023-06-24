@@ -806,5 +806,22 @@
       "sent": "موفق",
       "scheduled": "زمانبندی"
     }
+  },
+  "smsSettings": {
+    "pageTitle": "ارسال خودکار پیام",
+    "orderSms": "ارسال خودکار پیام برای سفارشات",
+    "event": "رخداد",
+    "eventType": {
+      "onAdd": "بعد از ثبت سفارش",
+      "onEdit": "بعد از ویرایش سفارش",
+      "onChangeState": "بعد از تغییر وضعیت سفارش",
+      "onPayment": "بعد از پرداخت سفارش"
+    },
+    "orderState": "وضعیت سفارش",
+    "orderType": "نوع سفارش",
+    "orderPayment": "وضعیت پرداخت",
+    "smsTemplate": "قالب پیام",
+    "orderManual": "دستی/منوی‌دیجیتال",
+    "delay": "تاخیر ارسال"
   }
 }
