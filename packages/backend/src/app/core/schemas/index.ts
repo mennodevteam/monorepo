@@ -30,6 +30,7 @@ export * from './shop-printer.schema';
 export * from './shop-user.schema';
 export * from './shop.schema';
 export * from './sms-account.schema';
+export * from './sms-group.schema';
 export * from './sms-template.schema';
 export * from './sms.schema';
 export * from './theme.schema';

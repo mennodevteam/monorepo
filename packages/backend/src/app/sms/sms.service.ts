@@ -1,4 +1,4 @@
-import { FilterSmsDto, NewSmsDto, Sms, SmsAccount, SmsStatus, SmsTemplate } from '@menno/types';
+import { FilterSmsDto, NewSmsDto, Sms, SmsAccount, SmsGroup, SmsStatus, SmsTemplate } from '@menno/types';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { Cron, CronExpression } from '@nestjs/schedule';
@@ -26,14 +26,16 @@ export class SmsService {
     @InjectRepository(SmsAccount)
     private smsAccountsRepo: Repository<SmsAccount>,
     @InjectRepository(SmsTemplate)
-    private smsTemplatesRepo: Repository<SmsTemplate>
+    private smsTemplatesRepo: Repository<SmsTemplate>,
+    @InjectRepository(SmsGroup)
+    private smsGroupsRepo: Repository<SmsGroup>
   ) {
     kavenegarApi = Kavenegar.KavenegarApi({
       apikey: process.env.KAVENEGAR_API_KEY,
     });
   }
 
-  async send(dto: NewSmsDto): Promise<Sms[]> {
+  async send(dto: NewSmsDto, groupMessage?: string): Promise<SmsGroup> {
     if (dto.accountId) {
       const account = await this.smsAccountsRepo.findOneBy({
         id: dto.accountId,
@@ -43,7 +45,10 @@ export class SmsService {
       }
     }
 
-    const groupId = Guid.create().toString();
+    const group = await this.smsGroupsRepo.save({
+      account: { id: dto.accountId },
+      message: groupMessage || dto.messages[0],
+    });
 
     return new Promise((resolve, reject) => {
       const kavenegarDtos: any[] = [];
@@ -71,14 +76,15 @@ export class SmsService {
                 message: entry.message,
                 receptor: entry.receptor,
                 sentAt: dto.sentAt,
-                groupId,
+                group,
                 status: this.getStatus(entry.status),
                 statusDescription: entry.statustext,
                 kavenegarId: entry.messageid,
               });
             }
-            const savedSms = await this.smsRepo.save(sentSms);
-            resolve(savedSms);
+            await this.smsRepo.save(sentSms);
+            const g = await this.smsGroupsRepo.findOne({ where: { id: group.id }, relations: ['list'] });
+            resolve(g);
           } else {
             reject(response);
           }
@@ -112,7 +118,7 @@ export class SmsService {
       messages.push(message);
     }
     dto.messages = messages;
-    return this.send(dto);
+    return this.send(dto, template.title);
   }
 
   async lookup(
@@ -138,6 +144,7 @@ export class SmsService {
         },
         async (response, status) => {
           if (status == 200) {
+            const group = await this.smsGroupsRepo.save({ account, message: kavenagarTemplate });
             const entry = response[0];
             const sms = <Sms>{
               account: <SmsAccount>{ id: accountId },
@@ -145,6 +152,7 @@ export class SmsService {
               message: entry.message,
               receptor: entry.receptor,
               status: this.getStatus(entry.status),
+              group,
               statusDescription: entry.statustext,
               kavenegarId: entry.messageid,
             };
@@ -158,8 +166,8 @@ export class SmsService {
     });
   }
 
-  async filter(filter: FilterSmsDto): Promise<[Sms[], number]> {
-    const condition: FindOptionsWhere<Sms> = {};
+  async filter(filter: FilterSmsDto): Promise<[SmsGroup[], number]> {
+    const condition: FindOptionsWhere<SmsGroup> = {};
     if (filter.accountId) {
       condition.account = { id: filter.accountId };
     }
@@ -170,21 +178,31 @@ export class SmsService {
     } else if (filter.toDate) {
       condition.createdAt = LessThanOrEqual(filter.toDate);
     }
-    if (filter.receptor) {
-      condition.receptor = filter.receptor;
-    }
+    // if (filter.receptor) {
+    //   condition.list = filter.receptor;
+    // }
     if (filter.query) {
       condition.message = Like(`%${filter.query}%`);
     }
 
-    const sms = await this.smsRepo.findAndCount({
+    const groups = await this.smsGroupsRepo.findAndCount({
       where: condition,
       order: { createdAt: 'DESC' },
       take: filter.take,
       skip: filter.skip,
     });
-
-    return sms;
+    for (const g of groups[0]) {
+      const sms = await this.smsRepo.findBy({ group: { id: g.id } });
+      g.count = sms.length;
+      g.receptors = g.count < 4 ? sms.map((x) => x.receptor) : undefined;
+      g.statusCount = [
+        sms.filter((x) => x.status === SmsStatus.Failed).length,
+        sms.filter((x) => x.status === SmsStatus.InQueue).length,
+        sms.filter((x) => x.status === SmsStatus.Sent).length,
+        sms.filter((x) => x.status === SmsStatus.Scheduled).length,
+      ];
+    }
+    return groups;
   }
 
   @Cron(CronExpression.EVERY_30_SECONDS)

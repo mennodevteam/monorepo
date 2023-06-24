@@ -1,7 +1,7 @@
 import { Club } from './club';
-import { Member } from './member';
 import { OrderType } from './order-type.enum';
 import { Status } from './status.enum';
+import { User } from './user';
 
 export class DiscountCoupon {
   id: string;
@@ -18,8 +18,8 @@ export class DiscountCoupon {
   minPrice: number;
   maxDiscount: number;
   maxUsePerUser: number;
-  maxUse: number
+  maxUse: number;
   code: string;
   club: Club;
-  member: Member;
+  user: User;
 }

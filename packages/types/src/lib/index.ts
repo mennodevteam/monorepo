@@ -61,6 +61,7 @@ export * from './shop-user-role.enum';
 export * from './shop-user';
 export * from './shop';
 export * from './sms-account';
+export * from './sms-group';
 export * from './sms-status.enum';
 export * from './sms-template';
 export * from './sms';

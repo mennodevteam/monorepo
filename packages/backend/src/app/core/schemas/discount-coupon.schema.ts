@@ -79,8 +79,8 @@ export const DiscountCouponSchema = new EntitySchema<DiscountCoupon>({
       type: 'many-to-one',
       target: 'Club',
     },
-    member: {
-      target: 'Member',
+    user: {
+      target: 'User',
       type: 'many-to-one',
     },
   },

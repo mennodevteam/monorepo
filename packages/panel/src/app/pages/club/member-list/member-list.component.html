@@ -1,5 +1,10 @@
 <mat-toolbar class="page-toolbar" *ngIf="!selection.hasValue()">
   <h2 flex>{{ 'members.title' | translate }}</h2>
+  <button mat-stroked-button routerLink="sms/group">
+    <i matListIcon class="far fa-tags"></i>
+    <span spacer-sm></span>
+    <span>{{ 'smsList.pageTitle' | translate }}</span>
+  </button>
   <button mat-stroked-button routerLink="discount-coupons">
     <i matListIcon class="far fa-tags"></i>
     <span spacer-sm></span>

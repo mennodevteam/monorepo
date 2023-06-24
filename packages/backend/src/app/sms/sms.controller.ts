@@ -1,4 +1,4 @@
-import { FilterSmsDto, Member, NewSmsDto, Shop, Sms, SmsTemplate, User, UserRole } from '@menno/types';
+import { FilterSmsDto, Member, NewSmsDto, Shop, Sms, SmsGroup, SmsTemplate, User, UserRole } from '@menno/types';
 import { Body, Controller, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
@@ -18,7 +18,7 @@ export class SmsController {
 
   @Post('filter')
   @Roles(UserRole.Panel)
-  async filter(@Body() filter: FilterSmsDto, @LoginUser() user: AuthPayload): Promise<[Sms[], number]> {
+  async filter(@Body() filter: FilterSmsDto, @LoginUser() user: AuthPayload): Promise<[SmsGroup[], number]> {
     const { smsAccount } = await this.authService.getPanelUserShop(user, ['smsAccount']);
     filter.accountId = smsAccount.id;
     return this.smsService.filter(filter);
@@ -26,11 +26,11 @@ export class SmsController {
 
   @Post('sendTemplate')
   @Roles(UserRole.Panel)
-  async sendTemplate(@Body() dto: NewSmsDto, @LoginUser() user: AuthPayload): Promise<Sms[]> {
+  async sendTemplate(@Body() dto: NewSmsDto, @LoginUser() user: AuthPayload): Promise<SmsGroup> {
     const shop = await this.authService.getPanelUserShop(user, ['smsAccount', 'club']);
     dto.accountId = shop.smsAccount.id;
     const members = await this.membersRepo.find({
-      where: { id: In(dto.memberIds), club: { id: shop.club.id } },
+      where: { id: dto.memberIds ? In(dto.memberIds) : undefined, club: { id: shop.club.id } },
       relations: ['user'],
     });
     dto.receptors = members.map((x) => x.user.mobilePhone);

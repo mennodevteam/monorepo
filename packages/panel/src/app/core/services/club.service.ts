@@ -23,6 +23,7 @@ import {
   NewSmsDto,
   Sms,
   SmsAccount,
+  SmsGroup,
   User,
   Wallet,
 } from '@menno/types';
@@ -161,9 +162,9 @@ export class ClubService {
     return res;
   }
 
-  async getDiscountCoupons(memberId?: string): Promise<DiscountCoupon[]> {
+  async getDiscountCoupons(userId?: string): Promise<DiscountCoupon[]> {
     let url = 'discountCoupons';
-    if (memberId) url += `/${memberId}`;
+    if (userId) url += `/${userId}`;
     const res = await this.http.get<DiscountCoupon[]>(url).toPromise();
     if (!res) throw new Error();
     return res;
@@ -185,13 +186,13 @@ export class ClubService {
     return this._tags.value;
   }
 
-  async sendSms(dto: NewSmsDto): Promise<Sms[] | undefined> {
+  async sendSms(dto: NewSmsDto): Promise<SmsGroup | undefined> {
     const verify = await this.dialog
       .open(AlertDialogComponent, {
         data: {
           title: this.translate.instant('verifySendSmsDialog.title'),
           description: this.translate.instant(
-            dto.receptors && dto.receptors.length
+            dto.memberIds?.length === 1
               ? 'verifySendSmsDialog.description'
               : 'verifySendSmsDialog.allDescription'
           ),
@@ -201,29 +202,25 @@ export class ClubService {
       .afterClosed()
       .toPromise();
     if (!verify) return;
-    const sms = await this.http.post<Sms[]>('sms/sendTemplate', dto).toPromise();
+    const group = await this.http.post<SmsGroup>('sms/sendTemplate', dto).toPromise();
     this.snack
-      .open(
-        this.translate.instant('smsTable.successfullySent'),
-        this.translate.instant('smsTable.viewResult'),
-        {
-          duration: 6000,
-          panelClass: 'success',
-        }
-      )
+      .open(this.translate.instant('smsList.sentSuccess'), this.translate.instant('smsList.viewDetails'), {
+        duration: 6000,
+        panelClass: 'success',
+      })
       .onAction()
       .subscribe(() => {
-        this.router.navigate(['/reports/list/messages']);
+        this.router.navigate(['/club/sms/group']);
       });
 
     setTimeout(() => {
       this.loadSmsAccount();
     }, 5000);
-    return sms;
+    return group;
   }
 
-  async filterSms(dto: FilterSmsDto): Promise<[Sms[], number]> {
-    const res = await this.http.post<[Sms[], number]>('sms/filter', dto).toPromise();
+  async filterSms(dto: FilterSmsDto): Promise<[SmsGroup[], number]> {
+    const res = await this.http.post<[SmsGroup[], number]>('sms/filter', dto).toPromise();
     if (!res) throw new Error();
     return res;
   }

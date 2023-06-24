@@ -214,11 +214,11 @@ export class ClubsService {
 
     let coupons = await this.discountCouponsRepo.find({
       where: options,
-      relations: ['member', 'member.user'],
+      relations: ['user'],
     });
 
-    if (dto.memberId) {
-      coupons = coupons.filter((x) => (!x.member && x.code) || x.member?.id === dto.memberId);
+    if (dto.userId) {
+      coupons = coupons.filter((x) => (!x.user && x.code) || x.user?.id === dto.userId);
     }
 
     coupons = coupons.filter(async (c) => {
@@ -226,11 +226,11 @@ export class ClubsService {
         const totalUse = await this.ordersRepo.count({ where: { discountCoupon: { id: c.id } } });
         if (totalUse >= c.maxUse) return false;
       }
-      if (c.maxUsePerUser && dto.memberId) {
-        const { user } = await this.membersRepo.findOne({
-          where: { id: dto.memberId },
-          relations: ['user'],
+      if (c.maxUsePerUser && dto.userId) {
+        const user = await this.usersRepo.findOne({
+          where: { id: dto.userId },
         });
+        if (!user) return false;
         const userUse = await this.ordersRepo.count({
           where: { discountCoupon: { id: c.id }, customer: { id: user.id } },
         });
@@ -327,7 +327,7 @@ export class ClubsService {
               coupon.expiredAt.getDate() + c.config.anniversary.discountCoupon.durationInDay
             );
             coupon.expiredAt.setHours(23, 59, 59, 99);
-            coupon.member = m;
+            coupon.user = m.user;
             coupon.club = c;
             this.discountCouponsRepo.save(coupon);
           }

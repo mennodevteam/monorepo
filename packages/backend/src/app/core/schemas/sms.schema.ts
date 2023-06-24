@@ -16,10 +16,6 @@ export const SmsSchema = new EntitySchema<Sms>({
     message: {
       type: String,
     },
-    groupId: {
-      type: String,
-      nullable: true,
-    },
     cost: {
       type: 'real',
     },
@@ -47,6 +43,12 @@ export const SmsSchema = new EntitySchema<Sms>({
     account: {
       type: 'many-to-one',
       target: 'SmsAccount',
+    },
+    group: {
+      type: 'many-to-one',
+      target: 'SmsGroup',
+      inverseSide: 'list',
+      nullable: true,
     },
   },
 });

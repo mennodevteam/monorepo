@@ -1,11 +1,12 @@
 import { SmsAccount } from './sms-account';
+import { SmsGroup } from './sms-group';
 import { SmsStatus } from './sms-status.enum';
 
 export class Sms {
   id: string;
   kavenegarId?: string;
   message: string;
-  groupId?: string;
+  group?: SmsGroup;
   account: SmsAccount;
   receptor: string;
   cost: number;

@@ -80,10 +80,9 @@ export class DiscountsCouponController {
   ): Promise<DiscountCoupon[]> {
     const { club } = await this.shopsRepo.findOne({ where: { id: shopId }, relations: ['club'] });
     if (club) {
-      const member = await this.membersRepo.findOneBy({ club: { id: club.id }, user: { id: user.id } });
       return this.clubsService.filterDiscountCoupons(<FilterDiscountCouponsDto>{
         clubId: club.id,
-        memberId: member?.id,
+        userId: user?.id,
         isEnabled: true,
       });
     }
@@ -91,16 +90,16 @@ export class DiscountsCouponController {
   }
 
   @Roles(UserRole.Panel)
-  @Get(':memberId?')
+  @Get(':userId?')
   async filter(
     @LoginUser() user: AuthPayload,
-    @Param('memberId') memberId: string
+    @Param('userId') userId: string
   ): Promise<DiscountCoupon[]> {
     const { club } = await this.auth.getPanelUserShop(user, ['club']);
     return this.clubsService.filterDiscountCoupons(<FilterDiscountCouponsDto>{
       clubId: club.id,
-      memberId,
-      isEnabled: memberId ? true : false,
+      userId,
+      isEnabled: userId ? true : false,
     });
   }
 
