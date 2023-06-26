@@ -58,6 +58,7 @@ export const OrderMessageSchema = new EntitySchema<OrderMessage>({
     smsTemplate: {
       type: 'many-to-one',
       target: 'SmsTemplate',
+      nullable: true,
     },
   },
 });

@@ -16,6 +16,11 @@ import {
   User,
   DiscountCoupon,
   OrderState,
+  OrderMessageEvent,
+  Status,
+  OrderMessage,
+  NewSmsDto,
+  SmsTemplate,
 } from '@menno/types';
 import { groupBy, groupBySum } from '@menno/utils';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -31,6 +36,7 @@ import {
   Not,
   Repository,
 } from 'typeorm';
+import { SmsService } from '../sms/sms.service';
 
 @Injectable()
 export class OrdersService {
@@ -42,7 +48,10 @@ export class OrdersService {
     @InjectRepository(Order)
     private ordersRepo: Repository<Order>,
     @InjectRepository(DiscountCoupon)
-    private discountCouponsRepo: Repository<DiscountCoupon>
+    private discountCouponsRepo: Repository<DiscountCoupon>,
+    @InjectRepository(OrderMessage)
+    private orderMessagesRepo: Repository<OrderMessage>,
+    private smsService: SmsService
   ) {}
 
   async dtoToOrder(dto: OrderDto) {
@@ -357,6 +366,8 @@ export class OrdersService {
     //   }
     // }
 
+    this.checkAfterUpdateOrderMessage(dto.id, OrderMessageEvent.OnEdit);
+
     delete editedOrder.qNumber;
     delete editedOrder.creator;
     delete editedOrder.shop;
@@ -483,6 +494,8 @@ export class OrdersService {
       // await this.clubMicroservice.send('walletLogs/save', walletLogs).toPromise();
     }
 
+    this.checkAfterUpdateOrderMessage(dto.orderId, OrderMessageEvent.OnPayment);
+
     return this.ordersRepo.save({
       id: order.id,
       paymentType: dto.type,
@@ -513,6 +526,56 @@ export class OrdersService {
         details: order.details,
       });
       await this.ordersRepo.softDelete(orderId);
+    }
+  }
+
+  async checkAfterUpdateOrderMessage(orderId: string, event: OrderMessageEvent) {
+    const order = await this.ordersRepo.findOne({
+      where: { id: orderId },
+      relations: ['shop.smsAccount', 'customer'],
+    });
+    const shop = order.shop;
+    const customer = order.customer;
+
+    if (customer?.mobilePhone && shop.smsAccount && shop.smsAccount.charge > 0) {
+      this.orderMessagesRepo
+        .find({
+          where: {
+            shop: { id: shop.id },
+            smsTemplate: { isVerified: true },
+            status: Status.Active,
+          },
+          relations: ['smsTemplate'],
+        })
+        .then((messages) => {
+          if (messages.length) {
+            let message: OrderMessage;
+
+            if (event === OrderMessageEvent.OnChangeState) {
+              message = OrderMessage.find(messages, order, OrderMessageEvent.OnChangeState);
+            } else if (event === OrderMessageEvent.OnPayment) {
+              message = OrderMessage.find(messages, order, OrderMessageEvent.OnPayment);
+            } else if (event === OrderMessageEvent.OnEdit) {
+              message = OrderMessage.find(messages, order, OrderMessageEvent.OnEdit);
+            }
+
+            if (message) {
+              const dto = new NewSmsDto();
+              dto.receptors = [customer.mobilePhone];
+              dto.accountId = shop.smsAccount.id;
+              dto.templateId = message.smsTemplate.id;
+              dto.templateParams = SmsTemplate.getTemplateParams([customer], shop, process.env.APP_ORIGIN);
+              dto.templateParams['###'] = [
+                Order.getLink(order.id, shop, process.env.APP_ORIGIN, process.env.APP_ORDER_PAGE_PATH),
+              ];
+              if (message.delayInMinutes) {
+                dto.sentAt = new Date();
+                dto.sentAt.setMinutes(dto.sentAt.getMinutes() + message.delayInMinutes);
+              }
+              this.smsService.sendTemplate(dto).catch((err) => {});
+            }
+          }
+        });
     }
   }
 }

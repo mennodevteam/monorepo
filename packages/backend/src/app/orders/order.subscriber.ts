@@ -10,7 +10,14 @@ import {
   User,
 } from '@menno/types';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, EntitySubscriberInterface, EventSubscriber, InsertEvent, Repository } from 'typeorm';
+import {
+  DataSource,
+  EntitySubscriberInterface,
+  EventSubscriber,
+  InsertEvent,
+  Repository,
+  UpdateEvent,
+} from 'typeorm';
 import { WebPushNotificationsService } from '../web-push-notifications/web-push-notifications.service';
 import { SmsService } from '../sms/sms.service';
 
@@ -24,6 +31,8 @@ export class OrderSubscriber implements EntitySubscriberInterface<Order> {
     private membersRepo: Repository<Member>,
     @InjectRepository(OrderMessage)
     private orderMessagesRepo: Repository<OrderMessage>,
+    @InjectRepository(Order)
+    private ordersRepo: Repository<Order>,
     @InjectRepository(Shop)
     private shopsRepo: Repository<Shop>,
     private webPush: WebPushNotificationsService,
@@ -84,7 +93,7 @@ export class OrderSubscriber implements EntitySubscriberInterface<Order> {
         })
         .then((messages) => {
           if (messages.length) {
-            const message = OrderMessage.find(messages, order);
+            const message = OrderMessage.find(messages, order, OrderMessageEvent.OnAdd);
             if (message) {
               const dto = new NewSmsDto();
               dto.receptors = [customer.mobilePhone];
@@ -92,12 +101,7 @@ export class OrderSubscriber implements EntitySubscriberInterface<Order> {
               dto.templateId = message.smsTemplate.id;
               dto.templateParams = SmsTemplate.getTemplateParams([customer], shop, process.env.APP_ORIGIN);
               dto.templateParams['###'] = [
-                Order.getLink(
-                  order.id,
-                  shop,
-                  process.env.APP_ORIGIN,
-                  process.env.APP_ORDER_PAGE_PATH
-                ),
+                Order.getLink(order.id, shop, process.env.APP_ORIGIN, process.env.APP_ORDER_PAGE_PATH),
               ];
               if (message.delayInMinutes) {
                 dto.sentAt = new Date();

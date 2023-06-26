@@ -141,6 +141,15 @@
               <i matListItemMeta class="fa-regular fa-angle-left"></i>
             </a>
             <mat-divider></mat-divider>
+            <a mat-list-item routerLink="/settings/sms">
+              <i matListItemIcon class="fa-solid mat-icon fa-message-smile"></i>
+              <span matListItemTitle>{{ 'home.autoSms' | translate }}</span>
+              <div matListItemMeta class="secondary">
+                <span class="red">{{ 'app.new' | translate }}</span>
+                <i class="fa-regular fa-angle-left"></i>
+              </div>
+            </a>
+            <mat-divider></mat-divider>
             <a mat-list-item routerLink="/settings/qr">
               <i matListItemIcon class="fa-solid mat-icon fa-qrcode"></i>
               <span matListItemTitle>{{ 'home.qr' | translate }}</span>

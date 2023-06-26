@@ -40,7 +40,6 @@ export class MessageTemplateSelectorDialogComponent implements OnInit {
     const templates = await this.templateService.getMessageTemplates();
     if (templates) {
       this.allTemplates = templates;
-      this.allTemplates.sort(sortByCreatedAtDesc);
       this.set();
     }
   }

@@ -25,10 +25,11 @@ export class OrderMessage {
   event: OrderMessageEvent;
   delayInMinutes: number;
 
-  static find(messages: OrderMessage[], order: Order) {
+  static find(messages: OrderMessage[], order: Order, event: OrderMessageEvent) {
     if (messages?.length) {
       const validMessages = messages.filter(
         (m) =>
+          m.event === event &&
           m.status === Status.Active &&
           m.smsTemplate?.isVerified &&
           (m.type == undefined || m.type == order.type) &&

@@ -15,7 +15,11 @@
       </button>
     </mat-toolbar>
     <mat-card-content>
-      <order-messages-table *ngIf="orderMessages" [orderMessages]="orderMessages"></order-messages-table>
+      <order-messages-table
+        *ngIf="orderMessages"
+        [orderMessages]="orderMessages"
+        (onEdit)="openOrderMessageEditDialog($event)"
+      ></order-messages-table>
     </mat-card-content>
   </mat-card>
 </main>

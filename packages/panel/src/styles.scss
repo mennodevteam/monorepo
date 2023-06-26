@@ -296,11 +296,11 @@ mat-card {
     }
   }
 
-  .mat-mdc-list-item {
-    .secondary {
-      display: flex;
-      align-items: center;
-    }
+  .secondary {
+    display: flex !important;
+    align-items: center !important;
+    height: 100%;
+    gap: 8px;
   }
 
   mat-card-title {

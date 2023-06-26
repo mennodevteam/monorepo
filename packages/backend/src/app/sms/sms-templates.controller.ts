@@ -1,7 +1,7 @@
 import { SmsTemplate, UserRole } from '@menno/types';
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
 import { Public } from '../auth/public.decorator';
 import { Roles } from '../auth/roles.decorators';
@@ -46,13 +46,23 @@ export class SmsTemplatesController {
   @Get()
   async filter(@LoginUser() user: AuthPayload): Promise<SmsTemplate[]> {
     const { smsAccount } = await this.auth.getPanelUserShop(user, ['smsAccount']);
-    return this.smsTemplatesRepo.find({
-      where: {
-        account: smsAccount,
-      },
+    const accountTemplates = await this.smsTemplatesRepo.find({
+      where: [
+        {
+          account: { id: smsAccount.id },
+        },
+      ],
       order: {
         createdAt: 'desc',
       },
     });
+    const globalTemplates = await this.smsTemplatesRepo.find({
+      where: [{ account: IsNull(), isVerified: true }],
+      order: {
+        createdAt: 'asc',
+      },
+    });
+
+    return [...accountTemplates, ...globalTemplates];
   }
 }

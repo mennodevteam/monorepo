@@ -60,7 +60,7 @@ export class AdvancedPromptDialogComponent implements OnInit {
       const value = this.form.getRawValue();
       for (const key in this.fields) {
         if (Object.prototype.hasOwnProperty.call(this.fields, key)) {
-          if (value[key] == undefined) delete value[key];
+          if (value[key] === undefined) delete value[key];
           else {
             const field = this.fields[key];
             if (field.type === 'number' && value[key] != undefined) value[key] = Number(value[key]);

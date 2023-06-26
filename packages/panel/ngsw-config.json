@@ -1,13 +1,8 @@
 {
   "appData": {
-    "forceReload": true,
+    "forceReload": false,
     "lazyReload": false,
-    "changes": [
-      "گزارش روزانه فروش",
-      "گزارش پیامک‌های ارسالی به صورت گروه بندی",
-      "بهبود رابط کاربری در موبایل",
-      "امکان محدود کردن تعداد استفاده از کد تخفیف"
-    ]
+    "changes": ["ارسال خودکار پیام به مشتری", "رفع مشکل نمایش اشتباه وضعیت سفارش‌گیری"]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",

@@ -3,6 +3,7 @@ import {
   ManualSettlementDto,
   Order,
   OrderDto,
+  OrderMessageEvent,
   OrderReportDto,
   User,
   UserRole,
@@ -123,6 +124,7 @@ export class OrdersController {
     };
     if (!order.waiter) update.waiter = { id: user.id } as User;
     await this.ordersRepo.update(order.id, update);
+    this.ordersService.checkAfterUpdateOrderMessage(id, OrderMessageEvent.OnChangeState);
     return { ...order, ...update };
   }
 
