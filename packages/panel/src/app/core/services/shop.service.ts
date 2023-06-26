@@ -30,10 +30,12 @@ export class ShopService {
       const shop = await this.http.get<Shop>('shops').toPromise();
       if (shop) {
         this.shop$.next(shop);
+        return shop;
       }
     } finally {
       this._loading = false;
     }
+    return;
   }
 
   async saveShop(dto: Shop) {

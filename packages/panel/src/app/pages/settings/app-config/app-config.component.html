@@ -4,11 +4,12 @@
       <i class="fa-regular fa-arrow-right fa-large"></i>
     </button>
     <h1 flex>{{ 'settings.appConfig' | translate }}</h1>
-    <button mat-flat-button color="primary" (click)="save()" [disabled]="saving || !form.dirty">
+    <button mat-flat-button color="primary" (click)="save()" [disabled]="loading || saving || !form.dirty">
       {{ 'app.save' | translate }}
     </button>
   </mat-toolbar>
-  <main class="form-page-layout content-wrapper">
+  <mat-spinner *ngIf="loading" [diameter]="36"></mat-spinner>
+  <main class="form-page-layout content-wrapper" *ngIf="!loading">
     <div class="flex-col">
       <mat-card>
         <mat-card-header>

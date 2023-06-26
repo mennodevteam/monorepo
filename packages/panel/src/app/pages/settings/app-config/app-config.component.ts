@@ -14,9 +14,10 @@ import { ENTER } from '@angular/cdk/keycodes';
   styleUrls: ['./app-config.component.scss'],
 })
 export class AppConfigComponent {
-  form: FormGroup;
+  form: FormGroup = new FormGroup({});
   themes: Theme[] = [];
   saving = false;
+  loading = true;
   ThemeMode = ThemeMode;
   MenuViewType = MenuViewType;
   OrderType = OrderType;
@@ -28,6 +29,12 @@ export class AppConfigComponent {
     private snack: MatSnackBar,
     private translate: TranslateService
   ) {
+    this.load();
+  }
+
+  async load() {
+    this.loading = true;
+    await this.shopService.loadShop();
     this.form = new FormGroup({
       theme: new FormControl(this.appConfig.theme),
       themeMode: new FormControl(this.appConfig.themeMode),
@@ -50,6 +57,7 @@ export class AppConfigComponent {
       const themeControl = this.form.get('theme');
       themeControl?.setValue(this.themes.find((x) => x.id === themeControl.value.id));
     });
+    this.loading = false;
   }
 
   get appConfig() {
