@@ -32,7 +32,6 @@ export class PosService extends OrderDto {
   saving = false;
   editOrder?: Order;
   menu: Menu;
-  override isManual = true;
   discountCoupons?: DiscountCoupon[];
   selectedDiscountCoupon?: DiscountCoupon;
   private _customer?: User;
@@ -249,7 +248,7 @@ export class PosService extends OrderDto {
       type: this.type,
       state: OrderState.Processing,
       details: this.details,
-      isManual: true,
+      isManual: this.editOrder?.isManual || true,
       manualCost: this.manualCost,
       manualDiscount: this.manualDiscount,
       customerId: this.customer?.id || null,
