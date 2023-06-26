@@ -249,6 +249,7 @@ export class PosService extends OrderDto {
       type: this.type,
       state: OrderState.Processing,
       details: this.details,
+      isManual: true,
       manualCost: this.manualCost,
       manualDiscount: this.manualDiscount,
       customerId: this.customer?.id || null,
