@@ -84,7 +84,7 @@ export class OrdersService {
       order.discountCoupon = await this.discountCouponsRepo.findOneBy({ id: dto.discountCoupon.id });
 
     const menu = shop.menu;
-    Menu.setRefsAndSort(menu, dto.type);
+    Menu.setRefsAndSort(menu, dto.type, true, true);
     order.items = [...OrderDto.productItems(dto, menu), ...OrderDto.abstractItems(dto, menu)];
 
     for (const item of order.items) {

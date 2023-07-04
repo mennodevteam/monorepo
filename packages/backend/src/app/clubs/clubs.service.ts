@@ -386,26 +386,30 @@ export class ClubsService {
     const users = await this.usersRepo.find({
       where: { mobilePhone: In(members[0].map((x) => x.user.mobilePhone)) },
     });
+    const savedMembers: Member[] = [];
+    while (users.length) {
+      const members = newMembers.splice(0, 2000);
+      const saved = await this.membersRepo.save(
+        members.map((m) => {
+          const existUser = users.find((x) => x.mobilePhone === m.user.mobilePhone);
+          const user = existUser ? { id: existUser.id } : m.user;
+          return <Member>{
+            club: { id: club.id },
+            description: m.description,
+            extraInfo: m.extraInfo,
+            gem: m.gem,
+            joinedAt: m.joinedAt,
+            id: m.id,
+            publicKey: m.publicKey,
+            star: m.star,
+            user,
+            wallet: m.wallet,
+          };
+        })
+      );
+      savedMembers.push(...saved);
+    }
 
-    const saved = await this.membersRepo.save(
-      newMembers.map((m) => {
-        const existUser = users.find((x) => x.mobilePhone === m.user.mobilePhone);
-        const user = existUser ? { id: existUser.id } : m.user;
-        return <Member>{
-          club: { id: club.id },
-          description: m.description,
-          extraInfo: m.extraInfo,
-          gem: m.gem,
-          joinedAt: m.joinedAt,
-          id: m.id,
-          publicKey: m.publicKey,
-          star: m.star,
-          user,
-          wallet: m.wallet,
-        };
-      })
-    );
-
-    return { club, members: saved.length };
+    return { club, members: savedMembers.length };
   }
 }
