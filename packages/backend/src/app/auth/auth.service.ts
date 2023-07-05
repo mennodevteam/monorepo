@@ -95,7 +95,7 @@ export class AuthService {
       try {
         const res = await this.http
           .get<{ user: OldTypes.User; addresses: OldTypes.Address[] }>(
-            `https://new-admin-api.menno.ir/auth/getUserPhone/${mobilePhone}`,
+            `http://65.21.237.12:3002/auth/getUserPhone/${mobilePhone}`,
             {
               timeout: 4000,
             }

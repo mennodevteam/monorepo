@@ -198,7 +198,7 @@ export class ShopsService {
         printViews: OldTypes.ShopPrintView[];
         deliveryAreas: OldTypes.DeliveryArea[];
         plugins: OldTypes.ShopPlugin[];
-      }>(`https://new-admin-api.menno.ir/shops/complete-data/xmje/${code}`)
+      }>(`http://65.21.237.12:3002/shops/complete-data/xmje/${code}`)
       .toPromise();
     const { shop, menu, appConfig, users, printViews, deliveryAreas, plugins } = res.data;
     const validPlugins = plugins.filter((x) => new Date(x.expiredAt).valueOf() > Date.now());
@@ -246,7 +246,7 @@ export class ShopsService {
 
     if (shop.logo) {
       const savedImage: any = await this.filesService.uploadFromUrl(
-        `https://new-app-api.menno.ir/files/${shop.logo}`,
+        `http://65.21.237.12:3001/files/${shop.logo}`,
         shop.title,
         shop.code
       );
@@ -267,7 +267,7 @@ export class ShopsService {
         for (const p of cat.products) {
           if (p.images && p.images[0]) {
             this.filesService
-              .uploadFromUrl(`https://new-app-api.menno.ir/files/${p.images[0]}`, p.title, shop.code)
+              .uploadFromUrl(`http://65.21.237.12:3001/files/${p.images[0]}`, p.title, shop.code)
               .then((savedImage: any) => {
                 this.productsRepository
                   .update(p.id, {

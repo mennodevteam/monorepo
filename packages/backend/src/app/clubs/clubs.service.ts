@@ -357,7 +357,7 @@ export class ClubsService {
     if (!shop) return;
     const res = await this.http
       .get<{ club: OldTypes.Club; members: [OldTypes.Member[], number] }>(
-        `https://new-admin-api.menno.ir/shops/club-data/xmje/${code}`
+        `http://65.21.237.12:3002/shops/club-data/xmje/${code}`
       )
       .toPromise();
 

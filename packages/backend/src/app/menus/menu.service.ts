@@ -60,7 +60,7 @@ export class MenusService {
     }
 
     const res = await this.http
-      .get<{ menu: Menu }>(`https://new-admin-api.menno.ir/shops/complete-data/xmje/${prevCode}`)
+      .get<{ menu: Menu }>(`http://65.21.237.12:3002/shops/complete-data/xmje/${prevCode}`)
       .toPromise();
 
     const menu = res.data.menu;
@@ -71,7 +71,7 @@ export class MenusService {
       if (cat.products) {
         for (const p of cat.products) {
           if (p.images && p.images[0]) {
-            const binary = await fetch(`https://new-app-api.menno.ir/files/${p.images[0]}`);
+            const binary = await fetch(`http://65.21.237.12:3001/files/${p.images[0]}`);
             const blob = await binary.buffer();
 
             const savedImage: any = await this.filesService.upload(<any>{ buffer: blob }, p.id, prevCode);
