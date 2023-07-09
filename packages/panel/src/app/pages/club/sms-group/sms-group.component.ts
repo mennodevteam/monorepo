@@ -18,7 +18,6 @@ export class SmsGroupComponent {
   async load() {
     const g = await this.club.filterSms({ take: 25 });
     this.smsGroups = g[0];
-    console.log(this.smsGroups);
     this.loading = false;
   }
 }

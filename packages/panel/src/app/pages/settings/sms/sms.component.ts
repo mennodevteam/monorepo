@@ -44,7 +44,6 @@ export class SmsComponent {
   }
 
   async openOrderMessageEditDialog(message?: OrderMessage) {
-    console.log(Object.keys(OrderState));
     const fields: PromptKeyFields = {
       event: {
         label: this.translate.instant('smsSettings.event'),

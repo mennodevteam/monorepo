@@ -80,8 +80,11 @@ export class OrdersService {
     if (dto.paymentType != undefined) order.paymentType = dto.paymentType;
     if (dto.state != undefined) order.state = dto.state;
     if (dto.type != undefined) order.type = dto.type;
-    if (dto.discountCoupon)
-      order.discountCoupon = await this.discountCouponsRepo.findOneBy({ id: dto.discountCoupon.id });
+    if (dto.discountCoupon) {
+      dto.discountCoupon = order.discountCoupon = await this.discountCouponsRepo.findOneBy({
+        id: dto.discountCoupon.id,
+      });
+    }
 
     const menu = shop.menu;
     Menu.setRefsAndSort(menu, dto.type, true, true);
