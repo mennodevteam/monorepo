@@ -1,0 +1,21 @@
+<mat-dialog-content>
+  <mat-nav-list>
+    <a mat-list-item (click)="edit()">
+      <i matListItemIcon class="fa-solid fa-plus"></i>
+      <span matListItemTitle>{{ 'app.add' | translate }}</span>
+    </a>
+    <a mat-list-item *ngFor="let ad of addresses" [matDialogClose]="ad">
+      <i matListItemIcon class="fa-solid fa-location-dot"></i>
+      <span matListItemTitle>{{ ad.deliveryArea?.title }}</span>
+      <span matListItemLine>{{ ad.description }}</span>
+      <div matListItemMeta class="secondary" *ngIf="!ad.latitude">
+        <button mat-icon-button tabindex="-1" (click)="edit(ad)" stopPropagation>
+          <i class="fa-regular fa-pencil"></i>
+        </button>
+        <!-- <button mat-icon-button tabindex="-1">
+          <i class="fa-regular fa-pencil"></i>
+        </button> -->
+      </div>
+    </a>
+  </mat-nav-list>
+</mat-dialog-content>

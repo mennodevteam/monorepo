@@ -65,6 +65,7 @@ import { TableSelectorDialogComponent } from './dialogs/table-selector-dialog/ta
 import { SelectStatusCardComponent } from './components/select-status-card/select-status-card.component';
 import { SelectOrderTypeCardComponent } from './components/select-order-type-card/select-order-type-card.component';
 import { UpdateDialogComponent } from './dialogs/update-dialog/update-dialog.component';
+import { UserAddressesDialogComponent } from './dialogs/user-addresses-dialog/user-addresses-dialog.component';
 
 @NgModule({
   declarations: [
@@ -98,6 +99,7 @@ import { UpdateDialogComponent } from './dialogs/update-dialog/update-dialog.com
     PhonePipe,
     EmptyStateComponent,
     SortDialogComponent,
+    UserAddressesDialogComponent,
   ],
   imports: [
     CommonModule,

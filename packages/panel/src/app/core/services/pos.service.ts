@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
+  Address,
   DiscountCoupon,
   MANUAL_COST_TITLE,
   MANUAL_DISCOUNT_TITLE,
@@ -22,6 +23,7 @@ import { PrinterService } from './printer.service';
 import { TodayOrdersService } from './today-orders.service';
 import { ShopService } from './shop.service';
 import { ClubService } from './club.service';
+import { HttpClient } from '@angular/common/http';
 
 declare let persianDate: any;
 
@@ -33,7 +35,7 @@ export class PosService extends OrderDto {
   editOrder?: Order;
   menu: Menu;
   discountCoupons?: DiscountCoupon[];
-  selectedDiscountCoupon?: DiscountCoupon;
+  customerAddresses: Address[];
   private _customer?: User;
 
   thisWeekPurchases = {
@@ -57,7 +59,8 @@ export class PosService extends OrderDto {
     private printer: PrinterService,
     private todayOrders: TodayOrdersService,
     private shopService: ShopService,
-    private club: ClubService
+    private club: ClubService,
+    private http: HttpClient
   ) {
     super();
     this.clear();
@@ -115,7 +118,7 @@ export class PosService extends OrderDto {
     this.clear();
     this.setType(this.type);
     if (orderId) {
-      const order = this.todayOrders.getById(orderId) || (await this.orderService.getById(orderId));
+      const order = await this.orderService.getById(orderId);
       if (order) {
         this.editOrder = order;
         this.note = order.note;
@@ -127,11 +130,11 @@ export class PosService extends OrderDto {
         this.manualDiscount = Math.abs(
           Order.abstractItems(order).find((x) => x.title === MANUAL_DISCOUNT_TITLE)?.price || 0
         );
+        this.customer = order.customer;
         this.manualCost = Order.abstractItems(order).find((x) => x.title === MANUAL_COST_TITLE)?.price;
         this.address = order.address;
         this.setType(order.type);
         this.discountCoupon = order.discountCoupon;
-        this.customer = order.customer;
         this.customerId = order.customer?.id;
       }
     }
@@ -159,6 +162,9 @@ export class PosService extends OrderDto {
     this.thisYearPurchases.count = 0;
     this.thisYearPurchases.total = 0;
     this._customer = user;
+    this.discountCoupon = undefined;
+    this.address = undefined;
+    this.customerAddresses = [];
 
     if (user) {
       this.orderService
@@ -196,20 +202,17 @@ export class PosService extends OrderDto {
           (x) =>
             new Date(x.startedAt).valueOf() <= Date.now() && new Date(x.expiredAt).valueOf() >= Date.now()
         );
-        if (!this.editOrder) this.selectedDiscountCoupon = this.discountCoupons[0];
+        if (!this.editOrder) this.discountCoupon = this.discountCoupons[0];
         else if (this.editOrder && this.editOrder.discountCoupon) {
-          this.selectedDiscountCoupon = coupons.find((x) => x.id === this.editOrder!.discountCoupon!.id);
+          this.discountCoupon = coupons.find((x) => x.id === this.editOrder!.discountCoupon!.id);
         }
       });
 
-      // this.http.get<Address[]>(`addresses/${this._member.userId}`).subscribe((addresses) => {
-      //   this.addresses = addresses.filter(
-      //     (x) =>
-      //       (x.latitude && x.longitude) ||
-      //       (x.deliveryArea && this.deliveryAreas.find((y) => y.id === x.deliveryArea.id))
-      //   );
-      //   if (this.addresses.length === 1 && this.type === OrderType.Delivery) this.address = this.addresses[0];
-      // });
+      this.http.get<Address[]>(`addresses/${user.id}`).subscribe((addresses) => {
+        this.customerAddresses = addresses.filter((x) => x.deliveryArea);
+        if (this.customerAddresses.length === 1 && this.type === OrderType.Delivery)
+          this.address = this.customerAddresses[0];
+      });
     }
   }
 
@@ -251,7 +254,9 @@ export class PosService extends OrderDto {
       isManual: this.editOrder?.isManual || true,
       manualCost: this.manualCost,
       manualDiscount: this.manualDiscount,
+      discountCoupon: this.discountCoupon && { id: this.discountCoupon.id },
       customerId: this.customer?.id || null,
+      address: this.type === OrderType.Delivery && this.address,
     } as OrderDto;
     this.saving = true;
     this.snack.open(this.translate.instant('app.saving'), '', { duration: 3000 });

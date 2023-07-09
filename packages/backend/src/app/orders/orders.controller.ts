@@ -107,7 +107,7 @@ export class OrdersController {
         id,
       },
       withDeleted: true,
-      relations: ['items.product', 'customer', 'waiter', 'creator', 'reviews', 'payment', 'address'],
+      relations: ['items.product', 'customer', 'waiter', 'creator', 'reviews', 'payment', 'address.deliveryArea'],
     });
   }
 

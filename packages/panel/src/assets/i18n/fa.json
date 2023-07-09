@@ -320,7 +320,9 @@
     "searchUser": "جستجوی اعضا...",
     "thisWeekOrders": "سفارشات این هفته",
     "thisMonthOrder": "سفارشات این ماه",
-    "thisYearOrder": "سفارشات امسال"
+    "thisYearOrder": "سفارشات امسال",
+    "discountCoupon": "کدتخفیف",
+    "aaddress": "آدرس ارسال"
   },
   "memberSelectDialog": {
     "noData": "هیچ عضوی یافت نشد",

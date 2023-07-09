@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { Member, OrderType, User } from '@menno/types';
+import { Address, DELIVERY_COST_TITLE, DISCOUNT_CODE_TITLE, Member, OrderType, User } from '@menno/types';
 import { PosService } from '../../../core/services/pos.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TableSelectorDialogComponent } from '../../../shared/dialogs/table-selector-dialog/table-selector-dialog.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ClubService } from '../../../core/services/club.service';
 import { ShopService } from '../../../core/services/shop.service';
+import { UserAddressesDialogComponent } from '../../../shared/dialogs/user-addresses-dialog/user-addresses-dialog.component';
 
 @Component({
   selector: 'left-section',
@@ -70,5 +71,27 @@ export class LeftSectionComponent {
 
   removeMember() {
     this.POS.customer = undefined;
+  }
+
+  get discountPrice() {
+    return this.POS.abstractItems?.find((x) => x.title === DISCOUNT_CODE_TITLE)?.price || 0;
+  }
+
+  get deliveryPrice() {
+    return this.POS.abstractItems?.find((x) => x.title === DELIVERY_COST_TITLE)?.price || 0;
+  }
+
+  selectCustomerAddress() {
+    this.dialog
+      .open(UserAddressesDialogComponent, {
+        data: {
+          user: this.POS.customer,
+          addresses: this.POS.customerAddresses,
+        },
+      })
+      .afterClosed()
+      .subscribe((address: Address) => {
+        if (address) this.POS.address = address;
+      });
   }
 }

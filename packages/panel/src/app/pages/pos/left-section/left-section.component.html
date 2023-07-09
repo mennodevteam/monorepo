@@ -76,5 +76,41 @@
         {{ 'app.number' | translate: { value: (POS.thisYearPurchases.count | number) } }}
       </b>
     </a>
+    <mat-divider *ngIf="POS.customer"></mat-divider>
+    <a mat-list-item *ngIf="POS.customer && POS.discountCoupons?.length" [matMenuTriggerFor]="discountMenu">
+      <i class="fa-solid fa-tag mat-icon fa-large" matListItemIcon></i>
+      <span matListItemTitle>{{ 'pos.discountCoupon' | translate }}</span>
+      <span matListItemLine *ngIf="POS.discountCoupon">{{ POS.discountCoupon.title }}</span>
+      <div class="secondary" matListItemMeta>
+        <span *ngIf="discountPrice">{{ discountPrice | menuCurrency }}</span>
+        <i class="fa-regular fa-angle-left"></i>
+      </div>
+      <mat-menu #discountMenu="matMenu">
+        <button mat-menu-item *ngIf="POS.discountCoupon" (click)="POS.discountCoupon = undefined">
+          <i class="fa-solid fa-trash-alt mat-icon"></i>
+          {{ 'app.remove' | translate }}
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item *ngFor="let d of POS.discountCoupons" (click)="POS.discountCoupon = d">
+          <i class="fa-solid fa-tag mat-icon"></i>
+          {{ d.title }}
+        </button>
+      </mat-menu>
+    </a>
+    <a
+      mat-list-item
+      *ngIf="POS.customer && POS.type === OrderType.Delivery && POS.customerAddresses"
+      (click)="selectCustomerAddress()"
+    >
+      <i class="fa-solid fa-location-dot mat-icon fa-large" matListItemIcon></i>
+      <span matListItemTitle>{{ 'pos.aaddress' | translate }}</span>
+      <span matListItemLine *ngIf="POS.address">{{
+        POS.address.deliveryArea?.title || POS.address.description
+      }}</span>
+      <div class="secondary" matListItemMeta>
+        <span *ngIf="deliveryPrice">{{ deliveryPrice | menuCurrency }}</span>
+        <i class="fa-regular fa-angle-left"></i>
+      </div>
+    </a>
   </mat-nav-list>
 </div>
