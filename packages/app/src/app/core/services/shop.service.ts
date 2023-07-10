@@ -62,7 +62,7 @@ export class ShopService {
 
   getShopUsernameFromQuery() {
     const hostname = location.hostname;
-    if (hostname.search(environment.appDomain)) {
+    if (hostname.search(environment.appDomain) > -1) {
       const query = hostname.split('.')[0];
       return query;
     }
