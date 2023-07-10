@@ -50,8 +50,10 @@ export class MembersController {
   @Roles(UserRole.Panel)
   async filter(@LoginUser() user: AuthPayload, @Body() filter: FilterMemberDto): Promise<[Member[], number]> {
     const { club } = await this.auth.getPanelUserShop(user, ['club']);
-    filter.clubId = club.id;
-    return this.clubService.filterMembers(filter);
+    if (club) {
+      filter.clubId = club.id;
+      return this.clubService.filterMembers(filter);
+    }
   }
 
   @Post()
