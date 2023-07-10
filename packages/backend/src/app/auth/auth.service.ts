@@ -83,12 +83,11 @@ export class AuthService {
   }
 
   async sendToken(mobilePhone: string, validateTime = 70000) {
-    const phone = PersianNumberService.toEnglish(mobilePhone);
     const token = Math.floor(Math.random() * 8000 + 1000).toString();
-    await this.lookup(phone, process.env.KAVENEGAR_CONFIRM_PHONE_TEMPLATE, token);
-    this.mobilePhoneTokens[phone] = token;
+    await this.lookup(mobilePhone, process.env.KAVENEGAR_CONFIRM_PHONE_TEMPLATE, token);
+    this.mobilePhoneTokens[mobilePhone] = token;
     setTimeout(() => {
-      delete this.mobilePhoneTokens[phone];
+      delete this.mobilePhoneTokens[mobilePhone];
     }, validateTime);
     let user = await this.usersRepo.findOneBy({ mobilePhone });
     if (!user) {
@@ -139,14 +138,13 @@ export class AuthService {
     }
   }
 
-  async loginAppWithToken(userId: string, mobile: string, token: string): Promise<User> {
-    const mobilePhone = PersianNumberService.toEnglish(mobile);
+  async loginAppWithToken(userId: string, mobilePhone: string, token: string): Promise<User> {
     if (this.mobilePhoneTokens[mobilePhone] === PersianNumberService.toEnglish(token)) {
       delete this.mobilePhoneTokens[mobilePhone];
       let user = await this.usersRepo.findOneBy({ mobilePhone });
       if (!user) {
         await this.usersRepo.update(userId, {
-          mobilePhone: mobile,
+          mobilePhone,
         });
         user = await this.usersRepo.findOneBy({ mobilePhone });
       }

@@ -22,6 +22,7 @@ import { Public } from './public.decorator';
 import { LoginUser } from './user.decorator';
 import { AdminLocalAuthGuard } from './admin-local-auth.guard';
 import { Roles } from './roles.decorators';
+import { PersianNumberService } from '@menno/utils';
 
 @Controller('auth')
 export class AuthController {
@@ -69,7 +70,7 @@ export class AuthController {
   @Public()
   @Get('sendToken/:mobile')
   async sendToken(@Param() params, @Req() req: Request) {
-    return this.auth.sendToken(params.mobile);
+    return this.auth.sendToken(PersianNumberService.toEnglish(params.mobile));
   }
 
   @Get('info')
@@ -83,6 +84,10 @@ export class AuthController {
 
   @Get('login/app/:userId/:mobile/:token')
   async loginAppWithToken(@Param() params) {
-    return this.auth.loginAppWithToken(params.userId, params.mobile, params.token);
+    return this.auth.loginAppWithToken(
+      params.userId,
+      PersianNumberService.toEnglish(params.mobile),
+      PersianNumberService.toEnglish(params.token)
+    );
   }
 }
