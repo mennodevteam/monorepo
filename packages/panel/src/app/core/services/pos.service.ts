@@ -132,8 +132,9 @@ export class PosService extends OrderDto {
         );
         this.customer = order.customer;
         this.manualCost = Order.abstractItems(order).find((x) => x.title === MANUAL_COST_TITLE)?.price;
-        this.address = order.address;
         this.setType(order.type);
+        this.address = order.address;
+        this.details = order.details;
         this.discountCoupon = order.discountCoupon;
         this.customerId = order.customer?.id;
       }
