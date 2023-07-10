@@ -1,5 +1,6 @@
 import { Directive, ElementRef, Input, SimpleChanges } from '@angular/core';
 import { FilesService } from '../../core/services/files.service';
+import { ThemeService } from '../../core/services/theme.service';
 
 export enum ImagePlaceholder {
   default = 'default',
@@ -14,7 +15,11 @@ export class ImageLoaderDirective {
   @Input() placeholder: string;
   @Input() defaultPlaceholder = ImagePlaceholder.default;
 
-  constructor(private el: ElementRef, private fileService: FilesService) {}
+  constructor(
+    private el: ElementRef,
+    private fileService: FilesService,
+    private themeService: ThemeService
+  ) {}
 
   ngAfterViewInit(): void {
     this.init();
@@ -26,10 +31,17 @@ export class ImageLoaderDirective {
     }
   }
 
+  get defaultPlaceholderUrl() {
+    if (this.defaultPlaceholder === ImagePlaceholder.default) {
+      return `assets/images/placeholder/default.png`;
+    }
+    return `assets/images/placeholder/person.png`;
+  }
+
   init() {
     const nativeEl = this.el.nativeElement;
     let src = this.imageLoader ? this.fileService.getFileUrl(this.imageLoader) : undefined;
-    const placeholderSrc = this.placeholder || `assets/images/placeholder/${this.defaultPlaceholder}.png`;
+    const placeholderSrc = this.placeholder || this.defaultPlaceholderUrl;
 
     if (!src) {
       src = placeholderSrc;

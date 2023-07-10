@@ -83,4 +83,12 @@ export class ThemeService {
       this._renderer.appendChild(this.head, linkEl);
     });
   }
+
+  get currentMode() {
+    if (this.mode) return this.mode;
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return `dark-mode`;
+    }
+    return `light-mode`;
+  }
 }
