@@ -2,6 +2,7 @@ import { Shop, ShopGroup } from '@menno/types';
 import { Controller, Get, Param } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Public } from '../auth/public.decorator';
 
 @Controller('shopGroups')
 export class ShopGroupsController {
@@ -12,6 +13,7 @@ export class ShopGroupsController {
     private shopsRepo: Repository<Shop>
   ) {}
 
+  @Public()
   @Get(':query')
   async findByCode(@Param('query') query: string): Promise<ShopGroup> {
     const shop = await this.shopsRepo.findOne({
