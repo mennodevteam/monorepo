@@ -191,16 +191,17 @@ export class ShopsService {
 
     const res = await this.http
       .get<{
-        shop: OldTypes.Shop;
-        menu: OldTypes.Menu;
-        appConfig: OldTypes.AppConfig;
-        users: OldTypes.ShopUser[];
-        printViews: OldTypes.ShopPrintView[];
-        deliveryAreas: OldTypes.DeliveryArea[];
-        plugins: OldTypes.ShopPlugin[];
+        shop: OldTypes.Shop,
+        menu: OldTypes.Menu,
+        appConfig: OldTypes.AppConfig,
+        users: OldTypes.ShopUser[],
+        printViews: OldTypes.ShopPrintView[],
+        deliveryAreas: OldTypes.DeliveryArea[],
+        plugins: OldTypes.ShopPlugin[],
+        smsAccount: OldTypes.SmsAccount,
       }>(`http://65.21.237.12:3002/shops/complete-data/xmje/${code}`)
       .toPromise();
-    const { shop, menu, appConfig, users, printViews, deliveryAreas, plugins } = res.data;
+    const { shop, menu, appConfig, users, printViews, deliveryAreas, plugins, smsAccount } = res.data;
     const validPlugins = plugins.filter((x) => new Date(x.expiredAt).valueOf() > Date.now());
     if (validPlugins.length === 0) {
       validPlugins.push({
@@ -230,6 +231,7 @@ export class ShopsService {
         poses: shop.details?.poses,
         tables: shop.details?.tables,
       },
+      smsAccount,
       username: shop.username,
       region: region ? { id: region.id } : shop.region,
       phones: shop.phones,
