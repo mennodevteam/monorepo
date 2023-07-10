@@ -191,14 +191,14 @@ export class ShopsService {
 
     const res = await this.http
       .get<{
-        shop: OldTypes.Shop,
-        menu: OldTypes.Menu,
-        appConfig: OldTypes.AppConfig,
-        users: OldTypes.ShopUser[],
-        printViews: OldTypes.ShopPrintView[],
-        deliveryAreas: OldTypes.DeliveryArea[],
-        plugins: OldTypes.ShopPlugin[],
-        smsAccount: OldTypes.SmsAccount,
+        shop: OldTypes.Shop;
+        menu: OldTypes.Menu;
+        appConfig: OldTypes.AppConfig;
+        users: OldTypes.ShopUser[];
+        printViews: OldTypes.ShopPrintView[];
+        deliveryAreas: OldTypes.DeliveryArea[];
+        plugins: OldTypes.ShopPlugin[];
+        smsAccount: OldTypes.SmsAccount;
       }>(`http://65.21.237.12:3002/shops/complete-data/xmje/${code}`)
       .toPromise();
     const { shop, menu, appConfig, users, printViews, deliveryAreas, plugins, smsAccount } = res.data;
@@ -285,6 +285,9 @@ export class ShopsService {
 
     const newAppConfig = await this.appConfigsRepository.save({
       disableOrdering: appConfig.viewMode,
+      dings: appConfig.ding,
+      ding: appConfig.ding?.length ? true : false,
+      disableOrderingOnClose: appConfig.disableOrderingOutsideTime,
     });
     this.shopsRepository.update(newShop.id, { appConfig: { id: newAppConfig.id } });
 
