@@ -20,6 +20,14 @@ export const ShopGroupSchema = new EntitySchema<ShopGroup>({
       type: String,
       nullable: true,
     },
+    phone: {
+      type: String,
+      nullable: true,
+    },
+    instagram: {
+      type: String,
+      nullable: true,
+    },
     code: {
       type: String,
       unique: true,

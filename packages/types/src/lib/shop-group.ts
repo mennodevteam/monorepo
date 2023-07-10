@@ -5,7 +5,9 @@ export class ShopGroup {
     code: string;
     title: string;
     description: string;
-    listName: string;
+    listName?: string;
+    phone?: string;
+    instagram?: PerformanceServerTiming;
     logo: string;
     details: any;
     shops: Shop[];

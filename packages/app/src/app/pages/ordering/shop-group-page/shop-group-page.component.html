@@ -1,0 +1,52 @@
+<div class="wrapper" *ngIf="shopGroup">
+  <header>
+    <img [imageLoader]="shopGroup.logo || shopGroup.shops[0].logo" id="logo" />
+    <div class="header-texts">
+      <h1 id="title">{{ shopGroup.title }}</h1>
+      <p *ngIf="shopGroup.description" id="description">{{ shopGroup.description }}</p>
+    </div>
+  </header>
+
+  <mat-nav-list>
+    <a *ngIf="shopGroup.phone" mat-list-item href="tel:{{ shopGroup.phone }}">
+      <span matListItemTitle>تلفن</span>
+      <span matListItemLine>
+        {{ shopGroup.phone }}
+      </span>
+      <button mat-icon-button matListItemMeta>
+        <i class="fa-solid fa-phone"></i>
+      </button>
+    </a>
+    <a
+      mat-list-item
+      *ngIf="shopGroup.instagram"
+      href="https://www.instagram.com/{{ shopGroup.instagram }}"
+      target="_blank"
+    >
+      <span matListItemTitle>اینستاگرام</span>
+      <span matListItemLine>
+        {{ shopGroup.instagram }}
+      </span>
+      <button mat-icon-button matListItemMeta>
+        <i class="fa-brands fa-instagram"></i>
+      </button>
+    </a>
+    <mat-divider></mat-divider>
+    <div>
+      <span spacer></span>
+    </div>
+    <span matSubheader *ngIf="shopGroup.listName">
+      یکی از {{ shopGroup.listName || 'شعب' }} را انتخاب کنید:
+    </span>
+    <a mat-list-item *ngFor="let s of shopGroup.shops" [href]="appLink(s)">
+      <img matListItemAvatar [imageLoader]="s.logo" />
+      <span matListItemTitle>{{ s.title }}</span>
+      <span matListItemLine *ngIf="s.address">
+        {{ s.address }}
+      </span>
+      <button mat-icon-button matListItemMeta>
+        <i class="fa-solid fa-angle-left"></i>
+      </button>
+    </a>
+  </mat-nav-list>
+</div>

@@ -9,10 +9,11 @@ import { HttpModule } from '@nestjs/axios';
 import { FilesModule } from '../files/files.module';
 import { ShopUsersController } from './shop-users.controller';
 import { ClubsModule } from '../clubs/clubs.module';
+import { ShopGroupsController } from './shop-groups.controller';
 
 @Module({
   imports: [SchemasModule, SmsModule, UsersModule, ClubsModule, AuthModule, HttpModule, FilesModule],
-  controllers: [ShopsController, ShopUsersController],
+  controllers: [ShopsController, ShopUsersController, ShopGroupsController],
   providers: [ShopsService],
   exports: [ShopsService],
 })

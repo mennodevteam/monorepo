@@ -2,7 +2,12 @@
   "appData": {
     "forceReload": false,
     "lazyReload": false,
-    "changes": ["ارسال خودکار پیام به مشتری", "رفع مشکل نمایش اشتباه وضعیت سفارش‌گیری"]
+    "changes": [
+      "رفع مشکل کد تخفیف در سفارش دستی",
+      "امکان سفارش دستی ارسال با پیک",
+      "رفع مشکل عدم نمایش قیمت در گوشی",
+      "صفحه "
+    ]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",

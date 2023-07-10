@@ -7,6 +7,7 @@ import { ProductPageComponent } from './product-page/product-page.component';
 import { ShopHomeComponent } from './shop-home/shop-home.component';
 import { OrderCompleteComponent } from './order-complete/order-complete.component';
 import { DiscountCouponListPageComponent } from './discount-coupon-list-page/discount-coupon-list-page.component';
+import { ShopGroupPageComponent } from './shop-group-page/shop-group-page.component';
 
 export const orderingRoutes: Routes = [
   {
@@ -16,6 +17,11 @@ export const orderingRoutes: Routes = [
       {
         path: '',
         component: ShopHomeComponent,
+      },
+      {
+        canActivate: [AuthGuard],
+        path: 'g',
+        component: ShopGroupPageComponent,
       },
       {
         canActivate: [AuthGuard],

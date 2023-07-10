@@ -57,6 +57,15 @@ span[spacer-sm] {
   flex: 1;
 }
 
+.secondary {
+  display: flex !important;
+  align-items: center !important;
+  height: 100%;
+  gap: 8px;
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
 // material override
 
 html[dir="rtl"] {

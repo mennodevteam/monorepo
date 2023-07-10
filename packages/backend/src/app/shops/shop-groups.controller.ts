@@ -1,4 +1,4 @@
-import { ShopGroup } from '@menno/types';
+import { Shop, ShopGroup } from '@menno/types';
 import { Controller, Get, Param } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -7,14 +7,17 @@ import { Repository } from 'typeorm';
 export class ShopGroupsController {
   constructor(
     @InjectRepository(ShopGroup)
-    private shopGroupsRepo: Repository<ShopGroup>
+    private shopGroupsRepo: Repository<ShopGroup>,
+    @InjectRepository(Shop)
+    private shopsRepo: Repository<Shop>
   ) {}
 
   @Get(':query')
-  findByCode(@Param('query') query: string): Promise<ShopGroup> {
-    return this.shopGroupsRepo.findOne({
-      where: [{ code: query }],
-      relations: ['shops'],
+  async findByCode(@Param('query') query: string): Promise<ShopGroup> {
+    const shop = await this.shopsRepo.findOne({
+      where: [{ domain: query }, { username: query }, { code: query }],
+      relations: ['shopGroup.shops'],
     });
+    return shop?.shopGroup;
   }
 }

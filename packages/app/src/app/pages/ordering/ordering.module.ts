@@ -38,6 +38,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DiscountCouponListPageComponent } from './discount-coupon-list-page/discount-coupon-list-page.component';
 import { DingBottomSheetComponent } from './ding-bottom-sheet/ding-bottom-sheet.component';
+import { ShopGroupPageComponent } from './shop-group-page/shop-group-page.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { DingBottomSheetComponent } from './ding-bottom-sheet/ding-bottom-sheet.
     OrderCompleteComponent,
     DiscountCouponListPageComponent,
     DingBottomSheetComponent,
+    ShopGroupPageComponent,
   ],
   imports: [
     CommonModule,

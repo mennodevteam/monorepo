@@ -13,9 +13,9 @@
       <span matListItemLine>
         {{ shop?.phones }}
       </span>
-      <button mat-icon-button matListItemMeta>
+      <div class="secondary" matListItemMeta>
         <i class="fa-solid fa-phone"></i>
-      </button>
+      </div>
     </a>
     <a
       mat-list-item
@@ -27,44 +27,55 @@
       <span matListItemLine>
         {{ shop?.instagram }}
       </span>
-      <button mat-icon-button matListItemMeta>
+      <div class="secondary" matListItemMeta>
         <i class="fa-brands fa-instagram"></i>
-      </button>
+      </div>
     </a>
     <a mat-list-item lines="3" *ngIf="shop?.address">
       <span matListItemTitle>آدرس</span>
       <span>
         {{ shop?.address }}
       </span>
-      <button mat-icon-button matListItemMeta>
+      <div class="secondary" matListItemMeta>
         <i class="fa-solid fa-location-dot"></i>
-      </button>
+      </div>
     </a>
 
     <mat-divider></mat-divider>
 
+    <a mat-list-item *ngIf="shop?.shopGroup" routerLink="/g">
+      <span matListItemTitle>
+        لیست سایر {{ shop?.shopGroup?.listName || 'شعب' }}
+      </span>
+      <div class="secondary" matListItemMeta>
+        <i class="fa-sharp fa-solid fa-sitemap"></i>
+      </div>
+    </a>
+
     <a mat-list-item routerLink="/coupons">
       <span matListItemTitle>
         کد‌های تخفیف شما
-        <span *ngIf="couponCount" style="font-size: 11px;" class="error-text">({{ 'app.number' | translate: { value: couponCount } }})</span>
+        <span *ngIf="couponCount" style="font-size: 11px" class="error-text"
+          >({{ 'app.number' | translate: { value: couponCount } }})</span
+        >
       </span>
-      <button mat-icon-button matListItemMeta>
+      <div class="secondary" matListItemMeta>
         <i class="fa-sharp fa-solid fa-tags"></i>
-      </button>
+      </div>
     </a>
 
     <a mat-list-item routerLink="/orders">
       <span matListItemTitle>لیست سفارشات پیشین</span>
-      <button mat-icon-button matListItemMeta>
+      <div class="secondary" matListItemMeta>
         <i class="fa-sharp fa-solid fa-clock-rotate-left"></i>
-      </button>
+      </div>
     </a>
 
     <a mat-list-item routerLink="/profile">
       <span matListItemTitle>حساب کاربری</span>
-      <button mat-icon-button matListItemMeta>
+      <div class="secondary" matListItemMeta>
         <i class="fa-sharp fa-solid fa-user"></i>
-      </button>
+      </div>
     </a>
   </mat-nav-list>
 
