@@ -29,8 +29,7 @@ export class ImageLoaderDirective {
   init() {
     const nativeEl = this.el.nativeElement;
     let src = this.imageLoader ? this.fileService.getFileUrl(this.imageLoader) : undefined;
-    const placeholderSrc =
-      this.placeholder || `assets/images/placeholder/${this.defaultPlaceholder}.png`;
+    const placeholderSrc = this.placeholder || `assets/images/placeholder/${this.defaultPlaceholder}.png`;
 
     if (!src) {
       src = placeholderSrc;
@@ -38,7 +37,10 @@ export class ImageLoaderDirective {
 
     if (nativeEl.tagName.toLowerCase() === 'img') {
       nativeEl.src = src;
-      nativeEl.onerror = `this.onerror = null;this.src=${placeholderSrc}`;
+      nativeEl.onerror = function () {
+        this.onerror = null;
+        this.src = placeholderSrc;
+      };
     } else {
       nativeEl.style.background = `url(${src}), url(${placeholderSrc})`;
       nativeEl.style.backgroundSize = 'cover';
