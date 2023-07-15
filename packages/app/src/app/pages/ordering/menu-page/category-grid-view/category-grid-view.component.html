@@ -19,7 +19,7 @@
       </span>
     </discount-badge>
     <mat-grid-tile-footer *ngIf="!product.details?.hideTitle || !product.details?.hidePrice">
-      <span class="product-title cut-text" [hidden]="product.details?.hideTitle">
+      <span class="product-title cut-text" [hidden]="!!product.details?.hideTitle">
         {{ product.title }}
       </span>
       <span

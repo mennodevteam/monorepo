@@ -16,7 +16,6 @@ body {
   font-family: "IRANSans";
   background-color: var(--md-sys-color-background);
   color: var(--md-sys-color-on-background);
-  overflow-x: hidden;
 }
 
 .submit-button {
@@ -131,4 +130,8 @@ mat-card {
 
 .mat-bottom-sheet-container {
   background-color: var(--md-sys-color-background) !important;
+}
+
+.cdk-visually-hidden {
+  display: none !important;
 }
