@@ -78,7 +78,7 @@
       {{ order.totalPrice | menuCurrency }}
       <span *ngIf="order.paymentType" class="payed-label">
         <i class="fa-solid fa-circle-check"></i>
-        {{ order.paymentType | orderPayment }}
+        {{ order.paymentType | orderPayment : order.details.posPayed }}
       </span>
       <button
         stopPropagation

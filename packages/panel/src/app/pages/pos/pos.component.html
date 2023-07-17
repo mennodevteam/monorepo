@@ -1,9 +1,10 @@
 <mat-toolbar class="main-toolbar mat-elevation-z3 form-theme">
   <button mat-icon-button class="fa-regular fa-close" goBack></button>
-  <h1 flex *ngIf="!queryParamId">{{ 'pos.newTitle' | translate }}</h1>
-  <h1 flex *ngIf="queryParamId && POS.editOrder">
+  <h1 class="hide-xs" *ngIf="!queryParamId">{{ 'pos.newTitle' | translate }}</h1>
+  <h1 class="hide-xs" *ngIf="queryParamId && POS.editOrder">
     {{ 'pos.editTitle' | translate: { value: POS.editOrder.qNumber } }}
   </h1>
+  <span flex></span>
   <button mat-button [disabled]="POS.saving" (click)="POS.clear()" color="warn">
     {{ 'app.clear' | translate }}
   </button>

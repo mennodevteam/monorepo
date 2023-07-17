@@ -11,11 +11,19 @@ main {
   height: calc(100vh - 56px);
 
   div[flex] {
-    width: 0;
+    // width: 0;
   }
 
   section {
     flex: none;
     width: 300px;
+  }
+
+  @media only screen and (max-width: 1024px) {
+    flex-direction: column;
+
+    section {
+      width: auto;
+    }
   }
 }

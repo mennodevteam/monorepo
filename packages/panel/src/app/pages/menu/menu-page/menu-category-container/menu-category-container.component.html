@@ -39,7 +39,7 @@
     </mat-toolbar-row>
   </mat-toolbar>
   <mat-divider></mat-divider>
-  <mat-card-content>
+  <mat-card-content style="overflow-x: auto;">
     <ng-container *ngIf="category.products && category.products.length">
       <products-table [products]="category.products"></products-table>
     </ng-container>
