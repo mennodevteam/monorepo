@@ -94,7 +94,8 @@ export class ShopPageComponent implements OnInit {
       this.form.get('longitude')?.setValue(ev.latlng.lng);
       this.map.flyTo(ev.latlng, 16);
       this.form.markAsDirty();
-      this.marker.setLatLng(ev.latlng);
+      if (!this.marker) this.marker = new L.Marker(ev.latlng)
+      else this.marker.setLatLng(ev.latlng);
       this.mapEdit = false;
     }
   }
