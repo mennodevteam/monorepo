@@ -829,5 +829,10 @@
     "orderManual": "دستی",
     "orderNotManual": "منوی‌دیجیتال",
     "delay": "تاخیر ارسال (دقیقه)"
+  },
+  "editAddressDialog": {
+    "title": "آدرس مشتری",
+    "address": "آدرس دقیق",
+    "deliveryArea": "منطقه"
   }
 }
