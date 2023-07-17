@@ -11,6 +11,7 @@ import { FilesService } from '../../../core/services/files.service';
 import { MenuService } from '../../../core/services/menu.service';
 import { ShopService } from '../../../core/services/shop.service';
 import { ImageCropperDialogComponent } from '../../../shared/dialogs/image-cropper-dialog/image-cropper-dialog.component';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'product-edit-page',
@@ -33,7 +34,8 @@ export class ProductEditPageComponent {
     private dialog: MatDialog,
     private snack: MatSnackBar,
     private translate: TranslateService,
-    private fileService: FilesService
+    private fileService: FilesService,
+    private sanitizer: DomSanitizer,
   ) {
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
@@ -99,7 +101,7 @@ export class ProductEditPageComponent {
     if (this.product) dto.id = this.product.id;
     if (this.imageCropperResult) {
       this.snack.open(this.translate.instant('app.uploading'), '', { duration: 5000 });
-      const savedFile = await this.fileService.upload(this.imageCropperResult.file, `${dto.title}.jpeg`);
+      const savedFile = await this.fileService.upload(this.imageCropperResult.file, `${Date.now()}.jpeg`);
       dto.images = [savedFile?.key];
     }
     dto.details = {
