@@ -3,7 +3,10 @@
     "forceReload": false,
     "lazyReload": false,
     "changes": [
-      ""
+      "رفع مشکل کد تخفیف در سفارش دستی",
+      "امکان سفارش دستی ارسال با پیک",
+      "نمایش شماره میز در لیست سفارشات",
+      "رفع مشکل تغییر شماره میز در ویرایش"
     ]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
