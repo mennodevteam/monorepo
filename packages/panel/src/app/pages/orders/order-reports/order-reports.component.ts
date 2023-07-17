@@ -151,7 +151,7 @@ export class OrderReportsComponent implements AfterViewInit {
           this.chartData.labels = keys.map((x) => this.menuService.getProductById(x)?.title);
           break;
         case 'payment':
-          this.chartData.labels = keys.map((x) => this.orderPaymentPipe.transform(Number(x)));
+          this.chartData.labels = keys.map((x) => isNaN(Number(x)) ? x : this.orderPaymentPipe.transform(Number(x)));
           break;
         case 'state':
           this.chartData.labels = keys.map((x) => this.orderStatePipe.transform(Number(x)));

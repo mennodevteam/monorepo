@@ -130,6 +130,7 @@ export class OrdersService {
     const condition: FindOptionsWhere<Order> = {};
 
     condition.shop = { id: dto.shopId };
+    const shop = await this.shopsRepo.findOneBy({ id: dto.shopId });
 
     if (dto.fromDate && dto.toDate) {
       condition.createdAt = Between(dto.fromDate, dto.toDate);
@@ -202,7 +203,15 @@ export class OrdersService {
         break;
       case 'payment':
         data = groupBySum<Order>(
-          orders,
+          orders.map((o) => {
+            if (o.paymentType === OrderPaymentType.Cash) {
+              const posIndex = o.details?.posPayed?.findIndex((x) => x > 0);
+              if (posIndex > -1) {
+                o.paymentType = shop?.details?.poses[posIndex] || `POS_${posIndex}` as any;
+              }
+            }
+            return o;
+          }),
           (order) => {
             return order.paymentType.toString();
           },
