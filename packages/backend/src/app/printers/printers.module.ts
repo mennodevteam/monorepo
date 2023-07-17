@@ -8,5 +8,6 @@ import { PrintersService } from './printers.service';
   imports: [SchemasModule, AuthModule],
   controllers: [PrintersController],
   providers: [PrintersService],
+  exports: [PrintersService]
 })
 export class PrintersModule {}

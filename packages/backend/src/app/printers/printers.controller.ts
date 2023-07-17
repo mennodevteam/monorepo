@@ -44,6 +44,9 @@ export class PrintersController {
     return this.printViewsRepo.find({
       where: { printer: In(printers.map((x) => x.id)) },
       relations: ['printer'],
+      order: {
+        createdAt: 'ASC',
+      },
     });
   }
 

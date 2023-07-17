@@ -4,7 +4,9 @@ import {
   Order,
   OrderMessage,
   OrderMessageEvent,
+  OrderPaymentType,
   Shop,
+  ShopPrintView,
   SmsTemplate,
   Status,
   User,
@@ -20,6 +22,7 @@ import {
 } from 'typeorm';
 import { WebPushNotificationsService } from '../web-push-notifications/web-push-notifications.service';
 import { SmsService } from '../sms/sms.service';
+import { PrintersService } from '../printers/printers.service';
 
 @EventSubscriber()
 export class OrderSubscriber implements EntitySubscriberInterface<Order> {
@@ -33,9 +36,12 @@ export class OrderSubscriber implements EntitySubscriberInterface<Order> {
     private orderMessagesRepo: Repository<OrderMessage>,
     @InjectRepository(Order)
     private ordersRepo: Repository<Order>,
+    @InjectRepository(ShopPrintView)
+    private shopPrintViewsRepo: Repository<ShopPrintView>,
     @InjectRepository(Shop)
     private shopsRepo: Repository<Shop>,
     private webPush: WebPushNotificationsService,
+    private printersService: PrintersService,
     private smsService: SmsService
   ) {
     dataSource.subscribers.push(this);
@@ -111,6 +117,57 @@ export class OrderSubscriber implements EntitySubscriberInterface<Order> {
             }
           }
         });
+    }
+
+    try {
+      this.autoPrint(order, shop, true);
+    } catch (error) {}
+  }
+
+  async afterUpdate(event: UpdateEvent<Order>): Promise<any> {
+    try {
+      const order = {
+        ...(await this.ordersRepo.findOne({ where: { id: event.entity.id }, relations: ['shop'] })),
+        ...event.entity,
+      };
+      this.autoPrint(order as Order, order.shop, false);
+    } catch (error) {}
+  }
+
+  private async autoPrint(order: Order, shop: Shop, isAdded?: boolean) {
+    const printerViews = await this.shopPrintViewsRepo.findBy({ printer: { shop: { id: shop.id } } });
+
+    for (const p of printerViews) {
+      if (!isAdded && order.paymentType === OrderPaymentType.Online && p.autoPrintOnOnlinePayment) {
+        this.printersService.printOrder({
+          orderId: order.id,
+          prints: [{ printViewId: p.id }],
+          waitForLocal: false,
+        });
+      }
+
+      if (
+        !isAdded &&
+        order.paymentType !== OrderPaymentType.NotPayed &&
+        order.paymentType !== OrderPaymentType.Online &&
+        p.autoPrintOnManualSettlement
+      ) {
+        {
+          this.printersService.printOrder({
+            orderId: order.id,
+            prints: [{ printViewId: p.id }],
+            waitForLocal: false,
+          });
+        }
+      }
+
+      if (isAdded && !order.isManual && p.autoPrintOnNewOrder) {
+        this.printersService.printOrder({
+          orderId: order.id,
+          prints: [{ printViewId: p.id }],
+          waitForLocal: false,
+        });
+      }
     }
   }
 }
