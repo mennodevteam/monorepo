@@ -388,20 +388,22 @@ export class ClubsService {
     });
 
     for (const m of newMembers) {
-      const existUser = users.find((x) => x.mobilePhone === m.user.mobilePhone);
-      const user = existUser ? { id: existUser.id } : m.user;
-      await this.membersRepo.save({
-        club: { id: club.id },
-        description: m.description,
-        extraInfo: m.extraInfo,
-        gem: m.gem,
-        joinedAt: m.joinedAt,
-        id: m.id,
-        publicKey: m.publicKey,
-        star: m.star,
-        user,
-        wallet: m.wallet,
-      } as Member);
+      try {
+        const existUser = users.find((x) => x.mobilePhone === m.user.mobilePhone);
+        const user = existUser ? { id: existUser.id } : m.user;
+        await this.membersRepo.save({
+          club: { id: club.id },
+          description: m.description,
+          extraInfo: m.extraInfo,
+          gem: m.gem,
+          joinedAt: m.joinedAt,
+          id: m.id,
+          publicKey: m.publicKey,
+          star: m.star,
+          user,
+          wallet: m.wallet,
+        } as Member);
+      } catch (error) {}
     }
     return { club, members: newMembers.length };
   }
