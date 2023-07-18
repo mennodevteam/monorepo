@@ -11,7 +11,7 @@ main {
   height: calc(100vh - 56px);
 
   div[flex] {
-    // width: 0;
+    width: 0;
   }
 
   section {
@@ -21,6 +21,10 @@ main {
 
   @media only screen and (max-width: 1024px) {
     flex-direction: column;
+
+    div[flex] {
+      width: auto;
+    }
 
     section {
       width: auto;

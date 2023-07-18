@@ -35,7 +35,7 @@ export class UserAddressesDialogComponent {
   }
 
   edit(add?: Address) {
-    const deliveryAreaOptions = this.deliveryAreas.map((d) => ({ text: d.title, value: { id: d.id } }));
+    const deliveryAreaOptions = this.deliveryAreas.map((d) => ({ text: d.title, value: d }));
     const fields: PromptKeyFields = {
       description: {
         label: this.t.instant(`editAddressDialog.address`),
@@ -65,6 +65,7 @@ export class UserAddressesDialogComponent {
         if (dto) {
           if (add) dto.id = add.id;
           dto.user = { id: this.user.id } as User;
+          debugger
           this.http.post<Address>('addresses', dto).subscribe((data) => {
             if (data) {
               if (add) {

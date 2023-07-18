@@ -1,6 +1,6 @@
 {
   "appData": {
-    "forceReload": false,
+    "forceReload": true,
     "lazyReload": false,
     "changes": [
       "رفع مشکل کد تخفیف در سفارش دستی",
