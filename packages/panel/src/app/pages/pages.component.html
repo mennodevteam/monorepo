@@ -46,6 +46,9 @@
     <i class="fa-solid fa-plus-circle"></i>
     {{ 'shell.addOrder' | translate }}
   </button>
+  <button mat-icon-button (click)="club.openAddMemberDialog()" class="hide-xs" *ngIf="!isClubDisabled">
+    <i class="fa-solid fa-user-plus"></i>
+  </button>
   <button mat-icon-button class="hide-xs" [matMenuTriggerFor]="mobileMenu">
     <i class="fa-solid fa-mobile"></i>
   </button>

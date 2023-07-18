@@ -27,8 +27,11 @@
       formControlName="query"
       placeholder="{{ 'pos.searchUser' | translate }}"
     />
-    <button mat-icon-button>
+    <button mat-icon-button type="submit">
       <i class="fa-regular fa-search"></i>
+    </button>
+    <button mat-icon-button (click)="openAddMemberDialog()" type="button">
+      <i class="fa-regular fa-user-plus"></i>
     </button>
   </form>
 

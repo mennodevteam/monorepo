@@ -17,6 +17,8 @@
   background-color: $gray-l2;
   display: block;
   outline: none;
+  flex: 1;
+  min-width: 0px;
   border: $border;
   border-radius: 8px;
 }

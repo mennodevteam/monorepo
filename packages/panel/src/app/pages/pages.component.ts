@@ -15,6 +15,7 @@ import { PromptDialogComponent } from '../shared/dialogs/prompt-dialog/prompt-di
 import { PersianNumberService } from '@menno/utils';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ClubService } from '../core/services/club.service';
 
 @Component({
   selector: 'menno-pages',
@@ -38,7 +39,8 @@ export class PagesComponent implements OnInit {
     private dingService: DingService,
     private dialog: MatDialog,
     private snack: MatSnackBar,
-    private translate: TranslateService
+    private translate: TranslateService,
+    public club: ClubService,
   ) {
     this.isHandset$ = this.breakpointObserver.observe('(max-width: 1024px)').pipe(
       map((result) => result.matches),

@@ -38,6 +38,14 @@ export class LeftSectionComponent {
       });
   }
 
+  openAddMemberDialog() {
+    this.clubService.openAddMemberDialog().then((m) => {
+      if (m) {
+        this.selectMember(m);
+      }
+    })
+  }
+
   get tables() {
     return this.shopService.shop?.details?.tables;
   }
