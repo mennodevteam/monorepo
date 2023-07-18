@@ -148,9 +148,6 @@ export class AuthService {
         });
         user = await this.usersRepo.findOneBy({ mobilePhone });
       }
-      if (!user) {
-        console.log('loginAppWithToken no user', { mobilePhone, userId });
-      }
       return this.loginApp(user);
     } else {
       throw new HttpException('code is not valid', HttpStatus.FORBIDDEN);

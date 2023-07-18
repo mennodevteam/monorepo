@@ -120,10 +120,9 @@ export class ShopsController {
   @Public()
   @Get(':query')
   async findByUsernameOrCode(@Param('query') query: string, @Req() req): Promise<Shop> {
-    console.log(query);
     const shop = await this.shopsRepo.findOne({
       where: [{ domain: query }, { username: query }, { code: query }],
-      relations: ['region', 'shopGroup', 'appConfig.theme', 'paymentGateway', 'plugins'],
+      relations: ['region', 'shopGroup', 'appConfig.theme', 'paymentGateway', 'plugins', 'club'],
     });
 
     if (!(shop.plugins?.plugins?.indexOf(Plugin.Ordering) >= 0)) shop.appConfig.disableOrdering = true;

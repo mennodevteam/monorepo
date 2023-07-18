@@ -116,7 +116,6 @@ export class PrintersService {
         type: view.type,
       });
     }
-    console.log('a', actions);
     return this.printActionsRepo.save(actions);
   }
 }
