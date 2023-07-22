@@ -43,6 +43,8 @@ export class ShopService {
             this.themeService.mode = 'light';
             break;
         }
+      } else {
+        this.themeService.color = 'default';
       }
 
       if (shop) {

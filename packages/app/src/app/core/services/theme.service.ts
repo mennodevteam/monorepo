@@ -33,12 +33,9 @@ export class ThemeService {
 
   set color(val: string) {
     if (COLORS.indexOf(val) === -1) return;
-    if (val === 'default') this.setColor(val);
-    else {
-      this.loadCss(`${val}-theme.css`).then(() => {
-        this.setColor(val);
-      });
-    }
+    this.loadCss(`${val}-theme.css`).then(() => {
+      this.setColor(val);
+    });
     this.setColor(val);
   }
 
