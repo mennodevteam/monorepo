@@ -36,7 +36,7 @@ export class ClubsController {
   @Get('join/:clubId')
   @Roles(UserRole.App)
   async joinClub(@Param('clubId') clubId: string, @LoginUser() user: AuthPayload) {
-    this.clubsService.join(clubId, user.id);
+    return this.clubsService.join(clubId, user.id);
   }
 
   @Public()

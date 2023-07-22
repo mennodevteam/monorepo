@@ -84,4 +84,15 @@ export class MembersController {
   async deleteMember(@Param('id') id: string): Promise<void> {
     await this.membersRepo.softDelete(id);
   }
+
+  @Get('club/:clubId')
+  @Roles(UserRole.App)
+  async getMemberClub(@LoginUser() user: AuthPayload, @Param('clubId') clubId: string) {
+    return this.membersRepo.findOne({
+      where: {
+        club: { id: clubId },
+        user: { id: user.id },
+      },
+    });
+  }
 }

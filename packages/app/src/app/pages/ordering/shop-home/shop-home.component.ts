@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { MenuService } from '../../../core/services/menu.service';
 import { ShopService } from '../../../core/services/shop.service';
 import { HttpClient } from '@angular/common/http';
-import { DiscountCoupon, OrderType } from '@menno/types';
+import { DiscountCoupon, Member, OrderType } from '@menno/types';
 import { BasketService } from '../../../core/services/basket.service';
 import { ActivatedRoute } from '@angular/router';
+import { ClubService } from '../../../core/services/club.service';
 
 @Component({
   selector: 'shop-home',
@@ -13,13 +14,17 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ShopHomeComponent {
   couponCount = 0;
+  member: Member;
+  loadingMember = false;
   constructor(
     private shopService: ShopService,
     private menuService: MenuService,
     private http: HttpClient,
     private basket: BasketService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public club: ClubService
   ) {
+    this.loadMember();
     this.http.get<DiscountCoupon[]>(`discountCoupons/app/${this.shopService.shop?.id}`).subscribe((c) => {
       if (c.length) {
         this.couponCount = c.length;
@@ -46,6 +51,24 @@ export class ShopHomeComponent {
         }
       }
     }
+  }
+
+  async loadMember() {
+    this.loadingMember = true;
+    try {
+      const member = await this.club.getMember();
+      if (member) this.member = member;
+    } catch (error) {}
+    this.loadingMember = false;
+  }
+
+  async join() {
+    this.loadingMember = true;
+    try {
+      const member = await this.club.join();
+      if (member) this.member = member;
+    } catch (error) {}
+    this.loadingMember = false;
   }
 
   get shop() {

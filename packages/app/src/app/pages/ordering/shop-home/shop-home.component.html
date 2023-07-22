@@ -5,6 +5,16 @@
       <h1 id="title">{{ shop?.title }}</h1>
       <p *ngIf="shop?.description" id="description">{{ shop?.description }}</p>
     </div>
+
+    <ng-container *ngIf="shop?.club">
+      <button class="member-button" mat-stroked-button [disabled]="member || loadingMember" color="primary" (click)="join()">
+        <span *ngIf="member">
+          <i class="fa-solid fa-check-circle success-text fa-lg"></i>
+          شما عضو باشگاه مشتریان هستید
+        </span>
+        <span *ngIf="!member"> عضویت در باشگاه مشتریان </span>
+      </button>
+    </ng-container>
   </header>
 
   <mat-nav-list>
@@ -44,9 +54,7 @@
     <mat-divider></mat-divider>
 
     <a mat-list-item *ngIf="shop?.shopGroup" routerLink="/g">
-      <span matListItemTitle>
-        لیست سایر {{ shop?.shopGroup?.listName || 'شعب' }}
-      </span>
+      <span matListItemTitle> لیست سایر {{ shop?.shopGroup?.listName || 'شعب' }} </span>
       <div class="secondary" matListItemMeta>
         <i class="fa-sharp fa-solid fa-sitemap"></i>
       </div>

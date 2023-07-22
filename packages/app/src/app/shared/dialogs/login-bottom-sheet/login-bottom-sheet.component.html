@@ -15,7 +15,7 @@
       required
     />
   </mat-form-field>
-  <button mat-flat-button color="accent" type="submit" [disabled]="loading" class="submit-button">
+  <button mat-flat-button color="primary" type="submit" [disabled]="loading" class="submit-button">
     {{ 'app.continue' | translate }}
     <i *ngIf="loading" class="fad fa-spinner-third fa-spin"></i>
   </button>
@@ -51,7 +51,7 @@
     <span class="ltr" *ngIf="timer | async">({{ timer | async }})</span>
   </button>
   <span spacer-2x></span>
-  <button mat-flat-button color="accent" type="submit" [disabled]="loading" class="submit-button">
+  <button mat-flat-button color="primary" type="submit" [disabled]="loading" class="submit-button">
     {{ 'app.continue' | translate }}
     <i *ngIf="loading" class="fad fa-spinner-third fa-spin"></i>
   </button>
