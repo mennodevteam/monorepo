@@ -93,6 +93,24 @@ export class PaymentsController {
     );
   }
 
+  @Roles(UserRole.Panel)
+  @Get('test/:amount')
+  async test(@LoginUser() user: AuthPayload, @Req() req: Request, @Param('amount') amount: string) {
+    const shop: Shop = await this.auth.getPanelUserShop(user, ['paymentGateway']);
+    if (!shop.paymentGateway) throw new HttpException('no payment gateway for shop', HttpStatus.NOT_FOUND);
+    return this.getRedirectLink(
+      shop.paymentGateway.id,
+      Number(amount),
+      {
+        test: true,
+      },
+      'test',
+      { id: user.id, mobilePhone: user.mobilePhone } as User,
+      shop.id,
+      req.headers.origin
+    );
+  }
+
   @Roles(UserRole.App)
   @Get('payOrder/:orderId')
   async payOrder(@LoginUser() user: AuthPayload, @Param('orderId') orderId: string, @Req() req: Request) {
@@ -192,6 +210,9 @@ export class PaymentsController {
           'charge',
           amount
         );
+        const redirectUrl = `${payment.appReturnUrl}`;
+        return res.redirect(redirectUrl);
+      } else if (payment.details.test) {
         const redirectUrl = `${payment.appReturnUrl}`;
         return res.redirect(redirectUrl);
       }

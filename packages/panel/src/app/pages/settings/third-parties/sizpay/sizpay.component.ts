@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PaymentGateway, ThirdPartyApp } from '@menno/types';
 import { ShopService } from '../../../../core/services/shop.service';
 import { environment } from '../../../../../environments/environment';
+import { PayService } from 'packages/panel/src/app/core/services/pay.service';
 
 @Component({
   selector: 'sizpay',
@@ -14,7 +15,7 @@ export class SizpayComponent {
   gatewayForm: FormGroup;
   gateway?: PaymentGateway;
 
-  constructor(private shopService: ShopService, private http: HttpClient) {
+  constructor(private shopService: ShopService, private http: HttpClient, private payService: PayService) {
     this.initForm();
   }
 
@@ -41,5 +42,9 @@ export class SizpayComponent {
 
   get sizpayDocLink() {
     return environment.sizpayDocLink;
+  }
+
+  test() {
+    this.payService.redirect('test', 1000);
   }
 }

@@ -37,14 +37,14 @@
         </form>
       </mat-card-content>
       <mat-card-actions>
-        <button
-          mat-stroked-button
-          color="primary"
-          *ngIf="gatewayForm.disabled"
-          (click)="gatewayForm.enable()"
-        >
-          {{ 'app.edit' | translate }}
-        </button>
+        <ng-container *ngIf="gatewayForm.disabled">
+          <button mat-stroked-button color="primary" (click)="gatewayForm.enable()">
+            {{ 'app.edit' | translate }}
+          </button>
+          <button mat-button (click)="test()" *ngIf="gateway">
+            {{ 'thirdParties.sizpay.test' | translate }}
+          </button>
+        </ng-container>
         <ng-container *ngIf="!gatewayForm.disabled">
           <button mat-flat-button color="accent" (click)="save()">
             {{ 'app.save' | translate }}
@@ -61,7 +61,7 @@
     <mat-card>
       <mat-card-content>
         <mat-nav-list>
-          <a mat-list-item href="{{sizpayDocLink}}" target="_blank">
+          <a mat-list-item href="{{ sizpayDocLink }}" target="_blank">
             <span matListItemTitle>{{ 'thirdParties.sizpay.help' | translate }}</span>
             <span matListItemLine>{{ 'thirdParties.sizpay.helpDescription' | translate }}</span>
           </a>

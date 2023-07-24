@@ -1,6 +1,6 @@
 {
   "appData": {
-    "forceReload": false,
+    "forceReload": true,
     "lazyReload": false,
     "changes": [
       "امکان ثبت سریع اعضای باشگاه",
