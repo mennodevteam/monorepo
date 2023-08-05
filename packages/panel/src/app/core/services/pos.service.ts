@@ -148,6 +148,8 @@ export class PosService extends OrderDto {
     this.discountCoupon = undefined;
     this.editOrder = undefined;
     this.customer = undefined;
+    this.manualCost = undefined;
+    this.manualDiscount = undefined;
     this.details = {};
     this.setType(OrderType.DineIn);
   }

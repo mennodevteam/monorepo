@@ -1,12 +1,8 @@
 {
   "appData": {
-    "forceReload": true,
+    "forceReload": false,
     "lazyReload": false,
-    "changes": [
-      "امکان ثبت سریع اعضای باشگاه",
-      "رفع مشکل محاسبه قیمت فاکتور در سفارشات دستی ارسال با پیک",
-      "رفع مشکل نمایش نادرست سفارش دستی در دسکتاپ"
-    ]
+    "changes": ["رفع باگ تخفیف دستی و هزینه مازاد در سفارشات داخل مجموعه"]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",
