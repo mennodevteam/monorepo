@@ -142,6 +142,7 @@ export class AuthService {
   async loginAppWithToken(userId: string, mobilePhone: string, token: string): Promise<User> {
     Sentry.captureEvent({
       level: 'debug',
+      message: 'login app with token',
       extra: { userId, mobilePhone, token, tokens: this.mobilePhoneTokens },
     });
     if (this.mobilePhoneTokens[mobilePhone] === PersianNumberService.toEnglish(token)) {
