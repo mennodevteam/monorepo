@@ -64,7 +64,6 @@ export class AddressesController {
             }
           )
           .toPromise();
-        console.log(res.data, mobilePhone);
         if (res?.data?.addresses?.length) {
           await this.repo.save(
             res?.data?.addresses.map(

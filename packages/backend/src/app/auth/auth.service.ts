@@ -16,6 +16,7 @@ import { PersianNumberService } from '@menno/utils';
 import * as Kavenegar from 'kavenegar';
 import { HttpService } from '@nestjs/axios';
 import { OldTypes } from '@menno/old-types';
+import * as Sentry from '@sentry/node';
 
 let kavenegarApi;
 
@@ -139,6 +140,10 @@ export class AuthService {
   }
 
   async loginAppWithToken(userId: string, mobilePhone: string, token: string): Promise<User> {
+    Sentry.captureEvent({
+      level: 'debug',
+      extra: { userId, mobilePhone, token, tokens: this.mobilePhoneTokens },
+    });
     if (this.mobilePhoneTokens[mobilePhone] === PersianNumberService.toEnglish(token)) {
       delete this.mobilePhoneTokens[mobilePhone];
       let user = await this.usersRepo.findOneBy({ mobilePhone });

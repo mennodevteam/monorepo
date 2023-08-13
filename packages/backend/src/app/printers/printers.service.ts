@@ -38,11 +38,12 @@ export class PrintersService {
         'reviews',
         'customer',
         'creator',
-        'address'
+        'address',
       ],
       withDeleted: true,
     });
-    order.items = order.items.filter((x) => !x.isAbstract || x.price != 0);
+    if (!order.items) return [];
+    order.items = order.items?.filter((x) => !x.isAbstract || x.price != 0);
     const printViews = await this.printViewsRepo.find({
       where: { id: In(dto.prints.map((x) => x.printViewId)) },
       relations: ['printer'],
