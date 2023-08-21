@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from '../../core/guards/auth.guard';
 import { MenuGuard } from '../../core/guards/menu.guard';
 import { BasketPageComponent } from './basket-page/basket-page.component';
 import { MenuPageComponent } from './menu-page/menu-page.component';
@@ -8,6 +7,7 @@ import { ShopHomeComponent } from './shop-home/shop-home.component';
 import { OrderCompleteComponent } from './order-complete/order-complete.component';
 import { DiscountCouponListPageComponent } from './discount-coupon-list-page/discount-coupon-list-page.component';
 import { ShopGroupPageComponent } from './shop-group-page/shop-group-page.component';
+import { MobilePhoneGuard } from '../../core/guards/mobile-phone.guard';
 
 export const orderingRoutes: Routes = [
   {
@@ -19,17 +19,17 @@ export const orderingRoutes: Routes = [
         component: ShopHomeComponent,
       },
       {
-        canActivate: [AuthGuard],
+        canActivate: [MobilePhoneGuard],
         path: 'g',
         component: ShopGroupPageComponent,
       },
       {
-        canActivate: [AuthGuard],
+        canActivate: [MobilePhoneGuard],
         path: 'basket',
         component: BasketPageComponent,
       },
       {
-        canActivate: [AuthGuard],
+        canActivate: [MobilePhoneGuard],
         path: 'coupons',
         component: DiscountCouponListPageComponent,
       },
