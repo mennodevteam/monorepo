@@ -46,20 +46,7 @@ export class OrdersTableComponent implements AfterViewInit {
   }
 
   changeState(order: Order) {
-    let newState: OrderState | undefined;
-    switch (order.state) {
-      case OrderState.Pending:
-        newState = OrderState.Processing;
-        break;
-      case OrderState.Processing:
-        newState = order.type === OrderType.Delivery ? OrderState.Shipping : OrderState.Completed;
-        break;
-      case OrderState.Shipping:
-      case OrderState.Ready:
-        newState = OrderState.Completed;
-        break;
-    }
-
+    let newState = Order.nextState(order);
     if (newState != undefined) {
       this.ordersService.changeState(order, newState);
     }

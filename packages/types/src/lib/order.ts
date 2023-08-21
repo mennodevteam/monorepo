@@ -86,4 +86,27 @@ export class Order {
     const shopLink = Shop.appLink(shop, appOrigin);
     return `${shopLink}${orderDetailsPath}/${orderId}`;
   }
+
+  static getDefaultStates(order: Order) {
+    switch (order?.type) {
+      case OrderType.Delivery:
+        return [OrderState.Pending, OrderState.Processing, OrderState.Shipping, OrderState.Completed];
+      case OrderType.DineIn:
+      case OrderType.Takeaway:
+        return [OrderState.Pending, OrderState.Processing, OrderState.Ready, OrderState.Completed];
+      default:
+        return [];
+    }
+  }
+
+  static nextState(order?: Order, states?: OrderState[]) {
+    if (order) {
+      if (!states) states = Order.getDefaultStates(order);
+      const selectedIndex = states.indexOf(order.state);
+      if (selectedIndex < states.length - 1) {
+        return states[selectedIndex + 1];
+      }
+    }
+    return;
+  }
 }

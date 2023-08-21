@@ -129,13 +129,7 @@ export class OrderDetailsComponent implements OnDestroy {
   }
 
   get nextState() {
-    if (this.order) {
-      const selectedIndex = this.states.indexOf(this.order?.state);
-      if (selectedIndex < this.states.length - 1) {
-        return this.states[selectedIndex + 1];
-      }
-    }
-    return;
+    return Order.nextState(this.order);
   }
 
   async goNextState() {
