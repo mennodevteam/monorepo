@@ -1,4 +1,13 @@
-import { Controller, Get, HttpException, HttpStatus, Param } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  ForbiddenException,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { AuthService } from '../auth/auth.service';
 import { Roles } from '../auth/roles.decorators';
 import { LoginUser } from '../auth/user.decorator';
@@ -13,8 +22,8 @@ export class DeliveryAreasController {
     private auth: AuthService,
     @InjectRepository(Shop)
     private shopsRepo: Repository<Shop>,
-    @InjectRepository(Address)
-    private addressesRepo: Repository<Address>
+    @InjectRepository(DeliveryArea)
+    private repo: Repository<DeliveryArea>
   ) {}
 
   @Get()
@@ -22,6 +31,17 @@ export class DeliveryAreasController {
   async getDeliveryAreas(@LoginUser() user: AuthPayload) {
     const shop = await this.auth.getPanelUserShop(user, ['deliveryAreas']);
     return shop?.deliveryAreas;
+  }
+
+  @Post()
+  @Roles(UserRole.Panel)
+  async save(@Body() dto: DeliveryArea, @LoginUser() user: AuthPayload) {
+    const shop = await this.auth.getPanelUserShop(user, ['deliveryAreas']);
+    if (dto.id) dto.shop = { id: shop.id } as Shop;
+    else if (!shop.deliveryAreas.find((x) => x.id === dto.id)) {
+      throw new ForbiddenException();
+    }
+    return this.repo.save(dto);
   }
 
   @Get(`:shopId/:lat/:lng`)
