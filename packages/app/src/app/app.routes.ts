@@ -7,7 +7,7 @@ import { MobilePhoneGuard } from './core/guards/mobile-phone.guard';
 export const appRoutes: Route[] = [
   {
     path: '',
-    canActivate: [TranslateGuard],
+    canActivate: [TranslateGuard, AuthGuard],
     children: [
       {
         path: '',
