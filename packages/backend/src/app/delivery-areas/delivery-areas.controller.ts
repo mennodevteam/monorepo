@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   ForbiddenException,
   Get,
   HttpException,
@@ -30,18 +31,29 @@ export class DeliveryAreasController {
   @Roles(UserRole.Panel)
   async getDeliveryAreas(@LoginUser() user: AuthPayload) {
     const shop = await this.auth.getPanelUserShop(user, ['deliveryAreas']);
-    return shop?.deliveryAreas;
+    const deliveryAreas = shop?.deliveryAreas || [];
+    return deliveryAreas;
   }
 
   @Post()
   @Roles(UserRole.Panel)
   async save(@Body() dto: DeliveryArea, @LoginUser() user: AuthPayload) {
     const shop = await this.auth.getPanelUserShop(user, ['deliveryAreas']);
-    if (dto.id) dto.shop = { id: shop.id } as Shop;
-    else if (!shop.deliveryAreas.find((x) => x.id === dto.id)) {
+    dto.shop = { id: shop.id } as Shop;
+    if (dto.id && !shop.deliveryAreas.find((x) => x.id === dto.id)) {
       throw new ForbiddenException();
     }
     return this.repo.save(dto);
+  }
+
+  @Delete(':id')
+  @Roles(UserRole.Panel)
+  async remove(@Param('id') id: string, @LoginUser() user: AuthPayload) {
+    const shop = await this.auth.getPanelUserShop(user, ['deliveryAreas']);
+    if (!shop.deliveryAreas.find((x) => x.id === id)) {
+      throw new ForbiddenException();
+    }
+    this.repo.delete(id);
   }
 
   @Get(`:shopId/:lat/:lng`)

@@ -2,7 +2,7 @@ import { Status } from './status.enum';
 import { Shop } from './shop';
 
 export class DeliveryArea {
-  id: number;
+  id: string;
   title: string;
   price: number;
   minOrderPrice?: number;

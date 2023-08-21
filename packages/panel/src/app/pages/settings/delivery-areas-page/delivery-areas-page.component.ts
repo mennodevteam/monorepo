@@ -108,6 +108,8 @@ export class DeliveryAreasPageComponent implements OnInit {
       // });
       if (polygon) dto.polygon = polygon;
       if (area) dto.id = area.id;
+      if (!dto.minOrderPrice) dto.minOrderPrice = 0;
+      if (!dto.minPriceForFree) dto.minPriceForFree = 0;
       await this.http.post('deliveryAreas', dto).toPromise();
       this.load();
       // loadingDialog.close();
