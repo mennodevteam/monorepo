@@ -94,7 +94,7 @@ export class ShopPageComponent implements OnInit {
       this.form.get('longitude')?.setValue(ev.latlng.lng);
       this.map.flyTo(ev.latlng, 16);
       this.form.markAsDirty();
-      if (!this.marker) this.marker = new L.Marker(ev.latlng)
+      if (!this.marker) this.marker = new L.Marker(ev.latlng);
       else this.marker.setLatLng(ev.latlng);
       this.mapEdit = false;
     }
@@ -145,11 +145,14 @@ export class ShopPageComponent implements OnInit {
   openOpeningHoursDialog() {
     this.dialog.open(OpeningHoursDialogComponent, {
       disableClose: true,
-      width: '420px'
+      width: '420px',
     });
   }
 
-  removePhoto() {}
+  removePhoto() {
+    this.form.get('logo')?.setValue(null);
+    this.form.markAsDirty();
+  }
 
   async save() {
     if (this.form.invalid) return;

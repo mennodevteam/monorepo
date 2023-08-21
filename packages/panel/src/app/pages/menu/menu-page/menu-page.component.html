@@ -41,7 +41,7 @@
   </mat-menu>
 </mat-toolbar>
 
-<mat-tab-group mat-stretch-tabs="false">
+<mat-tab-group mat-stretch-tabs="false" (selectedIndexChange)="selectedTabChange($event)">
   <mat-tab *ngFor="let cat of categories">
     <ng-template mat-tab-label>
       {{ cat.title }}

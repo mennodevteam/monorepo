@@ -1,18 +1,33 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MenuService } from '../../../core/services/menu.service';
 import { ShopService } from '../../../core/services/shop.service';
 import { Status } from '@menno/types';
 import { SortDialogComponent } from '../../../shared/dialogs/sort-dialog/sort-dialog.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatTabGroup } from '@angular/material/tabs';
 
 @Component({
   selector: 'menno-menu-page',
   templateUrl: './menu-page.component.html',
   styleUrls: ['./menu-page.component.scss'],
 })
-export class MenuPageComponent {
+export class MenuPageComponent implements AfterViewInit {
   Status = Status;
-  constructor(private menuService: MenuService, private dialog: MatDialog) {}
+  @ViewChild(MatTabGroup) tabs: MatTabGroup;
+  constructor(
+    private menuService: MenuService,
+    private dialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
+
+  ngAfterViewInit(): void {
+    const selectedTab = this.route.snapshot?.queryParams['category'];
+    if (this.tabs && selectedTab) {
+      this.tabs.selectedIndex = Number(selectedTab);
+    }
+  }
 
   get categories() {
     return this.menuService.menu?.categories;
@@ -30,5 +45,12 @@ export class MenuPageComponent {
           this.menuService.sortCategories(items.map((x: any) => x.key));
         }
       });
+  }
+
+  selectedTabChange(index: number) {
+    this.router.navigate([], {
+      queryParams: { category: index },
+      replaceUrl: true,
+    });
   }
 }
