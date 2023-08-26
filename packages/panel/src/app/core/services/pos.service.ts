@@ -159,6 +159,7 @@ export class PosService extends OrderDto {
   }
 
   set customer(user) {
+    debugger
     this.thisWeekPurchases.count = 0;
     this.thisWeekPurchases.total = 0;
     this.thisMonthPurchases.count = 0;

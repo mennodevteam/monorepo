@@ -353,8 +353,6 @@ export class ClubService {
         }
 
         const newMembers = await this.insertMembers([member]);
-        newMembers[0].user = member.user;
-        member.user = newMembers[0].user;
         this.snack.open(this.translate.instant('app.savedSuccessfully', { value: 1 }), '', {
           panelClass: 'success',
         });
