@@ -2,7 +2,12 @@
   "appData": {
     "forceReload": false,
     "lazyReload": false,
-    "changes": ["رفع باگ تخفیف دستی و هزینه مازاد در سفارشات داخل مجموعه"]
+    "changes": [
+      "رفع مشکل تغییر وضعیت سفارشات در سفارشات بیرون‌بر",
+      "بازگشت به دسته بندی قبلی بعد از ویرایش آیتم",
+      "رفع مشکل عدم ذخیره سازی مناطق ارسال با پیک",
+      "رفع مشکل عدم حذف لوگوی مجموعه"
+    ]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",

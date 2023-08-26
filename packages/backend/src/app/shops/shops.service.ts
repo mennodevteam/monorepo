@@ -244,7 +244,7 @@ export class ShopsService {
       users,
     };
 
-    const newShop = await this.shopsRepository.save(dto);
+    const newShop: Shop = await this.shopsRepository.save(dto);
 
     if (shop.logo) {
       const savedImage: any = await this.filesService.uploadFromUrl(
