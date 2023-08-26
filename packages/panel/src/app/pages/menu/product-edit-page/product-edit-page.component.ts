@@ -12,6 +12,7 @@ import { MenuService } from '../../../core/services/menu.service';
 import { ShopService } from '../../../core/services/shop.service';
 import { ImageCropperDialogComponent } from '../../../shared/dialogs/image-cropper-dialog/image-cropper-dialog.component';
 import { DomSanitizer } from '@angular/platform-browser';
+import { CropperOptions } from 'ngx-image-cropper';
 
 @Component({
   selector: 'product-edit-page',
@@ -35,7 +36,7 @@ export class ProductEditPageComponent {
     private snack: MatSnackBar,
     private translate: TranslateService,
     private fileService: FilesService,
-    private sanitizer: DomSanitizer,
+    private sanitizer: DomSanitizer
   ) {
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
@@ -126,11 +127,13 @@ export class ProductEditPageComponent {
   }
 
   upload() {
+    const spans = this.form.get('spans')?.value;
     this.dialog
       .open(ImageCropperDialogComponent, {
         data: {
           resizeToWidth: 600,
-        },
+          aspectRatio: spans ? spans[0] / spans[1] : 1,
+        } as CropperOptions,
       })
       .afterClosed()
       .subscribe((data) => {
