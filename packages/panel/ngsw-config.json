@@ -2,7 +2,7 @@
   "appData": {
     "forceReload": false,
     "lazyReload": false,
-    "changes": ["رفع مشکل کراپ تصویر آیتم در ابعاد 2 در 1", "رفع مشکل ذخیره سفارش جدید با ذخیره کاربر جدید"]
+    "changes": ["نمایش مجموع فروش روز (پرداخت شده)", "نمایش جزئیات نوع پرداخت مشتری (نوع کارت‌خوان)"]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",
