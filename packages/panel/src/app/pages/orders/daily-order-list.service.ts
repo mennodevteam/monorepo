@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Order, OrderState, OrderType } from '@menno/types';
+import { FilterOrderDto, Order, OrderState, OrderType } from '@menno/types';
 import { BehaviorSubject, filter, map, take } from 'rxjs';
 import { OrdersService } from '../../core/services/orders.service';
 import { TodayOrdersService } from '../../core/services/today-orders.service';
@@ -146,10 +146,17 @@ export class DailyOrderListService {
     this.orders.next(orders);
   }
 
-  get totalPrice() {
+  totalPrice(filter?: FilterOrderDto) {
+    let orders = this.allOrders.filter((o) => !o.deletedAt && o.state != OrderState.Canceled);
+    if (filter) {
+      if (filter.states) orders = orders.filter((o) => filter.states!.indexOf(o.state) > -1);
+      if (filter.types) orders = orders.filter((o) => filter.types!.indexOf(o.type) > -1);
+      if (filter.paymentTypes)
+        orders = orders.filter((o) => filter.paymentTypes!.indexOf(o.paymentType) > -1);
+    }
     let total = 0;
-    for (const o of this.allOrders) {
-      if (!o.deletedAt && o.state != OrderState.Canceled) total += o.totalPrice;
+    for (const o of orders) {
+      total += o.totalPrice;
     }
     return total;
   }

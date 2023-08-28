@@ -306,6 +306,7 @@
     "report": "گزارشات",
     "advancedReport": "گزارشات پیشرفته",
     "totalPrice": "فروش امروز",
+    "payedTotalPrice": "پرداخت شده",
     "advancedFilter": "فیلتر پیشرفته"
   },
   "pos": {

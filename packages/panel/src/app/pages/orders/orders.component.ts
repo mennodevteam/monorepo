@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Order, UserAction } from '@menno/types';
+import { Order, OrderPaymentType, UserAction } from '@menno/types';
 import { DailyOrderListService, DailyOrderStateFilter } from './daily-order-list.service';
 import { ShopService } from '../../core/services/shop.service';
 import { AuthService } from '../../core/services/auth.service';
@@ -67,6 +67,10 @@ export class OrdersComponent {
 
   get accessReport() {
     return this.auth.hasAccess(UserAction.Report);
+  }
+
+  get payedTotalPrice() {
+    return this.OS.totalPrice({paymentTypes: [OrderPaymentType.Cash, OrderPaymentType.ClubWallet, OrderPaymentType.Online]})
   }
 
   setQueryParams() {

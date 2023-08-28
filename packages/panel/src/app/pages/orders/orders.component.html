@@ -30,7 +30,10 @@
   </button>
   <mat-menu #reportMenu="matMenu">
     <button mat-menu-item disabled>
-      {{ 'dailyOrder.totalPrice' | translate }}: {{ OS.totalPrice | menuCurrency: undefined:true }}
+      {{ 'dailyOrder.totalPrice' | translate }}: {{ OS.totalPrice() | menuCurrency: undefined:true }}
+    </button>
+    <button mat-menu-item disabled>
+      {{ 'dailyOrder.payedTotalPrice' | translate }}: {{ payedTotalPrice | menuCurrency: undefined:true }}
     </button>
     <mat-divider></mat-divider>
     <button mat-menu-item routerLink="report">
