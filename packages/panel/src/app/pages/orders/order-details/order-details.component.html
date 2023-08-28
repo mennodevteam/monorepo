@@ -104,7 +104,7 @@
             <i *ngIf="order.paymentType" class="fa-solid fa-circle-check green"></i>
             <i *ngIf="!order.paymentType" class="fa-solid fa-circle-xmark red"></i>
             <span flex [ngClass]="{ green: order.paymentType, red: !order.paymentType }">
-              {{ order.paymentType | orderPayment }}
+              {{ order.paymentType | orderPayment : order.details.posPayed : order.totalPrice }}
             </span>
             <button
               mat-stroked-button
