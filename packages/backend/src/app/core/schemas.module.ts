@@ -42,6 +42,7 @@ import {
   WalletLogSchema,
   WalletSchema,
   WebPushSubscriptionSchema,
+  WindowsLocalNotificationSchema,
 } from './schemas';
 
 @Module({
@@ -88,6 +89,7 @@ import {
       WalletLogSchema,
       WalletSchema,
       WebPushSubscriptionSchema,
+      WindowsLocalNotificationSchema,
     ]),
   ],
   exports: [TypeOrmModule],

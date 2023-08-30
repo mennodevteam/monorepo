@@ -72,7 +72,6 @@ export class LeftSectionComponent {
   }
 
   selectMember(member: Member) {
-    debugger
     this.POS.customer = member.user;
     this.searchMembers = [];
     this.userQueryForm.controls['query'].setValue('');

@@ -19,11 +19,14 @@ export class TagsController {
   @Get()
   async find(@LoginUser() user: AuthPayload): Promise<MemberTag[]> {
     const { club } = await this.auth.getPanelUserShop(user, ['club']);
-    return this.tagsRepo.find({
-      where: {
-        club: { id: club.id },
-      },
-    });
+    if (club) {
+      return this.tagsRepo.find({
+        where: {
+          club: { id: club.id },
+        },
+      });
+    }
+    return [];
   }
 
   @Post()

@@ -24,6 +24,7 @@ import { ThirdPartiesModule } from './third-parties/third-parties.module';
 import { WebPushNotificationModule } from './web-push-notifications/web-push-notifications.module';
 import { DingModule } from './ding/ding.module';
 import { OrderMessagesModule } from './order-messages/order-messages.module';
+import { WindowsLocalNotificationModule } from './windows-local-notifacation/windows-local-notification.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { OrderMessagesModule } from './order-messages/order-messages.module';
     ThirdPartiesModule,
     WebPushNotificationModule,
     DingModule,
+    WindowsLocalNotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

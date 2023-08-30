@@ -5,11 +5,13 @@ import {
   OrderMessage,
   OrderMessageEvent,
   OrderPaymentType,
+  OrderType,
   Shop,
   ShopPrintView,
   SmsTemplate,
   Status,
   User,
+  WindowsLocalNotification,
 } from '@menno/types';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
@@ -23,6 +25,7 @@ import {
 import { WebPushNotificationsService } from '../web-push-notifications/web-push-notifications.service';
 import { SmsService } from '../sms/sms.service';
 import { PrintersService } from '../printers/printers.service';
+import * as Sentry from '@sentry/node';
 
 @EventSubscriber()
 export class OrderSubscriber implements EntitySubscriberInterface<Order> {
@@ -40,6 +43,8 @@ export class OrderSubscriber implements EntitySubscriberInterface<Order> {
     private shopPrintViewsRepo: Repository<ShopPrintView>,
     @InjectRepository(Shop)
     private shopsRepo: Repository<Shop>,
+    @InjectRepository(WindowsLocalNotification)
+    private windowsLocalNotificationRepo: Repository<WindowsLocalNotification>,
     private webPush: WebPushNotificationsService,
     private printersService: PrintersService,
     private smsService: SmsService
@@ -122,6 +127,12 @@ export class OrderSubscriber implements EntitySubscriberInterface<Order> {
     try {
       this.autoPrint(order, shop, true);
     } catch (error) {}
+
+    // try {
+    //   this.insertWindowsNotification(order, shop);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   }
 
   async afterUpdate(event: UpdateEvent<Order>): Promise<any> {
@@ -134,9 +145,45 @@ export class OrderSubscriber implements EntitySubscriberInterface<Order> {
     } catch (error) {}
   }
 
+  private async insertWindowsNotification(order: Order, shop: Shop) {
+    if (order.isManual) return;
+    const notification = new WindowsLocalNotification();
+    notification.shop = shop;
+    notification.isNotified = false;
+    notification.failedCount = 0;
+    notification.title = 'سفارش جدید';
+    switch (order.type) {
+      case OrderType.DineIn:
+        if (order.details.table) notification.description = `${order.details.table}  میز  `;
+        else {
+          notification.description = 'داخل مجموعه';
+        }
+        break;
+
+      case OrderType.Delivery:
+        notification.description = 'ارسال با پیک';
+        break;
+      case OrderType.Takeaway:
+        notification.description = 'بیرون بر';
+        break;
+    }
+    this.windowsLocalNotificationRepo.save(notification);
+  }
+
   private async autoPrint(order: Order, shop: Shop, isAdded?: boolean) {
     const printerViews = await this.shopPrintViewsRepo.findBy({ printer: { shop: { id: shop.id } } });
-
+    Sentry.captureEvent({
+      level: 'debug',
+      tags: {
+        printViews: printerViews.length,
+      },
+      message: 'panel auto pring',
+      transaction: order.id,
+      user: {
+        id: shop.id,
+      },
+      extra: { printViews: printerViews.map((p) => p.id).join(','), isAdded },
+    });
     for (const p of printerViews) {
       if (!isAdded && order.paymentType === OrderPaymentType.Online && p.autoPrintOnOnlinePayment) {
         this.printersService.printOrder({

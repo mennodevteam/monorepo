@@ -39,3 +39,4 @@ export * from './user.schema';
 export * from './wallet-log.schema';
 export * from './wallet.schema';
 export * from './web-push-subscription.schema';
+export * from './windows-local-notification.schema';

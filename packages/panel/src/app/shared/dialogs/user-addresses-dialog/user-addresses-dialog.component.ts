@@ -65,7 +65,6 @@ export class UserAddressesDialogComponent {
         if (dto) {
           if (add) dto.id = add.id;
           dto.user = { id: this.user.id } as User;
-          debugger
           this.http.post<Address>('addresses', dto).subscribe((data) => {
             if (data) {
               if (add) {
