@@ -317,7 +317,7 @@ mat-card {
 
   &.warning {
     box-shadow: none !important;
-    color: darken($yellow, 15);
+    color: darken($yellow, 30);
     border: 1px solid $yellow;
     background: rgba($yellow, 0.1);
   }

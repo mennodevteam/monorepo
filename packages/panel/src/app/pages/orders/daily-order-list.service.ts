@@ -134,7 +134,7 @@ export class DailyOrderListService {
         orders = this.allOrders.filter((x) => !x.deletedAt && x.paymentType);
         break;
       case 'edited':
-        orders = this.allOrders.filter((x) => !x.deletedAt);
+        orders = this.allOrders.filter((x) => !x.deletedAt && x.details.itemChanges?.length);
         break;
       case 'deleted':
         orders = this.allOrders.filter((x) => x.deletedAt);

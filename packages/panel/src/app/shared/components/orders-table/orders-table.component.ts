@@ -23,7 +23,7 @@ export class OrdersTableComponent implements AfterViewInit {
   dataSource = new MatTableDataSource<Order>();
 
   @Input() pageSizeOptions: number[];
-  @Input() columns = ['qNumber', 'customer', 'type', 'total', 'state', 'date', 'actions'];
+  @Input() columns = ['qNumber', 'customer', 'type', 'total', 'state', 'waiter', 'date', 'actions'];
   @Input() orders: BehaviorSubject<Order[]>;
   @Output() orderClicked = new EventEmitter<Order>();
 

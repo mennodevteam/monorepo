@@ -84,6 +84,34 @@
         </mat-card-content>
       </mat-card>
 
+      <mat-card class="warning" *ngIf="!!order?.details?.itemChanges">
+        <mat-card-content>
+          {{ 'orderDetails.itemChanges.title' | translate: { value: order.details.itemChanges?.length } }}
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button color="primary" [matMenuTriggerFor]="itemChangesMenu">
+            {{ 'orderDetails.itemChanges.view' | translate }}
+          </button>
+
+          <mat-menu #itemChangesMenu="matMenu">
+            <button
+              mat-menu-item
+              *ngFor="let changes of order.details.itemChanges; let i = index"
+              [matMenuTriggerFor]="itemChangesItemMenu"
+            >
+              <i class="fa-solid mat-icon fa-circle-{{ i + 1 }}"></i>
+              {{ 'orderDetails.itemChanges.changeTitle' | translate: { value: i + 1 } }}
+
+              <mat-menu #itemChangesItemMenu="matMenu">
+                <button mat-menu-item *ngFor="let item of changes">
+                  {{ item.title }}: <span class="eng ltr">{{item.change > 0 ? '+' : ''}}{{ item.change }}</span>
+                </button>
+              </mat-menu>
+            </button>
+          </mat-menu>
+        </mat-card-actions>
+      </mat-card>
+
       <mat-card>
         <mat-card-content>
           <mat-list>
@@ -104,7 +132,7 @@
             <i *ngIf="order.paymentType" class="fa-solid fa-circle-check green"></i>
             <i *ngIf="!order.paymentType" class="fa-solid fa-circle-xmark red"></i>
             <span flex [ngClass]="{ green: order.paymentType, red: !order.paymentType }">
-              {{ order.paymentType | orderPayment : order.details.posPayed : order.totalPrice }}
+              {{ order.paymentType | orderPayment: order.details.posPayed:order.totalPrice }}
             </span>
             <button
               mat-stroked-button
