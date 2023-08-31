@@ -22,6 +22,7 @@ export class OrdersTableComponent implements AfterViewInit {
   OrderState = OrderState;
   dataSource = new MatTableDataSource<Order>();
 
+  @Input() showCheckbox = false;
   @Input() pageSizeOptions: number[];
   @Input() columns = ['qNumber', 'customer', 'type', 'total', 'state', 'waiter', 'date', 'actions'];
   @Input() orders: BehaviorSubject<Order[]>;

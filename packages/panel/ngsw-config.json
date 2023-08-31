@@ -2,7 +2,7 @@
   "appData": {
     "forceReload": false,
     "lazyReload": false,
-    "changes": ["نمایش فاکتور‌ها ویرایش شده و لیست تغییرات", "نمایش سالن‌دار در لیست سفارشات"]
+    "changes": ["گروه کردن سفارشات"]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",

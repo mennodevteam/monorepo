@@ -29,7 +29,7 @@ export class Order {
   waiter?: User;
   qNumber?: number;
   mergeTo?: Order;
-  mergeFrom?: string[];
+  mergeFrom?: Order[];
   shop?: Shop;
   state: OrderState;
   type: OrderType;
@@ -49,6 +49,7 @@ export class Order {
   _changingState?: boolean;
   _settlementing?: boolean;
   _settingCustomer?: boolean;
+  _selected: boolean;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
@@ -108,5 +109,36 @@ export class Order {
       }
     }
     return;
+  }
+
+  static merge(orders: Order[], baseOrder: Order) {
+    let newOrder: Partial<Order> = { ...baseOrder, mergeFrom: [baseOrder] };
+    Object.keys(newOrder).forEach((key) => {
+      const field: keyof Order = key as keyof Order;
+      if (newOrder[field] == undefined) delete newOrder[field];
+    });
+    for (const o of orders) {
+      if (o.id === baseOrder.id || o.deletedAt) continue;
+      newOrder = { ...o, ...newOrder };
+      newOrder.totalPrice! += o.totalPrice;
+      newOrder.mergeFrom?.push(o);
+      if (newOrder.id) delete newOrder.id;
+
+      for (const item of o.items) {
+        const exist = newOrder.items!.find(
+          (x) => x.title === item.title && (x.isAbstract === item.isAbstract || x.price === item.price)
+        );
+        if (exist) {
+          if (item.isAbstract) {
+            exist.price += item.price;
+          } else {
+            exist.quantity += item.quantity;
+          }
+        } else {
+          newOrder.items!.push(item);
+        }
+      }
+    }
+    return newOrder;
   }
 }

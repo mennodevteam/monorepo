@@ -56,6 +56,20 @@ export class OrdersService {
     }
   }
 
+  async merge(orders: Order[]) {
+    try {
+      const order = await this.http
+        .post<Order>(
+          `orders/merge`,
+          orders.map((x) => x.id)
+        )
+        .toPromise();
+    } catch (error) {
+    } finally {
+      // order._changingState = false;
+    }
+  }
+
   async setDetails(order: Order, details: OrderDetails) {
     try {
       const result = await this.http.put<Order>(`orders/details/${order.id}`, details).toPromise();
@@ -108,9 +122,11 @@ export class OrdersService {
   async remove(order: Order, description?: string) {
     const params: any = {};
     if (description) params.description = description;
-    await this.http.delete(`orders/${order.id}`, {
-      params,
-    }).toPromise();
+    await this.http
+      .delete(`orders/${order.id}`, {
+        params,
+      })
+      .toPromise();
     order.deletedAt = new Date();
     order.state = OrderState.Canceled;
   }

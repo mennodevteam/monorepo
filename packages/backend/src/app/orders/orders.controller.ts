@@ -22,7 +22,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
@@ -107,7 +107,15 @@ export class OrdersController {
         id,
       },
       withDeleted: true,
-      relations: ['items.product', 'customer', 'waiter', 'creator', 'reviews', 'payment', 'address.deliveryArea'],
+      relations: [
+        'items.product',
+        'customer',
+        'waiter',
+        'creator',
+        'reviews',
+        'payment',
+        'address.deliveryArea',
+      ],
     });
   }
 
@@ -126,6 +134,38 @@ export class OrdersController {
     await this.ordersRepo.update(order.id, update);
     this.ordersService.checkAfterUpdateOrderMessage(id, OrderMessageEvent.OnChangeState);
     return { ...order, ...update };
+  }
+
+  @Roles(UserRole.Panel)
+  @Post('merge')
+  async mergeOrders(@Body() dto: string[], @LoginUser() user: AuthPayload): Promise<Order> {
+    const orders = await this.ordersRepo.find({
+      where: { id: In(dto) },
+      relations: [
+        'items.product',
+        'customer',
+        'waiter',
+        'creator',
+        'shop',
+        'reviews',
+        'payment',
+        'address.deliveryArea',
+      ],
+    });
+
+    const mergeOrder = Order.merge(
+      orders,
+      orders.find((x) => x.id === dto[0])
+    );
+    mergeOrder.updatedAt = new Date();
+    if (mergeOrder) {
+      const merged = await this.ordersRepo.save(mergeOrder);
+      for (const o of orders) {
+        await this.ordersRepo.update(o.id, { mergeTo: { id: merged.id } });
+        this.ordersRepo.softDelete(o.id);
+      }
+      return mergeOrder as Order;
+    }
   }
 
   @Roles(UserRole.Panel)

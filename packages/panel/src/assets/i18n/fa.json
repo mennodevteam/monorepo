@@ -304,6 +304,8 @@
     "tableFilter": "فیلتر میز",
     "removeTableFilter": "حذف فیلتر میز",
     "report": "گزارشات",
+    "grouping": "برای گروه کردن حداقل ۲ سفارش را انتخاب کنید",
+    "group": "گروه کردن",
     "advancedReport": "گزارشات پیشرفته",
     "totalPrice": "فروش امروز",
     "payedTotalPrice": "پرداخت شده",

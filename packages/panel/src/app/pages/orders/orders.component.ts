@@ -5,6 +5,7 @@ import { Order, OrderPaymentType, UserAction } from '@menno/types';
 import { DailyOrderListService, DailyOrderStateFilter } from './daily-order-list.service';
 import { ShopService } from '../../core/services/shop.service';
 import { AuthService } from '../../core/services/auth.service';
+import { OrdersService } from '../../core/services/orders.service';
 
 @Component({
   selector: 'orders',
@@ -13,13 +14,17 @@ import { AuthService } from '../../core/services/auth.service';
 })
 export class OrdersComponent {
   dateControl = new FormControl(this.OS.date);
+  grouping = false;
+  selectedOrders: Order[] = [];
+  savingGroup = false;
 
   constructor(
     public OS: DailyOrderListService,
     private router: Router,
     private route: ActivatedRoute,
     private shopService: ShopService,
-    public auth: AuthService
+    public auth: AuthService,
+    private ordersService: OrdersService
   ) {
     this.dateControl.valueChanges.subscribe((value: any) => {
       if (value) {
@@ -70,7 +75,9 @@ export class OrdersComponent {
   }
 
   get payedTotalPrice() {
-    return this.OS.totalPrice({paymentTypes: [OrderPaymentType.Cash, OrderPaymentType.ClubWallet, OrderPaymentType.Online]})
+    return this.OS.totalPrice({
+      paymentTypes: [OrderPaymentType.Cash, OrderPaymentType.ClubWallet, OrderPaymentType.Online],
+    });
   }
 
   setQueryParams() {
@@ -100,11 +107,36 @@ export class OrdersComponent {
   }
 
   orderClicked(order: Order) {
-    this.router.navigateByUrl(`/orders/details/${order.id}`);
+    if (this.grouping) {
+      if (order.deletedAt) return;
+      this.selectedOrders.push(order);
+      order._selected = true;
+    } else {
+      this.router.navigateByUrl(`/orders/details/${order.id}`);
+    }
   }
 
   toggleTableFilter() {
     if (this.tableFilter) this.tableFilter = undefined;
     else this.tableFilter = this.tables[0].code;
+  }
+
+  cancelGrouping() {
+    this.selectedOrders.forEach((x) => (x._selected = false));
+    this.selectedOrders = [];
+    this.grouping = false;
+  }
+
+  async mergeGroup() {
+    this.savingGroup = true;
+    try {
+      await this.ordersService.merge(this.selectedOrders);
+      await this.OS.loadData(true);
+      this.selectedOrders = [];
+      this.grouping = false;
+    } catch (error) {
+    } finally {
+      this.savingGroup = false;
+    }
   }
 }

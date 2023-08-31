@@ -80,10 +80,11 @@ export class DailyOrderListService {
     }
   }
 
-  async loadData() {
+  async loadData(forceLoad?: boolean) {
     if (this.isToday) {
       this._loading = true;
-      if (!this.todayOrders.orders) {
+      if (!this.todayOrders.orders || forceLoad) {
+        if (forceLoad) this.todayOrders.loadData();
         await this.todayOrders.ordersObservable
           .pipe(filter((x) => x != null))
           .pipe(take(1))
@@ -137,7 +138,7 @@ export class DailyOrderListService {
         orders = this.allOrders.filter((x) => !x.deletedAt && x.details.itemChanges?.length);
         break;
       case 'deleted':
-        orders = this.allOrders.filter((x) => x.deletedAt);
+        orders = this.allOrders.filter((x) => x.deletedAt && !x.mergeTo);
         break;
     }
 

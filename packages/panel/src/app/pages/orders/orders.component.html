@@ -1,4 +1,4 @@
-<mat-toolbar class="page-toolbar">
+<mat-toolbar class="page-toolbar" *ngIf="!grouping">
   <button mat-icon-button (click)="goToPrevDate()">
     <i class="fa-regular fa-angle-right"></i>
   </button>
@@ -14,6 +14,10 @@
     <i class="fa-regular fa-angles-left"></i>
   </button>
   <span flex></span>
+  <button mat-stroked-button class="hide-xs" (click)="grouping = true">
+    <i class="fa-regular fa-code-merge fa-sm"></i>
+    {{ 'dailyOrder.group' | translate }}
+  </button>
   <button mat-stroked-button routerLink="filter" class="hide-xs" [disabled]="!accessReport">
     <i class="fa-regular fa-filter-list fa-sm"></i>
     {{ 'dailyOrder.advancedFilter' | translate }}
@@ -21,6 +25,9 @@
   <button mat-stroked-button [matMenuTriggerFor]="reportMenu" class="hide-xs" [disabled]="!accessReport">
     <i class="fa-regular fa-chart-line fa-sm"></i>
     {{ 'dailyOrder.report' | translate }}
+  </button>
+  <button mat-icon-button class="show-xs" (click)="grouping = true">
+    <i class="fa-regular fa-code-merge fa-sm"></i>
   </button>
   <button mat-icon-button routerLink="filter" class="show-xs" [disabled]="!accessReport">
     <i class="fa-regular fa-filter-list fa-sm"></i>
@@ -40,6 +47,24 @@
       {{ 'dailyOrder.advancedReport' | translate }}
     </button>
   </mat-menu>
+</mat-toolbar>
+<mat-toolbar class="page-toolbar form-theme" *ngIf="grouping">
+  <i class="red fa-solid fa-circle-info"></i>
+  {{ 'dailyOrder.grouping' | translate }}...
+  <span flex></span>
+  <button *ngIf="!savingGroup" mat-button (click)="cancelGrouping()">
+    {{ 'app.cancel' | translate }}
+  </button>
+  <button
+    *ngIf="!savingGroup"
+    mat-flat-button
+    color="accent"
+    (click)="mergeGroup()"
+    [disabled]="selectedOrders.length < 2"
+  >
+    {{ 'app.ok' | translate }}
+  </button>
+  <mat-spinner [diameter]="24" *ngIf="savingGroup"></mat-spinner>
 </mat-toolbar>
 <nav mat-tab-nav-bar mat-stretch-tabs="false" class="border-bottom" [tabPanel]="tabPanel">
   <a mat-tab-link (click)="stateFilter = 'all'" [active]="stateFilter === 'all'">
@@ -81,7 +106,11 @@
     <mat-card>
       <mat-card-content style="overflow-x: auto">
         <ng-container *ngIf="orders && !loading">
-          <orders-table [orders]="orders" (orderClicked)="orderClicked($event)"></orders-table>
+          <orders-table
+            [showCheckbox]="grouping"
+            [orders]="orders"
+            (orderClicked)="orderClicked($event)"
+          ></orders-table>
           <empty-state
             *ngIf="!(orders | async)?.length"
             icon="fa-face-frown"
