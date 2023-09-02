@@ -45,21 +45,7 @@ export class ClubService {
     private router: Router
   ) {
     this.loadTags();
-    this.loadSmsAccount().then(() => {
-      if (this._smsAccount.value && this._smsAccount.value.charge < 10000) {
-        this.dialog.open(AlertDialogComponent, {
-          data: {
-            title: this.translate.instant('smsAccountCharge.chargeCreditDialogTitle'),
-            description:
-              this._smsAccount.value.charge <= 0
-                ? this.translate.instant('smsAccountCharge.chargeCreditDialogNoDescription')
-                : this.translate.instant('smsAccountCharge.chargeCreditDialogDescription'),
-            hideCancel: true,
-            okText: this.translate.instant('app.close'),
-          },
-        });
-      }
-    });
+    this.loadSmsAccount();
     this.loadMemberCount();
     setInterval(() => {
       this.loadMemberCount();
