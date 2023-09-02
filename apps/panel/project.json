@@ -1,0 +1,108 @@
+{
+  "name": "panel",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/panel/src",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/panel",
+        "index": "apps/panel/src/index.html",
+        "main": "apps/panel/src/main.ts",
+        "polyfills": "apps/panel/src/polyfills.ts",
+        "tsConfig": "apps/panel/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/panel/src/favicon.ico",
+          "apps/panel/src/manifest.webmanifest",
+          {
+            "glob": "**/*",
+            "input": "node_modules/leaflet/dist/images",
+            "output": "/"
+          },
+          "apps/panel/src/assets",
+          "apps/panel/src/liara_nginx.conf",
+          "apps/panel/src/liara.json"
+        ],
+        "styles": [
+          "apps/panel/src/styles.scss",
+          "./node_modules/leaflet/dist/leaflet.css",
+          "./node_modules/leaflet-draw/dist/leaflet.draw.css"
+        ],
+        "stylePreprocessorOptions": {
+          "includePaths": ["apps/panel/src/theme/"]
+        },
+        "scripts": ["node_modules/persian-date/dist/persian-date.min.js"]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "1mb",
+              "maximumError": "4mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/panel/src/environments/environment.ts",
+              "with": "apps/panel/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all",
+          "serviceWorker": true,
+          "ngswConfigPath": "apps/panel/ngsw-config.json"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "panel:build:production"
+        },
+        "development": {
+          "browserTarget": "panel:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "panel:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/panel/**/*.ts", "apps/panel/**/*.html"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/panel/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

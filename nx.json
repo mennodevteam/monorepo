@@ -38,10 +38,6 @@
     ],
     "sharedGlobals": []
   },
-  "workspaceLayout": {
-    "appsDir": "packages",
-    "libsDir": "packages"
-  },
   "defaultProject": "panel",
   "generators": {
     "@nrwl/angular:application": {
