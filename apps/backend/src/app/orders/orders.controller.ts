@@ -158,6 +158,7 @@ export class OrdersController {
       orders.find((x) => x.id === dto[0])
     );
     mergeOrder.updatedAt = new Date();
+    mergeOrder.isManual = true;
     if (mergeOrder) {
       const merged = await this.ordersRepo.save(mergeOrder);
       for (const o of orders) {
