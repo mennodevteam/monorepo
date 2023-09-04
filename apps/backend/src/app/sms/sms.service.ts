@@ -45,10 +45,12 @@ export class SmsService {
       }
     }
 
-    const group = await this.smsGroupsRepo.save({
-      account: { id: dto.accountId },
-      message: groupMessage || dto.messages[0],
-    });
+    const group =
+      dto.accountId &&
+      (await this.smsGroupsRepo.save({
+        account: { id: dto.accountId },
+        message: groupMessage || dto.messages[0],
+      }));
 
     return new Promise((resolve, reject) => {
       const kavenegarDtos: any[] = [];
@@ -64,14 +66,16 @@ export class SmsService {
         };
         kavenegarDtos.push(kavenegarDto);
       }
+      console.log(kavenegarDtos);
       for (const kavenegarDto of kavenegarDtos) {
         kavenegarApi.SendArray(kavenegarDto, async (response, status) => {
+          console.log(response);
           if (status == 200) {
             const entries = response;
             const sentSms: Sms[] = [];
             for (const entry of entries) {
               sentSms.push(<Sms>{
-                account: <SmsAccount>{ id: dto.accountId },
+                account: dto.accountId && <SmsAccount>{ id: dto.accountId },
                 cost: this.getCost(entry.cost),
                 message: entry.message,
                 receptor: entry.receptor,
@@ -82,8 +86,9 @@ export class SmsService {
                 kavenegarId: entry.messageid,
               });
             }
+            console.log(sentSms);
             await this.smsRepo.save(sentSms);
-            const g = await this.smsGroupsRepo.findOne({ where: { id: group.id }, relations: ['list'] });
+            const g = group && await this.smsGroupsRepo.findOne({ where: { id: group.id }, relations: ['list'] });
             resolve(g);
           } else {
             reject(response);

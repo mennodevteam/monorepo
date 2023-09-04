@@ -21,12 +21,12 @@ export class SmsTemplatesController {
   @Post()
   @Roles(UserRole.Panel)
   async save(@Body() smsTemplate: SmsTemplate, @LoginUser() user: AuthPayload): Promise<SmsTemplate> {
-    const { smsAccount } = await this.auth.getPanelUserShop(user, ['smsAccount']);
+    const shop = await this.auth.getPanelUserShop(user, ['smsAccount']);
 
-    if (smsAccount) {
-      smsTemplate.account = smsAccount;
+    if (shop.smsAccount) {
+      smsTemplate.account = shop.smsAccount;
       smsTemplate.creatorId = user.id;
-      return this.smsTemplatesService.createSmsTemplateFromPanel(smsTemplate);
+      return this.smsTemplatesService.createSmsTemplateFromPanel(smsTemplate, shop);
     }
   }
 

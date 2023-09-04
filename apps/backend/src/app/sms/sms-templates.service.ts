@@ -1,4 +1,4 @@
-import { NewSmsDto, SmsTemplate } from '@menno/types';
+import { NewSmsDto, Shop, SmsTemplate } from '@menno/types';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -12,7 +12,7 @@ export class SmsTemplatesService {
     private smsService: SmsService
   ) {}
 
-  async createSmsTemplateFromPanel(smsTemplate: SmsTemplate): Promise<SmsTemplate> {
+  async createSmsTemplateFromPanel(smsTemplate: SmsTemplate, shop: Shop): Promise<SmsTemplate> {
     smsTemplate.isVerified = false;
 
     const savedTemplate = await this.smsTemplatesRepo.save(smsTemplate);
@@ -21,7 +21,7 @@ export class SmsTemplatesService {
       try {
         const newTemplateSmsToAdmin = new NewSmsDto();
         newTemplateSmsToAdmin.messages = [
-          `یک الگوی جدید:\n\n${smsTemplate.message} \n\n${process.env.API_URL}/messageTemplates/verify/${savedTemplate.id}`,
+          `یک الگوی جدید برای ${shop.title}:\n\n${smsTemplate.message} \n\n${process.env.API_BASE_URL}/smsTemplates/verify/${savedTemplate.id}`,
         ];
         newTemplateSmsToAdmin.receptors = process.env.ADMIN_PHONE_NUMBERS.split(',');
         this.smsService.send(newTemplateSmsToAdmin);

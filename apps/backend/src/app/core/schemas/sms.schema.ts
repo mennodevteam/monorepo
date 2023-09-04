@@ -43,6 +43,7 @@ export const SmsSchema = new EntitySchema<Sms>({
     account: {
       type: 'many-to-one',
       target: 'SmsAccount',
+      nullable: true,
     },
     group: {
       type: 'many-to-one',
