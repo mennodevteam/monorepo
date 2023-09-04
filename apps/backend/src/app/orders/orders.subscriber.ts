@@ -28,7 +28,7 @@ import { PrintersService } from '../printers/printers.service';
 import * as Sentry from '@sentry/node';
 
 @EventSubscriber()
-export class OrderSubscriber implements EntitySubscriberInterface<Order> {
+export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
   constructor(
     dataSource: DataSource,
     @InjectRepository(User)
