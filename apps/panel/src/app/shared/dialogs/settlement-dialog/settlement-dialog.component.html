@@ -57,12 +57,15 @@
         {{ totalPrice | menuCurrency }}
       </b>
     </mat-list-item>
+    <mat-divider *ngIf="member"></mat-divider>
     <mat-list-item *ngIf="member" (click)="useWallet = !useWallet">
-      <p matLine [class.red]="!member.wallet || member.wallet.charge < 0">
+      <i matListItemIcon class="far fa-square fa-xl" *ngIf="!useWallet"></i>
+      <i matListItemIcon class="fas fa-square-check blue fa-xl" *ngIf="useWallet"></i>
+      <p matListItemLine [class.red]="!member.wallet || member.wallet.charge < 0">
         {{ 'settlementDialog.useWallet' | translate: { value: (member.wallet?.charge || 0 | menuCurrency) } }}
       </p>
-      <i class="fas fa-toggle-off gray" *ngIf="!useWallet"></i>
-      <i class="fas fa-toggle-on blue" *ngIf="useWallet"></i>
+      <div class="secondary" matListItemMeta>
+      </div>
     </mat-list-item>
   </mat-nav-list>
   <mat-divider></mat-divider>

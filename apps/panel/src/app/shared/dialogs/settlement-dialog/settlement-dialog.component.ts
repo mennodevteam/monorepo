@@ -14,6 +14,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { OrdersService } from '../../../core/services/orders.service';
 import { ShopService } from '../../../core/services/shop.service';
 import { ManualDiscountAndCostDialogComponent } from '../manual-discount-and-cost-dialog/manual-discount-and-cost-dialog.component';
+import { ClubService } from '../../../core/services/club.service';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
+import { MenuCurrencyPipe } from '../../pipes/menu-currency.pipe';
 
 @Component({
   selector: 'app-settlement-dialog',
@@ -40,10 +43,10 @@ export class SettlementDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<any>,
     private dialog: MatDialog,
     private translate: TranslateService,
-    private decimalPipe: DecimalPipe,
+    private menuCurrency: MenuCurrencyPipe,
     private shopService: ShopService,
     private snack: MatSnackBar,
-    // private club: ClubService,
+    private club: ClubService,
     private orderService: OrdersService
   ) {
     this.order = data.order;
@@ -81,9 +84,9 @@ export class SettlementDialogComponent implements OnInit {
     this.posValues[0] = this.totalPrice;
 
     if (this.order.customer) {
-      // this.club.getMemberByUserId(this.order.customerId).then((member) => {
-      //   this.member = member;
-      // });
+      this.club.getMemberByUserId(this.order.customer.id).then((member) => {
+        if (member) this.member = member;
+      });
     }
   }
 
@@ -176,9 +179,25 @@ export class SettlementDialogComponent implements OnInit {
       return;
     }
 
-    this.snack.open(this.translate.instant('app.saving'), '', { duration: 0 });
     const paymentType = this.useWallet ? OrderPaymentType.ClubWallet : OrderPaymentType.Cash;
+    
+    if (
+      paymentType === OrderPaymentType.ClubWallet &&
+      this.member.wallet &&
+      this.member.wallet.charge < this.totalPrice
+      ) {
+        const ok = await this.dialog.open(AlertDialogComponent, {
+        data: {
+          title: this.translate.instant('settlementDialog.chargeAlertDialog.title'),
+          description: this.translate.instant('settlementDialog.chargeAlertDialog.description', {
+            value: this.menuCurrency.transform(this.totalPrice - this.member.wallet.charge),
+          }),
+        },
+      }).afterClosed().toPromise();
+      if (!ok) return;
+    }
     try {
+      this.snack.open(this.translate.instant('app.saving'), '', { duration: 0 });
       await this.orderService.settlement(this.order, {
         orderId: this.order.id,
         manualDiscount: this.manualDiscount.price,

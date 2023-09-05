@@ -1,4 +1,4 @@
-@import 'theme';
+@import "theme";
 
 mat-dialog-content {
     min-width: 280px;
@@ -20,11 +20,6 @@ mat-dialog-content {
 
 .payment-method {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    .mat-form-field {
-        margin: 8px 4px;
-        width: 140px;
-        flex: none;
-    }
+    padding: 8px;
+    gap: 16px;
 }
