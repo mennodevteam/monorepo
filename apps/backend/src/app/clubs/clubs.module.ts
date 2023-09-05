@@ -24,6 +24,6 @@ import { WalletsController } from './wallets.controller';
     MissionsController,
     TagsController,
   ],
-  exports: [ClubsService],
+  exports: [ClubsService, WalletsService],
 })
 export class ClubsModule {}

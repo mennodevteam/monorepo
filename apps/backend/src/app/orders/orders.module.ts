@@ -7,9 +7,10 @@ import { OrdersService } from './orders.service';
 import { SmsModule } from '../sms/sms.module';
 import { WebPushNotificationModule } from '../web-push-notifications/web-push-notifications.module';
 import { PrintersModule } from '../printers/printers.module';
+import { ClubsModule } from '../clubs/clubs.module';
 
 @Module({
-  imports: [SchemasModule, AuthModule, SmsModule, WebPushNotificationModule, PrintersModule],
+  imports: [SchemasModule, AuthModule, SmsModule, WebPushNotificationModule, PrintersModule, ClubsModule],
   controllers: [OrdersController],
   providers: [OrdersService, OrdersSubscriber],
   exports: [OrdersService],

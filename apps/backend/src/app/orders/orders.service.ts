@@ -21,6 +21,7 @@ import {
   OrderMessage,
   NewSmsDto,
   SmsTemplate,
+  WalletLog,
 } from '@menno/types';
 import { groupBy, groupBySum } from '@menno/utils';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -37,6 +38,8 @@ import {
   Repository,
 } from 'typeorm';
 import { SmsService } from '../sms/sms.service';
+import { WalletsService } from '../clubs/wallets.service';
+import { AuthPayload } from '../core/types/auth-payload';
 
 @Injectable()
 export class OrdersService {
@@ -51,7 +54,8 @@ export class OrdersService {
     private discountCouponsRepo: Repository<DiscountCoupon>,
     @InjectRepository(OrderMessage)
     private orderMessagesRepo: Repository<OrderMessage>,
-    private smsService: SmsService
+    private smsService: SmsService,
+    private walletsService: WalletsService
   ) {}
 
   async dtoToOrder(dto: OrderDto) {
@@ -207,7 +211,7 @@ export class OrdersService {
             if (o.paymentType === OrderPaymentType.Cash) {
               const posIndex = o.details?.posPayed?.findIndex((x) => x > 0);
               if (posIndex > -1) {
-                o.paymentType = shop?.details?.poses[posIndex] || `POS_${posIndex}` as any;
+                o.paymentType = shop?.details?.poses[posIndex] || (`POS_${posIndex}` as any);
               }
             }
             return o;
@@ -445,10 +449,10 @@ export class OrdersService {
     return orders;
   }
 
-  async manualSettlement(dto: ManualSettlementDto): Promise<Order> {
+  async manualSettlement(dto: ManualSettlementDto, user: AuthPayload): Promise<Order> {
     const order = await this.ordersRepo.findOne({
       where: { id: dto.orderId },
-      relations: ['shop', 'items.product'],
+      relations: ['shop.club', 'items.product', 'customer'],
     });
     if (order && order.items.length > 0) {
       const perviousManualCost = order.items.find((x) => x.title === MANUAL_COST_TITLE && x.isAbstract);
@@ -489,21 +493,15 @@ export class OrdersService {
     }
 
     if (dto.type === OrderPaymentType.ClubWallet) {
-      // const member: Member = await this.clubMicroservice.send('members/filter', <FilterMemberDto>
-      //     { userId: order.customerId, clubId: order.shop.clubId }).toPromise();
-      // let wallet: Wallet;
-      // wallet = await this.clubMicroservice.send('wallets/findWallet', member[0][0].id).toPromise()
-      // member[0][0].wallet = wallet
-      // let club: Club = await this.clubMicroservice.send('clubs/findOne', order.shop.clubId).toPromise();
-      // if ((member[0][0].wallet.charge - Math.abs(order.totalPrice)) < (club.config.minMemberWalletCharge || 0)) {
-      //     throw new RpcException({ code: HttpStatus.FORBIDDEN, message: 'The purchase amount is more than the amount of the wallet' })
-      // }
-      // let walletLogs = new WalletLogs();
-      // walletLogs.user = order.creatorId;
-      // walletLogs.amount = - Math.abs(order.totalPrice);
-      // walletLogs.type = WalletLogType.PayOrder;
-      // walletLogs.wallet = wallet;
-      // await this.clubMicroservice.send('walletLogs/save', walletLogs).toPromise();
+      const member: Member = await this.membersRepo.findOne({
+        where: { user: { id: order.customer.id }, club: { id: order.shop.club.id } },
+        relations: ['wallet'],
+      });
+      await this.walletsService.updateWalletAmount({
+        wallet: { id: member.wallet.id },
+        amount: -order.totalPrice,
+        user: { id: user.id },
+      } as WalletLog);
     }
 
     this.checkAfterUpdateOrderMessage(dto.orderId, OrderMessageEvent.OnPayment);

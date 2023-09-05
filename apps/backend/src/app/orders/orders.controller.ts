@@ -189,7 +189,7 @@ export class OrdersController {
 
   @Post('manualSettlement')
   async manualSettlement(@Body() body: ManualSettlementDto, @LoginUser() user: AuthPayload): Promise<Order> {
-    return this.ordersService.manualSettlement(body);
+    return this.ordersService.manualSettlement(body, user);
   }
 
   @Get('sendLinkToCustomer/:orderId')
