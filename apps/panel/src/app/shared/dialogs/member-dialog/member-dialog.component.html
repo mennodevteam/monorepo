@@ -17,7 +17,7 @@
         <span matListItemLine class="gray">
           {{ 'memberDialog.currentCharge' | translate }}:
           <span [class.red]="member.wallet?.charge && member.wallet?.charge">{{
-            member.wallet?.charge || 0 | menuCurrency
+            member.wallet?.charge || 0 | menuCurrency : undefined : true
           }}</span>
         </span>
         <i matListItemMeta class="fa-solid fa-plus-circle"></i>

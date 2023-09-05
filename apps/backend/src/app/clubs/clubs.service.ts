@@ -401,7 +401,7 @@ export class ClubsService {
           publicKey: m.publicKey,
           star: m.star,
           user,
-          wallet: m.wallet,
+          wallet: { id: m.wallet?.id, charge: m.wallet?.charge },
         } as Member);
       } catch (error) {}
     }

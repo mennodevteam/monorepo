@@ -4,7 +4,8 @@
     <td mat-cell *matCellDef="let order">
       <mat-checkbox *ngIf="showCheckbox" [checked]="order._selected"></mat-checkbox>
       <b class="eng">
-        <span *ngIf="order.mergeFrom?.length">G</span>{{ order.qNumber }}<sup class="red" *ngIf="order.details?.itemChanges?.length">c</sup>
+        <span *ngIf="order.mergeFrom?.length">G</span>{{ order.qNumber
+        }}<sup class="red" *ngIf="order.details?.itemChanges?.length">c</sup>
       </b>
     </td>
   </ng-container>
@@ -25,7 +26,14 @@
         {{ 'ordersTable.addCustomer' | translate }}
       </button>
       <span *ngIf="order.customer?.mobilePhone">
-        {{ User.fullName(order.customer) }}
+        <button
+          mat-flat-button
+          (click)="memberInfo(order)"
+          stopPropagation
+          style="background-color: rgba(0, 0, 0, 0.1)"
+        >
+          {{ User.fullName(order.customer) }}
+        </button>
         <a
           stopPropagation
           mat-button

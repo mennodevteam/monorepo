@@ -13,9 +13,6 @@ export const WalletLogSchema = new EntitySchema<WalletLog>({
     amount: {
       type: Number,
     },
-    user: {
-      type: String,
-    },
     type: {
       type: 'enum',
       enum: WalletLogType,
@@ -31,6 +28,10 @@ export const WalletLogSchema = new EntitySchema<WalletLog>({
     },
   },
   relations: {
+    user: {
+      type: 'many-to-one',
+      target: 'User',
+    },
     wallet: {
       type: 'many-to-one',
       target: 'Wallet',

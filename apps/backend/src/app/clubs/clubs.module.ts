@@ -10,12 +10,15 @@ import { SchemasModule } from '../core/schemas.module';
 import { AuthModule } from '../auth/auth.module';
 import { SmsModule } from '../sms/sms.module';
 import { HttpModule } from '@nestjs/axios';
+import { WalletsService } from './wallets.service';
+import { WalletsController } from './wallets.controller';
 
 @Module({
   imports: [SchemasModule, AuthModule, SmsModule, HttpModule, ScheduleModule.forRoot()],
-  providers: [ClubsService],
+  providers: [ClubsService, WalletsService],
   controllers: [
     ClubsController,
+    WalletsController,
     DiscountsCouponController,
     MembersController,
     MissionsController,

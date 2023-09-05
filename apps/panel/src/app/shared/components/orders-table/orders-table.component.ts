@@ -10,6 +10,7 @@ import { MemberSelectDialogComponent } from '../../dialogs/member-select-dialog/
 import { SettlementDialogComponent } from '../../dialogs/settlement-dialog/settlement-dialog.component';
 import { PromptDialogComponent } from '../../dialogs/prompt-dialog/prompt-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
+import { MemberDialogComponent } from '../../dialogs/member-dialog/member-dialog.component';
 
 @Component({
   selector: 'orders-table',
@@ -71,6 +72,14 @@ export class OrdersTableComponent implements AfterViewInit {
 
   print(order: Order, view?: ShopPrintView) {
     this.printService.printOrder(order.id, view);
+  }
+
+  memberInfo(order: Order) {
+    if (order.customer?.mobilePhone) {
+      this.dialog.open(MemberDialogComponent, {
+        data: { mobilePhone: order.customer?.mobilePhone },
+      });
+    }
   }
 
   remove(order: Order) {

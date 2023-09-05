@@ -61,6 +61,7 @@ export const MemberSchema = new EntitySchema<Member>({
       type: 'one-to-one',
       target: 'Wallet',
       cascade: ['insert'],
+      inverseSide: 'member',
       joinColumn: true,
     },
   },

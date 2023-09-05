@@ -15,4 +15,11 @@ export const WalletSchema = new EntitySchema<Wallet>({
       default: 0,
     },
   },
+  relations: {
+    member: {
+      type: 'one-to-one',
+      target: 'Member',
+      inverseSide: 'wallet',
+    },
+  },
 });
