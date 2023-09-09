@@ -269,7 +269,7 @@ export class ShopsService {
         for (const p of cat.products) {
           if (p.images && p.images[0]) {
             this.filesService
-              .uploadFromUrl(`http://65.21.237.12:3001/files/${p.images[0]}`, p.title, shop.code)
+              .uploadFromUrl(`http://65.21.237.12:3001/files/${p.images[0]}`, p.id, shop.code)
               .then((savedImage: any) => {
                 this.productsRepository
                   .update(p.id, {
