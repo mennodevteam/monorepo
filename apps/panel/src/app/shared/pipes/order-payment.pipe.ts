@@ -31,12 +31,13 @@ export class OrderPaymentPipe implements PipeTransform {
             return this.translate.instant('orderPaymentType.cash');
           case 1:
             if (totalPrice && posPayedText[0][1] < totalPrice) {
-              return `${posPayedText[0][0]}: ${this.decimalPipe.transform(posPayedText[0][1])}`;
+              return `${posPayedText[0][0]}: ${this.decimalPipe.transform(
+                posPayedText[0][1]
+              )} ${this.translate.instant('orderPaymentType.remainCash')}`;
             }
             return posPayedText[0][0];
           default:
             return posPayedText.map((x) => `${x[0]}: ${this.decimalPipe.transform(x[1])}`).join(` - `);
-            break;
         }
       case OrderPaymentType.ClubWallet:
         return this.translate.instant('orderPaymentType.clubWallet');

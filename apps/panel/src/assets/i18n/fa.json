@@ -136,7 +136,8 @@
     "notPayed": "پرداخت نشده",
     "online": "آنلاین",
     "cash": "صندوق‌",
-    "clubWallet": "اعتباری"
+    "clubWallet": "اعتباری",
+    "remainCash": "مابقی نقد"
   },
   "productTable": {
     "image": "عکس",

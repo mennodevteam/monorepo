@@ -206,23 +206,34 @@ export class OrdersService {
         );
         break;
       case 'payment':
-        data = groupBySum<Order>(
-          orders.map((o) => {
-            if (o.paymentType === OrderPaymentType.Cash) {
-              const posIndex = o.details?.posPayed?.findIndex((x) => x > 0);
-              if (posIndex > -1) {
-                o.paymentType = shop?.details?.poses[posIndex] || (`POS_${posIndex}` as any);
+        data = {};
+        orders.forEach((o) => {
+          if (o.paymentType === OrderPaymentType.Cash) {
+            if (o.details?.posPayed?.length) {
+              let sum = 0;
+              for (let i = 0; i < o.details.posPayed.length; i++) {
+                const value = o.details.posPayed[i];
+                if (value > 0) {
+                  sum += value;
+
+                  const pos = shop?.details?.poses[i] || `POS_${i}`;
+                  if (data[pos]) {
+                    data[pos].sum += value;
+                    data[pos].count++;
+                  } else data[pos] = { sum: value, count: 1 };
+                }
+              }
+              if (sum < o.totalPrice) {
+                const pos = 'نقد';
+                const value = o.totalPrice - sum;
+                if (data[pos]) {
+                  data[pos].sum += value;
+                  data[pos].count++;
+                } else data[pos] = { sum: value, count: 1 };
               }
             }
-            return o;
-          }),
-          (order) => {
-            return order.paymentType.toString();
-          },
-          (order) => {
-            return order.totalPrice;
           }
-        );
+        });
         break;
       case 'state':
         data = groupBySum<Order>(
