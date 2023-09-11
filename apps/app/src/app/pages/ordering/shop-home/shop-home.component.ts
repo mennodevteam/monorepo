@@ -6,11 +6,13 @@ import { DiscountCoupon, Member, OrderType } from '@menno/types';
 import { BasketService } from '../../../core/services/basket.service';
 import { ActivatedRoute } from '@angular/router';
 import { ClubService } from '../../../core/services/club.service';
+import { fadeIn } from '../../../core/animations/fade.animation';
 
 @Component({
   selector: 'shop-home',
   templateUrl: './shop-home.component.html',
   styleUrls: ['./shop-home.component.scss'],
+  animations: [fadeIn()],
 })
 export class ShopHomeComponent {
   couponCount = 0;

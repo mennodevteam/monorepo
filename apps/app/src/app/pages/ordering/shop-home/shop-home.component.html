@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div class="wrapper" [@fadeIn]>
   <header>
     <img [imageLoader]="shop?.logo" id="logo" />
     <div class="header-texts">
@@ -6,8 +6,19 @@
       <p *ngIf="shop?.description" id="description">{{ shop?.description }}</p>
     </div>
 
+    <button mat-raised-button color="primary" routerLink="menu" class="submit-button">
+      مشاهده منو و ثبت سفارش
+      <i class="fa-solid fa-utensils fa-large"></i>
+    </button>
+
     <ng-container *ngIf="shop?.club">
-      <button class="member-button" mat-stroked-button [disabled]="member || loadingMember" color="primary" (click)="join()">
+      <button
+        class="member-button"
+        mat-stroked-button
+        [disabled]="member || loadingMember"
+        color="primary"
+        (click)="join()"
+      >
         <span *ngIf="member">
           <i class="fa-solid fa-check-circle success-text fa-lg"></i>
           شما عضو باشگاه مشتریان هستید
@@ -86,9 +97,4 @@
       </div>
     </a>
   </mat-nav-list>
-
-  <button mat-raised-button color="primary" id="action-button" routerLink="menu">
-    مشاهده منو و ثبت سفارش
-    <i class="fa-solid fa-utensils fa-large"></i>
-  </button>
 </div>
