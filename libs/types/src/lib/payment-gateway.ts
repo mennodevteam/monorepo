@@ -1,5 +1,6 @@
 export enum PaymentGatewayType {
   Sizpay = 'sizpay',
+  Zibal = 'zibal',
 }
 
 export class PaymentGateway {

@@ -10,7 +10,18 @@ import {
   User,
   UserRole,
 } from '@menno/types';
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Req, Response } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+  Query,
+  Req,
+  Response,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
 import { Repository } from 'typeorm';
@@ -86,7 +97,7 @@ export class PaymentsController {
           smsAccountId: shop.smsAccount.id,
         },
       },
-      'add order',
+      'charge sms',
       userData,
       shop.id,
       req.headers.origin
@@ -171,8 +182,14 @@ export class PaymentsController {
   }
 
   @Public()
+  @Get('afterBankPayment')
+  async returnUrlGet(@Query() query, @Response() res) {
+    return this.returnUrl(query, res);
+  }
+
+  @Public()
   @Post('afterBankPayment')
-  async return(@Body() dto: any, @Response() res) {
+  async returnUrl(@Body() dto: any, @Response() res) {
     const payment = await this.paymentsService.afterBankPayment(dto);
     if (payment?.isCompleted) {
       if (payment.details.newOrder) {
