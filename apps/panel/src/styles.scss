@@ -274,6 +274,11 @@ mat-spinner.loading {
   }
 }
 
+i[matlistitemicon] {
+  align-self: center !important;
+  margin-top: 0 !important;
+}
+
 mat-card {
   border-radius: 8px !important;
   box-shadow: none !important;

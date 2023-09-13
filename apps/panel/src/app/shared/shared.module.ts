@@ -66,6 +66,7 @@ import { SelectStatusCardComponent } from './components/select-status-card/selec
 import { SelectOrderTypeCardComponent } from './components/select-order-type-card/select-order-type-card.component';
 import { UpdateDialogComponent } from './dialogs/update-dialog/update-dialog.component';
 import { UserAddressesDialogComponent } from './dialogs/user-addresses-dialog/user-addresses-dialog.component';
+import { ExtendPluginsModalComponent } from './components/extend-plugins-modal/extend-plugins-modal.component';
 
 @NgModule({
   declarations: [
@@ -100,6 +101,7 @@ import { UserAddressesDialogComponent } from './dialogs/user-addresses-dialog/us
     EmptyStateComponent,
     SortDialogComponent,
     UserAddressesDialogComponent,
+    ExtendPluginsModalComponent,
   ],
   imports: [
     CommonModule,

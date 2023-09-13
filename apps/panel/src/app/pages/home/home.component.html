@@ -30,7 +30,7 @@
               <span matListItemMeta class="ltr"> {{ plugin?.renewAt | pdate: 'YYYY/MM/DD' }}</span>
             </mat-list-item>
             <mat-list-item>
-              <span matListItemLine> {{ 'home.expiredAt' | translate }}: </span>
+              <span matListItemLine> {{ 'home.remainDays' | translate: { value: (remainingDays | number: '1.0-0') } }}: </span>
               <span matListItemMeta class="ltr"> {{ plugin?.expiredAt | pdate: 'YYYY/MM/DD' }}</span>
             </mat-list-item>
             <mat-list-item>
@@ -43,6 +43,9 @@
               [color]="remainingDays > 20 ? 'accent' : 'warn'"
             ></mat-progress-bar>
           </mat-list>
+          <mat-card class="error" *ngIf="remainingDays < 8">
+            <mat-card-content>{{ 'home.expireWarning' | translate }}</mat-card-content>
+          </mat-card>
           <span spacer></span>
         </mat-card-content>
         <mat-divider></mat-divider>

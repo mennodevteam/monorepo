@@ -2,7 +2,7 @@
   "appData": {
     "forceReload": false,
     "lazyReload": false,
-    "changes": ["رفع خطای محاسبه اشتباه گزارش فروش به تفکیک پرداخت"]
+    "changes": ["امکان تمدید اشتراک به صورت آنلاین"]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",

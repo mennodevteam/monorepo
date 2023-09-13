@@ -10,6 +10,7 @@ import { AlertDialogComponent } from '../../shared/dialogs/alert-dialog/alert-di
 import { PUBLIC_URLS } from '../../core/public-urls.consts';
 import { PayService } from '../../core/services/pay.service';
 import { WebPushNotificationsService } from '../../core/services/web-push-notifications.service';
+import { ExtendPluginsModalComponent } from '../../shared/components/extend-plugins-modal/extend-plugins-modal.component';
 
 @Component({
   selector: 'home',
@@ -29,7 +30,7 @@ export class HomeComponent {
     private translate: TranslateService,
     private snack: MatSnackBar,
     private payService: PayService,
-    public webPush: WebPushNotificationsService,
+    public webPush: WebPushNotificationsService
   ) {
     const fromDate = new Date(this.plugin?.renewAt || 0).valueOf();
     const toDate = new Date(this.plugin?.expiredAt || 0).valueOf();
@@ -46,13 +47,13 @@ export class HomeComponent {
   }
 
   renew() {
-    this.dialog.open(AlertDialogComponent, {
-      data: {
-        title: this.translate.instant('home.renewAction'),
-        description: this.translate.instant('home.renewActionDescription'),
-        hideCancel: true,
-        ok: this.translate.instant('app.ok'),
-      },
+    this.dialog.open(ExtendPluginsModalComponent, {
+      // data: {
+      //   title: this.translate.instant('home.renewAction'),
+      //   description: this.translate.instant('home.renewActionDescription'),
+      //   hideCancel: true,
+      //   ok: this.translate.instant('app.ok'),
+      // },
     });
   }
 
@@ -81,17 +82,20 @@ export class HomeComponent {
       this.snack.open(this.translate.instant('sendShopLink.numberError'), '', { panelClass: 'warning' });
     }
   }
-  
+
   async chargeSmsAccount() {
-    const amount: number = await this.dialog.open(PromptDialogComponent, {
-      data: {
-        title: this.translate.instant('home.chargeDialogTitle'),
-        description: this.translate.instant('home.chargeDialogDescription'),
-        label: this.translate.instant('home.chargeDialogLabel'),
-        hint: this.translate.instant('app.currency'),
-        type: 'number',
-      }
-    }).afterClosed().toPromise();
+    const amount: number = await this.dialog
+      .open(PromptDialogComponent, {
+        data: {
+          title: this.translate.instant('home.chargeDialogTitle'),
+          description: this.translate.instant('home.chargeDialogDescription'),
+          label: this.translate.instant('home.chargeDialogLabel'),
+          hint: this.translate.instant('app.currency'),
+          type: 'number',
+        },
+      })
+      .afterClosed()
+      .toPromise();
     if (amount >= 1000) {
       this.redirectingChargeSms = true;
       this.payService.redirect('chargeSmsAccount', amount);

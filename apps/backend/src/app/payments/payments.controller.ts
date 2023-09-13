@@ -5,13 +5,16 @@ import {
   OrderPaymentType,
   PaymentGateway,
   PaymentToken,
+  Plugin,
   Shop,
+  ShopPlugins,
   SmsAccount,
   User,
   UserRole,
 } from '@menno/types';
 import {
   Body,
+  ConflictException,
   Controller,
   Get,
   HttpException,
@@ -43,6 +46,8 @@ export class PaymentsController {
     private shopsRepository: Repository<Shop>,
     @InjectRepository(SmsAccount)
     private smsAccountsRepository: Repository<SmsAccount>,
+    @InjectRepository(ShopPlugins)
+    private shopPluginsRepo: Repository<ShopPlugins>,
     @InjectRepository(PaymentGateway)
     private paymentGatewaysRepo: Repository<PaymentGateway>,
     @InjectRepository(Member)
@@ -74,6 +79,56 @@ export class PaymentsController {
       'add order',
       userData,
       dto.shopId,
+      req.headers.origin
+    );
+  }
+
+  @Roles(UserRole.Panel)
+  @Post('extendPlugin')
+  async extendPlugin(
+    @LoginUser() user: AuthPayload,
+    @Req() req: Request,
+    @Body()
+    body: {
+      isMonthly?: boolean;
+      plugins: Plugin[];
+    }
+  ) {
+    const shop: Shop = await this.auth.getPanelUserShop(user, ['plugins']);
+    const defaultGateway = await this.defaultGateway;
+    const userData = await this.auth.getUserData(user);
+
+    const expiredAt = new Date(shop.plugins.expiredAt);
+    if (expiredAt.valueOf() - Date.now() > 9 * 24 * 3600000) throw new ConflictException('too soon');
+    const newExpiredAt = new Date(expiredAt);
+    if (body.isMonthly) {
+      newExpiredAt.setMonth(newExpiredAt.getMonth() + 1);
+    } else {
+      newExpiredAt.setFullYear(newExpiredAt.getFullYear() + 1);
+    }
+
+    let price: number;
+    if (body.plugins.length === 3) {
+      price = body.isMonthly ? 999000 : 10000000;
+    } else if (body.plugins.length === 2) {
+      price = body.isMonthly ? 799000 : 8000000;
+    } else {
+      price = body.isMonthly ? 299000 : 3000000;
+    }
+
+    return this.getRedirectLink(
+      defaultGateway.id,
+      Number(price),
+      {
+        extendPlugin: {
+          plugins: body.plugins,
+          expiredAt: newExpiredAt,
+          pluginId: shop.plugins.id,
+        },
+      },
+      'extend plugin',
+      userData,
+      shop.id,
       req.headers.origin
     );
   }
@@ -230,6 +285,14 @@ export class PaymentsController {
         const redirectUrl = `${payment.appReturnUrl}`;
         return res.redirect(redirectUrl);
       } else if (payment.details.test) {
+        const redirectUrl = `${payment.appReturnUrl}`;
+        return res.redirect(redirectUrl);
+      } else if (payment.details.extendPlugin) {
+        this.shopPluginsRepo.update(payment.details.extendPlugin.pluginId, {
+          plugins: payment.details.extendPlugin.plugins,
+          expiredAt: new Date(payment.details.extendPlugin.expiredAt),
+          renewAt: new Date(),
+        });
         const redirectUrl = `${payment.appReturnUrl}`;
         return res.redirect(redirectUrl);
       }

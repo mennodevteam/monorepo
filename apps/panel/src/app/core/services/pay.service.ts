@@ -7,13 +7,21 @@ import { Injectable } from '@angular/core';
 export class PayService {
   constructor(private http: HttpClient) {}
 
-  async redirect(type: string, amount: number) {
+  async redirect(type: string, amount?: number, body?: any) {
+    let link = `payments/${type}`;
+    if (amount) link += `/${amount}`;
     try {
-      const paymentLink = await this.http
-        .get(`payments/${type}/${amount}`, {
-          responseType: 'text',
-        })
-        .toPromise();
+      const paymentLink = body
+        ? await this.http
+            .post(link, body, {
+              responseType: 'text',
+            })
+            .toPromise()
+        : await this.http
+            .get(link, {
+              responseType: 'text',
+            })
+            .toPromise();
       if (paymentLink) {
         var form = document.createElement('form');
         form.setAttribute('method', 'POST');
@@ -23,7 +31,6 @@ export class PayService {
         form.submit();
         document.body.removeChild(form);
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 }

@@ -1,0 +1,62 @@
+<h3 mat-dialog-title>{{ 'extendPlugin.title' | translate }}</h3>
+<mat-dialog-content>
+  <div style="display: flex; justify-content: center">
+    <mat-button-toggle-group [(ngModel)]="isMonthly">
+      <mat-button-toggle [value]="false">{{ 'extendPlugin.yearly' | translate }}</mat-button-toggle>
+      <mat-button-toggle [value]="true">{{ 'extendPlugin.monthly' | translate }}</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <mat-nav-list>
+    <a mat-list-item (click)="selected = 1">
+      <i *ngIf="selected === 1" matListItemIcon class="fa-solid fa-check-circle fa-lg success-color"></i>
+      <i *ngIf="selected !== 1" matListItemIcon class="fa-regular fa-circle fa-lg"></i>
+      <span matListItemTitle>
+        {{ 'extendPlugin.plan1' | translate }}
+        <b class="blue" *ngIf="isMonthly">{{ 299000 | menuCurrency }}</b>
+        <b class="blue" *ngIf="!isMonthly">{{ 3000000 | menuCurrency }}</b>
+      </span>
+      <span matListItemLine>
+        {{ 'extendPlugin.view' | translate }}
+      </span>
+    </a>
+    <a mat-list-item (click)="selected = 2">
+      <i *ngIf="selected === 2" matListItemIcon class="fa-solid fa-check-circle fa-lg success-color"></i>
+      <i *ngIf="selected !== 2" matListItemIcon class="fa-regular fa-circle fa-lg"></i>
+      <span matListItemTitle>
+        {{ 'extendPlugin.plan2' | translate }}
+        <b class="blue" *ngIf="isMonthly">{{ 799000 | menuCurrency }}</b>
+        <b class="blue" *ngIf="!isMonthly">{{ 8000000 | menuCurrency }}</b>
+      </span>
+      <span matListItemLine>
+        {{ 'extendPlugin.view' | translate }},
+        {{ 'extendPlugin.order' | translate }}
+      </span>
+    </a>
+    <a mat-list-item (click)="selected = 3">
+      <i *ngIf="selected === 3" matListItemIcon class="fa-solid fa-check-circle fa-lg success-color"></i>
+      <i *ngIf="selected !== 3" matListItemIcon class="fa-regular fa-circle fa-lg"></i>
+      <span matListItemTitle>
+        {{ 'extendPlugin.plan3' | translate }}
+        <b class="blue" *ngIf="isMonthly">{{ 999000 | menuCurrency }}</b>
+        <b class="blue" *ngIf="!isMonthly">{{ 10000000 | menuCurrency }}</b>
+      </span>
+      <span matListItemLine>
+        {{ 'extendPlugin.view' | translate }}, {{ 'extendPlugin.order' | translate }},
+        {{ 'extendPlugin.club' | translate }}
+      </span>
+    </a>
+  </mat-nav-list>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions>
+  <p class="red" *ngIf="unavailable">{{ 'extendPlugin.unavailable' | translate }}</p>
+  <button
+    mat-flat-button
+    color="primary"
+    *ngIf="!unavailable"
+    [disabled]="loading || !selected"
+    (click)="pay()"
+  >
+    {{ 'extendPlugin.pay' | translate }}
+  </button>
+</mat-dialog-actions>
