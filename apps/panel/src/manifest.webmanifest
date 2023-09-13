@@ -1,7 +1,7 @@
 {
   "name": "panel.menno.pro",
   "short_name": "panel.menno.pro",
-  "theme_color": "#ffca28",
+  "theme_color": "#FFB300",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",

@@ -2,7 +2,7 @@
   "appData": {
     "forceReload": false,
     "lazyReload": false,
-    "changes": ["امکان شارژ اعتباری حساب مشتریان"]
+    "changes": ["رفع خطای محاسبه اشتباه گزارش فروش به تفکیک پرداخت"]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",
