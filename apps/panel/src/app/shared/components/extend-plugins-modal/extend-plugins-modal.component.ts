@@ -20,7 +20,6 @@ export class ExtendPluginsModalComponent {
   }
 
   get unavailable() {
-    return false
     const expiredAt = new Date(this.shopService.shop?.plugins?.expiredAt || 0);
     return expiredAt.valueOf() - Date.now() > 9 * 24 * 3600000;
   }
