@@ -12,11 +12,9 @@
       [imageQuality]="data?.imageQuality || 92"
       [format]="data?.format || 'jpeg'"
       [roundCropper]="data.roundCropper"
-      backgroundColor="red"
       (imageCropped)="imageCropped($event)"
     ></image-cropper>
   </div>
-  <mat-checkbox [(ngModel)]="data.roundCropper">لوگو به صورت دایره ای</mat-checkbox>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button [disabled]="!result" [mat-dialog-close]="result" color="primary">

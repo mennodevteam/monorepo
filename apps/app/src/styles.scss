@@ -63,6 +63,11 @@ span[spacer-sm] {
   display: flex;
 }
 
+[flex-col] {
+  display: flex;
+  flex-direction: column;
+}
+
 [flex] {
   flex: 1;
 }

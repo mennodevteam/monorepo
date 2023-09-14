@@ -1,0 +1,42 @@
+<div flex-col>
+  <mat-nav-list *ngIf="shop">
+    <a *ngFor="let phone of shop.phones || []" mat-list-item href="tel:{{ phone }}">
+      <i matListItemIcon class="fa-solid fa-phone fa-lg"></i>
+      <span matListItemTitle>{{ 'shopInfo.phone' | translate }}</span>
+      <span matListItemLine>
+        {{ phone }}
+      </span>
+    </a>
+    <a
+      mat-list-item
+      *ngIf="shop.instagram"
+      href="https://www.instagram.com/{{ shop.instagram }}"
+      target="_blank"
+    >
+      <i matListItemIcon class="fa-brands fa-instagram fa-lg"></i>
+      <span matListItemTitle>{{ 'shopInfo.instagram' | translate }}</span>
+      <span matListItemLine>
+        {{ shop.instagram }}
+      </span>
+    </a>
+    <a mat-list-item lines="3" *ngIf="shop.address">
+      <i matListItemIcon class="fa-solid fa-location-dot fa-lg"></i>
+      <span matListItemTitle>{{ 'shopInfo.address' | translate }}</span>
+      <span>
+        {{ shop.address }}
+      </span>
+    </a>
+
+    <mat-divider></mat-divider>
+
+    <a mat-list-item *ngIf="shop.shopGroup" routerLink="/g">
+      <span matListItemTitle>
+        {{ 'shopInfo.shopGroupList' | translate: { value: shop.shopGroup?.listName || ('shopInfo.group' | translate) } }}
+      </span>
+      <div class="secondary" matListItemMeta>
+        <i class="fa-sharp fa-solid fa-sitemap"></i>
+      </div>
+    </a>
+  </mat-nav-list>
+  <button mat-button (click)="ref.dismiss()">{{ 'app.close' | translate }}</button>
+</div>

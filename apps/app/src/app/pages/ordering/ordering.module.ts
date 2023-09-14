@@ -40,6 +40,7 @@ import { DiscountCouponListPageComponent } from './discount-coupon-list-page/dis
 import { DingBottomSheetComponent } from './ding-bottom-sheet/ding-bottom-sheet.component';
 import { ShopGroupPageComponent } from './shop-group-page/shop-group-page.component';
 import { ShopWelcomeComponent } from './shop-welcome/shop-welcome.component';
+import { ShopInfoModalComponent } from './shop-info-modal/shop-info-modal.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { ShopWelcomeComponent } from './shop-welcome/shop-welcome.component';
     DingBottomSheetComponent,
     ShopGroupPageComponent,
     ShopWelcomeComponent,
+    ShopInfoModalComponent,
   ],
   imports: [
     CommonModule,

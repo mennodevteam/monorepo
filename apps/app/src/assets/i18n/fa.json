@@ -1,6 +1,7 @@
 {
   "app": {
     "number": "{{value}} عدد",
+    "close": "بستن",
     "count": "تعداد",
     "ok": "تایید",
     "cancel": "انصراف",
@@ -137,5 +138,12 @@
     "married": "متاهل",
     "marriageDate": "تاریخ ازدواج",
     "save": "ذخیره"
+  },
+  "shopInfo": {
+    "phone": "تلفن",
+    "instagram": "اینستاگرام",
+    "address": "آدرس",
+    "group": "شعب",
+    "shopGroupList": "لیست سایر {{value}}"
   }
 }
