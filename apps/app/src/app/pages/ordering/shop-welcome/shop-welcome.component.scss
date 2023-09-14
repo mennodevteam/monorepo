@@ -1,0 +1,39 @@
+.wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-position: center;
+  background-size: cover;
+  background-image: url("https://img.freepik.com/free-photo/restaurant-corridor-with-small-two-people-tables_140725-4928.jpg?w=740&t=st=1694689119~exp=1694689719~hmac=f31806c0424a43e8e3eae3bc03f2301588f1b101373b971c6d0e5b0b7dbcef70");
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  .content {
+    padding: 24px;
+    padding-top: 256px;
+    background: rgb(0, 0, 0);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+
+    #logo {
+      width: 196px;
+      border-radius: 16px;
+      margin: auto;
+    }
+
+    mat-toolbar {
+      padding: 0;
+      margin-bottom: -16px;
+
+      mat-divider {
+        height: 24px;
+      }
+    }
+  }
+}

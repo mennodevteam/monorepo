@@ -39,6 +39,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DiscountCouponListPageComponent } from './discount-coupon-list-page/discount-coupon-list-page.component';
 import { DingBottomSheetComponent } from './ding-bottom-sheet/ding-bottom-sheet.component';
 import { ShopGroupPageComponent } from './shop-group-page/shop-group-page.component';
+import { ShopWelcomeComponent } from './shop-welcome/shop-welcome.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { ShopGroupPageComponent } from './shop-group-page/shop-group-page.compon
     DiscountCouponListPageComponent,
     DingBottomSheetComponent,
     ShopGroupPageComponent,
+    ShopWelcomeComponent,
   ],
   imports: [
     CommonModule,

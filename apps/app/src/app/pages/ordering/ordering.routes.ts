@@ -8,6 +8,7 @@ import { OrderCompleteComponent } from './order-complete/order-complete.componen
 import { DiscountCouponListPageComponent } from './discount-coupon-list-page/discount-coupon-list-page.component';
 import { ShopGroupPageComponent } from './shop-group-page/shop-group-page.component';
 import { MobilePhoneGuard } from '../../core/guards/mobile-phone.guard';
+import { ShopWelcomeComponent } from './shop-welcome/shop-welcome.component';
 
 export const orderingRoutes: Routes = [
   {
@@ -17,6 +18,10 @@ export const orderingRoutes: Routes = [
       {
         path: '',
         component: ShopHomeComponent,
+      },
+      {
+        path: 'welcome',
+        component: ShopWelcomeComponent,
       },
       {
         canActivate: [MobilePhoneGuard],

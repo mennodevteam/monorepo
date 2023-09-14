@@ -19,6 +19,16 @@ body {
   font-size: 14px;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
 .cut-text {
   text-overflow: ellipsis;
   overflow: hidden;
@@ -47,6 +57,10 @@ span[spacer-sm] {
   display: inline-block;
   width: 8px;
   height: 8px;
+}
+
+[flex-row] {
+  display: flex;
 }
 
 [flex] {

@@ -158,6 +158,10 @@ $app-typography: mat.define-typography-config(
   mat-bottom-sheet-container {
     background-color: var(--md-sys-color-background) !important;
   }
+
+  mat-divider[vertical] {
+    height: 100%;
+  }
   
   .cdk-visually-hidden {
     display: none !important;
