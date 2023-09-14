@@ -131,6 +131,7 @@ export class ShopPageComponent implements OnInit {
       .open(ImageCropperDialogComponent, {
         data: <CropperOptions>{
           resizeToWidth: 512,
+          format: 'png',
         },
       })
       .afterClosed()
@@ -160,7 +161,7 @@ export class ShopPageComponent implements OnInit {
     const dto = this.form.getRawValue();
     if (this.imageCropperResult) {
       this.snack.open(this.translate.instant('app.uploading'), '', { duration: 5000 });
-      const savedFile = await this.fileService.upload(this.imageCropperResult.file, `${dto.title}.jpeg`);
+      const savedFile = await this.fileService.upload(this.imageCropperResult.file, `logo.png`);
       dto.logo = savedFile?.key;
     }
     this.snack.open(this.translate.instant('app.saving'), '', { duration: 5000 });
