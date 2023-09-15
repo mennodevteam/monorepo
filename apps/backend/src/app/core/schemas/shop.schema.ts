@@ -73,6 +73,14 @@ export const ShopSchema = new EntitySchema<Shop>({
       type: String,
       nullable: true,
     },
+    cover: {
+      type: String,
+      nullable: true,
+    },
+    verticalCover: {
+      type: String,
+      nullable: true,
+    },
     phones: {
       type: String,
       array: true,

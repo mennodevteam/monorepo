@@ -17,13 +17,14 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { SharedModule } from './shared/shared.module';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MaterialPersianDateAdapter, PERSIAN_DATE_FORMATS } from './core/material.persian-date.adapter';
+import { PagesComponent } from './pages/pages.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/');
 }
 
 @NgModule({
-  declarations: [AppComponent, NxWelcomeComponent],
+  declarations: [AppComponent, NxWelcomeComponent, PagesComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

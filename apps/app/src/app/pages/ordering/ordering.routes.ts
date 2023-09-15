@@ -5,7 +5,6 @@ import { MenuPageComponent } from './menu-page/menu-page.component';
 import { ProductPageComponent } from './product-page/product-page.component';
 import { ShopHomeComponent } from './shop-home/shop-home.component';
 import { OrderCompleteComponent } from './order-complete/order-complete.component';
-import { DiscountCouponListPageComponent } from './discount-coupon-list-page/discount-coupon-list-page.component';
 import { ShopGroupPageComponent } from './shop-group-page/shop-group-page.component';
 import { MobilePhoneGuard } from '../../core/guards/mobile-phone.guard';
 import { ShopWelcomeComponent } from './shop-welcome/shop-welcome.component';
@@ -24,7 +23,6 @@ export const orderingRoutes: Routes = [
         component: ShopWelcomeComponent,
       },
       {
-        canActivate: [MobilePhoneGuard],
         path: 'g',
         component: ShopGroupPageComponent,
       },
@@ -32,11 +30,6 @@ export const orderingRoutes: Routes = [
         canActivate: [MobilePhoneGuard],
         path: 'basket',
         component: BasketPageComponent,
-      },
-      {
-        canActivate: [MobilePhoneGuard],
-        path: 'coupons',
-        component: DiscountCouponListPageComponent,
       },
       {
         path: 'menu',

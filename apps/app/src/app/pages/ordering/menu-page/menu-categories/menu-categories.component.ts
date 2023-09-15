@@ -15,18 +15,4 @@ export class MenuCategoriesComponent {
   get categories() {
     return this.menuService.menu?.categories;
   }
-
-  selectChip(index: number, scrollIntoView = false) {
-    const selectedChip = this.categoryChips.toArray()[index];
-    selectedChip.select();
-    if (scrollIntoView) {
-      setTimeout(() => {
-        selectedChip._elementRef.nativeElement.scrollIntoView({
-          block: 'nearest',
-          inline: 'center',
-          behavior: 'smooth',
-        });
-      }, 300);
-    }
-  }
 }

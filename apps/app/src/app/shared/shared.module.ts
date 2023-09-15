@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -18,6 +19,7 @@ import { PdatePipe } from './pipes/pdate.pipe';
 import { OrderTypePipe } from './pipes/order-type.pipe';
 import { PromptDialogComponent } from './dialogs/prompt-dialog/prompt-dialog.component';
 import { EmptyStateComponent } from './components/empty-state/empty-state.component';
+import { MainMenuComponent } from './components/main-menu/main-menu.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,7 @@ import { EmptyStateComponent } from './components/empty-state/empty-state.compon
     PromptDialogComponent,
     PdatePipe,
     OrderTypePipe,
+    MainMenuComponent,
   ],
   imports: [
     CommonModule,
@@ -43,6 +46,7 @@ import { EmptyStateComponent } from './components/empty-state/empty-state.compon
     MatSnackBarModule,
     MatAutocompleteModule,
     MatIconModule,
+    MatMenuModule,
   ],
   exports: [
     GoBackDirective,
@@ -54,6 +58,7 @@ import { EmptyStateComponent } from './components/empty-state/empty-state.compon
     TranslateModule,
     CountSelectorComponent,
     MatAutocompleteModule,
+    MainMenuComponent,
     MatIconModule,
   ],
   providers: [DecimalPipe],

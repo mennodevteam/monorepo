@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import {
   DELIVERY_COST_TITLE,
+  HomePage,
   Menu,
   MenuViewType,
   OrderType,
@@ -20,6 +21,7 @@ import { ShopTablesBottomSheetComponent } from '../shop-tables-bottom-sheet/shop
 import { FormControl } from '@angular/forms';
 import { DingBottomSheetComponent } from '../ding-bottom-sheet/ding-bottom-sheet.component';
 import { AuthService } from '../../../core/services/auth.service';
+import { ShopInfoModalComponent } from '../shop-info-modal/shop-info-modal.component';
 
 @Component({
   selector: 'menu-page',
@@ -67,10 +69,6 @@ export class MenuPageComponent implements AfterViewInit {
         this.selectDineInTable();
       }
 
-      setTimeout(() => {
-        this.setScrolling();
-      }, 1000);
-
       this.searchQueryControl.valueChanges.subscribe((value) => {
         this.searchCategories = [];
         if (this.menu) {
@@ -79,14 +77,15 @@ export class MenuPageComponent implements AfterViewInit {
       });
     });
 
-    if (this.appConfig?.disableOrdering && this.menu && !Menu.isBasedOrderType(this.menu)) {
+    if (
+      (this.appConfig?.disableOrdering && this.menu && !Menu.isBasedOrderType(this.menu)) ||
+      this.appConfig?.selectableOrderTypes?.length === 1
+    ) {
       this.showSelectOrderType = false;
     }
   }
 
-  ngAfterViewInit(): void {
-    this.setScrolling();
-  }
+  ngAfterViewInit(): void {}
 
   get viewType() {
     return this._viewType;
@@ -95,28 +94,6 @@ export class MenuPageComponent implements AfterViewInit {
   set viewType(val: MenuViewType) {
     this._viewType = val;
     localStorage.setItem('ui-menuViewType', val.toString());
-  }
-
-  setScrolling() {
-    for (const cat of this.categoryElements) {
-      const topMargin = 60 + 120;
-      const bottomMargin = window.innerHeight - topMargin - 120;
-      const rootMargin = `-${topMargin}px 0px -${bottomMargin}px 0px`;
-      new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.intersectionRatio >= 0 && entry.isIntersecting) {
-              const selectedIndex = this.categoryElements.toArray().indexOf(cat);
-              this.menuCategoriesComponent.selectChip(selectedIndex, true);
-            }
-          });
-        },
-        {
-          root: null,
-          rootMargin,
-        }
-      ).observe(cat.nativeElement);
-    }
   }
 
   get orderType() {
@@ -144,17 +121,16 @@ export class MenuPageComponent implements AfterViewInit {
   }
 
   categoryClick(index: number) {
-    this.categoryElements.toArray()[index].nativeElement.scrollIntoView(true);
+    this.categoryElements.toArray()[index].nativeElement.scrollIntoView({
+      block: 'start',
+      behavior: 'smooth',
+    });
   }
 
   toggleView() {
     if (this.viewType === MenuViewType.Card) this.viewType = MenuViewType.Grid;
     else if (this.viewType === MenuViewType.Grid) this.viewType = MenuViewType.Compact;
     else if (this.viewType === MenuViewType.Compact) this.viewType = MenuViewType.Card;
-  }
-
-  changeType() {
-    this.menuService.openSelectOrderType();
   }
 
   async selectDeliveryAddress() {
@@ -209,5 +185,13 @@ export class MenuPageComponent implements AfterViewInit {
 
   get isClosed() {
     return !this.shopService.isOpen;
+  }
+
+  get isHomePage() {
+    return this.appConfig?.homePage === HomePage.Menu;
+  }
+
+  openShopInfoModal() {
+    this.bottomSheet.open(ShopInfoModalComponent);
   }
 }

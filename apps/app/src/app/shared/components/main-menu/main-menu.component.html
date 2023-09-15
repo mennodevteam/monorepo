@@ -1,0 +1,18 @@
+<button mat-icon-button [matMenuTriggerFor]="menu">
+  <i class="fa-regular fa-bars"></i>
+</button>
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item>
+    <i class="fa-solid mat-icon fa-user"></i>
+    {{ 'mainMenu.login' | translate }}
+  </button>
+  <button mat-menu-item routerLink="/">
+    <i class="fa-solid mat-icon fa-user"></i>
+    {{ 'mainMenu.loginInfo' | translate }}
+  </button>
+  <button mat-menu-item routerLink="/orders">
+    <i class="fa-solid mat-icon fa-utensils"></i>
+    {{ 'mainMenu.orders' | translate }}
+  </button>
+</mat-menu>

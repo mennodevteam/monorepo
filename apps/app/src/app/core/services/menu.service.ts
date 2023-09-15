@@ -27,6 +27,9 @@ export class MenuService {
     const query = this.shopService.getShopUsernameFromQuery();
     this._baseMenu = await this.http.get<Menu>(`menus/${query}`).toPromise();
 
+    if (this.shopService.shop?.appConfig?.selectableOrderTypes[0] != undefined)
+      this.type = this.shopService.shop?.appConfig?.selectableOrderTypes[0];
+    
     if (this._baseMenu) {
       const menu = this.baseMenu;
       Menu.setRefsAndSort(menu);

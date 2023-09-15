@@ -29,13 +29,11 @@
 
     <mat-divider></mat-divider>
 
-    <a mat-list-item *ngIf="shop.shopGroup" routerLink="/g">
+    <a mat-list-item *ngIf="shop.shopGroup" routerLink="/g" (click)="ref.dismiss()">
+      <i matListItemIcon class="fa-sharp fa-solid fa-sitemap fa-lg"></i>
       <span matListItemTitle>
         {{ 'shopInfo.shopGroupList' | translate: { value: shop.shopGroup?.listName || ('shopInfo.group' | translate) } }}
       </span>
-      <div class="secondary" matListItemMeta>
-        <i class="fa-sharp fa-solid fa-sitemap"></i>
-      </div>
     </a>
   </mat-nav-list>
   <button mat-button (click)="ref.dismiss()">{{ 'app.close' | translate }}</button>

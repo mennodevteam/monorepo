@@ -1,4 +1,4 @@
-import { AppConfig, MenuViewType, OrderType, ThemeMode } from '@menno/types';
+import { AppConfig, HomePage, MenuViewType, OrderType, ThemeMode } from '@menno/types';
 import { EntitySchema } from 'typeorm';
 
 export const AppConfigSchema = new EntitySchema<AppConfig>({
@@ -9,6 +9,11 @@ export const AppConfigSchema = new EntitySchema<AppConfig>({
       type: 'uuid',
       generated: 'uuid',
       primary: true,
+    },
+    homePage: {
+      type: 'enum',
+      enum: HomePage,
+      default: HomePage.Info,
     },
     themeMode: {
       type: 'enum',

@@ -43,6 +43,8 @@ export class Shop {
   menu?: Menu;
   club?: Club;
   logo: string;
+  cover: string;
+  verticalCover: string;
   appConfig?: AppConfig;
   connectionAt: Date;
   shopGroup?: ShopGroup;

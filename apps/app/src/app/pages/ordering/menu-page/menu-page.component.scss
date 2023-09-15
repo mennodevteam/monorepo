@@ -6,14 +6,37 @@
   margin: auto;
 }
 
-#logo {
-  width: 48px;
-  height: 48px;
-  border-radius: 16px;
-}
+header {
+  padding: 0 24px;
+  gap: 8px;
 
-.select-type {
-  width: -webkit-fill-available;
+  .shop-info {
+    gap: 16px;
+
+    #logo {
+      width: 72px;
+      height: 72px;
+      border-radius: 16px;
+    }
+
+    #title {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    #description {
+      font-size: 0.8rem;
+    }
+  }
+
+  mat-toolbar {
+    padding: 0;
+    margin-bottom: -16px;
+
+    mat-divider {
+      height: 24px;
+    }
+  }
 }
 
 .toolbar {
@@ -33,7 +56,7 @@
     outline: none;
     border: none;
     padding: 4px 12px;
-    border-radius: 24px;
+    border-radius: 8px;
     line-height: 28px;
     font-family: inherit;
   }

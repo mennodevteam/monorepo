@@ -14,10 +14,17 @@ export enum MenuViewType {
   Grid,
   Compact,
 }
+
+export enum HomePage {
+  Welcome = 'WELCOME',
+  Info = 'INFO',
+  Menu = 'MENU',
+}
 export class AppConfig {
   id: string;
   theme: Theme;
   themeMode: ThemeMode;
+  homePage: HomePage;
   selectableOrderTypes: OrderType[];
   disableOrdering: boolean;
   orderingTypes: OrderType[];
@@ -28,6 +35,6 @@ export class AppConfig {
   requiredRegister: OrderType[];
   menuViewType: MenuViewType;
   ding: boolean;
-  dings: string[]
+  dings: string[];
   menuCols: number;
 }

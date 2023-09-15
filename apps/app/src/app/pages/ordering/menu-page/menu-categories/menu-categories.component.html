@@ -1,13 +1,7 @@
-<mat-chip-listbox aria-label="categories" class="category-chips background">
-  <mat-chip-option
-    #categoryChip
-    color="primary"
-    [ngClass]="{'on-primary-text': categoryChip.selected}"
-    (click)="chipClick.emit(i)"
-    *ngFor="let c of categories; let i = index"
-  >
+<mat-chip-set aria-label="categories" class="category-chips background">
+  <mat-chip #categoryChip class="outline-variant" (click)="chipClick.emit(i)" *ngFor="let c of categories; let i = index">
     <i *ngIf="c.faIcon" class="fa-solid fa-{{ c.faIcon }}"></i>
     {{ c.title }}
-  </mat-chip-option>
+  </mat-chip>
   <span spacer-2x></span>
-</mat-chip-listbox>
+</mat-chip-set>
