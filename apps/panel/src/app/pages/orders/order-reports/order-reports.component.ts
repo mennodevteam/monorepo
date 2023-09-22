@@ -67,7 +67,16 @@ export class OrderReportsComponent implements AfterViewInit {
     this.form = this.fb.group({
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), Validators.required],
-      states: [[OrderState.Completed], Validators.required],
+      states: [
+        [
+          OrderState.Pending,
+          OrderState.Processing,
+          OrderState.Ready,
+          OrderState.Shipping,
+          OrderState.Completed,
+        ],
+        Validators.required,
+      ],
       payments: [
         [
           OrderPaymentType.NotPayed,
@@ -139,19 +148,23 @@ export class OrderReportsComponent implements AfterViewInit {
         },
       ];
 
-      // if (dto.groupBy === date)
+      let skipTotal = false;
       switch (dto.groupBy) {
         case 'date':
           this.chartData.labels = keys.map((x) => new persianDate(new Date(x)).format('YYYY/MM/DD'));
           break;
         case 'category':
+          skipTotal = true;
           this.chartData.labels = keys.map((x) => this.menuService.getCategoryById(Number(x))?.title);
           break;
         case 'product':
+          skipTotal = true;
           this.chartData.labels = keys.map((x) => this.menuService.getProductById(x)?.title);
           break;
         case 'payment':
-          this.chartData.labels = keys.map((x) => isNaN(Number(x)) ? x : this.orderPaymentPipe.transform(Number(x)));
+          this.chartData.labels = keys.map((x) =>
+            isNaN(Number(x)) ? x : this.orderPaymentPipe.transform(Number(x))
+          );
           break;
         case 'state':
           this.chartData.labels = keys.map((x) => this.orderStatePipe.transform(Number(x)));
@@ -167,13 +180,16 @@ export class OrderReportsComponent implements AfterViewInit {
         count: data[key].count,
         sum: data[key].sum,
       }));
-      const totalRow = this.tableData.reduce(
-        (t, o) => {
-          return { ...t, count: t.count + o.count, sum: t.sum + o.sum };
-        },
-        { label: this.translate.instant('app.sum'), count: 0, sum: 0 }
-      );
-      this.tableData.unshift(totalRow);
+
+      if (!skipTotal) {
+        const totalRow = this.tableData.reduce(
+          (t, o) => {
+            return { ...t, count: t.count + o.count, sum: t.sum + o.sum };
+          },
+          { label: this.translate.instant('app.sum'), count: 0, sum: 0 }
+        );
+        this.tableData.unshift(totalRow);
+      }
 
       this.chart?.update();
     }

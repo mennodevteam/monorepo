@@ -199,9 +199,8 @@ export class OrdersService {
             date.setHours(date.getHours() - 3);
             return date.toDateString();
           },
-          (order) => {
-            return order.totalPrice;
-          },
+          (order) => order.totalPrice,
+          (order) => 1,
           dateDefaultKeys
         );
         break;
@@ -238,45 +237,33 @@ export class OrdersService {
       case 'state':
         data = groupBySum<Order>(
           orders,
-          (order) => {
-            return order.state.toString();
-          },
-          (order) => {
-            return order.totalPrice;
-          }
+          (order) => order.state.toString(),
+          (order) => order.totalPrice,
+          (order) => 1
         );
         break;
       case 'type':
         data = groupBySum<Order>(
           orders,
-          (order) => {
-            return order.type.toString();
-          },
-          (order) => {
-            return order.totalPrice;
-          }
+          (order) => order.type.toString(),
+          (order) => order.totalPrice,
+          (order) => 1
         );
         break;
       case 'category':
         data = groupBySum<OrderItem>(
           orderItems.filter((x) => x.product?.category),
-          (item) => {
-            return item.product.category.id.toString();
-          },
-          (item) => {
-            return item.price;
-          }
+          (item) => item.product.category.id.toString(),
+          (item) => item.price * item.quantity,
+          (item) => item.quantity
         );
         break;
       case 'product':
         data = groupBySum<OrderItem>(
           orderItems.filter((x) => x.product),
-          (item) => {
-            return item.product.id;
-          },
-          (item) => {
-            return item.quantity * item.price;
-          }
+          (item) => item.product.id,
+          (item) => item.quantity * item.price,
+          (item) => item.quantity
         );
         break;
     }

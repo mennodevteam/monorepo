@@ -94,13 +94,15 @@
             <mat-button-toggle value="type">{{ 'orderReport.groupBy.type' | translate }}</mat-button-toggle>
           </mat-button-toggle-group>
           <span spacer-2x></span>
+
+          <mat-spinner [diameter]="24" *ngIf="loading"></mat-spinner>
           <div [hidden]="loading">
             <div>
               <canvas baseChart [data]="chartData" [options]="chartOptions" [type]="chartType"></canvas>
             </div>
           </div>
 
-          <table mat-table [dataSource]="tableData">
+          <table mat-table [dataSource]="tableData" [hidden]="loading">
             <ng-container matColumnDef="label">
               <th mat-header-cell *matHeaderCellDef></th>
               <td mat-cell *matCellDef="let data">
