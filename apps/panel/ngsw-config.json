@@ -2,7 +2,7 @@
   "appData": {
     "forceReload": false,
     "lazyReload": false,
-    "changes": ["امکان تمدید اشتراک به صورت آنلاین"]
+    "changes": ["رفع مشکل اختلاف گزارش فروش محصولات"]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",
