@@ -10,7 +10,11 @@ export class WindowsLocalNotificationController {
   @Public()
   @Get('/:shopId')
   async getNewNotifies(@Param('shopId') shopId: string): Promise<WindowsLocalNotification[]> {
-    return this.widowsLocalNotificationService.findByShop(shopId);
+    const notifications = await this.widowsLocalNotificationService.findByShop(shopId);
+    for (const n of notifications) {
+      this.widowsLocalNotificationService.isNotified(n.id);
+    }
+    return notifications;
   }
 
   @Public()

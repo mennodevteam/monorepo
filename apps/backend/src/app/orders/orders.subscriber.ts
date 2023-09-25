@@ -129,10 +129,8 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     } catch (error) {}
 
     try {
-      if (shop.options?.windowsNotification) this.insertWindowsNotification(order, shop);
-    } catch (error) {
-      console.log(error);
-    }
+      this.insertWindowsNotification(order, shop);
+    } catch (error) {}
   }
 
   async afterUpdate(event: UpdateEvent<Order>): Promise<any> {
