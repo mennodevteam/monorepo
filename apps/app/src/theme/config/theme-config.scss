@@ -142,6 +142,10 @@ $app-typography: mat.define-typography-config(
     mat-button-toggle {
       font-family: inherit !important;
       flex: 1;
+
+      * {
+        line-height: 32px;
+      }
     }
   }
 
@@ -161,6 +165,7 @@ $app-typography: mat.define-typography-config(
   }
   
   mat-bottom-sheet-container {
+    padding: 24px 16px;
     background-color: var(--md-sys-color-background) !important;
   }
 

@@ -12,6 +12,7 @@ header {
 
   .shop-info {
     gap: 16px;
+    align-items: center;
 
     #logo {
       width: 72px;
@@ -30,11 +31,12 @@ header {
   }
 
   mat-toolbar {
-    padding: 0;
+    height: 40px !important;
+    padding: 0 !important;
     margin-bottom: -16px;
 
     mat-divider {
-      height: 24px;
+      height: 24px !important;
     }
   }
 }

@@ -120,6 +120,10 @@ export class MenuPageComponent implements AfterViewInit {
     return this.shop?.details?.tables;
   }
 
+  get showTableSelect() {
+    return this.tables?.length && !this.shop?.appConfig?.disableOrdering && this.orderType === OrderType.DineIn
+  }
+
   categoryClick(index: number) {
     this.categoryElements.toArray()[index].nativeElement.scrollIntoView({
       block: 'start',

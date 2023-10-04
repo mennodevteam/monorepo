@@ -25,7 +25,7 @@
   </header>
 
   <mat-toolbar>
-    <mat-button-toggle-group appearance="legacy" [(ngModel)]="menuService.type" color="primary" flex>
+    <mat-button-toggle-group [(ngModel)]="menuService.type" color="primary" flex>
       <mat-button-toggle *ngFor="let t of appConfig?.selectableOrderTypes" [value]="t">
         {{ t | orderType }}
       </mat-button-toggle>
@@ -39,32 +39,32 @@
     <disable-ordering-card></disable-ordering-card>
   </section>
 
-  <mat-nav-list *ngIf="showSelectOrderType">
-    <a mat-list-item *ngSwitchCase="OrderType.Delivery" (click)="selectDeliveryAddress()">
-      <i matListItemIcon class="fa-solid fa-map-location-dot"></i>
-      <span matListItemTitle *ngIf="!basket.address" class="error-text">
-        {{ 'menu.selectDeliveryAddress' | translate }}
-      </span>
-      <span matListItemTitle *ngIf="basket.address">
-        {{ basket.address.description }}
-      </span>
-      <span matListItemMeta *ngIf="basket.address && !basket.address?.deliveryArea" class="error-text">
-        {{ 'locationsBottomSheet.outsideArea' | translate }}
-      </span>
-      <span
-        matListItemMeta
-        *ngIf="basket.address?.deliveryArea && basket.address?.deliveryArea?.status !== Status.Active"
-        class="error-text"
-      >
-        {{ 'locationsBottomSheet.disabled' | translate }}
-      </span>
-      <span matListItemMeta *ngIf="deliveryCost" class="tertiary-text">
-        {{ deliveryCost.price | menuCurrency }}
-      </span>
-      <i matListItemMeta *ngIf="!basket.address" class="fa-regular fa-chevron-left"></i>
-    </a>
-    <ng-container *ngIf="tables?.length && !shop?.appConfig?.disableOrdering">
-      <a mat-list-item *ngSwitchCase="OrderType.DineIn" (click)="selectDineInTable()">
+  <ng-container [ngSwitch]="orderType">
+    <mat-nav-list *ngIf="showTableSelect || orderType === OrderType.Delivery">
+      <a mat-list-item *ngIf="orderType === OrderType.Delivery" (click)="selectDeliveryAddress()">
+        <i matListItemIcon class="fa-solid fa-map-location-dot"></i>
+        <span matListItemTitle *ngIf="!basket.address" class="error-text">
+          {{ 'menu.selectDeliveryAddress' | translate }}
+        </span>
+        <span matListItemTitle *ngIf="basket.address">
+          {{ basket.address.description }}
+        </span>
+        <span matListItemMeta *ngIf="basket.address && !basket.address?.deliveryArea" class="error-text">
+          {{ 'locationsBottomSheet.outsideArea' | translate }}
+        </span>
+        <span
+          matListItemMeta
+          *ngIf="basket.address?.deliveryArea && basket.address?.deliveryArea?.status !== Status.Active"
+          class="error-text"
+        >
+          {{ 'locationsBottomSheet.disabled' | translate }}
+        </span>
+        <span matListItemMeta *ngIf="deliveryCost" class="tertiary-text">
+          {{ deliveryCost.price | menuCurrency }}
+        </span>
+        <i matListItemMeta *ngIf="!basket.address" class="fa-regular fa-chevron-left"></i>
+      </a>
+      <a mat-list-item *ngIf="showTableSelect" (click)="selectDineInTable()">
         <i matListItemIcon class="fa-solid fa-chair"></i>
         <span matListItemTitle *ngIf="!basket.details?.table" class="error-text">
           {{ 'menu.selectDineInTable' | translate }}
@@ -74,8 +74,8 @@
         </span>
         <i matListItemMeta class="fa-regular fa-chevron-left"></i>
       </a>
-    </ng-container>
-  </mat-nav-list>
+    </mat-nav-list>
+  </ng-container>
 
   <mat-toolbar class="toolbar">
     <div id="search-wrapper" flex>
