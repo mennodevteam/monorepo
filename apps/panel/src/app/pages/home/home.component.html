@@ -30,7 +30,9 @@
               <span matListItemMeta class="ltr"> {{ plugin?.renewAt | pdate: 'YYYY/MM/DD' }}</span>
             </mat-list-item>
             <mat-list-item>
-              <span matListItemLine> {{ 'home.remainDays' | translate: { value: (remainingDays | number: '1.0-0') } }}: </span>
+              <span matListItemLine>
+                {{ 'home.remainDays' | translate: { value: (remainingDays | number: '1.0-0') } }}:
+              </span>
               <span matListItemMeta class="ltr"> {{ plugin?.expiredAt | pdate: 'YYYY/MM/DD' }}</span>
             </mat-list-item>
             <mat-list-item>
@@ -141,14 +143,17 @@
             <a mat-list-item routerLink="/settings/app-config">
               <i matListItemIcon class="fa-solid mat-icon fa-palette"></i>
               <span matListItemTitle>{{ 'home.appConfig' | translate }}</span>
-              <i matListItemMeta class="fa-regular fa-angle-left"></i>
+              <div matListItemMeta class="secondary">
+                <span class="red">{{ 'app.newDesign' | translate }}</span>
+                <span spacer></span>
+                <i class="fa-regular fa-angle-left"></i>
+              </div>
             </a>
             <mat-divider></mat-divider>
             <a mat-list-item routerLink="/settings/sms">
               <i matListItemIcon class="fa-solid mat-icon fa-message-smile"></i>
               <span matListItemTitle>{{ 'home.autoSms' | translate }}</span>
               <div matListItemMeta class="secondary">
-                <span class="red">{{ 'app.new' | translate }}</span>
                 <i class="fa-regular fa-angle-left"></i>
               </div>
             </a>

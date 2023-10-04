@@ -50,7 +50,8 @@
     "addExcel": "افزودن با اکسل",
     "downloadSampleExcel": "دانلود اکسل نمونه",
     "uploadExcel": "آپلود اکسل",
-    "smsSent": "پیامک ارسال شد"
+    "smsSent": "پیامک ارسال شد",
+    "newDesign": "دیزاین جدید"
   },
   "shell": {
     "home": "خانه",

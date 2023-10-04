@@ -2,7 +2,7 @@
   "appData": {
     "forceReload": false,
     "lazyReload": false,
-    "changes": ["رفع مشکل اختلاف گزارش فروش محصولات"]
+    "changes": ["دیزاین جدید صفحه ورود"]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",
