@@ -1,6 +1,9 @@
 <div class="wrapper" *ngIf="shop">
+  <div id="main-menu">
+    <main-menu></main-menu>
+  </div>
   <div class="content">
-    <img [imageLoader]="shop.logo" id="logo" class="mat-elevation-z3"/>
+    <img [imageLoader]="shop.logo" id="logo" class="mat-elevation-z3" />
     <h1 id="title">{{ shop.title }}</h1>
     <p *ngIf="shop.description" id="description">{{ shop.description }}</p>
     <button mat-raised-button color="primary" routerLink="/menu" class="submit-button">
@@ -9,13 +12,9 @@
     </button>
 
     <mat-toolbar flex-row>
-      <button mat-button flex (click)="openShopInfoModal()">
-        اطلاعات مجموعه
-      </button>
+      <button mat-button flex (click)="openShopInfoModal()">اطلاعات مجموعه</button>
       <mat-divider vertical></mat-divider>
-      <button mat-button flex routerLink="/club">
-        باشگاه مشتریان
-      </button>
+      <button mat-button flex routerLink="/club">باشگاه مشتریان</button>
     </mat-toolbar>
   </div>
 </div>

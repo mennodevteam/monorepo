@@ -2,11 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { HomePage, MenuViewType, OrderType, Theme, ThemeMode } from '@menno/types';
+import { HomePage, MenuViewType, OrderType, Shop, Theme, ThemeMode } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { ShopService } from '../../../core/services/shop.service';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ENTER } from '@angular/cdk/keycodes';
+import { MatDialog } from '@angular/material/dialog';
+import { ImageCropperDialogComponent } from '../../../shared/dialogs/image-cropper-dialog/image-cropper-dialog.component';
+import { CropperOptions } from 'ngx-image-cropper';
+import { FilesService } from '../../../core/services/files.service';
 
 @Component({
   selector: 'app-config',
@@ -21,6 +25,7 @@ export class AppConfigComponent {
   ThemeMode = ThemeMode;
   MenuViewType = MenuViewType;
   HomePage = HomePage;
+  savingCover: boolean
   OrderType = OrderType;
   readonly separatorKeysCodes = [ENTER] as const;
 
@@ -28,7 +33,9 @@ export class AppConfigComponent {
     private shopService: ShopService,
     private http: HttpClient,
     private snack: MatSnackBar,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private dialog: MatDialog,
+    private fileService: FilesService,
   ) {
     this.load();
   }
@@ -63,6 +70,37 @@ export class AppConfigComponent {
         this.form.markAsDirty();
       });
     });
+  }
+
+  openApp() {
+    window.open(this.shopService.appLink, this.shopService.shop?.title, 'width=400,height=700');
+  }
+
+  upload() {
+    this.dialog
+      .open(ImageCropperDialogComponent, {
+        data: <CropperOptions>{
+          resizeToWidth: 1200,
+          format: 'jpeg',
+          imageQuality: 100,
+          aspectRatio: 390/844,
+        },
+      })
+      .afterClosed()
+      .subscribe(async (data) => {
+        if (data) {
+          this.savingCover = true;
+          this.snack.open(this.translate.instant('app.uploading'), '', { duration: 5000 });
+          const savedFile = await this.fileService.upload(data.file, `cover.jpg`);
+          if (savedFile?.key) {
+            await this.shopService.saveShop({
+              verticalCover: savedFile.key
+            } as Shop);
+            this.snack.open(this.translate.instant('appConfig.coverSaved'), '', { panelClass: 'success', duration: 1000 });
+          }
+          this.savingCover = false;
+        }
+      });
   }
 
   get appConfig() {

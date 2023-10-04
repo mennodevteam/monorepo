@@ -4,6 +4,9 @@
       <i class="fa-regular fa-arrow-right fa-large"></i>
     </button>
     <h1 flex>{{ 'settings.appConfig' | translate }}</h1>
+    <button mat-stroked-button color="primary" (click)="openApp()">
+      {{ 'shell.openApp' | translate }}
+    </button>
     <button mat-flat-button color="primary" (click)="save()" [disabled]="loading || saving || !form.dirty">
       {{ 'app.save' | translate }}
     </button>
@@ -54,6 +57,13 @@
             </div>
           </div>
         </mat-card-content>
+        <mat-card-actions *ngIf="form.value?.homePage === HomePage.Welcome">
+          {{ 'appConfig.homePageCover' | translate }}
+          <button mat-button color="primary" type="button" (click)="upload()" [disabled]="savingCover">
+            <i class="fa-regular fa-upload"></i>
+            {{ 'app.upload' | translate }}
+          </button>
+        </mat-card-actions>
       </mat-card>
 
       <mat-card>

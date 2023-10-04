@@ -20,6 +20,7 @@ import { OrderTypePipe } from './pipes/order-type.pipe';
 import { PromptDialogComponent } from './dialogs/prompt-dialog/prompt-dialog.component';
 import { EmptyStateComponent } from './components/empty-state/empty-state.component';
 import { MainMenuComponent } from './components/main-menu/main-menu.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { MainMenuComponent } from './components/main-menu/main-menu.component';
   imports: [
     CommonModule,
     TranslateModule,
+    RouterModule,
     FormsModule,
     MatButtonModule,
     ReactiveFormsModule,

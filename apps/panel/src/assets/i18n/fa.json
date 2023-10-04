@@ -181,6 +181,8 @@
   "appConfig": {
     "homeSection": "دیزاین صفحه اصلی",
     "homeDescription": "کاربر بعد از ورود به لینک منوی شما اولین صفحه صفحه انتخاب شده زیر را خواهد دید",
+    "homePageCover": "آپلود تصویر زمینه پشت صفحه",
+    "coverSaved": "تصویر پشت زمینه با موفقیت بروزرسانی شد",
     "homePageInfo": "اطلاعات مجموعه",
     "homePageWelcome": "خوش آمد",
     "homePageMenu": "منو",

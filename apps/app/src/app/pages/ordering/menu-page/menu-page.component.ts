@@ -60,15 +60,6 @@ export class MenuPageComponent implements AfterViewInit {
     }
 
     this.menuService.typeObservable.subscribe((type) => {
-      if (
-        type === OrderType.DineIn &&
-        !this.basket.details?.table &&
-        this.tables?.length &&
-        !this.shop?.appConfig?.disableOrdering
-      ) {
-        this.selectDineInTable();
-      }
-
       this.searchQueryControl.valueChanges.subscribe((value) => {
         this.searchCategories = [];
         if (this.menu) {
@@ -121,7 +112,9 @@ export class MenuPageComponent implements AfterViewInit {
   }
 
   get showTableSelect() {
-    return this.tables?.length && !this.shop?.appConfig?.disableOrdering && this.orderType === OrderType.DineIn
+    return (
+      this.tables?.length && !this.shop?.appConfig?.disableOrdering && this.orderType === OrderType.DineIn
+    );
   }
 
   categoryClick(index: number) {
@@ -192,7 +185,6 @@ export class MenuPageComponent implements AfterViewInit {
   }
 
   get isHomePage() {
-    return true
     return this.appConfig?.homePage === HomePage.Menu;
   }
 

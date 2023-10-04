@@ -3,11 +3,11 @@
 </button>
 
 <mat-menu #menu="matMenu">
-  <button mat-menu-item>
+  <button mat-menu-item *ngIf="auth.isGuestUser">
     <i class="fa-solid mat-icon fa-user"></i>
     {{ 'mainMenu.login' | translate }}
   </button>
-  <button mat-menu-item routerLink="/">
+  <button mat-menu-item routerLink="/profile">
     <i class="fa-solid mat-icon fa-user"></i>
     {{ 'mainMenu.loginInfo' | translate }}
   </button>

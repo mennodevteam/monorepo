@@ -145,5 +145,10 @@
     "address": "آدرس",
     "group": "شعب",
     "shopGroupList": "لیست سایر {{value}}"
+  },
+  "mainMenu": {
+    "login": "ورود به حساب کاربری",
+    "loginInfo": "ویرایش اطلاعات کاربری",
+    "orders": "لیست سفارشات پیشین"
   }
 }
