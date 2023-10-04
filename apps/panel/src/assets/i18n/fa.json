@@ -179,6 +179,11 @@
     "openingHours": "ساعات کاری مجموعه"
   },
   "appConfig": {
+    "homeSection": "دیزاین صفحه اصلی",
+    "homeDescription": "کاربر بعد از ورود به لینک منوی شما اولین صفحه صفحه انتخاب شده زیر را خواهد دید",
+    "homePageInfo": "اطلاعات مجموعه",
+    "homePageWelcome": "خوش آمد",
+    "homePageMenu": "منو",
     "themeSection": "رنگبندی اپلیکیشن",
     "theme": "رنگ",
     "themeMode": "تاریک / روشن",

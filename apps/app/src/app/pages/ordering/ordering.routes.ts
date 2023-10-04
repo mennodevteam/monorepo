@@ -8,6 +8,7 @@ import { OrderCompleteComponent } from './order-complete/order-complete.componen
 import { ShopGroupPageComponent } from './shop-group-page/shop-group-page.component';
 import { MobilePhoneGuard } from '../../core/guards/mobile-phone.guard';
 import { ShopWelcomeComponent } from './shop-welcome/shop-welcome.component';
+import { OrderingComponent } from './ordering.component';
 
 export const orderingRoutes: Routes = [
   {
@@ -16,6 +17,10 @@ export const orderingRoutes: Routes = [
     children: [
       {
         path: '',
+        component: OrderingComponent,
+      },
+      {
+        path: 'home',
         component: ShopHomeComponent,
       },
       {

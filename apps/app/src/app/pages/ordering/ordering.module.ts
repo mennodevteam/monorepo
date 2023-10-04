@@ -40,6 +40,7 @@ import { DingBottomSheetComponent } from './ding-bottom-sheet/ding-bottom-sheet.
 import { ShopGroupPageComponent } from './shop-group-page/shop-group-page.component';
 import { ShopWelcomeComponent } from './shop-welcome/shop-welcome.component';
 import { ShopInfoModalComponent } from './shop-info-modal/shop-info-modal.component';
+import { OrderingComponent } from './ordering.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { ShopInfoModalComponent } from './shop-info-modal/shop-info-modal.compon
     ShopGroupPageComponent,
     ShopWelcomeComponent,
     ShopInfoModalComponent,
+    OrderingComponent,
   ],
   imports: [
     CommonModule,

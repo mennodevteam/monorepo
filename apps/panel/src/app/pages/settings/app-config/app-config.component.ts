@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MenuViewType, OrderType, Theme, ThemeMode } from '@menno/types';
+import { HomePage, MenuViewType, OrderType, Theme, ThemeMode } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { ShopService } from '../../../core/services/shop.service';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -20,6 +20,7 @@ export class AppConfigComponent {
   loading = true;
   ThemeMode = ThemeMode;
   MenuViewType = MenuViewType;
+  HomePage = HomePage;
   OrderType = OrderType;
   readonly separatorKeysCodes = [ENTER] as const;
 
@@ -46,6 +47,7 @@ export class AppConfigComponent {
       requiredPayment: new FormControl(this.appConfig.requiredPayment),
       requiredRegister: new FormControl(this.appConfig.requiredRegister),
       menuViewType: new FormControl(this.appConfig.menuViewType),
+      homePage: new FormControl(this.appConfig.homePage),
       disableOrderingOnClose: new FormControl(this.appConfig.disableOrderingOnClose),
       ding: new FormControl(this.appConfig.ding),
       dings: new FormControl(this.appConfig.dings || []),
@@ -56,8 +58,11 @@ export class AppConfigComponent {
       this.themes = themes;
       const themeControl = this.form.get('theme');
       themeControl?.setValue(this.themes.find((x) => x.id === themeControl.value.id));
+      this.loading = false;
+      this.form.valueChanges.subscribe(() => {
+        this.form.markAsDirty();
+      });
     });
-    this.loading = false;
   }
 
   get appConfig() {

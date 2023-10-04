@@ -12,9 +12,56 @@
   <main class="form-page-layout content-wrapper" *ngIf="!loading">
     <div class="flex-col">
       <mat-card>
-        <mat-card-header>
-          <mat-card-title>{{ 'appConfig.themeSection' | translate }}</mat-card-title>
-        </mat-card-header>
+        <mat-toolbar>
+          <b class="flex">
+            {{ 'appConfig.homeSection' | translate }}
+          </b>
+        </mat-toolbar>
+        <mat-card-content>
+          <p>
+            {{ 'appConfig.homeDescription' | translate }}
+          </p>
+          <div class="image-options">
+            <div
+              class="image-option"
+              [class.selected]="form.value?.homePage === HomePage.Info"
+              (click)="form.controls['homePage'].setValue(HomePage.Info)"
+            >
+              <p>
+                {{ 'appConfig.homePageInfo' | translate }}
+              </p>
+              <img src="assets/images/screenshots/home.jpg" />
+            </div>
+            <div
+              class="image-option"
+              [class.selected]="form.value?.homePage === HomePage.Welcome"
+              (click)="form.controls['homePage'].setValue(HomePage.Welcome)"
+            >
+              <p>
+                {{ 'appConfig.homePageWelcome' | translate }}
+              </p>
+              <img src="assets/images/screenshots/welcome.jpg" />
+            </div>
+            <div
+              class="image-option"
+              [class.selected]="form.value?.homePage === HomePage.Menu"
+              (click)="form.controls['homePage'].setValue(HomePage.Menu)"
+            >
+              <p>
+                {{ 'appConfig.homePageMenu' | translate }}
+              </p>
+              <img src="assets/images/screenshots/menu.jpg" />
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card>
+        <mat-toolbar>
+          <b class="flex">
+            {{ 'appConfig.themeSection' | translate }}
+          </b>
+        </mat-toolbar>
         <span spacer-2x></span>
         <mat-card-content>
           <mat-form-field>
@@ -32,53 +79,93 @@
               style="width: 48px; text-align: center"
             ></i>
           </mat-form-field>
-          <span spacer-2x></span>
-          <mat-form-field>
-            <mat-label>{{ 'appConfig.themeMode' | translate }}</mat-label>
-            <mat-select formControlName="themeMode">
-              <mat-option [value]="ThemeMode.Auto">
-                {{ 'appConfig.themeModeAuto' | translate }}
-              </mat-option>
-              <mat-option [value]="ThemeMode.Dark">
+          <h5>{{ 'appConfig.themeMode' | translate }}</h5>
+          <div class="image-options">
+            <div
+              class="image-option"
+              [class.selected]="form.value?.themeMode === ThemeMode.Dark"
+              (click)="form.controls['themeMode'].setValue(ThemeMode.Dark)"
+            >
+              <p>
                 {{ 'appConfig.themeModeDark' | translate }}
-              </mat-option>
-              <mat-option [value]="ThemeMode.Light">
+              </p>
+              <img src="assets/images/screenshots/menu.jpg" />
+            </div>
+            <div
+              class="image-option"
+              [class.selected]="form.value?.themeMode === ThemeMode.Light"
+              (click)="form.controls['themeMode'].setValue(ThemeMode.Light)"
+            >
+              <p>
                 {{ 'appConfig.themeModeLight' | translate }}
-              </mat-option>
-              <!-- <mat-option [value]="ThemeMode.Manual">
-                {{ 'appConfig.themeModeManual' | translate }}
-              </mat-option> -->
-            </mat-select>
-            <mat-hint *ngIf="form.controls['themeMode'].value === ThemeMode.Auto">{{
-              'appConfig.themeModeAutoHint' | translate
-            }}</mat-hint>
-          </mat-form-field>
+              </p>
+              <img src="assets/images/screenshots/menu light.jpg" />
+            </div>
+            <div
+              class="image-option"
+              [class.selected]="form.value?.themeMode === ThemeMode.Auto"
+              (click)="form.controls['themeMode'].setValue(ThemeMode.Auto)"
+            >
+              <p>
+                {{ 'appConfig.themeModeAuto' | translate }}
+              </p>
+              <img src="assets/images/screenshots/theme auto.jpg" />
+            </div>
+          </div>
         </mat-card-content>
       </mat-card>
 
       <mat-card>
-        <mat-card-header>
-          <mat-card-title>{{ 'appConfig.menuSection' | translate }}</mat-card-title>
-        </mat-card-header>
+        <mat-toolbar>
+          <b class="flex">
+            {{ 'appConfig.menuSection' | translate }}
+          </b>
+        </mat-toolbar>
         <span spacer-2x></span>
         <mat-card-content>
-          <mat-form-field>
-            <mat-label>{{ 'appConfig.menuViewType' | translate }}</mat-label>
-            <mat-select formControlName="menuViewType">
-              <mat-option [value]="MenuViewType.Manual">
-                {{ 'appConfig.menuViewTypeManual' | translate }}
-              </mat-option>
-              <mat-option [value]="MenuViewType.Grid">
+          <div class="image-options">
+            <div
+              class="image-option"
+              [class.selected]="form.value?.menuViewType === MenuViewType.Grid"
+              (click)="form.controls['menuViewType'].setValue(MenuViewType.Grid)"
+            >
+              <p>
                 {{ 'appConfig.menuViewTypeGrid' | translate }}
-              </mat-option>
-              <mat-option [value]="MenuViewType.Card">
+              </p>
+              <img src="assets/images/screenshots/grid.jpg" />
+            </div>
+            <div
+              class="image-option"
+              [class.selected]="form.value?.menuViewType === MenuViewType.Card"
+              (click)="form.controls['menuViewType'].setValue(MenuViewType.Card)"
+            >
+              <p>
                 {{ 'appConfig.menuViewTypeCard' | translate }}
-              </mat-option>
-              <mat-option [value]="MenuViewType.Compact">
+              </p>
+              <img src="assets/images/screenshots/card.jpg" />
+            </div>
+            <div
+              class="image-option"
+              [class.selected]="form.value?.menuViewType === MenuViewType.Compact"
+              (click)="form.controls['menuViewType'].setValue(MenuViewType.Compact)"
+            >
+              <p>
                 {{ 'appConfig.menuViewTypeCompact' | translate }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+              </p>
+              <img src="assets/images/screenshots/compact.jpg" />
+            </div>
+            <div
+              class="image-option"
+              [class.selected]="form.value?.menuViewType === MenuViewType.Manual"
+              (click)="form.controls['menuViewType'].setValue(MenuViewType.Manual)"
+            >
+              <p>
+                {{ 'appConfig.menuViewTypeManual' | translate }}
+              </p>
+              <img src="assets/images/screenshots/menu manual.jpg" />
+            </div>
+          </div>
+          <span spacer-2x></span>
           <ng-container>
             <mat-form-field>
               <mat-label>{{ 'appConfig.menuCols' | translate }}</mat-label>
@@ -100,7 +187,7 @@
       </mat-card>
     </div>
 
-    <div class="flex-col">
+    <div class="static-col">
       <mat-card>
         <mat-toolbar>
           <b flex>
@@ -191,6 +278,7 @@
             }}</mat-button-toggle>
           </mat-button-toggle-group>
         </mat-toolbar>
+        <span spacer-2x></span>
         <mat-card-content *ngIf="!form.controls['disablePayment']?.value">
           <mat-form-field>
             <mat-label>{{ 'appConfig.requiredPayment' | translate }}</mat-label>
@@ -221,6 +309,7 @@
             }}</mat-button-toggle>
           </mat-button-toggle-group>
         </mat-toolbar>
+        <span spacer-2x></span>
         <mat-card-content *ngIf="form.controls['ding']?.value">
           <mat-form-field>
             <mat-label>{{ 'appConfig.dingsLabel' | translate }}</mat-label>

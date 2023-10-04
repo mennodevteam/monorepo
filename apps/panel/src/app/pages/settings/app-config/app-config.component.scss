@@ -7,3 +7,36 @@
 mat-spinner {
   margin: 24px auto;
 }
+
+main {
+  padding: 24px;
+}
+
+.image-options {
+  display: flex;
+  gap: 16px;
+}
+
+.image-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.03);
+  width: fit-content;
+  padding: 16px;
+  border-radius: 12px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.06);
+  }
+
+  &.selected {
+    box-shadow: 0 0 4px 2px $blue;
+  }
+
+  img {
+    width: 160px;
+    border-radius: 8px;
+  }
+}

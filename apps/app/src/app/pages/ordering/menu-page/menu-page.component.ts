@@ -192,6 +192,7 @@ export class MenuPageComponent implements AfterViewInit {
   }
 
   get isHomePage() {
+    return true
     return this.appConfig?.homePage === HomePage.Menu;
   }
 

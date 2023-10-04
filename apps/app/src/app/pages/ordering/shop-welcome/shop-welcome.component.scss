@@ -20,6 +20,7 @@
     flex-direction: column;
     text-align: center;
     gap: 16px;
+    color: white;
 
     #logo {
       width: 196px;
@@ -33,6 +34,10 @@
 
       mat-divider {
         height: 24px;
+      }
+
+      * {
+        color: white;
       }
     }
   }
