@@ -6,7 +6,6 @@
   bottom: 0;
   background-position: center;
   background-size: cover;
-  background-image: url("https://img.freepik.com/free-photo/restaurant-corridor-with-small-two-people-tables_140725-4928.jpg?w=740&t=st=1694689119~exp=1694689719~hmac=f31806c0424a43e8e3eae3bc03f2301588f1b101373b971c6d0e5b0b7dbcef70");
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -40,6 +39,7 @@
     mat-toolbar {
       padding: 0;
       margin-bottom: -16px;
+      background-color: transparent;
 
       mat-divider {
         height: 24px;

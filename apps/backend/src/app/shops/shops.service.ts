@@ -124,7 +124,7 @@ export class ShopsService {
     }
 
     const shop = new Shop();
-    shop.username = dto.username;
+    shop.username = dto.username.toLowerCase();
     shop.title = dto.title;
     shop.code = code.toString();
 
@@ -232,7 +232,7 @@ export class ShopsService {
         tables: shop.details?.tables,
       },
       smsAccount,
-      username: shop.username,
+      username: shop.username.toLowerCase(),
       region: region ? { id: region.id } : shop.region,
       phones: shop.phones,
       plugins: {

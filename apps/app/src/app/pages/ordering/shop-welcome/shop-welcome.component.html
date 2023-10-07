@@ -1,9 +1,9 @@
-<div class="wrapper" *ngIf="shop">
+<div class="wrapper" *ngIf="shop" [imageLoader]="shop.verticalCover" [placeholder]="'assets/images/placeholder/welcome.jpg'">
   <div id="main-menu">
     <main-menu></main-menu>
   </div>
   <div class="content">
-    <img [imageLoader]="shop.logo" id="logo" class="mat-elevation-z3" />
+    <img [imageLoader]="shop.logo" id="logo" />
     <h1 id="title">{{ shop.title }}</h1>
     <p *ngIf="shop.description" id="description">{{ shop.description }}</p>
     <button mat-raised-button color="primary" routerLink="/menu" class="submit-button">

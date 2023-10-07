@@ -25,7 +25,7 @@ export class AppConfigComponent {
   ThemeMode = ThemeMode;
   MenuViewType = MenuViewType;
   HomePage = HomePage;
-  savingCover: boolean
+  savingCover: boolean;
   OrderType = OrderType;
   readonly separatorKeysCodes = [ENTER] as const;
 
@@ -35,7 +35,7 @@ export class AppConfigComponent {
     private snack: MatSnackBar,
     private translate: TranslateService,
     private dialog: MatDialog,
-    private fileService: FilesService,
+    private fileService: FilesService
   ) {
     this.load();
   }
@@ -80,10 +80,8 @@ export class AppConfigComponent {
     this.dialog
       .open(ImageCropperDialogComponent, {
         data: <CropperOptions>{
-          resizeToWidth: 1200,
-          format: 'jpeg',
-          imageQuality: 100,
-          aspectRatio: 390/844,
+          resizeToWidth: 800,
+          aspectRatio: 390 / 844,
         },
       })
       .afterClosed()
@@ -94,9 +92,13 @@ export class AppConfigComponent {
           const savedFile = await this.fileService.upload(data.file, `cover.jpg`);
           if (savedFile?.key) {
             await this.shopService.saveShop({
-              verticalCover: savedFile.key
+              verticalCover: savedFile.key,
             } as Shop);
-            this.snack.open(this.translate.instant('appConfig.coverSaved'), '', { panelClass: 'success', duration: 1000 });
+            this.shopService.shop!.verticalCover = savedFile.key;
+            this.snack.open(this.translate.instant('appConfig.coverSaved'), '', {
+              panelClass: 'success',
+              duration: 1000,
+            });
           }
           this.savingCover = false;
         }
@@ -110,6 +112,13 @@ export class AppConfigComponent {
   async save() {
     const fv = this.form.getRawValue();
     if (this.form.invalid) return;
+    if (fv.homePage === HomePage.Welcome && !this.shopService.shop?.verticalCover) {
+      this.snack.open(this.translate.instant('appConfig.noCoverError'), '', {
+        duration: 4000,
+        panelClass: 'warning',
+      });
+      return;
+    }
     this.saving = true;
     this.snack.open(this.translate.instant('app.saving'), '', { duration: 5000 });
     await this.http.post('appConfigs', fv).toPromise();
