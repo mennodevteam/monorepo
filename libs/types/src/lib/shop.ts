@@ -19,6 +19,10 @@ export interface ShopDetails {
   tables?: ShopTable[];
   poses?: string[];
   openingHours?: string[][];
+  enamad?: {
+    id: string;
+    code: string;
+  };
 }
 
 export class Shop {

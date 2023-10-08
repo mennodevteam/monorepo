@@ -58,3 +58,16 @@
   bottom: 24px;
   height: 64px;
 }
+
+.enamad {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 24px;
+  border-radius: 12px;
+  margin: auto;
+
+  img {
+    border-radius: 4px;
+  }
+}

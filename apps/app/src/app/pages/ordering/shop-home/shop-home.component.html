@@ -97,4 +97,21 @@
       </div>
     </a>
   </mat-nav-list>
+  <div class="enamad surface-variant" *ngIf="shop?.details?.enamad">
+    <a
+      referrerpolicy="origin"
+      target="_blank"
+      href="https://trustseal.enamad.ir/u?id={{ shop?.details?.enamad?.id }}&code={{
+        shop?.details?.enamad?.code
+      }}"
+      ><img
+        referrerpolicy="origin"
+        src="https://trustseal.enamad.ir/logo.aspx?id={{ shop?.details?.enamad?.id }}&code={{
+          shop?.details?.enamad?.id
+        }}"
+        alt=""
+        style="cursor: pointer"
+        [attr.code]="shop?.details?.enamad?.code"
+    /></a>
+  </div>
 </div>
