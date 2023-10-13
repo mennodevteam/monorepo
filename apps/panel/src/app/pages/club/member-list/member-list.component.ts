@@ -28,6 +28,7 @@ export class MemberListComponent {
   filterForm: FormGroup;
   loading = false;
   totalCount: number;
+  downloadingCSV = false;
   totalWalletCharge?: number;
   skipPaginatorChangeDetection = false;
   selection = new SelectionModel<Member>(true, []);
@@ -114,6 +115,57 @@ export class MemberListComponent {
     this.filterForm.reset();
     this.currentFilter = undefined;
     this.load();
+  }
+
+  async downloadCsv() {
+    this.downloadingCSV = true;
+    try {
+      const data = await this.club.filter({}).toPromise();
+      if (data) {
+        const csvContent =
+          'data:text/csv;charset=utf-8,' +
+          [
+            'نام',
+            'نام‌خانوادگی',
+            'موبایل',
+            'جنسیت',
+            'آدرس',
+            'تاریخ تولد',
+            'تاریخ ازدواج',
+            'اینستاگرام',
+            'تاریخ عضویت',
+            'تگ',
+            'کلید',
+            'ستاره',
+            'اعتبار',
+          ].join(',') +
+          '\n' +
+          data[0]
+            .map((m) =>
+              [
+                m.user.firstName,
+                m.user.lastName,
+                m.user.mobilePhone,
+                m.user.gender,
+                m.user.address,
+                m.user.birthDate,
+                m.user.marriageDate,
+                m.user.instagram,
+                m.joinedAt,
+                m.tags.map((x) => x.title).join('-'),
+                m.publicKey,
+                m.star,
+                m.wallet?.charge || 0,
+              ].join(',')
+            )
+            .join('\n');
+
+        const encodedUri = encodeURI(csvContent);
+        window.open(encodedUri);
+      }
+    } finally {
+      this.downloadingCSV = false;
+    }
   }
 
   get clubFilter() {

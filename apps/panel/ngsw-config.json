@@ -2,7 +2,7 @@
   "appData": {
     "forceReload": false,
     "lazyReload": false,
-    "changes": ["دیزاین جدید صفحه ورود برای اپ سفارش‌گیری"]
+    "changes": ["امکان دانلود لیست اعضای باشگاه مشتریان"]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",

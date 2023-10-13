@@ -16,6 +16,10 @@
     <span spacer-sm></span>
     <span>{{ 'members.sendSmsAll' | translate }}</span>
   </button>
+  <button mat-stroked-button (click)="downloadCsv()" [disabled]="downloadingCSV" class="hide-xs">
+    <i matListIcon class="far fa-arrow-down-to-line"></i>
+    {{ 'app.download' | translate }}
+  </button>
   <button
     mat-icon-button
     routerLink="discount-coupons"
@@ -39,6 +43,15 @@
     class="show-xs"
   >
     <i matListIcon class="far fa-message-lines"></i>
+  </button>
+  <button
+    mat-icon-button
+    (click)="downloadCsv()"
+    [disabled]="downloadingCSV"
+    matTooltip="{{ 'app.download' | translate }}"
+    class="show-xs"
+  >
+    <i matListIcon class="far fa-arrow-down-to-line"></i>
   </button>
   <button mat-flat-button color="primary" [matMenuTriggerFor]="addMenu">
     {{ 'members.add' | translate }}
@@ -155,7 +168,9 @@
         <i mat-card-avatar class="fa-solid fa-wallet"></i>
         <div class="info-card__texts">
           <p>{{ 'members.walletCharge' | translate }}</p>
-          <h4>{{ totalWalletCharge != undefined ? (totalWalletCharge | menuCurrency : undefined : true) : '-' }}</h4>
+          <h4>
+            {{ totalWalletCharge != undefined ? (totalWalletCharge | menuCurrency: undefined:true) : '-' }}
+          </h4>
         </div>
       </mat-card-content>
     </mat-card>
