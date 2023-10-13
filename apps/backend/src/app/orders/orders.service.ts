@@ -132,6 +132,7 @@ export class OrdersService {
 
   async report(dto: OrderReportDto) {
     const condition: FindOptionsWhere<Order> = {};
+    condition.mergeTo = IsNull()
 
     condition.shop = { id: dto.shopId };
     const shop = await this.shopsRepo.findOneBy({ id: dto.shopId });
