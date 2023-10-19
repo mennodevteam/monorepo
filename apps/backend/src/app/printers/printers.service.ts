@@ -49,6 +49,8 @@ export class PrintersService {
       relations: ['printer'],
     });
 
+    const tableName = order.details.table && order.shop.details?.tables?.find(x => x.code === order.details.table)?.title;
+
     const notes: string[] = [];
     if (order.note) notes.push(order.note);
     for (const item of order.items) {
@@ -100,11 +102,8 @@ export class PrintersService {
           shopAddress: order.shop.address,
           shopName: order.shop.title,
           shopPhones: order.shop.phones,
-          shopUrl: process.env.APP_DOMAIN + '/' + order.shop.username,
-          table:
-            order.details.table && (<any>order.details.table).code
-              ? (<any>order.details.table).code
-              : order.details.table,
+          shopUrl: Shop.appLink(order.shop, process.env.APP_ORIGIN),
+          table: order.details.table && `${order.details.table} ${tableName}`.trim(),
           totalPrice: order.totalPrice,
           type: order.type,
         },
