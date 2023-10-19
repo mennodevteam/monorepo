@@ -9,7 +9,7 @@ import { MenuService } from '../../../../core/services/menu.service';
   styleUrls: ['./products-table.component.scss'],
 })
 export class ProductsTableComponent {
-  displayedColumns = ['image', 'title', 'price', 'actions'];
+  displayedColumns = ['image', 'title', 'price', 'status', 'actions'];
   @Input() products: Product[];
   Status = Status;
   OrderType = OrderType;
@@ -24,5 +24,18 @@ export class ProductsTableComponent {
         this.menuService.deleteProduct(p.id);
       }
     });
+  }
+
+  async changeStatus(product: Product, status: Status) {
+    if (product.status !== status) {
+      product._changingStatus = true;
+      try {
+        await this.menuService.saveProduct({ id: product.id, status });
+        product.status = status;
+      } catch (error) {
+      } finally {
+        product._changingStatus = false;
+      }
+    }
   }
 }

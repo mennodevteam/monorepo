@@ -81,7 +81,13 @@ export class MenuService {
     }
 
     const savedProduct = await this.http.post<Product>(`products`, dto).toPromise();
-    await this.loadMenu();
+    if (dto.id) {
+      const product = this.getProductById(dto.id);
+      if (product) Object.assign(product, dto);
+      return product;
+    } else {
+      await this.loadMenu();
+    }
     return savedProduct;
   }
 

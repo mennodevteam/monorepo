@@ -22,6 +22,7 @@ export class Product {
   costs?: MenuCost[];
   thirdPartyId?: string;
   _orderItem?: ProductItem;
+  _changingStatus?: boolean;
   updatedAt?: Date;
   createdAt?: Date;
   deletedAt?: Date;
