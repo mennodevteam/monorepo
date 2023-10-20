@@ -2,7 +2,12 @@
   "appData": {
     "forceReload": false,
     "lazyReload": false,
-    "changes": ["امکان دانلود لیست اعضای باشگاه مشتریان"]
+    "changes": [
+      "هشدار ناموجود بودن آیتم در سفارش دستی",
+      "چاپ عنوان میز در فاکتور",
+      "رفع مشکل آدرس منوی دیجیتال در چاپ",
+      "امکان تغییر وضعیت آیتم در لیست آیتم‌ها"
+    ]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",

@@ -14,6 +14,7 @@ import {
   OrderType,
   Product,
   ProductItem,
+  Status,
   User,
 } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
@@ -24,6 +25,8 @@ import { TodayOrdersService } from './today-orders.service';
 import { ShopService } from './shop.service';
 import { ClubService } from './club.service';
 import { HttpClient } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertDialogComponent } from '../../shared/dialogs/alert-dialog/alert-dialog.component';
 
 declare let persianDate: any;
 
@@ -60,7 +63,8 @@ export class PosService extends OrderDto {
     private todayOrders: TodayOrdersService,
     private shopService: ShopService,
     private club: ClubService,
-    private http: HttpClient
+    private http: HttpClient,
+    private dialog: MatDialog
   ) {
     super();
     this.clear();
@@ -79,16 +83,36 @@ export class PosService extends OrderDto {
     }
   }
 
-  plus(productId: string) {
+  async plus(productId: string) {
     const product = this.menuService.getProductById(productId);
     if (product) {
       const item = this.productItems?.find((x) => x.productId === productId);
       if (item) item.quantity ? item.quantity++ : (item.quantity = 1);
       else {
+        if (product.status !== Status.Active) {
+          const ok = await this.dialog
+            .open(AlertDialogComponent, {
+              data: {
+                title: this.translate.instant(
+                  `pos.addProductWarning.title`,
+                  {value: this.translate.instant(product.status === Status.Inactive ? 'app.inactive' : 'app.finished')}
+                ),
+                description: this.translate.instant(
+                  `pos.addProductWarning.description`,
+                  {value: this.translate.instant(product.status === Status.Inactive ? 'app.inactive' : 'app.finished')}
+                ),
+                status: 'warning'
+              },
+            })
+            .afterClosed()
+            .toPromise();
+          if (!ok) return;
+        }
         const item: ProductItem = {
           productId: productId,
           quantity: 1,
         };
+
         if (!this.productItems) this.productItems = [];
         this.productItems.push(item);
         product._orderItem = item;

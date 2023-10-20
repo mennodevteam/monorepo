@@ -336,7 +336,11 @@
     "thisMonthOrder": "سفارشات این ماه",
     "thisYearOrder": "سفارشات امسال",
     "discountCoupon": "کدتخفیف",
-    "aaddress": "آدرس ارسال"
+    "address": "آدرس ارسال",
+    "addProductWarning": {
+      "title": "آیتم {{value}}",
+      "description": "آیتم انتخاب شده {{value}} است. اما می‌توانید با تایید آن را به فاکتور اضافه کنید."
+    }
   },
   "memberSelectDialog": {
     "noData": "هیچ عضوی یافت نشد",
