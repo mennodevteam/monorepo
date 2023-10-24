@@ -8,6 +8,7 @@ import { ShopGroup } from './shop-group';
 import { ShopPlugins } from './shop-plugin';
 import { ShopUser } from './shop-user';
 import { SmsAccount } from './sms-account';
+import { Status } from './status.enum';
 import { ThirdParty } from './third-party';
 
 export interface ShopTable {
@@ -44,6 +45,7 @@ export class Shop {
   deliveryAreas?: DeliveryArea[];
   smsAccount?: SmsAccount;
   paymentGateway?: PaymentGateway;
+  status: Status;
   menu?: Menu;
   club?: Club;
   logo: string;

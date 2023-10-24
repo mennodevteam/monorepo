@@ -25,6 +25,7 @@ import { WebPushNotificationModule } from './web-push-notifications/web-push-not
 import { DingModule } from './ding/ding.module';
 import { OrderMessagesModule } from './order-messages/order-messages.module';
 import { WindowsLocalNotificationModule } from './windows-local-notifacation/windows-local-notification.module';
+import { AppRedirectController } from './app-redirect.controller';
 
 @Module({
   imports: [
@@ -61,7 +62,7 @@ import { WindowsLocalNotificationModule } from './windows-local-notifacation/win
     DingModule,
     WindowsLocalNotificationModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, AppRedirectController],
   providers: [AppService],
 })
 export class AppModule {}
