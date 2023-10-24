@@ -5,8 +5,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Shop, Status } from '@menno/types';
 import { Repository } from 'typeorm';
 
+const HOSTS = process.env.APP_REDIRECT_HOSTS?.split(',')
+console.log(HOSTS)
+
 @Controller({
-  host: ['menno.ir', '*.menno.ir'],
+  host: HOSTS || '*.menno.ir',
 })
 export class AppRedirectController {
   constructor(
