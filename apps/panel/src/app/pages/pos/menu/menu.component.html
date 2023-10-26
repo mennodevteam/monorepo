@@ -1,6 +1,6 @@
 <mat-tab-group mat-stretch-tabs="false" class="categories">
   <mat-tab label="{{ cat.title }}" *ngFor="let cat of POS.categories">
-    <mat-grid-list class="items" cols="{{ (isXSmall$ | async) ? 3 : 4 }}" rowHeight="64px">
+    <mat-grid-list class="items" cols="{{ (isXSmall$ | async) ? 2 : 4 }}" rowHeight="64px">
       <mat-grid-tile
         class="product-tile no-select"
         matRipple

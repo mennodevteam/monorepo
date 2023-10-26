@@ -1,0 +1,20 @@
+:host ::ng-deep mat-tab-group {
+  mat-tab-label {
+      min-width: 48px !important;
+      padding: 0 16px !important;
+  }
+
+  @media only screen and (max-width: 600px) {
+      .mat-mdc-tab-header-pagination {
+          display: none !important;
+      }
+
+      mat-tab-header {
+          overflow-x: scroll !important;
+      }
+
+      .mat-mdc-tab-label-container {
+          overflow: visible !important;
+      }
+  }
+}
