@@ -6,7 +6,7 @@
     class="product-tile"
     [ngClass]="{ finished: product.status === Status.Blocked }"
     *ngFor="let product of category.products"
-    routerLink="product/{{ product.id }}"
+    routerLink="/menu/product/{{ product.id }}"
     [imageLoader]="product.images ? product.images[0] : undefined"
   >
     <!-- <div class="badge tertiary on-tertiary-text mat-elevation-z3" *ngIf="product._orderItem?.quantity">

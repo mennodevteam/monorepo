@@ -1,6 +1,6 @@
 <mat-nav-list>
   <ng-container *ngFor="let product of category.products; let last = last">
-    <a mat-list-item routerLink="product/{{ product.id }}">
+    <a mat-list-item routerLink="/menu/product/{{ product.id }}">
       <img matListItemAvatar [ngClass]="{ finished: product.status === Status.Blocked }" [imageLoader]="product.images ? product.images[0] : undefined" />
       <h3 matListItemTitle class="title">{{ product.title }}</h3>
       <span matListItemLine class="subtitle">
