@@ -1,4 +1,32 @@
-<table mat-table [dataSource]="dataSource">
+<mat-nav-list *screen="'MOBILE'">
+  <a mat-list-item *ngFor="let order of dataSource.data">
+    <span matListItemTitle class="row">
+      <b class="eng">
+        <span *ngIf="order.mergeFrom?.length">G</span>{{ order.qNumber
+        }}<sup class="red" *ngIf="order.details?.itemChanges?.length">c</sup>.
+      </b>
+      <span *ngIf="order.customer">
+        {{ User.fullName(order.customer) }}
+        {{ order.customer.mobilePhone | phone }}
+      </span>
+      <span *ngIf="!order.customer">
+        {{ 'ordersTable.addCustomer' | translate }}
+      </span>
+      <span flex></span>
+      <small class="gray eng">{{ order.createdAt | date: 'HH:mm' }}</small>
+    </span>
+    <span matListItemLine [ngSwitch]="order.type">
+      <i matListItemIcon *ngSwitchCase="OrderType.DineIn" class="fa-solid fa-mug-hot"></i>
+      <i matListItemIcon *ngSwitchCase="OrderType.Takeaway" class="fa-solid fa-cup-togo"></i>
+      <i matListItemIcon *ngSwitchCase="OrderType.Delivery" class="fa-solid fa-moped"></i>
+      <span class="eng" *ngIf="order.type === OrderType.DineIn && order.details?.table">{{
+        order.details?.table
+      }}</span>
+    </span>
+  </a>
+</mat-nav-list>
+
+<table mat-table [dataSource]="dataSource" *screen="'DESKTOP'">
   <ng-container matColumnDef="qNumber">
     <th mat-header-cell *matHeaderCellDef [style.width.px]="showCheckbox ? 110 : 72"></th>
     <td mat-cell *matCellDef="let order">

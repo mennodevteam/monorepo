@@ -67,6 +67,7 @@ import { SelectOrderTypeCardComponent } from './components/select-order-type-car
 import { UpdateDialogComponent } from './dialogs/update-dialog/update-dialog.component';
 import { UserAddressesDialogComponent } from './dialogs/user-addresses-dialog/user-addresses-dialog.component';
 import { ExtendPluginsModalComponent } from './components/extend-plugins-modal/extend-plugins-modal.component';
+import { ScreenDirective } from './directives/screen.directive';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { ExtendPluginsModalComponent } from './components/extend-plugins-modal/e
     AdvancedPromptDialogComponent,
     ImageCropperDialogComponent,
     GoBackDirective,
+    ScreenDirective,
     SanitizeUrlPipe,
     MenuCurrencyPipe,
     PdatePipe,
@@ -146,6 +148,7 @@ import { ExtendPluginsModalComponent } from './components/extend-plugins-modal/e
     AdvancedPromptDialogComponent,
     ImageCropperDialogComponent,
     GoBackDirective,
+    ScreenDirective,
     SanitizeUrlPipe,
     MenuCurrencyPipe,
     OrderTypePipe,

@@ -2,11 +2,15 @@
 
 :host {
   display: block;
-  min-width: 960px;
   width: 100%;
 }
 
+mat-nav-list {
+  margin: -16px;
+}
+
 table {
+  min-width: 960px;
   box-shadow: none;
 }
 
