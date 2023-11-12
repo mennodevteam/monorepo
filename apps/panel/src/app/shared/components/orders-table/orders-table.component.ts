@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { Member, Order, OrderState, OrderType, ShopPrintView, User } from '@menno/types';
+import { Member, Order, OrderPaymentType, OrderState, OrderType, ShopPrintView, User } from '@menno/types';
 import { BehaviorSubject } from 'rxjs';
 import { ClubService } from '../../../core/services/club.service';
 import { OrdersService } from '../../../core/services/orders.service';
@@ -21,6 +21,7 @@ export class OrdersTableComponent implements AfterViewInit {
   User = User;
   OrderType = OrderType;
   OrderState = OrderState;
+  OrderPaymentType = OrderPaymentType;
   dataSource = new MatTableDataSource<Order>();
 
   @Input() showCheckbox = false;

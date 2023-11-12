@@ -49,3 +49,23 @@ table {
   color: $green;
   font-size: 12px;
 }
+
+mat-nav-list {
+  a[mat-list-item] {
+    i.mat-mdc-list-item-icon {
+      margin-left: 16px;
+    }
+
+    .mat-mdc-list-item-title {
+      font-size: 12px !important;
+      margin: 0;
+    }
+
+    .mat-mdc-list-item-line {
+      font-size: 12px !important;
+    }
+  }
+  // span[matListTitle] {
+  //   font-
+  // }
+}

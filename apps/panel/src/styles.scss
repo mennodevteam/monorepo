@@ -128,7 +128,7 @@ i[empty-state-icon] {
 }
 
 .row {
-  display: flex;
+  display: flex !important;
   align-items: center;
 }
 
@@ -233,7 +233,7 @@ mat-spinner.loading {
 .mat-mdc-list-item-icon {
   text-align: center !important;
   line-height: 24px !important;
-  color: black !important;
+  color: black;
 }
 
 .mdc-button {

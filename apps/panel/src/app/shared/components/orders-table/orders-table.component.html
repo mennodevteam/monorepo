@@ -1,29 +1,47 @@
 <mat-nav-list *screen="'MOBILE'">
-  <a mat-list-item *ngFor="let order of dataSource.data">
-    <span matListItemTitle class="row">
-      <b class="eng">
-        <span *ngIf="order.mergeFrom?.length">G</span>{{ order.qNumber
-        }}<sup class="red" *ngIf="order.details?.itemChanges?.length">c</sup>.
-      </b>
-      <span *ngIf="order.customer">
-        {{ User.fullName(order.customer) }}
-        {{ order.customer.mobilePhone | phone }}
+  <ng-container *ngFor="let order of dataSource.data">
+    <a mat-list-item (click)="orderClicked.emit(order)">
+      <i matListItemIcon class="fa-solid fa-circle-small red" *ngIf="order.state === OrderState.Pending"></i>
+      <i
+        matListItemIcon
+        class="fa-solid fa-hat-chef yellow"
+        *ngIf="order.state === OrderState.Processing"
+      ></i>
+      <i matListItemIcon class="fa-solid fa-check blue" *ngIf="order.state === OrderState.Ready"></i>
+      <i matListItemIcon class="fa-solid fa-moped blue" *ngIf="order.state === OrderState.Shipping"></i>
+      <i
+        matListItemIcon
+        class="fa-solid fa-circle-check green"
+        *ngIf="order.state === OrderState.Completed"
+      ></i>
+      <i matListItemIcon class="fa-solid fa-circle-xmark red" *ngIf="order.state === OrderState.Canceled"></i>
+      <span matListItemTitle class="row">
+        <b class="eng">
+          <span *ngIf="order.mergeFrom?.length">G</span>{{ order.qNumber
+          }}<sup class="red" *ngIf="order.details?.itemChanges?.length">c</sup>.
+        </b>
+        <span *ngIf="order.customer">
+          {{ User.fullName(order.customer) }}
+          {{ order.customer.mobilePhone | phone }}
+        </span>
+        <!-- <span *ngIf="!order.customer">
+          {{ 'ordersTable.addCustomer' | translate }}
+        </span> -->
+        <span flex></span>
+        <span class="eng gray">{{ order.createdAt | date: 'HH:mm' }}</span>
       </span>
-      <span *ngIf="!order.customer">
-        {{ 'ordersTable.addCustomer' | translate }}
+      <span matListItemLine [ngSwitch]="order.type" class="row">
+        {{ order.type | orderType }}
+        <span spacer-sm></span>
+        <span class="eng" *ngIf="order.type === OrderType.DineIn && order.details?.table">{{
+          order.details?.table
+        }}</span>
+        <span flex></span>
+        <b [class.green]="order.paymentType !== OrderPaymentType.NotPayed">{{ order.totalPrice | menuCurrency }}</b>
       </span>
-      <span flex></span>
-      <small class="gray eng">{{ order.createdAt | date: 'HH:mm' }}</small>
-    </span>
-    <span matListItemLine [ngSwitch]="order.type">
-      <i matListItemIcon *ngSwitchCase="OrderType.DineIn" class="fa-solid fa-mug-hot"></i>
-      <i matListItemIcon *ngSwitchCase="OrderType.Takeaway" class="fa-solid fa-cup-togo"></i>
-      <i matListItemIcon *ngSwitchCase="OrderType.Delivery" class="fa-solid fa-moped"></i>
-      <span class="eng" *ngIf="order.type === OrderType.DineIn && order.details?.table">{{
-        order.details?.table
-      }}</span>
-    </span>
-  </a>
+    </a>
+    <mat-divider></mat-divider>
+  </ng-container>
 </mat-nav-list>
 
 <table mat-table [dataSource]="dataSource" *screen="'DESKTOP'">
