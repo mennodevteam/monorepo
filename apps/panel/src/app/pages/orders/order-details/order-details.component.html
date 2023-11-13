@@ -15,11 +15,15 @@
     [disabled]="order?.deletedAt"
   >
     <i class="fa-regular fa-pencil"></i>
-    {{ 'app.edit' | translate }}
+    <span class="hide-xs">
+      {{ 'app.edit' | translate }}
+    </span>
   </button>
   <button mat-stroked-button [matMenuTriggerFor]="printMenu">
     <i class="fa-regular fa-print"></i>
-    {{ 'app.print' | translate }}
+    <span class="hide-xs">
+      {{ 'app.print' | translate }}
+    </span>
   </button>
   <mat-menu #printMenu="matMenu">
     <button mat-menu-item (click)="print()">
@@ -67,12 +71,12 @@
               </td>
             </ng-container>
             <ng-container matColumnDef="sum">
-              <th mat-header-cell *matHeaderCellDef style="width: 180px; text-align: end">
+              <th mat-header-cell *matHeaderCellDef style="text-align: end">
                 {{ 'app.sum' | translate }}
               </th>
               <td mat-cell *matCellDef="let element" style="text-align: end">
                 <span style="display: inline-block">
-                  {{ element.price * element.quantity | menuCurrency }}
+                  {{ element.price * element.quantity | number }}
                 </span>
               </td>
             </ng-container>
@@ -104,7 +108,8 @@
 
               <mat-menu #itemChangesItemMenu="matMenu">
                 <button mat-menu-item *ngFor="let item of changes">
-                  {{ item.title }}: <span class="eng ltr">{{item.change > 0 ? '+' : ''}}{{ item.change }}</span>
+                  {{ item.title }}:
+                  <span class="eng ltr">{{ item.change > 0 ? '+' : '' }}{{ item.change }}</span>
                 </button>
               </mat-menu>
             </button>
@@ -128,23 +133,23 @@
               <b matListItemMeta>{{ total | menuCurrency }}</b>
             </mat-list-item>
           </mat-list>
-          <mat-toolbar>
-            <i *ngIf="order.paymentType" class="fa-solid fa-circle-check green"></i>
-            <i *ngIf="!order.paymentType" class="fa-solid fa-circle-xmark red"></i>
-            <span flex [ngClass]="{ green: order.paymentType, red: !order.paymentType }">
-              {{ order.paymentType | orderPayment: order.details.posPayed:order.totalPrice }}
-            </span>
-            <button
-              mat-stroked-button
-              [disabled]="order._settlementing || order.deletedAt"
-              *ngIf="!order.paymentType"
-              (click)="settlement(order)"
-            >
-              <i class="fa-regular fa-cash-register"></i>
-              {{ 'orderDetails.settlement' | translate }}
-            </button>
-          </mat-toolbar>
         </mat-card-content>
+        <mat-card-actions>
+          <i *ngIf="order.paymentType" class="fa-solid fa-circle-check green"></i>
+          <i *ngIf="!order.paymentType" class="fa-solid fa-circle-xmark red"></i>
+          <span flex [ngClass]="{ green: order.paymentType, red: !order.paymentType }">
+            {{ order.paymentType | orderPayment: order.details.posPayed:order.totalPrice }}
+          </span>
+          <button
+            mat-stroked-button
+            [disabled]="order._settlementing || order.deletedAt"
+            *ngIf="!order.paymentType"
+            (click)="settlement(order)"
+          >
+            <i class="fa-regular fa-cash-register"></i>
+            {{ 'orderDetails.settlement' | translate }}
+          </button>
+        </mat-card-actions>
       </mat-card>
     </div>
 

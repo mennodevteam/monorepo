@@ -27,6 +27,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ShopService } from '../../../core/services/shop.service';
 import { PromptDialogComponent } from '../../../shared/dialogs/prompt-dialog/prompt-dialog.component';
 import { MemberDialogComponent } from '../../../shared/dialogs/member-dialog/member-dialog.component';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
   selector: 'order-details',
@@ -58,8 +59,13 @@ export class OrderDetailsComponent implements OnDestroy {
     private translate: TranslateService,
     private snack: MatSnackBar,
     private decimalPipe: DecimalPipe,
-    private shopService: ShopService
+    private shopService: ShopService,
+    private breakpoints: BreakpointObserver
   ) {
+    const isMobile = this.breakpoints.isMatched('(max-width: 800px)');
+    if (isMobile) {
+      this.displayedColumns = ['title', 'quantity', 'sum']
+    }
     this.route.params.subscribe((params) => {
       this.order = this.todayOrders.getById(this.orderId);
       this.loadOrder();
