@@ -8,7 +8,7 @@ import { SmsGroup } from '@menno/types';
   styleUrls: ['./sms-group.component.scss'],
 })
 export class SmsGroupComponent {
-  displayedColumns = ['message', 'createdAt', 'receptors', 'failed', 'inQueue', 'sent', 'scheduled'];
+  displayedColumns = ['message', 'createdAt', 'receptors', 'cost', 'failed', 'inQueue', 'sent', 'scheduled'];
   smsGroups: SmsGroup[];
   loading = true;
   constructor(private club: ClubService) {

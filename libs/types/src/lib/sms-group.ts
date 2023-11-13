@@ -9,6 +9,7 @@ export class SmsGroup {
   createdAt: Date;
   account: SmsAccount;
   count?: number;
+  cost?: number;
   receptors?: string[];
   statusCount: number[];
 }

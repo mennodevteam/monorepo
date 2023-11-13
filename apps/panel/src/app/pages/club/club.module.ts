@@ -10,6 +10,7 @@ import { TagEditDialogComponent } from './member-list/tag-edit-dialog/tag-edit-d
 import { DiscountCouponsComponent } from './discount-coupons/discount-coupons.component';
 import { DiscountCouponsEditComponent } from './discount-coupons-edit/discount-coupons-edit.component';
 import { SmsGroupComponent } from './sms-group/sms-group.component';
+import { SmsListComponent } from './sms-group/sms-list/sms-list.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { SmsGroupComponent } from './sms-group/sms-group.component';
     DiscountCouponsComponent,
     DiscountCouponsEditComponent,
     SmsGroupComponent,
+    SmsListComponent,
   ],
   imports: [CommonModule, SharedModule, RouterModule.forChild(clubRoutes)],
 })

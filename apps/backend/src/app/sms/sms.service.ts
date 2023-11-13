@@ -88,7 +88,8 @@ export class SmsService {
             }
             console.log(sentSms);
             await this.smsRepo.save(sentSms);
-            const g = group && await this.smsGroupsRepo.findOne({ where: { id: group.id }, relations: ['list'] });
+            const g =
+              group && (await this.smsGroupsRepo.findOne({ where: { id: group.id }, relations: ['list'] }));
             resolve(g);
           } else {
             reject(response);
@@ -196,9 +197,11 @@ export class SmsService {
       take: filter.take,
       skip: filter.skip,
     });
+
     for (const g of groups[0]) {
       const sms = await this.smsRepo.findBy({ group: { id: g.id } });
       g.count = sms.length;
+      g.cost = sms.reduce<number>((sum, s) => sum + s.cost, 0);
       g.receptors = g.count < 4 ? sms.map((x) => x.receptor) : undefined;
       g.statusCount = [
         sms.filter((x) => x.status === SmsStatus.Failed).length,

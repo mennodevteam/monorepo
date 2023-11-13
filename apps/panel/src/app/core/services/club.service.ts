@@ -211,6 +211,12 @@ export class ClubService {
     return res;
   }
 
+  async getSmsGroup(id: string): Promise<SmsGroup> {
+    const res = await this.http.get<SmsGroup>('sms/group/'+id).toPromise();
+    if (!res) throw new Error();
+    return res;
+  }
+
   async removeDiscountCoupon(discountCouponId: string): Promise<void> {
     await this.http.delete(`discountCoupons/${discountCouponId}`).toPromise();
   }

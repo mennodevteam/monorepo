@@ -1,5 +1,5 @@
 import { FilterSmsDto, Member, NewSmsDto, Shop, Sms, SmsGroup, SmsTemplate, User, UserRole } from '@menno/types';
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, Get, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
@@ -13,7 +13,8 @@ export class SmsController {
   constructor(
     private authService: AuthService,
     private smsService: SmsService,
-    @InjectRepository(Member) private membersRepo: Repository<Member>
+    @InjectRepository(Member) private membersRepo: Repository<Member>,
+    @InjectRepository(SmsGroup) private groupsRepo: Repository<SmsGroup>
   ) {}
 
   @Post('filter')
@@ -22,6 +23,15 @@ export class SmsController {
     const { smsAccount } = await this.authService.getPanelUserShop(user, ['smsAccount']);
     filter.accountId = smsAccount.id;
     return this.smsService.filter(filter);
+  }
+
+  @Get('group/:id')
+  @Roles(UserRole.Panel)
+  async list(@Param('id') id: string, @LoginUser() user: AuthPayload): Promise<SmsGroup> {
+    const { smsAccount } = await this.authService.getPanelUserShop(user, ['smsAccount']);
+    const group = await this.groupsRepo.findOne({where: {id}, relations: ['account', 'list']});
+    if (smsAccount?.id !== group.account?.id) throw new ForbiddenException();
+    return group;
   }
 
   @Post('sendTemplate')
