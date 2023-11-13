@@ -98,9 +98,12 @@ $app-typography: mat.define-typography-config(
   }
 
   mat-toolbar {
-    background-color: transparent !important;
     color: var(--md-sys-color-on-background) !important;
-  
+    
+    &:not(.background) {
+      background-color: transparent !important;
+    }
+
     min-height: 72px;
     &-row {
       min-height: 72px;

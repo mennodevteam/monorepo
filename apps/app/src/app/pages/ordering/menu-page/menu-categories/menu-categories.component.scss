@@ -8,12 +8,6 @@
   }
 }
 
-.category-chips {
-  position: sticky;
-  top: 0;
-  z-index: 200;
-}
-
 ::ng-deep .category-chips {
   .on-primary-text span {
     color: inherit !important;

@@ -24,7 +24,7 @@
     </mat-toolbar>
   </header>
 
-  <mat-toolbar>
+  <mat-toolbar *ngIf="showSelectOrderType">
     <mat-button-toggle-group [(ngModel)]="menuService.type" color="primary" flex>
       <mat-button-toggle *ngFor="let t of appConfig?.selectableOrderTypes" [value]="t">
         {{ t | orderType }}
@@ -128,7 +128,9 @@
   </mat-toolbar>
 
   <div class="menu" *ngIf="!searchQueryControl.value">
-    <menu-categories (chipClick)="categoryClick($event)"></menu-categories>
+    <div class="category-buttons background">
+      <menu-categories (chipClick)="categoryClick($event)"></menu-categories>
+    </div>
 
     <div
       *ngFor="let c of categories; let last = last"
@@ -140,6 +142,8 @@
         <i *ngIf="c.faIcon" class="fa-solid fa-{{ c.faIcon }}"></i>
         {{ c.title }}
       </h3>
+      <p class="outline-text" *ngIf="c.description">{{c.description}}</p>
+      <span spacer></span>
       <ng-container *ngIf="viewType === MenuViewType.Card">
         <category-card-view [category]="c"></category-card-view>
       </ng-container>
