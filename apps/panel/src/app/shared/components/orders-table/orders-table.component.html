@@ -37,7 +37,9 @@
           order.details?.table
         }}</span>
         <span flex></span>
-        <b [class.green]="order.paymentType !== OrderPaymentType.NotPayed">{{ order.totalPrice | menuCurrency }}</b>
+        <b [class.green]="order.paymentType !== OrderPaymentType.NotPayed">{{
+          order.totalPrice | menuCurrency
+        }}</b>
       </span>
     </a>
     <mat-divider></mat-divider>
@@ -168,6 +170,19 @@
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let order" style="text-align: end">
       <ng-container *ngIf="!order.deletedAt">
+        <button mat-icon-button stopPropagation [matMenuTriggerFor]="itemsMenu">
+          <i class="fa-regular fa-list-ul fa-flip-horizontal"></i>
+        </button>
+        <mat-menu #itemsMenu="matMenu">
+          <ng-container *ngFor="let item of order.items">
+            <button mat-menu-item *ngIf="!item.isAbstract">
+              {{ item.title }}
+              <span *ngIf="item.quantity > 1">
+                ({{ 'app.number' | translate: { value: item.quantity } }})
+              </span>
+            </button>
+          </ng-container>
+        </mat-menu>
         <button mat-icon-button (click)="print(order)" stopPropagation>
           <i class="fa-regular fa-print"></i>
         </button>
