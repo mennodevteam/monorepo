@@ -132,6 +132,7 @@ export class ProductEditPageComponent {
       .open(ImageCropperDialogComponent, {
         data: {
           resizeToWidth: 600,
+          imageQuality: 90,
           aspectRatio: spans ? spans[0] / spans[1] : 1,
         } as CropperOptions,
       })
