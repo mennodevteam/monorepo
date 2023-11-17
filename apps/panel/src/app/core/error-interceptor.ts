@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { AuthService } from './services/auth.service';
+import { Observable, catchError, throwError } from 'rxjs';
 import { ApiError } from './api-error';
 import { environment } from '../../environments/environment';
 
@@ -23,7 +21,6 @@ export class ErrorInterceptor implements HttpInterceptor {
           // auto logout if 401 response returned from api
           localStorage.removeItem(environment.localStorageUserKey);
           sessionStorage.removeItem(environment.localStorageUserKey);
-          // location.reload();
         }
         const apiError = new ApiError();
         apiError.data = err.error;

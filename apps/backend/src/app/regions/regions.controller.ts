@@ -14,7 +14,6 @@ export class RegionsController {
   @Public()
   @Get()
   find(): Promise<Region[]> {
-    console.log(121212)
     return this.regionsRepo.find({
       order: {
         title: 'ASC',

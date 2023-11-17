@@ -58,7 +58,11 @@ export class HomeComponent {
   }
 
   openApp() {
-    window.open(this.shopService.appLink, this.shop.title, 'width=400,height=700');
+    window.open(this.appLink, this.shop.title, 'width=400,height=700');
+  }
+
+  get appLink() {
+    return this.shopService.appLink
   }
 
   async sendLink() {
