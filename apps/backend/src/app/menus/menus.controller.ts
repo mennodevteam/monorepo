@@ -20,7 +20,7 @@ export class MenusController {
   @Get()
   async getPanelMenu(@LoginUser() user: AuthPayload): Promise<Menu> {
     const shop = await this.auth.getPanelUserShop(user, [
-      'menu.categories.products',
+      'menu.categories.products.variants',
       'menu.costs',
       'menu.costs.includeProductCategory',
       'menu.costs.includeProduct',
@@ -45,7 +45,7 @@ export class MenusController {
     const shop = await this.shopsRepo.findOne({
       where: [{ domain: query }, { username: query }, { code: query }],
       relations: [
-        'menu.categories.products',
+        'menu.categories.products.variants',
         'menu.costs',
         'menu.costs.includeProductCategory',
         'menu.costs.includeProduct',

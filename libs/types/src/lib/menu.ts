@@ -2,6 +2,7 @@ import { MenuCost } from './menu-cost';
 import { OrderType } from './order-type.enum';
 import { Product } from './product';
 import { ProductCategory } from './product-category';
+import { ProductVariant } from './product-variant';
 import { Status } from './status.enum';
 
 export class Menu {
@@ -57,6 +58,19 @@ export class Menu {
                 x.includeProductCategory?.find((y) => y.id === p.category.id) ||
                 x.includeProduct?.find((y) => y.id === p.id)
             );
+
+            if (p.variants) {
+              ProductVariant.sort(p.variants);
+              for (const v of p.variants) {
+                v.product = p;
+                if (
+                  p.variants.length == 1 ||
+                  p.status === Status.Inactive ||
+                  (p.status === Status.Blocked && v.status === Status.Active)
+                )
+                  v.status = p.status;
+              }
+            }
           }
         }
         cat.products = cat.products?.filter((x) => showInactive || x.status !== Status.Inactive);
@@ -90,6 +104,27 @@ export class Menu {
           if (cat.products) {
             for (const prod of cat.products) {
               if (prod.id === productId) return prod;
+            }
+          }
+        }
+      }
+    } catch (error) {
+      return null;
+    }
+    return null;
+  }
+
+  static getProductVariantById(menu: Menu, variantId: number) {
+    try {
+      if (menu && menu.categories) {
+        for (const cat of menu.categories) {
+          if (cat.products) {
+            for (const prod of cat.products) {
+              if (prod.variants) {
+                for (const v of prod.variants) {
+                  if (v.id === variantId) return v;
+                }
+              }
             }
           }
         }

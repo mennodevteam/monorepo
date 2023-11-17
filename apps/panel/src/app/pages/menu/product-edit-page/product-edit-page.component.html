@@ -55,6 +55,77 @@
             </mat-form-field>
           </mat-card-content>
         </mat-card>
+
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>
+              {{ 'productEdit.variantSectionTitle' | translate }}
+              <span class="red">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                {{ 'app.new' | translate }}
+              </span>
+            </mat-card-title>
+          </mat-card-header>
+          <span spacer></span>
+          <mat-card-content>
+            <p>
+              {{ 'productEdit.variantSectionDescription' | translate }}
+            </p>
+            <mat-list
+              *ngIf="form.controls['variants'].value?.length"
+              cdkDropList
+              (cdkDropListDropped)="sortVariants($event)"
+            >
+              <mat-list-item *ngFor="let variant of form.controls['variants'].value" cdkDrag>
+                <i matListItemIcon class="fa-solid fa-grip-dots-vertical"></i>
+                <span matListItemTitle>{{ variant.title }}</span>
+                <span matListItemLine *ngIf="variant.description">{{ variant.description }}</span>
+                <div class="secondary" matListItemMeta>
+                  <b class="blue">{{ variant.price | menuCurrency }}</b>
+                  <button *ngIf="form.controls['variants'].value.length > 1" mat-stroked-button [mat-menu-trigger-for]="statusMenu">
+                    <span *ngIf="variant.status === Status.Active">
+                      <i class="fa-solid fa-check-circle green"></i>
+                      {{ 'app.active' | translate }}
+                    </span>
+                    <span *ngIf="variant.status === Status.Blocked">
+                      <i class="fa-solid fa-circle-0 red"></i>
+                      {{ 'app.finished' | translate }}
+                    </span>
+                    <span *ngIf="variant.status === Status.Inactive">
+                      <i class="fa-solid fa-ban red"></i>
+                      {{ 'app.inactive' | translate }}
+                    </span>
+                  </button>
+                  <mat-menu #statusMenu="matMenu">
+                    <button mat-menu-item (click)="variant.status = Status.Active; form.markAsDirty()">
+                      <i class="fa-solid fa-check-circle mat-icon"></i>
+                      {{ 'app.active' | translate }}
+                    </button>
+                    <button mat-menu-item (click)="variant.status = Status.Blocked; form.markAsDirty()">
+                      <i class="fa-solid fa-circle-0 mat-icon"></i>
+                      {{ 'app.finished' | translate }}
+                    </button>
+                    <button mat-menu-item (click)="variant.status = Status.Inactive; form.markAsDirty()">
+                      <i class="fa-solid fa-ban mat-icon"></i>
+                      {{ 'app.inactive' | translate }}
+                    </button>
+                  </mat-menu>
+                  <button mat-icon-button (click)="editVariantDialog(variant)" [disabled]="!variant.id">
+                    <i class="fa-regular fa-pencil-alt"></i>
+                  </button>
+                  <button mat-icon-button (click)="removeVariant(variant)">
+                    <i class="fa-regular fa-trash-alt"></i>
+                  </button>
+                </div>
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button color="primary" (click)="editVariantDialog()">
+              {{ 'productEdit.addVariant' | translate }}
+            </button>
+          </mat-card-actions>
+        </mat-card>
       </div>
 
       <div class="static-col">

@@ -42,6 +42,11 @@ export const OrderItemSchema = new EntitySchema<OrderItem>({
         product: {
             type: 'many-to-one',
             target: 'Product',
-        }
+        },
+        productVariant: {
+            type: 'many-to-one',
+            target: 'ProductVariant',
+            nullable: true,
+        },
     }
 });

@@ -22,6 +22,7 @@ export * from './payment.schema';
 export * from './print-action.schema';
 export * from './product-category.schema';
 export * from './product.schema';
+export * from './product-variant.schema';
 export * from './region.schema';
 export * from './shop-group.schema';
 export * from './shop-plugins.schema';

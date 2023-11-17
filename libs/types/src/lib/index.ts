@@ -48,6 +48,7 @@ export * from './print-order.dto';
 export * from './print-type.enum';
 export * from './product-category';
 export * from './product';
+export * from './product-variant';
 export * from './quantity-log-dto';
 export * from './region';
 export * from './shop-bankInfo';

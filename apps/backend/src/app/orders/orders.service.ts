@@ -22,6 +22,7 @@ import {
   NewSmsDto,
   SmsTemplate,
   WalletLog,
+  ProductVariant,
 } from '@menno/types';
 import { groupBy, groupBySum } from '@menno/utils';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -63,7 +64,7 @@ export class OrdersService {
     const shop = await this.shopsRepo.findOne({
       where: { id: dto.shopId },
       relations: [
-        'menu.categories.products',
+        'menu.categories.products.variants',
         'menu.costs.includeProductCategory',
         'menu.costs.includeProduct',
       ],
@@ -96,6 +97,7 @@ export class OrdersService {
 
     for (const item of order.items) {
       if (item.product) item.product = { id: item.product.id } as Product;
+      if (item.productVariant) item.productVariant = {id: item.productVariant.id} as ProductVariant;
     }
 
     order.totalPrice = OrderDto.total(dto, menu);
@@ -275,7 +277,7 @@ export class OrdersService {
   async editOrder(dto: OrderDto) {
     const order = await this.ordersRepo.findOne({
       where: { id: dto.id },
-      relations: ['items.product', 'customer', 'shop'],
+      relations: ['items.product', 'items.productVariant', 'customer', 'shop'],
     });
     if (order.shop.id !== dto.shopId) {
       throw new HttpException('this order is for another shop', HttpStatus.FORBIDDEN);
@@ -305,14 +307,14 @@ export class OrdersService {
 
     for (const item of order.items) {
       if (item.isAbstract || !item.product) continue;
-      const dtoItem = dto.productItems.find((x) => x.productId == item.product.id);
+      const dtoItem = dto.productItems.find((x) => x.productId == item.product.id && x.productVariantId == item.productVariant?.id);
       if (!dtoItem) changes.push({ title: item.title, change: -1 * item.quantity });
       else if (dtoItem.quantity != item.quantity)
         changes.push({ title: item.title, change: dtoItem.quantity - item.quantity });
     }
 
     const newProductItems = editedOrder.items.filter(
-      (x) => x.product && !order.items.find((y) => y.product && y.product.id === x.product.id)
+      (x) => x.product && !order.items.find((y) => y.product && y.product.id === x.product.id && y.productVariant?.id === x.productVariant?.id)
     );
     for (const item of newProductItems) {
       changes.push({ title: item.title, change: item.quantity });
@@ -451,7 +453,7 @@ export class OrdersService {
   async manualSettlement(dto: ManualSettlementDto, user: AuthPayload): Promise<Order> {
     const order = await this.ordersRepo.findOne({
       where: { id: dto.orderId },
-      relations: ['shop.club', 'items.product', 'customer'],
+      relations: ['shop.club', 'items.product', 'items.productVariant', 'customer'],
     });
     if (order && order.items.length > 0) {
       const perviousManualCost = order.items.find((x) => x.title === MANUAL_COST_TITLE && x.isAbstract);

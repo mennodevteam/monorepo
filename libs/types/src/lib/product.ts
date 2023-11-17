@@ -4,6 +4,7 @@ import { StockItem } from './stock-item';
 import { MenuCost } from './menu-cost';
 import { OrderType } from './order-type.enum';
 import { ProductItem } from './order.dto';
+import { ProductVariant } from './product-variant';
 
 export class Product {
   id: string;
@@ -20,6 +21,7 @@ export class Product {
   limitQuantity: boolean;
   stockItem: StockItem;
   costs?: MenuCost[];
+  variants: ProductVariant[];
   thirdPartyId?: string;
   _orderItem?: ProductItem;
   _changingStatus?: boolean;
@@ -39,52 +41,55 @@ export class Product {
     });
   }
 
-  static realPrice(product: Product, round = 500) {
+  static realPrice(product: Product, productVariant?: ProductVariant, round = 500) {
     let cost = 0;
+    const price = productVariant ? productVariant.price : product.price;
     const showCosts = product.costs?.filter((x) => x.showOnItem && (x.fixedCost > 0 || x.percentageCost > 0));
     if (showCosts) {
       for (const c of showCosts) {
         if (c.fixedCost) cost += c.fixedCost;
         if (c.percentageCost) {
-          const dis = (product.price * c.percentageCost) / 100;
+          const dis = (price * c.percentageCost) / 100;
           cost += dis;
         }
       }
     }
-    const total = Math.floor((product.price + cost) / round) * round;
+    const total = Math.floor((price + cost) / round) * round;
     return Math.max(total, 0);
   }
 
-  static totalPrice(product: Product, round = 500) {
+  static totalPrice(product: Product, productVariant?: ProductVariant, round = 500) {
     let cost = 0;
+    const price = productVariant ? productVariant.price : product.price;
     const showCosts = product.costs?.filter((x) => x.showOnItem);
     if (showCosts) {
       for (const c of showCosts) {
         if (c.fixedCost) cost += c.fixedCost;
         if (c.percentageCost) {
-          const dis = (product.price * c.percentageCost) / 100;
+          const dis = (price * c.percentageCost) / 100;
           cost += dis;
         }
       }
     }
-    const total = Math.floor((product.price + cost) / round) * round;
+    const total = Math.floor((price + cost) / round) * round;
     return Math.max(total, 0);
   }
 
-  static fixedDiscount(product: Product) {
-    const cost = Product.realPrice(product) - Product.totalPrice(product);
+  static fixedDiscount(product: Product, productVariant?: ProductVariant) {
+    const cost = Product.realPrice(product, productVariant) - Product.totalPrice(product, productVariant);
     if (cost > 0) return cost;
     return 0;
   }
 
-  static percentageDiscount(product: Product, round = 5) {
-    const cost = Product.realPrice(product) - Product.totalPrice(product);
-    if (cost > 0) return Math.round((cost / product.price) * 100 / round) * round;
+  static percentageDiscount(product: Product, productVariant?: ProductVariant, round = 5) {
+    const price = productVariant ? productVariant.price : product.price;
+    const cost = Product.realPrice(product, productVariant) - Product.totalPrice(product, productVariant);
+    if (cost > 0) return Math.round((cost / price) * 100 / round) * round;
     return 0;
   }
 
-  static hasDiscount(product: Product) {
-    if (Product.totalPrice(product) < Product.realPrice(product)) return true;
+  static hasDiscount(product: Product, productVariant?: ProductVariant) {
+    if (Product.totalPrice(product, productVariant) < Product.realPrice(product, productVariant)) return true;
     return false;
   }
 }

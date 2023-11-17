@@ -203,6 +203,7 @@ import { ScreenDirective } from './directives/screen.directive';
     MatSelectModule,
     MatCheckboxModule,
     MatGridListModule,
+    DragDropModule,
     MatTooltipModule,
     MatChipsModule,
     MatRadioModule,

@@ -17,6 +17,7 @@ export const DELIVERY_COST_TITLE = 'هزینه ارسال';
 
 export type ProductItem = {
   productId: string;
+  productVariantId?: number;
   quantity: number;
 };
 export class OrderDto {
@@ -44,7 +45,10 @@ export class OrderDto {
       const items = <OrderItem[]>dto.productItems
         .map((item) => {
           const product = Menu.getProductById(menu, item.productId);
-          if (product) return new OrderItem(product, item.quantity);
+          const productVariant = item.productVariantId
+            ? Menu.getProductVariantById(menu, item.productVariantId)
+            : undefined;
+          if (product) return new OrderItem(product, item.quantity, productVariant || undefined);
           return null;
         })
         .filter((item) => item);

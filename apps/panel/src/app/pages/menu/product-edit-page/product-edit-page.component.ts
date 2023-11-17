@@ -4,7 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { OrderType, Product, Status } from '@menno/types';
+import { OrderType, Product, ProductVariant, Status } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { map } from 'rxjs';
 import { FilesService } from '../../../core/services/files.service';
@@ -13,6 +13,11 @@ import { ShopService } from '../../../core/services/shop.service';
 import { ImageCropperDialogComponent } from '../../../shared/dialogs/image-cropper-dialog/image-cropper-dialog.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CropperOptions } from 'ngx-image-cropper';
+import {
+  AdvancedPromptDialogComponent,
+  PromptKeyFields,
+} from '../../../shared/dialogs/advanced-prompt-dialog/advanced-prompt-dialog.component';
+import { moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'product-edit-page',
@@ -52,6 +57,7 @@ export class ProductEditPageComponent {
       spans: new FormControl([1, 1], Validators.required),
       hideTitle: new FormControl(false),
       hidePrice: new FormControl(false),
+      variants: new FormControl([]),
     });
 
     this.route.queryParams.subscribe(async (params) => {
@@ -72,6 +78,7 @@ export class ProductEditPageComponent {
             spans: this.product.details
               ? [this.product.details.colspan || 1, this.product.details.rowspan || 1]
               : [1, 1],
+            variants: this.product.variants || [],
           });
         }
       }
@@ -105,6 +112,12 @@ export class ProductEditPageComponent {
       const savedFile = await this.fileService.upload(this.imageCropperResult.file, `${Date.now()}.jpeg`);
       dto.images = [savedFile?.key];
     }
+    if (dto.variants) {
+      dto.variants.forEach((v: ProductVariant, i: number) => {
+        v.position = i;
+        v.product = undefined as any;
+      });
+    }
     dto.details = {
       colspan: dto.spans[0],
       rowspan: dto.spans[1],
@@ -112,6 +125,7 @@ export class ProductEditPageComponent {
       hidePrice: dto.hidePrice,
     };
     this.snack.open(this.translate.instant('app.saving'), '', { duration: 5000 });
+    console.log(dto);
     await this.menuService.saveProduct(dto);
     this.snack.open(this.translate.instant('app.savedSuccessfully'), '', {
       duration: 5000,
@@ -145,5 +159,66 @@ export class ProductEditPageComponent {
       });
   }
 
+  async editVariantDialog(variant?: ProductVariant) {
+    const fields: PromptKeyFields = {
+      title: {
+        label: this.translate.instant('app.title'),
+        control: new FormControl(variant?.title, Validators.required),
+      },
+      price: {
+        label: this.translate.instant('app.price'),
+        control: new FormControl(variant?.price, Validators.required),
+        type: 'number',
+      },
+      description: {
+        label: this.translate.instant('app.description'),
+        control: new FormControl(variant?.description),
+        rows: 3,
+        type: 'textarea',
+      },
+    };
+    const dto: ProductVariant = await this.dialog
+      .open(AdvancedPromptDialogComponent, {
+        data: {
+          title: variant
+            ? this.translate.instant('productEdit.variantDialog.editTitle', { value: variant.title })
+            : this.translate.instant('productEdit.variantDialog.newTitle'),
+          fields,
+        },
+      })
+      .afterClosed()
+      .toPromise();
+
+    if (dto) {
+      const variants: ProductVariant[] = this.form.get('variants')?.value || [];
+      if (variant) {
+        dto.id = variant.id;
+        dto.status = variant.status;
+        const index = variants.findIndex((x) => x.id === dto.id);
+        if (index > -1) variants[index] = dto;
+        else variants.push(dto);
+      } else {
+        dto.status = Status.Active;
+        variants.push(dto);
+      }
+      this.form.get('variants')?.setValue(variants);
+      this.form.markAsDirty();
+    }
+  }
+
   removePhoto() {}
+
+  sortVariants(event: any) {
+    moveItemInArray(this.form.get('variants')?.value, event.previousIndex, event.currentIndex);
+  }
+
+  removeVariant(v: ProductVariant) {
+    const variants: ProductVariant[] = this.form.get('variants')?.value || [];
+    const index = variants.findIndex((x) => x.id === v.id);
+    if (index > -1) {
+      variants.splice(index, 1);
+      this.form.get('variants')?.setValue(variants);
+      this.form.markAsDirty();
+    }
+  }
 }

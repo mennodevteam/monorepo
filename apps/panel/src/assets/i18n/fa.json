@@ -103,7 +103,14 @@
     "categoryLabel": "دسته‌بندی",
     "descriptionLabel": "توضیحات",
     "priceSectionTitle": "قیمت‌گذاری",
-    "priceLabel": "قیمت آیتم",
+    "priceLabel": "قیمت پایه",
+    "variantSectionTitle": "تنوع آیتم",
+    "variantSectionDescription": "با ایجاد تنوع روی آیتم، کاربر هنگام انتخاب آیتم باید نوع آن را مشخص کند. هرنوع می‌تواند قیمت متفاوتی داشته باشد.",
+    "variantDialog": {
+      "newTitle": "ایجاد نوع جدید",
+      "editTitle": "ویرایش {{value}}"
+    },
+    "addVariant": "ایجاد نوع جدید",
     "viewSectionTitle": "نحوه نمایش",
     "hideTitle": "مخفی کردن عنوان",
     "hidePrice": "مخفی کردن قیمت",

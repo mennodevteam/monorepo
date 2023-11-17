@@ -109,6 +109,7 @@ export class OrdersController {
       withDeleted: true,
       relations: [
         'items.product',
+        'items.productVariant',
         'customer',
         'waiter',
         'creator',
@@ -143,6 +144,7 @@ export class OrdersController {
       where: { id: In(dto) },
       relations: [
         'items.product',
+        'items.productVariant',
         'customer',
         'waiter',
         'creator',
