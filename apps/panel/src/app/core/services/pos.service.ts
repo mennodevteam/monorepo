@@ -166,6 +166,7 @@ export class PosService extends OrderDto {
   }
 
   clear() {
+    this.id = undefined;
     this.productItems = [];
     this.note = undefined;
     this.address = undefined;

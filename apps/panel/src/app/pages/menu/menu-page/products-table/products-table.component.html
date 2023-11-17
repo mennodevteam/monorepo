@@ -59,11 +59,11 @@
           <i class="fa-solid fa-check-circle mat-icon"></i>
           {{ 'app.active' | translate }}
         </button>
-        <button mat-menu-item (click)="changeStatus(product, Status.Inactive)">
+        <button mat-menu-item (click)="changeStatus(product, Status.Blocked)">
           <i class="fa-solid fa-circle-0 mat-icon"></i>
           {{ 'app.finished' | translate }}
         </button>
-        <button mat-menu-item (click)="changeStatus(product, Status.Blocked)">
+        <button mat-menu-item (click)="changeStatus(product, Status.Inactive)">
           <i class="fa-solid fa-ban mat-icon"></i>
           {{ 'app.inactive' | translate }}
         </button>
