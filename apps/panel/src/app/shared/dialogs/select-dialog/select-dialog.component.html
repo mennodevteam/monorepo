@@ -6,8 +6,8 @@
   <mat-nav-list>
     <a mat-list-item *ngFor="let item of items" [mat-dialog-close]="item.value">
       <i *ngIf="item.iconClass" matListIcon class="{{ item.iconClass }}"></i>
-      <h3 matLine>{{ item.title }}</h3>
-      <p *ngIf="item.subtitle" matLine>{{ item.subtitle }}</p>
+      <span matListItemTitle>{{ item.title }}</span>
+      <span *ngIf="item.subtitle" matListItemLine>{{ item.subtitle }}</span>
     </a>
   </mat-nav-list>
 </mat-dialog-content>

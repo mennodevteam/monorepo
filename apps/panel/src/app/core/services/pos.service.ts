@@ -14,6 +14,7 @@ import {
   OrderType,
   Product,
   ProductItem,
+  ProductVariant,
   Status,
   User,
 } from '@menno/types';
@@ -27,6 +28,11 @@ import { ClubService } from './club.service';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from '../../shared/dialogs/alert-dialog/alert-dialog.component';
+import {
+  SelectDialogComponent,
+  SelectItem,
+} from '../../shared/dialogs/select-dialog/select-dialog.component';
+import { MenuCurrencyPipe } from '../../shared/pipes/menu-currency.pipe';
 
 declare let persianDate: any;
 
@@ -64,7 +70,8 @@ export class PosService extends OrderDto {
     private shopService: ShopService,
     private club: ClubService,
     private http: HttpClient,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private menuCurrency: MenuCurrencyPipe
   ) {
     super();
     this.clear();
@@ -83,25 +90,50 @@ export class PosService extends OrderDto {
     }
   }
 
-  async plus(productId: string) {
+  async plus(productId: string, productVariantId?: number) {
     const product = this.menuService.getProductById(productId);
+    let productVariant: ProductVariant | undefined = undefined;
     if (product) {
-      const item = this.productItems?.find((x) => x.productId === productId);
+      if (product.variants) {
+        if (product.variants.length === 1) productVariant = product.variants[0];
+        else if (productVariantId) productVariant = Menu.getProductVariantById(this.menu, productVariantId) || undefined;
+        else {
+          const items: SelectItem[] = product.variants.map((v) => ({
+            title: v.title,
+            subtitle: this.menuCurrency.transform(v.price),
+            value: v,
+          }));
+          const selectedVariant = await this.dialog
+            .open(SelectDialogComponent, {
+              data: { items },
+            })
+            .afterClosed()
+            .toPromise();
+          if (selectedVariant) productVariant = selectedVariant;
+          else return;
+        }
+      }
+
+      const item = this.productItems?.find(
+        (x) => x.productId === productId && x.productVariantId == productVariant?.id
+      );
       if (item) item.quantity ? item.quantity++ : (item.quantity = 1);
       else {
-        if (product.status !== Status.Active) {
+        if (product.status !== Status.Active || (productVariant?.status != undefined && productVariant?.status !== Status.Active)) {
           const ok = await this.dialog
             .open(AlertDialogComponent, {
               data: {
-                title: this.translate.instant(
-                  `pos.addProductWarning.title`,
-                  {value: this.translate.instant(product.status === Status.Inactive ? 'app.inactive' : 'app.finished')}
-                ),
-                description: this.translate.instant(
-                  `pos.addProductWarning.description`,
-                  {value: this.translate.instant(product.status === Status.Inactive ? 'app.inactive' : 'app.finished')}
-                ),
-                status: 'warning'
+                title: this.translate.instant(`pos.addProductWarning.title`, {
+                  value: this.translate.instant(
+                    product.status === Status.Inactive ? 'app.inactive' : 'app.finished'
+                  ),
+                }),
+                description: this.translate.instant(`pos.addProductWarning.description`, {
+                  value: this.translate.instant(
+                    product.status === Status.Inactive ? 'app.inactive' : 'app.finished'
+                  ),
+                }),
+                status: 'warning',
               },
             })
             .afterClosed()
@@ -110,6 +142,7 @@ export class PosService extends OrderDto {
         }
         const item: ProductItem = {
           productId: productId,
+          productVariantId: productVariant?.id,
           quantity: 1,
         };
 
@@ -120,10 +153,10 @@ export class PosService extends OrderDto {
     }
   }
 
-  minus(productId: string) {
+  minus(productId: string, productVariantId?: number) {
     const product = this.menuService.getProductById(productId);
     if (product) {
-      const item = this.productItems?.find((x) => x.productId === product.id);
+      const item = this.productItems?.find((x) => x.productId === product.id && x.productVariantId == productVariantId);
       if (item) {
         if (item.quantity > 1) item.quantity--;
         else {
