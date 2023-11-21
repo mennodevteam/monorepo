@@ -94,7 +94,7 @@ export class PosService extends OrderDto {
     const product = this.menuService.getProductById(productId);
     let productVariant: ProductVariant | undefined = undefined;
     if (product) {
-      if (product.variants) {
+      if (product.variants?.length) {
         if (product.variants.length === 1) productVariant = product.variants[0];
         else if (productVariantId) productVariant = Menu.getProductVariantById(this.menu, productVariantId) || undefined;
         else {
