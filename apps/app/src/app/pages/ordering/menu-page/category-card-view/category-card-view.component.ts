@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Product, ProductCategory, Status } from '@menno/types';
+import { Product, ProductCategory, ProductVariant, Status } from '@menno/types';
 import { BasketService } from '../../../../core/services/basket.service';
 import { ShopService } from '../../../../core/services/shop.service';
 
@@ -15,13 +15,13 @@ export class CategoryCardViewComponent {
 
   constructor(private basket: BasketService, public shopService: ShopService) {}
 
-  plus(product: Product, ev?: Event) {
-    this.basket.plus(product);
+  plus(product: Product, variant?: ProductVariant, ev?: Event) {
+    this.basket.plus(product, variant);
     if (ev) ev.stopPropagation();
   }
 
-  minus(product: Product, ev?: Event) {
-    this.basket.minus(product);
+  minus(product: Product, variant?: ProductVariant, ev?: Event) {
+    this.basket.minus(product, variant);
     if (ev) ev.stopPropagation();
   }
 }

@@ -71,7 +71,7 @@ export class BasketPageComponent {
     try {
       const order = await this.basket.complete();
       if (order) {
-        this.router.navigateByUrl(`/complete/${order.id}`);
+        this.router.navigateByUrl(`/complete/${order.id}`, {replaceUrl: true});
       } else {
         this.saving = false;
       }
