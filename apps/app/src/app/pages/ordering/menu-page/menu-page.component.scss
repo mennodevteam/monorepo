@@ -86,6 +86,10 @@ header {
 
 .category-wrapper {
   scroll-margin: 72px;
+
+  .category-description {
+    white-space: break-spaces;
+  }
 }
 
 .product-wrapper {

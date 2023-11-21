@@ -142,7 +142,7 @@
         <i *ngIf="c.faIcon" class="fa-solid fa-{{ c.faIcon }}"></i>
         {{ c.title }}
       </h3>
-      <p class="outline-text" *ngIf="c.description">{{c.description}}</p>
+      <p class="outline-text category-description" *ngIf="c.description">{{c.description}}</p>
       <span spacer></span>
       <ng-container *ngIf="viewType === MenuViewType.Card">
         <category-card-view [category]="c"></category-card-view>
