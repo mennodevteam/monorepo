@@ -170,12 +170,6 @@ export class ProductEditPageComponent {
         control: new FormControl(variant?.price, Validators.required),
         type: 'number',
       },
-      description: {
-        label: this.translate.instant('app.description'),
-        control: new FormControl(variant?.description),
-        rows: 3,
-        type: 'textarea',
-      },
     };
     const dto: ProductVariant = await this.dialog
       .open(AdvancedPromptDialogComponent, {

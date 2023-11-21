@@ -56,7 +56,12 @@ export class MenusController {
     if (shop.menu?.categories) {
       shop.menu.categories = shop.menu.categories.filter((x) => x.status !== Status.Inactive);
       for (const cat of shop.menu.categories) {
-        if (cat.products) cat.products = cat.products.filter((x) => x.status !== Status.Inactive);
+        if (cat.products) {
+          cat.products = cat.products.filter((x) => x.status !== Status.Inactive);
+          for (const product of cat.products) {
+            if (product.variants) product.variants = product.variants.filter((x) => x.status !== Status.Inactive);
+          }
+        }
       }
     }
 

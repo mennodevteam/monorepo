@@ -12,7 +12,69 @@
   <span spacer></span>
   <p class="outline-text">{{ product.description }}</p>
 
-  <mat-toolbar>
+  <mat-list>
+    <mat-list-item *ngIf="!product.variants?.length">
+      <span matListItemTitle>{{ Product.totalPrice(product) | menuCurrency }}</span>
+      <span matListItemLine *ngIf="Product.hasDiscount(product)">
+        <span class="error-text line-through">
+          {{ Product.realPrice(product) | menuCurrency }}
+          <span spacer-sm></span>
+          {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
+        </span>
+      </span>
+      <div class="secondary" matListItemMeta>
+        <count-selector
+          *ngIf="product._orderItem?.quantity"
+          [count]="product._orderItem!.quantity"
+          (plusClick)="plus()"
+          (minusClick)="minus()"
+        ></count-selector>
+        <button
+          mat-stroked-button
+          [disabled]="product.status === Status.Blocked"
+          *ngIf="!product?._orderItem?.quantity"
+          (click)="plus()"
+        >
+          <span *ngIf="product.status === Status.Active">{{ 'app.select' | translate }}</span>
+          <span *ngIf="product.status === Status.Blocked">{{ 'app.finished' | translate }}</span>
+        </button>
+      </div>
+    </mat-list-item>
+    <ng-container *ngIf="product.variants?.length">
+      <mat-list-item *ngFor="let variant of product.variants">
+        <span matListItemTitle>{{ variant.title }}</span>
+        <span matListItemLine>
+          <span class="error-text line-through" *ngIf="Product.hasDiscount(product, variant)">
+            {{ Product.realPrice(product, variant) | menuCurrency }}
+            <span spacer-sm></span>
+          </span>
+          {{ Product.totalPrice(product, variant) | menuCurrency }}
+        </span>
+        <div class="secondary" matListItemMeta *ngIf="shopService.hasOrderingPlugin()">
+          <ng-container>
+            <count-selector
+              *ngIf="variant._orderItem?.quantity"
+              [count]="variant._orderItem!.quantity"
+              (plusClick)="plus(variant)"
+              (minusClick)="minus(variant)"
+            ></count-selector>
+
+            <button
+              mat-stroked-button
+              [disabled]="variant.status === Status.Blocked"
+              *ngIf="!variant?._orderItem?.quantity"
+              (click)="plus(variant)"
+            >
+              <span *ngIf="variant.status === Status.Active">{{ 'app.select' | translate }}</span>
+              <span *ngIf="variant.status === Status.Blocked">{{ 'app.finished' | translate }}</span>
+            </button>
+          </ng-container>
+        </div>
+      </mat-list-item>
+    </ng-container>
+  </mat-list>
+  <span #selectButtonRow></span>
+  <!-- <mat-toolbar>
     <mat-toolbar-row class="price-section">
       <p *ngIf="!Product.hasDiscount(product)" flex>{{ 'app.price' | translate }}</p>
       <span class="price-section__text">
@@ -34,20 +96,9 @@
       <count-selector [count]="1" (plusClick)="plus()" (minusClick)="minus()"></count-selector>
     </mat-toolbar-row>
     <span #selectButtonRow></span>
-  </mat-toolbar>
+  </mat-toolbar> -->
 
   <ng-container *ngIf="shopService.hasOrderingPlugin()">
-    <button
-      mat-stroked-button
-      [disabled]="product.status === Status.Blocked"
-      *ngIf="!product?._orderItem?.quantity"
-      (click)="plus()"
-      class="add-button"
-    >
-      <span *ngIf="product.status === Status.Active">{{ 'app.select' | translate }}</span>
-      <span *ngIf="product.status === Status.Blocked">{{ 'app.finished' | translate }}</span>
-    </button>
-
     <div style="height: 72px"></div>
 
     <mat-toolbar class="actions background mat-elevation-z5">
@@ -71,7 +122,7 @@
         [disabled]="product.status === Status.Blocked"
         *ngIf="!product?._orderItem?.quantity"
         color="primary"
-        (click)="plus(true)"
+        (click)="plus(undefined, true)"
       >
         <span *ngIf="product.status === Status.Active">{{ 'app.select' | translate }}</span>
         <span *ngIf="product.status === Status.Blocked">{{ 'app.finished' | translate }}</span>

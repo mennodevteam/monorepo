@@ -1,3 +1,4 @@
+import { ProductItem } from './order.dto';
 import { Product } from './product';
 import { Status } from './status.enum';
 
@@ -8,6 +9,7 @@ export class ProductVariant {
   price: number;
   status: Status;
   position?: number;
+  _orderItem?: ProductItem;
   product: Product;
   createdAt: Date;
   deletedAt?: Date;

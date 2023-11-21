@@ -7,6 +7,7 @@ import {
   OrderType,
   Product,
   ProductItem,
+  ProductVariant,
   Shop,
   Status,
 } from '@menno/types';
@@ -38,35 +39,56 @@ export class BasketService extends OrderDto {
     });
   }
 
-  plus(product: Product) {
-    const item = this.productItems?.find((x) => x.productId === product.id);
+  plus(product: Product, variant?: ProductVariant) {
+    const item = this.getItem(product.id, variant?.id);
     if (item) {
       item.quantity ? item.quantity++ : (item.quantity = 1);
-      product._orderItem = item;
     } else {
       const item: ProductItem = {
         productId: product.id,
+        productVariantId: variant?.id,
         quantity: 1,
       };
       if (!this.productItems) this.productItems = [];
       this.productItems.push(item);
-      product._orderItem = item;
+    }
+    this.updateProductOrderItem(product, variant);
+  }
+
+  private updateProductOrderItem(product: Product, variant?: ProductVariant) {
+    const productItems = this.productItems?.filter((x) => x.productId === product.id);
+    const sum = productItems.reduce((sum, item) => sum + item.quantity, 0);
+    if (sum) {
+      product._orderItem = {
+        quantity: productItems.reduce((sum, item) => sum + item.quantity, 0),
+      } as ProductItem;
+    } else {
+      product._orderItem = undefined;
+    }
+
+    if (variant) {
+      const variantItem = productItems.find((x) => x.productVariantId === variant?.id);
+      if (variantItem?.quantity)
+        variant._orderItem = {
+          quantity: variantItem.quantity,
+        } as ProductItem;
+      else  variant._orderItem = undefined;
     }
   }
 
-  minus(product: Product) {
-    const item = this.productItems?.find((x) => x.productId === product.id);
+  minus(product: Product, variant?: ProductVariant) {
+    const item = this.getItem(product.id, variant?.id);
     if (item) {
       if (item.quantity > 1) item.quantity--;
       else {
-        product._orderItem = undefined;
         this.productItems.splice(this.productItems.indexOf(item), 1);
       }
     }
+    this.updateProductOrderItem(product);
   }
 
-  getItem(productId: string) {
-    return this.productItems?.find((x) => x.productId === productId);
+  getItem(productId: string, variantId?: number) {
+    return this.productItems?.find((x) => x.productId === productId && x.productVariantId == variantId);
   }
 
   clear(deep?: boolean) {

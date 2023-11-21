@@ -11,19 +11,13 @@
   <ng-container *ngIf="items?.length">
     <mat-list>
       <mat-list-item *ngFor="let item of items" class="product-item">
-        <img
-          matListItemAvatar
-          [imageLoader]="
-            item.product && item.product.images !== undefined ? item.product.images[0] : undefined
-          "
-        />
         <h3 matListItemTitle>{{ item.title }}</h3>
         <p matListItemLine>{{ item.price | menuCurrency }}</p>
         <div matListItemMeta>
           <count-selector
             [count]="item.quantity"
-            (plusClick)="basket.plus(item.product!)"
-            (minusClick)="basket.minus(item.product!)"
+            (plusClick)="basket.plus(item.product!, item.productVariant)"
+            (minusClick)="basket.minus(item.product!, item.productVariant)"
           ></count-selector>
         </div>
       </mat-list-item>

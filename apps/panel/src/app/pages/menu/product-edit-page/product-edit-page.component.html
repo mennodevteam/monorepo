@@ -79,7 +79,6 @@
               <mat-list-item *ngFor="let variant of form.controls['variants'].value" cdkDrag>
                 <i matListItemIcon class="fa-solid fa-grip-dots-vertical"></i>
                 <span matListItemTitle>{{ variant.title }}</span>
-                <span matListItemLine *ngIf="variant.description">{{ variant.description }}</span>
                 <div class="secondary" matListItemMeta>
                   <b class="blue">{{ variant.price | menuCurrency }}</b>
                   <button *ngIf="form.controls['variants'].value.length > 1" mat-stroked-button [mat-menu-trigger-for]="statusMenu">

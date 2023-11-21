@@ -21,16 +21,8 @@ main {
   }
 }
 
-.price-section {
-  &__text {
-    display: flex;
-    flex-direction: column;
-
-    &__old {
-      text-decoration: line-through;
-      font-size: 12px;
-    }
-  }
+.line-through {
+  text-decoration: line-through;
 }
 
 .add-button {
