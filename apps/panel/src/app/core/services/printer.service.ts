@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PrintType, ShopPrinter, ShopPrintView } from '@menno/types';
+import { PrintActionData, PrintType, ShopPrinter, ShopPrintView } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment';
 import {
@@ -46,6 +46,13 @@ export class PrinterService {
   async remove(shopPrintView: ShopPrintView): Promise<ShopPrintView[]> {
     await this.http.delete(`printers/printViews/${shopPrintView.id}`).toPromise();
     return this.load();
+  }
+
+  async printData(data: PrintActionData, printView: ShopPrintView) {
+    this.snack.open(this.translate.instant('app.printing'), '', { duration: 4000 });
+    const savedPrintActions = await this.http
+      .post<any[]>('printers/printData/' + printView.id, data)
+      .toPromise();
   }
 
   async printOrder(orderId: string, printView?: ShopPrintView) {

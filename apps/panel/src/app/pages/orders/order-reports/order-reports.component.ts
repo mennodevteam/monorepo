@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { OrderPaymentType, OrderReportDto, OrderState, OrderType } from '@menno/types';
+import { OrderPaymentType, OrderReportDto, OrderState, OrderType, ShopPrintView } from '@menno/types';
 import { OrdersService } from '../../../core/services/orders.service';
 import { Chart, ChartConfiguration, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
@@ -11,6 +11,7 @@ import { MenuService } from '../../../core/services/menu.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuCurrencyPipe } from '../../../shared/pipes/menu-currency.pipe';
 import { sortByCreatedAt } from '@menno/utils';
+import { PrinterService } from '../../../core/services/printer.service';
 Chart.defaults.font.family = 'IRANSans';
 
 declare let persianDate: any;
@@ -62,7 +63,8 @@ export class OrderReportsComponent implements AfterViewInit {
     private orderPaymentPipe: OrderPaymentPipe,
     private orderStatePipe: OrderStatePipe,
     private translate: TranslateService,
-    private menuCurrency: MenuCurrencyPipe
+    private menuCurrency: MenuCurrencyPipe,
+    private printerService: PrinterService,
   ) {
     this.form = this.fb.group({
       fromDate: [new Date(), Validators.required],
@@ -194,5 +196,38 @@ export class OrderReportsComponent implements AfterViewInit {
       this.chart?.update();
     }
     this.loading = false;
+  }
+
+  get printers() {
+    return this.printerService.printers;
+  }
+
+  print(printView: ShopPrintView) {
+    const formControl: OrderReportDto = this.form.getRawValue();
+    if (formControl.groupBy === 'product') {
+      this.printerService.printData({
+        currency: 'تومان',
+        customerAddress: '',
+        customerName: '',
+        customerPhone: '',
+        date: new Date(),
+        descriptions: [],
+        qNumber: 0,
+        shopAddress: '',
+        shopName: '',
+        shopPhones: [],
+        items: this.tableData.map((data) => ({
+          isAbstract: false,
+          title: data.label,
+          quantity: data.count,
+          price: data.sum,
+        })),
+        table: '',
+        totalPrice: 0,
+        type: 0,
+        shopUrl: ''
+        
+      }, printView)
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { PrintAction, Shop, ShopPrinter, ShopPrintView, User } from '@menno/types';
+import { PrintAction, PrintActionData, Shop, ShopPrinter, ShopPrintView, User } from '@menno/types';
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
@@ -32,6 +32,11 @@ export class PrintersController {
   @Post('printOrder')
   printOrder(@Body() dto): Promise<PrintAction[]> {
     return this.printersService.printOrder(dto);
+  }
+
+  @Post('printData/:printViewId')
+  printData(@Body() data: PrintActionData, @Param('printViewId') printViewId: string): Promise<PrintAction> {
+    return this.printersService.printData(data, printViewId);
   }
 
   @Get('printViews')

@@ -102,6 +102,26 @@
             </div>
           </div>
 
+          <span spacer-2x></span>
+
+          <mat-toolbar [hidden]="loading">
+            <p flex>
+              {{'orderReport.tableTitle' | translate}}
+            </p>
+            <button mat-stroked-button [matMenuTriggerFor]="printMenu" type="button">
+              <i class="fa-regular fa-print"></i>
+              <span class="hide-xs">
+                {{ 'app.print' | translate }}
+              </span>
+            </button>
+            <mat-menu #printMenu="matMenu">
+              <button mat-menu-item *ngFor="let p of printers" (click)="print(p)" type="button">
+                <i class="fa-solid fa-print mat-icon"></i>
+                <span>{{ p.title }}</span>
+              </button>
+            </mat-menu>
+          </mat-toolbar>
+
           <table mat-table [dataSource]="tableData" [hidden]="loading">
             <ng-container matColumnDef="label">
               <th mat-header-cell *matHeaderCellDef></th>

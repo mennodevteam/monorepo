@@ -561,6 +561,7 @@
     "pageTitle": "گزارش تفکیکی سفارشات",
     "typesLabel": "نوع سفارش",
     "statesLabel": "وضعیت سفارش",
+    "tableTitle": "جدول گزارش",
     "paymentsLabel": "وضعیت پرداخت",
     "submit": "دریافت گزارش",
     "groupBy": {

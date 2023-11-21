@@ -2,6 +2,7 @@ import { OldTypes } from '@menno/old-types';
 import {
   Order,
   PrintAction,
+  PrintActionData,
   PrintOrderDto,
   PrintType,
   Shop,
@@ -117,5 +118,19 @@ export class PrintersService {
       });
     }
     return this.printActionsRepo.save(actions);
+  }
+
+  async printData(data: PrintActionData, printViewId: string) {
+    const view = await this.printViewsRepo.findOne({where: {id: printViewId}, relations: ['printer']})
+    const action = {
+      count: 1,
+      data,
+      printerName: view.printer.name,
+      printerTitle: view.title,
+      printView: { id: view.id },
+      type: view.type,
+    }as PrintAction;
+
+    return this.printActionsRepo.save(action);
   }
 }
