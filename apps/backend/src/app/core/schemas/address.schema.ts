@@ -36,6 +36,7 @@ export const AddressSchema = new EntitySchema<Address>({
       type: 'many-to-one',
       target: 'DeliveryArea',
       nullable: true,
+      onDelete: 'SET NULL'
     },
   },
 });

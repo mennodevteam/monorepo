@@ -35,7 +35,7 @@
           </button>
         </mat-card-actions>
       </mat-card>
-      
+
       <mat-card>
         <mat-card-header>
           <mat-card-title>
@@ -187,6 +187,34 @@
             </a>
           </mat-nav-list>
         </mat-card-content>
+      </mat-card>
+
+      <mat-card >
+        <mat-card-header>
+          <mat-card-title>
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            {{ 'home.updateTitle' | translate }}
+          </mat-card-title>
+          <mat-card-subtitle
+            >{{ 'home.lastUpdate' | translate }}: {{ update.date | pdate: 'D MMMM YYYY' }}</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item *ngFor="let item of update.items">
+              <i matListItemIcon *ngIf="item.type === 'feature'" class="fa-solid fa-sparkles green fa-lg"></i>
+              <i matListItemIcon *ngIf="item.type === 'bug'" class="fa-solid fa-square-check gray fa-lg"></i>
+              <h5 matListItemTitle>{{ item.title }}</h5>
+              <mat-divider></mat-divider>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+        <mat-divider></mat-divider>
+        <mat-card-actions>
+          <a mat-button color="primary" [href]="env.updateDocLink" target="_blank">
+            {{'home.updateMore' | translate}}
+          </a>
+        </mat-card-actions>
       </mat-card>
     </div>
   </div>

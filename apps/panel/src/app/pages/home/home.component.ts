@@ -11,6 +11,7 @@ import { PUBLIC_URLS } from '../../core/public-urls.consts';
 import { PayService } from '../../core/services/pay.service';
 import { WebPushNotificationsService } from '../../core/services/web-push-notifications.service';
 import { ExtendPluginsModalComponent } from '../../shared/components/extend-plugins-modal/extend-plugins-modal.component';
+import { environment } from 'apps/panel/src/environments/environment';
 
 @Component({
   selector: 'home',
@@ -24,6 +25,18 @@ export class HomeComponent {
   PUBLIC_URLS = PUBLIC_URLS;
   avgSmsCharge = 3 * 44;
   redirectingChargeSms = false;
+  env = environment;
+
+  update = {
+    date: new Date(2023, 11, 22),
+    items: [
+      { title: 'امکان تعریف تنوع برای آیتم‌های منو', type: 'feature' },
+      { title: 'امکان پرینت گزارشات فروش', type: 'feature' },
+      { title: 'امکان گذاشتن پیام برای پشتیبانی در پنل', type: 'feature' },
+      { title: 'رفع برخی مشکلات گزارش‌ شده', type: 'bug' },
+    ],
+  };
+
   constructor(
     private shopService: ShopService,
     private dialog: MatDialog,
@@ -62,7 +75,7 @@ export class HomeComponent {
   }
 
   get appLink() {
-    return this.shopService.appLink
+    return this.shopService.appLink;
   }
 
   async sendLink() {

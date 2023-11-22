@@ -64,7 +64,7 @@ export class AppConfigComponent {
     this.http.get<Theme[]>('appConfigs/themes').subscribe((themes) => {
       this.themes = themes;
       const themeControl = this.form.get('theme');
-      themeControl?.setValue(this.themes.find((x) => x.id === themeControl.value.id));
+      themeControl?.setValue(this.themes.find((x) => x.id === themeControl.value?.id));
       this.loading = false;
       this.form.valueChanges.subscribe(() => {
         this.form.markAsDirty();
