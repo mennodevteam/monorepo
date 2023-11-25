@@ -22,7 +22,6 @@ export class GoftinoService {
   }
 
   private setUser(shop: Shop) {
-    console.log(shop, this.auth.instantUser)
     const user = {
       name: shop.title,
       phone: shop.phones.join(', ') + `, ${this.auth.instantUser?.mobilePhone}`,

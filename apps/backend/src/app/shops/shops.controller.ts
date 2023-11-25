@@ -31,23 +31,25 @@ export class ShopsController {
   ) {}
 
   @Public()
-  @Get('logo')
-  @Redirect('https://menno.pro', 302)
+  @Get('baseInfo')
   async shopInit(@Request() req: Request) {
     try {
       let shop: Shop;
       const referer: string = req.headers['referer'];
       const url = referer.split('://')[1];
+      console.log(url)
       if (url.search(process.env.APP_ORIGIN) > -1) {
         const username = url.split('.')[0];
         shop = await this.shopsRepo.findOneBy({ username });
       } else {
-        shop = await this.shopsRepo.findOneBy({ domain: url });
+        shop = await this.shopsRepo.findOneBy({ domain: url[url.length - 1] === '/' ? url.substring(0, url.length - 1) : url });
       }
 
       if (shop) {
-        const logoLink = `https://${process.env.LIARA_BUCKET_NAME}.${process.env.LIARA_BUCKET_ENDPOINT}/${shop.logo}`;
-        return { url: logoLink };
+        const logo = `https://${process.env.LIARA_BUCKET_NAME}.${process.env.LIARA_BUCKET_ENDPOINT}/${shop.logo}`;
+        const title = shop.title;
+        const description = shop.description;
+        return { logo, title, description };
       }
     } catch (error) {}
     return;

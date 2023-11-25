@@ -66,10 +66,8 @@ export class SmsService {
         };
         kavenegarDtos.push(kavenegarDto);
       }
-      console.log(kavenegarDtos);
       for (const kavenegarDto of kavenegarDtos) {
         kavenegarApi.SendArray(kavenegarDto, async (response, status) => {
-          console.log(response);
           if (status == 200) {
             const entries = response;
             const sentSms: Sms[] = [];
@@ -86,7 +84,6 @@ export class SmsService {
                 kavenegarId: entry.messageid,
               });
             }
-            console.log(sentSms);
             await this.smsRepo.save(sentSms);
             const g =
               group && (await this.smsGroupsRepo.findOne({ where: { id: group.id }, relations: ['list'] }));

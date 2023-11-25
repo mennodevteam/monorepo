@@ -125,7 +125,6 @@ export class ProductEditPageComponent {
       hidePrice: dto.hidePrice,
     };
     this.snack.open(this.translate.instant('app.saving'), '', { duration: 5000 });
-    console.log(dto);
     await this.menuService.saveProduct(dto);
     this.snack.open(this.translate.instant('app.savedSuccessfully'), '', {
       duration: 5000,

@@ -27,6 +27,10 @@ export const ShopSchema = new EntitySchema<Shop>({
       type: String,
       nullable: true,
     },
+    prevServerUsername: {
+      type: String,
+      nullable: true,
+    },
     username: {
       type: String,
       nullable: true,

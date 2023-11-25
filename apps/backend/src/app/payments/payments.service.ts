@@ -152,10 +152,8 @@ export class PaymentsService {
       payment.token = token.id;
       payment.invoiceId = token.orderId;
       payment.isCompleted = false;
-      console.log(data)
       if (data.success == '1') {
         const confirm = await this.confirm(token.gateway.id, token.id);
-        console.log(confirm);
         if (confirm) {
           payment.isCompleted = true;
           payment.referenceId = confirm;
@@ -174,7 +172,6 @@ export class PaymentsService {
   async confirm(gatewayId: string, tokenId: string): Promise<any> {
     const gateway = await this.gatewaysRepository.findOne({ where: { id: gatewayId }, select: ['keys', 'type'] });
     const token = await this.tokensRepository.findOne({ where: { id: tokenId } });
-    console.log(gateway, token)
     if (gateway.type === PaymentGatewayType.Sizpay) {
       const body = {
         UserName: gateway.keys.username,
@@ -195,9 +192,7 @@ export class PaymentsService {
         merchant: gateway.keys.merchantId,
         trackId: token.id,
       };
-      console.log(body)
       const confirmResponse: any = (await this.http.post(ZIBAL_VERIFY_URL, body).toPromise()).data;
-      console.log(confirmResponse)
       if (confirmResponse.result == 100) {
         return confirmResponse.refNumber;
       } else {

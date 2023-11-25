@@ -26,6 +26,8 @@ import { DingModule } from './ding/ding.module';
 import { OrderMessagesModule } from './order-messages/order-messages.module';
 import { WindowsLocalNotificationModule } from './windows-local-notifacation/windows-local-notification.module';
 import { AppRedirectController } from './app-redirect.controller';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpExceptionFilter } from './core/http-exception.filter';
 
 @Module({
   imports: [
@@ -63,6 +65,12 @@ import { AppRedirectController } from './app-redirect.controller';
     WindowsLocalNotificationModule,
   ],
   controllers: [AppController, AppRedirectController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}

@@ -25,7 +25,6 @@ export class ProductPageComponent {
   ) {
     this.route.params.subscribe((params) => {
       this.product = this.menuService.getProductById(params['id']);
-      console.log(this.product)
       if (this.product) {
         const item = this.basket.getItem(this.product.id);
         if (item) this.initCount = item.quantity;

@@ -32,6 +32,7 @@ export class Shop {
   description: string;
   code: string;
   prevServerCode: string;
+  prevServerUsername: string;
   username: string;
   lastDisconnectAlertAt: Date;
   region: Region;
