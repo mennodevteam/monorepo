@@ -21,6 +21,7 @@
     "manager": "مدیر",
     "managerPhone": "تلفن مدیر",
     "appLink": "اپ سفارشگیری",
+    "createdAt": "تاریخ ایجاد",
     "connectionAt": "آخرین ارتباط پنل"
   },
   "migrateDialog": {

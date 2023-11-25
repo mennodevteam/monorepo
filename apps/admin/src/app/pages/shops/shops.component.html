@@ -11,7 +11,7 @@
 <main>
   <mat-card>
     <mat-card-content>
-      <table mat-table [dataSource]="dataSource">
+      <table matSort mat-table [dataSource]="dataSource" (matSortChange)="sortChanged($event)">
         <ng-container matColumnDef="index">
           <th mat-header-cell *matHeaderCellDef style="width: 32px">#</th>
           <td mat-cell *matCellDef="let shop; let i = index">
@@ -29,7 +29,7 @@
         </ng-container>
 
         <ng-container matColumnDef="code">
-          <th mat-header-cell *matHeaderCellDef style="width: 64px">{{ 'app.code' | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef style="width: 64px" mat-sort-header>{{ 'app.code' | translate }}</th>
           <td mat-cell *matCellDef="let shop">
             <b class="eng blue">{{ shop.code }}</b>
           </td>
@@ -63,7 +63,7 @@
         </ng-container>
 
         <ng-container matColumnDef="expiredAt">
-          <th mat-header-cell *matHeaderCellDef>{{ 'app.expiredAt' | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'app.expiredAt' | translate }}</th>
           <td mat-cell *matCellDef="let shop">
             <div class="row" style="gap: 4px">
               <i
@@ -111,7 +111,7 @@
         </ng-container>
 
         <ng-container matColumnDef="connectionAt">
-          <th mat-header-cell *matHeaderCellDef>{{ 'shops.connectionAt' | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'shops.connectionAt' | translate }}</th>
           <td mat-cell *matCellDef="let shop">
             <i
               class="fa-solid fa-circle fa-xs green"
@@ -121,6 +121,13 @@
                 }"
             ></i>
             {{ shop.connectionAt ? (shop.connectionAt | pdate) : '-' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'shops.createdAt' | translate }}</th>
+          <td mat-cell *matCellDef="let shop">
+            {{ shop.connectionAt ? (shop.createdAt | pdate : 'YYYY-MM-DD') : '-' }}
           </td>
         </ng-container>
 
