@@ -13,7 +13,7 @@ import {
   Request,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Not, Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
 import { Public } from '../auth/public.decorator';
 import { Roles } from '../auth/roles.decorators';
@@ -37,12 +37,14 @@ export class ShopsController {
       let shop: Shop;
       const referer: string = req.headers['referer'];
       const url = referer.split('://')[1];
-      console.log(url)
+      console.log(url);
       if (url.search(process.env.APP_ORIGIN) > -1) {
         const username = url.split('.')[0];
         shop = await this.shopsRepo.findOneBy({ username });
       } else {
-        shop = await this.shopsRepo.findOneBy({ domain: url[url.length - 1] === '/' ? url.substring(0, url.length - 1) : url });
+        shop = await this.shopsRepo.findOneBy({
+          domain: url[url.length - 1] === '/' ? url.substring(0, url.length - 1) : url,
+        });
       }
 
       if (shop) {
@@ -72,17 +74,19 @@ export class ShopsController {
       this.shopsRepo.update(shop.id, { connectionAt: new Date() });
       return shop;
     } else {
-      return this.shopsRepo.find({
+      const shops = await this.shopsRepo.find({
         relations: ['region', 'plugins', 'users.user'],
-        where: {
-          users: {
-            role: ShopUserRole.Admin,
-          },
-        },
         order: {
           createdAt: 'DESC',
         },
       });
+
+      shops.forEach((shop) => {
+        const admin = shop.users.find(x => x.role === ShopUserRole.Admin);
+        if (admin) shop.users = [admin];
+      })
+
+      return shops;
     }
   }
 

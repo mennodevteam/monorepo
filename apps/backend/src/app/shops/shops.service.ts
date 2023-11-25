@@ -232,7 +232,9 @@ export class ShopsService {
         tables: shop.details?.tables,
       },
       smsAccount,
-      username: shop.username.toLowerCase(),
+      username: shop.username.toLowerCase().replace('.', '-').replace('_', '-'),
+      prevServerUsername: shop.username,
+      prevServerCode: shop.code,
       region: region ? { id: region.id } : shop.region,
       phones: shop.phones,
       plugins: {
@@ -249,7 +251,7 @@ export class ShopsService {
     if (shop.logo) {
       const savedImage: any = await this.filesService.uploadFromUrl(
         `http://65.21.237.12:3001/files/${shop.logo}`,
-        shop.title,
+        'logo',
         shop.code
       );
       await this.shopsRepository.update(newShop.id, {
