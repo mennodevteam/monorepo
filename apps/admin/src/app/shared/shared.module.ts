@@ -51,6 +51,7 @@ import { RouterLink } from '@angular/router';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CopyClipboardDirective } from './directives/copy-clipboard.directive';
+import { DateValuePipe } from './pipes/date-value.pipe';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,7 @@ import { CopyClipboardDirective } from './directives/copy-clipboard.directive';
     OrderPaymentPipe,
     StopPropagationDirective,
     CopyClipboardDirective,
-    PhonePipe,
+    DateValuePipe,
   ],
   imports: [
     CommonModule,
@@ -121,6 +122,7 @@ import { CopyClipboardDirective } from './directives/copy-clipboard.directive';
     StopPropagationDirective,
     CopyClipboardDirective,
     PdatePipe,
+    DateValuePipe,
     PhonePipe,
     AlertDialogComponent,
     SelectDialogComponent,

@@ -12,6 +12,7 @@ import { environment } from '../../../environments/environment';
 export class ShopsComponent {
   dataSource = new MatTableDataSource<Shop>();
   columns = [
+    'index',
     'image',
     'code',
     'id',
@@ -19,16 +20,15 @@ export class ShopsComponent {
     'plugins',
     'expiredAt',
     'manager',
-    'phone',
     'username',
     'password',
     'connectionAt',
-    'appLink',
     'actions',
   ];
   Plugin = Plugin;
   Shop = Shop;
   User = User;
+  now = new Date();
 
   constructor(public shopsService: ShopsService, private cdr: ChangeDetectorRef) {
     if (this.shops) {

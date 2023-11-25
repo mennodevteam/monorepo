@@ -12,6 +12,15 @@
   <mat-card>
     <mat-card-content>
       <table mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="index">
+          <th mat-header-cell *matHeaderCellDef style="width: 32px">#</th>
+          <td mat-cell *matCellDef="let shop; let i = index">
+            <span class="eng">
+              {{ dataSource.data.length - i }}
+            </span>
+          </td>
+        </ng-container>
+
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef style="width: 64px">{{ 'app.id' | translate }}</th>
           <td mat-cell *matCellDef="let shop">
@@ -44,15 +53,11 @@
           <th mat-header-cell *matHeaderCellDef>{{ 'app.plugins' | translate }}</th>
           <td mat-cell *matCellDef="let shop">
             <div class="plugins-wrapper">
-              <i
-                class="fa-solid"
-                *ngFor="let p of shop.plugins?.plugins"
-                [ngClass]="{
-                  'fa-book-open': p === Plugin.Menu,
-                  'fa-utensils': p === Plugin.Ordering,
-                  'fa-crown': p === Plugin.Club
-                }"
-              ></i>
+              <ng-container *ngFor="let p of shop.plugins?.plugins">
+                <i *ngIf="p === Plugin.Menu" class="fa-solid fa-book-open"></i>
+                <i *ngIf="p === Plugin.Ordering" class="fa-solid fa-utensils"></i>
+                <i *ngIf="p === Plugin.Club" class="fa-solid fa-crown"></i>
+              </ng-container>
             </div>
           </td>
         </ng-container>
@@ -60,7 +65,16 @@
         <ng-container matColumnDef="expiredAt">
           <th mat-header-cell *matHeaderCellDef>{{ 'app.expiredAt' | translate }}</th>
           <td mat-cell *matCellDef="let shop">
-            {{ shop.plugins?.expiredAt | pdate: 'YYYY/MM/DD' }}
+            <div class="row" style="gap: 4px">
+              <i
+                class="fa-solid fa-circle fa-xs green"
+                [ngClass]="{
+                  yellow: (shop.plugins?.expiredAt | dateValue) - (now | dateValue) < 10*3600000*24,
+                  red: (shop.plugins?.expiredAt | dateValue) < (now | dateValue),
+                }"
+              ></i>
+              {{ shop.plugins?.expiredAt | pdate: 'YYYY/MM/DD' }}
+            </div>
           </td>
         </ng-container>
 
@@ -99,28 +113,29 @@
         <ng-container matColumnDef="connectionAt">
           <th mat-header-cell *matHeaderCellDef>{{ 'shops.connectionAt' | translate }}</th>
           <td mat-cell *matCellDef="let shop">
+            <i
+              class="fa-solid fa-circle fa-xs green"
+              [ngClass]="{
+                  yellow: (now | dateValue) - (shop.connectionAt | dateValue) > 12*3600000,
+                  red: (now | dateValue) - (shop.connectionAt | dateValue) > 7*24*3600000,
+                }"
+            ></i>
             {{ shop.connectionAt ? (shop.connectionAt | pdate) : '-' }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="appLink">
-          <th mat-header-cell *matHeaderCellDef>{{ 'shops.appLink' | translate }}</th>
-          <td mat-cell *matCellDef="let shop">
-            <a mat-button [href]="Shop.appLink(shop, origin)" target="_blank" color="accent">
-              {{ Shop.appLink(shop, origin) }}
-            </a>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let shop" style="text-align: end">
+            <a mat-icon-button [href]="Shop.appLink(shop, origin)" target="_blank">
+              <i class="fa-regular fa-mobile"></i>
+            </a>
             <a
               mat-icon-button
               target="_blank"
               href="{{ panelLink }}?u={{ shop.users[0]?.user.username }}&p={{ shop.users[0]?.user.password }}"
             >
-              <i class="fa-regular fa-desktop fa-xs"></i>
+              <i class="fa-regular fa-desktop"></i>
             </a>
           </td>
         </ng-container>
