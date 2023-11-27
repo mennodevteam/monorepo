@@ -40,7 +40,7 @@
   </section>
 
   <ng-container [ngSwitch]="orderType">
-    <mat-nav-list *ngIf="showTableSelect || orderType === OrderType.Delivery">
+    <mat-nav-list *ngIf="!appConfig?.disableOrdering && (showTableSelect || orderType === OrderType.Delivery)">
       <a mat-list-item *ngIf="orderType === OrderType.Delivery" (click)="selectDeliveryAddress()">
         <i matListItemIcon class="fa-solid fa-map-location-dot"></i>
         <span matListItemTitle *ngIf="!basket.address" class="error-text">

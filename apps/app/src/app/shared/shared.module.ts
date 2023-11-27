@@ -21,6 +21,7 @@ import { PromptDialogComponent } from './dialogs/prompt-dialog/prompt-dialog.com
 import { EmptyStateComponent } from './components/empty-state/empty-state.component';
 import { MainMenuComponent } from './components/main-menu/main-menu.component';
 import { RouterModule } from '@angular/router';
+import { AlertDialogComponent } from './dialogs/alert-dialog/alert-dialog.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { RouterModule } from '@angular/router';
     MenuCurrencyPipe,
     CountSelectorComponent,
     LoginBottomSheetComponent,
+    AlertDialogComponent,
     PromptDialogComponent,
     PdatePipe,
     OrderTypePipe,

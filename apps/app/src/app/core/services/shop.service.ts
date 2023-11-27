@@ -5,6 +5,9 @@ import { BehaviorSubject } from 'rxjs';
 import { ThemeService } from './theme.service';
 import { PwaService } from './pwa.service';
 import { environment } from '../../../environments/environment';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertDialogComponent } from '../../shared/dialogs/alert-dialog/alert-dialog.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +17,13 @@ export class ShopService {
   dingInterval: any;
   dingTimer = 0;
 
-  constructor(private http: HttpClient, private themeService: ThemeService, private pwa: PwaService) {
+  constructor(
+    private http: HttpClient,
+    private themeService: ThemeService,
+    private pwa: PwaService,
+    private dialog: MatDialog,
+    private translate: TranslateService,
+  ) {
     this.load();
   }
 
@@ -45,6 +54,19 @@ export class ShopService {
         }
       } else {
         this.themeService.color = 'default';
+      }
+
+      if (Date.now() - new Date(shop?.plugins?.expiredAt || 0).valueOf() > 2 * 24 * 3600 * 1000) {
+        this.dialog.open(AlertDialogComponent, {
+          data: {
+            title: this.translate.instant('expiredDialog.title'),
+            description: this.translate.instant('expiredDialog.description'),
+            hideCancel: true,
+            hideOk: true,
+            status: 'warning'
+          },
+          disableClose: true,
+        })
       }
 
       if (shop) {
