@@ -20,6 +20,7 @@ import {
   OrderMessage,
   SmsTemplate,
   OrderMessageEvent,
+  HomePage,
 } from '@menno/types';
 import { OldTypes } from '@menno/old-types';
 import { HttpService } from '@nestjs/axios';
@@ -31,6 +32,7 @@ import { UsersService } from '../users/users.service';
 import fetch from 'node-fetch';
 import { FilesService } from '../files/files.service';
 import { ClubsService } from '../clubs/clubs.service';
+import { MenusService } from '../menus/menu.service';
 
 @Injectable()
 export class ShopsService {
@@ -59,7 +61,8 @@ export class ShopsService {
     private usersService: UsersService,
     private http: HttpService,
     private filesService: FilesService,
-    private clubsService: ClubsService
+    private clubsService: ClubsService,
+    private menusService: MenusService
   ) {}
 
   async sendShopLink(shopId: string, mobilePhone: string): Promise<Sms> {
@@ -263,32 +266,14 @@ export class ShopsService {
       id: menu.id,
       title: shop.title,
     });
-    for (const cat of menu.categories) {
-      cat.menu = { id: newMenu.id } as OldTypes.Menu;
-      await this.categoriesRepository.save(cat);
-
-      if (cat.products) {
-        for (const p of cat.products) {
-          if (p.images && p.images[0]) {
-            this.filesService
-              .uploadFromUrl(`http://65.21.237.12:3001/files/${p.images[0]}`, p.id, shop.code)
-              .then((savedImage: any) => {
-                this.productsRepository
-                  .update(p.id, {
-                    images: [savedImage],
-                  })
-                  .catch((er) => {});
-              });
-          }
-        }
-      }
-    }
+    this.menusService.syncMenu(menu.id, code);
     await this.shopsRepository.update(newShop.id, { menu: { id: newMenu.id } });
 
     const newAppConfig = await this.appConfigsRepository.save({
       disableOrdering: appConfig.viewMode,
       dings: appConfig.ding,
       ding: appConfig.ding?.length ? true : false,
+      homePage: HomePage.Menu,
       disableOrderingOnClose: appConfig.disableOrderingOutsideTime,
     });
     this.shopsRepository.update(newShop.id, { appConfig: { id: newAppConfig.id } });

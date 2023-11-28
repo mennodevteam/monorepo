@@ -10,9 +10,19 @@ import { FilesModule } from '../files/files.module';
 import { ShopUsersController } from './shop-users.controller';
 import { ClubsModule } from '../clubs/clubs.module';
 import { ShopGroupsController } from './shop-groups.controller';
+import { MenusModule } from '../menus/menus.module';
 
 @Module({
-  imports: [SchemasModule, SmsModule, UsersModule, ClubsModule, AuthModule, HttpModule, FilesModule],
+  imports: [
+    SchemasModule,
+    SmsModule,
+    UsersModule,
+    ClubsModule,
+    AuthModule,
+    HttpModule,
+    FilesModule,
+    MenusModule,
+  ],
   controllers: [ShopsController, ShopUsersController, ShopGroupsController],
   providers: [ShopsService],
   exports: [ShopsService],

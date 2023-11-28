@@ -67,9 +67,14 @@ export class MenusService {
 
     for (const cat of menu.categories) {
       cat.menu = { id: menuId } as Menu;
-      cat.deletedAt = null;
+      if (currentMenu.categories.find(x => x.id === cat.id)) {
+        cat.deletedAt = null;
+      } else {
+        delete cat.id
+      }
       if (cat.products) {
         for (const p of cat.products) {
+          delete p.category;
           if (p.images && p.images[0]) {
             const binary = await fetch(`http://65.21.237.12:3001/files/${p.images[0]}`);
             const blob = await binary.buffer();

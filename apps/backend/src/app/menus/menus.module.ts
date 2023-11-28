@@ -18,5 +18,6 @@ import { FilesModule } from '../files/files.module';
     ProductCategoriesController,
     MenuCostsController,
   ],
+  exports: [MenusService]
 })
 export class MenusModule {}
