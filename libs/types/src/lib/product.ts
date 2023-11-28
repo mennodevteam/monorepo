@@ -18,8 +18,7 @@ export class Product {
   orderTypes: OrderType[];
   packItems: string[];
   details: any;
-  limitQuantity: boolean;
-  stockItem: StockItem;
+  stock?: number | null;
   costs?: MenuCost[];
   variants: ProductVariant[];
   thirdPartyId?: string;

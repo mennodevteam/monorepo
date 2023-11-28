@@ -31,12 +31,16 @@
         ></count-selector>
         <button
           mat-stroked-button
-          [disabled]="product.status === Status.Blocked"
+          [disabled]="product.status === Status.Blocked || product.stock === 0"
           *ngIf="!product?._orderItem?.quantity"
           (click)="plus()"
         >
-          <span *ngIf="product.status === Status.Active">{{ 'app.select' | translate }}</span>
-          <span *ngIf="product.status === Status.Blocked">{{ 'app.finished' | translate }}</span>
+          <span *ngIf="product.status === Status.Active && product.stock !== 0">{{
+            'app.select' | translate
+          }}</span>
+          <span *ngIf="product.status === Status.Blocked || product.stock === 0">{{
+            'app.finished' | translate
+          }}</span>
         </button>
       </div>
     </mat-list-item>
@@ -61,12 +65,16 @@
 
             <button
               mat-stroked-button
-              [disabled]="variant.status === Status.Blocked"
+              [disabled]="variant.status === Status.Blocked || variant.stock === 0"
               *ngIf="!variant?._orderItem?.quantity"
               (click)="plus(variant)"
             >
-              <span *ngIf="variant.status === Status.Active">{{ 'app.select' | translate }}</span>
-              <span *ngIf="variant.status === Status.Blocked">{{ 'app.finished' | translate }}</span>
+              <span *ngIf="variant.status === Status.Active && variant.stock !== 0">{{
+                'app.select' | translate
+              }}</span>
+              <span *ngIf="variant.status === Status.Blocked || variant.stock === 0">{{
+                'app.finished' | translate
+              }}</span>
             </button>
           </ng-container>
         </div>

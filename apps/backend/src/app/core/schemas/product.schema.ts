@@ -26,9 +26,9 @@ export const ProductSchema = new EntitySchema<Product>({
       type: String,
       nullable: true,
     },
-    limitQuantity: {
-      type: Boolean,
-      default: false,
+    stock: {
+      type: Number,
+      nullable: true,
     },
     price: {
       type: 'real',

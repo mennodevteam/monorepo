@@ -18,6 +18,7 @@ import {
   PromptKeyFields,
 } from '../../../shared/dialogs/advanced-prompt-dialog/advanced-prompt-dialog.component';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
+import { PromptDialogComponent } from '../../../shared/dialogs/prompt-dialog/prompt-dialog.component';
 
 @Component({
   selector: 'product-edit-page',
@@ -213,5 +214,27 @@ export class ProductEditPageComponent {
       this.form.get('variants')?.setValue(variants);
       this.form.markAsDirty();
     }
+  }
+
+
+  async changeStock(variant: ProductVariant, infinity?: boolean) {
+    let stock = infinity ? null : 0;
+    if (!infinity) {
+      const dto = await this.dialog
+        .open(PromptDialogComponent, {
+          data: {
+            title: this.translate.instant('productTable.stockDialog.title', { value: variant.title }),
+            description: this.translate.instant('productTable.stockDialog.description'),
+            type: 'number',
+          },
+        })
+        .afterClosed()
+        .toPromise();
+      if (dto == undefined || dto < 0) return;
+      stock = dto;
+    }
+    
+    variant.stock = stock;
+    this.form.markAsDirty();
   }
 }

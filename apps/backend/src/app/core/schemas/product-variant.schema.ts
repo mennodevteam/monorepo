@@ -18,6 +18,10 @@ export const ProductVariantSchema = new EntitySchema<ProductVariant>({
       enum: Status,
       default: Status.Active,
     },
+    stock: {
+      type: Number,
+      nullable: true,
+    },
     position: {
       type: Number,
       nullable: true,

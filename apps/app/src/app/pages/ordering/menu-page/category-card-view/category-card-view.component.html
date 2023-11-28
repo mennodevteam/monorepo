@@ -46,12 +46,12 @@
             mat-stroked-button
             (click)="plus(product, undefined, $event)"
             *ngIf="!product._orderItem?.quantity"
-            [disabled]="product.status === Status.Blocked"
+            [disabled]="product.status === Status.Blocked || product.stock === 0"
           >
-            <span *ngIf="product.status === Status.Blocked">
+            <span *ngIf="product.status === Status.Blocked || product.stock === 0">
               {{ 'app.finished' | translate }}
             </span>
-            <span class="error-text" *ngIf="product.status === Status.Active">
+            <span class="error-text" *ngIf="product.status === Status.Active && product.stock !== 0">
               {{ 'app.add' | translate }}
             </span>
           </button>
@@ -59,7 +59,7 @@
       </mat-card-actions>
       <ng-container *ngIf="product.variants?.length">
         <mat-card-actions *ngFor="let variant of product.variants" class="price-section">
-          <span>{{variant.title}}</span>
+          <span>{{ variant.title }}</span>
           <span spacer-sm></span>
           <span flex *ngIf="!shopService.hasOrderingPlugin()"></span>
           <span class="price-section__text">
@@ -87,12 +87,12 @@
               mat-stroked-button
               (click)="plus(product, variant, $event)"
               *ngIf="!variant._orderItem?.quantity"
-              [disabled]="variant.status === Status.Blocked"
+              [disabled]="variant.status === Status.Blocked || variant.stock === 0"
             >
-              <span *ngIf="variant.status === Status.Blocked">
+              <span *ngIf="variant.status === Status.Blocked || variant.stock === 0">
                 {{ 'app.finished' | translate }}
               </span>
-              <span class="error-text" *ngIf="variant.status === Status.Active">
+              <span class="error-text" *ngIf="variant.status === Status.Active && variant.stock !== 0">
                 {{ 'app.add' | translate }}
               </span>
             </button>

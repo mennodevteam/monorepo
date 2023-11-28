@@ -8,6 +8,7 @@ export class ProductVariant {
   description?: string;
   price: number;
   status: Status;
+  stock?: number | null;
   position?: number;
   _orderItem?: ProductItem;
   product: Product;

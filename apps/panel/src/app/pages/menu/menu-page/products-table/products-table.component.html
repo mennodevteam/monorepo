@@ -14,7 +14,9 @@
   <ng-container matColumnDef="price">
     <th mat-header-cell *matHeaderCellDef>{{ 'productTable.price' | translate }}</th>
     <td mat-cell *matCellDef="let product">
-      {{ (product.variants && product.variants[0] ? product.variants[0].price : product.price) | menuCurrency }}
+      {{
+        (product.variants && product.variants[0] ? product.variants[0].price : product.price) | menuCurrency
+      }}
 
       <mat-chip-listbox *ngIf="product.costs?.length" class="cost-chips">
         <mat-chip-option [selectable]="false" *ngFor="let c of product.costs">
@@ -29,7 +31,34 @@
 
   <ng-container matColumnDef="stock">
     <th mat-header-cell *matHeaderCellDef>{{ 'productTable.stock' | translate }}</th>
-    <td mat-cell *matCellDef="let product"></td>
+    <td mat-cell *matCellDef="let product">
+      <ng-container *ngIf="!product.variants?.length">
+        <button
+          mat-stroked-button
+          [mat-menu-trigger-for]="stockMenu"
+          stopPropagation
+          [disabled]="product._changingStatus"
+        >
+          <span *ngIf="product.stock == null">
+            <i class="fa-solid fa-infinity green"></i>
+            {{ 'productTable.infinity' | translate }}
+          </span>
+          <span *ngIf="product.stock != null" [ngClass]="{ red: product.stock === 0 }">
+            {{ 'app.number' | translate: { value: product.stock } }}
+          </span>
+        </button>
+        <mat-menu #stockMenu="matMenu">
+          <button mat-menu-item (click)="changeStock(product, true)">
+            <i class="fa-solid fa-infinity mat-icon"></i>
+            {{ 'productTable.infinity' | translate }}
+          </button>
+          <button mat-menu-item (click)="changeStock(product)">
+            {{ 'productTable.setStock' | translate }}
+          </button>
+        </mat-menu>
+      </ng-container>
+      <small *ngIf="product.variants?.length">{{'productTable.basedOnVariants' | translate}}</small>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="status">

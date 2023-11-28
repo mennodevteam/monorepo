@@ -81,7 +81,11 @@
                 <span matListItemTitle>{{ variant.title }}</span>
                 <div class="secondary" matListItemMeta>
                   <b class="blue">{{ variant.price | menuCurrency }}</b>
-                  <button *ngIf="form.controls['variants'].value.length > 1" mat-stroked-button [mat-menu-trigger-for]="statusMenu">
+                  <button
+                    *ngIf="form.controls['variants'].value.length > 1"
+                    mat-stroked-button
+                    [mat-menu-trigger-for]="statusMenu"
+                  >
                     <span *ngIf="variant.status === Status.Active">
                       <i class="fa-solid fa-check-circle green"></i>
                       {{ 'app.active' | translate }}
@@ -107,6 +111,29 @@
                     <button mat-menu-item (click)="variant.status = Status.Inactive; form.markAsDirty()">
                       <i class="fa-solid fa-ban mat-icon"></i>
                       {{ 'app.inactive' | translate }}
+                    </button>
+                  </mat-menu>
+                  <button
+                    mat-stroked-button
+                    [mat-menu-trigger-for]="stockMenu"
+                    stopPropagation
+                    [disabled]="variant._changingStatus"
+                  >
+                    <span *ngIf="variant.stock == null">
+                      <i class="fa-solid fa-infinity green"></i>
+                      {{ 'productTable.infinity' | translate }}
+                    </span>
+                    <span *ngIf="variant.stock != null" [ngClass]="{ red: variant.stock === 0 }">
+                      {{ 'app.number' | translate: { value: variant.stock } }}
+                    </span>
+                  </button>
+                  <mat-menu #stockMenu="matMenu">
+                    <button mat-menu-item (click)="changeStock(variant, true)">
+                      <i class="fa-solid fa-infinity mat-icon"></i>
+                      {{ 'productTable.infinity' | translate }}
+                    </button>
+                    <button mat-menu-item (click)="changeStock(variant)">
+                      {{ 'productTable.setStock' | translate }}
                     </button>
                   </mat-menu>
                   <button mat-icon-button (click)="editVariantDialog(variant)" [disabled]="!variant.id">
