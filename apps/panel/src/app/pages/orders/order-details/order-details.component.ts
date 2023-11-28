@@ -1,5 +1,5 @@
 import { Component, OnDestroy, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute } from '@angular/router';
@@ -28,6 +28,10 @@ import { ShopService } from '../../../core/services/shop.service';
 import { PromptDialogComponent } from '../../../shared/dialogs/prompt-dialog/prompt-dialog.component';
 import { MemberDialogComponent } from '../../../shared/dialogs/member-dialog/member-dialog.component';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import {
+  AdvancedPromptDialogComponent,
+  PromptKeyFields,
+} from '../../../shared/dialogs/advanced-prompt-dialog/advanced-prompt-dialog.component';
 
 @Component({
   selector: 'order-details',
@@ -64,7 +68,7 @@ export class OrderDetailsComponent implements OnDestroy {
   ) {
     const isMobile = this.breakpoints.isMatched('(max-width: 800px)');
     if (isMobile) {
-      this.displayedColumns = ['title', 'quantity', 'sum']
+      this.displayedColumns = ['title', 'quantity', 'sum'];
     }
     this.route.params.subscribe((params) => {
       this.order = this.todayOrders.getById(this.orderId);
@@ -161,7 +165,7 @@ export class OrderDetailsComponent implements OnDestroy {
     });
   }
 
-  async setEstimate() {
+  async setEstimateToday() {
     const val = await this.dialog
       .open(PromptDialogComponent, {
         data: {
@@ -176,6 +180,45 @@ export class OrderDetailsComponent implements OnDestroy {
     if (val && this.order) {
       const estimateDate = new Date();
       estimateDate.setMinutes(estimateDate.getMinutes() + Number(val));
+      const details: OrderDetails = { ...this.order?.details, ...{ estimateCompletedAt: estimateDate } };
+      this.orderService.setDetails(this.order, details);
+    }
+  }
+
+  async setEstimateNextDays() {
+    const hours = [];
+    for (let i = 0; i < 24; i++) {
+      hours.push(i);
+    }
+    const fields: PromptKeyFields = {
+      date: {
+        label: this.translate.instant('app.date'),
+        control: new FormControl(new Date(), Validators.required),
+        type: 'datepicker',
+      },
+      time: {
+        label: this.translate.instant('app.time'),
+        control: new FormControl(10, Validators.required),
+        type: 'select',
+        options: hours.map((x) => ({ text: String(x), value: x })),
+      },
+    };
+    const dto = await this.dialog
+      .open(AdvancedPromptDialogComponent, {
+        data: {
+          title: this.translate.instant('orderDetails.estimateTime'),
+          description: this.translate.instant('orderDetails.estimateTimeNextDaysDialogDescription'),
+          fields,
+        },
+      })
+      .afterClosed()
+      .toPromise();
+
+    if (dto && this.order) {
+      const estimateDate = new Date(dto.date);
+      estimateDate.setHours(dto.time);
+      estimateDate.setMinutes(0);
+      estimateDate.setSeconds(0);
       const details: OrderDetails = { ...this.order?.details, ...{ estimateCompletedAt: estimateDate } };
       this.orderService.setDetails(this.order, details);
     }

@@ -524,7 +524,10 @@
     "ready": "آماده شد",
     "ship": "تحویل به پیک",
     "estimateTime": "زمان تحویل",
+    "todayEstimate": "امروز (چند دقیقه دیگر؟)",
+    "nextDaysEstimate": "روزهای آینده (چه تاریخی؟)",
     "estimateTimeDialogDescription": "چند دقیقه دیگر سفارش به مشتری تحویل داده می‌شود؟",
+    "estimateTimeNextDaysDialogDescription": "سفارش در چه تاریخ و به صورت تخمینی در چه ساعتی به مشتری تحویل داده می‌شود؟",
     "setDelayOnComplete": "تاخیر در تحویل"
   },
   "printers": {

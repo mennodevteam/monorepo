@@ -229,7 +229,7 @@
             {{ 'orderDetails.complete' | translate }}
           </button>
           <ng-container *ngIf="order.state !== OrderState.Pending">
-            <button mat-stroked-button (click)="setEstimate()" [disabled]="order.deletedAt">
+            <button mat-stroked-button [mat-menu-trigger-for]="estimateMenu" [disabled]="order.deletedAt">
               <i class="fa-regular fa-timer"></i>
               {{
                 (order.details.estimateCompletedAt
@@ -238,6 +238,15 @@
                 ) | translate
               }}
             </button>
+
+            <mat-menu #estimateMenu="matMenu">
+              <button mat-menu-item (click)="setEstimateToday()">
+                {{ 'orderDetails.todayEstimate' | translate }}
+              </button>
+              <button mat-menu-item (click)="setEstimateNextDays()">
+                {{ 'orderDetails.nextDaysEstimate' | translate }}
+              </button>
+            </mat-menu>
           </ng-container>
         </mat-card-actions>
       </mat-card>
