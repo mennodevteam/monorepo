@@ -96,7 +96,8 @@ export class PosService extends OrderDto {
     if (product) {
       if (product.variants?.length) {
         if (product.variants.length === 1) productVariant = product.variants[0];
-        else if (productVariantId) productVariant = Menu.getProductVariantById(this.menu, productVariantId) || undefined;
+        else if (productVariantId)
+          productVariant = Menu.getProductVariantById(this.menu, productVariantId) || undefined;
         else {
           const items: SelectItem[] = product.variants.map((v) => ({
             title: v.title,
@@ -117,9 +118,29 @@ export class PosService extends OrderDto {
       const item = this.productItems?.find(
         (x) => x.productId === productId && x.productVariantId == productVariant?.id
       );
+
+      if (!this.isStockValidForAddOne(product, productVariant, item, this.editOrder)) {
+        const ok = await this.dialog
+          .open(AlertDialogComponent, {
+            data: {
+              title: this.translate.instant(`pos.addProductStockWarning.title`),
+              description: this.translate.instant(`pos.addProductStockWarning.description`, {
+                value: productVariant ? productVariant.stock : product.stock,
+              }),
+              status: 'warning',
+            },
+          })
+          .afterClosed()
+          .toPromise();
+        if (!ok) return;
+      }
+
       if (item) item.quantity ? item.quantity++ : (item.quantity = 1);
       else {
-        if (product.status !== Status.Active || (productVariant?.status != undefined && productVariant?.status !== Status.Active)) {
+        if (
+          product.status !== Status.Active ||
+          (productVariant?.status != undefined && productVariant?.status !== Status.Active)
+        ) {
           const ok = await this.dialog
             .open(AlertDialogComponent, {
               data: {
@@ -156,7 +177,9 @@ export class PosService extends OrderDto {
   minus(productId: string, productVariantId?: number) {
     const product = this.menuService.getProductById(productId);
     if (product) {
-      const item = this.productItems?.find((x) => x.productId === product.id && x.productVariantId == productVariantId);
+      const item = this.productItems?.find(
+        (x) => x.productId === product.id && x.productVariantId == productVariantId
+      );
       if (item) {
         if (item.quantity > 1) item.quantity--;
         else {
@@ -181,6 +204,7 @@ export class PosService extends OrderDto {
         this.note = order.note;
         this.productItems = Order.productItems(order).map((x) => ({
           productId: x.product!.id,
+          productVariantId: x.productVariant?.id,
           quantity: x.quantity,
         }));
         this.note = order.note;

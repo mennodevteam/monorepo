@@ -100,6 +100,10 @@ export class Order {
     }
   }
 
+  static getItem(order: Order, productId: string, productVariantId?: number) {
+    return order.items?.find((x) => x.product?.id === productId && x.productVariant?.id === productVariantId);
+  }
+
   static nextState(order?: Order, states?: OrderState[]) {
     if (order) {
       if (!states) states = Order.getDefaultStates(order);

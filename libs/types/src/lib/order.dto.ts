@@ -8,6 +8,8 @@ import { OrderPaymentType } from './order-payment-type.enum';
 import { OrderState } from './order-state.enum';
 import { OrderType } from './order-type.enum';
 import { Payment } from './payment';
+import { Product } from './product';
+import { ProductVariant } from './product-variant';
 
 const FLOOR = 500;
 export const MANUAL_DISCOUNT_TITLE = 'تخفیف دستی';
@@ -55,6 +57,26 @@ export class OrderDto {
       return items;
     }
     return [];
+  }
+
+  isStockValidForAddOne(
+    product: Product,
+    productVariant?: ProductVariant,
+    item?: ProductItem,
+    editOrder?: Order
+  ) {
+    if (!productVariant && product.stock == null) return true;
+    if (productVariant && productVariant.stock == null) return true;
+
+    let stock = (productVariant ? productVariant.stock : product.stock) || 0;
+    const quantity = item?.quantity || 1;
+
+    if (editOrder) {
+      const editItem = Order.getItem(editOrder, product.id, productVariant?.id);
+      if (editItem) stock += editItem.quantity;
+    }
+
+    return quantity < stock;
   }
 
   static sum(dto: OrderDto, menu: Menu) {
