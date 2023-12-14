@@ -28,11 +28,10 @@ export class HomeComponent {
   env = environment;
 
   update = {
-    date: new Date(2023, 11, 22),
+    date: new Date(2023, 12, 14),
     items: [
-      { title: 'امکان تعریف تنوع برای آیتم‌های منو', type: 'feature' },
-      { title: 'امکان پرینت گزارشات فروش', type: 'feature' },
-      { title: 'امکان گذاشتن پیام برای پشتیبانی در پنل', type: 'feature' },
+      { title: 'امکان ثبت زمان تحویل سفارش برای روزهای آتی', type: 'feature' },
+      { title: 'امکان مدیریت موجودی آیتم‌ها', type: 'feature' },
       { title: 'رفع برخی مشکلات گزارش‌ شده', type: 'bug' },
     ],
   };

@@ -41,7 +41,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     }),
     RouterModule.forRoot(appRoutes, {
       initialNavigation: 'enabledBlocking',
-      useHash: true,
       scrollPositionRestoration: 'enabled',
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
