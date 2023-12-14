@@ -39,7 +39,7 @@ export class UserAddressesDialogComponent {
     const fields: PromptKeyFields = {
       description: {
         label: this.t.instant(`editAddressDialog.address`),
-        control: new FormControl(add?.description, Validators.required),
+        control: new FormControl(add ? add.description : this.user.address || '', Validators.required),
       },
       deliveryArea: {
         label: this.t.instant(`editAddressDialog.deliveryArea`),
