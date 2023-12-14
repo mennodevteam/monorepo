@@ -77,7 +77,9 @@ export class LoginBottomSheetComponent implements OnDestroy {
           } catch (error) {}
         }
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.error('abortcontroller error', err)
+      });
   }
 
   async sendToken() {
