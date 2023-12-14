@@ -66,6 +66,11 @@ export const ProductSchema = new EntitySchema<Product>({
       default: [OrderType.Delivery, OrderType.DineIn, OrderType.Takeaway],
     },
   },
+  checks: [
+    {
+      expression: 'stock >= 0',
+    },
+  ],
   relations: {
     category: {
       type: 'many-to-one',
@@ -76,7 +81,7 @@ export const ProductSchema = new EntitySchema<Product>({
       type: 'one-to-many',
       target: 'ProductVariant',
       inverseSide: 'product',
-      cascade: ['insert', 'update', 'soft-remove']
-    }
+      cascade: ['insert', 'update', 'soft-remove'],
+    },
   },
 });

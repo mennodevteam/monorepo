@@ -37,7 +37,6 @@ export class ShopsController {
       let shop: Shop;
       const referer: string = req.headers['referer'];
       const url = referer.split('://')[1];
-      console.log(url);
       if (url.search(process.env.APP_ORIGIN) > -1) {
         const username = url.split('.')[0];
         shop = await this.shopsRepo.findOneBy({ username });

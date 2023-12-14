@@ -8,11 +8,12 @@ import { SmsModule } from '../sms/sms.module';
 import { WebPushNotificationModule } from '../web-push-notifications/web-push-notifications.module';
 import { PrintersModule } from '../printers/printers.module';
 import { ClubsModule } from '../clubs/clubs.module';
+import { OrderItemsSubscriber } from './order-items.subscriber';
 
 @Module({
   imports: [SchemasModule, AuthModule, SmsModule, WebPushNotificationModule, PrintersModule, ClubsModule],
   controllers: [OrdersController],
-  providers: [OrdersService, OrdersSubscriber],
+  providers: [OrdersService, OrdersSubscriber, OrderItemsSubscriber],
   exports: [OrdersService],
 })
 export class OrdersModule {}

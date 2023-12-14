@@ -51,6 +51,8 @@ export class OrdersService {
     private shopsRepo: Repository<Shop>,
     @InjectRepository(Order)
     private ordersRepo: Repository<Order>,
+    @InjectRepository(OrderItem)
+    private orderItemsRepo: Repository<OrderItem>,
     @InjectRepository(DiscountCoupon)
     private discountCouponsRepo: Repository<DiscountCoupon>,
     @InjectRepository(OrderMessage)
@@ -97,7 +99,7 @@ export class OrdersService {
 
     for (const item of order.items) {
       if (item.product) item.product = { id: item.product.id } as Product;
-      if (item.productVariant) item.productVariant = {id: item.productVariant.id} as ProductVariant;
+      if (item.productVariant) item.productVariant = { id: item.productVariant.id } as ProductVariant;
     }
 
     order.totalPrice = OrderDto.total(dto, menu);
@@ -134,7 +136,7 @@ export class OrdersService {
 
   async report(dto: OrderReportDto) {
     const condition: FindOptionsWhere<Order> = {};
-    condition.mergeTo = IsNull()
+    condition.mergeTo = IsNull();
 
     condition.shop = { id: dto.shopId };
     const shop = await this.shopsRepo.findOneBy({ id: dto.shopId });
@@ -307,81 +309,25 @@ export class OrdersService {
 
     for (const item of order.items) {
       if (item.isAbstract || !item.product) continue;
-      const dtoItem = dto.productItems.find((x) => x.productId == item.product.id && x.productVariantId == item.productVariant?.id);
+      const dtoItem = dto.productItems.find(
+        (x) => x.productId == item.product.id && x.productVariantId == item.productVariant?.id
+      );
       if (!dtoItem) changes.push({ title: item.title, change: -1 * item.quantity });
       else if (dtoItem.quantity != item.quantity)
         changes.push({ title: item.title, change: dtoItem.quantity - item.quantity });
     }
 
     const newProductItems = editedOrder.items.filter(
-      (x) => x.product && !order.items.find((y) => y.product && y.product.id === x.product.id && y.productVariant?.id === x.productVariant?.id)
+      (x) =>
+        x.product &&
+        !order.items.find(
+          (y) => y.product && y.product.id === x.product.id && y.productVariant?.id === x.productVariant?.id
+        )
     );
     for (const item of newProductItems) {
       changes.push({ title: item.title, change: item.quantity });
     }
     if (changes.length) editedOrder.details.itemChanges.push(changes);
-
-    // const deletedItems = order.items.filter(
-    //   (x) => x.product && !editedOrder.items.find((y) => y.product && y.product.id === x.product.id)
-    // );
-    // const newItems = editedOrder.items.filter(
-    //   (x) => x.product && !order.items.find((y) => y.product && y.product.id === x.product.id)
-    // );
-    // const changedItems = editedOrder.items.filter(
-    //   (x) =>
-    //     x.product &&
-    //     order.items.find((y) => y.product && y.product.id === x.product.id) &&
-    //     order.items.find((y) => y.product && y.product.id === x.product.id).quantity !== x.quantity
-    // );
-
-    // if (deletedItems && deletedItems.length) {
-    //   for (const item of deletedItems) {
-    //     if (item.product && item.product.limitQuantity) {
-    //       this.stockMicroservice
-    //         .send('stockItems/setChanges', <QuantityLogDto>{
-    //           businessId: order.shop.id,
-    //           change: item.quantity,
-    //           description: 'editOrder',
-    //           itemId: item.product.id,
-    //           userId: order.customerId,
-    //         })
-    //         .toPromise();
-    //     }
-    //   }
-    // }
-
-    // if (newItems && newItems.length) {
-    //   for (const item of newItems) {
-    //     if (item.product && item.product.limitQuantity) {
-    //       this.stockMicroservice
-    //         .send('stockItems/setChanges', <QuantityLogDto>{
-    //           businessId: order.shop.id,
-    //           change: -1 * item.quantity,
-    //           description: 'editOrder',
-    //           itemId: item.product.id,
-    //           userId: order.customerId,
-    //         })
-    //         .toPromise();
-    //     }
-    //   }
-    // }
-
-    // if (changedItems && changedItems.length) {
-    //   for (const item of changedItems) {
-    //     if (item.product && item.product.limitQuantity) {
-    //       let beforeEditOrder = order.items.find((x) => x.product.id === item.product.id);
-    //       this.stockMicroservice
-    //         .send('stockItems/setChanges', <QuantityLogDto>{
-    //           businessId: order.shop.id,
-    //           change: beforeEditOrder.quantity - item.quantity,
-    //           description: 'editOrder',
-    //           itemId: item.product.id,
-    //           userId: order.customerId,
-    //         })
-    //         .toPromise();
-    //     }
-    //   }
-    // }
 
     this.checkAfterUpdateOrderMessage(dto.id, OrderMessageEvent.OnEdit);
 
@@ -394,6 +340,7 @@ export class OrdersService {
     delete editedOrder.mergeTo;
     delete editedOrder.mergeFrom;
     delete editedOrder.reviews;
+    await this.orderItemsRepo.remove(order.items);
     return this.ordersRepo.save(editedOrder);
   }
 
@@ -529,7 +476,10 @@ export class OrdersService {
   }
 
   async remove(orderId: string, shopId: string, description?: string) {
-    const order = await this.ordersRepo.findOneBy({ id: orderId, shop: { id: shopId } });
+    const order = await this.ordersRepo.findOne({
+      where: { id: orderId, shop: { id: shopId } },
+      relations: ['items'],
+    });
     if (order) {
       if (description) order.details = { ...order.details, deletionReason: description };
       await this.ordersRepo.update(orderId, {
@@ -537,6 +487,9 @@ export class OrdersService {
         details: order.details,
       });
       await this.ordersRepo.softDelete(orderId);
+      for (const item of order.items) {
+        await this.orderItemsRepo.softRemove({ id: item.id });
+      }
     }
   }
 

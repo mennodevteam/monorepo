@@ -355,6 +355,7 @@ export class PosService extends OrderDto {
     });
     this.clear();
     this.saving = false;
+    this.menuService.loadMenu();
     this.todayOrders.loadData();
 
     if (print && savedOrder) this.printer.printOrder(savedOrder?.id);

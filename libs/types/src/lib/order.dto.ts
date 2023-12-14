@@ -69,7 +69,7 @@ export class OrderDto {
     if (productVariant && productVariant.stock == null) return true;
 
     let stock = (productVariant ? productVariant.stock : product.stock) || 0;
-    const quantity = item?.quantity || 1;
+    const quantity = item?.quantity || 0;
 
     if (editOrder) {
       const editItem = Order.getItem(editOrder, product.id, productVariant?.id);

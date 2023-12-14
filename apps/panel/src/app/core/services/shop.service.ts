@@ -13,6 +13,9 @@ export class ShopService {
   constructor(private http: HttpClient) {
     this.shop$ = new BehaviorSubject<Shop | null>(null);
     this.loadShop();
+    setInterval(() => {
+      this.loadShop();
+    }, 60000);
   }
 
   get shopObservable() {

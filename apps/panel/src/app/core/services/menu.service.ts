@@ -13,6 +13,9 @@ export class MenuService {
   constructor(private http: HttpClient) {
     this.menu$ = new BehaviorSubject<Menu | null>(null);
     this.loadMenu();
+    setInterval(() => {
+      this.loadMenu();
+    }, 30000);
   }
 
   async loadMenu() {

@@ -13,6 +13,7 @@ export class OrderItem {
   quantity: number;
   note?: string;
   details?: any;
+  deletedAt?: Date;
 
   constructor(product?: Product, quantity?: number, productVariant?: ProductVariant) {
     this.quantity = quantity || 1;

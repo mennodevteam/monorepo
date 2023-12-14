@@ -47,6 +47,11 @@ export const ProductVariantSchema = new EntitySchema<ProductVariant>({
       nullable: true,
     },
   },
+  checks: [
+    {
+      expression: 'stock >= 0',
+    },
+  ],
   relations: {
     product: {
       type: 'many-to-one',
