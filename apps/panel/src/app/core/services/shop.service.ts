@@ -52,7 +52,7 @@ export class ShopService {
   }
 
   get appLink() {
-    return this.shop?.domain || `https://${this.shop?.username}.${environment.appDomain}`;
+    return this.shop ? Shop.appLink(this.shop, environment.appDomain) : '';
   }
 
   getShopUsers(): Promise<ShopUser[] | undefined> {
