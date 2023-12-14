@@ -41,6 +41,16 @@ export class BasketService extends OrderDto {
 
   plus(product: Product, variant?: ProductVariant) {
     const item = this.getItem(product.id, variant?.id);
+
+    if (!OrderDto.isStockValidForAddOne(product, variant, item)) {
+      this.snack.open(
+        this.translate.instant('basket.stockLimit', { value: variant?.stock || product.stock }),
+        '',
+        { panelClass: 'warning' }
+      );
+      return;
+    }
+
     if (item) {
       item.quantity ? item.quantity++ : (item.quantity = 1);
     } else {
@@ -72,7 +82,7 @@ export class BasketService extends OrderDto {
         variant._orderItem = {
           quantity: variantItem.quantity,
         } as ProductItem;
-      else  variant._orderItem = undefined;
+      else variant._orderItem = undefined;
     }
   }
 
@@ -84,7 +94,7 @@ export class BasketService extends OrderDto {
         this.productItems.splice(this.productItems.indexOf(item), 1);
       }
     }
-    this.updateProductOrderItem(product);
+    this.updateProductOrderItem(product, variant);
   }
 
   getItem(productId: string, variantId?: number) {

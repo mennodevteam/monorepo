@@ -15,7 +15,7 @@
         <p matListItemLine>{{ item.price | menuCurrency }}</p>
         <div matListItemMeta>
           <count-selector
-            [count]="item.quantity"
+            [(count)]="item.quantity"
             (plusClick)="basket.plus(item.product!, item.productVariant)"
             (minusClick)="basket.minus(item.product!, item.productVariant)"
           ></count-selector>

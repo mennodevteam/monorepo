@@ -119,7 +119,7 @@ export class PosService extends OrderDto {
         (x) => x.productId === productId && x.productVariantId == productVariant?.id
       );
 
-      if (!this.isStockValidForAddOne(product, productVariant, item, this.editOrder)) {
+      if (!OrderDto.isStockValidForAddOne(product, productVariant, item, this.editOrder)) {
         const ok = await this.dialog
           .open(AlertDialogComponent, {
             data: {

@@ -63,7 +63,8 @@
     "discountCouponNotFound": "کد وارد شده اشتباه است",
     "discountCouponMinPriceWarning": "حداقل سفارش برای کد تخفیف {{value}} است",
     "discountCouponOrderTypeWarning": "این کد تخفیف برای نوع سفارش دیگری است",
-    "complete": "ثبت سفارش"
+    "complete": "ثبت سفارش",
+    "stockLimit": "موجودی آیتم انتخاب شده {{value}} عدد بیشتر نیست"
   },
   "loginBottomSheet": {
     "title": "ورود و ثبت نام",

@@ -59,7 +59,7 @@ export class OrderDto {
     return [];
   }
 
-  isStockValidForAddOne(
+  static isStockValidForAddOne(
     product: Product,
     productVariant?: ProductVariant,
     item?: ProductItem,

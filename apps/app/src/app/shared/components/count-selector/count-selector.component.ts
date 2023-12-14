@@ -15,7 +15,7 @@ export class CountSelectorComponent {
 
   plus(ev: Event) {
     if (!this.max || this.count + 1 <= this.max) {
-      this.count++;
+      // this.count++;
       this.countChange.emit(this.count);
       this.plusClick.emit(ev);
     }
@@ -23,7 +23,7 @@ export class CountSelectorComponent {
 
   minus(ev: Event) {
     if (this.min == undefined || this.count - 1 >= this.min) {
-      this.count--;
+      // this.count--;
       this.countChange.emit(this.count);
       this.minusClick.emit(ev);
     }

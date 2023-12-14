@@ -38,7 +38,7 @@
           <span flex></span>
           <count-selector
             *ngIf="product._orderItem?.quantity"
-            [count]="product._orderItem?.quantity || 0"
+            [(count)]="product._orderItem!.quantity"
             (plusClick)="plus(product, undefined, $event)"
             (minusClick)="minus(product, undefined, $event)"
           ></count-selector>

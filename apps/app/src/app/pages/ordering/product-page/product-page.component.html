@@ -25,7 +25,7 @@
       <div class="secondary" matListItemMeta>
         <count-selector
           *ngIf="product._orderItem?.quantity"
-          [count]="product._orderItem!.quantity"
+          [(count)]="product._orderItem!.quantity"
           (plusClick)="plus()"
           (minusClick)="minus()"
         ></count-selector>
@@ -58,7 +58,7 @@
           <ng-container>
             <count-selector
               *ngIf="variant._orderItem?.quantity"
-              [count]="variant._orderItem!.quantity"
+              [(count)]="variant._orderItem!.quantity"
               (plusClick)="plus(variant)"
               (minusClick)="minus(variant)"
             ></count-selector>
