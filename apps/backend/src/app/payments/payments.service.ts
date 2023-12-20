@@ -13,6 +13,10 @@ const ZIBAL_REQUEST_URL = 'https://gateway.zibal.ir/v1/request';
 const ZIBAL_START_URL = 'https://gateway.zibal.ir/start';
 const ZIBAL_VERIFY_URL = 'https://gateway.zibal.ir/v1/verify';
 
+const ZARINPAL_REQUEST_URL = 'https://api.zarinpal.com/pg/v4/payment/request.json';
+const ZARINPAL_START_URL = 'https://www.zarinpal.com/pg/StartPay';
+const ZARINPAL_VERIFY_URL = 'https://api.zarinpal.com/pg/v4/payment/verify.json';
+
 @Injectable()
 export class PaymentsService {
   constructor(
@@ -103,6 +107,36 @@ export class PaymentsService {
         await this.tokensRepository.save(token);
         return `${ZIBAL_START_URL}/${token.id}`;
       }
+    } else if (gateway.type === PaymentGatewayType.Zarinpal) {
+      const getTokenBody = {
+        merchant_id: gateway.keys.merchantId,
+        amount: dto.amount,
+        order_id: dto.orderId,
+        description: dto.extraInfo.Descr,
+        mobile: dto.userPhone,
+        callback_url: dto.returnUrl,
+      };
+
+      const tokenResponse: any = (await this.http.post(ZARINPAL_REQUEST_URL, getTokenBody).toPromise()).data.data;
+      if (tokenResponse.code == 100) {
+        const token = new PaymentToken();
+        token.amount = dto.amount;
+        token.userId = dto.userId;
+        token.userPhone = dto.userPhone;
+        token.id = tokenResponse.authority;
+        token.appReturnUrl = dto.appReturnUrl;
+        token.extraInfo = dto.extraInfo;
+        token.details = dto.details;
+        token.shopId = dto.shopId;
+        token.orderId = dto.orderId;
+        token.gateway = gateway;
+        // token.invoice = <Invoice>{
+        //     id: dto.invoiceId
+        // };
+
+        await this.tokensRepository.save(token);
+        return `${ZARINPAL_START_URL}/${token.id}`;
+      }
     }
   }
 
@@ -166,11 +200,40 @@ export class PaymentsService {
       savedPayment.gateway = undefined;
       savedPayment.token = undefined;
       return savedPayment;
+    } else if (token.gateway.type === PaymentGatewayType.Zarinpal) {
+      payment.amount = token.amount;
+      payment.details = token.details;
+      payment.userId = token.userId;
+      payment.userPhone = token.userPhone;
+      payment.shopId = token.shopId;
+      payment.appReturnUrl = token.appReturnUrl;
+      payment.gateway = token.gateway;
+      payment.referenceId = data.trackId;
+      payment.token = token.id;
+      payment.invoiceId = token.orderId;
+      payment.isCompleted = false;
+      if (data.Status == 'OK') {
+        const confirm = await this.confirm(token.gateway.id, token.id, data);
+        if (confirm) {
+          payment.isCompleted = true;
+          payment.referenceId = confirm;
+          payment.confirmedAt = new Date();
+        }
+      } else {
+        payment.isCompleted = false;
+      }
+      const savedPayment = await this.paymentsRepository.save(payment);
+      savedPayment.gateway = undefined;
+      savedPayment.token = undefined;
+      return savedPayment;
     }
   }
 
-  async confirm(gatewayId: string, tokenId: string): Promise<any> {
-    const gateway = await this.gatewaysRepository.findOne({ where: { id: gatewayId }, select: ['keys', 'type'] });
+  async confirm(gatewayId: string, tokenId: string, data?: any): Promise<any> {
+    const gateway = await this.gatewaysRepository.findOne({
+      where: { id: gatewayId },
+      select: ['keys', 'type'],
+    });
     const token = await this.tokensRepository.findOne({ where: { id: tokenId } });
     if (gateway.type === PaymentGatewayType.Sizpay) {
       const body = {
@@ -197,6 +260,18 @@ export class PaymentsService {
         return confirmResponse.refNumber;
       } else {
         throw new HttpException(confirmResponse.Message, HttpStatus.BAD_REQUEST);
+      }
+    } else if (gateway.type === PaymentGatewayType.Zarinpal) {
+      const body = {
+        merchant_id: gateway.keys.merchantId,
+        authority: data.Authority,
+        amount: token.amount
+      };
+      const confirmResponse: any = (await this.http.post(ZARINPAL_VERIFY_URL, body).toPromise()).data.data;
+      if (confirmResponse.code == 100 || confirmResponse.code == 101) {
+        return confirmResponse.ref_id;
+      } else {
+        throw new HttpException(confirmResponse.code, HttpStatus.BAD_REQUEST);
       }
     }
   }

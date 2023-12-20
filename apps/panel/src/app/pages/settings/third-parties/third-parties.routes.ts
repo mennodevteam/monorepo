@@ -3,6 +3,8 @@ import { ThirdPartiesComponent } from './third-parties.component';
 import { HamiComponent } from './hami/hami.component';
 import { SizpayComponent } from './sizpay/sizpay.component';
 import { AlopeykComponent } from './alopeyk/alopeyk.component';
+import { ZibalComponent } from './zibal/zibal.component';
+import { ZarinpalComponent } from './zarinpal/zarinpal.component';
 
 export const thirdPartiesRoutes: Route[] = [
   {
@@ -16,6 +18,14 @@ export const thirdPartiesRoutes: Route[] = [
   {
     path: 'sizpay',
     component: SizpayComponent,
+  },
+  {
+    path: 'zibal',
+    component: ZibalComponent,
+  },
+  {
+    path: 'zarinpal',
+    component: ZarinpalComponent,
   },
   {
     path: 'alopeyk',

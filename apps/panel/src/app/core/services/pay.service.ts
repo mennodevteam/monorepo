@@ -31,6 +31,8 @@ export class PayService {
         form.submit();
         document.body.removeChild(form);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
 }

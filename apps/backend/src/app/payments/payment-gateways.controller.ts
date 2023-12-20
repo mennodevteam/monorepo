@@ -37,7 +37,7 @@ export class PaymentGatewaysController {
     if (shop.paymentGateway) {
       dto.id = shop.paymentGateway.id;
     }
-    dto.type = PaymentGatewayType.Sizpay;
+    if (!dto.type) dto.type = PaymentGatewayType.Sizpay;
     dto.title = shop.title;
     const result = await this.repo.save(dto);
     if (!shop.paymentGateway) this.shopsRepo.update(shop.id, { paymentGateway: { id: result.id } });
