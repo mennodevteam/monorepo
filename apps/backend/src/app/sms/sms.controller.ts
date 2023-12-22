@@ -1,7 +1,17 @@
-import { FilterSmsDto, Member, NewSmsDto, Shop, Sms, SmsGroup, SmsTemplate, User, UserRole } from '@menno/types';
+import {
+  FilterSmsDto,
+  Member,
+  NewSmsDto,
+  Shop,
+  Sms,
+  SmsGroup,
+  SmsTemplate,
+  User,
+  UserRole,
+} from '@menno/types';
 import { Body, Controller, ForbiddenException, Get, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { In, IsNull, Not, Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
 import { Roles } from '../auth/roles.decorators';
 import { LoginUser } from '../auth/user.decorator';
@@ -29,7 +39,7 @@ export class SmsController {
   @Roles(UserRole.Panel)
   async list(@Param('id') id: string, @LoginUser() user: AuthPayload): Promise<SmsGroup> {
     const { smsAccount } = await this.authService.getPanelUserShop(user, ['smsAccount']);
-    const group = await this.groupsRepo.findOne({where: {id}, relations: ['account', 'list']});
+    const group = await this.groupsRepo.findOne({ where: { id }, relations: ['account', 'list'] });
     if (smsAccount?.id !== group.account?.id) throw new ForbiddenException();
     return group;
   }
@@ -40,7 +50,11 @@ export class SmsController {
     const shop = await this.authService.getPanelUserShop(user, ['smsAccount', 'club']);
     dto.accountId = shop.smsAccount.id;
     const members = await this.membersRepo.find({
-      where: { id: dto.memberIds ? In(dto.memberIds) : undefined, club: { id: shop.club.id } },
+      where: {
+        id: dto.memberIds ? In(dto.memberIds) : undefined,
+        club: { id: shop.club.id },
+        user: Not(IsNull()),
+      },
       relations: ['user'],
     });
     dto.receptors = members.map((x) => x.user.mobilePhone);

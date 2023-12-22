@@ -15,4 +15,6 @@ export class ShopPluginsController {
     const shop = await this.auth.getPanelUserShop(user, ['plugins']);
     return shop?.plugins;
   }
+
+  
 }
