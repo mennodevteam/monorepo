@@ -50,7 +50,8 @@ export class PrintersService {
       relations: ['printer'],
     });
 
-    const tableName = order.details.table && order.shop.details?.tables?.find(x => x.code === order.details.table)?.title;
+    const tableName =
+      order.details.table && order.shop.details?.tables?.find((x) => x.code === order.details.table)?.title;
 
     const notes: string[] = [];
     if (order.note) notes.push(order.note);
@@ -120,8 +121,8 @@ export class PrintersService {
     return this.printActionsRepo.save(actions);
   }
 
-  async printData(data: PrintActionData, printViewId: string) {
-    const view = await this.printViewsRepo.findOne({where: {id: printViewId}, relations: ['printer']})
+  async printData(data: PrintActionData, printViewId: string, shopId: string) {
+    const view = await this.printViewsRepo.findOne({ where: { id: printViewId }, relations: ['printer'] });
     const action = {
       count: 1,
       data,
@@ -129,7 +130,8 @@ export class PrintersService {
       printerTitle: view.title,
       printView: { id: view.id },
       type: view.type,
-    }as PrintAction;
+      shop: { id: shopId },
+    } as PrintAction;
 
     return this.printActionsRepo.save(action);
   }

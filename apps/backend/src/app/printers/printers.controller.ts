@@ -35,8 +35,13 @@ export class PrintersController {
   }
 
   @Post('printData/:printViewId')
-  printData(@Body() data: PrintActionData, @Param('printViewId') printViewId: string): Promise<PrintAction> {
-    return this.printersService.printData(data, printViewId);
+  async printData(
+    @Body() data: PrintActionData,
+    @Param('printViewId') printViewId: string,
+    @LoginUser() user: AuthPayload
+  ): Promise<PrintAction> {
+    const shop = await this.auth.getPanelUserShop(user);
+    if (shop) return this.printersService.printData(data, printViewId, shop.id);
   }
 
   @Get('printViews')
