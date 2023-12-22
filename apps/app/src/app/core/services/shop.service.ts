@@ -8,6 +8,7 @@ import { environment } from '../../../environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from '../../shared/dialogs/alert-dialog/alert-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,7 @@ export class ShopService {
     private pwa: PwaService,
     private dialog: MatDialog,
     private translate: TranslateService,
+    private auth: AuthService
   ) {
     this.load();
   }
@@ -63,10 +65,10 @@ export class ShopService {
             description: this.translate.instant('expiredDialog.description'),
             hideCancel: true,
             hideOk: true,
-            status: 'warning'
+            status: 'warning',
           },
           disableClose: true,
-        })
+        });
       }
 
       if (shop) {
@@ -79,6 +81,12 @@ export class ShopService {
           );
         } else {
           this.pwa.setManifest(shop, this.url);
+        }
+
+        try {
+          (window as any).clarity('identify', shop.username, this.auth.user?.username, undefined, shop.title);
+        } catch (error) {
+          // unhandled
         }
       }
     }
