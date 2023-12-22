@@ -28,10 +28,9 @@ export class HomeComponent {
   env = environment;
 
   update = {
-    date: new Date(2023, 12, 14),
+    date: new Date(2023, 11, 22),
     items: [
-      { title: 'امکان ثبت زمان تحویل سفارش برای روزهای آتی', type: 'feature' },
-      { title: 'امکان مدیریت موجودی آیتم‌ها', type: 'feature' },
+      { title: 'امکان اتصال به درگاه پرداخت زرین‌پال', type: 'feature' },
       { title: 'رفع برخی مشکلات گزارش‌ شده', type: 'bug' },
     ],
   };
