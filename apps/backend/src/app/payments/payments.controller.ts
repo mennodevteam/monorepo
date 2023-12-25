@@ -98,7 +98,9 @@ export class PaymentsController {
     const defaultGateway = await this.defaultGateway;
     const userData = await this.auth.getUserData(user);
 
-    const expiredAt = new Date(shop.plugins.expiredAt);
+    const currentExpire = new Date(shop.plugins.expiredAt);
+
+    const expiredAt = currentExpire.valueOf() > Date.now() ? new Date(currentExpire) : new Date();
     if (expiredAt.valueOf() - Date.now() > 9 * 24 * 3600000) throw new ConflictException('too soon');
     const newExpiredAt = new Date(expiredAt);
     if (body.isMonthly) {
@@ -126,7 +128,7 @@ export class PaymentsController {
           pluginId: shop.plugins.id,
         },
       },
-      'extend plugin',
+      `خرید ماژول مجموعه ${shop.title}`,
       userData,
       shop.id,
       req.headers.origin
@@ -152,7 +154,7 @@ export class PaymentsController {
           smsAccountId: shop.smsAccount.id,
         },
       },
-      'charge sms',
+      `شارژ پیامک مجموعه ${shop.title}`,
       userData,
       shop.id,
       req.headers.origin
@@ -193,7 +195,7 @@ export class PaymentsController {
       {
         payOrder: { id: orderId },
       },
-      'pay order',
+      `پرداخت سفارش فیش ${order.qNumber}`,
       userData,
       order.shop.id,
       req.headers.origin

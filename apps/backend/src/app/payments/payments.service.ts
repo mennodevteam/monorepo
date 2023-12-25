@@ -144,7 +144,7 @@ export class PaymentsService {
     const payment = new Payment();
     const token = await this.tokensRepository.findOne({
       where: {
-        id: data.Token || data.trackId,
+        id: data.Token || data.trackId || data.Authority,
       },
       relations: ['gateway'],
     });
@@ -182,7 +182,7 @@ export class PaymentsService {
       payment.shopId = token.shopId;
       payment.appReturnUrl = token.appReturnUrl;
       payment.gateway = token.gateway;
-      payment.referenceId = data.trackId;
+      payment.referenceId = data.Authority;
       payment.token = token.id;
       payment.invoiceId = token.orderId;
       payment.isCompleted = false;

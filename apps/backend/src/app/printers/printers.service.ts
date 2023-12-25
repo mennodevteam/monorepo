@@ -123,6 +123,11 @@ export class PrintersService {
 
   async printData(data: PrintActionData, printViewId: string, shopId: string) {
     const view = await this.printViewsRepo.findOne({ where: { id: printViewId }, relations: ['printer'] });
+    let total = 0;
+    for (const item of data.items) {
+      total += item.quantity * item.price;
+    }
+    data.totalPrice = total;
     const action = {
       count: 1,
       data,

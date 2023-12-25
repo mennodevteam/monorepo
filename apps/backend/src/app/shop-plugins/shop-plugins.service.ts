@@ -16,11 +16,12 @@ export class ShopPluginsService {
   @Cron(CronExpression.EVERY_DAY_AT_11AM)
   async checkPluginExpiration(): Promise<void> {
     const plugins = await this.repo.find({ relations: ['shop.users.user'] });
-
+    console.log('plugin check startedddddddd', plugins)
     for (const plugin of plugins) {
       const admin = plugin.shop?.users.find((x) => x.user && x.role === ShopUserRole.Admin)?.user;
       const expireDateValue = new Date(plugin.expiredAt).valueOf();
       if (admin?.mobilePhone) {
+        console.log('admin')
         const expireDateDatDiff = Math.floor((expireDateValue.valueOf() - Date.now()) / 1000 / 3600 / 24);
 
         if (expireDateDatDiff === 5) {
