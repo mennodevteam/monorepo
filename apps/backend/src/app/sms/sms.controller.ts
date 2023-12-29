@@ -44,9 +44,15 @@ export class SmsController {
     return group;
   }
 
+  @Post('send')
+  @Roles(UserRole.Admin)
+  async send(@Body() dto: NewSmsDto, @LoginUser() user: AuthPayload) {
+    return this.smsService.send(dto)
+  }
+
   @Post('sendTemplate')
   @Roles(UserRole.Panel)
-  async sendTemplate(@Body() dto: NewSmsDto, @LoginUser() user: AuthPayload): Promise<SmsGroup> {
+  async sendTemplate(@Body() dto: NewSmsDto, @LoginUser() user: AuthPayload) {
     const shop = await this.authService.getPanelUserShop(user, ['smsAccount', 'club']);
     dto.accountId = shop.smsAccount.id;
     const members = await this.membersRepo.find({

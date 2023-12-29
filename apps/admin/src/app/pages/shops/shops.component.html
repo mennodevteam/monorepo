@@ -29,7 +29,9 @@
         </ng-container>
 
         <ng-container matColumnDef="code">
-          <th mat-header-cell *matHeaderCellDef style="width: 64px" mat-sort-header>{{ 'app.code' | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef style="width: 64px" mat-sort-header>
+            {{ 'app.code' | translate }}
+          </th>
           <td mat-cell *matCellDef="let shop">
             <b class="eng blue">{{ shop.code }}</b>
           </td>
@@ -88,7 +90,7 @@
         <ng-container matColumnDef="phone">
           <th mat-header-cell *matHeaderCellDef>{{ 'shops.managerPhone' | translate }}</th>
           <td mat-cell *matCellDef="let shop">
-            {{ shop.users[0]?.user?.phone | phone }}
+            {{ shop.users[0]?.user?.mobilePhone | phone }}
           </td>
         </ng-container>
 
@@ -127,13 +129,16 @@
         <ng-container matColumnDef="createdAt">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'shops.createdAt' | translate }}</th>
           <td mat-cell *matCellDef="let shop">
-            {{ shop.connectionAt ? (shop.createdAt | pdate : 'YYYY-MM-DD') : '-' }}
+            {{ shop.connectionAt ? (shop.createdAt | pdate: 'YYYY-MM-DD') : '-' }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let shop" style="text-align: end">
+            <button mat-icon-button (click)="sendSms(shop)">
+              <i class="fa-regular fa-message"></i>
+            </button>
             <a mat-icon-button [href]="Shop.appLink(shop, origin)" target="_blank">
               <i class="fa-regular fa-mobile"></i>
             </a>

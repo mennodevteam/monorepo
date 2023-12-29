@@ -1,9 +1,14 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { ShopsService } from '../../core/services/shops.service';
-import { Plugin, Shop, User } from '@menno/types';
+import { NewSmsDto, Plugin, Shop, Sms, User } from '@menno/types';
 import { MatTableDataSource } from '@angular/material/table';
 import { environment } from '../../../environments/environment';
 import { Sort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { PromptDialogComponent } from '../../shared/dialogs/prompt-dialog/prompt-dialog.component';
+import { TranslateService } from '@ngx-translate/core';
+import { SmsService } from '../../core/services/sms.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'menno-shops',
@@ -21,6 +26,7 @@ export class ShopsComponent {
     'plugins',
     'expiredAt',
     'manager',
+    'phone',
     'username',
     'password',
     'connectionAt',
@@ -32,7 +38,14 @@ export class ShopsComponent {
   User = User;
   now = new Date();
 
-  constructor(public shopsService: ShopsService, private cdr: ChangeDetectorRef) {
+  constructor(
+    public shopsService: ShopsService,
+    private cdr: ChangeDetectorRef,
+    private dialog: MatDialog,
+    private translate: TranslateService,
+    private smsService: SmsService,
+    private snack: MatSnackBar
+  ) {
     if (this.shops) {
       this.dataSource = new MatTableDataSource(this.shops);
       // this.cdr.detectChanges();
@@ -94,5 +107,36 @@ export class ShopsComponent {
           break;
       }
     }
+  }
+
+  sendSms(shop?: Shop) {
+    const dto = new NewSmsDto();
+    this.dialog
+      .open(PromptDialogComponent, {
+        data: {
+          title: this.translate.instant(shop ? 'smsDialog.title' : 'smsDialog.titleAll', {
+            value: shop?.title,
+          }),
+          label: this.translate.instant('smsDialog.label'),
+          type: 'textarea',
+          rows: 6
+        },
+      })
+      .afterClosed()
+      .subscribe((value) => {
+        if (value) {
+          if (shop) {
+            dto.receptors = [shop.users[0].user.mobilePhone];
+            dto.messages = [value];
+            this.smsService.send(dto).then((sms: Sms[] | undefined) => {
+              if (sms) {
+                this.snack.open(this.translate.instant('smsDialog.success', { value: sms.length }), '', {
+                  panelClass: 'success',
+                });
+              }
+            });
+          }
+        }
+      });
   }
 }

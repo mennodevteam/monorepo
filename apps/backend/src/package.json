@@ -10,6 +10,7 @@
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "10.2.4",
     "@nestjs/jwt": "^9.0.0",
+    "@nestjs/terminus": "^10.2.0",
     "@nestjs/microservices": "^9.1.2",
     "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-express": "10.2.4",
@@ -34,7 +35,6 @@
   },
   "devDependencies": {
     "@nestjs/schematics": "10.0.2",
-    "@nestjs/terminus": "^10.2.0",
     "@nestjs/testing": "10.2.4",
     "@types/jest": "29.4.4",
     "@types/md5": "^2.3.2",

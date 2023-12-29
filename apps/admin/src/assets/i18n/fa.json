@@ -45,5 +45,11 @@
     "expiredAtLabel": "تاریخ انقضا",
     "regionIdLabel": "انتخاب شهر",
     "regionTitleLabel": "شهر جدید"
+  },
+  "smsDialog": {
+    "title": "ارسال پیام به {{value}}",
+    "titleAll": "ارسال پیام به همه",
+    "label": "متن پیام",
+    "success": "{{value}} پیامک با موفقیت ارسال شد"
   }
 }

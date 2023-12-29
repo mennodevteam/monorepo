@@ -35,7 +35,7 @@ export class SmsService {
     });
   }
 
-  async send(dto: NewSmsDto, groupMessage?: string): Promise<SmsGroup> {
+  async send(dto: NewSmsDto, groupMessage?: string) {
     if (dto.accountId) {
       const account = await this.smsAccountsRepo.findOneBy({
         id: dto.accountId,
@@ -87,7 +87,7 @@ export class SmsService {
             await this.smsRepo.save(sentSms);
             const g =
               group && (await this.smsGroupsRepo.findOne({ where: { id: group.id }, relations: ['list'] }));
-            resolve(g);
+            resolve(g || sentSms);
           } else {
             reject(response);
           }
