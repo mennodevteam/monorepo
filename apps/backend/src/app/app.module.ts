@@ -28,6 +28,7 @@ import { WindowsLocalNotificationModule } from './windows-local-notifacation/win
 import { AppRedirectController } from './app-redirect.controller';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './core/http-exception.filter';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -39,8 +40,10 @@ import { HttpExceptionFilter } from './core/http-exception.filter';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       synchronize: true,
+      keepConnectionAlive: true,
       autoLoadEntities: true,
     }),
+    HealthModule,
     SchemasModule,
     HttpModule,
     AuthModule,
