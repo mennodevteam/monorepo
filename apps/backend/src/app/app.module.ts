@@ -42,6 +42,9 @@ import { HealthModule } from './health/health.module';
       synchronize: true,
       keepConnectionAlive: true,
       autoLoadEntities: true,
+      extra: {
+        extensions: ['pg_stat_statements'],
+      },
     }),
     HealthModule,
     SchemasModule,
