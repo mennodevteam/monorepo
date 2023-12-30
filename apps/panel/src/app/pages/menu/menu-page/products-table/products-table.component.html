@@ -2,7 +2,7 @@
   <ng-container matColumnDef="image">
     <th mat-header-cell *matHeaderCellDef>{{ 'productTable.image' | translate }}</th>
     <td mat-cell *matCellDef="let product">
-      <img [imageLoader]="product.images[0]" />
+      <img [imageLoader]="product.imageFiles?.xs || product.images[0]" />
     </td>
   </ng-container>
 

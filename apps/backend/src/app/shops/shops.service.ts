@@ -291,4 +291,78 @@ export class ShopsService {
 
     return newShop;
   }
+
+  async optimizeImages(code: string) {
+    const shop = await this.shopsRepository.findOne({
+      where: { code },
+      relations: ['menu.categories.products'],
+    });
+
+
+    if (shop.logo) {
+      try {
+        const newImages = await this.getImgproxyLinks(shop.logo, shop, 'logo');
+        this.shopsRepository.save({ id: shop.id, logoImage: newImages });
+      } catch (error) {}
+    }
+
+    if (shop.cover) {
+      try {
+        const newImages = await this.getImgproxyLinks(shop.cover, shop, 'cover');
+        this.shopsRepository.save({ id: shop.id, coverImage: newImages });
+      } catch (error) {}
+    }
+
+    if (shop.verticalCover) {
+      try {
+        const newImages = await this.getImgproxyLinks(shop.verticalCover, shop, 'vertical_cover');
+        this.shopsRepository.save({ id: shop.id, verticalCoverImage: newImages });
+      } catch (error) {}
+    }
+
+    if (shop.menu?.categories) {
+      for (const cat of shop.menu.categories) {
+        for (const prod of cat.products) {
+          if (prod.images?.length) {
+            try {
+              const newImages = await this.getImgproxyLinks(prod.images[0], shop, `product_${prod.id}`);
+              this.productsRepository.save({ id: prod.id, imageFiles: newImages });
+            } catch (error) {
+              // no need to handle
+            }
+          }
+        }
+      }
+    }
+  }
+
+  private async getImgproxyLinks(url: string, shop: Shop, name: string) {
+    const source = this.filesService.getUrl(url);
+    const origin: any = await this.filesService.uploadFromUrl(
+      `${process.env.IMGPROXY}/plain/${source}@webp`,
+      `${name}_origin.webp`,
+      shop.code
+    );
+    const md: any = await this.filesService.uploadFromUrl(
+      `${process.env.IMGPROXY}/width:512/plain/${source}@webp`,
+      `${name}_md.webp`,
+      shop.code
+    );
+    const sm: any = await this.filesService.uploadFromUrl(
+      `${process.env.IMGPROXY}/width:256/plain/${source}@webp`,
+      `${name}_sm.webp`,
+      shop.code
+    );
+    const xs: any = await this.filesService.uploadFromUrl(
+      `${process.env.IMGPROXY}/width:128/plain/${source}@webp`,
+      `${name}_xs.webp`,
+      shop.code
+    );
+    return {
+      origin: origin.key,
+      md: md.key,
+      sm: sm.key,
+      xs: xs.key,
+    };
+  }
 }

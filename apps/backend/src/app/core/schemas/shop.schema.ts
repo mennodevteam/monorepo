@@ -90,6 +90,18 @@ export const ShopSchema = new EntitySchema<Shop>({
       type: String,
       nullable: true,
     },
+    logoImage: {
+      type: 'simple-json',
+      nullable: true,
+    },
+    coverImage: {
+      type: 'simple-json',
+      nullable: true,
+    },
+    verticalCoverImage: {
+      type: 'simple-json',
+      nullable: true,
+    },
     phones: {
       type: String,
       array: true,

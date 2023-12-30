@@ -40,7 +40,7 @@
         <ng-container matColumnDef="image">
           <th mat-header-cell *matHeaderCellDef style="width: 64px">{{ 'app.logo' | translate }}</th>
           <td mat-cell *matCellDef="let shop">
-            <img class="shop-logo" [imageLoader]="shop.logo" />
+            <img class="shop-logo" [imageLoader]="shop.logoImage ? shop.logoImage.sm : shop.logo" />
           </td>
         </ng-container>
 

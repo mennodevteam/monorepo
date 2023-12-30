@@ -81,9 +81,9 @@ export class ShopsController {
       });
 
       shops.forEach((shop) => {
-        const admin = shop.users.find(x => x.role === ShopUserRole.Admin);
+        const admin = shop.users.find((x) => x.role === ShopUserRole.Admin);
         if (admin) shop.users = [admin];
-      })
+      });
 
       return shops;
     }
@@ -138,5 +138,11 @@ export class ShopsController {
   @Get('createNewFromPrev/:code')
   createNewShopFromPrev(@Param('code') code: string): Promise<Shop> {
     return this.shopsService.createNewShopFromPrev(code);
+  }
+
+  @Public()
+  @Get('optimizeImages/:code')
+  optimizeImages(@Param('code') code: string) {
+    this.shopsService.optimizeImages(code);
   }
 }

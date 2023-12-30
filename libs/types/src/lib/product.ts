@@ -5,6 +5,7 @@ import { MenuCost } from './menu-cost';
 import { OrderType } from './order-type.enum';
 import { ProductItem } from './order.dto';
 import { ProductVariant } from './product-variant';
+import { Image } from './image';
 
 export class Product {
   id: string;
@@ -15,6 +16,7 @@ export class Product {
   position?: number;
   category: ProductCategory;
   images?: string[];
+  imageFiles?: Image;
   orderTypes: OrderType[];
   packItems: string[];
   details: any;
@@ -83,7 +85,7 @@ export class Product {
   static percentageDiscount(product: Product, productVariant?: ProductVariant, round = 5) {
     const price = productVariant ? productVariant.price : product.price;
     const cost = Product.realPrice(product, productVariant) - Product.totalPrice(product, productVariant);
-    if (cost > 0) return Math.round((cost / price) * 100 / round) * round;
+    if (cost > 0) return Math.round(((cost / price) * 100) / round) * round;
     return 0;
   }
 

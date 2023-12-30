@@ -1,6 +1,7 @@
 import { AppConfig } from './app-config';
 import { Club } from './club';
 import { DeliveryArea } from './delivery-area';
+import { Image } from './image';
 import { Menu } from './menu';
 import { PaymentGateway } from './payment-gateway';
 import { Region } from './region';
@@ -50,8 +51,11 @@ export class Shop {
   menu?: Menu;
   club?: Club;
   logo: string;
+  logoImage: Image;
   cover: string;
+  coverImage: Image;
   verticalCover: string;
+  verticalCoverImage: Image;
   appConfig?: AppConfig;
   connectionAt: Date;
   shopGroup?: ShopGroup;

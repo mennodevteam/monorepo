@@ -11,7 +11,6 @@ export class FilesService {
   async uploadFromUrl(link: string, name: string, path?: string) {
     const binary = await fetch(link);
     const blob = await binary.buffer();
-
     return await this.upload(<any>{ buffer: blob }, name, path);
   }
 
@@ -39,5 +38,9 @@ export class FilesService {
         }
       );
     });
+  }
+
+  getUrl(key: string) {
+    return `${process.env.LIARA_BUCKET_URL}/${key}`
   }
 }
