@@ -339,22 +339,22 @@ export class ShopsService {
   private async getImgproxyLinks(url: string, shop: Shop, name: string) {
     const source = this.filesService.getUrl(url);
     const origin: any = await this.filesService.uploadFromUrl(
-      `${process.env.IMGPROXY}/plain/${source}@webp`,
+      `https://img.menno.pro/plain/${source}@webp`,
       `${name}_origin.webp`,
       shop.code
     );
     const md: any = await this.filesService.uploadFromUrl(
-      `${process.env.IMGPROXY}/width:512/plain/${source}@webp`,
+      `https://img.menno.pro/width:512/plain/${source}@webp`,
       `${name}_md.webp`,
       shop.code
     );
     const sm: any = await this.filesService.uploadFromUrl(
-      `${process.env.IMGPROXY}/width:256/plain/${source}@webp`,
+      `https://img.menno.pro/width:256/plain/${source}@webp`,
       `${name}_sm.webp`,
       shop.code
     );
     const xs: any = await this.filesService.uploadFromUrl(
-      `${process.env.IMGPROXY}/width:128/plain/${source}@webp`,
+      `https://img.menno.pro/width:128/plain/${source}@webp`,
       `${name}_xs.webp`,
       shop.code
     );

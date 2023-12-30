@@ -41,6 +41,6 @@ export class FilesService {
   }
 
   getUrl(key: string) {
-    return `${process.env.LIARA_BUCKET_URL}/${key}`
+    return `https://${process.env.LIARA_BUCKET_NAME}.${process.env.LIARA_BUCKET_ENDPOINT}/${key}`
   }
 }

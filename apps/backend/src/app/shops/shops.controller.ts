@@ -47,7 +47,7 @@ export class ShopsController {
       }
 
       if (shop) {
-        const logo = `https://${process.env.LIARA_BUCKET_NAME}.${process.env.LIARA_BUCKET_ENDPOINT}/${shop.logo}`;
+        const logo = `https://${process.env.LIARA_BUCKET_NAME}.${process.env.LIARA_BUCKET_ENDPOINT}/${shop.logoImage?.sm || shop.logo}`;
         const title = shop.title;
         const description = shop.description;
         return { logo, title, description };
