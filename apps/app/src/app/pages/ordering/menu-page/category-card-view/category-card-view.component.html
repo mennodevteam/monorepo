@@ -11,7 +11,9 @@
             mat-card-sm-image
             class="product__image"
             [ngClass]="{ finished: product.status === Status.Blocked }"
-            [imageLoader]="product.images ? product.images[0] : undefined"
+            [imageLoader]="
+              product.imageFiles?.xs || (product.images ? product.images[0] : undefined) || undefined
+            "
           />
           <mat-card-title class="product__title">{{ product.title }}</mat-card-title>
           <mat-card-subtitle class="product__description outline-text">

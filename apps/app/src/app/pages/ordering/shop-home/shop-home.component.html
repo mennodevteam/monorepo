@@ -1,6 +1,6 @@
 <div class="wrapper" [@fadeIn]>
   <header>
-    <img [imageLoader]="shop?.logo" id="logo" />
+    <img [imageLoader]="shop?.logoImage?.sm || shop?.logo" id="logo" />
     <div class="header-texts">
       <h1 id="title">{{ shop?.title }}</h1>
       <p *ngIf="shop?.description" id="description">{{ shop?.description }}</p>

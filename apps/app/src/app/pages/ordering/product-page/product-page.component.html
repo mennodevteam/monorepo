@@ -8,7 +8,10 @@
 </mat-toolbar>
 
 <main *ngIf="product">
-  <img id="product-image" [imageLoader]="product.images ? product.images[0] : undefined" />
+  <img
+    id="product-image"
+    [imageLoader]="product.imageFiles?.origin || (product.images ? product.images[0] : undefined) || undefined"
+  />
   <span spacer></span>
   <p class="outline-text description">{{ product.description }}</p>
 

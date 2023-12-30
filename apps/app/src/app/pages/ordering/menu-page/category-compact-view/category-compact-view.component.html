@@ -1,7 +1,13 @@
 <mat-nav-list>
   <ng-container *ngFor="let product of category.products; let last = last">
     <a mat-list-item routerLink="/menu/product/{{ product.id }}">
-      <img matListItemAvatar [ngClass]="{ finished: product.status === Status.Blocked }" [imageLoader]="product.images ? product.images[0] : undefined" />
+      <img
+        matListItemAvatar
+        [ngClass]="{ finished: product.status === Status.Blocked }"
+        [imageLoader]="
+          product.imageFiles?.xs || (product.images ? product.images[0] : undefined) || undefined
+        "
+      />
       <h3 matListItemTitle class="title">{{ product.title }}</h3>
       <span matListItemLine class="subtitle">
         <span *ngIf="Product.hasDiscount(product)" class="line-through error-text">
@@ -11,8 +17,12 @@
         {{ Product.totalPrice(product) | menuCurrency }}
       </span>
       <div matListItemMeta>
-        <span class="badge primary on-primary-text" *ngIf="product._orderItem?.quantity">{{ product._orderItem?.quantity }}</span>
-        <span class="error-text" *ngIf="product.status === Status.Blocked">{{ 'app.finished' | translate }}</span>
+        <span class="badge primary on-primary-text" *ngIf="product._orderItem?.quantity">{{
+          product._orderItem?.quantity
+        }}</span>
+        <span class="error-text" *ngIf="product.status === Status.Blocked">{{
+          'app.finished' | translate
+        }}</span>
         <span spacer-sm></span>
         <i class="fa-regular fa-angle-left"></i>
       </div>

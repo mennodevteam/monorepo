@@ -11,7 +11,7 @@
 
   <header flex-col *ngIf="isHomePage">
     <div class="shop-info" flex-row>
-      <img [imageLoader]="shop?.logo" id="logo" />
+      <img [imageLoader]="shop?.logoImage?.sm || shop?.logo" id="logo" />
       <div class="shop-info-texts" flex flex-col>
         <h1 id="title">{{ shop?.title }}</h1>
         <p *ngIf="shop?.description" id="description">{{ shop?.description }}</p>
