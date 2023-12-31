@@ -52,4 +52,8 @@ export class MenuCategoryContainerComponent {
         }
       });
   }
+
+  changeStar(star: number | null) {
+    this.menuService.saveCategory({id: this.category.id, star} as ProductCategory)
+  }
 }

@@ -12,6 +12,7 @@ import { ShopService } from './shop.service';
 export class MenuService {
   private _menu = new BehaviorSubject<Menu | null>(null);
   private _type = new BehaviorSubject<OrderType | null>(null);
+  private _star?: number;
   private _baseMenu: Menu | undefined;
   selectableOrderTypes: OrderType[];
 
@@ -29,10 +30,10 @@ export class MenuService {
 
     if (this.shopService.shop?.appConfig?.selectableOrderTypes[0] != undefined)
       this.type = this.shopService.shop?.appConfig?.selectableOrderTypes[0];
-    
+
     if (this._baseMenu) {
       const menu = this.baseMenu;
-      Menu.setRefsAndSort(menu);
+      Menu.setRefsAndSort(menu, undefined, undefined, undefined, this._star);
       this._menu.next(menu);
     } else {
       this._menu.next(null);
@@ -55,13 +56,22 @@ export class MenuService {
     this._type.next(val);
     if (this.menu) {
       const menu = this.baseMenu;
-      Menu.setRefsAndSort(menu, val == null ? undefined : val);
+      Menu.setRefsAndSort(menu, val == null ? undefined : val, undefined, undefined, this._star);
       this._menu.next(menu);
     }
   }
 
   get type() {
     return this._type.value;
+  }
+
+  set star(value: number | undefined) {
+    this._star = value;
+    if (this.menu) {
+      const menu = this.baseMenu;
+      Menu.setRefsAndSort(menu, this.type == null ? undefined : this.type, undefined, undefined, this._star);
+      this._menu.next(menu);
+    }
   }
 
   get typeObservable() {

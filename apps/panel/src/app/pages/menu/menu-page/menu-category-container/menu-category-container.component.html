@@ -7,8 +7,8 @@
         <span *ngIf="category.status !== Status.Active" class="inactive-badge">
           {{ 'app.inactive' | translate }}
         </span>
-        <span class="order-types"*ngIf="category.orderTypes && category.orderTypes.length < 3">
-          <ng-container *ngFor="let t of category.orderTypes; let last = last;">
+        <span class="order-types" *ngIf="category.orderTypes && category.orderTypes.length < 3">
+          <ng-container *ngFor="let t of category.orderTypes; let last = last">
             <span>
               {{ t | orderType }}
             </span>
@@ -16,6 +16,39 @@
           </ng-container>
         </span>
       </h3>
+
+      <button mat-stroked-button [matMenuTriggerFor]="starMenu">
+        <span *ngIf="category.star == null">{{ 'menu.star.all' | translate }}</span>
+        <span *ngIf="category.star === 0" class="red">{{ 'menu.star.star0' | translate }}</span>
+        <span *ngIf="category.star === 1" class="red">{{ 'menu.star.star1' | translate }}</span>
+        <span *ngIf="category.star === 2" class="red">{{ 'menu.star.star2' | translate }}</span>
+        <span *ngIf="category.star === 3" class="red">{{ 'menu.star.star3' | translate }}</span>
+        <span *ngIf="category.star === 4" class="red">{{ 'menu.star.star4' | translate }}</span>
+        <span *ngIf="category.star === 5" class="red">{{ 'menu.star.star5' | translate }}</span>
+      </button>
+      <mat-menu #starMenu="matMenu">
+        <button mat-menu-item (click)="changeStar(null)">
+          {{ 'menu.star.all' | translate }}
+        </button>
+        <button mat-menu-item (click)="changeStar(0)">
+          {{ 'menu.star.star0' | translate }}
+        </button>
+        <button mat-menu-item (click)="changeStar(1)">
+          {{ 'menu.star.star1' | translate }}
+        </button>
+        <button mat-menu-item (click)="changeStar(2)">
+          {{ 'menu.star.star2' | translate }}
+        </button>
+        <button mat-menu-item (click)="changeStar(3)">
+          {{ 'menu.star.star3' | translate }}
+        </button>
+        <button mat-menu-item (click)="changeStar(4)">
+          {{ 'menu.star.star4' | translate }}
+        </button>
+        <button mat-menu-item (click)="changeStar(5)">
+          {{ 'menu.star.star5' | translate }}
+        </button>
+      </mat-menu>
       <button
         mat-icon-button
         matTooltip="{{ 'menu.editCategory' | translate }}"
@@ -39,7 +72,7 @@
     </mat-toolbar-row>
   </mat-toolbar>
   <mat-divider></mat-divider>
-  <mat-card-content style="overflow-x: auto;">
+  <mat-card-content style="overflow-x: auto">
     <ng-container *ngIf="category.products && category.products.length">
       <products-table [products]="category.products"></products-table>
     </ng-container>

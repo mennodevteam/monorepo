@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ShopService } from './shop.service';
 import { DiscountCoupon, Member } from '@menno/types';
 import { AuthService } from './auth.service';
+import { MenuService } from './menu.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,12 @@ import { AuthService } from './auth.service';
 export class ClubService {
   member?: Member;
   coupons?: DiscountCoupon[];
-  constructor(private http: HttpClient, private shopService: ShopService, private auth: AuthService) {
+  constructor(
+    private http: HttpClient,
+    private shopService: ShopService,
+    private auth: AuthService,
+    private menu: MenuService
+  ) {
     this.getMember().then((member) => {
       if (member) this.member = member;
     });
@@ -32,7 +38,11 @@ export class ClubService {
 
   async getMember() {
     if (this.shopService.shop?.club) {
-      return this.http.get<Member>(`members/club/${this.shopService.shop.club.id}`).toPromise();
+      const member = await this.http.get<Member>(`members/club/${this.shopService.shop.club.id}`).toPromise();
+      if (member) {
+        this.menu.star = member.star;
+      }
+      return member;
     }
     return undefined;
   }

@@ -12,7 +12,17 @@ export class Menu {
   costs: MenuCost[];
   categories?: ProductCategory[];
 
-  static setRefsAndSort(menu: Menu, orderType?: OrderType, showInactive?: boolean, showEmpty?: boolean) {
+  static setRefsAndSort(
+    menu: Menu,
+    orderType?: OrderType,
+    showInactive?: boolean,
+    showEmpty?: boolean,
+    star?: number
+  ) {
+    if (star != undefined) {
+      menu.categories = menu.categories?.filter((x) => !x.star || star >= x.star);
+    }
+
     if (orderType != undefined) {
       menu.categories = menu.categories?.filter(
         (x) =>
