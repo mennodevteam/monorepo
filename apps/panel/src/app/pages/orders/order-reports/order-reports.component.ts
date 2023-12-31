@@ -10,7 +10,7 @@ import { OrderStatePipe } from '../../../shared/pipes/order-state.pipe';
 import { MenuService } from '../../../core/services/menu.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuCurrencyPipe } from '../../../shared/pipes/menu-currency.pipe';
-import { sortByCreatedAt } from '@menno/utils';
+import { chunkArray, sortByCreatedAt } from '@menno/utils';
 import { PrinterService } from '../../../core/services/printer.service';
 Chart.defaults.font.family = 'IRANSans';
 
@@ -64,7 +64,7 @@ export class OrderReportsComponent implements AfterViewInit {
     private orderStatePipe: OrderStatePipe,
     private translate: TranslateService,
     private menuCurrency: MenuCurrencyPipe,
-    private printerService: PrinterService,
+    private printerService: PrinterService
   ) {
     this.form = this.fb.group({
       fromDate: [new Date(), Validators.required],
@@ -204,30 +204,39 @@ export class OrderReportsComponent implements AfterViewInit {
 
   print(printView: ShopPrintView) {
     const formControl: OrderReportDto = this.form.getRawValue();
-    if (formControl.groupBy === 'product') {
-      this.printerService.printData({
-        currency: 'تومان',
-        customerAddress: '',
-        customerName: '',
-        customerPhone: '',
-        date: new Date(),
-        descriptions: [],
-        qNumber: 0,
-        shopAddress: '',
-        shopName: '',
-        shopPhones: [],
-        items: this.tableData.map((data) => ({
-          isAbstract: false,
-          title: data.label,
-          quantity: data.count,
-          price: data.sum,
-        })),
-        table: '',
-        totalPrice: 0,
-        type: 0,
-        shopUrl: ''
-        
-      }, printView)
+    const allItems = this.tableData
+      .filter((x) => x.label != this.translate.instant('app.sum'))
+      .map((data) => ({
+        isAbstract: false,
+        title: data.label,
+        quantity: data.count,
+        price: data.sum,
+      }));
+    const totalPrice = allItems.reduce((acc, obj) => acc + obj.price * obj.quantity, 0);
+    const chunkedData = chunkArray(allItems, 10);
+    let i = 1;
+    for (const items of chunkedData) {
+      this.printerService.printData(
+        {
+          currency: 'تومان',
+          customerAddress: '',
+          customerName: '',
+          customerPhone: '',
+          date: new Date(),
+          descriptions: [],
+          qNumber: i,
+          shopAddress: '',
+          shopName: '',
+          shopPhones: [],
+          items,
+          table: '',
+          totalPrice: totalPrice,
+          type: 0,
+          shopUrl: '',
+        },
+        printView
+      );
+      i++;
     }
   }
 }
