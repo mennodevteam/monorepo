@@ -28,10 +28,11 @@ export class HomeComponent {
   env = environment;
 
   update = {
-    date: new Date(2023, 11, 22),
+    date: new Date(2023, 11, 31),
     items: [
-      { title: 'امکان اتصال به درگاه پرداخت زرین‌پال', type: 'feature' },
-      { title: 'رفع برخی مشکلات گزارش‌ شده', type: 'bug' },
+      { title: "آیتم‌های خاص منو ویژه اعضای باشگاه مشتریان", type: 'feature' },
+      { title: "ترتیب نمایش اعضای باشگاه مشتریان", type: 'feature' },
+      { title: "رفع برخی از باگ‌های گزارش شده", type: 'bug' },
     ],
   };
 

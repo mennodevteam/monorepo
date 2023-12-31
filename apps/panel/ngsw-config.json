@@ -3,8 +3,9 @@
     "forceReload": false,
     "lazyReload": false,
     "changes": [
-      "امکان اتصال به درگاه پرداخت زرین‌پال",
-      "رفع برخی مشکلات گزارش‌ شده"
+      "آیتم‌های خاص منو ویژه اعضای باشگاه مشتریان",
+      "ترتیب نمایش اعضای باشگاه مشتریان",
+      "رفع برخی از باگ‌های گزارش شده"
     ]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
