@@ -12,6 +12,7 @@ import {
 import { AuthService } from './auth.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ShopService } from './shop.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,11 +22,22 @@ export class OrdersService {
     private http: HttpClient,
     private auth: AuthService,
     private translate: TranslateService,
-    private snack: MatSnackBar
+    private snack: MatSnackBar,
+    private shop: ShopService
   ) {}
 
   async filter(dto: FilterOrderDto) {
     const orders = await this.http.post<Order[]>(`orders/filter`, dto).toPromise();
+    if (orders) {
+      for (const o of orders) {
+        if (o.details?.table) {
+          const table = this.shop.shop?.details?.tables?.find((x) => x.code === o.details?.table);
+          if (table) {
+            o.details.table = `${o.details.table} (${table.title})`;
+          }
+        }
+      }
+    }
     return orders;
   }
 
