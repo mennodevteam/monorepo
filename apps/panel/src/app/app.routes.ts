@@ -2,7 +2,6 @@ import { Route } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { MenuGuard } from './core/guards/menu.guard';
 import { ShopGuard } from './core/guards/shop.guard';
-import { TodayOrdersGuard } from './core/guards/today-orders.guard';
 import { TranslateGuard } from './core/guards/translate.guard';
 import { PagesComponent } from './pages/pages.component';
 import { PluginGuard } from './core/guards/plugin.guard';

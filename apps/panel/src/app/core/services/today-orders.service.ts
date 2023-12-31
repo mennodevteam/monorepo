@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { EventEmitter, Injectable, signal } from '@angular/core';
 import { Order, OrderState, OrderType } from '@menno/types';
 import { BehaviorSubject, Observable, filter, map } from 'rxjs';
 import { OrdersService } from './orders.service';
@@ -13,11 +13,10 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class TodayOrdersService {
-  private _orders = new BehaviorSubject<Order[] | undefined>(undefined);
   private lastUpdate: Date;
+  orders = signal<Order[] | undefined>(undefined);
 
-  onNewOrder = new EventEmitter<void>();
-  onUpdateOrder = new EventEmitter<void>();
+  onUpdate = new EventEmitter<void>();
 
   constructor(
     private ordersService: OrdersService,
@@ -41,7 +40,7 @@ export class TodayOrdersService {
   }
 
   notifOrder(order: Order) {
-    if (order.state !== OrderState.Pending) return;
+    if (order.state !== OrderState.Pending || order.mergeFrom?.length) return;
     let title: string;
     switch (order.type) {
       case OrderType.Delivery:
@@ -106,14 +105,6 @@ export class TodayOrdersService {
     return date;
   }
 
-  get orders() {
-    return this._orders.value || [];
-  }
-
-  get ordersObservable() {
-    return this._orders.asObservable();
-  }
-
   async loadData() {
     if (!this.auth.instantUser) return;
     const fromDate = new Date(this.today);
@@ -123,7 +114,6 @@ export class TodayOrdersService {
     toDate.setHours(23, 59, 59, 999);
     toDate.setHours(toDate.getHours() + 3);
     const updatedAt = this.lastUpdate ? new Date(this.lastUpdate) : undefined;
-    this.lastUpdate = new Date();
     const orders = await this.ordersService.filter({
       fromDate,
       toDate,
@@ -132,8 +122,12 @@ export class TodayOrdersService {
 
     if (orders) {
       let newOrders: Order[] = [];
+      let currentUpdate: Date | undefined;
       for (const ord of orders) {
-        const existOrd = this.orders.find((x) => x.id === ord.id);
+        if (!currentUpdate) currentUpdate = new Date(ord.updatedAt || ord.createdAt);
+        else if (currentUpdate.valueOf() < new Date(ord.updatedAt || ord.createdAt).valueOf())
+          currentUpdate = new Date(ord.updatedAt || ord.createdAt);
+        const existOrd = this.orders()?.find((x) => x.id === ord.id);
         if (existOrd) {
           Object.assign(existOrd, ord);
         } else {
@@ -141,23 +135,20 @@ export class TodayOrdersService {
           this.notifOrder(ord);
         }
       }
+      if (currentUpdate) this.lastUpdate = currentUpdate;
       if (orders.length) {
         if (newOrders.length) {
-          this._orders.next([...newOrders, ...this.orders]);
-          this.onNewOrder.emit();
-        } else this.onUpdateOrder.emit();
+          this.orders.update((orders) => [...newOrders, ...(orders || [])]);
+        }
+        this.onUpdate.emit();
       }
     }
   }
 
   getById(id: string): Order | undefined {
     try {
-      return this._orders.value?.find((x) => x.id === id);
+      return this.orders()?.find((x) => x.id === id);
     } catch (error) {}
     return;
-  }
-
-  get newOrders() {
-    return this._orders.pipe(map((x) => x?.filter((y) => y.state === OrderState.Pending) || []));
   }
 }

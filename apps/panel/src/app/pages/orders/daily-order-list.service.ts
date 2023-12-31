@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { FilterOrderDto, Order, OrderState, OrderType } from '@menno/types';
 import { BehaviorSubject, filter, map, take } from 'rxjs';
 import { OrdersService } from '../../core/services/orders.service';
@@ -30,18 +30,12 @@ export class DailyOrderListService {
   private _loading = false;
 
   allOrders: Order[] = [];
-  orders = new BehaviorSubject<Order[]>([]);
+  orders = signal<Order[]>([]);
 
   constructor(private ordersService: OrdersService, private todayOrders: TodayOrdersService) {
-    this.todayOrders.onNewOrder.subscribe(() => {
-      if (this.isToday) {
-        this.allOrders = this.todayOrders.orders;
-        this.setData();
-      }
-    });
-
-    this.todayOrders.onUpdateOrder.subscribe(() => {
-      if (this.isToday) {
+    this.todayOrders.onUpdate.subscribe(() => {
+      if (this.isToday && this.todayOrders.orders()) {
+        this.allOrders = this.todayOrders.orders()!;
         this.setData();
       }
     });
@@ -83,15 +77,11 @@ export class DailyOrderListService {
   async loadData(forceLoad?: boolean) {
     if (this.isToday) {
       this._loading = true;
-      if (!this.todayOrders.orders || forceLoad) {
-        if (forceLoad) this.todayOrders.loadData();
-        await this.todayOrders.ordersObservable
-          .pipe(filter((x) => x != null))
-          .pipe(take(1))
-          .toPromise();
+      if (!this.todayOrders.orders() || forceLoad) {
+        this.todayOrders.loadData();
       }
-      if (this.todayOrders.orders) {
-        this.allOrders = this.todayOrders.orders;
+      if (this.todayOrders.orders()) {
+        this.allOrders = this.todayOrders.orders()!;
         this.setData();
       }
       this._loading = false;
@@ -144,7 +134,7 @@ export class DailyOrderListService {
 
     if (this.filter.table) orders = orders.filter((x) => x.details.table === this.filter.table);
     if (this.filter.type != undefined) orders = orders.filter((x) => x.type === this.filter.type);
-    this.orders.next(orders);
+    this.orders.set(orders);
   }
 
   totalPrice(filter?: FilterOrderDto) {

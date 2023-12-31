@@ -1,9 +1,7 @@
-import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Member, Order, OrderPaymentType, OrderState, OrderType, ShopPrintView, User } from '@menno/types';
-import { BehaviorSubject } from 'rxjs';
-import { ClubService } from '../../../core/services/club.service';
 import { OrdersService } from '../../../core/services/orders.service';
 import { PrinterService } from '../../../core/services/printer.service';
 import { MemberSelectDialogComponent } from '../../dialogs/member-select-dialog/member-select-dialog.component';
@@ -17,7 +15,7 @@ import { MemberDialogComponent } from '../../dialogs/member-dialog/member-dialog
   templateUrl: './orders-table.component.html',
   styleUrls: ['./orders-table.component.scss'],
 })
-export class OrdersTableComponent implements AfterViewInit {
+export class OrdersTableComponent implements AfterViewInit, OnChanges {
   User = User;
   OrderType = OrderType;
   OrderState = OrderState;
@@ -27,7 +25,7 @@ export class OrdersTableComponent implements AfterViewInit {
   @Input() showCheckbox = false;
   @Input() pageSizeOptions: number[];
   @Input() columns = ['qNumber', 'customer', 'type', 'total', 'state', 'waiter', 'date', 'actions'];
-  @Input() orders: BehaviorSubject<Order[]>;
+  @Input() orders: Order[];
   @Output() orderClicked = new EventEmitter<Order>();
 
   constructor(
@@ -37,15 +35,23 @@ export class OrdersTableComponent implements AfterViewInit {
     private printService: PrinterService,
     private translate: TranslateService
   ) {}
+  
+  ngOnChanges(changes: SimpleChanges): void {
+      if (changes['orders']) {
+        this.setOrders();
+      }
+  }
 
   ngAfterViewInit() {
-    if (this.orders.value) {
-      this.dataSource = new MatTableDataSource(this.orders.value);
+    this.setOrders();
+  }
+
+  setOrders(orders: Order[] = this.orders) {
+    if (orders) {
+      this.orders = orders;
+      this.dataSource = new MatTableDataSource(this.orders);
       this.cdr.detectChanges();
     }
-    this.orders.subscribe((orders) => {
-      this.dataSource = new MatTableDataSource(orders);
-    });
   }
 
   changeState(order: Order) {

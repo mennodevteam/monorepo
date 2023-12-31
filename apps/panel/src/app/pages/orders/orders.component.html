@@ -112,7 +112,7 @@
             (orderClicked)="orderClicked($event)"
           ></orders-table>
           <empty-state
-            *ngIf="!(orders | async)?.length"
+            *ngIf="!orders?.length"
             icon="fa-face-frown"
             text="{{ 'dailyOrder.emptyState' | translate }}"
           ></empty-state>

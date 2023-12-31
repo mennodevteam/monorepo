@@ -55,7 +55,7 @@ export class OrdersComponent {
   }
 
   get orders() {
-    return this.OS.orders;
+    return this.OS.orders();
   }
 
   get date() {

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FilterOrderDto, Order, OrderPaymentType, OrderState, OrderType } from '@menno/types';
 import { BehaviorSubject } from 'rxjs';
@@ -15,7 +15,7 @@ export class OrderFilterComponent {
   OrderPaymentType = OrderPaymentType;
   OrderState = OrderState;
   loading = false;
-  orders = new BehaviorSubject<Order[]>([]);
+  orders = signal<Order[]>([]);
 
   constructor(private fb: FormBuilder, private ordersService: OrdersService) {
     this.form = this.fb.group({
@@ -61,7 +61,7 @@ export class OrderFilterComponent {
     if (!this.form.valid) return;
     const data = await this.ordersService.filter(this.filterDto);
     if (data) {
-      this.orders.next(data);
+      this.orders.set(data);
     }
   }
 }
