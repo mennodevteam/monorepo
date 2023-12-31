@@ -264,9 +264,10 @@ export class OrdersService {
         );
         break;
       case 'product':
+        orderItems.sort((a, b) => a.isAbstract && !b.isAbstract ? 1 : -1)
         data = groupBySum<OrderItem>(
-          orderItems.filter((x) => x.product),
-          (item) => item.product.id,
+          orderItems,
+          (item) => item.title,
           (item) => item.quantity * item.price,
           (item) => item.quantity
         );

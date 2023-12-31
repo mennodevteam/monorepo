@@ -161,7 +161,7 @@ export class OrderReportsComponent implements AfterViewInit {
           break;
         case 'product':
           skipTotal = true;
-          this.chartData.labels = keys.map((x) => this.menuService.getProductById(x)?.title);
+          this.chartData.labels = keys;
           break;
         case 'payment':
           this.chartData.labels = keys.map((x) =>
