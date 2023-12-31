@@ -75,6 +75,7 @@ export class DailyOrderListService {
   }
 
   async loadData(forceLoad?: boolean) {
+    const date = new Date(this.date);
     if (this.isToday) {
       this._loading = true;
       if (!this.todayOrders.orders() || forceLoad) {
@@ -98,7 +99,7 @@ export class DailyOrderListService {
         toDate,
       });
 
-      if (orders) {
+      if (orders && date.valueOf() === this.date.valueOf()) {
         this.allOrders = orders;
         this.setData();
       }
