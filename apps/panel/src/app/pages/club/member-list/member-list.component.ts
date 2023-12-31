@@ -14,6 +14,7 @@ import * as XLSX from 'xlsx';
 import { PersianNumberService } from '@menno/utils';
 import { TagEditDialogComponent } from './tag-edit-dialog/tag-edit-dialog.component';
 import { MessageTemplateSelectorDialogComponent } from '../../../shared/dialogs/message-template-selector-dialog/message-template-selector-dialog.component';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'member-list',
@@ -32,6 +33,8 @@ export class MemberListComponent {
   totalWalletCharge?: number;
   skipPaginatorChangeDetection = false;
   selection = new SelectionModel<Member>(true, []);
+  sortBy: FilterMemberDto['sortBy'];
+  sortType: FilterMemberDto['sortType'];
   private currentFilter?: FilterMemberDto;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -175,6 +178,8 @@ export class MemberListComponent {
     f.tagIds = formVal.tagIds;
     f.skip = (this.paginator.pageIndex || 0) * (this.paginator.pageSize || 20);
     f.take = this.paginator.pageSize || 20;
+    f.sortBy = this.sortBy;
+    f.sortType = this.sortType;
     return f;
   }
 
@@ -298,5 +303,17 @@ export class MemberListComponent {
     }
     this.snack.open(this.translate.instant('app.savedSuccessfully'), '', { panelClass: 'success' });
     this.club.loadTags();
+  }
+
+  sortChanged(ev: Sort) {
+    if (!ev?.direction) {
+      this.sortBy = undefined;
+      this.sortType = undefined;
+    } else {
+      this.sortBy = ev.active as FilterMemberDto['sortBy'];
+      this.sortType = ev.direction.toUpperCase() as FilterMemberDto['sortType'];
+    }
+
+    this.load();
   }
 }

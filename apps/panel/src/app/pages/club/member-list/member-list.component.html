@@ -183,7 +183,12 @@
     <mat-divider></mat-divider>
     <mat-card-content>
       <br />
-      <clb-members-table [hidden]="loading" [members]="members" [selection]="selection"></clb-members-table>
+      <clb-members-table
+        [hidden]="loading"
+        [members]="members"
+        [selection]="selection"
+        (sortChanged)="sortChanged($event)"
+      ></clb-members-table>
       <mat-spinner *ngIf="loading" [diameter]="32" color="primary"></mat-spinner>
     </mat-card-content>
   </mat-card>

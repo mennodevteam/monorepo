@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -11,6 +11,7 @@ import { ClubService } from '../../../../core/services/club.service';
 import { MemberDialogComponent } from '../../../../shared/dialogs/member-dialog/member-dialog.component';
 import { TagEditDialogComponent } from '../tag-edit-dialog/tag-edit-dialog.component';
 import { MessageTemplateSelectorDialogComponent } from '../../../../shared/dialogs/message-template-selector-dialog/message-template-selector-dialog.component';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'clb-members-table',
@@ -22,8 +23,9 @@ export class MembersTableComponent implements OnInit {
   @Input() members: BehaviorSubject<Member[]>;
   @Input() selection: SelectionModel<Member>;
   dataSource = new MatTableDataSource<Member>([]);
+  @Output() sortChanged = new EventEmitter<Sort>()
 
-  displayedColumns = ['select', 'name', 'phone', 'wallet', 'joinedAt', 'star', 'tags'];
+  displayedColumns = ['select', 'name', 'mobilePhone', 'credit', 'joinedAt', 'star', 'tags'];
   constructor(
     public shop: ShopService,
     private club: ClubService,
