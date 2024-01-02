@@ -8,13 +8,19 @@ import { UpdateDialogComponent } from '../../shared/dialogs/update-dialog/update
 })
 export class UpdateService {
   constructor(private updates: SwUpdate, private dialog: MatDialog) {
+    const currentVersion = localStorage.getItem('version');
     try {
       if (this.updates.isEnabled) {
         this.updates.versionUpdates.subscribe((ev: any) => {
           if (ev.latestVersion?.appData && ev.type == 'VERSION_READY') {
+            localStorage.setItem('version', ev.latestVersion?.appData.version)
+
             if (ev.latestVersion?.appData?.forceReload) {
               window.location.reload();
-            } else if (!ev.latestVersion?.appData.lazyReload) {
+            } else if (
+              !ev.latestVersion?.appData.lazyReload &&
+              ev.latestVersion?.appData.version != currentVersion
+            ) {
               this.dialog
                 .open(UpdateDialogComponent, {
                   data: ev.latestVersion?.appData,

@@ -27,18 +27,7 @@ export class OrdersService {
   ) {}
 
   async filter(dto: FilterOrderDto) {
-    const orders = await this.http.post<Order[]>(`orders/filter`, dto).toPromise();
-    if (orders) {
-      for (const o of orders) {
-        if (o.details?.table) {
-          const table = this.shop.shop?.details?.tables?.find((x) => x.code === o.details?.table);
-          if (table) {
-            o.details.table = `${o.details.table} (${table.title})`;
-          }
-        }
-      }
-    }
-    return orders;
+    return this.http.post<Order[]>(`orders/filter`, dto).toPromise();
   }
 
   async save(dto: OrderDto) {

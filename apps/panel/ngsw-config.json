@@ -1,7 +1,8 @@
 {
   "appData": {
-    "forceReload": false,
+    "forceReload": true,
     "lazyReload": false,
+    "version": "14021012",
     "changes": [
       "آیتم‌های خاص منو ویژه اعضای باشگاه مشتریان",
       "ترتیب نمایش اعضای باشگاه مشتریان",

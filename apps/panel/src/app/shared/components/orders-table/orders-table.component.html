@@ -33,9 +33,9 @@
       <span matListItemLine [ngSwitch]="order.type" class="row">
         {{ order.type | orderType }}
         <span spacer-sm></span>
-        <span class="eng" *ngIf="order.type === OrderType.DineIn && order.details?.table">{{
-          order.details?.table
-        }}</span>
+        <span class="eng" *ngIf="order.type === OrderType.DineIn && order.details?.table">
+          {{ order.details.table | table }}
+        </span>
         <span flex></span>
         <b [class.green]="order.paymentType !== OrderPaymentType.NotPayed">{{
           order.totalPrice | menuCurrency

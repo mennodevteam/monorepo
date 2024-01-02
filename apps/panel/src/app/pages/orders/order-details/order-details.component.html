@@ -297,7 +297,7 @@
             {{ order.type | orderType }}
           </mat-card-title>
           <mat-card-subtitle>
-            <span *ngSwitchCase="OrderType.DineIn">{{ order.details.table }}</span>
+            <span *ngSwitchCase="OrderType.DineIn">{{ order.details.table | table }}</span>
             <span *ngSwitchCase="OrderType.Delivery">
               {{ order.address?.description }}
             </span>

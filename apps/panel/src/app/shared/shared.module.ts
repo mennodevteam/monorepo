@@ -68,6 +68,7 @@ import { UpdateDialogComponent } from './dialogs/update-dialog/update-dialog.com
 import { UserAddressesDialogComponent } from './dialogs/user-addresses-dialog/user-addresses-dialog.component';
 import { ExtendPluginsModalComponent } from './components/extend-plugins-modal/extend-plugins-modal.component';
 import { ScreenDirective } from './directives/screen.directive';
+import { TablePipe } from './pipes/table.pipe';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { ScreenDirective } from './directives/screen.directive';
     MenuCurrencyPipe,
     PdatePipe,
     PhonePipe,
+    TablePipe,
     MemberAutocompleteComponent,
     SelectDialogComponent,
     AlertDialogComponent,
@@ -99,7 +101,6 @@ import { ScreenDirective } from './directives/screen.directive';
     MemberSelectDialogComponent,
     SettlementDialogComponent,
     MessageTemplateSelectorDialogComponent,
-    PhonePipe,
     EmptyStateComponent,
     SortDialogComponent,
     UserAddressesDialogComponent,
@@ -157,6 +158,7 @@ import { ScreenDirective } from './directives/screen.directive';
     StopPropagationDirective,
     PdatePipe,
     PhonePipe,
+    TablePipe,
     EmptyStateComponent,
     AlertDialogComponent,
     SelectOrderTypeCardComponent,
@@ -213,6 +215,7 @@ import { ScreenDirective } from './directives/screen.directive';
     { provide: MAT_DATE_FORMATS, useValue: PERSIAN_DATE_FORMATS },
     DatePipe,
     DecimalPipe,
+    TablePipe,
     PhonePipe,
   ],
 })
