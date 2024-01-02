@@ -1,5 +1,9 @@
 <mat-toolbar>
   <h1 flex>{{ 'shops.pageTitle' | translate }}</h1>
+  <button mat-button color="primary" (click)="sendSms()">
+    {{ 'shops.smsAll' | translate }}
+  </button>
+  <span spacer></span>
   <button mat-stroked-button color="primary" (click)="shopsService.migrateFromPrev()">
     {{ 'shops.migrate' | translate }}
   </button>

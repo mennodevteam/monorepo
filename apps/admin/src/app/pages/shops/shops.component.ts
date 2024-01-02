@@ -119,23 +119,34 @@ export class ShopsComponent {
           }),
           label: this.translate.instant('smsDialog.label'),
           type: 'textarea',
-          rows: 6
+          rows: 6,
         },
+        width: '600px',
       })
       .afterClosed()
       .subscribe((value) => {
-        if (value) {
+        if (value && this.shops) {
           if (shop) {
             dto.receptors = [shop.users[0].user.mobilePhone];
-            dto.messages = [value];
-            this.smsService.send(dto).then((sms: Sms[] | undefined) => {
-              if (sms) {
-                this.snack.open(this.translate.instant('smsDialog.success', { value: sms.length }), '', {
-                  panelClass: 'success',
-                });
+            dto.messages = [value.replace('###', shop.title)];
+          } else {
+            dto.receptors = [];
+            dto.messages = [];
+            for (const s of this.shops) {
+              if (s.users[0].user.mobilePhone) {
+                dto.receptors.push(s.users[0].user.mobilePhone);
+                dto.messages.push(value.replace('###', s.title));
               }
-            });
+            }
           }
+
+          this.smsService.send(dto).then((sms: Sms[] | undefined) => {
+            if (sms) {
+              this.snack.open(this.translate.instant('smsDialog.success', { value: sms.length }), '', {
+                panelClass: 'success',
+              });
+            }
+          });
         }
       });
   }
