@@ -21,10 +21,10 @@ export class MenuService {
     private shopService: ShopService,
     private bottomSheet: MatBottomSheet
   ) {
-    this.load();
+    this.load(true);
   }
 
-  async load() {
+  async load(sendStat?: boolean) {
     const query = this.shopService.getShopUsernameFromQuery();
     this._baseMenu = await this.http.get<Menu>(`menus/${query}`).toPromise();
 
@@ -35,9 +35,16 @@ export class MenuService {
       const menu = this.baseMenu;
       Menu.setRefsAndSort(menu, undefined, undefined, undefined, this._star);
       this._menu.next(menu);
+      if (sendStat) {
+        this.http.get(`menuStats/loadMenu/${menu.id}`).toPromise();
+      }
     } else {
       this._menu.next(null);
     }
+  }
+
+  sendProductStat(productId: string) {
+    if (this.menu) this.http.get(`menuStats/clickProduct/${this.menu.id}/${productId}`).toPromise();
   }
 
   get menu() {

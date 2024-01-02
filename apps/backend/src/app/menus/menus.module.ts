@@ -8,6 +8,7 @@ import { AuthModule } from '../auth/auth.module';
 import { MenuCostsController } from './menu-costs.controller';
 import { HttpModule } from '@nestjs/axios';
 import { FilesModule } from '../files/files.module';
+import { MenuStatsController } from './menu-stats.controller';
 
 @Module({
   imports: [SchemasModule, AuthModule, HttpModule, FilesModule],
@@ -17,6 +18,7 @@ import { FilesModule } from '../files/files.module';
     ProductsController,
     ProductCategoriesController,
     MenuCostsController,
+    MenuStatsController,
   ],
   exports: [MenusService]
 })
