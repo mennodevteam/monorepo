@@ -34,7 +34,7 @@
         {{ order.type | orderType }}
         <span spacer-sm></span>
         <span class="eng" *ngIf="order.type === OrderType.DineIn && order.details?.table">
-          {{ order.details.table | table }}
+          {{ order.details.table | shopTable }}
         </span>
         <span flex></span>
         <b [class.green]="order.paymentType !== OrderPaymentType.NotPayed">{{
@@ -105,7 +105,7 @@
       <i matListItemIcon *ngSwitchCase="OrderType.Takeaway" class="fa-solid fa-cup-togo"></i>
       <i matListItemIcon *ngSwitchCase="OrderType.Delivery" class="fa-solid fa-moped"></i>
       <span class="eng" *ngIf="order.type === OrderType.DineIn && order.details?.table">
-        {{ order.details?.table }}
+        {{ order.details?.table | shopTable }}
       </span>
       <span *ngIf="order.type !== OrderType.DineIn || !order.details?.table">
         {{ order.type | orderType }}
