@@ -37,11 +37,12 @@ export class MobilePhoneGuard implements CanActivate {
 
   private needLogin() {
     const t = this.menuService.type;
+    const config = this.shopService.shop?.appConfig
     if (!this.shopService.hasOrderingPlugin()) return false;
-    if (this.shopService.shop?.appConfig?.requiredPayment) {
-      if (this.shopService.shop?.appConfig?.disableOrdering) return false;
-      if (t != undefined && this.shopService.shop?.appConfig?.requiredPayment.indexOf(t) > -1) return true;
-      if (t != undefined && this.shopService.shop?.appConfig?.requiredRegister.indexOf(t) > -1) return true;
+    if (config) {
+      if (config?.disableOrdering) return false;
+      if (t != undefined && !config.disablePayment && config.requiredPayment.indexOf(t) > -1) return true;
+      if (t != undefined && config.requiredRegister.indexOf(t) > -1) return true;
     }
     return false;
   }
