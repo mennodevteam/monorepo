@@ -13,7 +13,7 @@ export class ShopPluginsService {
     private smsService: SmsService
   ) {}
 
-  @Cron(CronExpression.EVERY_DAY_AT_5AM)
+  @Cron(CronExpression.EVERY_DAY_AT_2PM)
   async checkPluginExpiration(): Promise<void> {
     const plugins = await this.repo.find({ relations: ['shop.users.user'] });
     for (const plugin of plugins) {
