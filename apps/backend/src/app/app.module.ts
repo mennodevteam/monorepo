@@ -46,15 +46,16 @@ import { HealthModule } from './health/health.module';
         extensions: ['pg_stat_statements'],
         pool: {
           max: process.env.DB_POOL_MAX ? Number(process.env.DB_POOL_MAX) : 10,
-          min:  process.env.DB_POOL_MAX ? Number(process.env.DB_POOL_MIN) : 2,
-          acquire:  process.env.DB_POOL_MAX ? Number(process.env.DB_POOL_ACQUIRE) : 30000,
-          idle:  process.env.DB_POOL_MAX ? Number(process.env.DB_POOL_IDLE) : 10000,
+          min: process.env.DB_POOL_MAX ? Number(process.env.DB_POOL_MIN) : 2,
+          acquire: process.env.DB_POOL_MAX ? Number(process.env.DB_POOL_ACQUIRE) : 30000,
+          idle: process.env.DB_POOL_MAX ? Number(process.env.DB_POOL_IDLE) : 10000,
         },
       },
+      connectTimeoutMS: 5000,
       poolSize: process.env.DB_POOL_MAX ? Number(process.env.DB_POOL_MAX) : 10,
       poolErrorHandler: (error: any) => {
-        console.error('pool error handler', error)
-      }
+        console.error('pool error handler', error);
+      },
     }),
     HealthModule,
     SchemasModule,
