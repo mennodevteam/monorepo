@@ -7,6 +7,7 @@ import { Public } from '../auth/public.decorator';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 import { MenusService } from './menu.service';
+import { RedisKey, RedisService } from '../core/redis.service';
 
 @Controller('menus')
 export class MenusController {
@@ -14,7 +15,8 @@ export class MenusController {
     @InjectRepository(Shop)
     private shopsRepo: Repository<Shop>,
     private auth: AuthService,
-    private menuService: MenusService
+    private menuService: MenusService,
+    private redis: RedisService
   ) {}
 
   @Get()
@@ -37,6 +39,7 @@ export class MenusController {
     });
 
     this.menuService.syncMenu(shop.menu.id, prevCode);
+    this.redis.updateMenu(shop.id);
   }
 
   @Public()
@@ -44,27 +47,15 @@ export class MenusController {
   async findOne(@Param('query') query: string): Promise<Menu> {
     const shop = await this.shopsRepo.findOne({
       where: [{ domain: query }, { username: query }, { code: query }],
-      relations: [
-        'menu.categories.products.variants',
-        'menu.costs',
-        'menu.costs.includeProductCategory',
-        'menu.costs.includeProduct',
-      ],
     });
 
-    if (shop.menu?.costs) shop.menu.costs = shop.menu.costs.filter((x) => x.status !== Status.Inactive);
-    if (shop.menu?.categories) {
-      shop.menu.categories = shop.menu.categories.filter((x) => x.status !== Status.Inactive);
-      for (const cat of shop.menu.categories) {
-        if (cat.products) {
-          cat.products = cat.products.filter((x) => x.status !== Status.Inactive);
-          for (const product of cat.products) {
-            if (product.variants) product.variants = product.variants.filter((x) => x.status !== Status.Inactive);
-          }
-        }
-      }
+    if (shop) {
+      const redisKey = this.redis.key(RedisKey.Menu, shop.id);
+      let data = await this.redis.client.get(redisKey);
+      if (!data) data = await this.redis.updateMenu(shop.id);
+      const menu = JSON.parse(data);
+      return menu;
     }
-
-    return shop.menu;
+    return;
   }
 }

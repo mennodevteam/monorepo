@@ -29,7 +29,6 @@ import * as Sentry from '@sentry/node';
 import { RedisKey, RedisService } from '../core/redis.service';
 import { Guid } from 'guid-typescript';
 
-
 @EventSubscriber()
 export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
   constructor(
@@ -51,7 +50,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     private webPush: WebPushNotificationsService,
     private printersService: PrintersService,
     private smsService: SmsService,
-    private redis: RedisService,
+    private redis: RedisService
   ) {
     dataSource.subscribers.push(this);
   }
@@ -66,6 +65,8 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     const shop = order.shop
       ? await this.shopsRepo.findOne({ where: { id: order.shop.id }, relations: ['club', 'smsAccount'] })
       : undefined;
+
+    this.redis.updateMenu(shop.id);
 
     const customer = order.customer ? await this.usersRepo.findOneBy({ id: order.customer.id }) : undefined;
 
@@ -143,6 +144,9 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
         ...(await this.ordersRepo.findOne({ where: { id: event.entity.id }, relations: ['shop'] })),
         ...event.entity,
       };
+
+      this.redis.updateMenu(order.shop.id);
+
       this.autoPrint(order as Order, order.shop, false);
     } catch (error) {}
   }
@@ -172,7 +176,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
         break;
     }
     const redisKey = this.redis.key(RedisKey.WindowsLocalNotification, shop.id);
-    this.redis.client.lpush(redisKey, JSON.stringify(notification))
+    this.redis.client.lpush(redisKey, JSON.stringify(notification));
   }
 
   private async autoPrint(order: Order, shop: Shop, isAdded?: boolean) {
