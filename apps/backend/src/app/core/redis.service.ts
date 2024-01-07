@@ -4,6 +4,7 @@ import { Redis } from 'ioredis';
 
 export enum RedisKey {
   PrintAction = 'print-action',
+  WindowsLocalNotification = 'windows-local-notif',
 }
 
 @Injectable()

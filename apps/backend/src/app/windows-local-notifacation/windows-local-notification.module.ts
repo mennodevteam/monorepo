@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { WindowsLocalNotificationController } from './windows-local-notification.controller';
 import { WindowsLocalNotificationService } from './windows-local-notification.service';
-import { SchemasModule } from '../core/schemas.module';
+import { CoreModule } from '../core/core.module';
 
 @Module({
-  imports: [SchemasModule],
+  imports: [CoreModule],
   providers: [WindowsLocalNotificationService],
   controllers: [WindowsLocalNotificationController],
   exports: [WindowsLocalNotificationService],

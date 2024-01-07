@@ -26,6 +26,9 @@ import { WebPushNotificationsService } from '../web-push-notifications/web-push-
 import { SmsService } from '../sms/sms.service';
 import { PrintersService } from '../printers/printers.service';
 import * as Sentry from '@sentry/node';
+import { RedisKey, RedisService } from '../core/redis.service';
+import { Guid } from 'guid-typescript';
+
 
 @EventSubscriber()
 export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
@@ -47,7 +50,8 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     private windowsLocalNotificationRepo: Repository<WindowsLocalNotification>,
     private webPush: WebPushNotificationsService,
     private printersService: PrintersService,
-    private smsService: SmsService
+    private smsService: SmsService,
+    private redis: RedisService,
   ) {
     dataSource.subscribers.push(this);
   }
@@ -146,10 +150,12 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
   private async insertWindowsNotification(order: Order, shop: Shop) {
     if (order.isManual) return;
     const notification = new WindowsLocalNotification();
+    notification.id = Date.now();
     notification.shop = shop;
     notification.isNotified = false;
     notification.failedCount = 0;
     notification.title = 'سفارش جدید';
+    notification.createdAt = new Date();
     switch (order.type) {
       case OrderType.DineIn:
         if (order.details.table) notification.description = `${order.details.table}  میز  `;
@@ -165,7 +171,8 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
         notification.description = 'بیرون بر';
         break;
     }
-    this.windowsLocalNotificationRepo.save(notification);
+    const redisKey = this.redis.key(RedisKey.WindowsLocalNotification, shop.id);
+    this.redis.client.lpush(redisKey, JSON.stringify(notification))
   }
 
   private async autoPrint(order: Order, shop: Shop, isAdded?: boolean) {

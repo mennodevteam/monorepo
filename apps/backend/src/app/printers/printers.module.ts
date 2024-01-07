@@ -1,14 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from '../auth/auth.module';
-import { SchemasModule } from '../core/schemas.module';
+import { CoreModule } from '../core/core.module';
 import { PrintersController } from './printers.controller';
 import { PrintersService } from './printers.service';
-import { RedisService } from '../core/redis.service';
 
 @Module({
-  imports: [SchemasModule, AuthModule],
+  imports: [CoreModule, AuthModule],
   controllers: [PrintersController],
-  providers: [PrintersService, RedisService],
-  exports: [PrintersService]
+  providers: [PrintersService],
+  exports: [PrintersService],
 })
 export class PrintersModule {}

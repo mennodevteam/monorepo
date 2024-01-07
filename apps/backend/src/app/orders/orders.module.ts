@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from '../auth/auth.module';
-import { SchemasModule } from '../core/schemas.module';
+import { CoreModule } from '../core/core.module';
 import { OrdersSubscriber } from './orders.subscriber';
 import { OrdersController } from './orders.controller';
 import { OrdersService } from './orders.service';
@@ -9,11 +9,12 @@ import { WebPushNotificationModule } from '../web-push-notifications/web-push-no
 import { PrintersModule } from '../printers/printers.module';
 import { ClubsModule } from '../clubs/clubs.module';
 import { OrderItemsSubscriber } from './order-items.subscriber';
+import { RedisService } from '../core/redis.service';
 
 @Module({
-  imports: [SchemasModule, AuthModule, SmsModule, WebPushNotificationModule, PrintersModule, ClubsModule],
+  imports: [CoreModule, AuthModule, SmsModule, WebPushNotificationModule, PrintersModule, ClubsModule],
   controllers: [OrdersController],
-  providers: [OrdersService, OrdersSubscriber, OrderItemsSubscriber],
+  providers: [OrdersService, RedisService, OrdersSubscriber, OrderItemsSubscriber],
   exports: [OrdersService],
 })
 export class OrdersModule {}

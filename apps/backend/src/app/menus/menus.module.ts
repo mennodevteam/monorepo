@@ -3,7 +3,7 @@ import { MenusController } from './menus.controller';
 import { ProductsController } from './products.controller';
 import { ProductCategoriesController } from './product-categories.controller';
 import { MenusService } from './menu.service';
-import { SchemasModule } from '../core/schemas.module';
+import { CoreModule } from '../core/core.module';
 import { AuthModule } from '../auth/auth.module';
 import { MenuCostsController } from './menu-costs.controller';
 import { HttpModule } from '@nestjs/axios';
@@ -11,7 +11,7 @@ import { FilesModule } from '../files/files.module';
 import { MenuStatsController } from './menu-stats.controller';
 
 @Module({
-  imports: [SchemasModule, AuthModule, HttpModule, FilesModule],
+  imports: [CoreModule, AuthModule, HttpModule, FilesModule],
   providers: [MenusService],
   controllers: [
     MenusController,

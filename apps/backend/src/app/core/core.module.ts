@@ -46,6 +46,7 @@ import {
   WebPushSubscriptionSchema,
   WindowsLocalNotificationSchema,
 } from './schemas';
+import { RedisService } from './redis.service';
 
 @Module({
   imports: [
@@ -96,6 +97,7 @@ import {
       WindowsLocalNotificationSchema,
     ]),
   ],
-  exports: [TypeOrmModule],
+  providers: [RedisService],
+  exports: [TypeOrmModule, RedisService],
 })
-export class SchemasModule {}
+export class CoreModule {}

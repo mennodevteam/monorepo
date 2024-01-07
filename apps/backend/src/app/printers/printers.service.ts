@@ -120,6 +120,7 @@ export class PrintersService {
         order: { id: order.id },
         printView: { id: view.id },
         type: view.type,
+        createdAt: new Date(),
       });
     }
     await this.redis.client.lpush(
@@ -144,6 +145,7 @@ export class PrintersService {
       printerTitle: view.title,
       printView: { id: view.id },
       type: view.type,
+      createdAt: new Date(),
       shop: { id: shopId },
     } as PrintAction;
     await this.redis.client.lpush(this.redis.key(RedisKey.PrintAction, shopId), JSON.stringify(action));

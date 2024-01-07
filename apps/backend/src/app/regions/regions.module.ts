@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { RegionsController } from './regions.controller';
 import { ScheduleModule } from '@nestjs/schedule';
-import { SchemasModule } from '../core/schemas.module';
+import { CoreModule } from '../core/core.module';
 
 @Module({
-  imports: [SchemasModule, ScheduleModule.forRoot()],
+  imports: [CoreModule, ScheduleModule.forRoot()],
   providers: [],
   controllers: [RegionsController],
 })

@@ -3,7 +3,7 @@ import { ShopsController } from './shops.controller';
 import { ShopsService } from './shops.service';
 import { SmsModule } from '../sms/sms.module';
 import { UsersModule } from '../users/users.module';
-import { SchemasModule } from '../core/schemas.module';
+import { CoreModule } from '../core/core.module';
 import { AuthModule } from '../auth/auth.module';
 import { HttpModule } from '@nestjs/axios';
 import { FilesModule } from '../files/files.module';
@@ -14,7 +14,7 @@ import { MenusModule } from '../menus/menus.module';
 
 @Module({
   imports: [
-    SchemasModule,
+    CoreModule,
     SmsModule,
     UsersModule,
     ClubsModule,

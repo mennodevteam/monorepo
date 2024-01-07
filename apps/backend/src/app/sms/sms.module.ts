@@ -7,10 +7,10 @@ import { AuthModule } from '../auth/auth.module';
 import { SmsAccountsController } from './sms-accounts.controller';
 import { SmsTemplatesController } from './sms-templates.controller';
 import { SmsTemplatesService } from './sms-templates.service';
-import { SchemasModule } from '../core/schemas.module';
+import { CoreModule } from '../core/core.module';
 
 @Module({
-  imports: [SchemasModule, AuthModule, ScheduleModule.forRoot()],
+  imports: [CoreModule, AuthModule, ScheduleModule.forRoot()],
   providers: [SmsService, SmsSubscriber, SmsTemplatesService],
   controllers: [SmsController, SmsAccountsController, SmsTemplatesController],
   exports: [SmsService],

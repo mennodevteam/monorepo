@@ -8,13 +8,13 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { AuthController } from './auth.controller';
 import { RolesGuard } from './roles.guard';
-import { SchemasModule } from '../core/schemas.module';
+import { CoreModule } from '../core/core.module';
 import { AppLocalStrategy } from './app-local.strategy';
 import { AdminLocalStrategy } from './admin-local.strategy';
 import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [SchemasModule, PassportModule, HttpModule, JwtModule.register({})],
+  imports: [CoreModule, PassportModule, HttpModule, JwtModule.register({})],
   providers: [
     AuthService,
     PanelLocalStrategy,

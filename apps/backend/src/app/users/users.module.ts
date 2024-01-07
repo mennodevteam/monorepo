@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { SchemasModule } from '../core/schemas.module';
+import { CoreModule } from '../core/core.module';
 import { UsersService } from './users.service';
 
 @Module({
-  imports: [SchemasModule],
+  imports: [CoreModule],
   providers: [UsersService],
   exports: [UsersService],
 })

@@ -6,7 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { ClubsModule } from './clubs/clubs.module';
-import { SchemasModule } from './core/schemas.module';
+import { CoreModule } from './core/core.module';
 import { DeliveryAreasModule } from './delivery-areas/delivery-areas.module';
 import { FilesModule } from './files/files.module';
 import { MenusModule } from './menus/menus.module';
@@ -29,7 +29,6 @@ import { AppRedirectController } from './app-redirect.controller';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './core/http-exception.filter';
 import { HealthModule } from './health/health.module';
-import { RedisService } from './core/redis.service';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -59,7 +58,7 @@ import { RedisService } from './core/redis.service';
       },
     }),
     HealthModule,
-    SchemasModule,
+    CoreModule,
     HttpModule,
     AuthModule,
     UsersModule,
@@ -85,7 +84,6 @@ import { RedisService } from './core/redis.service';
   controllers: [AppController, AppRedirectController],
   providers: [
     AppService,
-    RedisService,
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,

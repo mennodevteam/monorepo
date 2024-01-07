@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { DingController } from './ding.controller';
-import { SchemasModule } from '../core/schemas.module';
+import { CoreModule } from '../core/core.module';
 import { WebPushNotificationModule } from '../web-push-notifications/web-push-notifications.module';
 
 @Module({
-  imports: [SchemasModule, WebPushNotificationModule],
+  imports: [CoreModule, WebPushNotificationModule],
   providers: [],
   controllers: [DingController],
 })

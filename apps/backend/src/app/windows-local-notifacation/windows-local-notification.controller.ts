@@ -11,21 +11,18 @@ export class WindowsLocalNotificationController {
   @Get('/:shopId')
   async getNewNotifies(@Param('shopId') shopId: string): Promise<WindowsLocalNotification[]> {
     const notifications = await this.widowsLocalNotificationService.findByShop(shopId);
-    for (const n of notifications) {
-      this.widowsLocalNotificationService.isNotified(n.id);
-    }
     return notifications;
   }
 
   @Public()
   @Get('/isNotified/:id')
-  isNotified(@Param('id') id: string): Promise<void> {
-    return this.widowsLocalNotificationService.isNotified(Number(id));
+  async isNotified(@Param('id') id: string): Promise<void> {
+    // return this.widowsLocalNotificationService.isNotified(Number(id));
   }
 
   @Public()
   @Get('/setFailed/:id')
-  setFailed(@Param('id') id: string): Promise<void> {
-    return this.widowsLocalNotificationService.setFailed(Number(id));
+  async setFailed(@Param('id') id: string): Promise<void> {
+    // return this.widowsLocalNotificationService.setFailed(Number(id));
   }
 }
