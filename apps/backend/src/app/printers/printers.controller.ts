@@ -22,7 +22,7 @@ export class PrintersController {
     private printActionsRepo: Repository<PrintAction>,
     private printersService: PrintersService,
     private auth: AuthService,
-    private redis: RedisService,
+    private redis: RedisService
   ) {}
 
   @Public()
@@ -103,7 +103,7 @@ export class PrintersController {
     last5min.setMinutes(last5min.getMinutes() - 5);
     const redisKey = this.redis.key(RedisKey.PrintAction, shopId);
     const data = await this.redis.client.lrange(redisKey, 0, -1);
-    let actions: PrintAction[] = data ? data.map(x => JSON.parse(x)) : [];
+    let actions: PrintAction[] = data.map((x) => JSON.parse(x));
     actions = actions.filter((x) => !x.waitForLocal || Date.now() - new Date(x.createdAt).valueOf() > 15000);
     this.redis.client.del(redisKey);
     return actions;
