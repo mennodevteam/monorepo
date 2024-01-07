@@ -104,7 +104,7 @@ export class PrintersController {
     const redisKey = this.redis.key(RedisKey.PrintAction, shopId);
     const data = await this.redis.client.lrange(redisKey, 0, -1);
     let actions: PrintAction[] = data.map((x) => JSON.parse(x));
-    actions = actions.filter((x) => !x.waitForLocal || Date.now() - new Date(x.createdAt).valueOf() > 15000);
+    actions = actions.filter((x) => !x.waitForLocal || Date.now() - new Date(x.createdAt).valueOf() > 60000);
     this.redis.client.del(redisKey);
     return actions;
   }
