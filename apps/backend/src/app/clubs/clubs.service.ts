@@ -27,6 +27,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { SmsService } from '../sms/sms.service';
 import { OldTypes } from '@menno/old-types';
 import { HttpService } from '@nestjs/axios';
+import { RedisService } from '../core/redis.service';
 
 @Injectable()
 export class ClubsService {
@@ -38,7 +39,8 @@ export class ClubsService {
     @InjectRepository(Club) private clubsRepo: Repository<Club>,
     @InjectRepository(Member) private membersRepo: Repository<Member>,
     @InjectRepository(User) private usersRepo: Repository<User>,
-    @InjectRepository(DiscountCoupon) private discountCouponsRepo: Repository<DiscountCoupon>
+    @InjectRepository(DiscountCoupon) private discountCouponsRepo: Repository<DiscountCoupon>,
+    private redis: RedisService
   ) {}
 
   async saveMember(member: Member): Promise<Member> {
@@ -373,6 +375,7 @@ export class ClubsService {
       await this.shopsRepo.update(shop.id, {
         club: { id: club.id },
       });
+      this.redis.updateShop(shop.id);
     }
 
     const currentMembers = shop.club

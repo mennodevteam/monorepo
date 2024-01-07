@@ -47,6 +47,7 @@ export class MenusController {
   async findOne(@Param('query') query: string): Promise<Menu> {
     const shop = await this.shopsRepo.findOne({
       where: [{ domain: query }, { username: query }, { code: query }],
+      select: ['id']
     });
 
     if (shop) {

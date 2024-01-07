@@ -9,6 +9,7 @@ import { AuthPayload } from '../core/types/auth-payload';
 import { Roles } from '../auth/roles.decorators';
 import { environment } from '../../environments/environment';
 import { PaymentGateway, PaymentGatewayType, Shop, UserRole } from '@menno/types';
+import { RedisService } from '../core/redis.service';
 
 @Roles(UserRole.Panel)
 @Controller('paymentGateways')
@@ -18,14 +19,15 @@ export class PaymentGatewaysController {
     @InjectRepository(PaymentGateway)
     private repo: Repository<PaymentGateway>,
     @InjectRepository(Shop)
-    private shopsRepo: Repository<Shop>
+    private shopsRepo: Repository<Shop>,
+    private redis: RedisService
   ) {}
 
   @Get()
   async get(@Body() dto: PaymentGateway, @LoginUser() user: AuthPayload) {
     const shop = await this.auth.getPanelUserShop(user, ['paymentGateway']);
     if (shop.paymentGateway) {
-      const g = await this.repo.findOne({where: {id: shop.paymentGateway.id}, select: ['keys']});
+      const g = await this.repo.findOne({ where: { id: shop.paymentGateway.id }, select: ['keys'] });
       shop.paymentGateway.keys = g.keys;
     }
     return shop.paymentGateway;
@@ -41,6 +43,7 @@ export class PaymentGatewaysController {
     dto.title = shop.title;
     const result = await this.repo.save(dto);
     if (!shop.paymentGateway) this.shopsRepo.update(shop.id, { paymentGateway: { id: result.id } });
+    this.redis.updateShop(shop.id);
     return result;
   }
 }

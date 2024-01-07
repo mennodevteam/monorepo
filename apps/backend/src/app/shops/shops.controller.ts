@@ -20,6 +20,7 @@ import { Roles } from '../auth/roles.decorators';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 import { ShopsService } from './shops.service';
+import { RedisKey, RedisService } from '../core/redis.service';
 
 @Controller('shops')
 export class ShopsController {
@@ -27,7 +28,8 @@ export class ShopsController {
     private auth: AuthService,
     private shopsService: ShopsService,
     @InjectRepository(Shop)
-    private shopsRepo: Repository<Shop>
+    private shopsRepo: Repository<Shop>,
+    private redis: RedisService
   ) {}
 
   @Public()
@@ -47,7 +49,9 @@ export class ShopsController {
       }
 
       if (shop) {
-        const logo = `https://${process.env.LIARA_BUCKET_NAME}.${process.env.LIARA_BUCKET_ENDPOINT}/${shop.logoImage?.sm || shop.logo}`;
+        const logo = `https://${process.env.LIARA_BUCKET_NAME}.${process.env.LIARA_BUCKET_ENDPOINT}/${
+          shop.logoImage?.sm || shop.logo
+        }`;
         const title = shop.title;
         const description = shop.description;
         return { logo, title, description };
@@ -94,7 +98,9 @@ export class ShopsController {
   async edit(@Body() dto: Shop, @LoginUser() user: AuthPayload): Promise<Shop> {
     const shop = await this.auth.getPanelUserShop(user);
     dto.id = shop.id;
-    return this.shopsService.save(dto);
+    const res = await this.shopsService.save(dto);
+    this.redis.updateShop(shop.id);
+    return res;
   }
 
   @Post()
@@ -110,7 +116,7 @@ export class ShopsController {
       dto.plugins = [Plugin.Menu, Plugin.Ordering, Plugin.Club];
       dto.expiredAt = new Date();
       dto.pluginDescription = 'نسخه آزمایشی رایگان';
-      dto.expiredAt.setDate(dto.expiredAt.getDate() + 7);
+      dto.expiredAt.setDate(dto.expiredAt.getDate() + 3);
       return this.shopsService.create(dto);
     } else throw new HttpException({ otp: 'token invalid' }, HttpStatus.FORBIDDEN);
   }
@@ -127,11 +133,16 @@ export class ShopsController {
   async findByUsernameOrCode(@Param('query') query: string, @Req() req): Promise<Shop> {
     const shop = await this.shopsRepo.findOne({
       where: [{ domain: query }, { username: query }, { code: query }],
-      relations: ['region', 'shopGroup', 'appConfig.theme', 'paymentGateway', 'plugins', 'club'],
+      select: ['id'],
     });
-
-    if (!(shop.plugins?.plugins?.indexOf(Plugin.Ordering) >= 0)) shop.appConfig.disableOrdering = true;
-    return shop;
+    if (shop) {
+      const redisKey = this.redis.key(RedisKey.Shop, shop.id);
+      let data = await this.redis.client.get(redisKey);
+      if (!data) data = await this.redis.updateShop(shop.id);
+      const res = JSON.parse(data);
+      return res;
+    }
+    return;
   }
 
   @Public()

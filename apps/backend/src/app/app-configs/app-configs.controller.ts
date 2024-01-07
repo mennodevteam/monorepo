@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
+import { RedisService } from '../core/redis.service';
 
 @Controller('appConfigs')
 export class AppConfigsController {
@@ -15,7 +16,8 @@ export class AppConfigsController {
     private shopsRepo: Repository<Shop>,
     @InjectRepository(Theme)
     private themesRepo: Repository<Theme>,
-    private auth: AuthService
+    private auth: AuthService,
+    private redis: RedisService
   ) {}
 
   @Get('themes')
@@ -35,6 +37,7 @@ export class AppConfigsController {
         this.shopsRepo.update(shop.id, {
           appConfig: { id: newConfig.id },
         });
+        this.redis.updateShop(shop.id);
         return newConfig;
       }
     }

@@ -7,6 +7,7 @@ import { AuthService } from '../auth/auth.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { HttpService } from '@nestjs/axios';
+import { RedisService } from '../core/redis.service';
 
 @Roles(UserRole.Panel)
 @Controller('thirdParties')
@@ -15,13 +16,16 @@ export class ThirdPartiesController {
     private auth: AuthService,
     private http: HttpService,
     @InjectRepository(ThirdParty)
-    private repo: Repository<ThirdParty>
+    private repo: Repository<ThirdParty>,
+    private redis: RedisService
   ) {}
 
   @Post()
   async save(@Body() dto: Partial<ThirdParty>, @LoginUser() user: AuthPayload) {
     const shop = await this.auth.getPanelUserShop(user);
     dto.shop = { id: shop.id } as Shop;
-    return this.repo.save(dto);
+    const res = await this.repo.save(dto);
+    this.redis.updateShop(shop.id);
+    return res;
   }
 }

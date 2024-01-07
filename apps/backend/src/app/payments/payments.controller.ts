@@ -36,6 +36,7 @@ import { OrdersService } from '../orders/orders.service';
 import { PaymentsService } from './payments.service';
 import { Roles } from '../auth/roles.decorators';
 import { environment } from '../../environments/environment';
+import { RedisService } from '../core/redis.service';
 @Controller('payments')
 export class PaymentsController {
   constructor(
@@ -53,7 +54,8 @@ export class PaymentsController {
     @InjectRepository(Member)
     private membersRepository: Repository<Member>,
     @InjectRepository(Order)
-    private ordersRepository: Repository<Order>
+    private ordersRepository: Repository<Order>,
+    private redis: RedisService,
   ) {}
 
   @Roles(UserRole.App)
@@ -126,6 +128,7 @@ export class PaymentsController {
           plugins: body.plugins,
           expiredAt: newExpiredAt,
           pluginId: shop.plugins.id,
+          shopId: shop.id,
         },
       },
       `خرید ماژول مجموعه ${shop.title}`,
@@ -295,6 +298,7 @@ export class PaymentsController {
           expiredAt: new Date(payment.details.extendPlugin.expiredAt),
           renewAt: new Date(),
         });
+        this.redis.updateShop(payment.details.extendPlugin.shopId);
         const redirectUrl = `${payment.appReturnUrl}`;
         return res.redirect(redirectUrl);
       }
