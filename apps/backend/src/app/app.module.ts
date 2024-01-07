@@ -29,6 +29,7 @@ import { AppRedirectController } from './app-redirect.controller';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './core/http-exception.filter';
 import { HealthModule } from './health/health.module';
+import { RedisService } from './core/redis.service';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -84,6 +85,7 @@ import { HealthModule } from './health/health.module';
   controllers: [AppController, AppRedirectController],
   providers: [
     AppService,
+    RedisService,
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,

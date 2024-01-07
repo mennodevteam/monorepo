@@ -7,6 +7,7 @@ import { Public } from '../auth/public.decorator';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 import { PrintersService } from './printers.service';
+import { RedisKey, RedisService } from '../core/redis.service';
 
 @Controller('printers')
 export class PrintersController {
@@ -20,7 +21,8 @@ export class PrintersController {
     @InjectRepository(PrintAction)
     private printActionsRepo: Repository<PrintAction>,
     private printersService: PrintersService,
-    private auth: AuthService
+    private auth: AuthService,
+    private redis: RedisService,
   ) {}
 
   @Public()
@@ -99,28 +101,24 @@ export class PrintersController {
   async findPrintActionsByShopId(@Param('shopId') shopId: string): Promise<PrintAction[]> {
     const last5min = new Date();
     last5min.setMinutes(last5min.getMinutes() - 5);
-    let actions = await this.printActionsRepo.find({
-      where: {
-        shop: { id: shopId },
-        isPrinted: false,
-        failedCount: LessThanOrEqual(3),
-        createdAt: MoreThanOrEqual(last5min),
-      },
-    });
+    const redisKey = this.redis.key(RedisKey.PrintAction, shopId);
+    const data = await this.redis.client.lrange(redisKey, 0, -1);
+    let actions: PrintAction[] = data ? data.map(x => JSON.parse(x)) : [];
     actions = actions.filter((x) => !x.waitForLocal || Date.now() - new Date(x.createdAt).valueOf() > 15000);
+    this.redis.client.del(redisKey);
     return actions;
   }
 
   @Public()
   @Get('actions/setPrinted/:id')
   async setPrintActionPrinted(@Param('id') id: string): Promise<void> {
-    await this.printActionsRepo.update(id, { isPrinted: true });
+    // await this.printActionsRepo.update(id, { isPrinted: true });
   }
 
   @Public()
   @Get('actions/setFailed/:id')
   async setPrintActionFailed(@Param('id') id: string): Promise<void> {
-    await this.printActionsRepo.increment({ id }, 'failedCount', 1);
+    // await this.printActionsRepo.increment({ id }, 'failedCount', 1);
   }
 
   @Delete('printViews/:viewId')

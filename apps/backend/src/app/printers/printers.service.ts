@@ -13,6 +13,8 @@ import {
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
+import { Guid } from 'guid-typescript';
+import { RedisKey, RedisService } from '../core/redis.service';
 
 @Injectable()
 export class PrintersService {
@@ -26,7 +28,8 @@ export class PrintersService {
     @InjectRepository(ShopPrintView)
     private printViewsRepo: Repository<ShopPrintView>,
     @InjectRepository(PrintAction)
-    private printActionsRepo: Repository<PrintAction>
+    private printActionsRepo: Repository<PrintAction>,
+    private redis: RedisService
   ) {}
   async printOrder(dto: PrintOrderDto): Promise<PrintAction[]> {
     const order = await this.ordersRepo.findOne({
@@ -81,6 +84,7 @@ export class PrintersService {
         descriptions = descriptions.concat(changesDescriptions);
       }
       actions.push(<PrintAction>{
+        id: Guid.create().toString(),
         count: p.count || view.defaultCount || 1,
         data: {
           currency: order.details.currency,
@@ -118,7 +122,11 @@ export class PrintersService {
         type: view.type,
       });
     }
-    return this.printActionsRepo.save(actions);
+    await this.redis.client.lpush(
+      this.redis.key(RedisKey.PrintAction, order.shop.id),
+      ...actions.map((x) => JSON.stringify(x))
+    );
+    return actions;
   }
 
   async printData(data: PrintActionData, printViewId: string, shopId: string) {
@@ -129,6 +137,7 @@ export class PrintersService {
     }
     data.totalPrice = total;
     const action = {
+      id: Guid.create().toString(),
       count: 1,
       data,
       printerName: view.printer.name,
@@ -137,7 +146,7 @@ export class PrintersService {
       type: view.type,
       shop: { id: shopId },
     } as PrintAction;
-
-    return this.printActionsRepo.save(action);
+    await this.redis.client.lpush(this.redis.key(RedisKey.PrintAction, shopId), JSON.stringify(action));
+    return action;
   }
 }
