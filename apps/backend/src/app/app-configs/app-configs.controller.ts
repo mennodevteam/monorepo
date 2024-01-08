@@ -31,7 +31,9 @@ export class AppConfigsController {
     if (shop) {
       if (shop.appConfig) {
         dto.id = shop.appConfig.id;
-        return this.appConfigsRepo.save(dto);
+        const res = await this.appConfigsRepo.save(dto);
+        this.redis.updateShop(shop.id);
+        return res;
       } else {
         const newConfig = await this.appConfigsRepo.save(dto);
         this.shopsRepo.update(shop.id, {
