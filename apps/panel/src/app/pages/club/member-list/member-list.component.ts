@@ -99,19 +99,6 @@ export class MemberListComponent {
     });
 
     this.totalWalletCharge = undefined;
-    const noPaginationFilter = this.currentFilter;
-    noPaginationFilter.take = undefined;
-    noPaginationFilter.skip = undefined;
-    this.club.filter(noPaginationFilter).subscribe((res) => {
-      let sum = 0;
-      for (const m of res[0]) {
-        if (m.wallet)
-          try {
-            sum += m.wallet.charge;
-          } catch (error) {}
-      }
-      this.totalWalletCharge = sum;
-    });
   }
 
   removeFilter() {
