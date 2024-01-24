@@ -293,7 +293,7 @@ export class PaymentsController {
         const redirectUrl = `${payment.appReturnUrl}`;
         return res.redirect(redirectUrl);
       } else if (payment.details.extendPlugin) {
-        this.shopPluginsRepo.update(payment.details.extendPlugin.pluginId, {
+        await this.shopPluginsRepo.update(payment.details.extendPlugin.pluginId, {
           plugins: payment.details.extendPlugin.plugins,
           expiredAt: new Date(payment.details.extendPlugin.expiredAt),
           renewAt: new Date(),
