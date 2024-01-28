@@ -101,22 +101,27 @@ export class OrdersController {
 
   @Get('panel/:id')
   @Roles(UserRole.Panel)
-  getOrderDetailsPanel(@Param('id') id: string) {
+  getOrderDetailsPanel(@Param('id') id: string, @Query('withProduct') withProduct: string) {
+    const relations = [
+      'items',
+      'customer',
+      'waiter',
+      'creator',
+      'reviews',
+      'payment',
+      'address.deliveryArea',
+    ];
+
+    if (withProduct) {
+      relations.push('items.product', 'items.productVariant');
+    }
+
     return this.ordersRepo.findOne({
       where: {
         id,
       },
       withDeleted: true,
-      relations: [
-        'items.product',
-        'items.productVariant',
-        'customer',
-        'waiter',
-        'creator',
-        'reviews',
-        'payment',
-        'address.deliveryArea',
-      ],
+      relations,
     });
   }
 

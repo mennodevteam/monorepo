@@ -35,8 +35,10 @@ export class OrdersService {
     return order;
   }
 
-  async getById(id: string) {
-    return this.http.get<Order>(`orders/panel/${id}`).toPromise();
+  async getById(id: string, withProduct?: boolean) {
+    let url = `orders/panel/${id}`;
+    if (withProduct) url += `?withProduct=true`;
+    return this.http.get<Order>(url).toPromise();
   }
 
   async report(dto: OrderReportDto) {

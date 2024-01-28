@@ -198,7 +198,7 @@ export class PosService extends OrderDto {
     this.clear();
     this.setType(this.type);
     if (orderId) {
-      const order = await this.orderService.getById(orderId);
+      const order = await this.orderService.getById(orderId, true);
       if (order) {
         this.editOrder = order;
         this.note = order.note;
