@@ -37,11 +37,6 @@ export const OrderSchema = new EntitySchema<Order>({
       enum: OrderPaymentType,
       default: OrderPaymentType.NotPayed,
     },
-    mergeFrom: {
-      type: String,
-      array: true,
-      nullable: true,
-    },
     note: {
       type: String,
       nullable: true,
@@ -92,12 +87,6 @@ export const OrderSchema = new EntitySchema<Order>({
       type: 'many-to-one',
       target: 'Order',
       inverseSide: 'mergeFrom',
-      nullable: true,
-    },
-    mergeFrom: {
-      type: 'one-to-many',
-      target: 'Order',
-      inverseSide: 'mergeTo',
       nullable: true,
     },
     shop: {

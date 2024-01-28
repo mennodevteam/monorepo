@@ -388,6 +388,11 @@ export class OrdersService {
       where: condition,
       order: { createdAt: 'DESC' },
       relations,
+      select: {
+        mergeTo: {
+          id: true,
+        },
+      },
       withDeleted: dto.withDeleted,
     });
 

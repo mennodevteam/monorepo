@@ -8,6 +8,7 @@ import { LocalNotification, LocalNotificationsService } from './local-notificati
 import { TranslateService } from '@ngx-translate/core';
 import { MenuCurrencyPipe } from '../../shared/pipes/menu-currency.pipe';
 import { Router } from '@angular/router';
+import { sortByCreatedAt, sortByCreatedAtDesc } from '@menno/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -124,6 +125,13 @@ export class TodayOrdersService {
       let newOrders: Order[] = [];
       let currentUpdate: Date | undefined;
       for (const ord of orders) {
+        if (ord.mergeTo) {
+          const mergeToOrder = orders.find((x) => x.id === ord.mergeTo?.id);
+          if (mergeToOrder) {
+            if (!mergeToOrder.mergeFrom) mergeToOrder.mergeFrom = [];
+            mergeToOrder.mergeFrom.push(ord);
+          }
+        }
         if (!currentUpdate) currentUpdate = new Date(ord.updatedAt || ord.createdAt);
         else if (currentUpdate.valueOf() < new Date(ord.updatedAt || ord.createdAt).valueOf())
           currentUpdate = new Date(ord.updatedAt || ord.createdAt);
@@ -138,7 +146,9 @@ export class TodayOrdersService {
       if (currentUpdate) this.lastUpdate = currentUpdate;
       if (orders.length) {
         if (newOrders.length) {
-          this.orders.update((orders) => [...newOrders, ...(orders || [])]);
+          this.orders.update((orders) =>
+            [...newOrders, ...(orders?.filter((x) => !x.mergeTo) || [])].sort(sortByCreatedAtDesc)
+          );
         }
         this.onUpdate.emit();
       }

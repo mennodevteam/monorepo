@@ -116,7 +116,7 @@ export class Order {
   }
 
   static merge(orders: Order[], baseOrder: Order) {
-    let newOrder: Partial<Order> = { ...baseOrder, mergeFrom: [baseOrder] };
+    let newOrder: Partial<Order> = { ...baseOrder, mergeFrom: [{id: baseOrder.id} as Order] };
     Object.keys(newOrder).forEach((key) => {
       const field: keyof Order = key as keyof Order;
       if (newOrder[field] == undefined) delete newOrder[field];
@@ -125,7 +125,7 @@ export class Order {
       if (o.id === baseOrder.id || o.deletedAt) continue;
       newOrder = { ...o, ...newOrder };
       newOrder.totalPrice! += o.totalPrice;
-      newOrder.mergeFrom?.push(o);
+      newOrder.mergeFrom?.push({id: o.id} as Order);
       if (newOrder.id) delete newOrder.id;
 
       for (const item of o.items) {
