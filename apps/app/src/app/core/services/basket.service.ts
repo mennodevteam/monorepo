@@ -168,6 +168,22 @@ export class BasketService extends OrderDto {
 
   async complete() {
     if (this.type == undefined || !this.shopService.shop) return;
+    await this.shopService.load(true);
+
+    if (!this.shopService.isOpen) {
+      this.snack.open(this.translate.instant('menu.shopIsClosed'), '', {
+        panelClass: 'warning',
+        duration: 4000,
+      });
+      return;
+    } else if (this.shopService.shop?.appConfig?.disableOrdering) {
+      this.snack.open(this.translate.instant('menu.disableOrderingTitle'), '', {
+        panelClass: 'warning',
+        duration: 4000,
+      });
+      return;
+    }
+
     if (
       this.type === OrderType.Delivery &&
       (!this.address ||

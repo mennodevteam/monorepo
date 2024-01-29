@@ -29,65 +29,59 @@ export class ShopService {
     this.load();
   }
 
-  async load() {
+  async load(skipNull = false) {
     const query = this.getShopUsernameFromQuery();
-    if (
-      !this._shop.value ||
-      (this._shop.value.username !== query &&
-        this._shop.value.code !== query &&
-        this._shop.value.domain !== query)
-    ) {
-      this._shop.next(null);
 
-      const shop = await this.http.get<Shop>(`shops/${query}`).toPromise();
-      this._shop.next(shop || null);
+    if (!skipNull) this._shop.next(null);
 
-      // set theme
-      if (shop?.appConfig?.theme) {
-        const theme = shop?.appConfig?.theme;
-        this.themeService.color = theme.key;
-        switch (shop?.appConfig.themeMode) {
-          case ThemeMode.Dark:
-            this.themeService.mode = 'dark';
-            break;
-          case ThemeMode.Light:
-            this.themeService.mode = 'light';
-            break;
-        }
+    const shop = await this.http.get<Shop>(`shops/${query}`).toPromise();
+    this._shop.next(shop || null);
+
+    // set theme
+    if (shop?.appConfig?.theme) {
+      const theme = shop?.appConfig?.theme;
+      this.themeService.color = theme.key;
+      switch (shop?.appConfig.themeMode) {
+        case ThemeMode.Dark:
+          this.themeService.mode = 'dark';
+          break;
+        case ThemeMode.Light:
+          this.themeService.mode = 'light';
+          break;
+      }
+    } else {
+      this.themeService.color = 'default';
+    }
+
+    if (Date.now() - new Date(shop?.plugins?.expiredAt || 0).valueOf() > 2 * 24 * 3600 * 1000) {
+      this.dialog.open(AlertDialogComponent, {
+        data: {
+          title: this.translate.instant('expiredDialog.title'),
+          description: this.translate.instant('expiredDialog.description'),
+          hideCancel: true,
+          hideOk: true,
+          status: 'warning',
+        },
+        disableClose: true,
+      });
+    }
+
+    if (shop) {
+      if (shop.appConfig?.theme) {
+        this.pwa.setManifest(
+          shop,
+          this.url,
+          shop.appConfig.theme.primaryColor,
+          shop.appConfig.themeMode === ThemeMode.Dark ? '#333333' : '#ffffff'
+        );
       } else {
-        this.themeService.color = 'default';
+        this.pwa.setManifest(shop, this.url);
       }
 
-      if (Date.now() - new Date(shop?.plugins?.expiredAt || 0).valueOf() > 2 * 24 * 3600 * 1000) {
-        this.dialog.open(AlertDialogComponent, {
-          data: {
-            title: this.translate.instant('expiredDialog.title'),
-            description: this.translate.instant('expiredDialog.description'),
-            hideCancel: true,
-            hideOk: true,
-            status: 'warning',
-          },
-          disableClose: true,
-        });
-      }
-
-      if (shop) {
-        if (shop.appConfig?.theme) {
-          this.pwa.setManifest(
-            shop,
-            this.url,
-            shop.appConfig.theme.primaryColor,
-            shop.appConfig.themeMode === ThemeMode.Dark ? '#333333' : '#ffffff'
-          );
-        } else {
-          this.pwa.setManifest(shop, this.url);
-        }
-
-        try {
-          (window as any).clarity('identify', shop.username, this.auth.user?.username, undefined, shop.title);
-        } catch (error) {
-          // unhandled
-        }
+      try {
+        (window as any).clarity('identify', shop.username, this.auth.user?.username, undefined, shop.title);
+      } catch (error) {
+        // unhandled
       }
     }
   }
