@@ -28,11 +28,10 @@ export class HomeComponent {
   env = environment;
 
   update = {
-    date: new Date(2023, 11, 31),
+    date: new Date(2024, 0, 29),
     items: [
-      { title: "آیتم‌های خاص منو ویژه اعضای باشگاه مشتریان", type: 'feature' },
-      { title: "ترتیب نمایش اعضای باشگاه مشتریان", type: 'feature' },
-      { title: "رفع برخی از باگ‌های گزارش شده", type: 'bug' },
+      { title: 'بهبود سرعت و کارایی سیستم', type: 'feature' },
+      { title: 'رفع مشکل ثبت سفارش بعد از بستن سفارش‌گیری', type: 'bug' },
     ],
   };
 
