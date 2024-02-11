@@ -36,6 +36,7 @@ export class EditDiscountComponent {
       status: new FormControl(Status.Active, Validators.required),
       includeProductCategory: new FormControl([]),
       includeProduct: new FormControl([]),
+      isManual: new FormControl(null),
     });
 
     this.route.queryParams.subscribe(async (params) => {
@@ -56,6 +57,7 @@ export class EditDiscountComponent {
             includeProduct: d.includeProduct
               ? this.menuService.filterProductsByIds(d.includeProduct.map((x) => x.id))
               : [],
+            isManual: d.isManual != undefined ? d.isManual : null,
           });
         }
       }
@@ -68,6 +70,10 @@ export class EditDiscountComponent {
 
   get statusControl() {
     return this.form.get('status') as FormControl;
+  }
+
+  get isManualControl() {
+    return this.form.get('isManual') as FormControl;
   }
 
   get includeProductControl() {

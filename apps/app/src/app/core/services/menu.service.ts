@@ -33,7 +33,7 @@ export class MenuService {
 
     if (this._baseMenu) {
       const menu = this.baseMenu;
-      Menu.setRefsAndSort(menu, undefined, undefined, undefined, this._star);
+      Menu.setRefsAndSort(menu, undefined, undefined, undefined, this._star, false);
       this._menu.next(menu);
       if (sendStat) {
         this.http.get(`menuStats/loadMenu/${menu.id}`).toPromise();
@@ -63,7 +63,7 @@ export class MenuService {
     this._type.next(val);
     if (this.menu) {
       const menu = this.baseMenu;
-      Menu.setRefsAndSort(menu, val == null ? undefined : val, undefined, undefined, this._star);
+      Menu.setRefsAndSort(menu, val == null ? undefined : val, undefined, undefined, this._star, false);
       this._menu.next(menu);
     }
   }
@@ -76,7 +76,7 @@ export class MenuService {
     this._star = value;
     if (this.menu) {
       const menu = this.baseMenu;
-      Menu.setRefsAndSort(menu, this.type == null ? undefined : this.type, undefined, undefined, this._star);
+      Menu.setRefsAndSort(menu, this.type == null ? undefined : this.type, undefined, undefined, this._star, false);
       this._menu.next(menu);
     }
   }

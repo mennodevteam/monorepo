@@ -84,7 +84,7 @@ export class PosService extends OrderDto {
   setType(val: OrderType) {
     this.menu = this.menuService.baseMenu;
     this.type = val;
-    Menu.setRefsAndSort(this.menu, this.type, true);
+    Menu.setRefsAndSort(this.menu, this.type, true, undefined, undefined, true);
     if (val === OrderType.DineIn && this.shopService.shop?.details?.tables?.length) {
       this.details = { ...this.details, table: this.shopService.shop.details.tables[0].code };
     }

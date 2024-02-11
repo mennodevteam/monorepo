@@ -37,6 +37,7 @@ export class EditCostComponent {
       showOnItem: new FormControl(true, Validators.required),
       includeProductCategory: new FormControl([]),
       includeProduct: new FormControl([]),
+      isManual: new FormControl(null),
     });
 
     this.route.queryParams.subscribe(async (params) => {
@@ -58,6 +59,7 @@ export class EditCostComponent {
             includeProduct: d.includeProduct
               ? this.menuService.filterProductsByIds(d.includeProduct.map((x) => x.id))
               : [],
+            isManual: d.isManual != undefined ? d.isManual : null,
           });
         }
       }
@@ -74,6 +76,10 @@ export class EditCostComponent {
 
   get includeProductControl() {
     return this.form.get('includeProduct') as FormControl;
+  }
+
+  get isManualControl() {
+    return this.form.get('isManual') as FormControl;
   }
 
   get includeProductCategoryControl() {

@@ -94,7 +94,7 @@ export class OrdersService {
     }
 
     const menu = shop.menu;
-    Menu.setRefsAndSort(menu, dto.type, true, true);
+    Menu.setRefsAndSort(menu, dto.type, true, true, undefined, dto.isManual ? true : false);
     order.items = [...OrderDto.productItems(dto, menu), ...OrderDto.abstractItems(dto, menu)];
 
     for (const item of order.items) {

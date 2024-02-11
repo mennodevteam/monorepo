@@ -69,6 +69,7 @@ import { UserAddressesDialogComponent } from './dialogs/user-addresses-dialog/us
 import { ExtendPluginsModalComponent } from './components/extend-plugins-modal/extend-plugins-modal.component';
 import { ScreenDirective } from './directives/screen.directive';
 import { TablePipe } from './pipes/table.pipe';
+import { SelectIsManualCardComponent } from './components/select-is-manual-card/select-is-manual-card.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { TablePipe } from './pipes/table.pipe';
     PhonePipe,
     TablePipe,
     MemberAutocompleteComponent,
+    SelectIsManualCardComponent,
     SelectDialogComponent,
     AlertDialogComponent,
     SelectOrderTypeCardComponent,
@@ -175,6 +177,7 @@ import { TablePipe } from './pipes/table.pipe';
     ImageLoaderDirective,
     FormBuilderComponent,
     MemberAutocompleteComponent,
+    SelectIsManualCardComponent,
     OrdersTableComponent,
 
     FormsModule,

@@ -18,6 +18,7 @@ export class MenuCost {
   includeProductCategory: ProductCategory[];
   includeProduct: Product[];
   menu: Menu;
+  isManual?: boolean;
   createdAt: Date;
 
   static sort(costs: MenuCost[]) {

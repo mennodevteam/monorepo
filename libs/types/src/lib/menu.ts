@@ -17,7 +17,8 @@ export class Menu {
     orderType?: OrderType,
     showInactive?: boolean,
     showEmpty?: boolean,
-    star?: number
+    star?: number,
+    isManual?: boolean
   ) {
     if (star != undefined) {
       menu.categories = menu.categories?.filter((x) => !x.star || star >= x.star);
@@ -30,7 +31,10 @@ export class Menu {
       );
       menu.costs = menu.costs?.filter(
         (x) =>
-          (showInactive || x.status !== Status.Inactive) && x.orderTypes && x.orderTypes.includes(orderType)
+          (showInactive || x.status !== Status.Inactive) &&
+          x.orderTypes &&
+          x.orderTypes.includes(orderType) &&
+          (isManual == undefined || x.isManual == null || isManual === x.isManual)
       );
     }
     if (menu.costs) {

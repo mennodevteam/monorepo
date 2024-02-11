@@ -43,6 +43,10 @@ export const MenuCostSchema = new EntitySchema<MenuCost>({
       type: Boolean,
       default: false,
     },
+    isManual: {
+      type: Boolean,
+      nullable: true,
+    },
     orderTypes: {
       type: 'enum',
       array: true,

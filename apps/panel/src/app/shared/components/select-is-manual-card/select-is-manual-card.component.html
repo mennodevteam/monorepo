@@ -1,0 +1,19 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title> {{ 'isManualCard.title' | translate }} </mat-card-title>
+  </mat-card-header>
+  <span spacer-2x></span>
+  <mat-card-content>
+    <mat-radio-group [formControl]="control">
+      <mat-radio-button class="example-radio-button" [value]="null">{{
+        'isManualCard.all' | translate
+      }}</mat-radio-button>
+      <mat-radio-button class="example-radio-button" [value]="true">{{
+        'isManualCard.true' | translate
+      }}</mat-radio-button>
+      <mat-radio-button class="example-radio-button" [value]="false">{{
+        'isManualCard.false' | translate
+      }}</mat-radio-button>
+    </mat-radio-group>
+  </mat-card-content>
+</mat-card>
