@@ -28,10 +28,12 @@ export class HomeComponent {
   env = environment;
 
   update = {
-    date: new Date(2024, 0, 29),
+    date: new Date(2024, 1, 11),
     items: [
-      { title: 'بهبود سرعت و کارایی سیستم', type: 'feature' },
-      { title: 'رفع مشکل ثبت سفارش بعد از بستن سفارش‌گیری', type: 'bug' },
+      { title: 'اضافه شدن بخش داشبورد', type: 'feature' },
+      { title: 'اطلاع‌رسانی سفارش جدید از طریق پیامک', type: 'feature' },
+      { title: 'محدود کردن تخفیف‌ها و هزینه روی سفارش دستی یا آنلاین', type: 'feature' },
+      { title: 'رفع برخی باگ‌های گزارش شده', type: 'bug' },
     ],
   };
 
