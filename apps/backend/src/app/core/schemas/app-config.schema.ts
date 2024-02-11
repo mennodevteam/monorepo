@@ -37,6 +37,11 @@ export const AppConfigSchema = new EntitySchema<AppConfig>({
       array: true,
       nullable: true,
     },
+    smsOnNewOrder: {
+      type: String,
+      array: true,
+      default: [],
+    },
     disableOrderingText: {
       type: String,
       nullable: true,

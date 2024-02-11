@@ -25,6 +25,7 @@ export class AppConfig {
   theme: Theme;
   themeMode: ThemeMode;
   homePage: HomePage;
+  smsOnNewOrder: string[];
   selectableOrderTypes: OrderType[];
   disableOrdering: boolean;
   orderingTypes: OrderType[];

@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ImageCropperDialogComponent } from '../../../shared/dialogs/image-cropper-dialog/image-cropper-dialog.component';
 import { CropperOptions } from 'ngx-image-cropper';
 import { FilesService } from '../../../core/services/files.service';
+import { PersianNumberService } from '@menno/utils';
 
 @Component({
   selector: 'app-config',
@@ -59,6 +60,7 @@ export class AppConfigComponent {
       ding: new FormControl(this.appConfig.ding),
       dings: new FormControl(this.appConfig.dings || []),
       menuCols: new FormControl(this.appConfig.menuCols, [Validators.min(2), Validators.max(4)]),
+      smsOnNewOrder: new FormControl(this.appConfig?.smsOnNewOrder || [])
     });
 
     this.http.get<Theme[]>('appConfigs/themes').subscribe((themes) => {
@@ -144,6 +146,24 @@ export class AppConfigComponent {
 
     if (index >= 0) {
       this.form.get('dings')?.value.splice(index, 1);
+    }
+    this.form.markAsDirty();
+  }
+
+  addSmsOnNewOrder(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (value) {
+      this.form.get('smsOnNewOrder')?.value.push(PersianNumberService.toEnglish(value));
+    }
+    event.chipInput!.clear();
+    this.form.markAsDirty();
+  }
+
+  removeSmsOnNewOrder(phone: string): void {
+    const index = this.form.get('smsOnNewOrder')?.value?.indexOf(phone);
+
+    if (index >= 0) {
+      this.form.get('smsOnNewOrder')?.value.splice(index, 1);
     }
     this.form.markAsDirty();
   }

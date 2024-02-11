@@ -243,7 +243,12 @@
     "ding": "امکان دینگ داخل مجموعه",
     "dingsLabel": "آیتم‌های دینگ (اختیاری)",
     "dingsPlaceholder": "مثلا: زیر سگاری لطفا...",
-    "dingsHint": "با enter آیتم‌ها را از هم جدا کنید"
+    "dingsHint": "با enter آیتم‌ها را از هم جدا کنید",
+    "smsOnNewOrder": "sms سفارش جدید",
+    "smsOnNewOrderDescription": "بعد از دریافت سفارش جدید، یک پیامک اطلاع‌رسانی به شماره تلفن همراه ارسال خواهد شد.",
+    "smsOnNewOrderLabel": "شماره تلفن همراه برای ارسال پیامک",
+    "smsOnNewOrderPlaceholder": "مثلا: 09123333333",
+    "smsOnNewOrderHint": "با enter شماره تلفن‌ها را از هم جدا کنید"
   },
   "dayOfWeeks": {
     "saturday": "شنبه",

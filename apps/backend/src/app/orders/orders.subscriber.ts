@@ -136,6 +136,10 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     try {
       this.insertWindowsNotification(order, shop);
     } catch (error) {}
+
+    try {
+      this.appConfigSmsNewOrder(order, shop);
+    } catch (error) {}
   }
 
   async afterUpdate(event: UpdateEvent<Order>): Promise<any> {
@@ -149,6 +153,38 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
 
       this.autoPrint(order as Order, order.shop, false);
     } catch (error) {}
+  }
+
+  private async appConfigSmsNewOrder(order: Order, shop: Shop) {
+    if (!order.isManual && !order.mergeFrom?.length && shop.smsAccount && shop.smsAccount.charge > 0) {
+      const shopWithConfig = await this.shopsRepo.findOne({ where: { id: shop.id }, relations: ['appConfig'] });
+      if (shopWithConfig?.appConfig?.smsOnNewOrder?.length) {
+        let message = `سفارش جدید: `
+        switch (order.type) {
+          case OrderType.DineIn:
+            if (order.details.table) message += `${order.details.table}  میز  `;
+            else {
+              message += 'داخل مجموعه';
+            }
+            break;
+    
+          case OrderType.Delivery:
+            message += 'ارسال با پیک';
+            break;
+          case OrderType.Takeaway:
+            message += 'بیرون بر';
+            break;
+        }
+
+        message += `\n\n فیش شماره ${order.qNumber}`
+
+        this.smsService.send({
+          accountId: shop.smsAccount.id,
+          messages: shopWithConfig.appConfig.smsOnNewOrder.map(x => message),
+          receptors: shopWithConfig.appConfig.smsOnNewOrder
+        })
+      }
+    }
   }
 
   private async insertWindowsNotification(order: Order, shop: Shop) {
