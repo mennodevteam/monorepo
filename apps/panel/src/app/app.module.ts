@@ -20,6 +20,10 @@ import { PaginatorIntl } from './core/mat-paginator-intl';
 import { NotificationsComponent } from './pages/notifications/notifications.component';
 import { MenuCurrencyPipe } from './shared/pipes/menu-currency.pipe';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { Chart } from 'chart.js';
+
+Chart.defaults.font.family = 'IRANSans';
+
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/');

@@ -1,1 +1,76 @@
-dashboard
+<main class="content-wrapper">
+  <div class="form-page-layout" *ngIf="!loading">
+    <div class="flex-col">
+      <mat-card>
+        <mat-card-content>
+          <canvas
+            baseChart
+            [data]="dailyReportChartData"
+            [options]="dailyReportChartOptions"
+            type="line"
+          ></canvas>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="daily-table-card">
+        <mat-card-content>
+          <table mat-table [dataSource]="dailyData">
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef>{{ 'app.date' | translate }}</th>
+              <td mat-cell *matCellDef="let data">
+                <b>{{ data.date | pdate: 'YYYY-MM-DD' }}</b>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="view">
+              <th mat-header-cell *matHeaderCellDef>{{ 'dashboard.view' | translate }}</th>
+              <td mat-cell *matCellDef="let data">
+                <p class="eng">{{ data.view | number }}</p>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="orderCount">
+              <th mat-header-cell *matHeaderCellDef>{{ 'dashboard.orderCount' | translate }}</th>
+              <td mat-cell *matCellDef="let data">
+                <p class="eng">{{ data.orderCount | number }}</p>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="orderSum">
+              <th mat-header-cell *matHeaderCellDef>{{ 'dashboard.orderSum' | translate }}</th>
+              <td mat-cell *matCellDef="let data">
+                <p>{{ data.orderSum | menuCurrency: undefined:true }}</p>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="cvr">
+              <th mat-header-cell *matHeaderCellDef>
+                CVR
+                <i
+                  matTooltip="{{ 'dashboard.cvr' | translate }}"
+                  class="fa-solid blue fa-circle-info fa-sm"
+                ></i>
+              </th>
+              <td mat-cell *matCellDef="let data">
+                <p class="eng">{{ (data.view ? data.orderCount / data.view : 0) | number }}</p>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="aov">
+              <th mat-header-cell *matHeaderCellDef>
+                AOV
+                <i
+                  matTooltip="{{ 'dashboard.aov' | translate }}"
+                  class="fa-solid blue fa-circle-info fa-sm"
+                ></i>
+              </th>
+              <td mat-cell *matCellDef="let data">
+                <p>
+                  {{ (data.orderCount ? data.orderSum / data.orderCount : 0) | menuCurrency: undefined:true }}
+                </p>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="dailyTableCols; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: dailyTableCols"></tr>
+
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</main>
