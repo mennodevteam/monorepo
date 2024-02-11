@@ -199,7 +199,10 @@ export class ProductEditPageComponent {
     }
   }
 
-  removePhoto() {}
+  removePhoto() {
+    this.form.get('images')?.setValue([]);
+    this.form.markAsDirty();
+  }
 
   sortVariants(event: any) {
     moveItemInArray(this.form.get('variants')?.value, event.previousIndex, event.currentIndex);
