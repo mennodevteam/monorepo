@@ -29,6 +29,7 @@ import { AppRedirectController } from './app-redirect.controller';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './core/http-exception.filter';
 import { HealthModule } from './health/health.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -61,6 +62,7 @@ import { HealthModule } from './health/health.module';
     CoreModule,
     HttpModule,
     AuthModule,
+    DashboardModule,
     UsersModule,
     ShopsModule,
     MenusModule,

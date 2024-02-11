@@ -16,6 +16,8 @@ export class ShopService {
     setInterval(() => {
       this.loadShop();
     }, 60000);
+
+    this.http.get('dashboard/daily/2024-01-01/2024-02-10').toPromise();
   }
 
   get shopObservable() {
