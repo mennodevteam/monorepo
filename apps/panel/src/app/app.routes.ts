@@ -23,6 +23,10 @@ export const appRoutes: Route[] = [
         canActivate: [ShopGuard, MenuGuard],
         children: [
           {
+            path: 'dashboard',
+            loadChildren: () => import('./pages/dashboard/dashboard.module').then((m) => m.DashboardModule),
+          },
+          {
             canActivate: [PluginGuard, UserActionsGuard],
             data: { plugins: [Plugin.Menu], userActions: [UserAction.Menu] },
             path: 'menu',

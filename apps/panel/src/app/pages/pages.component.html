@@ -7,6 +7,10 @@
       <i class="fa-solid mat-icon fa-home"></i>
       {{ 'shell.home' | translate }}
     </button>
+    <button mat-menu-item routerLink="dashboard">
+      <i class="fa-solid mat-icon fa-chart-pie"></i>
+      {{ 'shell.dashboard' | translate }}
+    </button>
     <button mat-menu-item routerLink="menu">
       <i class="fa-solid mat-icon fa-book-open"></i>
       {{ 'shell.menu' | translate }}
@@ -29,6 +33,10 @@
   <button mat-button routerLink="/" class="hide-xs">
     <i class="fa-solid fa-home"></i>
     {{ 'shell.home' | translate }}
+  </button>
+  <button mat-button routerLink="dashboard" class="hide-xs">
+    <i class="fa-solid fa-chart-pie"></i>
+    {{ 'shell.dashboard' | translate }}
   </button>
   <button mat-button routerLink="menu" class="hide-xs">
     <i class="fa-solid fa-book-open"></i>
