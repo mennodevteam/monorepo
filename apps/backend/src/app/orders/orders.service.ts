@@ -264,7 +264,7 @@ export class OrdersService {
         );
         break;
       case 'product':
-        orderItems.sort((a, b) => a.isAbstract && !b.isAbstract ? 1 : -1)
+        orderItems.sort((a, b) => (a.isAbstract && !b.isAbstract ? 1 : -1));
         data = groupBySum<OrderItem>(
           orderItems,
           (item) => item.title,
@@ -451,11 +451,14 @@ export class OrdersService {
         where: { user: { id: order.customer.id }, club: { id: order.shop.club.id } },
         relations: ['wallet'],
       });
-      await this.walletsService.updateWalletAmount({
-        wallet: { id: member.wallet.id },
-        amount: -order.totalPrice,
-        user: { id: user.id },
-      } as WalletLog);
+      await this.walletsService.updateWalletAmount(
+        {
+          wallet: { id: member.wallet.id },
+          amount: -order.totalPrice,
+          user: { id: user.id },
+        } as WalletLog,
+        order.shop.id
+      );
     }
 
     this.checkAfterUpdateOrderMessage(dto.orderId, OrderMessageEvent.OnPayment);

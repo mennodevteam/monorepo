@@ -37,4 +37,8 @@ export class PersianNumberService {
     }
     return str;
   }
+
+  static withCommas(amount: number) {
+    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
 }

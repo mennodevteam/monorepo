@@ -93,6 +93,7 @@ export class MembersController {
         club: { id: clubId },
         user: { id: user.id },
       },
+      relations: ['wallet'],
     });
   }
 }

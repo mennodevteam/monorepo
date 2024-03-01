@@ -39,11 +39,14 @@ export class WalletsController {
       member.wallet = newWallet;
     }
 
-    return this.walletsService.updateWalletAmount({
-      amount: dto.amount,
-      type: WalletLogType.ManualCharge,
-      wallet: member.wallet,
-      user: { id: user.id },
-    } as WalletLog);
+    return this.walletsService.updateWalletAmount(
+      {
+        amount: dto.amount,
+        type: WalletLogType.ManualCharge,
+        wallet: member.wallet,
+        user: { id: user.id },
+      } as WalletLog,
+      shop.id
+    );
   }
 }
