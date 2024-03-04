@@ -44,6 +44,7 @@ export class Order {
   thirdPartyId?: string;
   packOrderId?: string;
   payment?: Payment;
+  walletPaymentAmount?: number;
   details: OrderDetails;
   _groupOffer?: Order[];
   _changingState?: boolean;

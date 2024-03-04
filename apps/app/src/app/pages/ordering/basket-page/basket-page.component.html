@@ -72,6 +72,10 @@
       ></textarea>
     </mat-form-field>
   </ng-container>
+  <span spacer-2x></span>
+  <ng-container *ngIf="basket.isPaymentRequired && member?.wallet && member!.wallet!.charge > 0">
+    
+  </ng-container>
 </main>
 
 <div *ngIf="disableOrdering" style="padding: 24px">

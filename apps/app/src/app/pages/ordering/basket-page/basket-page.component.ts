@@ -10,6 +10,7 @@ import { PromptDialogComponent } from '../../../shared/dialogs/prompt-dialog/pro
 import { AuthService } from '../../../core/services/auth.service';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { LoginBottomSheetComponent } from '../../../shared/dialogs/login-bottom-sheet/login-bottom-sheet.component';
+import { ClubService } from '../../../core/services/club.service';
 
 @Component({
   selector: 'basket-page',
@@ -28,6 +29,7 @@ export class BasketPageComponent {
     private translate: TranslateService,
     private dialog: MatDialog,
     private auth: AuthService,
+    private club: ClubService,
     private bottomSheet: MatBottomSheet
   ) {
     let valid = true;
@@ -66,12 +68,16 @@ export class BasketPageComponent {
     return this.basket.abstractItems || [];
   }
 
+  get member() {
+    return this.club.member;
+  }
+
   async complete() {
     this.saving = true;
     try {
       const order = await this.basket.complete();
       if (order) {
-        this.router.navigateByUrl(`/complete/${order.id}`, {replaceUrl: true});
+        this.router.navigateByUrl(`/complete/${order.id}`, { replaceUrl: true });
       } else {
         this.saving = false;
       }

@@ -44,6 +44,10 @@ export const OrderSchema = new EntitySchema<Order>({
     totalPrice: {
       type: 'real',
     },
+    walletPaymentAmount: {
+      type: 'real',
+      nullable: true,
+    },
     details: {
       type: 'simple-json',
       default: {},

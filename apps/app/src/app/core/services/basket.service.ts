@@ -17,6 +17,7 @@ import { ShopService } from './shop.service';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
+import { ClubService } from './club.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +28,7 @@ export class BasketService extends OrderDto {
     private shopService: ShopService,
     private ordersService: OrdersService,
     private http: HttpClient,
+    private club: ClubService,
     private snack: MatSnackBar,
     private translate: TranslateService
   ) {
@@ -224,6 +226,7 @@ export class BasketService extends OrderDto {
       shopId: this.shopService.shop.id,
       address: this.address,
       details: this.details,
+      useWallet: this.useWallet,
       discountCoupon: this.discountCoupon ? ({ id: this.discountCoupon.id } as DiscountCoupon) : undefined,
     };
     if (this.isPaymentRequired) {
@@ -241,10 +244,13 @@ export class BasketService extends OrderDto {
     return false;
   }
 
-  private get isPaymentRequired() {
+  get isPaymentRequired() {
     return (
       this.isPaymentAvailable &&
       this.total > 0 &&
+      (!this.useWallet ||
+        !this.club.member?.wallet?.charge ||
+        this.club.member?.wallet?.charge < this.total) &&
       this.shopService.shop?.appConfig?.requiredPayment?.includes(this.type)
     );
   }

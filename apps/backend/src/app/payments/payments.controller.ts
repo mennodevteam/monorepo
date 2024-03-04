@@ -55,7 +55,7 @@ export class PaymentsController {
     private membersRepository: Repository<Member>,
     @InjectRepository(Order)
     private ordersRepository: Repository<Order>,
-    private redis: RedisService,
+    private redis: RedisService
   ) {}
 
   @Roles(UserRole.App)
@@ -63,7 +63,7 @@ export class PaymentsController {
   async addOrder(@LoginUser() user: AuthPayload, @Body() dto: OrderDto, @Req() req: Request) {
     const shop: Shop = await this.shopsRepository.findOne({
       where: { id: dto.shopId },
-      relations: ['paymentGateway'],
+      relations: ['paymentGateway', 'club'],
     });
     if (!shop.paymentGateway) throw new HttpException('no payment gateway for shop', HttpStatus.NOT_FOUND);
     dto.isManual = false;
@@ -72,9 +72,12 @@ export class PaymentsController {
     dto.paymentType = OrderPaymentType.Online;
     const order = await this.ordersService.dtoToOrder(dto);
     const userData = await this.auth.getUserData(user);
+    const totalPrice = order.walletPaymentAmount
+      ? order.totalPrice - order.walletPaymentAmount
+      : order.totalPrice;
     return this.getRedirectLink(
       shop.paymentGateway.id,
-      order.totalPrice,
+      totalPrice,
       {
         newOrder: dto,
       },
@@ -192,9 +195,12 @@ export class PaymentsController {
     if (!order.shop.paymentGateway)
       throw new HttpException('no payment gateway for shop', HttpStatus.NOT_FOUND);
     const userData = await this.auth.getUserData(user);
+    const totalPrice = order.walletPaymentAmount
+      ? order.totalPrice - order.walletPaymentAmount
+      : order.totalPrice;
     return this.getRedirectLink(
       order.shop.paymentGateway.id,
-      order.totalPrice,
+      totalPrice,
       {
         payOrder: { id: orderId },
       },

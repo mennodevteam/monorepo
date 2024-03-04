@@ -66,6 +66,7 @@ export class OrdersService {
     const shop = await this.shopsRepo.findOne({
       where: { id: dto.shopId },
       relations: [
+        'club',
         'menu.categories.products.variants',
         'menu.costs.includeProductCategory',
         'menu.costs.includeProduct',
@@ -103,6 +104,22 @@ export class OrdersService {
     }
 
     order.totalPrice = OrderDto.total(dto, menu);
+
+    if (dto.useWallet && shop.club) {
+      const member = await this.membersRepo.findOne({
+        where: { user: { id: dto.customerId }, club: { id: shop.club.id } },
+        relations: ['wallet'],
+      });
+
+      if (member?.wallet?.charge) {
+        if (member.wallet.charge >= order.totalPrice) {
+          order.walletPaymentAmount = order.totalPrice;
+          order.paymentType = OrderPaymentType.ClubWallet;
+        } else {
+          order.walletPaymentAmount = member.wallet.charge;
+        }
+      }
+    }
     return order;
   }
 
