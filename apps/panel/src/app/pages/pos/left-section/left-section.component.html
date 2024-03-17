@@ -41,7 +41,7 @@
       <span matListItemTitle>{{ User.fullName(POS.customer) }}</span>
       <span matListItemLine>{{ POS.customer.mobilePhone | phone }}</span>
       <button
-        *ngIf="!POS.customerId"
+        *ngIf="!POS.editOrder?.paymentType"
         mat-icon-button
         color="warn"
         matListItemMeta

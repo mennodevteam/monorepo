@@ -187,7 +187,7 @@
         <button mat-icon-button (click)="print(order)" stopPropagation>
           <i class="fa-regular fa-print"></i>
         </button>
-        <button mat-icon-button routerLink="/pos" [queryParams]="{ id: order.id }" stopPropagation>
+        <button mat-icon-button routerLink="/pos" [queryParams]="{ id: order.id }" stopPropagation [disabled]="!!order.paymentType">
           <i class="fa-regular fa-pencil"></i>
         </button>
         <button mat-icon-button stopPropagation (click)="remove(order)">

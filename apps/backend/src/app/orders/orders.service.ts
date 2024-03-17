@@ -76,9 +76,10 @@ export class OrdersService {
     if (!shop) throw new HttpException('shop not found', HttpStatus.NOT_ACCEPTABLE);
 
     order.shop = <Shop>{ id: dto.shopId };
-    if (dto.creatorId) order.creator = <User>{ id: dto.creatorId };
-    if (dto.customerId) order.customer = <User>{ id: dto.customerId };
-    if (dto.waiterId) order.waiter = <User>{ id: dto.waiterId };
+    order.customer = dto.customerId ? { id: dto.customerId } as User : null;
+    
+    if (dto.creatorId) order.creator = { id: dto.creatorId } as User;
+    if (dto.waiterId) order.waiter = { id: dto.waiterId } as User;
     if (dto.details) order.details = dto.details;
     if (dto.id) order.id = dto.id;
     if (dto.isManual) order.isManual = dto.isManual;
@@ -288,7 +289,8 @@ export class OrdersService {
     }
     if (order.paymentType) throw new HttpException('not allowed for payed orders', HttpStatus.NOT_ACCEPTABLE);
 
-    if (order.customer) {
+    if (order.customer && !!order.paymentType) {
+      console.log('12213123123')
       delete dto.customerId;
     }
 
@@ -298,6 +300,7 @@ export class OrdersService {
 
     const editedOrder = await this.dtoToOrder(dto);
     editedOrder.id = dto.id;
+    console.log(editedOrder)
 
     // set prev details
     editedOrder.details = { ...(order.details || {}), ...(editedOrder.details || {}) };
