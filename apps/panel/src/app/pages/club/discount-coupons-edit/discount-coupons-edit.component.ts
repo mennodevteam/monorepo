@@ -3,7 +3,8 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ClubService } from '../../../core/services/club.service';
-import { DiscountCoupon, Status } from '@menno/types';
+import { DiscountCoupon, MemberTag, Status } from '@menno/types';
+import { filter, take } from 'rxjs';
 
 @Component({
   selector: 'app-discount-coupons-edit',
@@ -15,6 +16,7 @@ export class DiscountCouponsEditComponent implements OnInit {
   form: FormGroup;
   saving: boolean;
   loading = true;
+  tags: MemberTag[];
 
   constructor(
     private route: ActivatedRoute,
@@ -27,24 +29,38 @@ export class DiscountCouponsEditComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  async ngOnInit() {
+  ngOnInit() {
+    this.init();
+  }
+
+  async init() {
     const params = this.route.snapshot.queryParams;
     if (params['id']) {
       const discountCoupons = await this.club.getDiscountCoupons();
       const coupon = discountCoupons.find((x) => x.id === params['id']);
       if (coupon) this.discountCoupon = coupon;
     }
+
+    const tags = await this.club.tags
+      .pipe(
+        filter((tag) => !!tag),
+        take(1)
+      )
+      .toPromise();
+
+    this.tags = tags || [];
+
+    const selectedTag = tags?.find((tag) => tag.id === this.discountCoupon?.tag?.id);
+
     const next10day = new Date();
     next10day.setDate(next10day.getDate() + 10);
-
     this.form = new FormGroup({
       title: new FormControl(
         this.discountCoupon ? this.discountCoupon.title : undefined,
         Validators.required
       ),
-      star: new FormControl(
-        this.discountCoupon ? (this.discountCoupon.star != undefined ? this.discountCoupon.star : -1) : -1
-      ),
+      star: new FormControl(this.discountCoupon?.star != null ? this.discountCoupon.star : -1),
+      tag: new FormControl(selectedTag),
       useCode: new FormControl(this.discountCoupon && this.discountCoupon.code ? true : false),
       code: new FormControl(this.discountCoupon ? this.discountCoupon.code : undefined),
       startedAt: new FormControl(

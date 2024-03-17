@@ -23,11 +23,8 @@
               <input matInput formControlName="title" required />
             </mat-form-field>
             <p>{{ 'discountCouponEdit.userCodeDescription' | translate }}</p>
-            <mat-radio-group formControlName="useCode" color="primary">
-              <mat-radio-button [value]="false">{{
-                'discountCouponEdit.userCodeFalse' | translate
-              }}</mat-radio-button>
-              <mat-form-field appearance="fill" *ngIf="form.controls['useCode'].value === false">
+            <div class="form-page-layout">
+              <mat-form-field appearance="fill" class="flex-col">
                 <mat-label>{{ 'discountCouponEdit.star' | translate }}</mat-label>
                 <mat-select formControlName="star">
                   <mat-option [value]="-1">{{ 'discountCouponEdit.starAll' | translate }}</mat-option>
@@ -39,6 +36,24 @@
                   <mat-option [value]="5">{{ 'discountCouponEdit.starMembers5' | translate }}</mat-option>
                 </mat-select>
               </mat-form-field>
+              <mat-form-field appearance="fill" class="flex-col" *ngIf="form.controls['star'].value != -1">
+                <mat-label>{{ 'discountCouponEdit.tag' | translate }}</mat-label>
+                <mat-select formControlName="tag">
+                  <mat-option [value]="null">
+                    {{ 'discountCouponEdit.allTags' | translate }}
+                  </mat-option>
+                  <mat-option *ngFor="let tag of tags" [value]="tag">
+                    <i class="fas fa-circle" [style.color]="tag.color"></i>
+                    {{ tag.title }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <mat-radio-group formControlName="useCode" color="primary">
+              <mat-radio-button [value]="false">{{
+                'discountCouponEdit.userCodeFalse' | translate
+              }}</mat-radio-button>
               <mat-radio-button [value]="true">{{
                 'discountCouponEdit.userCodeTrue' | translate
               }}</mat-radio-button>

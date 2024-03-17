@@ -206,7 +206,10 @@ export class ClubsService {
   async filterDiscountCoupons(dto: FilterDiscountCouponsDto): Promise<DiscountCoupon[]> {
     const options: FindOptionsWhere<DiscountCoupon> = {};
     const member = dto.userId
-      ? await this.membersRepo.findOneBy({ user: { id: dto.userId }, club: { id: dto.clubId } })
+      ? await this.membersRepo.findOne({
+          where: { user: { id: dto.userId }, club: { id: dto.clubId } },
+          relations: ['tags'],
+        })
       : undefined;
     if (dto.clubId) {
       options.club = { id: dto.clubId };
@@ -219,14 +222,19 @@ export class ClubsService {
 
     let coupons = await this.discountCouponsRepo.find({
       where: options,
-      relations: ['user'],
+      relations: ['user', 'tag'],
     });
 
     if (dto.userId) {
       if (!member) {
-        coupons = coupons.filter((x) => !x.user && !x.code && !x.star);
+        coupons = coupons.filter((x) => !x.user && !x.code && x.star == null);
       } else {
-        coupons = coupons.filter((x) => (!x.user || x.user?.id === dto.userId) && x.star <= member.star);
+        coupons = coupons.filter(
+          (x) =>
+            (!x.user || x.user?.id === dto.userId) &&
+            x.star <= member.star &&
+            (!x.tag || member.tags?.find((tag) => tag.id === x.tag.id))
+        );
       }
     }
 

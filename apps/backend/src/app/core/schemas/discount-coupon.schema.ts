@@ -82,6 +82,12 @@ export const DiscountCouponSchema = new EntitySchema<DiscountCoupon>({
     user: {
       target: 'User',
       type: 'many-to-one',
+      nullable: true,
+    },
+    tag: {
+      target: 'MemberTag',
+      type: 'many-to-one',
+      nullable: true,
     },
   },
 });

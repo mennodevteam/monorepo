@@ -1,4 +1,5 @@
 import { Club } from './club';
+import { MemberTag } from './member-tag';
 import { OrderType } from './order-type.enum';
 import { Status } from './status.enum';
 import { User } from './user';
@@ -20,6 +21,7 @@ export class DiscountCoupon {
   maxUsePerUser: number;
   maxUse: number;
   code: string;
+  tag?: MemberTag;
   club: Club;
   user: User;
 }

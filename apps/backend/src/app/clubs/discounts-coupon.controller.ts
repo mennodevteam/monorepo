@@ -45,9 +45,17 @@ export class DiscountsCouponController {
     @Param('shopId') shopId: string,
     @Param('code') code: string
   ): Promise<DiscountCoupon | undefined> {
-    const { club } = await this.shopsRepo.findOne({ where: { id: shopId }, relations: ['club'] });
+    const { club } = await this.shopsRepo.findOne({ where: { id: shopId }, relations: ['club', 'tag'] });
     if (club) {
-      const coupon = await this.discountCouponsRepo.findOneBy({
+      const member = await this.membersRepo.findOne({
+        where: {
+          club: { id: club.id },
+          user: { id: user.id },
+        },
+        relations: ['tags'],
+      });
+
+      const coupons = await this.discountCouponsRepo.findBy({
         club: { id: club.id },
         startedAt: LessThanOrEqual(new Date()),
         expiredAt: MoreThanOrEqual(new Date()),
@@ -55,19 +63,29 @@ export class DiscountsCouponController {
         code,
       });
 
-      if (coupon?.maxUse) {
-        const totalCount = await this.ordersRepo.count({ where: { discountCoupon: { id: coupon.id } } });
-        if (totalCount >= coupon.maxUse) return;
-      }
+      for (const coupon of coupons) {
+        if (coupon?.star != undefined) {
+          if (!member || member.star < coupon.star) break;
+        }
 
-      if (coupon?.maxUsePerUser) {
-        const totalCount = await this.ordersRepo.count({
-          where: { discountCoupon: { id: coupon.id }, customer: { id: user.id } },
-        });
-        if (totalCount >= coupon.maxUsePerUser) return;
-      }
+        if (coupon?.tag != undefined) {
+          if (!member || !member.tags.find((tag) => tag.id === coupon.tag.id)) break;
+        }
 
-      return coupon;
+        if (coupon?.maxUse) {
+          const totalCount = await this.ordersRepo.count({ where: { discountCoupon: { id: coupon.id } } });
+          if (totalCount >= coupon.maxUse) break;
+        }
+
+        if (coupon?.maxUsePerUser) {
+          const totalCount = await this.ordersRepo.count({
+            where: { discountCoupon: { id: coupon.id }, customer: { id: user.id } },
+          });
+          if (totalCount >= coupon.maxUsePerUser) break;
+        }
+
+        return coupon;
+      }
     }
     return;
   }
@@ -91,10 +109,7 @@ export class DiscountsCouponController {
 
   @Roles(UserRole.Panel)
   @Get(':userId?')
-  async filter(
-    @LoginUser() user: AuthPayload,
-    @Param('userId') userId: string
-  ): Promise<DiscountCoupon[]> {
+  async filter(@LoginUser() user: AuthPayload, @Param('userId') userId: string): Promise<DiscountCoupon[]> {
     const { club } = await this.auth.getPanelUserShop(user, ['club']);
     return this.clubsService.filterDiscountCoupons(<FilterDiscountCouponsDto>{
       clubId: club.id,
