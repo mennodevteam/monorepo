@@ -107,4 +107,8 @@ export class PagesComponent implements OnInit {
       this.snack.open(this.translate.instant('sendShopLink.numberError'), '', { panelClass: 'warning' });
     }
   }
+
+  get telegramVisibility() {
+    return !location.pathname.startsWith('/pos');
+  }
 }

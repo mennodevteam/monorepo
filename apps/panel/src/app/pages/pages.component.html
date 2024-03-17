@@ -90,6 +90,7 @@
 <router-outlet></router-outlet>
 <app-notifications></app-notifications>
 <a
+  *ngIf="shop && telegramVisibility"
   href="https://t.me/menno_pro"
   target="_blank"
   mat-mini-fab
