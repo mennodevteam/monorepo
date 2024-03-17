@@ -331,6 +331,17 @@ export class PosService extends OrderDto {
   }
 
   async save(print = false) {
+    if (this.discountCoupon?.minPrice && this.sum < this.discountCoupon.minPrice) {
+      this.snack.open(
+        this.translate.instant('pos.discountCouponMinPrice', {
+          value: this.menuCurrency.transform(this.discountCoupon.minPrice),
+        }),
+        '',
+        { panelClass: 'warning' }
+      );
+      return;
+    }
+
     if (this.type !== OrderType.DineIn && this.details?.table) delete this.details.table;
     const dto: OrderDto = {
       id: this.editOrder?.id,
@@ -346,6 +357,7 @@ export class PosService extends OrderDto {
       address: this.type === OrderType.Delivery ? this.address : null,
       note: this.note,
     } as OrderDto;
+
     this.saving = true;
     this.snack.open(this.translate.instant('app.saving'), '', { duration: 3000 });
     const savedOrder = await this.orderService.save(dto);

@@ -368,6 +368,7 @@
     "thisYearOrder": "سفارشات امسال",
     "discountCoupon": "کدتخفیف",
     "address": "آدرس ارسال",
+    "discountCouponMinPrice": "حداقل سفارش برای استفاده از این کد تخفیف {{value}} است",
     "addProductWarning": {
       "title": "آیتم {{value}}",
       "description": "آیتم انتخاب شده {{value}} است. در صورت اطمینان، با تایید آن را به فاکتور اضافه کنید."

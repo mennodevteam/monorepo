@@ -111,7 +111,9 @@ export class OrderDto {
       let price = 0;
       if (dto.discountCoupon.fixedDiscount) price -= dto.discountCoupon.fixedDiscount;
       if (dto.discountCoupon.percentageDiscount) {
-        const dis = (sum * dto.discountCoupon.percentageDiscount) / 100;
+        let dis = (sum * dto.discountCoupon.percentageDiscount) / 100;
+        if (dto.discountCoupon.maxDiscount && dis > dto.discountCoupon.maxDiscount)
+          dis = dto.discountCoupon.maxDiscount;
         price -= dis;
       }
       abstractItems.push(<OrderItem>{
