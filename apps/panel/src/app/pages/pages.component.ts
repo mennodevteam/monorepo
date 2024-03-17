@@ -17,11 +17,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ClubService } from '../core/services/club.service';
 import { GoftinoService } from '../core/services/goftino.service';
+import { bounceIn } from '../core/animations/bounce.animation';
 
 @Component({
   selector: 'menno-pages',
   templateUrl: './pages.component.html',
   styleUrls: ['./pages.component.scss'],
+  animations: [
+    bounceIn('0.2s 1s')
+  ]
 })
 export class PagesComponent implements OnInit {
   isHandset$: Observable<boolean>;

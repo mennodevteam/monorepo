@@ -110,6 +110,7 @@ export class OrdersController {
       'reviews',
       'payment',
       'address.deliveryArea',
+      'discountCoupon'
     ];
 
     if (withProduct) {

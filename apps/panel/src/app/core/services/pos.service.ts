@@ -216,6 +216,7 @@ export class PosService extends OrderDto {
         this.setType(order.type);
         this.address = order.address;
         this.details = order.details;
+        this.isManual = order.isManual;
         this.discountCoupon = order.discountCoupon;
         this.customerId = order.customer?.id;
       }
@@ -290,7 +291,8 @@ export class PosService extends OrderDto {
         );
         if (!this.editOrder) this.discountCoupon = this.discountCoupons[0];
         else if (this.editOrder && this.editOrder.discountCoupon) {
-          this.discountCoupon = coupons.find((x) => x.id === this.editOrder!.discountCoupon!.id);
+          const selected = coupons.find((x) => x.id === this.editOrder!.discountCoupon!.id);
+          if (!selected) this.discountCoupons.push(this.editOrder.discountCoupon);
         }
       });
 

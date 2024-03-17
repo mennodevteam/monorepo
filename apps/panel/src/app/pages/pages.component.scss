@@ -28,3 +28,14 @@ mat-toolbar {
     border-radius: 50%;
   }
 }
+
+#telegram {
+  position: fixed;
+  left: 34px;
+  bottom: 96px;
+  transition: 0.3;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}

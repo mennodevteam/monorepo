@@ -28,11 +28,10 @@ export class HomeComponent {
   env = environment;
 
   update = {
-    date: new Date(2024, 1, 11),
+    date: new Date(2024, 2, 17),
     items: [
-      { title: 'اضافه شدن بخش داشبورد', type: 'feature' },
-      { title: 'اطلاع‌رسانی سفارش جدید از طریق پیامک', type: 'feature' },
-      { title: 'محدود کردن تخفیف‌ها و هزینه روی سفارش دستی یا آنلاین', type: 'feature' },
+      { title: 'کد تخفیف اعضای باشگاه برمبنای ستاره و برچسب', type: 'feature' },
+      { title: 'ارسال خودکار اعتبار کیف پول اعضا', type: 'feature' },
       { title: 'رفع برخی باگ‌های گزارش شده', type: 'bug' },
     ],
   };
