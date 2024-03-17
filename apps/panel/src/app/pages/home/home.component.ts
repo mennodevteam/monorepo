@@ -31,7 +31,7 @@ export class HomeComponent {
     date: new Date(2024, 2, 17),
     items: [
       { title: 'کد تخفیف اعضای باشگاه برمبنای ستاره و برچسب', type: 'feature' },
-      { title: 'ارسال خودکار اعتبار کیف پول اعضا', type: 'feature' },
+      { title: 'ارسال خودکار پیامک با تغییر اعتبار کیف پول اعضا', type: 'feature' },
       { title: 'رفع برخی باگ‌های گزارش شده', type: 'bug' },
     ],
   };
