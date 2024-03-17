@@ -23,6 +23,7 @@ import {
   SmsTemplate,
   WalletLog,
   ProductVariant,
+  WalletLogType,
 } from '@menno/types';
 import { groupBy, groupBySum } from '@menno/utils';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -456,6 +457,7 @@ export class OrdersService {
           wallet: { id: member.wallet.id },
           amount: -order.totalPrice,
           user: { id: user.id },
+          type: WalletLogType.PayOrder,
         } as WalletLog,
         order.shop.id
       );

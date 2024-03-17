@@ -22,7 +22,7 @@ export class WalletsService {
     const shop = await this.shopsRepo.findOne({ where: { id: shopId }, relations: ['smsAccount'] });
     wallet.charge += dto.amount;
     await this.walletLogsRepo.save(dto);
-
+    console.log(dto);
     if (wallet.member.user) {
       const textContent = this.getMessageText(dto, shop, wallet);
       this.sms.send({
@@ -46,7 +46,7 @@ export class WalletsService {
         break;
       case WalletLogType.PayOrder:
         text += `بابت ثبت سفارش مبلغ ${PersianNumberService.withCommas(
-          dto.amount
+          Math.abs(dto.amount)
         )} تومان از کیف پول شما کسر شد.\nموجودی کیف پول: ${PersianNumberService.withCommas(wallet.charge)}`;
         break;
     }
