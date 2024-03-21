@@ -148,6 +148,10 @@ export class ClubService {
     return res;
   }
 
+  async removeMission(missionId: number): Promise<void> {
+    await this.http.delete(`missions/${missionId}`).toPromise();
+  }
+
   async getDiscountCoupons(userId?: string): Promise<DiscountCoupon[]> {
     let url = 'discountCoupons';
     if (userId) url += `/${userId}`;

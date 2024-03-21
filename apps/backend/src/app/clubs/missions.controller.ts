@@ -15,7 +15,7 @@ export class MissionsController {
 
   @Get()
   async find(@LoginUser() user: AuthPayload): Promise<Mission[]> {
-    const { club } = await this.auth.getPanelUserShop(user, ['panel']);
+    const { club } = await this.auth.getPanelUserShop(user, ['club']);
     return this.missionsRepo.find({
       where: {
         club: { id: club?.id },

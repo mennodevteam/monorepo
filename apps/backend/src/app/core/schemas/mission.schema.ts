@@ -1,4 +1,4 @@
-import { Mission } from '@menno/types';
+import { Mission, Status } from '@menno/types';
 import { EntitySchema } from 'typeorm';
 
 export const MissionSchema = new EntitySchema<Mission>({
@@ -27,6 +27,11 @@ export const MissionSchema = new EntitySchema<Mission>({
     },
     expiredAt: {
       type: 'timestamptz',
+    },
+    status: {
+      type: 'enum',
+      enum: Status,
+      default: Status.Active,
     },
     description: {
       type: String,

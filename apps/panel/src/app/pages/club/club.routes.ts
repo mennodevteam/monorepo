@@ -5,6 +5,7 @@ import { DiscountCouponsComponent } from './discount-coupons/discount-coupons.co
 import { DiscountCouponsEditComponent } from './discount-coupons-edit/discount-coupons-edit.component';
 import { SmsGroupComponent } from './sms-group/sms-group.component';
 import { SmsListComponent } from './sms-group/sms-list/sms-list.component';
+import { MissionListComponent } from './mission-list/mission-list.component';
 
 export const clubRoutes: Route[] = [
   {
@@ -14,6 +15,7 @@ export const clubRoutes: Route[] = [
       { path: '', component: MemberListComponent },
       { path: 'discount-coupons', component: DiscountCouponsComponent },
       { path: 'discount-coupons/edit', component: DiscountCouponsEditComponent },
+      { path: 'missions', component: MissionListComponent },
       { path: 'sms/group', component: SmsGroupComponent },
       { path: 'sms/group/:id', component: SmsListComponent },
     ],

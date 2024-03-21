@@ -45,7 +45,7 @@ export class DiscountsCouponController {
     @Param('shopId') shopId: string,
     @Param('code') code: string
   ): Promise<DiscountCoupon | undefined> {
-    const { club } = await this.shopsRepo.findOne({ where: { id: shopId }, relations: ['club', 'tag'] });
+    const { club } = await this.shopsRepo.findOne({ where: { id: shopId }, relations: ['club'] });
     if (club) {
       const member = await this.membersRepo.findOne({
         where: {
@@ -55,12 +55,15 @@ export class DiscountsCouponController {
         relations: ['tags'],
       });
 
-      const coupons = await this.discountCouponsRepo.findBy({
-        club: { id: club.id },
-        startedAt: LessThanOrEqual(new Date()),
-        expiredAt: MoreThanOrEqual(new Date()),
-        status: Status.Active,
-        code,
+      const coupons = await this.discountCouponsRepo.find({
+        where: {
+          club: { id: club.id },
+          startedAt: LessThanOrEqual(new Date()),
+          expiredAt: MoreThanOrEqual(new Date()),
+          status: Status.Active,
+          code,
+        },
+        relations: ['tag'],
       });
 
       for (const coupon of coupons) {

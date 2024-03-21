@@ -1,5 +1,6 @@
 import { Club } from './club';
 import { DiscountCoupon } from './discount-coupon';
+import { Status } from './status.enum';
 
 export interface MissionReward {
   gem?: number;
@@ -32,6 +33,7 @@ export interface MissionCondition {
 export class Mission {
   id: number;
   title: string;
+  status: Status;
   description: string;
   club: Club;
   condition: MissionCondition;
