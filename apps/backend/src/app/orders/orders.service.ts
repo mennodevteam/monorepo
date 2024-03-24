@@ -24,6 +24,7 @@ import {
   WalletLog,
   ProductVariant,
   WalletLogType,
+  Wallet,
 } from '@menno/types';
 import { groupBy, groupBySum } from '@menno/utils';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -54,6 +55,8 @@ export class OrdersService {
     private ordersRepo: Repository<Order>,
     @InjectRepository(OrderItem)
     private orderItemsRepo: Repository<OrderItem>,
+    @InjectRepository(Wallet)
+    private walletsRepo: Repository<Wallet>,
     @InjectRepository(DiscountCoupon)
     private discountCouponsRepo: Repository<DiscountCoupon>,
     @InjectRepository(OrderMessage)
@@ -238,6 +241,16 @@ export class OrdersService {
                 } else data[pos] = { sum: value, count: 1 };
               }
             }
+          } else if (o.paymentType === OrderPaymentType.ClubWallet) {
+            if (data['اعتباری']) {
+              data['اعتباری'].sum += o.totalPrice;
+              data['اعتباری'].count++;
+            } else data['اعتباری'] = { sum: o.totalPrice, count: 1 };
+          } else if (o.paymentType === OrderPaymentType.Online) {
+            if (data['آنلاین']) {
+              data['آنلاین'].sum += o.totalPrice;
+              data['آنلاین'].count++;
+            } else data['آنلاین'] = { sum: o.totalPrice, count: 1 };
           }
         });
         break;
@@ -455,6 +468,9 @@ export class OrdersService {
         where: { user: { id: order.customer.id }, club: { id: order.shop.club.id } },
         relations: ['wallet'],
       });
+      if (!member.wallet) {
+        member.wallet = await this.walletsRepo.save({charge: 0, member: {id: member.id}});
+      }
       await this.walletsService.updateWalletAmount(
         {
           wallet: { id: member.wallet.id },
