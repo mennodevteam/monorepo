@@ -1,64 +1,21 @@
 <mat-toolbar class="page-toolbar" *ngIf="!selection.hasValue()">
   <h2 class="hide-xs">{{ 'members.title' | translate }}</h2>
   <span flex></span>
-  <button mat-stroked-button routerLink="discount-coupons" class="hide-xs">
-    <i matListIcon class="far fa-tags"></i>
+  <button mat-stroked-button routerLink="missions">
+    <i class="far fa-bullseye-arrow"></i>
+    <span spacer-sm></span>
+    <span>{{ 'members.missions' | translate }}</span>
+    <span spacer-sm></span>
+    <i class="fas fa-sparkles red"></i>
+  </button>
+  <button mat-stroked-button routerLink="discount-coupons">
+    <i class="far fa-tags"></i>
     <span spacer-sm></span>
     <span>{{ 'members.discountCodes' | translate }}</span>
-  </button>
-  <button mat-stroked-button routerLink="sms/group" class="hide-xs">
-    <i matListIcon class="far fa-message-check"></i>
-    <span spacer-sm></span>
-    <span>{{ 'smsList.pageTitle' | translate }}</span>
-  </button>
-  <button mat-stroked-button (click)="sendSmsToAll()" class="hide-xs">
-    <i matListIcon class="far fa-message-lines"></i>
-    <span spacer-sm></span>
-    <span>{{ 'members.sendSmsAll' | translate }}</span>
-  </button>
-  <button mat-stroked-button (click)="downloadCsv()" [disabled]="downloadingCSV" class="hide-xs">
-    <i matListIcon class="far fa-arrow-down-to-line"></i>
-    {{ 'app.download' | translate }}
-  </button>
-  <button
-    mat-icon-button
-    routerLink="discount-coupons"
-    matTooltip="{{ 'members.discountCodes' | translate }}"
-    class="show-xs"
-  >
-    <i matListIcon class="far fa-tags"></i>
-  </button>
-  <button
-    mat-icon-button
-    routerLink="sms/group"
-    matTooltip="{{ 'smsList.pageTitle' | translate }}"
-    class="show-xs"
-  >
-    <i matListIcon class="far fa-message-check"></i>
-  </button>
-  <button
-    mat-icon-button
-    (click)="sendSmsToAll()"
-    matTooltip="{{ 'members.sendSmsAll' | translate }}"
-    class="show-xs"
-  >
-    <i matListIcon class="far fa-message-lines"></i>
-  </button>
-  <button
-    mat-icon-button
-    (click)="downloadCsv()"
-    [disabled]="downloadingCSV"
-    matTooltip="{{ 'app.download' | translate }}"
-    class="show-xs"
-  >
-    <i matListIcon class="far fa-arrow-down-to-line"></i>
   </button>
   <button mat-flat-button color="primary" [matMenuTriggerFor]="addMenu">
     {{ 'members.add' | translate }}
   </button>
-  <a mat-icon-button routerLink="/settings/club" matTooltip="{{ 'members.settingTootltip' | translate }}">
-    <i class="fas fa-cog"></i>
-  </a>
   <mat-menu #addMenu="matMenu">
     <button mat-menu-item (click)="openAddMemberDialog()">
       {{ 'members.addOne' | translate }}
@@ -77,6 +34,24 @@
         {{ 'app.uploadExcel' | translate }}
       </button>
     </mat-menu>
+  </mat-menu>
+
+  <a mat-icon-button [matMenuTriggerFor]="moreMenu">
+    <i class="fas fa-ellipsis-vertical"></i>
+  </a>
+  <mat-menu #moreMenu="matMenu">
+    <button mat-menu-item (click)="sendSmsToAll()">
+      <i class="mat-icon far fa-message-lines fa-large"></i>
+      {{ 'members.sendSmsAll' | translate }}
+    </button>
+    <a mat-menu-item routerLink="sms/group">
+      <i class="mat-icon far fa-message-check fa-large"></i>
+      {{ 'smsList.pageTitle' | translate }}
+    </a>
+    <a mat-menu-item (click)="downloadCsv()" [disabled]="downloadingCSV">
+      <i class="mat-icon far fa-arrow-down-to-line fa-large"></i>
+      {{ 'app.download' | translate }}
+    </a>
   </mat-menu>
   <input style="display: none" #fileInput type="file" (change)="excelInputFileChanged($event)" />
 </mat-toolbar>
