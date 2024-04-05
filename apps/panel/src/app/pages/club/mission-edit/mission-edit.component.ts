@@ -61,7 +61,7 @@ export class MissionEditComponent implements OnInit {
       orderSum: new FormControl(this.mission?.orderSum || 0),
       rewardType: new FormControl(this.mission?.rewardType || MissionRewardType.DiscountCoupon),
       rewardValue: new FormControl(this.mission?.rewardValue || 0),
-      durationInDays: new FormControl(this.mission?.rewardValue || 0),
+      durationInDays: new FormControl(this.mission?.durationInDays || 0),
       discountCoupon: new FormGroup({
         type: new FormControl('percentage'),
         fixedDiscount: new FormControl(this.mission?.rewardDetails?.fixedDiscount || 0),

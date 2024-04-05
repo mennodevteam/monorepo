@@ -14,7 +14,7 @@ export class MissionListComponent {
   missions: Mission[];
   loading = false;
   Status = Status;
-  displayedColumns = ['title', 'status', 'actions'];
+  displayedColumns = ['title', 'status', 'date', 'actions'];
 
   constructor(private club: ClubService, private alertDialogService: AlertDialogService) {
     this.load();
