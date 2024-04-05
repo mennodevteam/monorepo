@@ -8,6 +8,7 @@
     "price": "مبلغ",
     "currency": "تومان",
     "all": "همه",
+    "description": "توضیحات",
     "add": "ایجاد کردن",
     "status": "وضعیت",
     "finished": "ناموجود",
@@ -963,5 +964,28 @@
     "orderSum": "جمع کل سفارش",
     "cvr": "نرخ تبدیل مشاهده منو به سفارش",
     "aov": "میانگین هر سفارش"
+  },
+  "missionEdit": {
+    "editTitle": "ویرایش سناریو",
+    "newTitle": "ایجاد سناریو فروش",
+    "conditionTitle": "شرایط دریافت پاداش",
+    "conditionPeriodLabel": "نو سناریو",
+    "conditionPeriod": {
+      "PER_PURCHASE": "به ازای هر خرید",
+      "WEEKLY": "میزان خرید در طول هفته",
+      "MONTHLY": "میزان خرید در طول ماه",
+      "YEARLY": "میزان خرید در طول سال"
+    },
+    "conditionPeriodDescription": "برای دریافت پاداش باید شروط زیر برقرار شود",
+    "orderCount": "تعداد سفارش",
+    "orderSum": "مجموع سفارش",
+    "rewardTitle": "پاداش سناریو",
+    "rewardTypeLabel": "نوع پاداش",
+    "rewardType": {
+      "DISCOUNT_COUPON": "کد تخفیف",
+      "WALLET_CHARGE": "شارژ کیف پول"
+    },
+    "rewardValue": "میزان شارژ کیف پول",
+    "durationInDays": "تعداد روز اعتبار کد تخفیف"
   }
 }

@@ -1,0 +1,174 @@
+<form *ngIf="form && !loading" [formGroup]="form" (ngSubmit)="save()">
+  <mat-toolbar class="page-toolbar form-theme">
+    <h2 *ngIf="mission?.id" flex>{{ 'missionEdit.editTitle' | translate }} - {{ mission.title }}</h2>
+    <h2 *ngIf="!mission?.id" flex>{{ 'missionEdit.newTitle' | translate }}</h2>
+    <button mat-button secondary goBack type="button">
+      {{ 'app.cancel' | translate }}
+    </button>
+    <button mat-flat-button secondary color="accent" type="submit" [disabled]="!form.dirty || saving">
+      {{ 'app.save' | translate }}
+      <i class="fad fa-spinner-third fa-spin" *ngIf="saving"></i>
+    </button>
+  </mat-toolbar>
+
+  <main class="content-wrapper">
+    <div id="form" class="form-page-layout">
+      <div class="static-col">
+        <mat-card>
+          <mat-card-content>
+            <mat-form-field>
+              <mat-label> {{ 'app.title' | translate }} </mat-label>
+              <input matInput formControlName="title" required />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label> {{ 'app.description' | translate }} </mat-label>
+              <input matInput formControlName="description" required />
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title> {{ 'app.dateRange' | translate }} </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-form-field>
+              <mat-label>{{ 'app.dateRange' | translate }}</mat-label>
+              <mat-date-range-input [rangePicker]="picker">
+                <input
+                  matStartDate
+                  formControlName="startedAt"
+                  placeholder="{{ 'app.fromDate' | translate }}"
+                />
+                <input matEndDate formControlName="expiredAt" placeholder="{{ 'app.toDate' | translate }}" />
+              </mat-date-range-input>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+
+        <select-status-card [control]="statusControl"></select-status-card>
+      </div>
+
+      <div class="flex-col">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title> {{ 'missionEdit.conditionTitle' | translate }} </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-form-field>
+              <mat-label>{{ 'missionEdit.conditionPeriodLabel' | translate }}</mat-label>
+              <mat-select formControlName="conditionPeriod">
+                <mat-option *ngFor="let type of MissionConditionPeriodValues" [value]="type">
+                  {{ 'missionEdit.conditionPeriod.' + type | translate }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <p *ngIf="!isPerPurchase">
+              {{ 'missionEdit.conditionPeriodDescription' | translate }}
+            </p>
+
+            <div class="row" style="gap: 16px">
+              <mat-form-field flex *ngIf="!isPerPurchase">
+                <mat-label>{{ 'missionEdit.orderCount' | translate }}</mat-label>
+                <input matInput formControlName="orderCount" type="number" />
+              </mat-form-field>
+              <mat-form-field flex>
+                <mat-label>{{ 'missionEdit.orderSum' | translate }}</mat-label>
+                <input matInput formControlName="orderSum" type="number" />
+              </mat-form-field>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title> {{ 'missionEdit.rewardTitle' | translate }} </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-form-field>
+              <mat-label>{{ 'missionEdit.rewardTypeLabel' | translate }}</mat-label>
+              <mat-select formControlName="rewardType">
+                <mat-option *ngFor="let type of MissionRewardTypeValues" [value]="type">
+                  {{ 'missionEdit.rewardType.' + type | translate }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field *ngIf="isWalletChargeReward">
+              <mat-label>{{ 'missionEdit.rewardValue' | translate }}</mat-label>
+              <input matInput formControlName="rewardValue" type="number" />
+            </mat-form-field>
+
+            <form *ngIf="!isWalletChargeReward" formGroupName="discountCoupon">
+              <div class="row">
+                <mat-form-field flex>
+                  <mat-label>
+                    {{ 'discountCouponEdit.type' | translate }}
+                  </mat-label>
+                  <mat-select formControlName="type" required>
+                    <mat-option value="percentage">
+                      {{ 'discountCouponEdit.percentageCoupon' | translate }}
+                    </mat-option>
+                    <mat-option value="fixed">{{ 'discountCouponEdit.fixedCoupon' | translate }} </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <span spacer></span>
+                <mat-form-field flex *ngIf="!isPercentageDiscount">
+                  <mat-label>
+                    {{ 'discountCouponEdit.fixedDiscount' | translate }}
+                  </mat-label>
+                  <input matInput formControlName="fixedDiscount" type="number" />
+                  <mat-hint>
+                    {{ form.value.discountCoupon?.fixedDiscount | menuCurrency: undefined:true }}
+                  </mat-hint>
+                </mat-form-field>
+                <mat-form-field flex *ngIf="isPercentageDiscount">
+                  <mat-label>
+                    {{ 'discountCouponEdit.percentageDiscount' | translate }}
+                  </mat-label>
+                  <input matInput formControlName="percentageDiscount" type="number" />
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <mat-form-field flex>
+                  <mat-label>
+                    {{ 'discountCouponEdit.minPrice' | translate }}
+                  </mat-label>
+                  <input matInput formControlName="minPrice" type="number" />
+                  <mat-hint>
+                    {{ form.value.discountCoupon?.minPrice | menuCurrency: undefined:true }}
+                  </mat-hint>
+                </mat-form-field>
+                <span spacer></span>
+                <mat-form-field flex>
+                  <mat-label>
+                    {{ 'discountCouponEdit.maxDiscount' | translate }}
+                  </mat-label>
+                  <input
+                    matInput
+                    [readonly]="!isPercentageDiscount"
+                    formControlName="maxDiscount"
+                    type="number"
+                  />
+                  <mat-hint>
+                    {{ form.value.discountCoupon?.maxDiscount | menuCurrency: undefined:true }}
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+            </form>
+            <span spacer></span>
+            <mat-form-field *ngIf="!isWalletChargeReward">
+              <mat-label>
+                {{ 'missionEdit.durationInDays' | translate }}
+              </mat-label>
+              <input matInput formControlName="durationInDays" type="number" />
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </main>
+</form>

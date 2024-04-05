@@ -2,42 +2,30 @@ import { Club } from './club';
 import { DiscountCoupon } from './discount-coupon';
 import { Status } from './status.enum';
 
-export interface MissionReward {
-  gem?: number;
-  discountCoupon?: {
-    coupon: DiscountCoupon;
-    durationInDay: number;
-  };
+export enum MissionConditionPeriod {
+  PerPurchase = 'PER_PURCHASE',
+  Weekly = 'WEEKLY',
+  Monthly = 'MONTHLY',
+  Yearly = 'YEARLY',
 }
-
-export interface MissionCondition {
-  perPurchase: {
-    minimumPrice: number;
-  };
-  weekly: {
-    total: number;
-    count: number;
-  };
-  monthly: {
-    total: number;
-    count: number;
-  };
-  yearly: {
-    total: number;
-    count: number;
-  };
-  items: string[];
-  labels: string[];
+export enum MissionRewardType {
+  DiscountCoupon = 'DISCOUNT_COUPON',
+  WalletCharge = 'WALLET_CHARGE',
 }
 
 export class Mission {
   id: number;
   title: string;
   status: Status;
-  description: string;
+  description?: string;
   club: Club;
-  condition: MissionCondition;
-  reward: MissionReward;
+  conditionPeriod: MissionConditionPeriod;
+  orderCount: number;
+  orderSum: number;
+  rewardType: MissionRewardType;
+  rewardValue: number;
+  rewardDetails?: DiscountCoupon;
+  durationInDays?: number;
   startedAt: Date;
   expiredAt: Date;
   createdAt: Date;

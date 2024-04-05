@@ -12,6 +12,7 @@ import { DiscountCouponsEditComponent } from './discount-coupons-edit/discount-c
 import { SmsGroupComponent } from './sms-group/sms-group.component';
 import { SmsListComponent } from './sms-group/sms-list/sms-list.component';
 import { MissionListComponent } from './mission-list/mission-list.component';
+import { MissionEditComponent } from './mission-edit/mission-edit.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { MissionListComponent } from './mission-list/mission-list.component';
     SmsGroupComponent,
     SmsListComponent,
     MissionListComponent,
+    MissionEditComponent,
   ],
   imports: [CommonModule, SharedModule, RouterModule.forChild(clubRoutes)],
 })

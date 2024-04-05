@@ -1,0 +1,20 @@
+@import "theme";
+
+main {
+  padding: 24px;
+}
+
+mat-button-toggle {
+  flex: 1;
+}
+
+mat-radio-group {
+  mat-radio-button {
+    display: block;
+    margin: 8px;
+  }
+
+  mat-form-field {
+    margin: 0 24px !important;
+  }
+}
