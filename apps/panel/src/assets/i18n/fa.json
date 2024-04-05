@@ -976,7 +976,7 @@
       "MONTHLY": "میزان خرید در طول ماه",
       "YEARLY": "میزان خرید در طول سال"
     },
-    "conditionPeriodDescription": "برای دریافت پاداش باید شروط زیر برقرار شود",
+    "conditionPeriodDescription": "برای دریافت پاداش باید شروط زیر در بازه مشخص شده بالا برقرار شود",
     "orderCount": "تعداد سفارش",
     "orderSum": "مجموع سفارش",
     "rewardTitle": "پاداش سناریو",

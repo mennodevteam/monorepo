@@ -49,8 +49,8 @@ export class MissionEditComponent implements OnInit {
     next30day.setDate(next30day.getDate() + 30);
     this.form = new FormGroup({
       title: new FormControl(this.mission?.title, Validators.required),
-      description: new FormControl(this.mission?.description, Validators.required),
-      status: new FormControl(this.mission?.status || Status.Active),
+      description: new FormControl(this.mission?.description),
+      status: new FormControl(this.mission?.status != undefined ? this.mission.status : Status.Active),
       startedAt: new FormControl(this.mission?.startedAt || new Date(), Validators.required),
       expiredAt: new FormControl(this.mission?.expiredAt || next30day, Validators.required),
       conditionPeriod: new FormControl(
@@ -61,7 +61,7 @@ export class MissionEditComponent implements OnInit {
       orderSum: new FormControl(this.mission?.orderSum || 0),
       rewardType: new FormControl(this.mission?.rewardType || MissionRewardType.DiscountCoupon),
       rewardValue: new FormControl(this.mission?.rewardValue || 0),
-      reward: new FormControl(this.mission?.rewardValue || 0),
+      durationInDays: new FormControl(this.mission?.rewardValue || 0),
       discountCoupon: new FormGroup({
         type: new FormControl('percentage'),
         fixedDiscount: new FormControl(this.mission?.rewardDetails?.fixedDiscount || 0),
@@ -89,19 +89,53 @@ export class MissionEditComponent implements OnInit {
     //   this.mission = this.missionDto;
     // }
 
+    this.form
+      .get('discountCoupon')
+      ?.get('type')
+      ?.valueChanges.subscribe((change) => {
+        this.form.get('discountCoupon')?.get('fixedDiscount')?.setValue(0);
+        this.form.get('discountCoupon')?.get('percentageDiscount')?.setValue(0);
+        this.form.get('discountCoupon')?.get('minPrice')?.setValue(0);
+        this.form.get('discountCoupon')?.get('maxDiscount')?.setValue(0);
+        this.form.get('discountCoupon')?.get('durationInDays')?.setValue(0);
+      });
+
+    this.form.get('rewardType')?.valueChanges.subscribe((change) => {
+      this.form.get('rewardValue')?.setValue(0);
+      this.form.get('discountCoupon')?.get('fixedDiscount')?.setValue(0);
+      this.form.get('discountCoupon')?.get('percentageDiscount')?.setValue(0);
+      this.form.get('discountCoupon')?.get('minPrice')?.setValue(0);
+      this.form.get('discountCoupon')?.get('maxDiscount')?.setValue(0);
+      this.form.get('discountCoupon')?.get('durationInDays')?.setValue(0);
+    });
+
     this.loading = false;
+  }
+
+  get formValue() {
+    return this.form.getRawValue();
   }
 
   async save() {
     if (this.form.valid) {
+      const dto: Mission = this.formValue;
+
+      if (this.mission) dto.id = this.mission.id;
+
+      if (this.isWalletChargeReward) {
+        dto.rewardDetails = null;
+      } else {
+        dto.rewardDetails = this.formValue.discountCoupon;
+      }
+
       this.saving = true;
-      const dto = this.form.getRawValue();
-      await this.club.saveDiscountCoupon(dto);
+      await this.club.saveMission(dto);
       this.location.back();
     }
   }
 
   get statusControl() {
+    console.log(this.form.getRawValue());
     return this.form.get('status') as FormControl;
   }
 
