@@ -303,7 +303,6 @@ export class OrdersService {
     if (order.paymentType) throw new HttpException('not allowed for payed orders', HttpStatus.NOT_ACCEPTABLE);
 
     if (order.customer && !!order.paymentType) {
-      console.log('12213123123')
       delete dto.customerId;
     }
 
@@ -313,7 +312,6 @@ export class OrdersService {
 
     const editedOrder = await this.dtoToOrder(dto);
     editedOrder.id = dto.id;
-    console.log(editedOrder)
 
     // set prev details
     editedOrder.details = { ...(order.details || {}), ...(editedOrder.details || {}) };

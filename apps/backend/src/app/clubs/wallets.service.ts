@@ -22,7 +22,6 @@ export class WalletsService {
     const shop = await this.shopsRepo.findOne({ where: { id: shopId }, relations: ['smsAccount'] });
     wallet.charge += dto.amount;
     await this.walletLogsRepo.save(dto);
-    console.log(dto);
     if (wallet.member.user) {
       const textContent = this.getMessageText(dto, shop, wallet);
       this.sms.send({
@@ -40,9 +39,9 @@ export class WalletsService {
     let text = `${shop.title}\n\n${wallet.member.user.firstName} عزیز\n`;
     switch (dto.type) {
       case WalletLogType.ManualCharge:
-        text += `کیف پول شما برای سفارش از مجموعه به مبلغ ${PersianNumberService.withCommas(
+        text += `کیف پول شما به مبلغ ${PersianNumberService.withCommas(
           dto.amount
-        )} تومان شارژ شد.\nموچودی کیف پول: ${PersianNumberService.withCommas(wallet.charge)} تومان`;
+        )} تومان شارژ شد و می‌توانید در سفارشات بعدی از آن استفاده کنید.\nموچودی کیف پول: ${PersianNumberService.withCommas(wallet.charge)} تومان`;
         break;
       case WalletLogType.PayOrder:
         text += `بابت ثبت سفارش مبلغ ${PersianNumberService.withCommas(
@@ -56,5 +55,10 @@ export class WalletsService {
       process.env.APP_ORIGIN
     )}`;
     return text;
+  }
+
+  async getMemberWallet(memberId: string) {
+    const wallet = await this.walletsRepo.findOneBy({ member: { id: memberId } });
+    return wallet || (await this.walletsRepo.save({ member: { id: memberId }, charge: 0 } as Wallet));
   }
 }

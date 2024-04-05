@@ -59,16 +59,12 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     return Order;
   }
 
-  async afterInsert(event: InsertEvent<Order>) {
+  async beforeInsert(event: InsertEvent<Order>) {
     const order = event.entity;
-
-    const shop = order.shop
-      ? await this.shopsRepo.findOne({ where: { id: order.shop.id }, relations: ['club', 'smsAccount'] })
-      : undefined;
-
-    this.redis.updateMenu(shop.id);
-
     const customer = order.customer ? await this.usersRepo.findOneBy({ id: order.customer.id }) : undefined;
+    const shop = order.shop
+      ? await this.shopsRepo.findOne({ where: { id: order.shop.id }, relations: ['club'] })
+      : undefined;
 
     if (customer && shop && shop.club) {
       const member = await this.membersRepo.findOne({
@@ -86,6 +82,18 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
         });
       }
     }
+  }
+
+  async afterInsert(event: InsertEvent<Order>) {
+    const order = event.entity;
+
+    const shop = order.shop
+      ? await this.shopsRepo.findOne({ where: { id: order.shop.id }, relations: ['club', 'smsAccount'] })
+      : undefined;
+
+    this.redis.updateMenu(shop.id);
+
+    const customer = order.customer ? await this.usersRepo.findOneBy({ id: order.customer.id }) : undefined;
 
     if (!order.isManual) {
       this.webPush.notifToShop(order.shop.id, {
