@@ -133,9 +133,12 @@
             </mat-list-item>
             <mat-list-item>
               <span matListItemLine>{{ 'home.smsCount' | translate }}</span>
-              <span matListItemMeta>{{
-                'app.number' | translate: { value: (shop.smsAccount.charge / avgSmsCharge | number: '1.0-0') }
-              }}</span>
+              <span matListItemMeta>
+                {{
+                  'app.number'
+                    | translate: { value: (shop.smsAccount.charge / avgSmsCharge | number: '1.0-0') }
+                }}
+              </span>
             </mat-list-item>
           </mat-list>
         </mat-card-content>
@@ -180,11 +183,20 @@
                 <i class="fa-regular fa-angle-left"></i>
               </div>
             </a>
+            <mat-divider></mat-divider>
+            <a mat-list-item routerLink="/club/missions">
+              <i matListItemIcon class="fa-solid mat-icon fa-bullseye-arrow red"></i>
+              <span matListItemTitle>{{ 'home.missions' | translate }}</span>
+              <span matListItemLine>{{ 'home.missionsDescription' | translate }}</span>
+              <div matListItemMeta>
+                <i class="fa-regular fa-angle-left"></i>
+              </div>
+            </a>
           </mat-nav-list>
         </mat-card-content>
       </mat-card>
 
-      <mat-card >
+      <mat-card>
         <mat-card-header>
           <mat-card-title>
             <i class="fa-solid fa-wand-magic-sparkles"></i>
@@ -207,7 +219,7 @@
         <mat-divider></mat-divider>
         <mat-card-actions>
           <a mat-button color="primary" [href]="env.updateDocLink" target="_blank">
-            {{'home.updateMore' | translate}}
+            {{ 'home.updateMore' | translate }}
           </a>
         </mat-card-actions>
       </mat-card>

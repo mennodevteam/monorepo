@@ -28,11 +28,9 @@ export class HomeComponent {
   env = environment;
 
   update = {
-    date: new Date(2024, 2, 17),
+    date: new Date(2024, 3, 5),
     items: [
-      { title: 'کد تخفیف اعضای باشگاه برمبنای ستاره و برچسب', type: 'feature' },
-      { title: 'ارسال خودکار پیامک با تغییر اعتبار کیف پول اعضا', type: 'feature' },
-      { title: 'رفع برخی باگ‌های گزارش شده', type: 'bug' },
+      { title: 'فروش بیشتر با سناریو فروش', type: 'feature' },
     ],
   };
 

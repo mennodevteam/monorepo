@@ -2,11 +2,9 @@
   "appData": {
     "forceReload": false,
     "lazyReload": false,
-    "version": "14021227",
+    "version": "14030122",
     "changes": [
-      "کد تخفیف اعضای باشگاه برمبنای ستاره و برچسب",
-      "ارسال خودکار پیامک با تغییر اعتبار کیف پول اعضا",
-      "رفع برخی باگ‌های گزارش شده"
+      "فروش بیشتر با سناریو فروش باشگاه مشتریان"
     ]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
