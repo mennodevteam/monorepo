@@ -28,7 +28,7 @@ export class HomeComponent {
   env = environment;
 
   update = {
-    date: new Date(2024, 3, 5),
+    date: new Date(2024, 3, 10),
     items: [
       { title: 'فروش بیشتر با سناریو فروش', type: 'feature' },
     ],

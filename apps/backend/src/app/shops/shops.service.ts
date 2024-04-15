@@ -21,6 +21,7 @@ import {
   SmsTemplate,
   OrderMessageEvent,
   HomePage,
+  NewSmsDto,
 } from '@menno/types';
 import { OldTypes } from '@menno/old-types';
 import { HttpService } from '@nestjs/axios';
@@ -185,6 +186,20 @@ export class ShopsService {
       }
     }
 
+    if (savedShopInfo && process.env.ADMIN_PHONE_NUMBERS) {
+      try {
+        const newTemplateSmsToAdmin = new NewSmsDto();
+        newTemplateSmsToAdmin.messages = [
+          `😍 مجموعه ${savedShopInfo.title} ایجاد شد\n\n${Shop.appLink(
+            savedShopInfo,
+            process.env.APP_ORIGIN
+          )}`,
+        ];
+        newTemplateSmsToAdmin.receptors = process.env.ADMIN_PHONE_NUMBERS.split(',');
+        this.smsService.send(newTemplateSmsToAdmin);
+      } catch (error) {}
+    }
+
     return savedShopInfo;
   }
 
@@ -297,7 +312,6 @@ export class ShopsService {
       where: { code },
       relations: ['menu.categories.products'],
     });
-
 
     if (shop.logo) {
       try {
