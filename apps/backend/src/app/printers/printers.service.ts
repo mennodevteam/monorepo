@@ -47,7 +47,6 @@ export class PrintersService {
       withDeleted: true,
     });
     if (!order?.items) return [];
-    order.items = order.items?.filter((x) => !x.isAbstract || x.price != 0);
     const printViews = await this.printViewsRepo.find({
       where: { id: In(dto.prints.map((x) => x.printViewId)) },
       relations: ['printer'],
@@ -73,15 +72,14 @@ export class PrintersService {
 
     const actions: PrintAction[] = [];
     for (const p of dto.prints) {
+      let items = order.items;
       const view = printViews.find((x) => x.id === p.printViewId);
       let descriptions = [];
       if (notes && notes.length) descriptions = descriptions.concat(notes);
-      if (
-        (view.type === PrintType.Kitchen || view.type === PrintType.KitchenLarge) &&
-        changesDescriptions &&
-        changesDescriptions.length
-      ) {
-        descriptions = descriptions.concat(changesDescriptions);
+      if ((view.type === PrintType.Kitchen, view.type === PrintType.KitchenLarge)) {
+        items = items.filter((x) => !x.isAbstract);
+        if (changesDescriptions && changesDescriptions.length)
+          descriptions = descriptions.concat(changesDescriptions);
       }
       actions.push(<PrintAction>{
         id: Guid.create().toString(),
@@ -96,14 +94,14 @@ export class PrintersService {
           items:
             view.includeProductCategoryIds && view.includeProductCategoryIds.length
               ? <any>(
-                  order.items.filter(
+                  items.filter(
                     (x) =>
                       x.product &&
                       x.product.category &&
                       view.includeProductCategoryIds.indexOf(x.product.category.id) > -1
                   )
                 )
-              : <any>order.items,
+              : <any>items,
           qNumber: order.qNumber,
           shopAddress: order.shop.address,
           shopName: order.shop.title,
