@@ -76,7 +76,7 @@ export class PrintersService {
       const view = printViews.find((x) => x.id === p.printViewId);
       let descriptions = [];
       if (notes && notes.length) descriptions = descriptions.concat(notes);
-      if ((view.type === PrintType.Kitchen, view.type === PrintType.KitchenLarge)) {
+      if (view.type === PrintType.Kitchen || view.type === PrintType.KitchenLarge) {
         items = items.filter((x) => !x.isAbstract);
         if (changesDescriptions && changesDescriptions.length)
           descriptions = descriptions.concat(changesDescriptions);
