@@ -5,13 +5,13 @@
     {{ 'pos.editTitle' | translate: { value: POS.editOrder.qNumber } }}
   </h1>
   <span flex></span>
-  <button mat-button [disabled]="POS.saving" (click)="POS.clear()" color="warn">
+  <button mat-button [disabled]="POS.saving" (click)="POS.clear()" color="warn" [matomoClick]="['order', 'pos', 'clear click']">
     {{ 'app.clear' | translate }}
   </button>
-  <button mat-flat-button [disabled]="POS.saving || !POS.items.length" (click)="save(true)" color="accent">
+  <button mat-flat-button [disabled]="POS.saving || !POS.items.length" (click)="save(true)" color="accent" [matomoClick]="['order', 'pos', 'save and print click']">
     {{ 'pos.saveAndPrint' | translate }}
   </button>
-  <button mat-flat-button [disabled]="POS.saving || !POS.items.length" (click)="save()" color="accent">
+  <button mat-flat-button [disabled]="POS.saving || !POS.items.length" (click)="save()" color="accent" [matomoClick]="['order', 'pos', 'save click']">
     {{ 'app.save' | translate }}
   </button>
 </mat-toolbar>

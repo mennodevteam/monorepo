@@ -3,87 +3,113 @@
     <i class="fa-solid fa-bars"></i>
   </button>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item routerLink="/">
+    <button mat-menu-item routerLink="/" [matomoClick]="['top app bar', 'tabs', 'home']">
       <i class="fa-solid mat-icon fa-home"></i>
       {{ 'shell.home' | translate }}
     </button>
-    <button mat-menu-item routerLink="dashboard">
+    <button mat-menu-item routerLink="dashboard" [matomoClick]="['top app bar', 'tabs', 'dashboard']">
       <i class="fa-solid mat-icon fa-chart-pie"></i>
       {{ 'shell.dashboard' | translate }}
     </button>
-    <button mat-menu-item routerLink="menu">
+    <button mat-menu-item routerLink="menu" [matomoClick]="['top app bar', 'tabs', 'menu']">
       <i class="fa-solid mat-icon fa-book-open"></i>
       {{ 'shell.menu' | translate }}
     </button>
-    <button mat-menu-item routerLink="orders">
+    <button mat-menu-item routerLink="orders" [matomoClick]="['top app bar', 'tabs', 'orders']">
       <i class="fa-solid mat-icon fa-utensils"></i>
       {{ 'shell.orders' | translate }}
     </button>
-    <button mat-menu-item routerLink="club" [disabled]="isClubDisabled">
+    <button mat-menu-item routerLink="club" [disabled]="isClubDisabled" [matomoClick]="['top app bar', 'tabs', 'club']">
       <i class="fa-solid mat-icon fa-crown"></i>
       {{ 'shell.club' | translate }}
     </button>
-    <button mat-menu-item routerLink="settings">
+    <button mat-menu-item routerLink="settings" [matomoClick]="['top app bar', 'tabs', 'setting']">
       <i class="fa-solid mat-icon fa-gear"></i>
       {{ 'shell.settings' | translate }}
     </button>
   </mat-menu>
   <img src="assets/icons/logo.svg" id="logo" class="hide-xs" />
   <span spacer class="hide-xs"></span>
-  <button mat-button routerLink="/" class="hide-xs">
+  <button mat-button routerLink="/" class="hide-xs" [matomoClick]="['top app bar', 'tabs', 'home']">
     <i class="fa-solid fa-home"></i>
     {{ 'shell.home' | translate }}
   </button>
-  <button mat-button routerLink="dashboard" class="hide-xs">
+  <button mat-button routerLink="dashboard" class="hide-xs" [matomoClick]="['top app bar', 'tabs', 'dashboard']">
     <i class="fa-solid fa-chart-pie"></i>
     {{ 'shell.dashboard' | translate }}
   </button>
-  <button mat-button routerLink="menu" class="hide-xs">
+  <button mat-button routerLink="menu" class="hide-xs" [matomoClick]="['top app bar', 'tabs', 'menu']">
     <i class="fa-solid fa-book-open"></i>
     {{ 'shell.menu' | translate }}
   </button>
-  <button mat-button routerLink="orders" class="hide-xs">
+  <button mat-button routerLink="orders" class="hide-xs" [matomoClick]="['top app bar', 'tabs', 'orders']">
     <i class="fa-solid fa-utensils"></i>
     {{ 'shell.orders' | translate }}
   </button>
-  <button mat-button routerLink="club" [disabled]="isClubDisabled" class="hide-xs">
+  <button
+    mat-button
+    routerLink="club"
+    [disabled]="isClubDisabled"
+    class="hide-xs"
+    [matomoClick]="['top app bar', 'club click']"
+  >
     <i class="fa-solid fa-crown"></i>
     {{ 'shell.club' | translate }}
   </button>
   <div flex></div>
-  <button mat-flat-button id="add-order" routerLink="/pos">
+  <button mat-flat-button id="add-order" routerLink="/pos" [matomoClick]="['order', 'pos', 'add order top app bar click']">
     <i class="fa-solid fa-plus-circle"></i>
     {{ 'shell.addOrder' | translate }}
   </button>
-  <button mat-icon-button (click)="club.openAddMemberDialog()" class="hide-xs" *ngIf="!isClubDisabled">
+  <button
+    mat-icon-button
+    (click)="club.openAddMemberDialog()"
+    class="hide-xs"
+    *ngIf="!isClubDisabled"
+    [matomoClick]="['club', 'add member', 'top app bar click']"
+  >
     <i class="fa-solid fa-user-plus"></i>
   </button>
-  <button mat-icon-button class="hide-xs" [matMenuTriggerFor]="mobileMenu">
+  <button
+    mat-icon-button
+    class="hide-xs"
+    [matMenuTriggerFor]="mobileMenu"
+    [matomoClick]="['top app bar', 'mobile click']"
+  >
     <i class="fa-solid fa-mobile"></i>
   </button>
   <mat-menu #mobileMenu="matMenu">
-    <button mat-menu-item (click)="openApp()">
+    <button mat-menu-item (click)="openApp()" [matomoClick]="['app link', 'view', 'top app bar click']">
       <i class="fa-solid mat-icon fa-mobile-screen-button"></i>
       {{ 'shell.openApp' | translate }}
     </button>
     <mat-divider></mat-divider>
-    <button mat-menu-item (click)="sendLink()">
+    <button mat-menu-item (click)="sendLink()" [matomoClick]="['app link', 'send', 'top app bar click']">
       <i class="fa-solid mat-icon fa-message-sms"></i>
       {{ 'shell.sendAppLink' | translate }}
     </button>
     <mat-divider></mat-divider>
-    <button mat-menu-item routerLink="/settings/app-config">
+    <button
+      mat-menu-item
+      routerLink="/settings/app-config"
+      [matomoClick]="['top app bar', 'app config click']"
+    >
       <i class="fa-solid mat-icon fa-gear"></i>
       {{ 'shell.appConfig' | translate }}
     </button>
   </mat-menu>
-  <button mat-icon-button routerLink="settings" class="hide-xs">
+  <button mat-icon-button routerLink="settings" class="hide-xs" [matomoClick]="['top app bar', 'settings click']">
     <i class="fa-solid fa-gear"></i>
   </button>
-  <button mat-icon-button id="user-button" [matMenuTriggerFor]="userMenu">
+  <button
+    mat-icon-button
+    id="user-button"
+    [matMenuTriggerFor]="userMenu"
+    [matomoClick]="['top app bar', 'logo click']"
+  >
     <img [imageLoader]="shop?.logo" />
   </button>
-  <mat-menu #userMenu="matMenu">
+  <mat-menu #userMenu="matMenu" [matomoClick]="['top app bar', 'logout click']">
     <button mat-menu-item (click)="logout()">{{ 'shell.logout' | translate }}</button>
   </mat-menu>
 </mat-toolbar>
@@ -99,6 +125,7 @@
   matTooltip="کانال تلگرام menno_pro@"
   matTooltipPosition="right"
   [@bounceIn]
+  [matomoClick]="['top app bar', 'telegram click']"
 >
   <i class="fa-brands fa-telegram fa-lg"></i>
 </a>

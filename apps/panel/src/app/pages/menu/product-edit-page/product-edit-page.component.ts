@@ -19,6 +19,7 @@ import {
 } from '../../../shared/dialogs/advanced-prompt-dialog/advanced-prompt-dialog.component';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { PromptDialogComponent } from '../../../shared/dialogs/prompt-dialog/prompt-dialog.component';
+import { MatomoService } from '../../../core/services/matomo.service';
 
 @Component({
   selector: 'product-edit-page',
@@ -42,7 +43,8 @@ export class ProductEditPageComponent {
     private snack: MatSnackBar,
     private translate: TranslateService,
     private fileService: FilesService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private matomo: MatomoService
   ) {
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
@@ -131,6 +133,9 @@ export class ProductEditPageComponent {
       duration: 5000,
       panelClass: 'success',
     });
+
+    this.matomo.trackEvent('menu', 'product', dto.id ? 'edit product save' : 'add product save');
+
     this.saving = false;
     this.location.back();
   }
@@ -155,6 +160,8 @@ export class ProductEditPageComponent {
           this.imageCropperResult = data;
           this.form.markAsDirty();
         }
+
+        this.matomo.trackEvent('menu', 'product', 'upload photo', data != undefined);
       });
   }
 
@@ -197,6 +204,8 @@ export class ProductEditPageComponent {
       this.form.get('variants')?.setValue(variants);
       this.form.markAsDirty();
     }
+
+    this.matomo.trackEvent('menu', 'product variant', variant ? 'edit' : 'add', dto != undefined);
   }
 
   removePhoto() {
@@ -218,7 +227,6 @@ export class ProductEditPageComponent {
     }
   }
 
-
   async changeStock(variant: ProductVariant, infinity?: boolean) {
     let stock = infinity ? null : 0;
     if (!infinity) {
@@ -235,7 +243,7 @@ export class ProductEditPageComponent {
       if (dto == undefined || dto < 0) return;
       stock = dto;
     }
-    
+
     variant.stock = stock;
     this.form.markAsDirty();
   }

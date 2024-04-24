@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { ChangePasswordDto, ShopUser, ShopUserRole, User, UserAction } from '@menno/types';
 import { environment } from '../../../environments/environment';
 import { ApiError } from '../api-error';
+import { MatomoService } from './matomo.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,13 +14,14 @@ export class AuthService {
   private user$: BehaviorSubject<User | null>;
   shopUser: ShopUser;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private matomo: MatomoService) {
     const _item: any =
       sessionStorage?.getItem(environment.localStorageUserKey) ||
       localStorage?.getItem(environment.localStorageUserKey);
 
     if (_item) {
       this.user$ = new BehaviorSubject<User | null>(JSON.parse(_item));
+      this.matomo.trackEvent('auth', 'login', 'with token');
       this.loadShopUser();
     } else {
       this.user$ = new BehaviorSubject<User | null>(null);
@@ -31,6 +33,8 @@ export class AuthService {
   }
 
   login(username: string, password: string, saveLoginUser?: boolean) {
+    this.matomo.trackEvent('auth', 'login', 'with password');
+
     return this.http.post<any>(`auth/login/panel`, { username, password }).pipe(
       map((user) => {
         // store user details and jwt token in local storage to keep user logged in between page refreshes

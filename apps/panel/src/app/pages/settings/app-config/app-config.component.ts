@@ -12,6 +12,7 @@ import { ImageCropperDialogComponent } from '../../../shared/dialogs/image-cropp
 import { CropperOptions } from 'ngx-image-cropper';
 import { FilesService } from '../../../core/services/files.service';
 import { PersianNumberService } from '@menno/utils';
+import { MatomoService } from '../../../core/services/matomo.service';
 
 @Component({
   selector: 'app-config',
@@ -36,7 +37,8 @@ export class AppConfigComponent {
     private snack: MatSnackBar,
     private translate: TranslateService,
     private dialog: MatDialog,
-    private fileService: FilesService
+    private fileService: FilesService,
+    private matomo: MatomoService,
   ) {
     this.load();
   }
@@ -130,6 +132,9 @@ export class AppConfigComponent {
     });
     this.saving = false;
     this.form.markAsUntouched();
+
+    this.matomo.trackEvent('setting', 'app config', 'save changes');
+
   }
 
   addDing(event: MatChipInputEvent): void {

@@ -27,7 +27,7 @@
   >
     <i class="fa-regular fa-grid-2-plus"></i>
   </button>
-  <button mat-flat-button color="primary" routerLink="category">
+  <button mat-flat-button color="primary" routerLink="category" [matomoClick]="['menu', 'category', 'add click']">
     {{ 'menu.addCategory' | translate }}
   </button>
   <button mat-icon-button [matMenuTriggerFor]="menu">

@@ -83,7 +83,7 @@
   </mat-card-content>
   <mat-divider></mat-divider>
   <mat-card-actions>
-    <button mat-button color="primary" routerLink="product" [queryParams]="{ categoryId: category.id }">
+    <button mat-button color="primary" routerLink="product" [queryParams]="{ categoryId: category.id }" [matomoClick]="['menu', 'product', 'add click']">
       <i class="fa-regular fa-plus"></i>
       {{ 'menu.addProduct' | translate }}
     </button>

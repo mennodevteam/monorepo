@@ -31,6 +31,11 @@ export class MatomoService {
 
           this.push(['setCustomDimension', 4, Math.floor(subDiff / 1000 / 3600 / 24)]);
           this.push(['setCustomDimension', 5, Math.floor(remainDiff / 1000 / 3600 / 24)]);
+          this.push([
+            'setCustomDimension',
+            6,
+            remainDiff < 0 ? 'expired' : Math.floor(subDiff / 1000 / 3600 / 24) < 10 ? 'demo' : 'active',
+          ]);
         }
       }
     });
@@ -38,5 +43,9 @@ export class MatomoService {
 
   get push() {
     return _paq.push;
+  }
+
+  trackEvent(category: string, action: string, key?: string, value?: string | number | boolean) {
+    this.push(['trackEvent', category, action, key, value]);
   }
 }

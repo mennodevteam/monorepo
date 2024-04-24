@@ -70,6 +70,7 @@ import { ExtendPluginsModalComponent } from './components/extend-plugins-modal/e
 import { ScreenDirective } from './directives/screen.directive';
 import { TablePipe } from './pipes/table.pipe';
 import { SelectIsManualCardComponent } from './components/select-is-manual-card/select-is-manual-card.component';
+import { MatomoClickDirective } from './directives/matomo-click.directive';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { SelectIsManualCardComponent } from './components/select-is-manual-card/
     SelectOrderTypeCardComponent,
     SelectStatusCardComponent,
     ImageLoaderDirective,
+    MatomoClickDirective,
     FormBuilderComponent,
     OrdersTableComponent,
     OrderTypePipe,
@@ -175,6 +177,7 @@ import { SelectIsManualCardComponent } from './components/select-is-manual-card/
     MessageTemplateSelectorDialogComponent,
     TranslateModule,
     ImageLoaderDirective,
+    MatomoClickDirective,
     FormBuilderComponent,
     MemberAutocompleteComponent,
     SelectIsManualCardComponent,

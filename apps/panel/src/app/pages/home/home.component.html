@@ -2,7 +2,12 @@
   <mat-card class="warning" *ngIf="!webPush.isSubscribed && webPush.isEnabled">
     <mat-card-content>
       {{ 'home.enableNotificationDescription' | translate }}
-      <button mat-button color="primary" (click)="webPush.subscribe()">
+      <button
+        mat-button
+        color="primary"
+        (click)="webPush.subscribe()"
+        [matomoClick]="['notification', 'click', 'home enable notification']"
+      >
         {{ 'home.enableNotificationAction' | translate }}
       </button>
     </mat-card-content>
@@ -21,16 +26,26 @@
         <mat-divider></mat-divider>
         <mat-card-content>
           <mat-nav-list>
-            <a mat-list-item>
+            <a
+              mat-list-item
+              [href]="appLink"
+              target="_blank"
+              [matomoClick]="['app link', 'view', 'home app link']"
+            >
               <i matListItemIcon class="fa-solid fa-arrow-up-right-from-square"></i>
               <span matListItemTitle>{{ 'home.appLink' | translate }}</span>
-              <a matListItemLine [href]="appLink" target="_blank">{{ appLink }}</a>
+              <a matListItemLine>{{ appLink }}</a>
             </a>
           </mat-nav-list>
         </mat-card-content>
         <mat-divider></mat-divider>
         <mat-card-actions>
-          <button mat-button color="primary" (click)="sendLink()">
+          <button
+            mat-button
+            color="primary"
+            (click)="sendLink()"
+            [matomoClick]="['app link', 'send', 'home click']"
+          >
             {{ 'home.sendAppLink' | translate }}
           </button>
         </mat-card-actions>
@@ -74,7 +89,12 @@
         </mat-card-content>
         <mat-divider></mat-divider>
         <mat-card-actions>
-          <button mat-button color="primary" (click)="renew()">
+          <button
+            mat-button
+            color="primary"
+            (click)="renew()"
+            [matomoClick]="['subscription', 'renew', 'home renew click']"
+          >
             {{ 'home.renewAction' | translate }}
           </button>
         </mat-card-actions>
@@ -144,7 +164,13 @@
         </mat-card-content>
         <mat-divider></mat-divider>
         <mat-card-actions>
-          <button mat-button color="primary" (click)="chargeSmsAccount()" [disabled]="redirectingChargeSms">
+          <button
+            mat-button
+            color="primary"
+            (click)="chargeSmsAccount()"
+            [disabled]="redirectingChargeSms"
+            [matomoClick]="['club', 'charge sms', 'home click']"
+          >
             {{ 'home.chargeSmsAccount' | translate }}
           </button>
         </mat-card-actions>
@@ -218,7 +244,13 @@
         </mat-card-content>
         <mat-divider></mat-divider>
         <mat-card-actions>
-          <a mat-button color="primary" [href]="env.updateDocLink" target="_blank">
+          <a
+            mat-button
+            color="primary"
+            [href]="env.updateDocLink"
+            target="_blank"
+            [matomoClick]="['update', 'view', 'home update history link']"
+          >
             {{ 'home.updateMore' | translate }}
           </a>
         </mat-card-actions>

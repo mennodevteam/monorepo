@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MenuService } from '../../../../core/services/menu.service';
 import { AlertDialogComponent } from '../../../../shared/dialogs/alert-dialog/alert-dialog.component';
 import { SortDialogComponent } from '../../../../shared/dialogs/sort-dialog/sort-dialog.component';
+import { MatomoService } from 'apps/panel/src/app/core/services/matomo.service';
 
 @Component({
   selector: 'menu-category-container',
@@ -18,7 +19,8 @@ export class MenuCategoryContainerComponent {
   constructor(
     private dialog: MatDialog,
     private menuService: MenuService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private matomo: MatomoService
   ) {}
 
   deleteCategory() {
@@ -36,6 +38,7 @@ export class MenuCategoryContainerComponent {
         if (val) {
           this.menuService.deleteCategory(this.category.id);
         }
+        this.matomo.trackEvent('menu', 'category', 'delete', val == true);
       });
   }
 
@@ -50,10 +53,13 @@ export class MenuCategoryContainerComponent {
         if (items) {
           this.menuService.sortProducts(items.map((x: any) => x.key));
         }
+        this.matomo.trackEvent('menu', 'product', 'sort', items != undefined);
       });
   }
 
   changeStar(star: number | null) {
-    this.menuService.saveCategory({id: this.category.id, star} as ProductCategory)
+    this.menuService.saveCategory({ id: this.category.id, star } as ProductCategory);
+
+    this.matomo.trackEvent('menu', 'category', 'set star', star || undefined);
   }
 }
