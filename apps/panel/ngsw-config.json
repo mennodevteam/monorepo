@@ -1,6 +1,6 @@
 {
   "appData": {
-    "forceReload": false,
+    "forceReload": true,
     "lazyReload": false,
     "version": "14030122",
     "changes": [
