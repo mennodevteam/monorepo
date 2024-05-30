@@ -19,7 +19,15 @@
         {{ shop.instagram }}
       </span>
     </a>
-    <a mat-list-item lines="3" *ngIf="shop.address">
+    <a
+      mat-list-item
+      lines="3"
+      *ngIf="shop.address"
+      target="_blank"
+      [attr.href]="
+        shop.latitude && shop.longitude ? 'geo:' + shop.latitude + ',' + shop.longitude + '?z=10' : null
+      "
+    >
       <i matListItemIcon class="fa-solid fa-location-dot fa-lg"></i>
       <span matListItemTitle>{{ 'shopInfo.address' | translate }}</span>
       <span>
@@ -32,7 +40,10 @@
     <a mat-list-item *ngIf="shop.shopGroup" routerLink="/g" (click)="ref.dismiss()">
       <i matListItemIcon class="fa-sharp fa-solid fa-sitemap fa-lg"></i>
       <span matListItemTitle>
-        {{ 'shopInfo.shopGroupList' | translate: { value: shop.shopGroup?.listName || ('shopInfo.group' | translate) } }}
+        {{
+          'shopInfo.shopGroupList'
+            | translate : { value: shop.shopGroup?.listName || ('shopInfo.group' | translate) }
+        }}
       </span>
     </a>
   </mat-nav-list>

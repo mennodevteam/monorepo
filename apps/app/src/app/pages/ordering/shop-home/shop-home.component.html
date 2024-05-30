@@ -52,7 +52,15 @@
         <i class="fa-brands fa-instagram"></i>
       </div>
     </a>
-    <a mat-list-item lines="3" *ngIf="shop?.address">
+    <a
+      mat-list-item
+      lines="3"
+      *ngIf="shop?.address"
+      target="_blank"
+      [attr.href]="
+        shop?.latitude && shop?.longitude ? 'geo:' + shop?.latitude + ',' + shop?.longitude + '?z=10' : null
+      "
+    >
       <span matListItemTitle>آدرس</span>
       <span>
         {{ shop?.address }}
@@ -75,7 +83,7 @@
       <span matListItemTitle>
         باشگاه مشتریان
         <span *ngIf="couponCount" style="font-size: 11px" class="error-text"
-          >({{ 'app.number' | translate: { value: couponCount } }})</span
+          >({{ 'app.number' | translate : { value: couponCount } }})</span
         >
       </span>
       <div class="secondary" matListItemMeta>
