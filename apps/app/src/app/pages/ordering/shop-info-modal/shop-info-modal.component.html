@@ -25,7 +25,19 @@
       *ngIf="shop.address"
       target="_blank"
       [attr.href]="
-        shop.latitude && shop.longitude ? 'geo:' + shop.latitude + ',' + shop.longitude + '?z=10' : null
+        shop.latitude && shop.longitude
+          ? 'geo:' +
+            shop.latitude +
+            ',' +
+            shop.longitude +
+            '?q=' +
+            shop.latitude +
+            ',' +
+            shop.longitude +
+            '(' +
+            shop.title +
+            ')'
+          : null
       "
     >
       <i matListItemIcon class="fa-solid fa-location-dot fa-lg"></i>
