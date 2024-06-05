@@ -1,4 +1,11 @@
 import { Route } from '@angular/router';
-import { AuthGuard } from './common/guards/auth.guard';
+import { shopRoutes } from './shop/shop.routes';
+import { AuthGuard, ShopGuard, TranslateGuard } from './core';
 
-export const appRoutes: Route[] = [{ path: '', canActivate: [AuthGuard], children: [] }];
+export const appRoutes: Route[] = [
+  {
+    path: '',
+    canActivate: [AuthGuard],
+    children: [{ path: '', canActivate: [ShopGuard], children: shopRoutes }],
+  },
+];

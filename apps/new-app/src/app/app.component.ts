@@ -10,4 +10,8 @@ import { RouterModule } from '@angular/router';
 })
 export class AppComponent {
   title = 'new-app';
+
+  constructor() {
+    console.log(2398274)
+  }
 }

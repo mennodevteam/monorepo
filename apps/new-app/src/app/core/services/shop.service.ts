@@ -28,7 +28,6 @@ export class ShopService {
 
   async load(skipNull = false) {
     const query = this.getShopUsernameFromQuery();
-
     if (!skipNull) this._shop.next(null);
 
     const shop = await this.http.get<Shop>(`shops/${query}`).toPromise();
