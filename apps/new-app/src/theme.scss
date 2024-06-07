@@ -1,0 +1,173 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: mat.$azure-palette,
+    ),
+    typography: (
+      plain-family: 'Vazirmatn',
+      brand-family: 'Vazirmatn',
+      bold-weight: 900,
+    ),
+  )
+);
+
+@mixin color-tokens($app-theme) {
+  .primary {
+    background-color: mat.get-theme-color($app-theme, primary);
+  }
+  .primary-text {
+    color: mat.get-theme-color($app-theme, primary);
+  }
+  .on-primary {
+    color: mat.get-theme-color($app-theme, on-primary);
+  }
+  .primary-container {
+    background-color: mat.get-theme-color($app-theme, primary-container);
+  }
+  .on-primary-container {
+    color: mat.get-theme-color($app-theme, on-primary-container);
+  }
+  .primary-fixed {
+    background-color: mat.get-theme-color($app-theme, primary-fixed);
+  }
+  .primary-fixed-dim {
+    background-color: mat.get-theme-color($app-theme, primary-fixed-dim);
+  }
+  .on-primary-fixed {
+    color: mat.get-theme-color($app-theme, on-primary-fixed);
+  }
+  .on-primary-fixed-variant {
+    color: mat.get-theme-color($app-theme, on-primary-fixed-variant);
+  }
+  .secondary {
+    background-color: mat.get-theme-color($app-theme, secondary);
+  }
+  .on-secondary {
+    color: mat.get-theme-color($app-theme, on-secondary);
+  }
+  .secondary-container {
+    background-color: mat.get-theme-color($app-theme, secondary-container);
+  }
+  .on-secondary-container {
+    color: mat.get-theme-color($app-theme, on-secondary-container);
+  }
+  .secondary-fixed {
+    background-color: mat.get-theme-color($app-theme, secondary-fixed);
+  }
+  .secondary-fixed-dim {
+    background-color: mat.get-theme-color($app-theme, secondary-fixed-dim);
+  }
+  .on-secondary-fixed {
+    color: mat.get-theme-color($app-theme, on-secondary-fixed);
+  }
+  .on-secondary-fixed-variant {
+    color: mat.get-theme-color($app-theme, on-secondary-fixed-variant);
+  }
+  .tertiary {
+    background-color: mat.get-theme-color($app-theme, tertiary);
+  }
+  .on-tertiary {
+    color: mat.get-theme-color($app-theme, on-tertiary);
+  }
+  .tertiary-container {
+    background-color: mat.get-theme-color($app-theme, tertiary-container);
+  }
+  .on-tertiary-container {
+    color: mat.get-theme-color($app-theme, on-tertiary-container);
+  }
+  .tertiary-fixed {
+    background-color: mat.get-theme-color($app-theme, tertiary-fixed);
+  }
+  .tertiary-fixed-dim {
+    background-color: mat.get-theme-color($app-theme, tertiary-fixed-dim);
+  }
+  .on-tertiary-fixed {
+    color: mat.get-theme-color($app-theme, on-tertiary-fixed);
+  }
+  .on-tertiary-fixed-variant {
+    color: mat.get-theme-color($app-theme, on-tertiary-fixed-variant);
+  }
+  .error {
+    background-color: mat.get-theme-color($app-theme, error);
+  }
+  .on-error {
+    color: mat.get-theme-color($app-theme, on-error);
+  }
+  .error-container {
+    background-color: mat.get-theme-color($app-theme, error-container);
+  }
+  .on-error-container {
+    color: mat.get-theme-color($app-theme, on-error-container);
+  }
+  .surface-dim {
+    background-color: mat.get-theme-color($app-theme, surface-dim);
+  }
+  .surface {
+    background-color: mat.get-theme-color($app-theme, surface);
+  }
+  .surface-bright {
+    background-color: mat.get-theme-color($app-theme, surface-bright);
+  }
+  .surface-container-lowest {
+    background-color: mat.get-theme-color($app-theme, surface-container-lowest);
+  }
+  .surface-container-low {
+    background-color: mat.get-theme-color($app-theme, surface-container-low);
+  }
+  .surface-container {
+    background-color: mat.get-theme-color($app-theme, surface-container);
+  }
+  .surface-container-high {
+    background-color: mat.get-theme-color($app-theme, surface-container-high);
+  }
+  .surface-container-highest {
+    background-color: mat.get-theme-color($app-theme, surface-container-highest);
+  }
+  .on-surface {
+    color: mat.get-theme-color($app-theme, on-surface);
+  }
+  .on-surface-variant {
+    color: mat.get-theme-color($app-theme, on-surface-variant);
+  }
+  .outline {
+    background-color: mat.get-theme-color($app-theme, outline);
+  }
+  .outline-variant {
+    background-color: mat.get-theme-color($app-theme, outline-variant);
+  }
+  .inverse-surface {
+    background-color: mat.get-theme-color($app-theme, inverse-surface);
+  }
+  .inverse-on-surface {
+    background-color: mat.get-theme-color($app-theme, inverse-on-surface);
+  }
+  .inverse-primary {
+    background-color: mat.get-theme-color($app-theme, inverse-primary);
+  }
+  .scrim {
+    background-color: mat.get-theme-color($app-theme, scrim);
+  }
+  .shadow {
+    background-color: mat.get-theme-color($app-theme, shadow);
+  }
+}
+
+html {
+  @include mat.all-component-themes($theme);
+  @include mat.strong-focus-indicators-theme($theme);
+
+  @include color-tokens($theme);
+
+  // .mdc-button.tertiary {
+  //   @include mat.button-color($theme, $color-variant: tertiary);
+  // }
+
+  // .mat-mdc-tab-nav-bar.tertiary {
+  //   @include mat.tabs-color($theme, $color-variant: tertiary);
+  // }
+}
