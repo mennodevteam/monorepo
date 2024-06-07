@@ -25,6 +25,7 @@ export interface ShopDetails {
     id: string;
     code: string;
   };
+  enamadInnerHtml?: string;
 }
 
 export class Shop {

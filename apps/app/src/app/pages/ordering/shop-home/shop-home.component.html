@@ -95,7 +95,7 @@
       <span matListItemTitle>
         باشگاه مشتریان
         <span *ngIf="couponCount" style="font-size: 11px" class="error-text"
-          >({{ 'app.number' | translate : { value: couponCount } }})</span
+          >({{ 'app.number' | translate: { value: couponCount } }})</span
         >
       </span>
       <div class="secondary" matListItemMeta>
@@ -117,6 +117,11 @@
       </div>
     </a>
   </mat-nav-list>
+  <div
+    class="enamad surface-variant"
+    [innerHTML]="shop?.details?.enamadInnerHtml"
+    *ngIf="shop?.details?.enamadInnerHtml"
+  ></div>
   <div class="enamad surface-variant" *ngIf="shop?.details?.enamad">
     <a
       referrerpolicy="origin"
