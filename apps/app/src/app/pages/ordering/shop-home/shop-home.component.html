@@ -119,8 +119,8 @@
   </mat-nav-list>
   <div
     class="enamad surface-variant"
-    [innerHTML]="shop?.details?.enamadInnerHtml"
-    *ngIf="shop?.details?.enamadInnerHtml"
+    [innerHTML]="sanitizeEnamadInnerHtml"
+    *ngIf="sanitizeEnamadInnerHtml"
   ></div>
   <div class="enamad surface-variant" *ngIf="shop?.details?.enamad">
     <a

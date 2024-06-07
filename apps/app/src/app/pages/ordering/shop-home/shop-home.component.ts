@@ -5,6 +5,7 @@ import { DiscountCoupon, Member } from '@menno/types';
 import { BasketService } from '../../../core/services/basket.service';
 import { ClubService } from '../../../core/services/club.service';
 import { fadeIn } from '../../../core/animations/fade.animation';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'shop-home',
@@ -16,11 +17,14 @@ export class ShopHomeComponent {
   couponCount = 0;
   member: Member;
   loadingMember = false;
+  sanitizeEnamadInnerHtml?: SafeHtml;
+  
   constructor(
     private shopService: ShopService,
     private http: HttpClient,
     private basket: BasketService,
-    public club: ClubService
+    public club: ClubService,
+    private sanitized: DomSanitizer,
   ) {
     this.loadMember();
     this.http.get<DiscountCoupon[]>(`discountCoupons/app/${this.shopService.shop?.id}`).subscribe((c) => {
@@ -30,6 +34,11 @@ export class ShopHomeComponent {
           this.basket.discountCoupon = c[0];
       }
     });
+
+    const enamadInnerHtml = this.shop?.details?.enamadInnerHtml;
+    if (enamadInnerHtml) {
+      this.sanitizeEnamadInnerHtml = this.sanitized.bypassSecurityTrustHtml(enamadInnerHtml);
+    }
   }
 
   async loadMember() {
