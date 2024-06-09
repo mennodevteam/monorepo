@@ -1,4 +1,11 @@
-<div class="content">
-  <h1>{{ shop.title }}</h1>
-  <button mat-flat-button>مشاهده منو</button>
+<div class="container">
+  <app-slider [test]="12" [shop]="shop" />
+  <div class="content">
+    <img [imageLoader]="shop.logo" id="logo" />
+    <h1>{{ shop.title }}</h1>
+    @if (shop.description) {
+    <p>{{shop.description}}</p>
+    }
+    <button mat-flat-button>مشاهده منو</button>
+  </div>
 </div>

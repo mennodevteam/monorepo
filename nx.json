@@ -44,7 +44,7 @@
     ],
     "sharedGlobals": []
   },
-  "defaultProject": "panel",
+  "defaultProject": "new-app",
   "generators": {
     "@nrwl/angular:application": {
       "style": "scss",
