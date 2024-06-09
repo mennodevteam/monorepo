@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 import { shopRoutes } from './shop/shop.routes';
-import { AuthGuard, ShopGuard, TranslateGuard } from './core';
+import { AuthGuard, ShopGuard } from './core';
 
 export const appRoutes: Route[] = [
   {

@@ -1,21 +1,21 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ShopService } from '../../core';
-import { Shop } from '@menno/types';
 import { MatButtonModule } from '@angular/material/button';
+import { SliderComponent } from './slider/slider.component';
+import { COMMON } from '../../common';
 
 @Component({
   selector: 'app-welcome',
   standalone: true,
-  imports: [CommonModule, MatButtonModule],
+  imports: [CommonModule, MatButtonModule, SliderComponent, COMMON],
   templateUrl: './welcome.component.html',
   styleUrl: './welcome.component.scss',
 })
 export class WelcomeComponent {
-  shop: Shop;
-  constructor(private shopService: ShopService) {
-    if (shopService.shop) {
-      this.shop = shopService.shop;
-    }
+  constructor(private shopService: ShopService) {}
+
+  get shop() {
+    return this.shopService.shop!;
   }
 }
