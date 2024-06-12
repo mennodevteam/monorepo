@@ -7,6 +7,7 @@ import { environment } from '../../../environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from './auth.service';
+import { ThemeService } from './theme.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,8 @@ export class ShopService {
     private pwa: PwaService,
     private dialog: MatDialog,
     private translate: TranslateService,
-    private auth: AuthService
+    private auth: AuthService,
+    private themeService: ThemeService,
   ) {
     this.load();
   }
@@ -47,6 +49,7 @@ export class ShopService {
     // }
 
     if (shop) {
+      this.themeService.color = 'green';
       if (shop.appConfig?.theme) {
         this.pwa.setManifest(
           shop,
