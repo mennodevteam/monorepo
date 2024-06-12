@@ -1,0 +1,6 @@
+@import './_base.scss';
+
+html[theme-color='green'] {
+  background-color: blue !important;
+  @include setTheme('green');
+}

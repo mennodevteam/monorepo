@@ -2,20 +2,6 @@
 
 @include mat.core();
 
-$theme: mat.define-theme(
-  (
-    color: (
-      theme-type: light,
-      primary: mat.$azure-palette,
-    ),
-    typography: (
-      plain-family: 'Vazirmatn',
-      brand-family: 'Vazirmatn',
-      bold-weight: 900,
-    ),
-  )
-);
-
 @mixin color-tokens($app-theme) {
   .primary {
     background-color: mat.get-theme-color($app-theme, primary);
@@ -157,17 +143,52 @@ $theme: mat.define-theme(
   }
 }
 
-html {
-  @include mat.all-component-themes($theme);
-  @include mat.strong-focus-indicators-theme($theme);
+@mixin setTheme($palette-color) {
+  $palette: mat.$red-palette;
+  @if $palette == red {
+    $palette: mat.$red-palette;
+  } @else if $palette == green {
+    $palette: mat.$green-palette;
+  } @else if $palette == blue {
+    $palette: mat.$blue-palette;
+  } @else if $palette == yellow {
+    $palette: mat.$yellow-palette;
+  } @else if $palette == cyan {
+    $palette: mat.$cyan-palette;
+  } @else if $palette == magenta {
+    $palette: mat.$magenta-palette;
+  } @else if $palette == orange {
+    $palette: mat.$orange-palette;
+  } @else if $palette == chartreuse {
+    $palette: mat.$chartreuse-palette;
+  } @else if $palette == spring-green {
+    $palette: mat.$spring-green-palette;
+  } @else if $palette == azure {
+    $palette: mat.$azure-palette;
+  } @else if $palette == violet {
+    $palette: mat.$violet-palette;
+  } @else if $palette == rose {
+    $palette: mat.$rose-palette;
+  }
 
-  @include color-tokens($theme);
+  $theme: mat.define-theme(
+    (
+      color: (
+        theme-type: light,
+        primary: $palette,
+      ),
+      typography: (
+        plain-family: 'Vazirmatn',
+        brand-family: 'Vazirmatn',
+        bold-weight: 900,
+      ),
+    )
+  );
 
-  // .mdc-button.tertiary {
-  //   @include mat.button-color($theme, $color-variant: tertiary);
-  // }
-
-  // .mat-mdc-tab-nav-bar.tertiary {
-  //   @include mat.tabs-color($theme, $color-variant: tertiary);
-  // }
+  body {
+    @include mat.all-component-themes($theme);
+    @include mat.strong-focus-indicators-theme($theme);
+  
+    @include color-tokens($theme);
+  }
 }
