@@ -6,6 +6,7 @@ import { ChangePasswordDto, ShopUser, ShopUserRole, User, UserAction } from '@me
 import { environment } from '../../../environments/environment';
 import { ApiError } from '../api-error';
 import { MatomoService } from './matomo.service';
+declare var dataLayer: any[];
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +30,14 @@ export class AuthService {
 
     this.user$.subscribe((u) => {
       this.loadShopUser();
+
+      if (u) {
+        dataLayer = dataLayer || [];
+        dataLayer.push({
+          event: 'setUserId',
+          user_id: u.id,
+        });
+      }
     });
   }
 

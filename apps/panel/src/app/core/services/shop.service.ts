@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Shop, ShopUser, ThirdParty } from '@menno/types';
 import { environment } from '../../../environments/environment';
 import { BehaviorSubject } from 'rxjs';
+declare var dataLayer: any[];
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +34,13 @@ export class ShopService {
       const shop = await this.http.get<Shop>('shops').toPromise();
       if (shop) {
         this.shop$.next(shop);
+        
+        dataLayer.push({
+          event: 'setShopInfo',
+          username: shop.username,
+          code: shop.code,
+        });
+
         return shop;
       }
     } finally {
