@@ -2,11 +2,14 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import * as swStats from 'swagger-stats';
+import { json } from 'express';
+
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   const port = process.env.PORT || 3333;
+  app.use(json({ limit: '20mb' }));
 
   app.use(
     swStats.getMiddleware({

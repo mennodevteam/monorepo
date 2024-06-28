@@ -28,6 +28,17 @@ export class ProductsController {
     return res;
   }
 
+  @Post('array')
+  async saveArray(@Body() dto: Product[], @LoginUser() user: AuthPayload): Promise<Product[]> {
+    const shop = await this.auth.getPanelUserShop(user, ['menu']);
+    for (const d of dto) {
+      if (!d.category.id) d.category.menu = shop.menu;
+    }
+    const res = await this.productsRepo.save(dto);
+    this.redis.updateMenu(shop.id);
+    return res;
+  }
+
   @Delete(':id')
   async remove(@Param('id') id: string, @LoginUser() user: AuthPayload): Promise<void> {
     const shop = await this.auth.getPanelUserShop(user);

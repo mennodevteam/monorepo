@@ -92,6 +92,9 @@
     "addProduct": "افزودن آیتم",
     "sortCategories": "ترتیب دسته‌بندی‌ها",
     "sortProducts": "ترتیب آیتم‌ها",
+    "downloadSampleCsv": "دانلود فایل CSV نمونه",
+    "importFromCsv": "بارگزاری منو از طریق CSV",
+    "savingSnack": "درحال ذخیره سازی {{i}} از {{length}}",
     "deleteCategoryAlert": {
       "title": "حذف دسته‌بندی {{value}}",
       "description": "در صورت اطمینان از حذف، لطفا تایید کنید"

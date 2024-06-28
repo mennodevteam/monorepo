@@ -38,6 +38,16 @@
       <i class="fa-solid fa-sort mat-icon"></i>
       <span>{{ 'menu.sortCategories' | translate }}</span>
     </button>
+    <mat-divider></mat-divider>
+    <input #customInputFile hidden type="file" accept=".csv" (change)="importFromCSV($event)" />
+    <button mat-menu-item (click)="customInputFile.click()">
+      <i class="fa-solid fa-file-import mat-icon"></i>
+      <span>{{ 'menu.importFromCsv' | translate }}</span>
+    </button>
+    <a mat-menu-item href="assets/files/sample-products.csv" download>
+      <i class="fa-solid fa-file-csv mat-icon"></i>
+      <span>{{ 'menu.downloadSampleCsv' | translate }}</span>
+    </a>
   </mat-menu>
 </mat-toolbar>
 

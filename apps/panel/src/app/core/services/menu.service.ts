@@ -78,8 +78,8 @@ export class MenuService {
     await this.loadMenu();
   }
 
-  async saveProduct(dto: Partial<Product>) {
-    if (dto.category) {
+  async saveProduct(dto: Partial<Product>, skipLoad?: boolean) {
+    if (dto.category?.id) {
       dto.category = <ProductCategory>{ id: dto.category.id };
     }
 
@@ -88,10 +88,16 @@ export class MenuService {
       const product = this.getProductById(dto.id);
       if (product) Object.assign(product, dto);
       return product;
-    } else {
+    } else if (!skipLoad) {
       await this.loadMenu();
     }
     return savedProduct;
+  }
+
+  async saveProducts(dto: Partial<Product>[]) {
+    const savedProducts = await this.http.post<Product[]>(`products/array`, dto).toPromise();
+    await this.loadMenu();
+    return savedProducts;
   }
 
   async saveMenuCost(dto: MenuCost) {
