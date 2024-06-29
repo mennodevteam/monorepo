@@ -108,6 +108,12 @@
             <p flex>
               {{'orderReport.tableTitle' | translate}}
             </p>
+            <button mat-stroked-button [matMenuTriggerFor]="printMenu" type="button" (click)="downloadCsv()">
+              <i class="fa-regular fa-file-csv"></i>
+              <span class="hide-xs">
+                {{ 'app.downloadExcel' | translate }}
+              </span>
+            </button>
             <button mat-stroked-button [matMenuTriggerFor]="printMenu" type="button">
               <i class="fa-regular fa-print"></i>
               <span class="hide-xs">

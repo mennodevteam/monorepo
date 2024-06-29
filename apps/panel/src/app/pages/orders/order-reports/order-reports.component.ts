@@ -105,9 +105,13 @@ export class OrderReportsComponent implements AfterViewInit {
     this.submit();
   }
 
+  get formValue() {
+    return this.form.getRawValue() as OrderReportDto;
+  }
+
   async submit() {
     this.loading = true;
-    const dto: OrderReportDto = this.form.getRawValue();
+    const dto = this.formValue;
     dto.fromDate = (dto.fromDate as any)._d || dto.fromDate;
     dto.toDate = (dto.toDate as any)._d || dto.toDate;
     if (!this.isRangeCorrect) {
@@ -238,5 +242,23 @@ export class OrderReportsComponent implements AfterViewInit {
       );
       i++;
     }
+  }
+
+  downloadCsv() {
+    const csvData = [
+      'عنوان,تعداد,مجموع (تومان)',
+
+      ...this.tableData.map((t) => [t.label, t.count, t.sum].join(',')),
+    ];
+
+    const dataUri = `data:text/csv;charset=utf-8,\uFEFF${encodeURIComponent(csvData.join('\n'))}`;
+
+    // Append the Content-Disposition header with the filename
+    const downloadLink = document.createElement('a');
+    downloadLink.href = dataUri;
+    downloadLink.setAttribute('download', `report-${this.formValue.groupBy}.csv`);
+
+    // Trigger a click on the link to prompt the download
+    downloadLink.click();
   }
 }
