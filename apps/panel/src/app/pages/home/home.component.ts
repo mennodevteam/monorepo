@@ -29,8 +29,11 @@ export class HomeComponent {
   env = environment;
 
   update = {
-    date: new Date(2024, 3, 10),
-    items: [{ title: 'فروش بیشتر با سناریو فروش', type: 'feature' }],
+    date: new Date(2024, 5, 29),
+    items: [
+      { title: 'دانلود اکسل گزارشات فروش', type: 'feature' },
+      { title: 'بارگذاری سریع منو از طریق اکسل', type: 'feature' },
+    ],
   };
 
   constructor(

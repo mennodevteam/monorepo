@@ -2,9 +2,10 @@
   "appData": {
     "forceReload": false,
     "lazyReload": false,
-    "version": "14030122",
+    "version": "14030409",
     "changes": [
-      "فروش بیشتر با سناریو فروش باشگاه مشتریان"
+      "دانلود اکسل گزارشات فروش",
+      "بارگذاری سریع منو از طریق اکسل"
     ]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
