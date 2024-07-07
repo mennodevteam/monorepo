@@ -1,0 +1,19 @@
+<header fxLayout="row" fxLayoutGap="12" fxFlexAlign="center center" p-md>
+  <img [imageLoader]="shop.logo" id="logo" />
+  <div fxLayout="column">
+    <h1>{{ shop.title }}</h1>
+    @if (shop.description) {
+    <p>{{ shop.description }}</p>
+    }
+  </div>
+</header>
+
+<mat-toolbar fxLayout="row" fxLayoutGap="8">
+  <button mat-stroked-button>
+    {{ OrderType.Delivery | orderType }}
+    <i class="fa-regular fa-angle-down fa-lg"></i>
+  </button>
+  <button mat-flat-button fxFlex>
+      {{ 'app.search' | translate }}
+  </button>
+</mat-toolbar>

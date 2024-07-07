@@ -20,6 +20,10 @@ export const AppConfigSchema = new EntitySchema<AppConfig>({
       enum: ThemeMode,
       default: ThemeMode.Auto,
     },
+    themeHex: {
+      type: String,
+      nullable: true,
+    },
     disablePayment: {
       type: Boolean,
       default: false,
