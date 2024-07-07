@@ -66,25 +66,26 @@ $m3-base-config: (
       //   99: var(--p-tertiary-99),
       //   100: #ffffff,
       // ),
-      neutral: (
-        0: #000000,
-        10: #191c1c,
-        // Must be fixed due color mixins
-        20: var(--p-neutral-20),
-        25: var(--p-neutral-25),
-        30: var(--p-neutral-30),
-        35: var(--p-neutral-35),
-        40: var(--p-neutral-40),
-        50: var(--p-neutral-50),
-        60: var(--p-neutral-60),
-        70: var(--p-neutral-70),
-        80: var(--p-neutral-80),
-        90: var(--p-neutral-90),
-        95: var(--p-neutral-95),
-        98: var(--p-neutral-98),
-        99: var(--p-neutral-99),
-        100: #ffffff,
-      ),
+      neutral:
+        (
+          0: #000000,
+          10: #191c1c,
+          // Must be fixed due color mixins
+          20: var(--p-neutral-20),
+          25: var(--p-neutral-25),
+          30: var(--p-neutral-30),
+          35: var(--p-neutral-35),
+          40: var(--p-neutral-40),
+          50: var(--p-neutral-50),
+          60: var(--p-neutral-60),
+          70: var(--p-neutral-70),
+          80: var(--p-neutral-80),
+          90: var(--p-neutral-90),
+          95: var(--p-neutral-95),
+          98: var(--p-neutral-98),
+          99: var(--p-neutral-99),
+          100: #ffffff,
+        ),
       neutral-variant: (
         0: #000000,
         10: var(--p-neutral-variant-10),
@@ -130,16 +131,49 @@ $m3-base-config: (
   ),
 );
 
-$light-theme: mat.define-theme(map.set($m3-base-config, color, theme-type, light));
-$dark-theme: mat.define-theme(map.set($m3-base-config, color, theme-type, dark));
+$light-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+      use-system-variables: true,
+    ),
+    typography: (
+      plain-family: 'Vazirmatn',
+      brand-family: 'Vazirmatn',
+      bold-weight: 900,
+      use-system-variables: true,
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
+);
+
+$dark-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: dark,
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+      use-system-variables: true,
+    ),
+    typography: (
+      plain-family: 'Vazirmatn',
+      brand-family: 'Vazirmatn',
+      bold-weight: 900,
+      use-system-variables: true,
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
+);
 
 html,
 body {
-  @include mat.core-theme($light-theme);
   @include mat.all-component-themes($light-theme);
-  // @include mat.color-variants-back-compat($angular-material-3-theme);
-
-  &.dark {
-    @include mat.all-component-colors($dark-theme);
-  }
+  @include mat.system-level-colors($light-theme);
+  @include mat.system-level-typography($light-theme);
 }
