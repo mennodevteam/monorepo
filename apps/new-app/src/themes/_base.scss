@@ -1,194 +1,145 @@
+/* You can add global styles to this file, and also import other style files */
+@use 'sass:map';
 @use '@angular/material' as mat;
 
 @include mat.core();
 
-@mixin color-tokens($app-theme) {
-  .primary {
-    background-color: mat.get-theme-color($app-theme, primary);
-  }
-  .primary-text {
-    color: mat.get-theme-color($app-theme, primary);
-  }
-  .on-primary {
-    color: mat.get-theme-color($app-theme, on-primary);
-  }
-  .primary-container {
-    background-color: mat.get-theme-color($app-theme, primary-container);
-  }
-  .on-primary-container {
-    color: mat.get-theme-color($app-theme, on-primary-container);
-  }
-  .primary-fixed {
-    background-color: mat.get-theme-color($app-theme, primary-fixed);
-  }
-  .primary-fixed-dim {
-    background-color: mat.get-theme-color($app-theme, primary-fixed-dim);
-  }
-  .on-primary-fixed {
-    color: mat.get-theme-color($app-theme, on-primary-fixed);
-  }
-  .on-primary-fixed-variant {
-    color: mat.get-theme-color($app-theme, on-primary-fixed-variant);
-  }
-  .secondary {
-    background-color: mat.get-theme-color($app-theme, secondary);
-  }
-  .on-secondary {
-    color: mat.get-theme-color($app-theme, on-secondary);
-  }
-  .secondary-container {
-    background-color: mat.get-theme-color($app-theme, secondary-container);
-  }
-  .on-secondary-container {
-    color: mat.get-theme-color($app-theme, on-secondary-container);
-  }
-  .secondary-fixed {
-    background-color: mat.get-theme-color($app-theme, secondary-fixed);
-  }
-  .secondary-fixed-dim {
-    background-color: mat.get-theme-color($app-theme, secondary-fixed-dim);
-  }
-  .on-secondary-fixed {
-    color: mat.get-theme-color($app-theme, on-secondary-fixed);
-  }
-  .on-secondary-fixed-variant {
-    color: mat.get-theme-color($app-theme, on-secondary-fixed-variant);
-  }
-  .tertiary {
-    background-color: mat.get-theme-color($app-theme, tertiary);
-  }
-  .on-tertiary {
-    color: mat.get-theme-color($app-theme, on-tertiary);
-  }
-  .tertiary-container {
-    background-color: mat.get-theme-color($app-theme, tertiary-container);
-  }
-  .on-tertiary-container {
-    color: mat.get-theme-color($app-theme, on-tertiary-container);
-  }
-  .tertiary-fixed {
-    background-color: mat.get-theme-color($app-theme, tertiary-fixed);
-  }
-  .tertiary-fixed-dim {
-    background-color: mat.get-theme-color($app-theme, tertiary-fixed-dim);
-  }
-  .on-tertiary-fixed {
-    color: mat.get-theme-color($app-theme, on-tertiary-fixed);
-  }
-  .on-tertiary-fixed-variant {
-    color: mat.get-theme-color($app-theme, on-tertiary-fixed-variant);
-  }
-  .error {
-    background-color: mat.get-theme-color($app-theme, error);
-  }
-  .on-error {
-    color: mat.get-theme-color($app-theme, on-error);
-  }
-  .error-container {
-    background-color: mat.get-theme-color($app-theme, error-container);
-  }
-  .on-error-container {
-    color: mat.get-theme-color($app-theme, on-error-container);
-  }
-  .surface-dim {
-    background-color: mat.get-theme-color($app-theme, surface-dim);
-  }
-  .surface {
-    background-color: mat.get-theme-color($app-theme, surface);
-  }
-  .surface-bright {
-    background-color: mat.get-theme-color($app-theme, surface-bright);
-  }
-  .surface-container-lowest {
-    background-color: mat.get-theme-color($app-theme, surface-container-lowest);
-  }
-  .surface-container-low {
-    background-color: mat.get-theme-color($app-theme, surface-container-low);
-  }
-  .surface-container {
-    background-color: mat.get-theme-color($app-theme, surface-container);
-  }
-  .surface-container-high {
-    background-color: mat.get-theme-color($app-theme, surface-container-high);
-  }
-  .surface-container-highest {
-    background-color: mat.get-theme-color($app-theme, surface-container-highest);
-  }
-  .on-surface {
-    color: mat.get-theme-color($app-theme, on-surface);
-  }
-  .on-surface-variant {
-    color: mat.get-theme-color($app-theme, on-surface-variant);
-  }
-  .outline {
-    background-color: mat.get-theme-color($app-theme, outline);
-  }
-  .outline-variant {
-    background-color: mat.get-theme-color($app-theme, outline-variant);
-  }
-  .inverse-surface {
-    background-color: mat.get-theme-color($app-theme, inverse-surface);
-  }
-  .inverse-on-surface {
-    background-color: mat.get-theme-color($app-theme, inverse-on-surface);
-  }
-  .inverse-primary {
-    background-color: mat.get-theme-color($app-theme, inverse-primary);
-  }
-  .scrim {
-    background-color: mat.get-theme-color($app-theme, scrim);
-  }
-  .shadow {
-    background-color: mat.get-theme-color($app-theme, shadow);
+:root {
+  // Fix ripple colors somehow
+  .mat-ripple-element {
+    background-color: var(--mat-ripple-color, rgba(0, 0, 0, 0.1)) !important;
   }
 }
 
-@mixin setTheme($palette-color) {
-  $palette: mat.$red-palette;
-  @if $palette == red {
-    $palette: mat.$red-palette;
-  } @else if $palette == green {
-    $palette: mat.$green-palette;
-  } @else if $palette == blue {
-    $palette: mat.$blue-palette;
-  } @else if $palette == yellow {
-    $palette: mat.$yellow-palette;
-  } @else if $palette == cyan {
-    $palette: mat.$cyan-palette;
-  } @else if $palette == magenta {
-    $palette: mat.$magenta-palette;
-  } @else if $palette == orange {
-    $palette: mat.$orange-palette;
-  } @else if $palette == chartreuse {
-    $palette: mat.$chartreuse-palette;
-  } @else if $palette == spring-green {
-    $palette: mat.$spring-green-palette;
-  } @else if $palette == azure {
-    $palette: mat.$azure-palette;
-  } @else if $palette == violet {
-    $palette: mat.$violet-palette;
-  } @else if $palette == rose {
-    $palette: mat.$rose-palette;
-  }
-
-  $theme: mat.define-theme(
-    (
-      color: (
-        theme-type: light,
-        primary: $palette,
+$m3-base-config: (
+  color: (
+    primary: (
+      0: #000000,
+      10: var(--primary-10),
+      20: var(--primary-20),
+      25: var(--primary-25),
+      30: var(--primary-30),
+      35: var(--primary-35),
+      40: var(--primary-40),
+      50: var(--primary-50),
+      60: var(--primary-60),
+      70: var(--primary-70),
+      80: var(--primary-80),
+      90: var(--primary-90),
+      95: var(--primary-95),
+      98: var(--primary-98),
+      99: var(--primary-99),
+      100: #ffffffff,
+      secondary: (
+        0: #000000,
+        10: var(--p-secondary-10),
+        20: var(--p-secondary-20),
+        25: var(--p-secondary-25),
+        30: var(--p-secondary-30),
+        35: var(--p-secondary-35),
+        40: var(--p-secondary-40),
+        50: var(--p-secondary-50),
+        60: var(--p-secondary-60),
+        70: var(--p-secondary-70),
+        80: var(--p-secondary-80),
+        90: var(--p-secondary-90),
+        95: var(--p-secondary-95),
+        98: var(--p-secondary-98),
+        99: var(--p-secondary-99),
+        100: #ffffff,
       ),
-      typography: (
-        plain-family: 'Vazirmatn',
-        brand-family: 'Vazirmatn',
-        bold-weight: 900,
+      // tertiary: (
+      //   0: #000000,
+      //   10: var(--p-tertiary-10),
+      //   20: var(--p-tertiary-20),
+      //   25: var(--p-tertiary-25),
+      //   30: var(--p-tertiary-30),
+      //   35: var(--p-tertiary-35),
+      //   40: var(--p-tertiary-40),
+      //   50: var(--p-tertiary-50),
+      //   60: var(--p-tertiary-60),
+      //   70: var(--p-tertiary-70),
+      //   80: var(--p-tertiary-80),
+      //   90: var(--p-tertiary-90),
+      //   95: var(--p-tertiary-95),
+      //   98: var(--p-tertiary-98),
+      //   99: var(--p-tertiary-99),
+      //   100: #ffffff,
+      // ),
+      neutral: (
+        0: #000000,
+        10: #191c1c,
+        // Must be fixed due color mixins
+        20: var(--p-neutral-20),
+        25: var(--p-neutral-25),
+        30: var(--p-neutral-30),
+        35: var(--p-neutral-35),
+        40: var(--p-neutral-40),
+        50: var(--p-neutral-50),
+        60: var(--p-neutral-60),
+        70: var(--p-neutral-70),
+        80: var(--p-neutral-80),
+        90: var(--p-neutral-90),
+        95: var(--p-neutral-95),
+        98: var(--p-neutral-98),
+        99: var(--p-neutral-99),
+        100: #ffffff,
       ),
-    )
-  );
+      neutral-variant: (
+        0: #000000,
+        10: var(--p-neutral-variant-10),
+        20: var(--p-neutral-variant-20),
+        25: var(--p-neutral-variant-25),
+        30: var(--p-neutral-variant-30),
+        35: var(--p-neutral-variant-35),
+        40: var(--p-neutral-variant-40),
+        50: var(--p-neutral-variant-50),
+        60: var(--p-neutral-variant-60),
+        70: var(--p-neutral-variant-70),
+        80: var(--p-neutral-variant-80),
+        90: var(--p-neutral-variant-90),
+        95: var(--p-neutral-variant-95),
+        98: var(--p-neutral-variant-98),
+        99: var(--p-neutral-variant-99),
+        100: #ffffff,
+      ),
+      error: (
+        0: #000000,
+        10: var(--p-error-10),
+        20: var(--p-error-20),
+        25: var(--p-error-25),
+        30: var(--p-error-30),
+        35: var(--p-error-35),
+        40: var(--p-error-40),
+        50: var(--p-error-50),
+        60: var(--p-error-60),
+        70: var(--p-error-70),
+        80: var(--p-error-80),
+        90: var(--p-error-90),
+        95: var(--p-error-95),
+        98: var(--p-error-98),
+        99: var(--p-error-99),
+        100: #ffffff,
+      ),
+    ),
+  ),
+  typography: (
+    plain-family: 'Vazirmatn',
+    brand-family: 'Vazirmatn',
+    bold-weight: 900,
+  ),
+);
 
-  body {
-    @include mat.all-component-themes($theme);
-    @include mat.strong-focus-indicators-theme($theme);
-  
-    @include color-tokens($theme);
+$light-theme: mat.define-theme(map.set($m3-base-config, color, theme-type, light));
+$dark-theme: mat.define-theme(map.set($m3-base-config, color, theme-type, dark));
+
+html,
+body {
+  @include mat.core-theme($light-theme);
+  @include mat.all-component-themes($light-theme);
+  // @include mat.color-variants-back-compat($angular-material-3-theme);
+
+  &.dark {
+    @include mat.all-component-colors($dark-theme);
   }
 }

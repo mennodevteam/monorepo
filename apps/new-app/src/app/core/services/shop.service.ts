@@ -49,7 +49,7 @@ export class ShopService {
     // }
 
     if (shop) {
-      this.themeService.color = 'green';
+      // this.themeService.color = 'green';
       if (shop.appConfig?.theme) {
         this.pwa.setManifest(
           shop,

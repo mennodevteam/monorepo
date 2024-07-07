@@ -1,74 +1,70 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+import { Injectable } from '@angular/core';
+import {
+  argbFromHex,
+  themeFromSourceColor,
+  applyTheme,
+  hexFromArgb,
+  TonalPalette,
+} from '@material/material-color-utilities';
 
-export const LOCAL_STORAGE_THEME_COLOR_KEY = 'appThemeString';
-export const DEFAULT_THEME_COLOR = 'blue';
-
-export const COLORS = [
-  'red',
-  'green',
-  'blue',
-  'yellow',
-  'cyan',
-  'magenta',
-  'orange',
-  'chartreuse',
-  'spring-green',
-  'azure',
-  'violet',
-  'rose',
-];
+const DEFAULT_COLOR = '#FFC107';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ThemeService {
-  private _color = DEFAULT_THEME_COLOR;
-  private _renderer: Renderer2;
-  private head: HTMLElement;
+  constructor() {
+    this.themeFromSelectedColor();
+    setTimeout(() => {
+      this.themeFromSelectedColor('#FFC107')
+    }, 3000);
+  }
 
-  constructor(private rendererFactory: RendererFactory2, @Inject(DOCUMENT) private document: Document) {
-    this.head = this.document.head;
-    this._renderer = this.rendererFactory.createRenderer(null, null);
+  themeFromSelectedColor(color?: string, isDark?: boolean): void {
+    // All calculations are made using numbers
+    // we need HEX strings for use @material-utilitis-color apis
+    const theme = themeFromSourceColor(argbFromHex(color ?? DEFAULT_COLOR));
 
-    const localStorageTheme = localStorage.getItem(LOCAL_STORAGE_THEME_COLOR_KEY);
-    if (localStorageTheme) {
-      this.color = localStorageTheme;
+    // ngular material tones
+    const tones = [0, 10, 20, 25, 30, 35, 40, 50, 60, 70, 80, 90, 95, 99, 100];
+
+    // A colors Dictionary
+    const colors = Object.entries(theme.palettes).reduce((acc: any, curr: [string, TonalPalette]) => {
+      const hexColors = tones.map((tone) => ({ tone, hex: hexFromArgb(curr[1].tone(tone)) }));
+
+      return { ...acc, [curr[0]]: hexColors };
+    }, {});
+
+    // Then we will apply the colors to the DOM :root element
+    this.createCustomProperties(colors, 'p');
+  }
+
+  createCustomProperties(colorsFromPaletteConfig: any, paletteKey: 'p' | 't') {
+    let styleString = ':root,:host{';
+
+    for (const [key, palette] of Object.entries(colorsFromPaletteConfig)) {
+      (palette as any[]).forEach(({ hex, tone }) => {
+        if (key === 'primary') {
+          styleString += `--${key}-${tone}:${hex};`;
+        } else {
+          styleString += `--${paletteKey}-${key}-${tone}:${hex};`;
+        }
+      });
     }
+
+    styleString += '}';
+
+    this.applyThemeString(styleString, 'angular-material-theme');
   }
 
-  set color(val: string) {
-    if (COLORS.indexOf(val) === -1 || this.color === `${val}`) return;
-    this.loadCss(`${val}-theme.css`).then(() => {
-      this.setColor(val);
-    });
-    this.setColor(val);
-  }
+  applyThemeString(themeString: string, ssName = 'angular-material-theme') {
+    let sheet = (globalThis as any)[ssName];
 
-  get color() {
-    return `${this._color}`;
-  }
-
-  private setColor(val: string) {
-    if (COLORS.indexOf(val) > -1) {
-      localStorage.setItem(LOCAL_STORAGE_THEME_COLOR_KEY, val);
-      this._color = val;
-      this.html.setAttribute('theme-color', this.color);
+    if (!sheet) {
+      sheet = new CSSStyleSheet();
+      (globalThis as any)[ssName] = sheet;
+      document.adoptedStyleSheets.push(sheet);
     }
-  }
-
-  private get html() {
-    return document.getElementsByTagName('html')[0];
-  }
-
-  private async loadCss(filename: string) {
-    return new Promise((resolve) => {
-      const linkEl: HTMLElement = this._renderer.createElement('link');
-      this._renderer.setAttribute(linkEl, 'rel', 'stylesheet');
-      this._renderer.setAttribute(linkEl, 'type', 'text/css');
-      this._renderer.setAttribute(linkEl, 'href', filename);
-      this._renderer.setProperty(linkEl, 'onload', resolve);
-      this._renderer.appendChild(this.head, linkEl);
-    });
+    sheet.replaceSync(themeString);
   }
 }
