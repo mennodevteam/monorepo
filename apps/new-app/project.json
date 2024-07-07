@@ -22,70 +22,7 @@
             "input": "apps/new-app/public"
           }
         ],
-        "styles": [
-          "apps/new-app/src/themes/_base.scss",
-          "apps/new-app/src/styles.scss",
-          {
-            "input": "apps/new-app/src/themes/red-theme.scss",
-            "inject": false,
-            "bundleName": "red-theme"
-          },
-          {
-            "input": "apps/new-app/src/themes/green-theme.scss",
-            "inject": false,
-            "bundleName": "green-theme"
-          },
-          {
-            "input": "apps/new-app/src/themes/blue-theme.scss",
-            "inject": false,
-            "bundleName": "blue-theme"
-          },
-          {
-            "input": "apps/new-app/src/themes/yellow-theme.scss",
-            "inject": false,
-            "bundleName": "yellow-theme"
-          },
-          {
-            "input": "apps/new-app/src/themes/cyan-theme.scss",
-            "inject": false,
-            "bundleName": "cyan-theme"
-          },
-          {
-            "input": "apps/new-app/src/themes/magenta-theme.scss",
-            "inject": false,
-            "bundleName": "magenta-theme"
-          },
-          {
-            "input": "apps/new-app/src/themes/orange-theme.scss",
-            "inject": false,
-            "bundleName": "orange-theme"
-          },
-          {
-            "input": "apps/new-app/src/themes/chartreuse-theme.scss",
-            "inject": false,
-            "bundleName": "chartreuse-theme"
-          },
-          {
-            "input": "apps/new-app/src/themes/spring-green-theme.scss",
-            "inject": false,
-            "bundleName": "spring-green-theme"
-          },
-          {
-            "input": "apps/new-app/src/themes/azure-theme.scss",
-            "inject": false,
-            "bundleName": "azure-theme"
-          },
-          {
-            "input": "apps/new-app/src/themes/violet-theme.scss",
-            "inject": false,
-            "bundleName": "violet-theme"
-          },
-          {
-            "input": "apps/new-app/src/themes/rose-theme.scss",
-            "inject": false,
-            "bundleName": "rose-theme"
-          },
-        ],
+        "styles": ["apps/new-app/src/themes/_base.scss", "apps/new-app/src/styles.scss"],
         "stylePreprocessorOptions": {
           "includePaths": ["apps/new-app/src/themes/"]
         },

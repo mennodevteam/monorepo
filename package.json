@@ -30,6 +30,7 @@
     "@angular/service-worker": "18.0.1",
     "@asymmetrik/ngx-leaflet": "^15.0.1",
     "@asymmetrik/ngx-leaflet-draw": "^15.0.1",
+    "@material/material-color-utilities": "^0.3.0",
     "@nestjs/axios": "^2.0.0",
     "@nestjs/common": "10.2.4",
     "@nestjs/config": "^2.2.0",
