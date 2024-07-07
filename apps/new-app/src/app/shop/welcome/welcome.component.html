@@ -1,6 +1,6 @@
-<div class="container">
+<div fxLayout="column" fxLayoutGap="16">
   <app-slider [test]="12" [shop]="shop" />
-  <div class="content">
+  <div fxLayout="column" fxLayoutGap="8" fxLayoutAlign="center center">
     <img [imageLoader]="shop.logo" id="logo" />
     <h1>{{ shop.title }}</h1>
     @if (shop.description) {

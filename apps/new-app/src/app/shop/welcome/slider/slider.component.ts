@@ -13,9 +13,8 @@ import { Shop } from '@menno/types';
 export class SliderComponent implements AfterViewInit {
   @Input() shop: Shop;
   @Input() test: number;
-  constructor() {
-  }
-  
+  constructor() {}
+
   ngAfterViewInit(): void {
     console.log(this.shop);
     console.log(this.test);

@@ -16,7 +16,7 @@ export class ThemeService {
   constructor() {
     this.themeFromSelectedColor();
     setTimeout(() => {
-      this.themeFromSelectedColor('#FFC107')
+      this.themeFromSelectedColor('#FFC107');
     }, 3000);
   }
 

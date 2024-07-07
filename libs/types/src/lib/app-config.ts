@@ -23,6 +23,7 @@ export enum HomePage {
 export class AppConfig {
   id: string;
   theme: Theme;
+  themeHex?: string;
   themeMode: ThemeMode;
   homePage: HomePage;
   smsOnNewOrder: string[];
