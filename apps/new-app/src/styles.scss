@@ -1,3 +1,4 @@
+@import '../public/iransans/iransans.scss';
 @import '../public/fontawesome/scss/fontawesome.scss';
 @import '../public/fontawesome/scss/regular.scss';
 @import '../public/fontawesome/scss/brands.scss';
@@ -9,7 +10,7 @@ body {
 }
 body {
   margin: 0;
-  font-family: Vazirmatn, sans-serif;
+  font-family: IRANSans, sans-serif;
 }
 
 h1,
