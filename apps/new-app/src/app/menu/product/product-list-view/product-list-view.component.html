@@ -1,12 +1,18 @@
 <mat-nav-list>
   @for (product of category.products; track product.id; let isLast = $last) {
     @defer {
-      <a mat-list-item>
-        <img matListItemAvatar [imageLoader]="product.images?.[0]" />
-        <span matListItemTitle>{{ product.title }}</span>
-        <span matListItemLine>
-          <span>{{ product.price }}</span>
+      <a mat-list-item class="item">
+        <img matListItemAvatar class="item__image" [imageLoader]="product.images?.[0]" />
+        <span matListItemTitle class="item__title">{{ product.title }}</span>
+        <span matListItemLine class="item__subtitle">
+          @if (Product.hasDiscount(product)) {
+            <span class="line-price error-text">{{ Product.realPrice(product)| number }}</span>&nbsp;
+          }
+          <span>{{ Product.totalPrice(product) | menuCurrency }}</span>
         </span>
+        <div matListItemMeta>
+          <i class="fa-regular fa-chevron-left"></i>
+        </div>
       </a>
       @if (!isLast) {
         <mat-divider />

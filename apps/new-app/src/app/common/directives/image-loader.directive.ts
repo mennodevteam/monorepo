@@ -29,7 +29,7 @@ export class ImageLoaderDirective {
 
   get defaultPlaceholderUrl() {
     if (this.defaultPlaceholder === ImagePlaceholder.default) {
-      return `assets/images/placeholder/default.png`;
+      return `images/default.png`;
     }
     return `assets/images/placeholder/person.png`;
   }
