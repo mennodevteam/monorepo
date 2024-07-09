@@ -1,3 +1,9 @@
 <app-top-app-bar [shop]="shop" />
 <app-header [shop]="shop" />
 <app-category-carousel [menu]="menu" />
+
+<main fxLayout="column" fxLayoutGap="24" p-md>
+  @for (category of menu.categories; track $index) {
+  <app-category-section [category]="category" />
+  }
+</main>

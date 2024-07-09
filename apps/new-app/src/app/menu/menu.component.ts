@@ -6,11 +6,12 @@ import { HeaderComponent } from './header/header.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { COMMON } from '../common';
 import { CategoryCarouselComponent } from './category-carousel/category-carousel.component';
+import { CategorySectionComponent } from './category-section/category-section.component';
 
 @Component({
   selector: 'app-menu',
   standalone: true,
-  imports: [CommonModule, TopAppBarComponent, HeaderComponent, COMMON, CategoryCarouselComponent],
+  imports: [CommonModule, TopAppBarComponent, HeaderComponent, COMMON, CategoryCarouselComponent, CategorySectionComponent],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
 })
