@@ -5,7 +5,7 @@
 
 html,
 body {
-  height: 100%;
+  min-height: 100%;
 }
 body {
   margin: 0;
@@ -45,4 +45,9 @@ p {
     height: 56px !important;
     border-radius: 16px !important;
   }
+}
+
+.inverse-surface-button {
+  background-color: var(--sys-on-background) !important;
+  color: var(--sys-background) !important;
 }

@@ -17,11 +17,13 @@ export class ThemeService {
     this.themeFromSelectedColor();
   }
 
-  themeFromSelectedColor(color?: string, isDark?: boolean): void {
-    const corePalette = CorePalette.of(argbFromHex(DEFAULT_COLOR));
-    corePalette.a3 = TonalPalette.fromInt(argbFromHex(isDark ? '#ffffff' : '#000000'));
+  themeFromSelectedColor(color = DEFAULT_COLOR, isDark?: boolean): void {
+    const corePalette = CorePalette.of(argbFromHex(color));
+    // corePalette.a1 = TonalPalette.fromInt(argbFromHex(color));
+    const darkPalette = Scheme.darkFromCorePalette(corePalette);
+    const lightPalette = Scheme.lightFromCorePalette(corePalette);
 
-    this.createCustomProperties(isDark ? Scheme.darkFromCorePalette(corePalette).toJSON() : Scheme.lightFromCorePalette(corePalette).toJSON());
+    this.createCustomProperties(isDark ? darkPalette.toJSON() : lightPalette.toJSON());
   }
 
   createCustomProperties(schemes: any) {
