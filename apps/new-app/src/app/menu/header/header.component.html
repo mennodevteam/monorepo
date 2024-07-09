@@ -1,5 +1,5 @@
-<header fxLayout="row" fxLayoutGap="12" fxFlexAlign="center center" p-md>
-  <img [imageLoader]="shop.logo" id="logo" />
+<header fxLayout="row" fxLayoutGap="12" fxLayoutAlign="start center" p-md>
+  <img [imageLoader]="shop.logo" id="logo" fxFlex="none" />
   <div fxLayout="column">
     <h1>{{ shop.title }}</h1>
     @if (shop.description) {
@@ -13,7 +13,7 @@
     {{ OrderType.Delivery | orderType }}
     <i class="fa-regular fa-angle-down fa-lg"></i>
   </button>
-  <button mat-flat-button fxFlex class="surface-variant-background on-surface-variant-text" id="search-button">
+  <button mat-flat-button fxFlex class="inverse-on-surface-background inverse-surface-text" id="search-button">
     <i class="fa-regular fa-search"></i>
     {{ 'app.search' | translate }}
   </button>

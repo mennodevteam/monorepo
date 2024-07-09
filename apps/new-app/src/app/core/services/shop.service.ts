@@ -23,7 +23,7 @@ export class ShopService {
     private dialog: MatDialog,
     private translate: TranslateService,
     private auth: AuthService,
-    private themeService: ThemeService,
+    private themeService: ThemeService
   ) {
     this.load();
   }
@@ -49,8 +49,11 @@ export class ShopService {
     // }
 
     if (shop) {
-      // this.themeService.color = 'green';
       if (shop.appConfig?.theme) {
+        this.themeService.themeFromSelectedColor(
+          shop.appConfig.theme.primaryColor,
+          shop.appConfig.themeMode === ThemeMode.Dark
+        );
         this.pwa.setManifest(
           shop,
           this.url,

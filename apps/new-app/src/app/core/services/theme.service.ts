@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  CorePalette,
-  Scheme,
-  TonalPalette,
-  argbFromHex,
-  hexFromArgb,
-} from '@material/material-color-utilities';
+import { argbFromHex, hexFromArgb, themeFromSourceColor } from '@material/material-color-utilities';
 
 const DEFAULT_COLOR = '#50F25A';
 
@@ -18,15 +12,12 @@ export class ThemeService {
   }
 
   themeFromSelectedColor(color = DEFAULT_COLOR, isDark?: boolean): void {
-    const corePalette = CorePalette.of(argbFromHex(color));
-    // corePalette.a1 = TonalPalette.fromInt(argbFromHex(color));
-    const darkPalette = Scheme.darkFromCorePalette(corePalette);
-    const lightPalette = Scheme.lightFromCorePalette(corePalette);
-
-    this.createCustomProperties(isDark ? darkPalette.toJSON() : lightPalette.toJSON());
+    const theme = themeFromSourceColor(argbFromHex(color ?? DEFAULT_COLOR));
+    if (isDark) document.body.classList.add('dark')
+    this.createCustomProperties(isDark ? theme.schemes.dark.toJSON() : theme.schemes.light.toJSON());
   }
 
-  createCustomProperties(schemes: any) {
+  private createCustomProperties(schemes: any) {
     let sheet = (globalThis as any)['material-tokens-class'];
 
     if (!sheet) {

@@ -1,0 +1,33 @@
+.item {
+  border-radius: 16px;
+
+  &__content {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 8px;
+    color: white;
+
+    &__title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    &__subtitle {
+      font-size: 12px;
+
+      .line-price {
+        text-decoration: line-through;
+      }
+
+      span {
+        display: inline-block;
+      }
+    }
+  }
+}
+
+::ng-deep .item .mat-grid-tile-content {
+  background: rgb(0, 0, 0);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 80%);
+}
