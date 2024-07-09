@@ -1,14 +1,16 @@
 <mat-nav-list>
   @for (product of category.products; track product.id; let isLast = $last) {
-  <a mat-list-item>
-    <img matListItemAvatar [imageLoader]="product.images?.[0]" />
-    <span matListItemTitle>{{ product.title }}</span>
-    <span matListItemLine>
-      <span>{{ product.price }}</span>
-    </span>
-  </a>
-  @if (!isLast) {
-    <mat-divider />
-  }
+    @defer {
+      <a mat-list-item>
+        <img matListItemAvatar [imageLoader]="product.images?.[0]" />
+        <span matListItemTitle>{{ product.title }}</span>
+        <span matListItemLine>
+          <span>{{ product.price }}</span>
+        </span>
+      </a>
+      @if (!isLast) {
+        <mat-divider />
+      }
+    }
   }
 </mat-nav-list>

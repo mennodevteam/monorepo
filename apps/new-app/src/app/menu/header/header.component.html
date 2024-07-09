@@ -13,7 +13,8 @@
     {{ OrderType.Delivery | orderType }}
     <i class="fa-regular fa-angle-down fa-lg"></i>
   </button>
-  <button mat-flat-button fxFlex>
-      {{ 'app.search' | translate }}
+  <button mat-flat-button fxFlex class="surface-variant-background on-surface-variant-text" id="search-button">
+    <i class="fa-regular fa-search"></i>
+    {{ 'app.search' | translate }}
   </button>
 </mat-toolbar>

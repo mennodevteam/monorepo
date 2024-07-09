@@ -7,7 +7,7 @@ import {
   hexFromArgb,
 } from '@material/material-color-utilities';
 
-const DEFAULT_COLOR = '#FFC107';
+const DEFAULT_COLOR = '#50F25A';
 
 @Injectable({
   providedIn: 'root',
