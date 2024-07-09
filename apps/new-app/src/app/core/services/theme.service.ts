@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
-import * as MatColorUtils from '@material/material-color-utilities';
+import {
+  CorePalette,
+  Scheme,
+  TonalPalette,
+  argbFromHex,
+  hexFromArgb,
+} from '@material/material-color-utilities';
 
 const DEFAULT_COLOR = '#FFC107';
 
@@ -12,8 +18,10 @@ export class ThemeService {
   }
 
   themeFromSelectedColor(color?: string, isDark?: boolean): void {
-    const theme = MatColorUtils.themeFromSourceColor(MatColorUtils.argbFromHex(color ?? DEFAULT_COLOR));
-    this.createCustomProperties(isDark ? theme.schemes.dark.toJSON() : theme.schemes.light.toJSON());
+    const corePalette = CorePalette.of(argbFromHex(DEFAULT_COLOR));
+    corePalette.a3 = TonalPalette.fromInt(argbFromHex(isDark ? '#ffffff' : '#000000'));
+
+    this.createCustomProperties(isDark ? Scheme.darkFromCorePalette(corePalette).toJSON() : Scheme.lightFromCorePalette(corePalette).toJSON());
   }
 
   createCustomProperties(schemes: any) {
@@ -33,9 +41,9 @@ export class ThemeService {
           .replace(/[\s_]+/g, '-')
           .toLowerCase();
 
-        const value = MatColorUtils.hexFromArgb(schemes[key]);
+        const value = hexFromArgb(schemes[key]);
         document.body.style.setProperty(`--sys-${keyText}`, value);
-        tokenClassString += `.${keyText}-text{color:${value}}.${keyText}-background{background-color:${value}}`;
+        tokenClassString += `.${keyText}-text{color:${value} !important}.${keyText}-background{background-color:${value} !important}`;
       }
     }
     sheet.replaceSync(tokenClassString);

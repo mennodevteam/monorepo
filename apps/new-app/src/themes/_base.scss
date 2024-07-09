@@ -176,4 +176,8 @@ body {
   @include mat.all-component-themes($light-theme);
   @include mat.system-level-colors($light-theme);
   @include mat.system-level-typography($light-theme);
+
+  .tertiary-button {
+    @include mat.button-color($light-theme, $color-variant: tertiary);
+  }
 }
