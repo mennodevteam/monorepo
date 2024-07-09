@@ -74,7 +74,7 @@ export class CategoryCarouselComponent implements AfterViewInit {
 
     const carouselObserver = new IntersectionObserver(
       (entries) => {
-        this.isCarouselStick.set(Boolean(entries[0]?.isIntersecting));
+        this.isCarouselStick.set(Boolean(entries[0]?.isIntersecting) === false);
       },
       { threshold: 1 }
     );

@@ -12,9 +12,25 @@ export class ThemeService {
   }
 
   themeFromSelectedColor(color = DEFAULT_COLOR, isDark?: boolean): void {
-    const theme = themeFromSourceColor(argbFromHex(color ?? DEFAULT_COLOR));
-    if (isDark) document.body.classList.add('dark')
-    this.createCustomProperties(isDark ? theme.schemes.dark.toJSON() : theme.schemes.light.toJSON());
+    const theme = themeFromSourceColor(argbFromHex(color), [
+      { name: 'primary', blend: false, value: argbFromHex(color) },
+    ]);
+    const core = theme.customColors[0];
+
+    const darkJson = theme.schemes.dark.toJSON();
+    darkJson.primary = core.dark.color;
+    darkJson.onPrimary = core.dark.onColor;
+    darkJson.primaryContainer = core.dark.colorContainer;
+    darkJson.onPrimaryContainer = core.dark.onColorContainer;
+
+    const lightJson = theme.schemes.light.toJSON();
+    lightJson.primary = core.light.color;
+    lightJson.onPrimary = core.light.onColor;
+    lightJson.primaryContainer = core.light.colorContainer;
+    lightJson.onPrimaryContainer = core.light.onColorContainer;
+
+    if (isDark) document.body.classList.add('dark');
+    this.createCustomProperties(isDark ? darkJson : lightJson);
   }
 
   private createCustomProperties(schemes: any) {
