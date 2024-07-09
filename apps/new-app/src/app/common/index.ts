@@ -4,10 +4,11 @@ import { COMMON_PIPES } from './pipes';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
+import { MatDividerModule } from '@angular/material/divider';
 
 const COMMON_CORE = [RouterModule];
 
-const COMMON_MATERIAL = [MatButtonModule];
+const COMMON_MATERIAL = [MatButtonModule, MatDividerModule];
 
 const COMMON_LIBS = [FlexLayoutModule, TranslateModule];
 

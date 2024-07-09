@@ -63,3 +63,19 @@ div.mat-mdc-list-item-meta {
 img.mat-mdc-list-item-avatar {
   background-color: var(--sys-surface-variant) !important;
 }
+
+.mat-bottom-sheet-container {
+  border-radius: 32px 32px 0 0;
+}
+
+mat-radio-group.outline {
+  mat-radio-button {
+    border: 1px solid var(--sys-outline-variant);
+    padding: 8px 16px;
+    border-radius: 16px;
+
+    &.mat-mdc-radio-checked {
+      border-color: var(--sys-outline) !important;
+    }
+  }
+}
