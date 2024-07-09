@@ -9,11 +9,16 @@
 </header>
 
 <mat-toolbar fxLayout="row" fxLayoutGap="8">
-  <button mat-stroked-button>
+  <button mat-stroked-button (click)="orderTypeClick()">
     {{ OrderType.Delivery | orderType }}
     <i class="fa-regular fa-angle-down fa-lg"></i>
   </button>
-  <button mat-flat-button fxFlex class="inverse-on-surface-background inverse-surface-text" id="search-button">
+  <button
+    mat-flat-button
+    fxFlex
+    class="inverse-on-surface-background inverse-surface-text"
+    id="search-button"
+  >
     <i class="fa-regular fa-search"></i>
     {{ 'app.search' | translate }}
   </button>
