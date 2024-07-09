@@ -1,4 +1,4 @@
-<mat-toolbar fxLayout="row" id="carousel">
+<mat-toolbar fxLayout="row" id="carousel" [class.mat-elevation-z2]="true">
   @for (category of menu.categories; track category.id; let index = $index) {
   <button
     mat-button

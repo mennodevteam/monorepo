@@ -4,6 +4,7 @@ import {
   ElementRef,
   Input,
   QueryList,
+  ViewChild,
   ViewChildren,
   computed,
   effect,
@@ -12,7 +13,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { Menu } from '@menno/types';
 import { COMMON } from '../../common';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatToolbar, MatToolbarModule } from '@angular/material/toolbar';
 import { MatButton } from '@angular/material/button';
 import { debounceSignal } from '../../core';
 
@@ -25,8 +26,10 @@ import { debounceSignal } from '../../core';
 })
 export class CategoryCarouselComponent implements AfterViewInit {
   @ViewChildren(MatButton) categoryButtons: QueryList<MatButton>;
+  @ViewChild(MatToolbar) carousel: MatToolbar;
   @Input() menu: Menu;
   @Input() selectedIndex = signal(0);
+  isCarouselStick = signal(false);
   isObserverDisabled = signal(false);
   debounceSelectedIndex = debounceSignal(this.selectedIndex, 300);
   selectedTarget = computed(() => {
@@ -48,7 +51,7 @@ export class CategoryCarouselComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const observer = new IntersectionObserver(
+    const sectionObserver = new IntersectionObserver(
       (entries, observer) => {
         if (this.isObserverDisabled()) return;
         const intersected = entries.filter((elem) => elem.isIntersecting === true)[0];
@@ -66,8 +69,17 @@ export class CategoryCarouselComponent implements AfterViewInit {
     );
 
     this.sections.forEach((element) => {
-      if (element) observer.observe(element);
+      if (element) sectionObserver.observe(element);
     });
+
+    const carouselObserver = new IntersectionObserver(
+      (entries) => {
+        this.isCarouselStick.set(Boolean(entries[0]?.isIntersecting));
+      },
+      { threshold: 1 }
+    );
+
+    carouselObserver.observe(this.carousel['_elementRef'].nativeElement);
   }
 
   selectCategory(index: number) {
