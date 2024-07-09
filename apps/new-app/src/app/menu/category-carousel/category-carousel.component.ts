@@ -74,7 +74,7 @@ export class CategoryCarouselComponent implements AfterViewInit {
     this.isObserverDisabled.set(true);
     setTimeout(() => {
       this.isObserverDisabled.set(false);
-    }, 2000);
+    }, 1300);
     this.selectedIndex.set(index);
     this.sections.item(index).scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
