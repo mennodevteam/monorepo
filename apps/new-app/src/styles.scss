@@ -37,3 +37,12 @@ p {
 *[p-lg] {
   padding: 24px;
 }
+
+.mdc-button {
+  border-radius: 8px !important;
+
+  &.large {
+    height: 56px !important;
+    border-radius: 16px !important;
+  }
+}

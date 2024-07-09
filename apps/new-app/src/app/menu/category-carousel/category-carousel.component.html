@@ -1,0 +1,16 @@
+<mat-toolbar fxLayout="row" id="carousel" fxLayoutGap="8">
+  @for (category of menu.categories; track category.id; let index = $index) {
+  <button
+    mat-button
+    [ngClass]="index === selectedIndex() ? 'mat-mdc-unelevated-button' : 'mat-mdc-outlined-button'"
+    fxFlex="none"
+    class="tertiary-button"
+    (click)="selectCategory(index)"
+  >
+    @if (category.faIcon) {
+    <i class="fa-solid fa-{{ category.faIcon }}"></i>
+    &nbsp; }
+    {{ category.title }}
+  </button>
+  }
+</mat-toolbar>
