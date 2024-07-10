@@ -1,4 +1,4 @@
-import { Injectable, WritableSignal, computed, effect, signal } from '@angular/core';
+import { Injectable, WritableSignal, computed, effect, signal, untracked } from '@angular/core';
 import {
   Address,
   DeliveryArea,
@@ -72,6 +72,17 @@ export class CartService {
     private snack: MatSnackBar,
     private translate: TranslateService,
   ) {
+    effect(() => {
+      const menu = this.menuService.menu();
+      untracked(() => {
+        const items = this.quantity();
+        const copy = [...items];
+        for (const item of items) {
+          if (!this.menuService.getProductById(item.productId)) copy.splice(copy.indexOf(item), 1);
+        }
+        this.quantity.set(copy);
+      });
+    });
     // this.menuService.typeObservable.subscribe((type) => {
     //   if (type != undefined) {
     //     if (this.type != type) this.clear();
@@ -109,11 +120,19 @@ export class CartService {
     if (item) {
       if (item.quantity() > 1) item.quantity.update((v) => v - 1);
       else {
-        this.quantity.update((items) => {
-          items.splice(items.indexOf(item), 1);
-          return [...items];
-        });
+        this.remove(product, variant);
       }
+    }
+  }
+
+  remove(product: Product, variant?: ProductVariant) {
+    const item = this.getSignalItem(product.id, variant?.id);
+
+    if (item) {
+      this.quantity.update((items) => {
+        items.splice(items.indexOf(item), 1);
+        return [...items];
+      });
     }
   }
 

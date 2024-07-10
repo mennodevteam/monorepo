@@ -10,7 +10,7 @@
 
 <mat-toolbar fxLayout="row" fxLayoutGap="8">
   <button mat-stroked-button (click)="orderTypeClick()">
-    {{ OrderType.Delivery | orderType }}
+    {{ menu.type() | orderType }}
     <i class="fa-regular fa-angle-down fa-lg"></i>
   </button>
   <button
