@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { MenuService, ShopService } from './core';
 
 @Component({
   standalone: true,
@@ -11,7 +12,5 @@ import { RouterModule } from '@angular/router';
 export class AppComponent {
   title = 'new-app';
 
-  constructor() {
-    console.log(2398274)
-  }
+  constructor(private shopService: ShopService, private menuService: MenuService) {}
 }

@@ -50,10 +50,7 @@ export class ShopService {
 
     if (shop) {
       if (shop.appConfig?.theme) {
-        this.themeService.themeFromSelectedColor(
-          shop.appConfig.theme.primaryColor,
-          shop.appConfig.themeMode === ThemeMode.Dark
-        );
+        this.themeService.setThemeFromColor(shop.appConfig.theme.primaryColor, shop.appConfig.themeMode);
         this.pwa.setManifest(
           shop,
           this.url,
