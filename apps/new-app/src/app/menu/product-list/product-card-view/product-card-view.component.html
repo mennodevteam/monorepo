@@ -8,7 +8,7 @@
           <h3 class="product-card__title">{{ product.title }}</h3>
           <p class="product-card__description outline-text" fxFlex>{{ product.description }}</p>
 
-          @if (!product.variants?.length) {
+          @if (!product.variants.length) {
             <div fxLayout="row">
               <div class="product-card__price-section" fxFlex fxLayout="column" fxLayoutAlign="space-around">
                 @if (Product.hasDiscount(product)) {
@@ -16,12 +16,12 @@
                 }
                 <span class="price">{{ Product.totalPrice(product) | menuCurrency }}</span>
               </div>
-              <app-quantity-selector />
+              <app-quantity-selector [product]="product" />
             </div>
           }
         </div>
       </mat-card-content>
-      @if (product.variants?.length) {
+      @if (product.variants.length) {
         @for (variant of product.variants; track variant.id; let last = $last) {
           <mat-card-actions fxLayout="row">
             <div
@@ -36,7 +36,7 @@
                 <span class="line-price error-text">{{ Product.realPrice(product) | menuCurrency }}</span>
               }
             </div>
-            <app-quantity-selector />
+            <app-quantity-selector [product]="product" [variant]="variant" />
           </mat-card-actions>
 
           @if (!last) {

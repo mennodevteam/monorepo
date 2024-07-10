@@ -7,6 +7,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { COMMON } from '../common';
 import { CategoryCarouselComponent } from './category-carousel/category-carousel.component';
 import { CategorySectionComponent } from './category-section/category-section.component';
+import { CartService } from '../core/services/cart.service';
 
 @Component({
   selector: 'app-menu',
@@ -16,7 +17,7 @@ import { CategorySectionComponent } from './category-section/category-section.co
   styleUrl: './menu.component.scss',
 })
 export class MenuComponent {
-  constructor(private shopService: ShopService, public menuService: MenuService) {}
+  constructor(private shopService: ShopService, public menuService: MenuService, public cart: CartService) {}
 
   get shop() {
     return this.shopService.shop;
