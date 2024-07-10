@@ -34,6 +34,9 @@
               }
               <span class="price">{{ Product.totalPrice(product, variant) | menuCurrency }}</span>
             </span>
+            <div matListItemMeta>
+              <app-quantity-selector />
+            </div>
           </mat-list-item>
 
           @if (!last) {
