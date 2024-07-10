@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class OrderTypePipe implements PipeTransform {
   constructor(private translate: TranslateService) {}
 
-  transform(value: OrderType): unknown {
-    return this.translate.instant(`orderType.${value}`);
+  transform(value?: OrderType): unknown {
+    return this.translate.instant(`orderType.${value != undefined ? value : 'title'}`);
   }
 }
