@@ -4,8 +4,8 @@
     <img [imageLoader]="shop.logo" id="logo" />
     <h1>{{ shop.title }}</h1>
     @if (shop.description) {
-    <p>{{shop.description}}</p>
+      <p>{{ shop.description }}</p>
     }
-    <a mat-flat-button class="large" routerLink="/menu">{{'welcome.viewMenu' | translate}}</a>
+    <a mat-flat-button class="large" routerLink="/menu">{{ 'welcome.viewMenu' | translate }}</a>
   </div>
 </div>

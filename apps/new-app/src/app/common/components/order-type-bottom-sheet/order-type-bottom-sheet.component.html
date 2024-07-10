@@ -1,12 +1,12 @@
 <div fxLayout="column" fxLayoutGap="16" p-md>
-  <h3>{{'orderType.title' | translate}}</h3>
+  <h3>{{ 'orderType.title' | translate }}</h3>
   <mat-divider />
   <mat-radio-group class="outline" aria-labelledby="select order type" fxLayout="column" fxLayoutGap="8">
-    <mat-radio-button [value]="OrderType.DineIn">{{OrderType.DineIn | orderType}}</mat-radio-button>
-    <mat-radio-button [value]="OrderType.Delivery">{{OrderType.Delivery | orderType}}</mat-radio-button>
-    <mat-radio-button [value]="OrderType.Takeaway">{{OrderType.Takeaway | orderType}}</mat-radio-button>
+    <mat-radio-button [value]="OrderType.DineIn">{{ OrderType.DineIn | orderType }}</mat-radio-button>
+    <mat-radio-button [value]="OrderType.Delivery">{{ OrderType.Delivery | orderType }}</mat-radio-button>
+    <mat-radio-button [value]="OrderType.Takeaway">{{ OrderType.Takeaway | orderType }}</mat-radio-button>
   </mat-radio-group>
   <button mat-flat-button class="large">
-    {{'app.ok' | translate}}
+    {{ 'app.ok' | translate }}
   </button>
 </div>

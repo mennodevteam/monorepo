@@ -1,12 +1,12 @@
 <section fxLayout="column" fxLayoutGap="8" class="category-section">
   <h2>
     @if (category.faIcon) {
-      <i class="fa-regular fa-{{category.faIcon}} fa-lg"></i>&nbsp;
+      <i class="fa-regular fa-{{ category.faIcon }} fa-lg"></i>&nbsp;
     }
     {{ category.title }}
   </h2>
   @if (category.description) {
-    <p class="outline-text">{{category.description}}</p>
+    <p class="outline-text">{{ category.description }}</p>
   }
   <app-product-grid-view [category]="category" />
   <!-- <app-product-list-view [category]="category" /> -->
