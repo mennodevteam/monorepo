@@ -1,0 +1,44 @@
+.product-card {
+  mat-card-content {
+    padding: 8px;
+  }
+
+  &__image {
+    width: 104px;
+    height: 104px;
+    border-radius: 16px;
+  }
+
+  &__title {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  &__description {
+    font-size: 10px;
+    max-height: 40px;
+    overflow: hidden;
+    font-weight: 400;
+  }
+
+  &__price-section {
+    font-size: 11px;
+
+    b {
+      display: block;
+      font-size: 14px;
+    }
+
+    span {
+      display: block;
+    }
+
+    .line-price {
+      text-decoration: line-through;
+    }
+  }
+}
+
+mat-divider {
+  margin: 0 8px;
+}
