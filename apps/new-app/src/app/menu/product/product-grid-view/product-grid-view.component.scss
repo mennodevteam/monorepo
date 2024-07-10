@@ -15,16 +15,15 @@
 
     &__subtitle {
       font-size: 12px;
-
-      .line-price {
-        text-decoration: line-through;
-      }
-
       span {
         display: inline-block;
       }
     }
   }
+}
+
+.line-price {
+  text-decoration: line-through;
 }
 
 ::ng-deep .item .mat-grid-tile-content {

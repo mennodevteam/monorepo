@@ -1,0 +1,44 @@
+.image-container {
+  width: 100%;
+  padding-top: 100%;
+  background-color: gray;
+  position: relative;
+}
+button#back-button {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+}
+
+h1 {
+  font-weight: 600;
+  font-size: 26px;
+}
+
+.price-section {
+  span {
+    display: inline-block;
+  }
+  .price {
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .line-price {
+    text-decoration: line-through;
+    font-size: 11px;
+  }
+}
+
+.description {
+  font-size: 11px;
+}
+
+#actionbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0px -2px 11px 0px var(--sys-shadow);
+  height: 88px;
+}

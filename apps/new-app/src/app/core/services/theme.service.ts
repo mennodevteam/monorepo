@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { argbFromHex, hexFromArgb, themeFromSourceColor } from '@material/material-color-utilities';
+import { ThemeMode } from '@menno/types';
 
 const DEFAULT_COLOR = '#50F25A';
 
@@ -8,10 +9,18 @@ const DEFAULT_COLOR = '#50F25A';
 })
 export class ThemeService {
   constructor() {
-    this.themeFromSelectedColor();
+    this.setThemeFromColor();
   }
 
-  themeFromSelectedColor(color = DEFAULT_COLOR, isDark?: boolean): void {
+  setThemeFromColor(color = DEFAULT_COLOR, themeMode?: ThemeMode): void {
+    let isDark = themeMode === ThemeMode.Dark;
+
+    if (themeMode === ThemeMode.Auto) {
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        isDark = true;
+      }
+    }
+
     const theme = themeFromSourceColor(argbFromHex(color), [
       { name: 'primary', blend: false, value: argbFromHex(color) },
     ]);
