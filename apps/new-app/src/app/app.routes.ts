@@ -1,21 +1,19 @@
 import { Route } from '@angular/router';
 import { shopRoutes } from './shop/shop.routes';
-import { AuthGuard, MenuGuard, ShopGuard } from './core';
 import { menuRoutes } from './menu/menu.routes';
+import { shopResolver, translateActivator, userResolver } from './core';
 
 export const appRoutes: Route[] = [
   {
     path: '',
-    canActivate: [AuthGuard],
+    resolve: {
+      user: userResolver,
+      shop: shopResolver,
+    },
+    canActivate: [translateActivator],
     children: [
-      {
-        path: '',
-        canActivate: [ShopGuard],
-        children: [
-          { path: 'menu', children: menuRoutes, canActivate: [MenuGuard] },
-          { path: '', children: shopRoutes },
-        ],
-      },
+      { path: 'menu', children: menuRoutes },
+      { path: '', children: shopRoutes },
     ],
   },
 ];
