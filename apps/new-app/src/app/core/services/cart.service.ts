@@ -48,6 +48,10 @@ export class CartService {
     return this.quantity().map((item) => this.getItem(item));
   });
 
+  length = computed(() => {
+    return this.quantity().length;
+  });
+
   orderItems = computed(() => {
     return OrderDto.productItems(this.dto(), this.menuService.menu());
   });
