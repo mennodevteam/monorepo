@@ -7,3 +7,16 @@
     <app-category-section [category]="category" />
   }
 </main>
+
+@if (cart.length()) {
+  <mat-toolbar
+    @flyInOutFromDown
+    fxLayout="column"
+    fxLayoutAlign="center"
+    id="actionbar"
+    class="background-background"
+    p-md
+  >
+    <button mat-flat-button class="large">{{ 'cart.complete' | translate }}</button>
+  </mat-toolbar>
+}
