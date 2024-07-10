@@ -1,0 +1,49 @@
+<section fxLayout="column" fxLayoutGap="16">
+  @for (product of category.products; track product.id; let isLast = $last) {
+    <mat-card class="product-card">
+      <!-- <img mat-card-image [imageLoader]="product.images?.[0]" /> -->
+      <mat-card-content fxLayout="row" fxLayoutGap="8">
+        <img fxFlex="none" class="product-card__image" [imageLoader]="product.images?.[0]" />
+        <div fxFlex fxLayout="column">
+          <h3 class="product-card__title">{{ product.title }}</h3>
+          <p class="product-card__description outline-text" fxFlex>{{ product.description }}</p>
+
+          @if (!product.variants?.length) {
+            <div fxLayout="row">
+              <div class="product-card__price-section" fxFlex fxLayout="column" fxLayoutAlign="space-around">
+                @if (Product.hasDiscount(product)) {
+                  <span class="line-price error-text">{{ Product.realPrice(product) | menuCurrency }}</span>
+                }
+                <span class="price">{{ Product.totalPrice(product) | menuCurrency }}</span>
+              </div>
+              <app-quantity-selector />
+            </div>
+          }
+        </div>
+      </mat-card-content>
+      @if (product.variants?.length) {
+        @for (variant of product.variants; track variant.id; let last = $last) {
+          <mat-card-actions fxLayout="row">
+            <div
+              class="product-card__price-section"
+              fxFlex
+              fxLayout="row"
+              fxLayoutAlign="start center"
+              fxLayoutGap="8"
+            >
+              <b class="price">{{ Product.totalPrice(product) | menuCurrency }}</b>
+              @if (Product.hasDiscount(product)) {
+                <span class="line-price error-text">{{ Product.realPrice(product) | menuCurrency }}</span>
+              }
+            </div>
+            <app-quantity-selector />
+          </mat-card-actions>
+
+          @if (!last) {
+            <mat-divider />
+          }
+        }
+      }
+    </mat-card>
+  }
+</section>

@@ -79,3 +79,9 @@ mat-radio-group.outline {
     }
   }
 }
+
+mat-card {
+  box-shadow: none !important;
+  border: 1px solid var(--sys-outline-variant) !important;
+  border-radius: 16px !important;
+}

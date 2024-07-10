@@ -6,7 +6,7 @@
         <span matListItemTitle class="item__title">{{ product.title }}</span>
         <span matListItemLine class="item__subtitle">
           @if (Product.hasDiscount(product)) {
-            <span class="line-price error-text">{{ Product.realPrice(product)| number }}</span>&nbsp;
+            <span class="line-price error-text">{{ Product.realPrice(product) | number }}</span> &nbsp;
           }
           <span>{{ Product.totalPrice(product) | menuCurrency }}</span>
         </span>
