@@ -4,6 +4,7 @@ import { COMMON } from '../../../common';
 import { Product, ProductCategory } from '@menno/types';
 import { MatCardModule } from '@angular/material/card'
 import { QuantitySelectorComponent } from "../../../common/components/quantity-selector/quantity-selector.component";
+import { CartService } from '../../../core/services/cart.service';
 
 @Component({
   selector: 'app-product-card-view',
@@ -15,4 +16,6 @@ import { QuantitySelectorComponent } from "../../../common/components/quantity-s
 export class ProductCardViewComponent {
   Product = Product;
   @Input() category: ProductCategory;
+
+  constructor(public cart: CartService) {}
 }

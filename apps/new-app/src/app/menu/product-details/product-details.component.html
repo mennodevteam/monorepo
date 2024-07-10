@@ -35,7 +35,7 @@
               <span class="price">{{ Product.totalPrice(product, variant) | menuCurrency }}</span>
             </span>
             <div matListItemMeta>
-              <app-quantity-selector />
+              <app-quantity-selector [product]="product" [variant]="variant" />
             </div>
           </mat-list-item>
 

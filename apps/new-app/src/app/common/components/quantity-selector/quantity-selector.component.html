@@ -1,11 +1,11 @@
 <div fxLayout="row" fxLayoutAlign="center center">
-  <button mat-mini-fab (click)="plus()">
+  <button mat-mini-fab (click)="cart.plus(product, variant)">
     <i class="fa-regular fa-plus"></i>
   </button>
   <b fxFlex>
-    {{ value() }}
+    {{ !!value ? value() : 0 }}
   </b>
-  <button mat-mini-fab [disabled]="!value()" (click)="minus()">
+  <button mat-mini-fab [disabled]="!value || !value()" (click)="cart.minus(product, variant)">
     <i class="fa-regular fa-minus"></i>
   </button>
 </div>
