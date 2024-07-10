@@ -1,110 +1,94 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, WritableSignal, computed, signal } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { Menu, MenuViewType, OrderType, Product, ProductCategory } from '@menno/types';
-import { BehaviorSubject } from 'rxjs';
+import { Menu, OrderType, Product } from '@menno/types';
 import { ShopService } from './shop.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MenuService {
-  private _menu = new BehaviorSubject<Menu | null>(null);
-  private _type = new BehaviorSubject<OrderType | null>(null);
-  private _star?: number;
-  private _baseMenu: Menu | undefined;
+  private _loading = new BehaviorSubject<void>(undefined);
+  private baseMenu = signal<Menu | undefined>(undefined);
+  type = signal<OrderType | undefined>(undefined);
+  star = signal<number | undefined>(undefined);
   selectableOrderTypes: OrderType[];
+  menu = computed(() => {
+    const menu: Menu = JSON.parse(JSON.stringify(this.baseMenu() || {}));
+    Menu.setRefsAndSort(
+      menu,
+      this.type() == null ? undefined : this.type(),
+      undefined,
+      undefined,
+      this.star(),
+      false,
+    );
+    return menu;
+  });
+
+  categories = computed(() => {
+    return this.menu().categories || [];
+  });
+
+  menuCosts = computed(() => {
+    return this.menu().costs || [];
+  });
 
   constructor(
     private http: HttpClient,
     private shopService: ShopService,
-    private bottomSheet: MatBottomSheet
+    private bottomSheet: MatBottomSheet,
   ) {
     this.load(true);
   }
 
   async load(sendStat?: boolean) {
     const query = this.shopService.getShopUsernameFromQuery();
-    this._baseMenu = await this.http.get<Menu>(`menus/${query}`).toPromise();
+    const baseMenu = await this.http.get<Menu>(`menus/${query}`).toPromise();
 
-    if (this.shopService.shop?.appConfig?.selectableOrderTypes[0] != undefined)
-      this.type = this.shopService.shop?.appConfig?.selectableOrderTypes[0];
+    if (baseMenu) {
+      if (this.appConfig?.selectableOrderTypes[0] != undefined)
+        this.type.set(this.appConfig?.selectableOrderTypes[0]);
 
-    if (this._baseMenu) {
-      const menu = this.baseMenu;
-      Menu.setRefsAndSort(menu, undefined, undefined, undefined, this._star, false);
-      this._menu.next(menu);
+      this.baseMenu.set(baseMenu);
+
       if (sendStat) {
-        this.http.get(`menuStats/loadMenu/${menu.id}`).toPromise();
+        this.http.get(`menuStats/loadMenu/${baseMenu.id}`).toPromise();
       }
-    } else {
-      this._menu.next(null);
+      this._loading.complete();
     }
+  }
+
+  get appConfig() {
+    return this.shopService.shop?.appConfig;
   }
 
   sendProductStat(productId: string) {
-    if (this.menu) this.http.get(`menuStats/clickProduct/${this.menu.id}/${productId}`).toPromise();
-  }
-
-  get menu() {
-    return this._menu.value;
-  }
-
-  get menuObservable() {
-    return this._menu.asObservable();
-  }
-
-  private get baseMenu() {
-    return JSON.parse(JSON.stringify(this._baseMenu));
-  }
-
-  set type(val: OrderType | null) {
-    this._type.next(val);
-    if (this.menu) {
-      const menu = this.baseMenu;
-      Menu.setRefsAndSort(menu, val == null ? undefined : val, undefined, undefined, this._star, false);
-      this._menu.next(menu);
-    }
-  }
-
-  get type() {
-    return this._type.value;
-  }
-
-  set star(value: number | undefined) {
-    this._star = value;
-    if (this.menu) {
-      const menu = this.baseMenu;
-      Menu.setRefsAndSort(menu, this.type == null ? undefined : this.type, undefined, undefined, this._star, false);
-      this._menu.next(menu);
-    }
-  }
-
-  get typeObservable() {
-    return this._type.asObservable();
+    if (this.menu) this.http.get(`menuStats/clickProduct/${this.menu().id}/${productId}`).toPromise();
   }
 
   getProductById(id: string): Product | null {
-    if (this.menu) return Menu.getProductById(this.menu, id);
+    if (this.menu) return Menu.getProductById(this.menu(), id);
     return null;
   }
 
-  checkSelectedOrderType() {
-    if (this.type == undefined) {
-      this.selectableOrderTypes = this.shopService.shop?.appConfig?.selectableOrderTypes || [];
-      if (!this.selectableOrderTypes || this.selectableOrderTypes.length === 0)
-        this.selectableOrderTypes = [OrderType.DineIn];
+  // checkSelectedOrderType() {
+  //   if (this.type == undefined) {
+  //     this.selectableOrderTypes = this.shopService.shop?.appConfig?.selectableOrderTypes || [];
+  //     if (!this.selectableOrderTypes || this.selectableOrderTypes.length === 0)
+  //       this.selectableOrderTypes = [OrderType.DineIn];
 
-      if (
-        this.shopService.shop?.appConfig?.disableOrdering &&
-        !this.menu?.costs.find((x) => x.orderTypes.length < 3)
-      )
-        this.selectableOrderTypes = [OrderType.DineIn];
+  //     if (
+  //       this.shopService.shop?.appConfig?.disableOrdering &&
+  //       !this.menu()?.costs.find((x) => x.orderTypes.length < 3)
+  //     )
+  //       this.selectableOrderTypes = [OrderType.DineIn];
 
-      if (this.selectableOrderTypes.length === 1) this.type = this.selectableOrderTypes[0];
-      else this.openSelectOrderType();
-    }
-  }
+  //     if (this.selectableOrderTypes.length === 1) this.type = this.selectableOrderTypes[0];
+  //     else this.openSelectOrderType();
+  //   }
+  // }
 
   openSelectOrderType() {
     // this.bottomSheet
@@ -116,5 +100,10 @@ export class MenuService {
     //   .subscribe((type) => {
     //     if (type != undefined) this.type = type;
     //   });
+  }
+
+  async getResolver() {
+    if (this.baseMenu()) return this.baseMenu();
+    return this._loading.asObservable().toPromise();
   }
 }

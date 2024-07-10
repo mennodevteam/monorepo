@@ -16,13 +16,10 @@ import { CategorySectionComponent } from './category-section/category-section.co
   styleUrl: './menu.component.scss',
 })
 export class MenuComponent {
-  constructor(private shopService: ShopService, private menuService: MenuService) {}
+  constructor(private shopService: ShopService, public menuService: MenuService) {}
 
   get shop() {
-    return this.shopService.shop!;
+    return this.shopService.shop;
   }
 
-  get menu() {
-    return this.menuService.menu!;
-  }
 }

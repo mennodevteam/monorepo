@@ -15,7 +15,7 @@ import { Menu } from '@menno/types';
 import { COMMON } from '../../common';
 import { MatToolbar, MatToolbarModule } from '@angular/material/toolbar';
 import { MatButton } from '@angular/material/button';
-import { debounceSignal } from '../../core';
+import { MenuService, debounceSignal } from '../../core';
 
 @Component({
   selector: 'app-category-carousel',
@@ -27,7 +27,6 @@ import { debounceSignal } from '../../core';
 export class CategoryCarouselComponent implements AfterViewInit {
   @ViewChildren(MatButton) categoryButtons: QueryList<MatButton>;
   @ViewChild(MatToolbar) carousel: MatToolbar;
-  @Input() menu: Menu;
   @Input() selectedIndex = signal(0);
   isCarouselStick = signal(false);
   isObserverDisabled = signal(false);
@@ -37,7 +36,7 @@ export class CategoryCarouselComponent implements AfterViewInit {
     return element;
   });
 
-  constructor() {
+  constructor(public menuService: MenuService) {
     effect(() => {
       const element = this.selectedTarget();
       if (element && !this.isObserverDisabled()) {

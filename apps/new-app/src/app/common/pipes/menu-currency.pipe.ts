@@ -10,7 +10,7 @@ import { MenuService } from '../../core/services/menu.service';
 export class MenuCurrencyPipe implements PipeTransform {
   constructor(private menuService: MenuService, private translateService: TranslateService) {}
   transform(value: any, digitsInfo?: string): string {
-    const currency = this.menuService.menu?.currency || 'تومان';
+    const currency = this.menuService.menu().currency || 'تومان';
     try {
       if (value !== '' && value != null && !isNaN(value)) {
         if (value != 0) {
