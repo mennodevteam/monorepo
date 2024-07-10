@@ -6,18 +6,22 @@ import { ActivatedRoute } from '@angular/router';
 import { MenuService } from '../../core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
+import { QuantitySelectorComponent } from '../../common/components/quantity-selector/quantity-selector.component';
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [CommonModule, COMMON, MatToolbarModule, MatListModule],
+  imports: [CommonModule, COMMON, MatToolbarModule, MatListModule, QuantitySelectorComponent],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.scss',
 })
 export class ProductDetailsComponent {
   Product = Product;
   product: Product;
-  constructor(private route: ActivatedRoute, private menuService: MenuService) {
+  constructor(
+    private route: ActivatedRoute,
+    private menuService: MenuService,
+  ) {
     const id = this.route.snapshot.params['id'];
     const product = this.menuService.getProductById(id);
     if (product) {
