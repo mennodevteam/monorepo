@@ -1,14 +1,12 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { inject } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class TranslateGuard implements CanActivate {
-  constructor(private translate: TranslateService) {}
-  async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    await this.translate.get('menno');
-    return true;
-  }
-}
+export const translateActivator: CanActivateFn = async (
+  next: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot,
+) => {
+  const translate = inject(TranslateService);
+  await translate.get('menno');
+  return true;
+};

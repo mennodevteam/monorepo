@@ -5,15 +5,15 @@ import { map } from 'rxjs/operators';
 import { User } from '@menno/types';
 import * as md5 from 'md5';
 import { Guid } from 'guid-typescript';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private _user = new BehaviorSubject<User | null>(null);
+  private _loading = new BehaviorSubject<void>(undefined);
+  user: User;
 
-  constructor(private http: HttpClient, private bottomSheet: MatBottomSheet) {
+  constructor(private http: HttpClient) {
     this.init();
   }
 
@@ -24,7 +24,7 @@ export class AuthService {
         const user = JSON.parse(_item);
         const info = await this.http.get<User>(`auth/info`).toPromise();
         if (info?.id === user.id) {
-          this._user.next(user);
+          this._loading.complete();
         }
       } catch (error) {}
     }
@@ -45,10 +45,11 @@ export class AuthService {
     return this.http.post<any>(`auth/login/app`, { username, password }).pipe(
       map((user) => {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
-        this._user.next(user);
+        this.user = user;
         this.saveLocal();
+        this._loading.complete();
         return user;
-      })
+      }),
     );
   }
 
@@ -67,7 +68,7 @@ export class AuthService {
         .get<User | undefined>(`auth/login/app/${this.user.id}/${mobile}/${token}`)
         .toPromise();
       if (user) {
-        this._user.next(user);
+        this.user = user;
         this.saveLocal();
         if (userDto) {
           await this.update(userDto);
@@ -85,16 +86,11 @@ export class AuthService {
     // remove user from local storage to log user out
     localStorage.removeItem('appLoginUser');
     sessionStorage.removeItem('appLoginUser');
-    this._user.next(null);
   }
 
-  get user() {
-    return this._user.value;
-  }
-
-  get userObservable() {
-    if (this.user) return of(this.user);
-    return this._user.asObservable();
+  async getResolver() {
+    if (this.user) return this.user;
+    return this._loading.asObservable().toPromise();
   }
 
   async update(dto: User) {
@@ -102,7 +98,7 @@ export class AuthService {
     if (user) {
       const prevUser = sessionStorage.getItem('appLoginUser') || localStorage.getItem('appLoginUser');
       if (user && prevUser) {
-        this._user.next({ ...JSON.parse(prevUser), ...user });
+        this.user = { ...JSON.parse(prevUser), ...user };
         this.saveLocal();
       }
     }
