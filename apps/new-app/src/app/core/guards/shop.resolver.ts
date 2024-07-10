@@ -1,13 +1,13 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
-import { Shop } from '@menno/types';
-import { ShopService } from '../services';
+import { Menu } from '@menno/types';
+import { MenuService } from '../services';
 
-export const shopResolver: ResolveFn<Shop> = async (
+export const menuResolver: ResolveFn<Menu> = async (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot,
 ) => {
-  const shopService = inject(ShopService);
-  if (!shopService.shop) await shopService.getResolver();
-  return shopService.shop;
+  const menuService = inject(MenuService);
+  if (!menuService.menu()) await menuService.getResolver();
+  return menuService.menu();
 };
