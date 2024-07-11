@@ -6,6 +6,7 @@
     "deploy-panel": "nx run panel:build --skip-nx-cache; liara deploy --path=dist/apps/panel",
     "deploy-admin": "nx run admin:build --skip-nx-cache; liara deploy --path=dist/apps/admin",
     "deploy-app": "nx run app:build --skip-nx-cache; liara deploy --path=dist/apps/app",
+    "deploy-new-app": "nx run app:build --skip-nx-cache; liara deploy --path=dist/apps/new-app",
     "deploy-backend": "nx run backend:build --skip-nx-cache; liara deploy --path=dist/apps/backend",
     "build": "nx run-many --target=build --all --maxParallel=100",
     "dev": "nx run-many --target=serve --all --maxParallel=100",

@@ -20,7 +20,9 @@
           {
             "glob": "**/*",
             "input": "apps/new-app/public"
-          }
+          },
+          "apps/new-app/src/liara_nginx.conf",
+          "apps/new-app/src/liara.json"
         ],
         "styles": ["apps/new-app/src/themes/_base.scss", "apps/new-app/src/styles.scss"],
         "stylePreprocessorOptions": {

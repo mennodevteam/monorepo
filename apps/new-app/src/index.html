@@ -25,8 +25,15 @@
         z-index: 100000;
         opacity: 1;
         transition: 300ms;
+        background-color: white;
       "
     ></div>
+
+    <script>
+      const backgroundColor = localStorage.getItem('appBackgroundColor') || '#ffffff';
+      document.body.style.backgroundColor = backgroundColor;
+      document.getElementById('pre-load-data-container').style.backgroundColor = backgroundColor;
+    </script>
 
     <script>
       fetch('https://api.menno.pro/shops/baseInfo')

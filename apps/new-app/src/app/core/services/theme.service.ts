@@ -12,7 +12,8 @@ export class ThemeService {
   private themeMode?: ThemeMode;
 
   constructor() {
-    this.setThemeFromColor();
+    const localThemeColor = localStorage.getItem('appThemeColor');
+    this.setThemeFromColor(localThemeColor || undefined);
   }
 
   setThemeFromColor(color = DEFAULT_COLOR, themeMode?: ThemeMode): void {
@@ -21,12 +22,15 @@ export class ThemeService {
     this.theme = theme;
     if (this.isDark) document.body.classList.add('dark');
     this.createCustomProperties(this.schema.toJSON());
+
+    localStorage.setItem('appBackgroundColor', this.background);
+    localStorage.setItem('appThemeColor', color);
   }
 
   private get schema() {
     const darkSchema = this.theme.schemes.dark;
     const lightSchema = this.theme.schemes.light;
-    if (this.isDark) return darkSchema
+    if (this.isDark) return darkSchema;
     return lightSchema;
   }
 
