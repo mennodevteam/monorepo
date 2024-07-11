@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ClubService } from '../core/services/club.service';
 
 @Component({
   selector: 'app-shell',
@@ -10,7 +11,7 @@ import { RouterModule } from '@angular/router';
   styleUrl: './shell.component.scss',
 })
 export class ShellComponent {
-  constructor() {
+  constructor(private club: ClubService) {
     const elem: HTMLElement | null = document.querySelector('#pre-load-data-container');
     if (elem) {
       setTimeout(() => {

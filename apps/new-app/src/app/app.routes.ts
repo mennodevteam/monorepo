@@ -3,6 +3,8 @@ import { shopRoutes } from './shop/shop.routes';
 import { menuRoutes } from './menu/menu.routes';
 import { menuResolver, shopResolver, translateActivator, userResolver } from './core';
 import { ShellComponent } from './shell/shell.component';
+import { CartComponent } from './cart/cart.component';
+import { PaymentComponent } from './payment/payment.component';
 
 export const appRoutes: Route[] = [
   {
@@ -16,6 +18,8 @@ export const appRoutes: Route[] = [
     canActivate: [translateActivator],
     children: [
       { path: 'menu', children: menuRoutes },
+      { path: 'cart', component: CartComponent },
+      { path: 'payment', component: PaymentComponent },
       { path: '', children: shopRoutes },
     ],
   },

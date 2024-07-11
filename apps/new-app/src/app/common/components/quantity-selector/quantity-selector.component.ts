@@ -13,7 +13,7 @@ import { CartService } from '../../../core/services/cart.service';
 })
 export class QuantitySelectorComponent {
   @Input() product: Product;
-  @Input() variant: ProductVariant;
+  @Input() variant?: ProductVariant;
   value?: WritableSignal<number>;
 
   constructor(public cart: CartService) {

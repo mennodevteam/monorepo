@@ -5,11 +5,12 @@ import { Product, ProductCategory } from '@menno/types';
 import { MatCardModule } from '@angular/material/card'
 import { QuantitySelectorComponent } from "../../../common/components/quantity-selector/quantity-selector.component";
 import { CartService } from '../../../core/services/cart.service';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
   selector: 'app-product-card-view',
   standalone: true,
-  imports: [CommonModule, COMMON, MatCardModule, QuantitySelectorComponent],
+  imports: [CommonModule, COMMON, MatCardModule, QuantitySelectorComponent, MatListModule],
   templateUrl: './product-card-view.component.html',
   styleUrl: './product-card-view.component.scss',
 })

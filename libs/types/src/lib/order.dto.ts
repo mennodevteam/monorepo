@@ -41,6 +41,7 @@ export class OrderDto {
   note?: string;
   details?: OrderDetails;
   productItems: ProductItem[];
+  useWallet?: boolean;
 
   static productItems(dto: OrderDto, menu: Menu): OrderItem[] {
     if (dto.productItems) {

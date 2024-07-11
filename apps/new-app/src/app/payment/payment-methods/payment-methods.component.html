@@ -1,0 +1,41 @@
+<label>{{ 'payment.title' | translate }}</label>
+
+<mat-selection-list
+  [(ngModel)]="type"
+  (ngModelChange)="typeSelectionChange($event)"
+  [multiple]="false"
+  fxLayout="column"
+  fxLayoutGap="16"
+>
+  @if (!isOnlinePaymentRequired) {
+    <mat-list-option [class.active]="type[0] === OrderPaymentType.Cash" [value]="OrderPaymentType.Cash">
+      <i matListItemIcon class="fa-light fa-sack-dollar"></i>
+      {{ 'payment.cash' | translate }}
+    </mat-list-option>
+  }
+
+  @if (isOnlinePaymentAvailable) {
+  <mat-list-option [class.active]="type[0] === OrderPaymentType.Online" [value]="OrderPaymentType.Online">
+    <i matListItemIcon class="fa-light fa-mobile-signal-out"></i>
+    {{ 'payment.online' | translate }}
+  </mat-list-option>
+  }
+</mat-selection-list>
+
+@if (club.wallet) {
+  <mat-selection-list>
+    <mat-list-option [(selected)]="useWallet" (selectedChange)="useWalletSelectedChange($event)" [disabled]="club.wallet.charge <= 0">
+      <i matListItemIcon class="fa-light fa-wallet"></i>
+      <span matListItemTitle>
+        {{ 'payment.useWallet' | translate }}
+      </span>
+      <span matListItemLine f-sm>
+        {{ 'payment.walletBallance' | translate: { value: (club.wallet.charge | menuCurrency) } }}
+      </span>
+    </mat-list-option>
+  </mat-selection-list>
+}
+
+@if (useWallet && cart.paymentType() === OrderPaymentType.Cash) {
+  <b class="error-text" f-sm>* {{ 'payment.cashWalletAlert' | translate }}</b>
+}

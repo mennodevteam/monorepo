@@ -1,0 +1,30 @@
+<mat-list>
+  <mat-list-item>
+    <span matListItemTitle>{{ 'cart.sum' | translate }}</span>
+    <div matListItemMeta>
+      <span>{{ cart.sum() | menuCurrency }}</span>
+    </div>
+  </mat-list-item>
+  @for (item of cart.abstractItems(); track $index) {
+    <mat-list-item>
+      <span matListItemTitle>{{ item.title }}</span>
+      <div matListItemMeta>
+        <span>{{ item.price | menuCurrency }}</span>
+      </div>
+    </mat-list-item>
+  }
+  <mat-list-item>
+    <span matListItemTitle>
+      <b>
+        {{ 'app.total' | translate }}
+      </b>
+    </span>
+    <div matListItemMeta>
+      <span>
+        <b>
+          {{ cart.total() | menuCurrency }}
+        </b>
+      </span>
+    </div>
+  </mat-list-item>
+</mat-list>

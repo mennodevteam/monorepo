@@ -1,0 +1,19 @@
+<app-top-app-bar title="{{ 'payment.title' | translate }}" [sticky]="true" />
+
+<main fxLayout="column" fxLayoutGap="16" p-md>
+  <button mat-stroked-button>
+    <i class="fa-regular fa-circle-plus"></i>
+    &nbsp;
+    {{ 'cart.addCoupon' | translate }}
+  </button>
+
+  <app-invoice />
+
+  <app-payment-methods />
+</main>
+
+<mat-toolbar fxLayout="column" fxLayoutAlign="center" id="actionbar" class="background-background" p-md>
+  <a mat-flat-button routerLink="/payment" class="large">
+    {{ 'order.add' | translate }} ({{ total() | menuCurrency }})
+  </a>
+</mat-toolbar>

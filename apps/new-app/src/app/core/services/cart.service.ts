@@ -5,6 +5,7 @@ import {
   DiscountCoupon,
   OrderDto,
   OrderItem,
+  OrderPaymentType,
   OrderType,
   Product,
   ProductItem,
@@ -25,12 +26,14 @@ type SignalProductItem = { productId: string; variantId?: number; quantity: Writ
   providedIn: 'root',
 })
 export class CartService {
+  paymentType = signal<OrderPaymentType | undefined>(undefined);
+  useWallet = signal<boolean>(false);
   quantity = signal<SignalProductItem[]>([]);
-
   note = signal<string | undefined>(undefined);
   address = signal<Address | undefined>(undefined);
   coupon = signal<DiscountCoupon | undefined>(undefined);
   table = signal<string | undefined>(undefined);
+
   private dto = computed(() => {
     return {
       productItems: this.productItems(),
@@ -39,6 +42,7 @@ export class CartService {
       isManual: false,
       address: this.address(),
       note: this.note(),
+      useWallet: this.useWallet(),
       discountCoupon: this.coupon() ? { id: this.coupon()?.id } : undefined,
       details: { table: this.table() },
     } as OrderDto;
@@ -157,6 +161,8 @@ export class CartService {
     this.note.set(undefined);
     this.address.set(undefined);
     this.table.set(undefined);
+    this.paymentType.set(undefined);
+    this.useWallet.set(false);
     if (deep) {
       this.menuService.load();
       this.coupon.set(undefined);
@@ -240,8 +246,15 @@ export class CartService {
       }
     }
 
-    if (this.isPaymentRequired) {
-      await this.ordersService.payAndAddOrder(this.dto());
+    if (
+      this.isPaymentRequired ||
+      (this.isPaymentAvailable && this.paymentType() === OrderPaymentType.Online)
+    ) {
+      const order = await this.ordersService.payAndAddOrder(this.dto());
+      if (order) {
+        this.clear(true);
+        return order;
+      }
     } else {
       const order = await this.ordersService.save(this.dto());
       this.clear(true);
@@ -250,12 +263,12 @@ export class CartService {
     return null;
   }
 
-  private get isPaymentAvailable() {
+  get isPaymentAvailable() {
     if (this.shopService.shop) return Shop.isPaymentAvailable(this.shopService.shop);
     return false;
   }
 
-  private get isPaymentRequired() {
+  get isPaymentRequired() {
     return (
       this.isPaymentAvailable &&
       this.total() > 0 &&

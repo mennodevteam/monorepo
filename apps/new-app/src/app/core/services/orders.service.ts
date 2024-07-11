@@ -7,7 +7,10 @@ import { PayService } from './pay.service';
   providedIn: 'root',
 })
 export class OrdersService {
-  constructor(private http: HttpClient, private payService: PayService) {}
+  constructor(
+    private http: HttpClient,
+    private payService: PayService,
+  ) {}
 
   async save(dto: OrderDto) {
     const order = await this.http.post<Order>(`orders`, dto).toPromise();
@@ -33,7 +36,10 @@ export class OrdersService {
       })
       .toPromise();
 
-    if (link) await this.payService.redirect(link);
+    if (link === '0') {
+      return this.save(dto);
+    } else if (link) await this.payService.redirect(link);
+    return;
   }
 
   async payOrder(orderId: string) {

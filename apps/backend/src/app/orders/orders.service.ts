@@ -62,7 +62,7 @@ export class OrdersService {
     @InjectRepository(OrderMessage)
     private orderMessagesRepo: Repository<OrderMessage>,
     private smsService: SmsService,
-    private walletsService: WalletsService
+    private walletsService: WalletsService,
   ) {}
 
   async dtoToOrder(dto: OrderDto) {
@@ -79,8 +79,8 @@ export class OrdersService {
     if (!shop) throw new HttpException('shop not found', HttpStatus.NOT_ACCEPTABLE);
 
     order.shop = <Shop>{ id: dto.shopId };
-    order.customer = dto.customerId ? { id: dto.customerId } as User : null;
-    
+    order.customer = dto.customerId ? ({ id: dto.customerId } as User) : null;
+
     if (dto.creatorId) order.creator = { id: dto.creatorId } as User;
     if (dto.waiterId) order.waiter = { id: dto.waiterId } as User;
     if (dto.details) order.details = dto.details;
@@ -105,6 +105,16 @@ export class OrdersService {
     for (const item of order.items) {
       if (item.product) item.product = { id: item.product.id } as Product;
       if (item.productVariant) item.productVariant = { id: item.productVariant.id } as ProductVariant;
+    }
+
+    if (dto.useWallet) {
+      const member: Member = await this.membersRepo.findOne({
+        where: { user: { id: order.customer.id }, club: { id: order.shop.club.id } },
+        relations: ['wallet'],
+      });
+      if (member?.wallet?.charge) {
+        order.useWallet = Math.min(member.wallet.charge, order.totalPrice);
+      }
     }
 
     order.totalPrice = OrderDto.total(dto, menu);
@@ -135,6 +145,24 @@ export class OrdersService {
       if (orderDate.toDateString() === now.toDateString()) order.qNumber = Number(lastOrder.qNumber) + 1;
       else order.qNumber = 1;
     } else order.qNumber = 1;
+
+    if (order.useWallet) {
+      const member: Member = await this.membersRepo.findOne({
+        where: { user: { id: order.customer.id }, club: { id: order.shop.club.id } },
+        relations: ['wallet'],
+      });
+      if (member?.wallet?.charge >= order.useWallet) {
+        await this.walletsService.updateWalletAmount(
+          {
+            wallet: { id: member.wallet.id },
+            amount: -order.useWallet,
+            user: { id: order.customer.id },
+            type: WalletLogType.PayOrder,
+          } as WalletLog,
+          order.shop.id,
+        );
+      }
+    }
 
     return await this.ordersRepo.save(order);
   }
@@ -211,7 +239,7 @@ export class OrdersService {
           },
           (order) => order.totalPrice,
           (order) => 1,
-          dateDefaultKeys
+          dateDefaultKeys,
         );
         break;
       case 'payment':
@@ -259,7 +287,7 @@ export class OrdersService {
           orders,
           (order) => order.state.toString(),
           (order) => order.totalPrice,
-          (order) => 1
+          (order) => 1,
         );
         break;
       case 'type':
@@ -267,7 +295,7 @@ export class OrdersService {
           orders,
           (order) => order.type.toString(),
           (order) => order.totalPrice,
-          (order) => 1
+          (order) => 1,
         );
         break;
       case 'category':
@@ -275,7 +303,7 @@ export class OrdersService {
           orderItems.filter((x) => x.product?.category),
           (item) => item.product.category.id.toString(),
           (item) => item.price * item.quantity,
-          (item) => item.quantity
+          (item) => item.quantity,
         );
         break;
       case 'product':
@@ -284,7 +312,7 @@ export class OrdersService {
           orderItems,
           (item) => item.title,
           (item) => item.quantity * item.price,
-          (item) => item.quantity
+          (item) => item.quantity,
         );
         break;
     }
@@ -326,7 +354,7 @@ export class OrdersService {
     for (const item of order.items) {
       if (item.isAbstract || !item.product) continue;
       const dtoItem = dto.productItems.find(
-        (x) => x.productId == item.product.id && x.productVariantId == item.productVariant?.id
+        (x) => x.productId == item.product.id && x.productVariantId == item.productVariant?.id,
       );
       if (!dtoItem) changes.push({ title: item.title, change: -1 * item.quantity });
       else if (dtoItem.quantity != item.quantity)
@@ -337,8 +365,8 @@ export class OrdersService {
       (x) =>
         x.product &&
         !order.items.find(
-          (y) => y.product && y.product.id === x.product.id && y.productVariant?.id === x.productVariant?.id
-        )
+          (y) => y.product && y.product.id === x.product.id && y.productVariant?.id === x.productVariant?.id,
+        ),
     );
     for (const item of newProductItems) {
       changes.push({ title: item.title, change: item.quantity });
@@ -432,7 +460,7 @@ export class OrdersService {
       }
 
       const perviousManualDiscount = order.items.find(
-        (x) => x.title === MANUAL_DISCOUNT_TITLE && x.isAbstract
+        (x) => x.title === MANUAL_DISCOUNT_TITLE && x.isAbstract,
       );
       if (perviousManualDiscount) {
         order.totalPrice += Math.abs(perviousManualDiscount.price);
@@ -467,7 +495,7 @@ export class OrdersService {
         relations: ['wallet'],
       });
       if (!member.wallet) {
-        member.wallet = await this.walletsRepo.save({charge: 0, member: {id: member.id}});
+        member.wallet = await this.walletsRepo.save({ charge: 0, member: { id: member.id } });
       }
       await this.walletsService.updateWalletAmount(
         {
@@ -476,7 +504,7 @@ export class OrdersService {
           user: { id: user.id },
           type: WalletLogType.PayOrder,
         } as WalletLog,
-        order.shop.id
+        order.shop.id,
       );
     }
 

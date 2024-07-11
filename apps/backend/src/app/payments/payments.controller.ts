@@ -63,25 +63,28 @@ export class PaymentsController {
   async addOrder(@LoginUser() user: AuthPayload, @Body() dto: OrderDto, @Req() req: Request) {
     const shop: Shop = await this.shopsRepository.findOne({
       where: { id: dto.shopId },
-      relations: ['paymentGateway'],
+      relations: ['paymentGateway', 'club'],
     });
     if (!shop.paymentGateway) throw new HttpException('no payment gateway for shop', HttpStatus.NOT_FOUND);
     dto.isManual = false;
     dto.creatorId = user.id;
     dto.customerId = user.id;
     dto.paymentType = OrderPaymentType.Online;
-    const order = await this.ordersService.dtoToOrder(dto);
     const userData = await this.auth.getUserData(user);
+    const order = await this.ordersService.dtoToOrder(dto);
+    let totalPrice = order.totalPrice;
+    if (order.useWallet) totalPrice -= order.useWallet;
+    if (totalPrice <= 0) return 0;
     return this.getRedirectLink(
       shop.paymentGateway.id,
-      order.totalPrice,
+      totalPrice,
       {
         newOrder: dto,
       },
       'add order',
       userData,
       dto.shopId,
-      req.headers.origin
+      req.headers.origin,
     );
   }
 
@@ -94,7 +97,7 @@ export class PaymentsController {
     body: {
       isMonthly?: boolean;
       plugins: Plugin[];
-    }
+    },
   ) {
     const shop: Shop = await this.auth.getPanelUserShop(user, ['plugins']);
     const defaultGateway = await this.defaultGateway;
@@ -134,7 +137,7 @@ export class PaymentsController {
       `خرید ماژول مجموعه ${shop.title}`,
       userData,
       shop.id,
-      req.headers.origin
+      req.headers.origin,
     );
   }
 
@@ -143,7 +146,7 @@ export class PaymentsController {
   async chargeSmsAccount(
     @LoginUser() user: AuthPayload,
     @Req() req: Request,
-    @Param('amount') amount: string
+    @Param('amount') amount: string,
   ) {
     const shop: Shop = await this.auth.getPanelUserShop(user, ['smsAccount']);
     const defaultGateway = await this.defaultGateway;
@@ -160,7 +163,7 @@ export class PaymentsController {
       `شارژ پیامک مجموعه ${shop.title}`,
       userData,
       shop.id,
-      req.headers.origin
+      req.headers.origin,
     );
   }
 
@@ -178,7 +181,7 @@ export class PaymentsController {
       'test',
       { id: user.id, mobilePhone: user.mobilePhone } as User,
       shop.id,
-      req.headers.origin
+      req.headers.origin,
     );
   }
 
@@ -201,7 +204,7 @@ export class PaymentsController {
       `پرداخت سفارش فیش ${order.qNumber}`,
       userData,
       order.shop.id,
-      req.headers.origin
+      req.headers.origin,
     );
   }
 
@@ -212,7 +215,7 @@ export class PaymentsController {
     description: string,
     user: User,
     shopId: string,
-    appReturnUrl: string
+    appReturnUrl: string,
   ) {
     if (!gatewayId) {
       throw new HttpException('no bank portal', HttpStatus.NOT_FOUND);
@@ -285,7 +288,7 @@ export class PaymentsController {
         await this.smsAccountsRepository.increment(
           { id: payment.details.chargeSmsAccount.smsAccountId },
           'charge',
-          amount
+          amount,
         );
         const redirectUrl = `${payment.appReturnUrl}`;
         return res.redirect(redirectUrl);

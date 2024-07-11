@@ -1,0 +1,13 @@
+<app-top-app-bar title="{{ 'cart.title' | translate }}" [sticky]="true" />
+<main p-md fxLayout="column" fxLayoutGap="24">
+  <app-product-items />
+
+  <mat-form-field appearance="outline">
+    <mat-label>{{ 'app.description' | translate }}</mat-label>
+    <textarea matInput rows="2" placeholder="{{ 'cart.notePlaceholder' | translate }}"></textarea>
+  </mat-form-field>
+</main>
+
+<mat-toolbar fxLayout="column" fxLayoutAlign="center" id="actionbar" class="background-background" p-md>
+  <a mat-flat-button routerLink="/payment" class="large">{{ 'cart.complete' | translate }}</a>
+</mat-toolbar>

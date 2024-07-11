@@ -1,5 +1,6 @@
 @import '../public/fonts/iransans/iransans.scss';
 @import '../public/fonts/fontawesome/scss/fontawesome.scss';
+@import '../public/fonts/fontawesome/scss/light.scss';
 @import '../public/fonts/fontawesome/scss/regular.scss';
 @import '../public/fonts/fontawesome/scss/brands.scss';
 @import '../public/fonts/fontawesome/scss/solid.scss';
@@ -7,6 +8,9 @@
 html,
 body {
   min-height: 100%;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 body {
   margin: 0;
@@ -21,6 +25,10 @@ h5,
 h6,
 p {
   margin: 0;
+}
+
+*[f-sm] {
+  font-size: 12px !important;
 }
 
 *[p-xs] {
@@ -68,13 +76,13 @@ img.mat-mdc-list-item-avatar {
   border-radius: 32px 32px 0 0;
 }
 
-mat-radio-group.outline {
-  mat-radio-button {
+mat-selection-list {
+  mat-list-option {
     border: 1px solid var(--sys-outline-variant);
-    padding: 8px 16px;
-    border-radius: 16px;
+    // padding: 8px 16px;
+    border-radius: 16px !important;
 
-    &.mat-mdc-radio-checked {
+    &.active {
       border-color: var(--sys-outline) !important;
     }
   }
