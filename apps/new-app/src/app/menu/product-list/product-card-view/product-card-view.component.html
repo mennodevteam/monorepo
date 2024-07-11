@@ -7,7 +7,7 @@
           <img fxFlex="none" class="product-card__image" [imageLoader]="product.images?.[0]" />
           <div fxFlex fxLayout="column">
             <h3 class="product-card__title">{{ product.title }}</h3>
-            <p class="product-card__description outline-text" fxFlex>{{ product.description }}</p>
+            <p class="product-card__description outline-text" [class.compact]="!product.variants.length" fxFlex>{{ product.description }}</p>
   
             @if (!product.variants.length) {
               <div fxLayout="row">
@@ -22,22 +22,24 @@
             }
           </div>
         </div>
-        <mat-list>
-          @for (variant of product.variants; track variant.id; let last = $last) {
-            <mat-list-item>
-              <span matListItemTitle>{{ variant.title }}</span>
-              <span matListItemLine>
-                <span>{{ Product.totalPrice(product) | menuCurrency }}</span> &nbsp;
-                @if (Product.hasDiscount(product)) {
-                  <span class="line-price error-text">{{ Product.realPrice(product) | number }}</span>
-                }
-              </span>
-              <div matListItemMeta>
-                <app-quantity-selector [product]="product" [variant]="variant" />
-              </div>
-            </mat-list-item>
-          }
-        </mat-list>
+        @if (product.variants.length) {
+          <mat-list>
+            @for (variant of product.variants; track variant.id; let last = $last) {
+              <mat-list-item>
+                <span matListItemTitle>{{ variant.title }}</span>
+                <span matListItemLine>
+                  <span>{{ Product.totalPrice(product) | menuCurrency }}</span> &nbsp;
+                  @if (Product.hasDiscount(product)) {
+                    <span class="line-price error-text">{{ Product.realPrice(product) | number }}</span>
+                  }
+                </span>
+                <div matListItemMeta>
+                  <app-quantity-selector [product]="product" [variant]="variant" />
+                </div>
+              </mat-list-item>
+            }
+          </mat-list>
+        }
       </mat-card-content>
       <!-- @if (product.variants.length) {
         @for (variant of product.variants; track variant.id; let last = $last) {
