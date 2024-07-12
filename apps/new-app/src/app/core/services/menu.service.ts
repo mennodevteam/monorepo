@@ -103,7 +103,7 @@ export class MenuService {
   }
 
   async getResolver() {
-    if (this.baseMenu()) return this.baseMenu();
+    if (this.baseMenu()?.id) return this.baseMenu();
     return this._loading.asObservable().toPromise();
   }
 }

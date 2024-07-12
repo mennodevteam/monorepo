@@ -4,8 +4,10 @@
       routerLink="product/{{ product.id }}"
       class="item"
       [imageLoader]="product.images?.[0]"
+      [imageFile]="product.imageFiles?.[0]"
       [rowspan]="product.details?.rowspan || 1"
       [colspan]="product.details?.colspan || 1"
+      loading="lazy"
     >
       <div class="item__content" fxLayout="column">
         <span class="item__content__title">{{ product.title }}</span>

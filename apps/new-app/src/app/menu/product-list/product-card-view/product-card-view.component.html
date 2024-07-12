@@ -4,7 +4,7 @@
       <!-- <img mat-card-image [imageLoader]="product.images?.[0]" /> -->
       <mat-card-content>
         <div fxLayout="row" fxLayoutGap="8">
-          <img fxFlex="none" class="product-card__image" [imageLoader]="product.images?.[0]" />
+          <img fxFlex="none" class="product-card__image" [imageLoader]="product.images?.[0]" [imageFile]="product.imageFiles?.[0]" />
           <div fxFlex fxLayout="column">
             <h3 class="product-card__title">{{ product.title }}</h3>
             <p class="product-card__description outline-text" [class.compact]="!product.variants.length" fxFlex>{{ product.description }}</p>
@@ -41,24 +41,6 @@
           </mat-list>
         }
       </mat-card-content>
-      <!-- @if (product.variants.length) {
-        @for (variant of product.variants; track variant.id; let last = $last) {
-          <mat-card-actions fxLayout="row">
-            <div
-              class="product-card__price-section"
-              fxFlex
-              fxLayout="row"
-              fxLayoutAlign="start center"
-              fxLayoutGap="8"
-            ></div>
-            <app-quantity-selector [product]="product" [variant]="variant" />
-          </mat-card-actions>
-
-          @if (!last) {
-            <mat-divider />
-          }
-        }
-      } -->
     </mat-card>
   }
 </section>
