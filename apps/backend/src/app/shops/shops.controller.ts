@@ -29,7 +29,7 @@ export class ShopsController {
     private shopsService: ShopsService,
     @InjectRepository(Shop)
     private shopsRepo: Repository<Shop>,
-    private redis: RedisService
+    private redis: RedisService,
   ) {}
 
   @Public()
@@ -39,7 +39,7 @@ export class ShopsController {
       let shop: Shop;
       const referer: string = req.headers['referer'];
       const url = referer.split('://')[1];
-      if (url.search(process.env.APP_ORIGIN) > -1) {
+      if (url.search(process.env.APP_ORIGIN.split('.')[0]) > -1) {
         const username = url.split('.')[0];
         shop = await this.shopsRepo.findOneBy({ username });
       } else {
