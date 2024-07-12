@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { COMMON } from '../../../common';
 import { Shop } from '@menno/types';
@@ -10,13 +10,8 @@ import { Shop } from '@menno/types';
   templateUrl: './slider.component.html',
   styleUrl: './slider.component.scss',
 })
-export class SliderComponent implements AfterViewInit {
+export class SliderComponent {
   @Input() shop: Shop;
-  @Input() test: number;
-  constructor() {}
 
-  ngAfterViewInit(): void {
-    console.log(this.shop);
-    console.log(this.test);
-  }
+  constructor() {}
 }

@@ -40,7 +40,7 @@
     <script>
       fetch('https://api.menno.pro/shops/baseInfo')
         .then((response) => {
-          if (response?.data) return response.json();
+          return response.json();
         })
         .then((shop) => {
           if (shop?.title) {

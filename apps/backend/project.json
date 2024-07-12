@@ -10,6 +10,7 @@
       "options": {
         "target": "node",
         "compiler": "tsc",
+        "isolatedConfig": false,
         "outputPath": "dist/apps/backend",
         "main": "apps/backend/src/main.ts",
         "tsConfig": "apps/backend/tsconfig.app.json",
