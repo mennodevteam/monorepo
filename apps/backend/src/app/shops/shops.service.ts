@@ -315,14 +315,14 @@ export class ShopsService {
 
     if (shop.logo) {
       try {
-        const newImages = await this.filesService.getImgproxyLinks(shop.logo, 'logo', shop.code);
+        const newImages = await this.filesService.getImgproxyLinks(shop.logo, 'logo', shop.code, true);
         await this.shopsRepository.save({ id: shop.id, logoImage: newImages });
       } catch (error) {}
     }
 
     if (shop.cover) {
       try {
-        const newImages = await this.filesService.getImgproxyLinks(shop.cover, 'cover', shop.code);
+        const newImages = await this.filesService.getImgproxyLinks(shop.cover, 'cover', shop.code, true);
         await this.shopsRepository.save({ id: shop.id, coverImage: newImages });
       } catch (error) {}
     }
@@ -333,6 +333,7 @@ export class ShopsService {
           shop.verticalCover,
           'vertical_cover',
           shop.code,
+          true,
         );
         await this.shopsRepository.save({ id: shop.id, verticalCoverImage: newImages });
       } catch (error) {}
@@ -347,6 +348,7 @@ export class ShopsService {
                 prod.images[0],
                 `product_${prod.id}`,
                 shop.code,
+                true,
               );
               await this.productsRepository.save({ id: prod.id, imageFiles: [newImages] });
             } catch (error) {

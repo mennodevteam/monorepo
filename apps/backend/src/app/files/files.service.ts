@@ -45,14 +45,14 @@ export class FilesService {
     return `https://${process.env.LIARA_BUCKET_NAME}.${process.env.LIARA_BUCKET_ENDPOINT}/${key}`;
   }
 
-  async getImgproxyLinks(url: string, name: string, path?: string): Promise<Image> {
+  async getImgproxyLinks(url: string, name: string, path?: string, waiting?: boolean): Promise<Image> {
     if (url.search('http') !== 0) url = this.getUrl(url);
     const pre = Date.now();
     const originKey = `${pre}_${name}_origin.webp`;
     const mdKey = `${pre}_${name}_md.webp`;
     const smKey = `${pre}_${name}_sm.webp`;
-    const xsKey = `${pre}_${name}_xs.webp`;
-    const xxsKey = `${pre}_${name}_xxs.webp`;
+    const xsKey = `${pre}_${name}_xs.jpeg`;
+    const xxsKey = `${pre}_${name}_xxs.jpeg`;
 
     const save = async () => {
       const origin: any = await this.uploadFromUrl(
@@ -71,18 +71,19 @@ export class FilesService {
         path,
       );
       const xs: any = await this.uploadFromUrl(
-        `https://img.menno.pro/_/width:128/plain/${url}@webp`,
+        `https://img.menno.pro/_/width:128/plain/${url}@jpeg`,
         xsKey,
         path,
       );
       const xxs: any = await this.uploadFromUrl(
-        `https://img.menno.pro/_/width:64/plain/${url}@webp`,
+        `https://img.menno.pro/_/width:64/plain/${url}@jpeg`,
         xxsKey,
         path,
       );
-    }
+    };
 
-    save();
+    if (waiting) await save();
+    else save();
 
     return {
       origin: path ? `${path}/${originKey}` : originKey,

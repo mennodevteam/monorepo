@@ -46,12 +46,12 @@ export class MenuService {
   async load(sendStat?: boolean) {
     const query = this.shopService.getShopUsernameFromQuery();
     const baseMenu = await this.http.get<Menu>(`menus/${query}`).toPromise();
-
+    console.log(baseMenu)
     if (baseMenu) {
       if (this.appConfig?.selectableOrderTypes[0] != undefined)
         this.type.set(this.appConfig?.selectableOrderTypes[0]);
 
-      this.baseMenu.set(baseMenu);
+      this.baseMenu.set({...baseMenu});
 
       if (sendStat) {
         this.http.get(`menuStats/loadMenu/${baseMenu.id}`).toPromise();

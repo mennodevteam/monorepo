@@ -16,6 +16,7 @@ export class ImageLoaderDirective {
     (entries, observer) => {
       for (const entry of entries) {
         if (entry.isIntersecting) {
+          console.log(entry.target)
           const src = entry.target.getAttribute('imageSrc');
           const placeholder = entry.target.getAttribute('imagePlaceholder');
           const defaultPlaceholder = entry.target.getAttribute('defaultPlaceholder');
@@ -35,6 +36,7 @@ export class ImageLoaderDirective {
             target.style.backgroundSize = 'cover';
             target.style.backgroundPosition = 'center';
           }
+          observer.unobserve(entry.target);
         }
       }
     },
@@ -92,16 +94,16 @@ export class ImageLoaderDirective {
 
     ImageLoaderDirective.observer.observe(nativeEl);
 
-    // if (nativeEl.tagName.toLowerCase() === 'img') {
-    //   nativeEl.src = src;
-    //   nativeEl.onerror = function () {
-    //     this.onerror = null;
-    //     this.src = placeholderSrc;
-    //   };
-    // } else {
-    //   nativeEl.style.background = `url('${src}'), url(${placeholderSrc})`;
-    //   nativeEl.style.backgroundSize = 'cover';
-    //   nativeEl.style.backgroundPosition = 'center';
-    // }
+    if (nativeEl.tagName.toLowerCase() === 'img') {
+      (nativeEl as HTMLImageElement).src = placeholderSrc;
+      (nativeEl as HTMLImageElement).onerror = function () {
+        this.onerror = null;
+        this.src = placeholderSrc;
+      };
+    } else {
+      nativeEl.style.background = `url(${placeholderSrc})`;
+      nativeEl.style.backgroundSize = 'cover';
+      nativeEl.style.backgroundPosition = 'center';
+    }
   }
 }
