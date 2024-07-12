@@ -38,11 +38,11 @@ export class ImageLoaderDirective {
         }
       }
     },
-    { rootMargin: '200px' },
+    { rootMargin: '200px', threshold: 0.1 },
   );
   @Input() imageLoader?: string | undefined;
   @Input() imageFile?: Image;
-  @Input() size?: keyof Image;
+  @Input() imageSize?: keyof Image;
   @Input() placeholder: string;
   @Input() defaultPlaceholder = ImagePlaceholder.default;
 
@@ -75,7 +75,7 @@ export class ImageLoaderDirective {
         this.placeholder = this.fileService.getFileUrl(this.imageFile.xxs);
 
       src = this.fileService.getFileUrl(
-        this.size && this.imageFile[this.size] ? this.imageFile[this.size] : this.imageFile.md,
+        this.imageSize && this.imageFile[this.imageSize] ? this.imageFile[this.imageSize] : this.imageFile.md,
       );
     } else if (this.imageLoader) src = this.fileService.getFileUrl(this.imageLoader);
 

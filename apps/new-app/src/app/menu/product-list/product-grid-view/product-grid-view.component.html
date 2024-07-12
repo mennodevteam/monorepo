@@ -5,9 +5,9 @@
       class="item"
       [imageLoader]="product.images?.[0]"
       [imageFile]="product.imageFiles?.[0]"
+      [imageSize]="'sm'"
       [rowspan]="product.details?.rowspan || 1"
       [colspan]="product.details?.colspan || 1"
-      loading="lazy"
     >
       <div class="item__content" fxLayout="column">
         <span class="item__content__title">{{ product.title }}</span>

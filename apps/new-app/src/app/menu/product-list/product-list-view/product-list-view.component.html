@@ -2,7 +2,7 @@
   @for (product of category.products; track product.id; let isLast = $last) {
     @defer {
       <a mat-list-item class="item">
-        <img matListItemAvatar class="item__image" [imageLoader]="product.images?.[0]" />
+        <img matListItemAvatar class="item__image" [imageLoader]="product.images?.[0]" [imageSize]="'sm'" />
         <span matListItemTitle class="item__title">{{ product.title }}</span>
         <span matListItemLine class="item__subtitle">
           @if (Product.hasDiscount(product)) {

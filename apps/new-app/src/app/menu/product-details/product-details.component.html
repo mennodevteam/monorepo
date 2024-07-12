@@ -2,7 +2,11 @@
   <button mat-mini-fab id="back-button" goBack>
     <i class="fa-regular fa-chevron-right"></i>
   </button>
-  <div class="image-container" [imageLoader]="product.images?.[0]"></div>
+  <div
+    class="image-container"
+    [imageLoader]="product.images?.[0]"
+    [imageFile]="product.imageFiles?.[0]"
+  ></div>
   <main fxLayout="column" p-md fxLayoutGap="16">
     <h1>{{ product.title }}</h1>
     <span fxLayout="row" class="price-section" fxLayoutAlign="start center">

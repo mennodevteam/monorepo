@@ -1,5 +1,5 @@
 <header fxLayout="row" fxLayoutGap="12" fxLayoutAlign="start center" p-md>
-  <img [imageLoader]="shop.logo" id="logo" fxFlex="none" />
+  <img [imageLoader]="shop.logo" [imageFile]="shop.logoImage" id="logo" fxFlex="none" />
   <div fxLayout="column">
     <h1>{{ shop.title }}</h1>
     @if (shop.description) {

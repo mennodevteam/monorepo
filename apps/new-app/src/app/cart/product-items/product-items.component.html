@@ -3,7 +3,12 @@
     <mat-card class="product-card">
       <!-- <img mat-card-image [imageLoader]="product.images?.[0]" /> -->
       <mat-card-content fxLayout="row" fxLayoutGap="8" fxLayoutAlign="start center">
-        <img fxFlex="none" class="product-card__image" [imageLoader]="item.product?.images?.[0]" />
+        <img
+          fxFlex="none"
+          class="product-card__image"
+          [imageLoader]="item.product?.images?.[0]"
+          [imageFile]="item.product?.imageFiles?.[0]"
+        />
         <div fxFlex fxLayout="column" fxLayoutAlign="space-around">
           <h3 class="product-card__title">{{ item.product?.title }}</h3>
           <p class="product-card__description outline-text" fxFlex>{{ item.productVariant?.title }}</p>
