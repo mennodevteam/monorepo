@@ -46,6 +46,7 @@ export class FilesService {
   }
 
   async getImgproxyLinks(url: string, name: string, path?: string): Promise<Image> {
+    if (url.search('http') !== 0) url = this.getUrl(url);
     const pre = Date.now();
     const originKey = `${pre}_${name}_origin.webp`;
     const mdKey = `${pre}_${name}_md.webp`;
