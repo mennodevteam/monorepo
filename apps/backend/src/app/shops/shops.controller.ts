@@ -8,12 +8,11 @@ import {
   Param,
   Post,
   Put,
-  Redirect,
   Req,
   Request,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IsNull, Not, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
 import { Public } from '../auth/public.decorator';
 import { Roles } from '../auth/roles.decorators';
@@ -153,7 +152,12 @@ export class ShopsController {
 
   @Public()
   @Get('optimizeImages/:code')
-  optimizeImages(@Param('code') code: string) {
-    this.shopsService.optimizeImages(code);
+  async optimizeImages(@Param('code') code: string) {
+    await this.shopsService.optimizeImages(code);
+    const shop = await this.shopsRepo.findOne({
+      where: {code},
+    });
+    this.redis.updateMenu(shop.id);
+    this.redis.updateShop(shop.id);
   }
 }
