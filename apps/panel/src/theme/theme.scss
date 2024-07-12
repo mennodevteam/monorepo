@@ -1,20 +1,20 @@
 @use "@angular/material" as mat;
 
-$app-primary: mat.define-palette(mat.$blue-palette);
-$app-accent: mat.define-palette(mat.$amber-palette, 600);
-$app-warn: mat.define-palette(mat.$red-palette);
+$app-primary: mat.m2-define-palette(mat.$m2-blue-palette);
+$app-accent: mat.m2-define-palette(mat.$m2-amber-palette, 600);
+$app-warn: mat.m2-define-palette(mat.$m2-red-palette);
 
-$primary: mat.get-color-from-palette($app-primary);
-$accent: mat.get-color-from-palette($app-accent);
-$warn: mat.get-color-from-palette($app-warn);
+$primary: mat.m2-get-color-from-palette($app-primary);
+$accent: mat.m2-get-color-from-palette($app-accent);
+$warn: mat.m2-get-color-from-palette($app-warn);
 
-$app-form-primary: mat.define-palette(mat.$blue-palette);
-$app-form-accent: mat.define-palette(mat.$green-palette, A700);
-$app-form-warn: mat.define-palette(mat.$red-palette);
+$app-form-primary: mat.m2-define-palette(mat.$m2-blue-palette);
+$app-form-accent: mat.m2-define-palette(mat.$m2-green-palette, A700);
+$app-form-warn: mat.m2-define-palette(mat.$m2-red-palette);
 
-$form-primary: mat.get-color-from-palette($app-form-primary);
-$form-accent: mat.get-color-from-palette($app-form-accent);
-$form-warn: mat.get-color-from-palette($app-form-warn);
+$form-primary: mat.m2-get-color-from-palette($app-form-primary);
+$form-accent: mat.m2-get-color-from-palette($app-form-accent);
+$form-warn: mat.m2-get-color-from-palette($app-form-warn);
 
 $gray: #757575;
 $gray-l1: #bdbdbd;

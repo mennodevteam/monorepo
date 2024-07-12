@@ -1,11 +1,11 @@
 @use "@angular/material" as mat;
 @import "theme.scss";
 
-$app-typography: mat.define-typography-config(
+$app-typography: mat.m2-define-typography-config(
   $font-family: "IRANSans",
 );
 
-$app-theme: mat.define-light-theme(
+$app-theme: mat.m2-define-light-theme(
   (
     color: (
       primary: $app-primary,
@@ -16,7 +16,7 @@ $app-theme: mat.define-light-theme(
   )
 );
 
-$app-dark-theme: mat.define-dark-theme(
+$app-dark-theme: mat.m2-define-dark-theme(
   (
     color: (
       primary: $app-primary,
@@ -27,7 +27,7 @@ $app-dark-theme: mat.define-dark-theme(
   )
 );
 
-$app-form-theme: mat.define-light-theme(
+$app-form-theme: mat.m2-define-light-theme(
   (
     color: (
       primary: $app-form-primary,
@@ -61,13 +61,13 @@ $app-form-theme: mat.define-light-theme(
     }
 
     .mat-button-toggle-checked {
-      background-color: mat.get-color-from-palette($primary) !important;
-      color: mat.get-color-from-palette($primary, default-contrast) !important;
+      background-color: mat.m2-get-color-from-palette($primary) !important;
+      color: mat.m2-get-color-from-palette($primary, default-contrast) !important;
     }
 
     &[color="accent"] .mat-button-toggle-checked {
-      background-color: mat.get-color-from-palette($accent) !important;
-      color: mat.get-color-from-palette($accent, default-contrast) !important;
+      background-color: mat.m2-get-color-from-palette($accent) !important;
+      color: mat.m2-get-color-from-palette($accent, default-contrast) !important;
     }
   }
 
@@ -81,8 +81,8 @@ $app-form-theme: mat.define-light-theme(
 
   .mat-step-header .mat-step-icon-state-edit,
   .mat-step-header .mat-step-icon-selected {
-    background-color: mat.get-color-from-palette($accent);
-    color: mat.get-color-from-palette($accent, default-contrast);
+    background-color: mat.m2-get-color-from-palette($accent);
+    color: mat.m2-get-color-from-palette($accent, default-contrast);
   }
 }
 

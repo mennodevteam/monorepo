@@ -115,6 +115,7 @@ export class ProductEditPageComponent {
       const savedFile = await this.fileService.upload(this.imageCropperResult.file, 'product');
       if (savedFile) {
         const imageFile = await this.fileService.saveFileImage(savedFile.key, 'product');
+        console.log(imageFile);
         dto.imageFiles = [imageFile];
         dto.images = [savedFile?.key];
       }
