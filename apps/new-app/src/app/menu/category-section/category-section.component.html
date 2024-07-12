@@ -8,7 +8,15 @@
   @if (category.description) {
     <p class="outline-text">{{ category.description }}</p>
   }
-  <app-product-card-view [category]="category" />
-  <!-- <app-product-grid-view [category]="category" /> -->
-  <!-- <app-product-list-view [category]="category" /> -->
+  @switch (viewType) {
+    @case (MenuViewType.Card) {
+      <app-product-card-view [category]="category" />
+    }
+    @case (MenuViewType.Compact) {
+      <app-product-list-view [category]="category" />
+    }
+    @default {
+      <app-product-grid-view [category]="category" />
+    }
+  }
 </section>

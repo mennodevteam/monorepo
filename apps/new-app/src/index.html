@@ -30,15 +30,17 @@
     ></div>
 
     <script>
-      const backgroundColor = localStorage.getItem('appBackgroundColor') || '#ffffff';
-      document.body.style.backgroundColor = backgroundColor;
-      document.getElementById('pre-load-data-container').style.backgroundColor = backgroundColor;
+      const backgroundColor = localStorage.getItem('appBackgroundColor');
+      if (backgroundColor) {
+        document.body.style.backgroundColor = backgroundColor;
+        document.getElementById('pre-load-data-container').style.backgroundColor = backgroundColor;
+      }
     </script>
 
     <script>
       fetch('https://api.menno.pro/shops/baseInfo')
         .then((response) => {
-          return response.json();
+          if (response?.data) return response.json();
         })
         .then((shop) => {
           if (shop?.title) {

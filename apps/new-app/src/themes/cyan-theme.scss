@@ -1,5 +1,0 @@
-@import './_base.scss';
-
-html[theme-color='cyan'] {
-  @include setTheme('cyan');
-}
