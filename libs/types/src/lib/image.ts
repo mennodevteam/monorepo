@@ -3,4 +3,5 @@ export class Image {
   md: string;
   xs: string;
   sm: string;
+  xxs: string;
 }

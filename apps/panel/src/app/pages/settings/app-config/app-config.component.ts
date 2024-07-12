@@ -93,10 +93,12 @@ export class AppConfigComponent {
         if (data) {
           this.savingCover = true;
           this.snack.open(this.translate.instant('app.uploading'), '', { duration: 5000 });
-          const savedFile = await this.fileService.upload(data.file, `cover.jpg`);
+          const savedFile = await this.fileService.upload(data.file, 'hr-cover');
           if (savedFile?.key) {
+            const imageFile = await this.fileService.saveFileImage(savedFile.key, 'hr-cover');
             await this.shopService.saveShop({
               verticalCover: savedFile.key,
+              verticalCoverImage: imageFile
             } as Shop);
             this.shopService.shop!.verticalCover = savedFile.key;
             this.snack.open(this.translate.instant('appConfig.coverSaved'), '', {

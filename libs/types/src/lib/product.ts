@@ -1,6 +1,5 @@
 import { Status } from './status.enum';
 import { ProductCategory } from './product-category';
-import { StockItem } from './stock-item';
 import { MenuCost } from './menu-cost';
 import { OrderType } from './order-type.enum';
 import { ProductItem } from './order.dto';
@@ -16,7 +15,7 @@ export class Product {
   position?: number;
   category: ProductCategory;
   images?: string[];
-  imageFiles?: Image;
+  imageFiles?: Image[];
   orderTypes: OrderType[];
   packItems: string[];
   details: any;

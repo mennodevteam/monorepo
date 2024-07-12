@@ -37,14 +37,14 @@ export class ShopPageComponent implements OnInit {
       this.shop?.latitude && this.shop.longitude
         ? 16
         : this.shop?.region?.latitude && this.shop.region?.longitude
-        ? 13
-        : 6,
+          ? 13
+          : 6,
     center:
       this.shop?.latitude && this.shop.longitude
         ? L.latLng(this.shop.latitude, this.shop.longitude)
         : this.shop?.region?.latitude && this.shop.region?.longitude
-        ? L.latLng(this.shop?.region?.latitude, this.shop.region?.longitude)
-        : L.latLng(32.723, 53.682),
+          ? L.latLng(this.shop?.region?.latitude, this.shop.region?.longitude)
+          : L.latLng(32.723, 53.682),
   };
   marker: L.Marker;
 
@@ -58,7 +58,7 @@ export class ShopPageComponent implements OnInit {
     private fileService: FilesService,
     private translate: TranslateService,
     private regionsService: RegionsService,
-    private matomo: MatomoService
+    private matomo: MatomoService,
   ) {
     const shop = this.shopService.shop;
 
@@ -167,7 +167,11 @@ export class ShopPageComponent implements OnInit {
     const dto = this.form.getRawValue();
     if (this.imageCropperResult) {
       this.snack.open(this.translate.instant('app.uploading'), '', { duration: 5000 });
-      const savedFile = await this.fileService.upload(this.imageCropperResult.file, `logo.png`);
+      const savedFile = await this.fileService.upload(this.imageCropperResult.file, `logo`);
+      if (savedFile) {
+        const imageFile = await this.fileService.saveFileImage(savedFile.key, 'logo');
+        dto.images = [imageFile];
+      }
       dto.logo = savedFile?.key;
     }
     this.snack.open(this.translate.instant('app.saving'), '', { duration: 5000 });

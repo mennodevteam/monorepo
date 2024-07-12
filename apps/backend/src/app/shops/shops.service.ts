@@ -63,7 +63,7 @@ export class ShopsService {
     private http: HttpService,
     private filesService: FilesService,
     private clubsService: ClubsService,
-    private menusService: MenusService
+    private menusService: MenusService,
   ) {}
 
   async sendShopLink(shopId: string, mobilePhone: string): Promise<Sms> {
@@ -79,7 +79,7 @@ export class ShopsService {
         shop.smsAccount.id,
         mobilePhone,
         process.env.SHOP_LINK_KAVENEGAR_TEMPLATE,
-        tokens
+        tokens,
       );
     }
   }
@@ -192,7 +192,7 @@ export class ShopsService {
         newTemplateSmsToAdmin.messages = [
           `😍 مجموعه ${savedShopInfo.title} ایجاد شد\n\n${Shop.appLink(
             savedShopInfo,
-            process.env.APP_ORIGIN
+            process.env.APP_ORIGIN,
           )}`,
         ];
         newTemplateSmsToAdmin.receptors = process.env.ADMIN_PHONE_NUMBERS.split(',');
@@ -270,7 +270,7 @@ export class ShopsService {
       const savedImage: any = await this.filesService.uploadFromUrl(
         `http://65.21.237.12:3001/files/${shop.logo}`,
         'logo',
-        shop.code
+        shop.code,
       );
       await this.shopsRepository.update(newShop.id, {
         logo: savedImage.key,
@@ -340,7 +340,7 @@ export class ShopsService {
           if (prod.images?.length) {
             try {
               const newImages = await this.getImgproxyLinks(prod.images[0], shop, `product_${prod.id}`);
-              this.productsRepository.save({ id: prod.id, imageFiles: newImages });
+              this.productsRepository.save({ id: prod.id, imageFiles: [newImages] });
             } catch (error) {
               // no need to handle
             }
@@ -355,28 +355,34 @@ export class ShopsService {
     const origin: any = await this.filesService.uploadFromUrl(
       `https://img.menno.pro/_/plain/${source}@webp`,
       `${name}_origin.webp`,
-      shop.code
+      shop.code,
     );
     const md: any = await this.filesService.uploadFromUrl(
       `https://img.menno.pro/_/width:512/plain/${source}@webp`,
       `${name}_md.webp`,
-      shop.code
+      shop.code,
     );
     const sm: any = await this.filesService.uploadFromUrl(
       `https://img.menno.pro/_/width:256/plain/${source}@webp`,
       `${name}_sm.webp`,
-      shop.code
+      shop.code,
     );
     const xs: any = await this.filesService.uploadFromUrl(
       `https://img.menno.pro/_/width:128/plain/${source}@webp`,
       `${name}_xs.webp`,
-      shop.code
+      shop.code,
+    );
+    const xxs: any = await this.filesService.uploadFromUrl(
+      `https://img.menno.pro/_/width:64/plain/${source}@webp`,
+      `${name}_xs.webp`,
+      shop.code,
     );
     return {
       origin: origin.key,
       md: md.key,
       sm: sm.key,
       xs: xs.key,
+      xxs: xs.key,
     };
   }
 }

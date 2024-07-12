@@ -44,7 +44,7 @@ export class ProductEditPageComponent {
     private translate: TranslateService,
     private fileService: FilesService,
     private sanitizer: DomSanitizer,
-    private matomo: MatomoService
+    private matomo: MatomoService,
   ) {
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
@@ -54,7 +54,7 @@ export class ProductEditPageComponent {
       status: new FormControl(Status.Active, Validators.required),
       orderTypes: new FormControl(
         [OrderType.Delivery, OrderType.DineIn, OrderType.Takeaway],
-        Validators.required
+        Validators.required,
       ),
       images: new FormControl([]),
       spans: new FormControl([1, 1], Validators.required),
@@ -112,8 +112,12 @@ export class ProductEditPageComponent {
     if (this.product) dto.id = this.product.id;
     if (this.imageCropperResult) {
       this.snack.open(this.translate.instant('app.uploading'), '', { duration: 5000 });
-      const savedFile = await this.fileService.upload(this.imageCropperResult.file, `${Date.now()}.jpeg`);
-      dto.images = [savedFile?.key];
+      const savedFile = await this.fileService.upload(this.imageCropperResult.file, 'product');
+      if (savedFile) {
+        const imageFile = await this.fileService.saveFileImage(savedFile.key, 'product');
+        dto.imageFiles = [imageFile];
+        dto.images = [savedFile?.key];
+      }
     }
     if (dto.variants) {
       dto.variants.forEach((v: ProductVariant, i: number) => {

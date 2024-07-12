@@ -56,7 +56,7 @@ export const ProductSchema = new EntitySchema<Product>({
       default: [],
     },
     imageFiles: {
-      type: 'simple-json',
+      type: 'simple-array',
       nullable: true,
     },
     details: {

@@ -3,6 +3,7 @@ import { S3 } from 'aws-sdk';
 import { awsConfig } from './aws.config';
 import 'multer';
 import fetch from 'node-fetch';
+import { Image } from '@menno/types';
 
 @Injectable()
 export class FilesService {
@@ -35,12 +36,48 @@ export class FilesService {
         (err, data) => {
           if (err) reject(err);
           else resolve(data);
-        }
+        },
       );
     });
   }
 
   getUrl(key: string) {
-    return `https://${process.env.LIARA_BUCKET_NAME}.${process.env.LIARA_BUCKET_ENDPOINT}/${key}`
+    return `https://${process.env.LIARA_BUCKET_NAME}.${process.env.LIARA_BUCKET_ENDPOINT}/${key}`;
+  }
+
+  async getImgproxyLinks(url: string, name: string, path?: string): Promise<Image> {
+    const source = this.getUrl(url);
+    const origin: any = await this.uploadFromUrl(
+      `https://img.menno.pro/_/plain/${source}@webp`,
+      `${name}_origin.webp`,
+      path,
+    );
+    const md: any = await this.uploadFromUrl(
+      `https://img.menno.pro/_/width:512/plain/${source}@webp`,
+      `${name}_md.webp`,
+      path,
+    );
+    const sm: any = await this.uploadFromUrl(
+      `https://img.menno.pro/_/width:256/plain/${source}@webp`,
+      `${name}_sm.webp`,
+      path,
+    );
+    const xs: any = await this.uploadFromUrl(
+      `https://img.menno.pro/_/width:128/plain/${source}@webp`,
+      `${name}_xs.webp`,
+      path,
+    );
+    const xxs: any = await this.uploadFromUrl(
+      `https://img.menno.pro/_/width:64/plain/${source}@webp`,
+      `${name}_xs.webp`,
+      path,
+    );
+    return {
+      origin: origin.key,
+      md: md.key,
+      sm: sm.key,
+      xs: xs.key,
+      xxs: xs.key,
+    };
   }
 }

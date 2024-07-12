@@ -13,4 +13,10 @@ export class FilesController {
   uploadFile(@UploadedFile() file: Express.Multer.File, @Body() body) {
     return this.filesService.upload(file, body?.name, body?.path);
   }
+
+  @Public()
+  @Post('upload/v2')
+  uploadV2(@Body() body) {
+    return this.filesService.getImgproxyLinks(body.url, body?.name, body?.path);
+  }
 }
