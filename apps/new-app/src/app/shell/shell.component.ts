@@ -13,7 +13,6 @@ import { ShopService } from '../core';
 })
 export class ShellComponent {
   constructor(private club: ClubService, private shop: ShopService) {
-    console.log('shell', shop.shop)
     const elem: HTMLElement | null = document.querySelector('#pre-load-data-container');
     if (elem) {
       setTimeout(() => {
