@@ -21,5 +21,6 @@ export const shopRoutes: Route[] = [
       },
     ],
     component: WelcomeComponent,
+    data: { animation: 'welcome' },
   },
 ];
