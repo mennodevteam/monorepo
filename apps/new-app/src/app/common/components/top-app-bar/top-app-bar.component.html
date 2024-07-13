@@ -1,10 +1,11 @@
-<mat-toolbar [class.sticky]="sticky" fxLayout="row" fxLayoutAlign="start center" class="mat-elevation-z3">
+<mat-toolbar [class.sticky]="sticky" fxLayout="row" fxLayoutAlign="space-between center" class="mat-elevation-z3">
   <button mat-icon-button goBack>
     <i class="fa-regular fa-chevron-right fa-sm"></i>
   </button>
   <label fxFlex>{{ title }}</label>
-  <button mat-icon-button>
-    <!-- <i class="fa-regular fa-chevron-right fa-sm"></i> -->
-  </button>
-  <div></div>
+  @if (!hideMenu) {
+    <button mat-icon-button routerLink="/main-menu">
+      <i class="fa-regular fa-bars fa-sm"></i>
+    </button>
+  }
 </mat-toolbar>

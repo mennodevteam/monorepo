@@ -6,6 +6,7 @@ import { ShellComponent } from './shell/shell.component';
 import { CartComponent } from './cart/cart.component';
 import { PaymentComponent } from './payment/payment.component';
 import { authRoutes } from './auth/auth.routes';
+import { MainMenuComponent } from './main-menu/main-menu.component';
 
 export const appRoutes: Route[] = [
   {
@@ -18,6 +19,7 @@ export const appRoutes: Route[] = [
     },
     canActivate: [translateActivator],
     children: [
+      { path: 'main-menu', component: MainMenuComponent },
       { path: 'login', children: authRoutes },
       { path: 'menu', children: menuRoutes },
       { path: 'cart', component: CartComponent },

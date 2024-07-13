@@ -2,7 +2,7 @@
 
 mat-toolbar {
   height: 64px;
-  
+
   &.sticky {
     z-index: 99;
     top: 0;
@@ -15,4 +15,7 @@ label {
   text-align: center;
   font-weight: 600;
   font-size: 18px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }

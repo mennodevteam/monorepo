@@ -1,0 +1,26 @@
+<app-top-app-bar [hideMenu]="true" />
+
+<main p-md>
+  <mat-nav-list fxLayout="column" fxLayoutGap="8">
+    <a mat-list-item class="surface-background" routerLink="/login">
+      <span matListItemLine>
+        <i class="fa-regular fa-user"></i>
+        &nbsp;
+        {{ 'login.phoneTitle' | translate }}
+      </span>
+      <div matListItemMeta>
+        <i class="fa-regular fa-chevron-left"></i>
+      </div>
+    </a>
+    <a mat-list-item class="surface-background">
+      <span matListItemLine>
+        <i class="fa-regular fa-user"></i>
+        &nbsp;
+        {{ 'login.phoneTitle' | translate }}
+      </span>
+      <div matListItemMeta>
+        <i class="fa-regular fa-chevron-left"></i>
+      </div>
+    </a>
+  </mat-nav-list>
+</main>

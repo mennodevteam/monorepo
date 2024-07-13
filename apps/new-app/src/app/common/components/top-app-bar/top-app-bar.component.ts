@@ -14,6 +14,7 @@ import { COMMON } from '../..';
 })
 export class TopAppBarComponent {
   @Input() title?: string;
+  @Input() hideMenu?: boolean;
   @Input() shop: Shop;
   @Input() sticky = false;
 }
