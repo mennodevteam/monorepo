@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, WritableSignal, computed, signal } from '@angular/core';
+import { Injectable, WritableSignal, computed, effect, signal } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { Menu, OrderType, Product } from '@menno/types';
 import { ShopService } from './shop.service';
@@ -40,13 +40,16 @@ export class MenuService {
     private shopService: ShopService,
     private bottomSheet: MatBottomSheet,
   ) {
+    effect(() => {
+      const menu = this.menu();
+      if (menu.id) this._loading.complete();
+    })
     this.load(true);
   }
 
   async load(sendStat?: boolean) {
     const query = this.shopService.getShopUsernameFromQuery();
     const baseMenu = await this.http.get<Menu>(`menus/${query}`).toPromise();
-    console.log(baseMenu)
     if (baseMenu) {
       if (this.appConfig?.selectableOrderTypes[0] != undefined)
         this.type.set(this.appConfig?.selectableOrderTypes[0]);
@@ -56,7 +59,6 @@ export class MenuService {
       if (sendStat) {
         this.http.get(`menuStats/loadMenu/${baseMenu.id}`).toPromise();
       }
-      this._loading.complete();
     }
   }
 
@@ -103,7 +105,7 @@ export class MenuService {
   }
 
   async getResolver() {
-    if (this.baseMenu()?.id) return this.baseMenu();
+    if (this.menu()?.id) return this.baseMenu();
     return this._loading.asObservable().toPromise();
   }
 }

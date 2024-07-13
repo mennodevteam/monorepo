@@ -16,7 +16,6 @@ export class ImageLoaderDirective {
     (entries, observer) => {
       for (const entry of entries) {
         if (entry.isIntersecting) {
-          console.log(entry.target)
           const src = entry.target.getAttribute('imageSrc');
           const placeholder = entry.target.getAttribute('imagePlaceholder');
           const defaultPlaceholder = entry.target.getAttribute('defaultPlaceholder');

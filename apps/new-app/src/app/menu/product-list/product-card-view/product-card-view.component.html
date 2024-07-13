@@ -1,17 +1,34 @@
 <section fxLayout="column" fxLayoutGap="16">
   @for (product of category.products; track product.id; let isLast = $last) {
-    <mat-card class="product-card">
+    <mat-card class="product-card" routerLink="product/{{ product.id }}">
       <!-- <img mat-card-image [imageLoader]="product.images?.[0]" /> -->
       <mat-card-content>
         <div fxLayout="row" fxLayoutGap="8">
-          <img fxFlex="none" class="product-card__image" [imageLoader]="product.images?.[0]" [imageFile]="product.imageFiles?.[0]" [imageSize]="'sm'" />
+          <img
+            fxFlex="none"
+            class="product-card__image"
+            [imageLoader]="product.images?.[0]"
+            [imageFile]="product.imageFiles?.[0]"
+            [imageSize]="'sm'"
+          />
           <div fxFlex fxLayout="column">
             <h3 class="product-card__title">{{ product.title }}</h3>
-            <p class="product-card__description outline-text" [class.compact]="!product.variants.length" fxFlex>{{ product.description }}</p>
-  
+            <p
+              class="product-card__description outline-text"
+              [class.compact]="!product.variants.length"
+              fxFlex
+            >
+              {{ product.description }}
+            </p>
+
             @if (!product.variants.length) {
               <div fxLayout="row">
-                <div class="product-card__price-section" fxFlex fxLayout="column" fxLayoutAlign="space-around">
+                <div
+                  class="product-card__price-section"
+                  fxFlex
+                  fxLayout="column"
+                  fxLayoutAlign="space-around"
+                >
                   @if (Product.hasDiscount(product)) {
                     <span class="line-price error-text">{{ Product.realPrice(product) | menuCurrency }}</span>
                   }
