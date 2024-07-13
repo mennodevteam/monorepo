@@ -30,9 +30,10 @@ export class OtpComponent implements OnDestroy {
     private location: PlatformLocation,
     private router: Router,
   ) {
-    const phone = this.route.snapshot.queryParamMap.get('phone');
+    const phone = this.router.getCurrentNavigation()?.extras?.state?.['phone'];
+
     if (!phone) {
-      location.back();
+      router.navigate(['/login'], { replaceUrl: true });
       return;
     }
 
@@ -41,11 +42,12 @@ export class OtpComponent implements OnDestroy {
   }
 
   async setToken(token: string, ev?: Event) {
+    const returnPath = this.route.snapshot.queryParams?.['returnPath'] || '/';
     this.loading.set(true);
     token = PersianNumberService.toEnglish(token);
     try {
       await this.auth.loginWithToken(this.phone, token);
-      this.router.navigate(['/']);
+      this.router.navigate([returnPath]);
     } catch (error) {
       //
     }

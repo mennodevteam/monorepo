@@ -7,7 +7,7 @@ import { TopAppBarComponent } from '../../common/components';
 import { AuthService } from '../../core';
 import { FormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PersianNumberService } from '@menno/utils';
 
 @Component({
@@ -31,6 +31,7 @@ export class LoginComponent {
   constructor(
     private auth: AuthService,
     private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   async sendToken(phone: string, ev: SubmitEvent) {
@@ -38,7 +39,11 @@ export class LoginComponent {
     phone = PersianNumberService.toEnglish(phone);
     this.loading.set(true);
     await this.auth.sendToken(`09${phone}`).toPromise();
-    this.router.navigate(['/login/otp'], { queryParams: { phone: `09${phone}` } });
+    this.router.navigate(['/login/otp'], {
+      state: { phone: `09${phone}` },
+      replaceUrl: true,
+      queryParams: this.route.snapshot.queryParams,
+    });
     ev.preventDefault();
   }
 }

@@ -51,16 +51,26 @@ $dark-theme: mat.define-theme(
   )
 );
 
+@mixin setTheme($theme) {
+  @include mat.all-component-themes($theme);
+  @include mat.system-level-colors($theme);
+  @include mat.system-level-typography($theme);
+
+  .tertiary-button {
+    @include mat.button-color($theme, $color-variant: tertiary);
+  }
+
+  .error-button {
+    @include mat.button-color($theme, $color-variant: error);
+  }
+}
+
 html,
 body {
   &:not(.dark) {
-    @include mat.all-component-themes($light-theme);
-    @include mat.system-level-colors($light-theme);
-    @include mat.system-level-typography($light-theme);
+    @include setTheme($light-theme);
   }
   &.dark {
-    @include mat.all-component-themes($dark-theme);
-    @include mat.system-level-colors($dark-theme);
-    @include mat.system-level-typography($dark-theme);
+    @include setTheme($dark-theme);
   }
 }

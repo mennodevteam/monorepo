@@ -46,6 +46,6 @@
     "otpDescription": "رمز یکبار مصرف ارسال شده به شماره زیر را وارد کنید",
     "remainingTime": "زمان باقی مانده: {{value}} ثانیه",
     "resendToken": "ارسال مجدد توکن",
-    "tokenExpired": "نوکن منقضی شده است"
+    "tokenExpired": "توکن منقضی شده است"
   }
 }

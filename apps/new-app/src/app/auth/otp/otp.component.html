@@ -6,6 +6,11 @@
   <h1>{{ 'login.otpTitle' | translate }}</h1>
   <p>{{ 'login.otpDescription' | translate }}</p>
 
+  <a mat-button class="edit-phone-button" goBack>
+    <i class="fa-regular fa-pencil-alt"></i>
+    {{ phone }}
+  </a>
+
   <div fxLayout="row" fxLayoutAlign="space-between" id="token-containers">
     <mat-form-field>
       <input
@@ -81,7 +86,7 @@
       type="submit"
       [disabled]="loading()"
       mat-flat-button
-      class="large"
+      class="large error-button"
       (click)="sendTokenAgain()"
     >
       {{ 'login.resendToken' | translate }}

@@ -41,6 +41,10 @@ export class ThemeService {
     const darkSchema = this.theme.schemes.dark.toJSON();
     darkSchema.background = argbFromHex('#0B0B0B');
     darkSchema.onBackground = argbFromHex('#FFFFFF');
+    darkSchema.tertiary = argbFromHex('#E6E6E6');
+    darkSchema.onTertiary = argbFromHex('#131313');
+    darkSchema.error = argbFromHex('#DB3B21');
+    darkSchema.onError = argbFromHex('#FFFFFF');
     darkSchema.surface = argbFromHex('#131313');
     darkSchema.onSurface = argbFromHex('#FFFFFF');
     darkSchema.surfaceVariant = argbFromHex('#292B2B');
@@ -55,6 +59,10 @@ export class ThemeService {
     const lightSchema = this.theme.schemes.light.toJSON();
     lightSchema.background = argbFromHex('#FFFFFF');
     lightSchema.onBackground = argbFromHex('#161616');
+    lightSchema.tertiary = argbFromHex('#161616');
+    lightSchema.onTertiary = argbFromHex('#FFFFFF');
+    lightSchema.error = argbFromHex('#DB3B21');
+    lightSchema.onError = argbFromHex('#FFFFFF');
     lightSchema.surface = argbFromHex('#FFFFFF');
     lightSchema.onSurface = argbFromHex('#161616');
     lightSchema.surfaceVariant = argbFromHex('#F2F3F4');
