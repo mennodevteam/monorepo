@@ -1,5 +1,11 @@
 @use '@angular/material' as mat;
 
+main {
+  transition: '300ms' padding;
+  &.searching {
+    padding-top: 64px;
+  }
+}
 
 #actionbar {
   position: fixed;
@@ -9,4 +15,20 @@
   @include mat.elevation(16);
   height: 88px;
   z-index: 100;
+}
+
+#searchbox-toolbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 100;
+  @include mat.elevation(16);
+
+  input {
+    background-color: var(--sys-surface);
+    border: none;
+    outline: none;
+    color: var(--sys-on-surface);
+  }
 }

@@ -2,8 +2,8 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
 
 export function slideInOut(timing = '0.2s') {
   return trigger('slideInOut', [
-    state('void', style({ height: 0, overflow: 'hidden' })),
-    transition('void => *, * => void', [animate(`${timing}`)]),
+    state('void', style({ height: 0, overflow: 'hidden', display: 'block' })),
+    transition('void => *, * => void', [animate(`${timing} ease-out`)]),
   ]);
 }
 

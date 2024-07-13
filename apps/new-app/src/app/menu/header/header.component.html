@@ -18,6 +18,7 @@
     fxFlex
     class="surface-variant-background on-surface-variant-text"
     id="search-button"
+    (click)="searchClick.emit()"
   >
     <i class="fa-regular fa-search"></i>
     {{ 'app.search' | translate }}

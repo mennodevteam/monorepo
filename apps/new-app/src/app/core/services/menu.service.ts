@@ -14,8 +14,12 @@ export class MenuService {
   type = signal<OrderType | undefined>(undefined);
   star = signal<number | undefined>(undefined);
   selectableOrderTypes: OrderType[];
+  searchText = signal('');
   menu = computed(() => {
     const menu: Menu = JSON.parse(JSON.stringify(this.baseMenu() || {}));
+    if (this.searchText()) {
+      menu.categories = Menu.search(menu, this.searchText());
+    }
     Menu.setRefsAndSort(
       menu,
       this.type() == null ? undefined : this.type(),
@@ -43,7 +47,7 @@ export class MenuService {
     effect(() => {
       const menu = this.menu();
       if (menu.id) this._loading.complete();
-    })
+    });
     this.load(true);
   }
 
@@ -54,7 +58,7 @@ export class MenuService {
       if (this.appConfig?.selectableOrderTypes[0] != undefined)
         this.type.set(this.appConfig?.selectableOrderTypes[0]);
 
-      this.baseMenu.set({...baseMenu});
+      this.baseMenu.set({ ...baseMenu });
 
       if (sendStat) {
         this.http.get(`menuStats/loadMenu/${baseMenu.id}`).toPromise();
