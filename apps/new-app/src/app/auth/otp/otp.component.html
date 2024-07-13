@@ -1,0 +1,93 @@
+<app-top-app-bar [sticky]="true" />
+<form fxLayout="column" fxLayoutGap="16" p-md>
+  <br />
+  <br />
+  <br />
+  <h1>{{ 'login.otpTitle' | translate }}</h1>
+  <p>{{ 'login.otpDescription' | translate }}</p>
+
+  <div fxLayout="row" fxLayoutAlign="space-between" id="token-containers">
+    <mat-form-field>
+      <input
+        matInput
+        #input1
+        autofocus
+        type="tel"
+        [readonly]="loading()"
+        minlength="1"
+        maxlength="1"
+        (keyup)="nextFocus($event, input2)"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        #input2
+        type="tel"
+        [readonly]="loading()"
+        minlength="1"
+        maxlength="1"
+        (keyup)="nextFocus($event, input3)"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        #input3
+        type="tel"
+        [readonly]="loading()"
+        minlength="1"
+        maxlength="1"
+        (keyup)="nextFocus($event, input4)"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        #input4
+        type="tel"
+        [readonly]="loading()"
+        minlength="1"
+        maxlength="1"
+        (keyup)="setToken(input1.value + input2.value + input3.value + input4.value)"
+      />
+    </mat-form-field>
+  </div>
+
+  @if (time()) {
+    <label class="timer outline-text">{{ 'login.remainingTime' | translate: { value: time() } }}</label>
+
+    <button
+      id="action"
+      type="submit"
+      [disabled]="loading()"
+      mat-flat-button
+      class="large"
+      (click)="setToken(input1.value + input2.value + input3.value + input4.value, $event)"
+    >
+      {{ 'app.ok' | translate }}
+      @if (loading()) {
+        ...
+      }
+    </button>
+  } @else {
+    <label class="timer error-text">{{ 'login.tokenExpired' | translate }}</label>
+
+    <button
+      id="action"
+      type="submit"
+      [disabled]="loading()"
+      mat-flat-button
+      class="large"
+      (click)="sendTokenAgain()"
+    >
+      {{ 'login.resendToken' | translate }}
+      @if (loading()) {
+        ...
+      }
+    </button>
+  }
+</form>

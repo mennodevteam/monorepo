@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { BehaviorSubject, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '@menno/types';
@@ -11,7 +11,7 @@ import { Guid } from 'guid-typescript';
 })
 export class AuthService {
   private _loading = new BehaviorSubject<void>(undefined);
-  user: User;
+  user = signal<User | undefined>(undefined);
 
   constructor(private http: HttpClient) {
     this.init();
@@ -24,12 +24,13 @@ export class AuthService {
         const user = JSON.parse(_item);
         const info = await this.http.get<User>(`auth/info`).toPromise();
         if (info?.id === user.id) {
+          this.user.set(info);
           this._loading.complete();
         }
       } catch (error) {}
     }
 
-    if (!this.user) {
+    if (!this.user()) {
       this.generateUser();
     }
   }
@@ -45,7 +46,7 @@ export class AuthService {
     return this.http.post<any>(`auth/login/app`, { username, password }).pipe(
       map((user) => {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
-        this.user = user;
+        this.user.set(user);
         this.saveLocal();
         this._loading.complete();
         return user;
@@ -54,8 +55,8 @@ export class AuthService {
   }
 
   private saveLocal() {
-    localStorage.setItem('appLoginUser', JSON.stringify(this.user));
-    sessionStorage.setItem('appLoginUser', JSON.stringify(this.user));
+    localStorage.setItem('appLoginUser', JSON.stringify(this.user()));
+    sessionStorage.setItem('appLoginUser', JSON.stringify(this.user()));
   }
 
   sendToken(mobilePhone: string) {
@@ -63,12 +64,12 @@ export class AuthService {
   }
 
   async loginWithToken(mobile: string, token: string, userDto?: User) {
-    if (this.user) {
+    if (this.user()) {
       const user = await this.http
-        .get<User | undefined>(`auth/login/app/${this.user.id}/${mobile}/${token}`)
+        .get<User | undefined>(`auth/login/app/${this.user()?.id}/${mobile}/${token}`)
         .toPromise();
       if (user) {
-        this.user = user;
+        this.user.set(user);
         this.saveLocal();
         if (userDto) {
           await this.update(userDto);
@@ -89,7 +90,7 @@ export class AuthService {
   }
 
   async getResolver() {
-    if (this.user) return this.user;
+    if (this.user()) return this.user();
     return this._loading.asObservable().toPromise();
   }
 
@@ -98,14 +99,14 @@ export class AuthService {
     if (user) {
       const prevUser = sessionStorage.getItem('appLoginUser') || localStorage.getItem('appLoginUser');
       if (user && prevUser) {
-        this.user = { ...JSON.parse(prevUser), ...user };
+        this.user.set({ ...JSON.parse(prevUser), ...user });
         this.saveLocal();
       }
     }
   }
 
   get isGuestUser() {
-    return !this.user?.mobilePhone;
+    return !this.user()?.mobilePhone;
   }
 
   // async openLoginPrompt(disableClose = false) {

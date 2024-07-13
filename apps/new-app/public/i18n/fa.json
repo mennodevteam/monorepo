@@ -36,5 +36,16 @@
   },
   "order": {
     "add": "ثبت سفارش"
+  },
+  "login": {
+    "phoneTitle": "عضویت/ ثبت‌نام",
+    "phoneDescription": "شماره موبایل خود را وارد کنید",
+    "phonePlaceholder": "123456789",
+    "phoneAction": "ارسال توکن",
+    "otpTitle": "تایید شماره موبایل",
+    "otpDescription": "رمز یکبار مصرف ارسال شده به شماره زیر را وارد کنید",
+    "remainingTime": "زمان باقی مانده: {{value}} ثانیه",
+    "resendToken": "ارسال مجدد توکن",
+    "tokenExpired": "نوکن منقضی شده است"
   }
 }

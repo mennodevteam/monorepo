@@ -5,6 +5,7 @@ import { menuResolver, shopResolver, translateActivator, userResolver } from './
 import { ShellComponent } from './shell/shell.component';
 import { CartComponent } from './cart/cart.component';
 import { PaymentComponent } from './payment/payment.component';
+import { authRoutes } from './auth/auth.routes';
 
 export const appRoutes: Route[] = [
   {
@@ -17,6 +18,7 @@ export const appRoutes: Route[] = [
     },
     canActivate: [translateActivator],
     children: [
+      { path: 'login', children: authRoutes },
       { path: 'menu', children: menuRoutes },
       { path: 'cart', component: CartComponent },
       { path: 'payment', component: PaymentComponent },

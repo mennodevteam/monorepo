@@ -8,6 +8,6 @@ export const userResolver: ResolveFn<User> = async (
   state: RouterStateSnapshot,
 ) => {
   const auth = inject(AuthService);
-  if (!auth.user) await auth.getResolver();
-  return auth.user;
+  await auth.getResolver();
+  return auth.user()!;
 };

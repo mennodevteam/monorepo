@@ -48,7 +48,7 @@ export class ShopService {
       }
 
       try {
-        (window as any).clarity('identify', shop.username, this.auth.user?.username, undefined, shop.title);
+        (window as any).clarity('identify', shop.username, this.auth.user()?.username, undefined, shop.title);
       } catch (error) {
         // unhandled
       }
@@ -61,6 +61,7 @@ export class ShopService {
     const hostname = location.hostname;
     if (hostname.search(environment.appDomain) > -1 || !environment.production) {
       const query = hostname.split('.')[0];
+      if (query === '192') return 'lime-golestan';
       return query;
     }
     return hostname;
