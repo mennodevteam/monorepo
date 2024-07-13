@@ -1,9 +1,7 @@
 @if (!searching()) {
-  <div @slideInOut style="display: inline">
-    <app-top-app-bar [shop]="shop" />
-    <app-header [shop]="shop" (searchClick)="searching.set(true)" />
-    <app-category-carousel />
-  </div>
+  <app-top-app-bar [shop]="shop" />
+  <app-header [shop]="shop" (searchClick)="searching.set(true)" />
+  <app-category-carousel />
 } @else {
   <mat-toolbar id="searchbox-toolbar" fxLayout="row">
     <input

@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild, effect, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TopAppBarComponent } from '../common/components';
-import { MenuService, ShopService, flyInOutFromDown, slideInOut } from '../core';
+import { MenuService, ShopService, flyInOutFromDown } from '../core';
 import { HeaderComponent } from './header/header.component';
 import { COMMON } from '../common';
 import { CategoryCarouselComponent } from './category-carousel/category-carousel.component';
@@ -25,7 +25,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
   ],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
-  animations: [flyInOutFromDown(), slideInOut()],
+  animations: [flyInOutFromDown()],
 })
 export class MenuComponent {
   @ViewChild('searchbox') searchboxInput: ElementRef;
