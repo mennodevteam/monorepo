@@ -1,4 +1,4 @@
-<mat-toolbar fxLayout="row" id="carousel" [class.mat-elevation-z2]="true" [class.shadow]="isCarouselStick()">
+<mat-toolbar fxLayout="row" id="carousel" [class.mat-elevation-z2]="true" [class.shadow]="isCarouselStick()" class="background-background">
   @for (category of menuService.categories(); track category.id; let index = $index) {
     <button
       mat-button

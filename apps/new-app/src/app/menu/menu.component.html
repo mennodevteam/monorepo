@@ -1,22 +1,22 @@
-<app-top-app-bar [shop]="shop" />
-<app-header [shop]="shop" />
-<app-category-carousel />
-
-<main fxLayout="column" fxLayoutGap="32" p-md>
-  @for (category of menuService.categories(); track category.id) {
-    <app-category-section [category]="category" />
+  <app-top-app-bar [shop]="shop" />
+  <app-header [shop]="shop" />
+  <app-category-carousel />
+  
+  <main fxLayout="column" fxLayoutGap="32" p-md>
+    @for (category of menuService.categories(); track category.id) {
+      <app-category-section [category]="category" />
+    }
+  </main>
+  
+  @if (cart.length()) {
+    <mat-toolbar
+      @flyInOutFromDown
+      fxLayout="column"
+      fxLayoutAlign="center"
+      id="actionbar"
+      class="background-background"
+      p-md
+    >
+      <a mat-flat-button routerLink="/cart" class="large">{{ 'cart.complete' | translate }}</a>
+    </mat-toolbar>
   }
-</main>
-
-@if (cart.length()) {
-  <mat-toolbar
-    @flyInOutFromDown
-    fxLayout="column"
-    fxLayoutAlign="center"
-    id="actionbar"
-    class="background-background"
-    p-md
-  >
-    <a mat-flat-button routerLink="/cart" class="large">{{ 'cart.complete' | translate }}</a>
-  </mat-toolbar>
-}

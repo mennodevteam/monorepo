@@ -1,5 +1,5 @@
 <div fxLayout="column">
-  <button mat-mini-fab id="back-button" goBack>
+  <button mat-mini-fab id="back-button" goBack class="inverse-surface-button">
     <i class="fa-regular fa-chevron-right"></i>
   </button>
   <div
@@ -49,13 +49,15 @@
         }
       </mat-list>
     } @else {
-      <br>
+      <br />
       <app-quantity-selector [product]="product" />
     }
   </main>
 </div>
 @if (cart.length() > 0) {
   <mat-toolbar @flyInOutFromDown fxLayout="column" fxLayoutAlign="center" id="actionbar">
-    <button mat-flat-button class="large inverse-surface-button" routerLink="/cart">{{ 'cart.complete' | translate }}</button>
+    <button mat-flat-button class="large inverse-surface-button" routerLink="/cart">
+      {{ 'cart.complete' | translate }}
+    </button>
   </mat-toolbar>
 }

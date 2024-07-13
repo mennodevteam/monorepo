@@ -8,7 +8,7 @@
   </div>
 </header>
 
-<mat-toolbar fxLayout="row" fxLayoutGap="8">
+<mat-toolbar fxLayout="row" fxLayoutGap="8" class="background-background">
   <button mat-stroked-button (click)="orderTypeClick()">
     {{ menu.type() | orderType }}
     <i class="fa-regular fa-angle-down fa-lg"></i>
@@ -16,7 +16,7 @@
   <button
     mat-flat-button
     fxFlex
-    class="inverse-on-surface-background inverse-surface-text"
+    class="surface-variant-background on-surface-variant-text"
     id="search-button"
   >
     <i class="fa-regular fa-search"></i>

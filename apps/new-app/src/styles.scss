@@ -58,6 +58,10 @@ p {
     height: 56px !important;
     border-radius: 16px !important;
   }
+
+  &.compact {
+    height: 32px !important;
+  }
 }
 
 .inverse-surface-button {
@@ -87,7 +91,7 @@ mat-selection-list {
     border-radius: 16px !important;
 
     &.active {
-      border-color: var(--sys-outline) !important;
+      border-color: var(--sys-on-background) !important;
     }
   }
 }
@@ -96,4 +100,5 @@ mat-card {
   box-shadow: none !important;
   border: 1px solid var(--sys-outline-variant) !important;
   border-radius: 16px !important;
+  background-color: var(--sys-background) !important;
 }

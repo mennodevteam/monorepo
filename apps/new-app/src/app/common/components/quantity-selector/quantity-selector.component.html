@@ -1,11 +1,33 @@
-<div fxLayout="row" fxLayoutAlign="center center">
-  <button mat-mini-fab (click)="cart.plus(product, variant)" stopPropagation>
-    <i class="fa-regular fa-plus"></i>
-  </button>
-  <b fxFlex>
-    {{ !!value ? value() : 0 }}
-  </b>
-  <button mat-mini-fab [disabled]="!value || !value()" (click)="cart.minus(product, variant)" stopPropagation>
-    <i class="fa-regular fa-minus"></i>
-  </button>
-</div>
+@if (value && value()) {
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <button
+      mat-mini-fab
+      (click)="cart.plus(product, variant)"
+      stopPropagation
+      class="primary-background on-primary-text"
+    >
+      <i class="fa-regular fa-plus"></i>
+    </button>
+
+    <b fxFlex>
+      {{ !!value ? value() : 0 }}
+    </b>
+
+    <button
+      mat-mini-fab
+      [disabled]="!value || !value()"
+      (click)="cart.minus(product, variant)"
+      stopPropagation
+      class="surface-variant-background on-surface-text"
+    >
+      <i class="fa-regular fa-minus"></i>
+    </button>
+  </div>
+} @else {
+  <div fxLayout="column">
+    <button mat-flat-button class="inverse-surface-button compact" (click)="cart.plus(product, variant)">
+      <i class="fa-regular fa-circle-plus"></i>
+      {{ 'menu.add' | translate }}
+    </button>
+  </div>
+}

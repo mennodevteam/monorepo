@@ -1,11 +1,17 @@
 <div fxLayout="column" fxLayoutGap="16" p-md>
   <h3>{{ 'orderType.title' | translate }}</h3>
   <mat-divider />
-  <mat-radio-group [(ngModel)]="type" class="outline" aria-labelledby="select order type" fxLayout="column" fxLayoutGap="8">
-    <mat-radio-button [value]="OrderType.DineIn">{{ OrderType.DineIn | orderType }}</mat-radio-button>
-    <mat-radio-button [value]="OrderType.Delivery">{{ OrderType.Delivery | orderType }}</mat-radio-button>
-    <mat-radio-button [value]="OrderType.Takeaway">{{ OrderType.Takeaway | orderType }}</mat-radio-button>
-  </mat-radio-group>
+  <mat-selection-list [(ngModel)]="type" [multiple]="false" fxLayout="column" fxLayoutGap="16">
+    <mat-list-option [class.active]="type[0] === OrderType.DineIn" [value]="OrderType.DineIn">{{
+      OrderType.DineIn | orderType
+    }}</mat-list-option>
+    <mat-list-option [class.active]="type[0] === OrderType.Delivery" [value]="OrderType.Delivery">{{
+      OrderType.Delivery | orderType
+    }}</mat-list-option>
+    <mat-list-option [class.active]="type[0] === OrderType.Takeaway" [value]="OrderType.Takeaway">{{
+      OrderType.Takeaway | orderType
+    }}</mat-list-option>
+  </mat-selection-list>
   <button mat-flat-button class="large" (click)="save()">
     {{ 'app.ok' | translate }}
   </button>
