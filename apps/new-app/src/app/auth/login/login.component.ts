@@ -41,7 +41,6 @@ export class LoginComponent {
     await this.auth.sendToken(`09${phone}`).toPromise();
     this.router.navigate(['/login/otp'], {
       state: { phone: `09${phone}` },
-      replaceUrl: true,
       queryParams: this.route.snapshot.queryParams,
     });
     ev.preventDefault();

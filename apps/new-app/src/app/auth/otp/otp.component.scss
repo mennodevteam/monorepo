@@ -8,11 +8,12 @@ button#action {
 input {
   direction: ltr;
   text-align: center;
+  letter-spacing: 24px !important;
 }
 
-mat-form-field {
-  width: 64px;
-}
+// mat-form-field {
+//   width: 64px;
+// }
 
 #token-containers {
   direction: ltr;
@@ -20,7 +21,7 @@ mat-form-field {
 
 .timer {
   font-size: 11px;
-  margin-top: -24px;
+  margin-top: -8px;
 }
 
 .edit-phone-button {

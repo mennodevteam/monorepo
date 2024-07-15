@@ -11,7 +11,7 @@
       placeholder="{{ 'menu.searchPlaceholder' | translate }}"
       [formControl]="searchControl"
     />
-    <button mat-icon-button (click)="searching.set(false)">
+    <button mat-icon-button (click)="searching.set(false)" class="error-button">
       <i class="fa-regular fa-circle-xmark fa-sm"></i>
     </button>
   </mat-toolbar>

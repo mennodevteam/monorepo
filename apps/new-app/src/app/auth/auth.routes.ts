@@ -3,6 +3,6 @@ import { LoginComponent } from './login/login.component';
 import { OtpComponent } from './otp/otp.component';
 
 export const authRoutes: Route[] = [
-  { path: '', component: LoginComponent },
-  { path: 'otp', component: OtpComponent },
+  { path: '', component: LoginComponent, data: { animation: 'login' } },
+  { path: 'otp', component: OtpComponent, data: { animation: 'otp' } },
 ];

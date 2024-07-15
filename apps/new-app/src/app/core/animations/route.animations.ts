@@ -126,4 +126,6 @@ export const routeAnimations = trigger('routeAnimations', [
   transition('* => cart', slideInFromRight),
   transition('cart => *', slideOutToRight),
   transition('welcome <=> menu', fadeInOut),
+  transition('login => otp', slideInFromRight),
+  transition('otp => login', slideOutToRight),
 ]);

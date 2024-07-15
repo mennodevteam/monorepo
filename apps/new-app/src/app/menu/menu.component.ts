@@ -29,8 +29,8 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 })
 export class MenuComponent {
   @ViewChild('searchbox') searchboxInput: ElementRef;
-  searchControl = new FormControl();
-  searching = signal(false);
+  searchControl = new FormControl(this.menuService.searchText());
+  searching = signal(!!this.menuService.searchText());
   constructor(
     private shopService: ShopService,
     public menuService: MenuService,
@@ -40,7 +40,7 @@ export class MenuComponent {
       if (this.searching()) {
         setTimeout(() => {
           this.searchboxInput.nativeElement.focus();
-        }, 800);
+        }, 100);
       } else {
         this.searchControl.setValue('');
       }

@@ -6,61 +6,45 @@
   <h1>{{ 'login.otpTitle' | translate }}</h1>
   <p>{{ 'login.otpDescription' | translate }}</p>
 
-  <a mat-button class="edit-phone-button" goBack>
+  <a mat-button class="edit-phone-button" goBack type="button">
     <i class="fa-regular fa-pencil-alt"></i>
     {{ phone }}
   </a>
 
-  <div fxLayout="row" fxLayoutAlign="space-between" id="token-containers">
-    <mat-form-field>
-      <input
-        matInput
-        #input1
-        autofocus
-        type="tel"
-        [readonly]="loading()"
-        minlength="1"
-        maxlength="1"
-        (keyup)="nextFocus($event, input2)"
-      />
-    </mat-form-field>
+  <ng-otp-input
+    [formCtrl]="otpFormControl"
+    [config]="{
+      length: 4,
+      allowNumbersOnly: true,
+      containerStyles: { display: 'flex', justifyContent: 'space-between', direction: 'ltr' },
+      containerClass: 'mono',
+      inputStyles: { outline: 'none', border: 'none', padding: '8px' },
+      inputClass: 'surface-variant-background on-background-text',
+    }"
+  ></ng-otp-input>
 
-    <mat-form-field>
-      <input
-        matInput
-        #input2
-        type="tel"
-        [readonly]="loading()"
-        minlength="1"
-        maxlength="1"
-        (keyup)="nextFocus($event, input3)"
-      />
-    </mat-form-field>
-
-    <mat-form-field>
-      <input
-        matInput
-        #input3
-        type="tel"
-        [readonly]="loading()"
-        minlength="1"
-        maxlength="1"
-        (keyup)="nextFocus($event, input4)"
-      />
-    </mat-form-field>
-
-    <mat-form-field>
-      <input
-        matInput
-        #input4
-        type="tel"
-        [readonly]="loading()"
-        minlength="1"
-        maxlength="1"
-        (keyup)="setToken(input1.value + input2.value + input3.value + input4.value)"
-      />
-    </mat-form-field>
-  </div>
+  <!-- <mat-form-field>
+    <input
+      matInput
+      #input
+      [formControl]="inputFormControl"
+      autofocus
+      type="tel"
+      [readonly]="loading()"
+      minlength="4"
+      maxlength="4"
+      class="mono"
+    />
+    @if (!time()) {
+      <mat-error>{{ 'login.tokenExpired' | translate }}</mat-error>
+    } @else if (error()) {
+      <mat-error>{{ 'login.otpError' | translate }}</mat-error>
+    } @else {
+      <mat-hint>{{ 'login.remainingTime' | translate: { value: time() } }}</mat-hint>
+    }
+  </mat-form-field> -->
+  <!-- <div fxLayout="row" fxLayoutAlign="space-between" id="token-containers">
+  </div> -->
 
   @if (time()) {
     <label class="timer outline-text">{{ 'login.remainingTime' | translate: { value: time() } }}</label>
@@ -71,7 +55,7 @@
       [disabled]="loading()"
       mat-flat-button
       class="large"
-      (click)="setToken(input1.value + input2.value + input3.value + input4.value, $event)"
+      (click)="setToken($event)"
     >
       {{ 'app.ok' | translate }}
       @if (loading()) {
