@@ -11,6 +11,8 @@
     {{ phone }}
   </a>
 
+  <input [formControl]="otpSmsControl" webOtp style="display: none;" />
+
   <ng-otp-input
     [formCtrl]="otpFormControl"
     [config]="{

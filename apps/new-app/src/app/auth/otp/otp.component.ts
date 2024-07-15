@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, signal } from '@angular/core';
+import { Component, OnDestroy, ViewChild, signal } from '@angular/core';
 import { CommonModule, PlatformLocation } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core';
@@ -11,8 +11,6 @@ import { PersianNumberService } from '@menno/utils';
 import { NgOtpInputComponent, NgOtpInputModule } from 'ng-otp-input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
-
-const SYSTEM_KEYS = ['Tab', 'Shift', 'Enter', 'Space'];
 
 @Component({
   selector: 'app-otp',
@@ -38,6 +36,7 @@ export class OtpComponent implements OnDestroy {
   error = signal(false);
   interval?: any;
   otpFormControl = new FormControl();
+  otpSmsControl = new FormControl();
   prevValue: string;
   @ViewChild(NgOtpInputComponent) inputComponent: NgOtpInputComponent;
 
@@ -64,6 +63,10 @@ export class OtpComponent implements OnDestroy {
       if (value.length === 4 && this.prevValue?.length === 3 && value.search(this.prevValue) === 0)
         this.setToken(value);
       this.prevValue = value;
+    });
+
+    this.otpSmsControl.valueChanges.subscribe((value) => {
+      this.inputComponent.setValue(value);
     });
   }
 

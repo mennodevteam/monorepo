@@ -59,7 +59,7 @@ export class ShopService {
 
   getShopUsernameFromQuery() {
     const hostname = location.hostname;
-    if (hostname.search(environment.appDomain) > -1 || !environment.production) {
+    if (hostname.search('menno') > -1 || !environment.production) {
       const query = hostname.split('.')[0];
       if (query === '192') return 'lime-golestan';
       return query;
