@@ -75,14 +75,24 @@ export class OtpComponent implements OnDestroy {
     this.loading.set(true);
     const token = PersianNumberService.toEnglish(this.otpFormControl.value);
     try {
-      await this.auth.loginWithToken(this.phone, token);
-      await this.location.back();
-      await this.location.back();
-      setTimeout(() => {
-        if (returnPath) {
-          this.router.navigate([returnPath]);
-        }
-      }, 200);
+      const user = await this.auth.loginWithToken(this.phone, token);
+      if (user?.firstName) {
+        await this.location.back();
+        await this.location.back();
+        setTimeout(() => {
+          if (returnPath) {
+            this.router.navigate([returnPath]);
+          }
+        }, 100);
+      } else {
+        await this.location.back();
+        await this.location.back();
+        setTimeout(() => {
+          this.router.navigate(['/login/register'], {
+            queryParams: this.route.snapshot.queryParams,
+          });
+        }, 100);
+      }
     } catch (error) {
       this.error.set(true);
       this.snack.open(this.translate.instant('login.otpError'), '', { duration: 2000 });

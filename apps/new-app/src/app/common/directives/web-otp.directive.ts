@@ -27,7 +27,7 @@ export class WebOtpDirective implements OnInit, OnDestroy {
         this.el.nativeElement.value = otp.code;
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
     if (this.timeout) {
       this.timer = setTimeout(() => {

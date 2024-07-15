@@ -1,0 +1,22 @@
+<app-top-app-bar [sticky]="true" />
+<form [formGroup]="formGroup" fxLayout="column" fxLayoutGap="16" p-md (ngSubmit)="submit($event)">
+  <br />
+  <h1>{{ 'register.title' | translate }}</h1>
+  <p class="outline-text">{{ 'register.description' | translate }}</p>
+  <br />
+  <mat-form-field>
+    <mat-label>{{ 'register.firstName' | translate }}</mat-label>
+    <input matInput formControlName="firstName" [readonly]="loading()" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>{{ 'register.lastName' | translate }}</mat-label>
+    <input matInput formControlName="lastName" [readonly]="loading()" />
+  </mat-form-field>
+
+  <button id="action" type="submit" [disabled]="loading()" mat-flat-button class="large">
+    {{ 'app.save' | translate }}
+    @if (loading()) {
+      ...
+    }
+  </button>
+</form>

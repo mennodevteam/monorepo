@@ -15,7 +15,7 @@ const coreQuery = query(
   { optional: true },
 );
 
-const coreChilde = query('@*', animateChild(), { optional: true });
+const coreChilde = query('@*', [], { optional: true });
 
 const coreLeaveTime = '300ms ease-out';
 const coreEnterTime = '300ms ease-out';
@@ -23,7 +23,7 @@ const coreEnterTime = '300ms ease-out';
 const slideInFromLeft = [
   coreQuery,
   query(':enter', [style({ transform: 'translateX(-100%)' })], { optional: true }),
-  query(':leave', animateChild(), { optional: true }),
+  query(':leave', [], { optional: true }),
   group([
     query(':leave', [animate(coreLeaveTime, style({ transform: 'translateX(100%)', opacity: 0 }))], {
       optional: true,
@@ -38,7 +38,7 @@ const slideInFromLeft = [
 const slideOutToLeft = [
   coreQuery,
   query(':enter', [style({ transform: 'translateX(100%)', opacity: 0 })], { optional: true }),
-  query(':leave', animateChild(), { optional: true }),
+  query(':leave', [], { optional: true }),
   group([
     query(':leave', [animate(coreLeaveTime, style({ transform: 'translateX(-100%)' }))], {
       optional: true,
@@ -53,7 +53,7 @@ const slideOutToLeft = [
 const slideInFromRight = [
   coreQuery,
   query(':enter', [style({ transform: 'translateX(100%)' })], { optional: true }),
-  query(':leave', animateChild(), { optional: true }),
+  query(':leave', [], { optional: true }),
   group([
     query(':leave', [animate(coreLeaveTime, style({ transform: 'translateX(-100%)', opacity: 0 }))], {
       optional: true,
@@ -68,7 +68,7 @@ const slideInFromRight = [
 const slideOutToRight = [
   coreQuery,
   query(':enter', [style({ transform: 'translateX(-100%)', opacity: 0 })], { optional: true }),
-  query(':leave', animateChild(), { optional: true }),
+  query(':leave', [], { optional: true }),
   group([
     query(':leave', [animate(coreLeaveTime, style({ transform: 'translateX(100%)' }))], {
       optional: true,
@@ -128,4 +128,6 @@ export const routeAnimations = trigger('routeAnimations', [
   transition('welcome <=> menu', fadeInOut),
   transition('login => otp', slideInFromRight),
   transition('otp => login', slideOutToRight),
+  transition('* => register', slideInFromRight),
+  transition('register => *', slideOutToRight),
 ]);
