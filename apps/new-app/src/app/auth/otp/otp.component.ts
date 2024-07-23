@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewChild, signal } from '@angular/core';
+import { Component, ElementRef, OnDestroy, ViewChild, effect, signal } from '@angular/core';
 import { CommonModule, PlatformLocation } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core';
@@ -36,7 +36,6 @@ export class OtpComponent implements OnDestroy {
   error = signal(false);
   interval?: any;
   otpFormControl = new FormControl();
-  otpSmsControl = new FormControl();
   prevValue: string;
   @ViewChild(NgOtpInputComponent) inputComponent: NgOtpInputComponent;
 
@@ -60,13 +59,8 @@ export class OtpComponent implements OnDestroy {
 
     this.otpFormControl.valueChanges.subscribe((value) => {
       this.error.set(false);
-      if (value.length === 4 && this.prevValue?.length === 3 && value.search(this.prevValue) === 0)
-        this.setToken(value);
+      if (value.length === 4 && this.prevValue?.length !== 4) this.setToken(value);
       this.prevValue = value;
-    });
-
-    this.otpSmsControl.valueChanges.subscribe((value) => {
-      this.inputComponent.setValue(value);
     });
   }
 

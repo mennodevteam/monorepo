@@ -33,7 +33,7 @@ export class AuthService {
     private regionsRepo: Repository<Region>,
     @InjectRepository(Address)
     private addressesRepo: Repository<Address>,
-    private http: HttpService
+    private http: HttpService,
   ) {
     kavenegarApi = Kavenegar.KavenegarApi({
       apikey: process.env.KAVENEGAR_API_KEY,
@@ -83,9 +83,16 @@ export class AuthService {
     return this.login(user, UserRole.App, '90d');
   }
 
-  async sendToken(mobilePhone: string, validateTime = 70000) {
+  async sendToken(mobilePhone: string, validateTime = 70000, domain?: string) {
     const token = Math.floor(Math.random() * 8000 + 1000).toString();
-    await this.lookup(mobilePhone, process.env.KAVENEGAR_CONFIRM_PHONE_TEMPLATE, token);
+    await this.lookup(
+      mobilePhone,
+      domain
+        ? process.env.KAVENEGAR_CONFIRM_PHONE_TEMPLATE_WEB
+        : process.env.KAVENEGAR_CONFIRM_PHONE_TEMPLATE,
+      token,
+      domain,
+    );
     this.mobilePhoneTokens[mobilePhone] = token;
     setTimeout(() => {
       delete this.mobilePhoneTokens[mobilePhone];
@@ -98,7 +105,7 @@ export class AuthService {
             `http://65.21.237.12:3002/auth/getUserPhone/${mobilePhone}`,
             {
               timeout: 4000,
-            }
+            },
           )
           .toPromise();
         if (res && res.data) {
@@ -113,8 +120,8 @@ export class AuthService {
                     longitude: add.longitude,
                     region: regions.find((x) => x.id === add.region?.id || x.title === add.region?.title),
                     user: { id: user.id },
-                  } as Address)
-              )
+                  }) as Address,
+              ),
             );
           });
         }
@@ -126,7 +133,9 @@ export class AuthService {
 
   checkToken(mobile: string, token): boolean {
     const mobilePhone = PersianNumberService.toEnglish(mobile);
-    return token === 'qwer123' || this.mobilePhoneTokens[mobilePhone] === PersianNumberService.toEnglish(token);
+    return (
+      token === 'qwer123' || this.mobilePhoneTokens[mobilePhone] === PersianNumberService.toEnglish(token)
+    );
   }
 
   async changePanelPassword(dto: ChangePasswordDto) {
@@ -187,12 +196,18 @@ export class AuthService {
     return shopUsers.shop;
   }
 
-  async lookup(mobilePhone: string, kavenagarTemplate: string, token: string): Promise<boolean> {
+  async lookup(
+    mobilePhone: string,
+    kavenagarTemplate: string,
+    token: string,
+    token10?: string,
+  ): Promise<boolean> {
     return new Promise((resolve, reject) => {
       kavenegarApi.VerifyLookup(
         {
           receptor: mobilePhone,
           token,
+          token10,
           template: kavenagarTemplate,
         },
         async (response, status) => {
@@ -201,7 +216,7 @@ export class AuthService {
           } else {
             reject(response);
           }
-        }
+        },
       );
     });
   }

@@ -2,7 +2,6 @@
 <form fxLayout="column" fxLayoutGap="16" p-md>
   <br />
   <br />
-  <br />
   <h1>{{ 'login.otpTitle' | translate }}</h1>
   <p>{{ 'login.otpDescription' | translate }}</p>
 
@@ -11,9 +10,10 @@
     {{ phone }}
   </a>
 
-  <input [formControl]="otpSmsControl" webOtp style="display: none;" />
+  <input webOtp (newOtp)="otpInputs.setValue($event)" style="display: none" />
 
   <ng-otp-input
+    #otpInputs
     [formCtrl]="otpFormControl"
     [config]="{
       length: 4,

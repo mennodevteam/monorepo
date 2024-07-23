@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 interface CredentialRequestOptions {
   otp: any;
   signal: any;
@@ -10,6 +10,7 @@ interface CredentialRequestOptions {
 })
 export class WebOtpDirective implements OnInit, OnDestroy {
   // Controller to abort the subscription if required.
+  @Output() newOtp = new EventEmitter<string>();
   private ac = new AbortController();
   private timer: any;
   constructor(private el: ElementRef) {}
@@ -25,6 +26,7 @@ export class WebOtpDirective implements OnInit, OnDestroy {
       .get(options)
       .then((otp: any) => {
         this.el.nativeElement.value = otp.code;
+        this.newOtp.emit(otp.code);
       })
       .catch((err) => {
         // console.log(err);

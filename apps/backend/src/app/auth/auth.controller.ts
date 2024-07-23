@@ -29,7 +29,7 @@ export class AuthController {
   constructor(
     private auth: AuthService,
     @InjectRepository(User)
-    private usersRepo: Repository<User>
+    private usersRepo: Repository<User>,
   ) {}
 
   @Public()
@@ -70,7 +70,9 @@ export class AuthController {
   @Public()
   @Get('sendToken/:mobile')
   async sendToken(@Param() params, @Req() req: Request) {
-    return this.auth.sendToken(PersianNumberService.toEnglish(params.mobile));
+    const referer: string = req.headers['referer'];
+    const url = referer.split('://')[1].split('/')[0];
+    return this.auth.sendToken(PersianNumberService.toEnglish(params.mobile), 70000, url);
   }
 
   @Get('info')
@@ -87,7 +89,7 @@ export class AuthController {
     return this.auth.loginAppWithToken(
       params.userId,
       PersianNumberService.toEnglish(params.mobile),
-      PersianNumberService.toEnglish(params.token)
+      PersianNumberService.toEnglish(params.token),
     );
   }
 }
