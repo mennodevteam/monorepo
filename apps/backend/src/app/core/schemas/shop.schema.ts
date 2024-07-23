@@ -1,4 +1,4 @@
-import { Shop, Status } from '@menno/types';
+import { BusinessCategory, Shop, Status } from '@menno/types';
 import { EntitySchema } from 'typeorm';
 
 export const ShopSchema = new EntitySchema<Shop>({
@@ -17,6 +17,11 @@ export const ShopSchema = new EntitySchema<Shop>({
       type: 'enum',
       enum: Status,
       default: Status.Active,
+    },
+    businessCategory: {
+      type: 'enum',
+      enum: BusinessCategory,
+      nullable: true,
     },
     code: {
       type: String,

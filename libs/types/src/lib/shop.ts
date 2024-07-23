@@ -12,6 +12,19 @@ import { SmsAccount } from './sms-account';
 import { Status } from './status.enum';
 import { ThirdParty } from './third-party';
 
+export enum BusinessCategory {
+  Cafe = 'CAFE',
+  Restaurant = 'RESTAURANT',
+  Protein = 'PROTEIN',
+  Confectionary = 'CONFECTIONARY',
+  GameCafe = 'GAME_CAFE',
+  JuiceAndIceCream = 'JUICE_AND_ICE_CREAM',
+  Herbal = 'HERBAL',
+  Nuts = 'NUTS',
+  Fruits = 'FRUITS',
+  Other = 'OTHER',
+}
+
 export interface ShopTable {
   code: string;
   title?: string;
@@ -43,6 +56,7 @@ export class Shop {
   longitude: number;
   address: string;
   instagram: string;
+  businessCategory?: BusinessCategory;
   phones: string[];
   images: string[];
   deliveryAreas?: DeliveryArea[];
