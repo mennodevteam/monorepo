@@ -8,7 +8,10 @@
 
   mat-button-toggle-group {
     margin: 8px;
-    font-size: 11px;
+
+    mat-button-toggle {
+      font-size: 11px !important;
+    }
   }
 }
 
