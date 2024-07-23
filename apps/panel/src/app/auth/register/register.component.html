@@ -2,8 +2,129 @@
   <h1>ثبت‌نام و دریافت رایگان منوی دیجیتال</h1>
 </mat-toolbar>
 <div class="container">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-page-layout">
-    <div class="flex-col">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>اطلاعات اولیه مجموعه</mat-card-title>
+      </mat-card-header>
+      <br />
+      <mat-card-content>
+        <mat-form-field appearance="outline">
+          <mat-label> نام مجموعه </mat-label>
+          <input matInput formControlName="title" required />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label> نوع مجموعه </mat-label>
+          <mat-select matInput formControlName="businessCategory">
+            <mat-option *ngFor="let cat of categories" [value]="cat">
+              {{ cat | businessCategory }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label> شهر </mat-label>
+          <mat-select [disabled]="!regions" matInput formControlName="regionId">
+            <mat-option *ngFor="let region of regions || []" [value]="region.id">
+              {{ region.title }}
+            </mat-option>
+            <mat-option [value]="null">ایجاد شهر جدید</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" *ngIf="form.controls['regionId'].value === null">
+          <mat-label> نام شهر </mat-label>
+          <input matInput formControlName="regionTitle" />
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>آدرس دامنه</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <small class="gray">
+          مشتریان شما برای دستیابی به منوی شما نیاز به یک آدرس دامنه دارند. به صورت رایگان و برای شروع از زیر
+          دامنه menno.pro استفاده خواهید کرد. مثلا: irankabab.menno.pro
+        </small>
+        <span spacer></span>
+        <mat-form-field appearance="outline">
+          <mat-label> زیر دامنه </mat-label>
+          <input matInput #usernameInput formControlName="username" class="ltr eng" required />
+          <mat-hint *ngIf="!usernameInput.value">متشکل از حروف انگلیسی کوچک و اعداد</mat-hint>
+          <mat-hint class="ltr eng" *ngIf="usernameInput.value">
+            {{ usernameInput.value }}.menno.pro
+          </mat-hint>
+        </mat-form-field>
+        <span spacer></span>
+        <small class="gray">
+          در صورت تمایل به استفاده مستقیم از دامنه شخصی به نام خود مجموعه (مثلا: irankabab.com) بعد از ثبت نام
+          از طریق پشتیبانی راهنمایی لازم را دریافت کنید.
+        </small>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>اطلاعات پنل مدیریت</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <small class="gray">
+          برای مدیریت آیتم ها وسفارشات یک پنل مدیریت در اختیار شما قرار داده می‌شود. اطلاعات لازم برای ورود به
+          پنل مدیریت را وارد کنید
+        </small>
+        <span spacer></span>
+        <mat-form-field appearance="outline">
+          <mat-label> نام‌کاربری </mat-label>
+          <input matInput class="ltr eng" formControlName="loginUsername" required />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label> رمز ورود </mat-label>
+          <input matInput class="ltr eng" formControlName="loginPassword" required />
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>مشخصات مدیر مجموعه</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <span spacer></span>
+        <mat-form-field appearance="outline">
+          <mat-label> نام مدیر مجموعه </mat-label>
+          <input matInput formControlName="firstName" required />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label> نام‌خانوادگی مدیر مجموعه </mat-label>
+          <input matInput formControlName="lastName" required />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>تلفن همراه</mat-label>
+          <input matInput class="ltr" formControlName="mobilePhone" required />
+          <span matTextSuffix>09</span>
+        </mat-form-field>
+        <p>
+          لطفا با استفاده از دکمه زیر کد‌ تاییدیه پیامک شده را دریافت کنید و در کادر زیر وارد کنید
+          <button
+            mat-stroked-button
+            color="primary"
+            [disabled]="otpStatus !== 'none'"
+            (click)="sentToken()"
+            type="button"
+          >
+            <span *ngIf="otpStatus === 'none'">ارسال کد</span>
+            <span *ngIf="otpStatus === 'sending'">درحال ارسال...</span>
+            <span *ngIf="otpStatus === 'sent'">ارسال مجدد ({{ otpTimer }})</span>
+          </button>
+        </p>
+        <mat-form-field appearance="outline">
+          <mat-label>کد تاییدیه</mat-label>
+          <input [disabled]="loading || otpStatus !== 'sent'" matInput formControlName="otp" required />
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+    <button mat-flat-button color="primary" class="submit-button" [disabled]="loading">ثبت نام</button>
+    <!-- <div class="flex-col">
       <h3>اطلاعات اولیه مجموعه</h3>
       <mat-form-field appearance="outline">
         <mat-label> نام مجموعه </mat-label>
@@ -73,6 +194,6 @@
         <input [disabled]="loading || otpStatus !== 'sent'" matInput formControlName="otp" required />
       </mat-form-field>
       <button mat-flat-button color="primary" class="submit-button">ثبت نام</button>
-    </div>
+    </div> -->
   </form>
 </div>

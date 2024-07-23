@@ -11,7 +11,7 @@ export class TranslateGuard implements CanActivate {
   async canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot):Promise<boolean> {
-    await this.translate.get('menno');
+    await this.translate.get('menno').toPromise();
     return true;
   }
   

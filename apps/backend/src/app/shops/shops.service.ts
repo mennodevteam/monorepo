@@ -108,7 +108,7 @@ export class ShopsService {
       if (!Shop.isUsernameValid(dto.username))
         throw new HttpException({ username: 'the username is invalid' }, HttpStatus.NOT_ACCEPTABLE);
       const existingShop = await this.shopsRepository.findOne({
-        where: { username: dto.username },
+        where: { username: dto.username.toLowerCase() },
       });
       if (existingShop) throw new HttpException({ username: 'Duplicated Shop link' }, HttpStatus.CONFLICT);
     }
@@ -131,6 +131,7 @@ export class ShopsService {
     shop.username = dto.username.toLowerCase();
     shop.title = dto.title;
     shop.code = code.toString();
+    shop.businessCategory = dto.businessCategory;
 
     if (dto.regionId) shop.region = <Region>{ id: dto.regionId };
     else if (dto.regionTitle) {

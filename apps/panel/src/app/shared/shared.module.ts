@@ -71,6 +71,7 @@ import { ScreenDirective } from './directives/screen.directive';
 import { TablePipe } from './pipes/table.pipe';
 import { SelectIsManualCardComponent } from './components/select-is-manual-card/select-is-manual-card.component';
 import { MatomoClickDirective } from './directives/matomo-click.directive';
+import { businessCategoryPipe } from './pipes/business-category.pipe';
 
 @NgModule({
   declarations: [
@@ -96,6 +97,7 @@ import { MatomoClickDirective } from './directives/matomo-click.directive';
     OrdersTableComponent,
     OrderTypePipe,
     OrderStatePipe,
+    businessCategoryPipe,
     OrderPaymentPipe,
     StopPropagationDirective,
     ManualDiscountAndCostDialogComponent,
@@ -158,6 +160,7 @@ import { MatomoClickDirective } from './directives/matomo-click.directive';
     MenuCurrencyPipe,
     OrderTypePipe,
     OrderStatePipe,
+    businessCategoryPipe,
     OrderPaymentPipe,
     StopPropagationDirective,
     PdatePipe,

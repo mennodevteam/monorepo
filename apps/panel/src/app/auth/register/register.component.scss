@@ -1,9 +1,16 @@
 .container {
   padding: 24px;
-  max-width: 960px;
+  max-width: 600px;
   margin: auto;
 
   form {
-    gap: 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  mat-card-content {
+    display: flex;
+    flex-direction: column;
   }
 }

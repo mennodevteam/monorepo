@@ -150,6 +150,18 @@
     "delivery": "ارسال با پیک",
     "takeaway": "مراجعه حضوری"
   },
+  "businessCategory": {
+    "CAFE": "کافی شاپ",
+    "RESTAURANT": "رستوران",
+    "PROTEIN": "پروتئین",
+    "CONFECTIONARY": "شیرینی",
+    "GAME_CAFE": "کافه بازی",
+    "JUICE_AND_ICE_CREAM": "آبمیوه و بستنی",
+    "HERBAL": "عطاری",
+    "NUTS": "آجیل و خشکبار",
+    "FRUITS": "میوه",
+    "OTHER": "سایر"
+  },
   "orderState": {
     "canceled": "لغو شده",
     "pending": "در انتظار تایید",

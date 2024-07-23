@@ -10,6 +10,7 @@ import { UserActionsGuard } from './core/guards/user-actions.guard';
 
 export const appRoutes: Route[] = [
   {
+    canActivate: [TranslateGuard],
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
   },

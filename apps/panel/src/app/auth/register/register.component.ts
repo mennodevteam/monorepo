@@ -5,7 +5,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiError } from '../../core/api-error';
 import { HttpClient, HttpStatusCode } from '@angular/common/http';
-import { CreateShopDto, Region } from '@menno/types';
+import { BusinessCategory, CreateShopDto, Region } from '@menno/types';
 import { RegionsService } from '../../core/services/regions.service';
 import { MatomoService } from '../../core/services/matomo.service';
 
@@ -15,6 +15,7 @@ import { MatomoService } from '../../core/services/matomo.service';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
+  categories = Object.values(BusinessCategory);
   form!: FormGroup;
   loading = false;
   submitted = false;
@@ -48,6 +49,7 @@ export class RegisterComponent {
         undefined,
         [Validators.required, Validators.minLength(3), Validators.pattern('[a-z]+[a-z0-9]*')],
       ],
+      businessCategory: [undefined, Validators.required],
       loginUsername: [undefined, Validators.required],
       loginPassword: [undefined, Validators.required],
       regionId: [''],
