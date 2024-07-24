@@ -72,13 +72,12 @@ export class ImageLoaderDirective {
   init() {
     let src: string | undefined = '';
     if (this.imageFile) {
-      if (this.imageFile.xxs && !this.placeholder)
-        this.placeholder = this.fileService.getFileUrl(this.imageFile.xxs);
+      if (this.imageFile.xxs && !this.placeholder) this.placeholder = this.getUrl(this.imageFile.xxs);
 
-      src = this.fileService.getFileUrl(
+      src = this.getUrl(
         this.imageSize && this.imageFile[this.imageSize] ? this.imageFile[this.imageSize] : this.imageFile.md,
       );
-    } else if (this.imageLoader) src = this.fileService.getFileUrl(this.imageLoader);
+    } else if (this.imageLoader) src = this.getUrl(this.imageLoader);
 
     const nativeEl = this.el.nativeElement as HTMLElement;
     const placeholderSrc = this.placeholder || this.defaultPlaceholderUrl;
@@ -103,6 +102,14 @@ export class ImageLoaderDirective {
       nativeEl.style.background = `url(${placeholderSrc})`;
       nativeEl.style.backgroundSize = 'cover';
       nativeEl.style.backgroundPosition = 'center';
+    }
+  }
+
+  private getUrl(url: string) {
+    if (url.search('http') === 0) {
+      return url;
+    } else {
+      return this.fileService.getFileUrl(url);
     }
   }
 }

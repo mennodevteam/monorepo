@@ -6,7 +6,12 @@
     "total": "جمع کل",
     "save": "ذخیره",
     "ok": "تایید",
+    "fromTo": "از {{from}} تا {{to}}",
     "cancel": "انصراف"
+  },
+  "info": {
+    "instagram": "اینستاگرام",
+    "about": "درباره {{value}}"
   },
   "welcome": {
     "viewMenu": "مشاهده منو"

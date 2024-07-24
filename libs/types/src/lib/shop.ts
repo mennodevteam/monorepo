@@ -15,6 +15,7 @@ import { ThirdParty } from './third-party';
 export enum BusinessCategory {
   Cafe = 'CAFE',
   Restaurant = 'RESTAURANT',
+  CafeRestaurant = 'CAFE_RESTAURANT',
   Protein = 'PROTEIN',
   Confectionary = 'CONFECTIONARY',
   GameCafe = 'GAME_CAFE',

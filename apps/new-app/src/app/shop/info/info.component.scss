@@ -1,0 +1,79 @@
+#back-button {
+  position: fixed;
+  right: 16px;
+  top: 16px;
+}
+
+mat-toolbar {
+  background-color: transparent;
+  gap: 16px;
+  padding: 0;
+}
+
+main {
+  gap: 16px;
+}
+
+#cover {
+  margin-bottom: -64px;
+  position: relative;
+  z-index: -1;
+
+  img {
+    width: 100%;
+  }
+
+  &::after {
+    content: close-quote;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    background: rgb(0, 0, 0);
+    background: linear-gradient(0deg, var(--sys-background) 0%, rgba(0, 0, 0, 0) 100%);
+  }
+}
+
+header {
+  text-align: center;
+  gap: 16px;
+}
+
+#logo {
+  width: 128px;
+  border-radius: 16px;
+  margin: 0 auto !important;
+}
+
+h1 {
+  font-size: 34px;
+  margin: 0 !important;
+  line-height: 34px;
+}
+
+p {
+  margin: 0 !important;
+}
+
+mat-card-title {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.about-list {
+  mat-list-item {
+    padding: 0;
+    height: 32px;
+
+    i {
+      width: 24px;
+      text-align: center;
+    }
+
+    a {
+      color: inherit;
+      text-underline-offset: 4px;
+    }
+  }
+}

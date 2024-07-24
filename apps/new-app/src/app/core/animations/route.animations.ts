@@ -130,4 +130,6 @@ export const routeAnimations = trigger('routeAnimations', [
   transition('otp => login', slideOutToRight),
   transition('* => register', slideInFromRight),
   transition('register => *', slideOutToRight),
+  transition('* => info', slideInFromRight),
+  transition('info => *', slideOutToRight),
 ]);

@@ -153,6 +153,7 @@
   "businessCategory": {
     "CAFE": "کافی شاپ",
     "RESTAURANT": "رستوران",
+    "CAFE_RESTAURANT": "کافه‌رستوران",
     "PROTEIN": "پروتئین",
     "CONFECTIONARY": "شیرینی",
     "GAME_CAFE": "کافه بازی",

@@ -3,6 +3,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { inject } from '@angular/core';
 import { ShopService } from '../core';
 import { HomePage } from '@menno/types';
+import { InfoComponent } from './info/info.component';
 
 export const shopRoutes: Route[] = [
   {
@@ -22,5 +23,10 @@ export const shopRoutes: Route[] = [
     ],
     component: WelcomeComponent,
     data: { animation: 'welcome' },
+  },
+  {
+    path: 'info',
+    component: InfoComponent,
+    data: { animation: 'info' },
   },
 ];
