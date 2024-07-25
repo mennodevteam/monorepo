@@ -1,4 +1,4 @@
-@import '../public/fonts/iransans/iransans.scss';
+@import '../public/fonts/iranyekanx/index.scss';
 @import '../public/fonts/fontawesome/scss/fontawesome.scss';
 @import '../public/fonts/fontawesome/scss/light.scss';
 @import '../public/fonts/fontawesome/scss/regular.scss';
@@ -14,15 +14,22 @@ body {
 }
 body {
   margin: 0;
-  font-family: IRANSans, sans-serif;
+  font-family: IRANYekanX, sans-serif;
 }
 
-input, textarea {
+input,
+textarea {
   font-family: inherit;
 }
 
 *.mono {
   font-family: monospace !important;
+}
+
+*:not(.eng) {
+  -moz-font-feature-settings: 'ss02';
+  -webkit-font-feature-settings: 'ss02';
+  font-feature-settings: 'ss02';
 }
 
 h1,
