@@ -2,15 +2,11 @@
   <h3>{{ 'orderType.title' | translate }}</h3>
   <mat-divider />
   <mat-selection-list [(ngModel)]="type" [multiple]="false" fxLayout="column" fxLayoutGap="16">
-    <mat-list-option [class.active]="type[0] === OrderType.DineIn" [value]="OrderType.DineIn">{{
-      OrderType.DineIn | orderType
-    }}</mat-list-option>
-    <mat-list-option [class.active]="type[0] === OrderType.Delivery" [value]="OrderType.Delivery">{{
-      OrderType.Delivery | orderType
-    }}</mat-list-option>
-    <mat-list-option [class.active]="type[0] === OrderType.Takeaway" [value]="OrderType.Takeaway">{{
-      OrderType.Takeaway | orderType
-    }}</mat-list-option>
+    @for (t of shopService.selectableOrderTypes; track $index) {
+      <mat-list-option [class.active]="type[0] === t" [value]="t">
+        {{ t | orderType }}
+      </mat-list-option>
+    }
   </mat-selection-list>
   <button mat-flat-button class="large" (click)="save()">
     {{ 'app.ok' | translate }}

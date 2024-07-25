@@ -71,6 +71,21 @@ export class ShopService {
     return this.shop?.plugins?.plugins ? this.shop?.plugins?.plugins.indexOf(Plugin.Ordering) > -1 : false;
   }
 
+  get selectableOrderTypes() {
+    return this.shop?.appConfig?.selectableOrderTypes || [];
+  }
+
+  get defaultOrderType() {
+    return this.shop?.appConfig?.selectableOrderTypes[0];
+  }
+
+  get hasMultipleOrderType() {
+    return (
+      this.shop?.appConfig?.selectableOrderTypes?.length &&
+      this.shop.appConfig.selectableOrderTypes.length > 1
+    );
+  }
+
   get isOpen() {
     if (!this.shop?.details.openingHours?.length) return true;
     return !this.shop.appConfig?.disableOrderingOnClose || Shop.isOpen(this.shop.details.openingHours);

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { COMMON } from '../..';
 import { MatRadioModule } from '@angular/material/radio';
 import { OrderType } from '@menno/types';
-import { MenuService } from '../../../core';
+import { MenuService, ShopService } from '../../../core';
 import { FormsModule } from '@angular/forms';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatListModule } from '@angular/material/list';
@@ -19,11 +19,12 @@ export class OrderTypeBottomSheetComponent {
   OrderType = OrderType;
   type: OrderType[] = [];
   constructor(
+    public shopService: ShopService,
     private menu: MenuService,
     public sheetRef: MatBottomSheetRef<any>,
   ) {
     const type = this.menu.type();
-    this.type = type ? [type] : [];
+    this.type = type != undefined ? [type] : [];
   }
 
   save() {

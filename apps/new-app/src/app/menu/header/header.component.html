@@ -8,11 +8,13 @@
   </div>
 </header>
 
-<mat-toolbar fxLayout="row" fxLayoutGap="8" class="background-background">
-  <button mat-stroked-button (click)="orderTypeClick()">
-    {{ menu.type() | orderType }}
-    <i class="fa-regular fa-angle-down fa-lg"></i>
-  </button>
+<mat-toolbar fxLayout="row" fxLayoutGap="8px" class="background-background">
+  @if (shopService.hasMultipleOrderType) {
+    <button mat-stroked-button (click)="orderTypeClick()">
+      {{ menu.type() | orderType }}
+      <i class="fa-regular fa-angle-down fa-lg"></i>
+    </button>
+  }
   <button
     mat-flat-button
     fxFlex

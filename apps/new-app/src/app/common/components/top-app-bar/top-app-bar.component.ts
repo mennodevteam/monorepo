@@ -4,6 +4,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { Shop } from '@menno/types';
 import { MatButtonModule } from '@angular/material/button';
 import { COMMON } from '../..';
+import { ShopService } from '../../../core';
 
 @Component({
   selector: 'app-top-app-bar',
@@ -15,6 +16,11 @@ import { COMMON } from '../..';
 export class TopAppBarComponent {
   @Input() title?: string;
   @Input() hideMenu?: boolean;
-  @Input() shop: Shop;
   @Input() sticky = false;
+
+  constructor(private shopService: ShopService) {}
+
+  get shop() {
+    return this.shopService.shop;
+  }
 }

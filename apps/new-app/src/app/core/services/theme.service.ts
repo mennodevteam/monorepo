@@ -32,6 +32,7 @@ export class ThemeService {
     if (this.isDark) document.body.classList.add('dark');
     this.createCustomProperties(this.schema);
 
+    document.body.style.backgroundColor = this.background;
     localStorage.setItem('appBackgroundColor', this.background);
     localStorage.setItem('appThemeColor', color);
   }

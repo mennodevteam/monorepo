@@ -53,10 +53,9 @@ export class MenuService {
   async load(sendStat?: boolean) {
     const query = this.shopService.getShopUsernameFromQuery();
     const baseMenu = await this.http.get<Menu>(`menus/${query}`).toPromise();
+    await this.shopService.getResolver();
     if (baseMenu) {
-      if (this.appConfig?.selectableOrderTypes[0] != undefined)
-        this.type.set(this.appConfig?.selectableOrderTypes[0]);
-      console.log(this.type());
+      if (this.shopService.selectableOrderTypes.length > 0) this.type.set(this.shopService.defaultOrderType);
 
       this.baseMenu.set({ ...baseMenu });
 
@@ -64,10 +63,6 @@ export class MenuService {
         this.http.get(`menuStats/loadMenu/${baseMenu.id}`).toPromise();
       }
     }
-  }
-
-  get appConfig() {
-    return this.shopService.shop?.appConfig;
   }
 
   sendProductStat(productId: string) {

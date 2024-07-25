@@ -1,6 +1,6 @@
 @if (!searching()) {
-  <app-top-app-bar [shop]="shop" />
-  <app-header [shop]="shop" (searchClick)="searching.set(true)" />
+  <app-top-app-bar />
+  <app-header (searchClick)="searching.set(true)" />
   <app-category-carousel />
 } @else {
   <mat-toolbar id="searchbox-toolbar" fxLayout="row">
