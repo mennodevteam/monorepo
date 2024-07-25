@@ -13,7 +13,6 @@ export class MenuService {
   private baseMenu = signal<Menu | undefined>(undefined);
   type = signal<OrderType | undefined>(undefined);
   star = signal<number | undefined>(undefined);
-  selectableOrderTypes: OrderType[];
   searchText = signal('');
   menu = computed(() => {
     const menu: Menu = JSON.parse(JSON.stringify(this.baseMenu() || {}));
@@ -57,6 +56,7 @@ export class MenuService {
     if (baseMenu) {
       if (this.appConfig?.selectableOrderTypes[0] != undefined)
         this.type.set(this.appConfig?.selectableOrderTypes[0]);
+      console.log(this.type());
 
       this.baseMenu.set({ ...baseMenu });
 

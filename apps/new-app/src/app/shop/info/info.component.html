@@ -1,18 +1,18 @@
 <div id="cover">
   <img src="https://pic.uhomes.com/onlineblog/cdn/uploads/2023/12/seo-manchester-restaurant-header.jpg" />
 </div>
-<main fxLayout="column" [fxLayoutGap]="32" p-md>
+<main fxLayout="column" p-md>
   <button mat-mini-fab id="back-button" goBack class="tertiary-button">
     <i class="fa-regular fa-chevron-right"></i>
   </button>
-  <header fxLayout="column" [fxLayoutGap]="32">
+  <header fxLayout="column">
     <img [imageLoader]="shop.logo" [imageFile]="shop.logoImage" id="logo" />
     <h1>{{ shop.title }}</h1>
     @if (shop.description) {
       <p f-md class="outline-text">{{ shop.description }}</p>
     }
   </header>
-  <mat-toolbar fxLayout="row" [fxLayoutGap]="16">
+  <mat-toolbar fxLayout="row">
     @if (shop.instagram) {
       <a
         fxFlex
