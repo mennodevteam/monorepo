@@ -15,6 +15,7 @@ export class ProductVariant {
   createdAt: Date;
   deletedAt?: Date;
   updatedAt?: Date;
+  _loading: boolean;
 
   static sort(variants: ProductVariant[]) {
     variants.sort((a, b) => {

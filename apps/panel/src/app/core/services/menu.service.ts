@@ -82,7 +82,6 @@ export class MenuService {
     if (dto.category?.id) {
       dto.category = <ProductCategory>{ id: dto.category.id };
     }
-
     const savedProduct = await this.http.post<Product>(`products`, dto).toPromise();
     if (dto.id) {
       const product = this.getProductById(dto.id);

@@ -2,7 +2,7 @@
   <ng-container matColumnDef="image">
     <th mat-header-cell *matHeaderCellDef>{{ 'productTable.image' | translate }}</th>
     <td mat-cell *matCellDef="let product">
-      <img [imageLoader]="product.imageFiles?.xs || product.images[0]" />
+      <img (click)="imageClick(product)" [imageLoader]="product.imageFiles?.xs || product.images[0]" />
     </td>
   </ng-container>
 
@@ -14,17 +14,37 @@
   <ng-container matColumnDef="price">
     <th mat-header-cell *matHeaderCellDef>{{ 'productTable.price' | translate }}</th>
     <td mat-cell *matCellDef="let product">
-      {{
-        (product.variants && product.variants[0] ? product.variants[0].price : product.price) | menuCurrency
-      }}
-
-      <mat-chip-listbox *ngIf="product.costs?.length" class="cost-chips">
-        <mat-chip-option [selectable]="false" *ngFor="let c of product.costs">
-          {{ c.title }}
-          (<span *ngIf="c.percentageCost">{{ abs(c.percentageCost) }}%</span>
-          <span *ngIf="c.fixedCost">{{ abs(c.fixedCost) | menuCurrency }}</span
-          >)
-        </mat-chip-option>
+      <mat-chip-listbox class="cost-chips">
+        @if (product.variants?.length) {
+          @for (variant of product.variants; track variant.id) {
+            <mat-chip-option [selectable]="false" (click)="variantClick(product, variant)">
+              {{ variant.title }}
+              ({{ variant.price | menuCurrency }})
+              @if (variant._loading) {
+                <i class="fa-regular fa-circle-notch fa-spin"></i>
+              } @else {
+                <i class="fa-regular fa-pencil-alt"></i>
+              }
+            </mat-chip-option>
+          }
+        } @else {
+          <mat-chip-option [selectable]="false" (click)="priceClick(product)">
+            {{ product.price | menuCurrency }}
+            @if (product._priceLoading) {
+              <i class="fa-regular fa-circle-notch fa-spin"></i>
+            } @else {
+              <i class="fa-regular fa-pencil-alt"></i>
+            }
+          </mat-chip-option>
+        }
+        @if (product.costs.length) {
+          <mat-chip-option [selectable]="false" *ngFor="let c of product.costs">
+            {{ c.title }}
+            (<span *ngIf="c.percentageCost">{{ abs(c.percentageCost) }}%</span>
+            <span *ngIf="c.fixedCost">{{ abs(c.fixedCost) | menuCurrency }}</span
+            >)
+          </mat-chip-option>
+        }
       </mat-chip-listbox>
     </td>
   </ng-container>
@@ -57,7 +77,7 @@
           </button>
         </mat-menu>
       </ng-container>
-      <small *ngIf="product.variants?.length">{{'productTable.basedOnVariants' | translate}}</small>
+      <small *ngIf="product.variants?.length">{{ 'productTable.basedOnVariants' | translate }}</small>
     </td>
   </ng-container>
 

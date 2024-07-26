@@ -25,6 +25,7 @@ export class Product {
   thirdPartyId?: string;
   _orderItem?: ProductItem;
   _changingStatus?: boolean;
+  _priceLoading?: boolean;
   updatedAt?: Date;
   createdAt?: Date;
   deletedAt?: Date;
