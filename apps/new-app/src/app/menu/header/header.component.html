@@ -8,6 +8,10 @@
   </div>
 </header>
 
+<div p-md style="padding-top: 0">
+  <app-alert-banner />
+</div>
+
 <mat-toolbar fxLayout="row" fxLayoutGap="8px" class="background-background">
   @if (shopService.hasMultipleOrderType) {
     <button mat-stroked-button (click)="orderTypeClick()">
