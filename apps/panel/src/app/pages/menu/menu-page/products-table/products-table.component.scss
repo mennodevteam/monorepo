@@ -40,11 +40,11 @@ img {
   gap: 4px;
 }
 
-.cost-chips {
+::ng-deep .cost-chips {
   vertical-align: middle;
   display: inline-flex;
 
-  mat-chip-option {
-    font-size: 12px;
+  mat-chip-option * {
+    font-size: 11px !important;
   }
 }
