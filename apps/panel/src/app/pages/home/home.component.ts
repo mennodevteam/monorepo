@@ -29,11 +29,8 @@ export class HomeComponent {
   env = environment;
 
   update = {
-    date: new Date(2024, 5, 29),
-    items: [
-      { title: 'دانلود اکسل گزارشات فروش', type: 'feature' },
-      { title: 'بارگذاری سریع منو از طریق اکسل', type: 'feature' },
-    ],
+    date: new Date(2024, 6, 26),
+    items: [{ title: 'بروزرسانی سریع آیتم‌های منو', type: 'feature' }],
   };
 
   constructor(
@@ -43,7 +40,7 @@ export class HomeComponent {
     private snack: MatSnackBar,
     private payService: PayService,
     public webPush: WebPushNotificationsService,
-    private matomo: MatomoService
+    private matomo: MatomoService,
   ) {
     const fromDate = new Date(this.plugin?.renewAt || 0).valueOf();
     const toDate = new Date(this.plugin?.expiredAt || 0).valueOf();

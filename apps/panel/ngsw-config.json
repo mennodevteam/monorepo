@@ -2,10 +2,9 @@
   "appData": {
     "forceReload": false,
     "lazyReload": false,
-    "version": "14030409",
+    "version": "14030505",
     "changes": [
-      "دانلود اکسل گزارشات فروش",
-      "بارگذاری سریع منو از طریق اکسل"
+      "بروزرسانی سریع آیتم‌های منو"
     ]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
