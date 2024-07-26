@@ -4,7 +4,9 @@
     "lazyReload": false,
     "version": "14030505",
     "changes": [
-      "بروزرسانی سریع آیتم‌های منو"
+      "بروزرسانی سریع قیمت آیتم",
+      "بروزرسانی سریع عکس آیتم",
+      "امکان آپلود عکس با پسوند HEIC (گوشی آیفون)"
     ]
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",

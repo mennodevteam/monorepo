@@ -30,7 +30,11 @@ export class HomeComponent {
 
   update = {
     date: new Date(2024, 6, 26),
-    items: [{ title: 'بروزرسانی سریع آیتم‌های منو', type: 'feature' }],
+    items: [
+      { title: 'بروزرسانی سریع قیمت آیتم', type: 'feature' },
+      { title: 'بروزرسانی سریع عکس آیتم', type: 'feature' },
+      { title: 'امکان آپلود عکس با پسوند HEIC (گوشی آیفون)', type: 'feature' },
+    ],
   };
 
   constructor(
