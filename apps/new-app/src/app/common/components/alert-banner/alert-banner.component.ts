@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { COMMON } from '../..';
 import { MatCardModule } from '@angular/material/card';
@@ -10,4 +10,8 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './alert-banner.component.html',
   styleUrl: './alert-banner.component.scss',
 })
-export class AlertBannerComponent {}
+export class AlertBannerComponent {
+  @Input() type?: 'info' | 'error' | 'warning';
+  @Input() title: string;
+  @Input() description: string;
+}

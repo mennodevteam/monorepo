@@ -4,7 +4,6 @@ import {
   DeliveryArea,
   DiscountCoupon,
   OrderDto,
-  OrderItem,
   OrderPaymentType,
   OrderType,
   Product,
@@ -201,14 +200,20 @@ export class CartService {
     if (this.menuService.type() == undefined || !this.shopService.shop) return;
     // await this.shopService.load(true);
 
-    if (!this.shopService.isOpen) {
-      this.snack.open(this.translate.instant('menu.shopIsClosed'), '', {
+    if (this.shopService.isOrderingTemporaryDisabled) {
+      this.snack.open(this.translate.instant('shop.disabledOrderingBanner.description'), '', {
         panelClass: 'warning',
         duration: 4000,
       });
       return;
-    } else if (this.shopService.shop?.appConfig?.disableOrdering) {
-      this.snack.open(this.translate.instant('menu.disableOrderingTitle'), '', {
+    } else if (this.shopService.isCloseTime) {
+      this.snack.open(this.translate.instant('menu.closeTimeBanner.description'), '', {
+        panelClass: 'warning',
+        duration: 4000,
+      });
+      return;
+    } else if (this.shopService.isOrderingDisabledOnType(this.menuService.type())) {
+      this.snack.open(this.translate.instant('menu.disabledOrderingGlobalBanner.description'), '', {
         panelClass: 'warning',
         duration: 4000,
       });

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Plugin, Shop } from '@menno/types';
+import { OrderType, Plugin, Shop } from '@menno/types';
 import { PwaService } from './pwa.service';
 import { environment } from '../../../environments/environment';
 import { AuthService } from './auth.service';
@@ -86,9 +86,18 @@ export class ShopService {
     );
   }
 
-  get isOpen() {
-    if (!this.shop?.details.openingHours?.length) return true;
-    return !this.shop.appConfig?.disableOrderingOnClose || Shop.isOpen(this.shop.details.openingHours);
+  get isCloseTime() {
+    if (!this.shop?.details.openingHours?.length) return false;
+    return this.shop.appConfig?.disableOrderingOnClose && !Shop.isOpen(this.shop.details.openingHours);
+  }
+
+  get isOrderingTemporaryDisabled() {
+    return this.hasOrderingPlugin() && this.shop.appConfig?.disableOrdering;
+  }
+
+  isOrderingDisabledOnType(type?: OrderType) {
+    if (type == undefined) return false;
+    return this.hasOrderingPlugin() && this.shop.appConfig?.orderingTypes.findIndex((x) => x === type) === -1;
   }
 
   get url() {

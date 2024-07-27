@@ -1,7 +1,16 @@
-<mat-card class="surface-variant-background">
+<mat-card
+  [ngClass]="{
+    'error-container-background on-error-container-text': type === 'error',
+    'surface-variant-background': !type,
+  }"
+>
   <mat-card-content fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="12px">
-    <i class="fa-regular fa-square-info fa-large"></i>
-    <h4>اطلاع رسانی</h4>
-    <p f-sm>در حال حاضر به علت تعمیرات فروشگاه تعطیل است</p>
+    @if (!type || type === 'info') {
+      <i class="fa-regular fa-square-info fa-large"></i>
+    } @else {
+      <i class="fa-regular fa-triangle-exclamation fa-large"></i>
+    }
+    <h4>{{ title }}</h4>
+    <p f-sm>{{ description }}</p>
   </mat-card-content>
 </mat-card>

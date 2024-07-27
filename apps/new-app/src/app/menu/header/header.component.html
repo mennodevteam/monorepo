@@ -8,9 +8,33 @@
   </div>
 </header>
 
-<div p-md style="padding-top: 0">
-  <app-alert-banner />
-</div>
+@if (shopService.isOrderingTemporaryDisabled) {
+  <div p-md style="padding-top: 0">
+    <app-alert-banner
+      type="error"
+      title="{{ 'shop.disabledOrderingBanner.title' | translate }}"
+      description="{{ 'shop.disabledOrderingBanner.description' | translate }}"
+    />
+  </div>
+} @else if (shopService.isCloseTime) {
+  <div p-md style="padding-top: 0">
+    <app-alert-banner
+      type="error"
+      title="{{ 'shop.closeTimeBanner.title' | translate }}"
+      description="{{ 'shop.closeTimeBanner.description' | translate }}"
+    />
+  </div>
+} @else if (shopService.isOrderingDisabledOnType(menu.type())) {
+  <div p-md style="padding-top: 0">
+    <app-alert-banner
+      type="error"
+      title="{{ 'shop.disabledOrderingOnTypeBanner.title' | translate }}"
+      description="{{
+        'shop.disabledOrderingOnTypeBanner.description' | translate: { value: (menu.type() | orderType) }
+      }}"
+    />
+  </div>
+}
 
 <mat-toolbar fxLayout="row" fxLayoutGap="8px" class="background-background">
   @if (shopService.hasMultipleOrderType) {

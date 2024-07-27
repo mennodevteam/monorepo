@@ -23,6 +23,24 @@
     "1": "ارسال با پیک",
     "2": "بیرون‌بر"
   },
+  "shop": {
+    "disabledOrderingBanner": {
+      "title": "عدم دریافت سفارش",
+      "description": "در حال حاضر امکان ثبت سفارش وجود ندارد. به زودی برمی‌گردیم."
+    },
+    "closeTimeBanner": {
+      "title": "عدم دریافت سفارش",
+      "description": "در خارج از تایم کاری هستیم و امکان ثبت سفارش وجود ندارد."
+    },
+    "disabledOrderingOnTypeBanner": {
+      "title": "عدم دریافت سفارش",
+      "description": "در حال حاضر امکان ثبت سفارش {{value}} وجود ندارد."
+    },
+    "disabledOrderingGlobalBanner": {
+      "title": "عدم دریافت سفارش",
+      "description": "در حال حاضر امکان ثبت سفارش وجود ندارد."
+    }
+  },
   "cart": {
     "title": "سبد خرید",
     "complete": "تکمیل خرید",
