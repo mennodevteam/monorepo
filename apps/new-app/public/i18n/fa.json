@@ -15,7 +15,7 @@
     "about": "درباره {{value}}"
   },
   "welcome": {
-    "viewMenu": "مشاهده منو"
+    "viewMenu": "مشاهده {{value}}"
   },
   "orderType": {
     "title": "نوع سفارش",
@@ -23,7 +23,23 @@
     "1": "ارسال با پیک",
     "2": "بیرون‌بر"
   },
+  "seo": {
+    "description": "{{title}}, مشاهده {{menuTitle}} و ثبت سفارش از {{shopTitle}}. آدرس: {{address}}. تلفن: {{phone}}"
+  },
   "shop": {
+    "category": {
+      "CAFE": "کافه",
+      "RESTAURANT": "رستوران",
+      "CAFE_RESTAURANT": "کافه رستوران",
+      "PROTEIN": "فروشگاه",
+      "CONFECTIONARY": "فروشگاه",
+      "GAME_CAFE": "کافه بازی",
+      "JUICE_AND_ICE_CREAM": "فروشگاه",
+      "HERBAL": "فروشگاه",
+      "NUTS": "فروشگاه",
+      "FRUITS": "فروشگاه",
+      "OTHER": "فروشگاه"
+    },
     "disabledOrderingBanner": {
       "title": "عدم دریافت سفارش",
       "description": "در حال حاضر امکان ثبت سفارش وجود ندارد. به زودی برمی‌گردیم."
@@ -50,7 +66,20 @@
   },
   "menu": {
     "add": "افزودن",
-    "searchPlaceholder": "جستجوی آیتم..."
+    "searchPlaceholder": "جستجوی در {{value}}...",
+    "category": {
+      "CAFE": "منو",
+      "RESTAURANT": "منو",
+      "CAFE_RESTAURANT": "منو",
+      "PROTEIN": "محصولات",
+      "CONFECTIONARY": "آیتم‌ها",
+      "GAME_CAFE": "آیتم‌ها",
+      "JUICE_AND_ICE_CREAM": "آیتم‌ها",
+      "HERBAL": "آیتم‌ها",
+      "NUTS": "آیتم‌ها",
+      "FRUITS": "آیتم‌ها",
+      "OTHER": "محصولات"
+    }
   },
   "payment": {
     "title": "روش پرداخت",

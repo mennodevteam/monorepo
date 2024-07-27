@@ -8,7 +8,7 @@
   </button>
   <span fxFlex></span>
   <label>{{ title }}</label>
-  @if (showActions && !pwa.isStandalone && !pwa.deferredPrompt) {
+  @if (showActions && !pwa.isStandalone && pwa.deferredPrompt) {
     <button mat-icon-button (click)="pwa.install()">
       <i class="fa-regular fa-arrow-down-to-bracket fa-xs"></i>
     </button>

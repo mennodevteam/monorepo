@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { OrderType, Plugin, Shop } from '@menno/types';
+import { BusinessCategory, OrderType, Plugin, Shop } from '@menno/types';
 import { environment } from '../../../environments/environment';
 import { AuthService } from './auth.service';
 import { ThemeService } from './theme.service';
 import { BehaviorSubject } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,7 @@ export class ShopService {
     private http: HttpClient,
     private auth: AuthService,
     private themeService: ThemeService,
+    private translate: TranslateService,
   ) {
     this.load();
   }
@@ -99,6 +101,10 @@ export class ShopService {
     return this.shop?.domain
       ? `https://${this.shop?.domain}`
       : `https://${this.shop?.username}.${environment.appDomain}`;
+  }
+
+  get businessCategoryTitle() {
+    return this.translate.instant(`shop.category.${this.shop.businessCategory || BusinessCategory.Other}`);
   }
 
   async getResolver() {

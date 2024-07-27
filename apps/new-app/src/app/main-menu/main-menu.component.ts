@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TopAppBarComponent } from '../common/components/top-app-bar/top-app-bar.component';
 import { COMMON } from '../common';
 import { MatListModule } from '@angular/material/list';
-import { AuthService, PwaService } from '../core';
+import { AuthService, MenuService, PwaService, ShopService } from '../core';
 
 @Component({
   selector: 'app-main-menu',
@@ -13,5 +13,10 @@ import { AuthService, PwaService } from '../core';
   styleUrl: './main-menu.component.scss',
 })
 export class MainMenuComponent {
-  constructor(public auth: AuthService, public pwa: PwaService) {}
+  constructor(
+    public auth: AuthService,
+    public pwa: PwaService,
+    public menuService: MenuService,
+    public shopService: ShopService,
+  ) {}
 }

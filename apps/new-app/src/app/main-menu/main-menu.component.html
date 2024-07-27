@@ -55,7 +55,7 @@
         <i class="fa-regular fa-chevron-left"></i>
       </div>
     </a>
-    <a mat-list-item class="surface-background">
+    <a mat-list-item class="surface-background" (click)="menuService.share()">
       <span matListItemLine>
         <i class="fa-regular fa-share-nodes"></i>
         &nbsp;
@@ -65,7 +65,7 @@
         <i class="fa-regular fa-chevron-left"></i>
       </div>
     </a>
-    @if (!pwa.isStandalone && !pwa.deferredPrompt) {
+    @if (!pwa.isStandalone && pwa.deferredPrompt) {
       <a mat-list-item class="surface-background" (click)="pwa.install()">
         <span matListItemLine>
           <i class="fa-regular fa-arrow-down-to-bracket"></i>

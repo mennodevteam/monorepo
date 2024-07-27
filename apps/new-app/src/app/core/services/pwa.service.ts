@@ -68,10 +68,8 @@ export class PwaService {
 
   constructor(
     private fileService: FilesService,
-    private Title: Title,
     private themeService: ThemeService,
     private shopService: ShopService,
-
   ) {
     window.addEventListener('beforeinstallprompt', (e) => {
       // Prevent Chrome 67 and earlier from automatically showing the prompt
@@ -133,8 +131,8 @@ export class PwaService {
         theme_color: this.themeService.primary,
         background_color: this.themeService.background,
         display: 'standalone',
-        scope: this.shopService.url,
-        start_url: this.shopService.url,
+        scope: location.origin,
+        start_url: location.origin,
         icons: manifestIcons,
       };
       const stringManifest = JSON.stringify(myDynamicManifest);
@@ -148,8 +146,6 @@ export class PwaService {
       if (shopIcon) {
         document.getElementById('app-favicon')?.setAttribute('href', shopIcon);
       }
-
-      this.Title.setTitle(shop.title);
     });
   }
 

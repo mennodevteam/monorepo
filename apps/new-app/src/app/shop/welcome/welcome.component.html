@@ -6,6 +6,8 @@
     @if (shop.description) {
       <p f-md class="outline-text">{{ shop.description }}</p>
     }
-    <a mat-flat-button class="large" routerLink="/menu">{{ 'welcome.viewMenu' | translate }}</a>
+    <a mat-flat-button class="large" routerLink="/menu">
+      {{ 'welcome.viewMenu' | translate: { value: menuService.businessCategoryTitle } }}
+    </a>
   </div>
 </div>

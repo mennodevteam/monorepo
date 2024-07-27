@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, WritableSignal, computed, effect, signal } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { Menu, OrderType, Product } from '@menno/types';
+import { BusinessCategory, Menu, OrderType, Product } from '@menno/types';
 import { ShopService } from './shop.service';
 import { BehaviorSubject } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -41,7 +42,7 @@ export class MenuService {
   constructor(
     private http: HttpClient,
     private shopService: ShopService,
-    private bottomSheet: MatBottomSheet,
+    private translate: TranslateService,
   ) {
     effect(() => {
       const menu = this.menu();
@@ -74,37 +75,33 @@ export class MenuService {
     return null;
   }
 
-  // checkSelectedOrderType() {
-  //   if (this.type == undefined) {
-  //     this.selectableOrderTypes = this.shopService.shop?.appConfig?.selectableOrderTypes || [];
-  //     if (!this.selectableOrderTypes || this.selectableOrderTypes.length === 0)
-  //       this.selectableOrderTypes = [OrderType.DineIn];
-
-  //     if (
-  //       this.shopService.shop?.appConfig?.disableOrdering &&
-  //       !this.menu()?.costs.find((x) => x.orderTypes.length < 3)
-  //     )
-  //       this.selectableOrderTypes = [OrderType.DineIn];
-
-  //     if (this.selectableOrderTypes.length === 1) this.type = this.selectableOrderTypes[0];
-  //     else this.openSelectOrderType();
-  //   }
-  // }
-
-  openSelectOrderType() {
-    // this.bottomSheet
-    //   .open(SelectOrderTypeModalComponent, {
-    //     closeOnNavigation: true,
-    //     disableClose: this.type == undefined,
-    //   })
-    //   .afterDismissed()
-    //   .subscribe((type) => {
-    //     if (type != undefined) this.type = type;
-    //   });
-  }
-
   async getResolver() {
     if (this.menu()?.id) return this.baseMenu();
     return this._loading.asObservable().toPromise();
+  }
+
+  get businessCategoryTitle() {
+    return this.translate.instant(
+      `menu.category.${this.shopService.shop.businessCategory || BusinessCategory.Cafe}`,
+    );
+  }
+
+  share() {
+    const shop = this.shopService.shop;
+    const text = this.translate.instant('seo.description', {
+      title: shop.title,
+      address: shop.address || '',
+      phone: shop.phones.join(', '),
+      menuTitle: this.businessCategoryTitle,
+      shopTitle: this.shopService.businessCategoryTitle,
+    });
+    try {
+      const shareData = {
+        title: shop.title,
+        text,
+        url: location.origin,
+      };
+      navigator.share(shareData);
+    } catch (error) {}
   }
 }

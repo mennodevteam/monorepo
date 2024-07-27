@@ -8,7 +8,9 @@
       fxFlex
       #searchbox
       type="text"
-      placeholder="{{ 'menu.searchPlaceholder' | translate }}"
+      placeholder="{{
+        'menu.searchPlaceholder' | translate: { value: menuService.businessCategoryTitle }
+      }}"
       [formControl]="searchControl"
     />
     <button mat-icon-button (click)="searching.set(false)" class="error-button">
