@@ -71,6 +71,7 @@ export class PwaService {
     private Title: Title,
     private themeService: ThemeService,
     private shopService: ShopService,
+
   ) {
     window.addEventListener('beforeinstallprompt', (e) => {
       // Prevent Chrome 67 and earlier from automatically showing the prompt
@@ -132,8 +133,8 @@ export class PwaService {
         theme_color: this.themeService.primary,
         background_color: this.themeService.background,
         display: 'standalone',
-        scope: '/',
-        start_url: '/',
+        scope: this.shopService.url,
+        start_url: this.shopService.url,
         icons: manifestIcons,
       };
       const stringManifest = JSON.stringify(myDynamicManifest);
@@ -164,5 +165,10 @@ export class PwaService {
         })
         .catch((error: any) => {});
     }
+  }
+
+  get isStandalone() {
+    const mqStandAlone = '(display-mode: standalone)';
+    return window.matchMedia(mqStandAlone).matches;
   }
 }

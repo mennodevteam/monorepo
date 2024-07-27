@@ -1,10 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { Shop } from '@menno/types';
 import { MatButtonModule } from '@angular/material/button';
 import { COMMON } from '../..';
-import { ShopService } from '../../../core';
+import { PwaService, ShopService } from '../../../core';
 
 @Component({
   selector: 'app-top-app-bar',
@@ -16,9 +15,13 @@ import { ShopService } from '../../../core';
 export class TopAppBarComponent {
   @Input() title?: string;
   @Input() hideMenu?: boolean;
+  @Input() showActions?: boolean;
   @Input() sticky = false;
 
-  constructor(private shopService: ShopService) {}
+  constructor(
+    private shopService: ShopService,
+    public pwa: PwaService,
+  ) {}
 
   get shop() {
     return this.shopService.shop;

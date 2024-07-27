@@ -1,5 +1,5 @@
 @if (!searching()) {
-  <app-top-app-bar />
+  <app-top-app-bar [showActions]="true" />
   <app-header (searchClick)="searching.set(true)" />
   <app-category-carousel />
 } @else {

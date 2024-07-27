@@ -1,8 +1,18 @@
-<mat-toolbar [class.sticky]="sticky" fxLayout="row" fxLayoutAlign="space-between center" class="mat-elevation-z3">
+<mat-toolbar
+  [class.sticky]="sticky"
+  fxLayout="row"
+  class="mat-elevation-z3"
+>
   <button mat-icon-button goBack>
     <i class="fa-regular fa-chevron-right fa-sm"></i>
   </button>
-  <label fxFlex>{{ title }}</label>
+  <span fxFlex></span>
+  <label>{{ title }}</label>
+  @if (showActions && !pwa.isStandalone && !pwa.deferredPrompt) {
+    <button mat-icon-button (click)="pwa.install()">
+      <i class="fa-regular fa-arrow-down-to-bracket fa-xs"></i>
+    </button>
+  }
   @if (!hideMenu) {
     <button mat-icon-button routerLink="/main-menu">
       <i class="fa-regular fa-bars fa-sm"></i>

@@ -96,7 +96,9 @@ export class ShopService {
   }
 
   get url() {
-    return this.shop?.domain || `https://${this.shop?.username}.${environment.appDomain}`;
+    return this.shop?.domain
+      ? `https://${this.shop?.domain}`
+      : `https://${this.shop?.username}.${environment.appDomain}`;
   }
 
   async getResolver() {

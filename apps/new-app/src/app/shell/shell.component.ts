@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChildrenOutletContexts, RouterModule } from '@angular/router';
 import { ClubService } from '../core/services/club.service';
-import { ShopService, routeAnimations } from '../core';
+import { PwaService, ShopService, routeAnimations } from '../core';
 
 @Component({
   selector: 'app-shell',
@@ -16,6 +16,7 @@ export class ShellComponent {
   constructor(
     private club: ClubService,
     private shop: ShopService,
+    private pwa: PwaService,
     private contexts: ChildrenOutletContexts,
   ) {
     const elem: HTMLElement | null = document.querySelector('#pre-load-data-container');

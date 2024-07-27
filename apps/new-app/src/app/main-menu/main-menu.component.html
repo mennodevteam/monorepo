@@ -65,15 +65,17 @@
         <i class="fa-regular fa-chevron-left"></i>
       </div>
     </a>
-    <a mat-list-item class="surface-background">
-      <span matListItemLine>
-        <i class="fa-regular fa-arrow-down-to-bracket"></i>
-        &nbsp;
-        {{ 'mainMenu.download' | translate }}
-      </span>
-      <div matListItemMeta>
-        <i class="fa-regular fa-chevron-left"></i>
-      </div>
-    </a>
+    @if (!pwa.isStandalone && !pwa.deferredPrompt) {
+      <a mat-list-item class="surface-background" (click)="pwa.install()">
+        <span matListItemLine>
+          <i class="fa-regular fa-arrow-down-to-bracket"></i>
+          &nbsp;
+          {{ 'mainMenu.download' | translate }}
+        </span>
+        <div matListItemMeta>
+          <i class="fa-regular fa-chevron-left"></i>
+        </div>
+      </a>
+    }
   </mat-nav-list>
 </main>
