@@ -6,6 +6,8 @@ import { CartService } from '../core/services/cart.service';
 import { COMMON } from '../common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { Router } from '@angular/router';
+import { AuthService } from '../core';
 
 @Component({
   selector: 'app-cart',
@@ -25,9 +27,19 @@ export class CartComponent {
   constructor(
     private cart: CartService,
     private location: PlatformLocation,
+    private router: Router,
+    private auth: AuthService
   ) {
     if (this.cart.length() === 0) {
       this.location.back();
+    }
+  }
+
+  submit() {
+    if (this.auth.isGuestUser && this.cart.isLoginRequired) {
+      this.router.navigate(['/login'], { queryParams: { returnPath: '/payment' } });
+    } else {
+      this.router.navigateByUrl('/payment');
     }
   }
 }

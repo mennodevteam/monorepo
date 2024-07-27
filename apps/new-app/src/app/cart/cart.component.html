@@ -9,5 +9,5 @@
 </main>
 
 <mat-toolbar fxLayout="column" fxLayoutAlign="center" id="actionbar" class="background-background" p-md>
-  <a mat-flat-button routerLink="/payment" class="large">{{ 'cart.complete' | translate }}</a>
+  <a mat-flat-button (click)="submit()" class="large">{{ 'cart.complete' | translate }}</a>
 </mat-toolbar>

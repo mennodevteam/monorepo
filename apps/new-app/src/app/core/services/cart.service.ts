@@ -280,4 +280,12 @@ export class CartService {
       this.shopService.shop?.appConfig?.requiredPayment?.includes(this.menuService.type()!)
     );
   }
+
+  get isLoginRequired() {
+    return (
+      this.isPaymentRequired ||
+      this.paymentType() === OrderPaymentType.Online ||
+      this.menuService.type() === OrderType.Delivery
+    );
+  }
 }
