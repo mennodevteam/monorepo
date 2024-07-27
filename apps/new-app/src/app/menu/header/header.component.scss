@@ -10,18 +10,22 @@ header {
   }
 
   p {
-    font-size: 12px;
+    font-size: 14px;
+    font-weight: 500;
   }
 }
 
 #search-button {
   justify-content: start !important;
+  padding: 0 12px;
 
   i {
     line-height: 24px !important;
+    transform: translateY(2px);
   }
 }
 
 mat-toolbar {
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  height: fit-content;
 }

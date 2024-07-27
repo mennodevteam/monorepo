@@ -4,11 +4,11 @@
     'surface-variant-background': !type,
   }"
 >
-  <mat-card-content fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="12px">
+  <mat-card-content fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="8px">
     @if (!type || type === 'info') {
-      <i class="fa-regular fa-square-info fa-large"></i>
+      <i class="fa-regular fa-square-info"></i>
     } @else {
-      <i class="fa-regular fa-triangle-exclamation fa-large"></i>
+      <i class="fa-regular fa-triangle-exclamation"></i>
     }
     <h4>{{ title }}</h4>
     <p f-sm>{{ description }}</p>
