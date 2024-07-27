@@ -1,0 +1,38 @@
+<app-top-app-bar title="{{ 'orderDetails.title' | translate }}" [sticky]="true" />
+<main>
+  @if (order()) {
+    <mat-list>
+      <mat-list-item>
+        <img matListItemAvatar imageLoader [imageFile]="shop()?.logoImage" [imageSize]="'sm'" />
+        <span matListItemTitle>{{ shop()?.title }}</span>
+        <div matListItemMeta>
+          <span>{{ order()?.createdAt | date }}</span>
+        </div>
+      </mat-list-item>
+      <mat-divider />
+      @for (item of order()?.items; track $index) {
+        <mat-list-item>
+          <span matListItemLine>{{ item.title }}</span>
+          <div matListItemMeta>
+            <span>{{ item.price | menuCurrency }}</span>
+          </div>
+        </mat-list-item>
+      }
+      <mat-divider />
+      <mat-list-item>
+        <span matListItemTitle>
+          <b>
+            {{ 'app.total' | translate }}
+          </b>
+        </span>
+        <div matListItemMeta>
+          <span>
+            <b>
+              {{ order()?.totalPrice | menuCurrency }}
+            </b>
+          </span>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  }
+</main>

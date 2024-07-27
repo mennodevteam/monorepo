@@ -16,10 +16,13 @@ import { ClubService } from '../../core/services/club.service';
 })
 export class PaymentMethodsComponent {
   OrderPaymentType = OrderPaymentType;
-  type: OrderPaymentType[] = [];
+  type: OrderPaymentType[] = [OrderPaymentType.Cash];
   useWallet: boolean = this.cart.useWallet();
 
-  constructor(public cart: CartService, public club: ClubService) {
+  constructor(
+    public cart: CartService,
+    public club: ClubService,
+  ) {
     if (this.cart.paymentType() != undefined) this.type = [this.cart.paymentType()!];
     else {
       if (!this.isOnlinePaymentAvailable) this.type = [OrderPaymentType.Cash];
@@ -43,6 +46,4 @@ export class PaymentMethodsComponent {
   get isOnlinePaymentRequired() {
     return this.cart.isPaymentRequired;
   }
-
-  
 }

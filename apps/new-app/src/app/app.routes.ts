@@ -7,6 +7,7 @@ import { CartComponent } from './cart/cart.component';
 import { PaymentComponent } from './payment/payment.component';
 import { authRoutes } from './auth/auth.routes';
 import { MainMenuComponent } from './main-menu/main-menu.component';
+import { ordersRoutes } from './orders/orders.routes';
 
 export const appRoutes: Route[] = [
   {
@@ -19,11 +20,12 @@ export const appRoutes: Route[] = [
     },
     canActivate: [translateActivator],
     children: [
-      { path: 'main-menu', component: MainMenuComponent, data: {animation: 'mainMenu'} },
+      { path: 'main-menu', component: MainMenuComponent, data: { animation: 'mainMenu' } },
       { path: 'login', children: authRoutes },
-      { path: 'menu', children: menuRoutes, data: {animation: 'menu'} },
-      { path: 'cart', component: CartComponent, data: {animation: 'cart'} },
-      { path: 'payment', component: PaymentComponent, data: {animation: 'payment'} },
+      { path: 'menu', children: menuRoutes, data: { animation: 'menu' } },
+      { path: 'orders', children: ordersRoutes, data: { animation: 'orders' } },
+      { path: 'cart', component: CartComponent, data: { animation: 'cart' } },
+      { path: 'payment', component: PaymentComponent, data: { animation: 'payment' } },
       { path: '', children: shopRoutes },
     ],
   },
