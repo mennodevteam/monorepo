@@ -2,27 +2,30 @@
 
 <main p-md>
   <mat-nav-list fxLayout="column" fxLayoutGap="8">
-    <a mat-list-item class="surface-background" routerLink="/login">
-      <span matListItemLine>
-        <i class="fa-regular fa-user"></i>
-        &nbsp;
-        {{ 'mainMenu.login' | translate }}
-      </span>
-      <div matListItemMeta>
-        <i class="fa-regular fa-chevron-left"></i>
-      </div>
-    </a>
-    <a mat-list-item class="surface-background" routerLink="/login/register">
-      <span matListItemLine>
-        <i class="fa-regular fa-user"></i>
-        &nbsp;
-        {{ 'mainMenu.profile' | translate }}
-      </span>
-      <div matListItemMeta>
-        <i class="fa-regular fa-chevron-left"></i>
-      </div>
-    </a>
-    <a mat-list-item class="surface-background">
+    @if (auth.isGuestUser) {
+      <a mat-list-item class="surface-background" routerLink="/login">
+        <span matListItemLine>
+          <i class="fa-regular fa-user"></i>
+          &nbsp;
+          {{ 'mainMenu.login' | translate }}
+        </span>
+        <div matListItemMeta>
+          <i class="fa-regular fa-chevron-left"></i>
+        </div>
+      </a>
+    } @else {
+      <a mat-list-item class="surface-background" routerLink="/login/register">
+        <span matListItemLine>
+          <i class="fa-regular fa-user"></i>
+          &nbsp;
+          {{ 'mainMenu.profile' | translate }}
+        </span>
+        <div matListItemMeta>
+          <i class="fa-regular fa-chevron-left"></i>
+        </div>
+      </a>
+    }
+    <a mat-list-item class="surface-background" routerLink="/info">
       <span matListItemLine>
         <i class="fa-regular fa-store"></i>
         &nbsp;

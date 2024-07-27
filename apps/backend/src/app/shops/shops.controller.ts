@@ -59,6 +59,38 @@ export class ShopsController {
     return;
   }
 
+  @Public()
+  @Get('manifest')
+  async getManifest(@Request() req: Request) {
+    try {
+      let shop: Shop;
+      const referer: string = req.headers['referer'];
+      const url = referer.split('://')[1];
+      if (url.search(process.env.APP_ORIGIN.split('.')[0]) > -1) {
+        const username = url.split('.')[0];
+        shop = await this.shopsRepo.findOneBy({ username });
+      } else {
+        shop = await this.shopsRepo.findOneBy({
+          domain: url[url.length - 1] === '/' ? url.substring(0, url.length - 1) : url,
+        });
+      }
+
+      if (shop) {
+        return {
+          name: shop.title,
+          short_name: shop.title,
+          // theme_color: theme,
+          // background_color: themeBackground,
+          // display: 'standalone',
+          // scope: url,
+          // start_url: url,
+          // icons: manifestIcons,
+        };
+      }
+    } catch (error) {}
+    return {};
+  }
+
   @Get()
   @Roles(UserRole.Panel, UserRole.Admin)
   async findOne(@LoginUser() user: AuthPayload): Promise<Shop | Shop[]> {
@@ -155,7 +187,7 @@ export class ShopsController {
   async optimizeImages(@Param('code') code: string) {
     await this.shopsService.optimizeImages(code);
     const shop = await this.shopsRepo.findOne({
-      where: {code},
+      where: { code },
     });
     this.redis.updateMenu(shop.id);
     this.redis.updateShop(shop.id);

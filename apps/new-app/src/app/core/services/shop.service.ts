@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { OrderType, Plugin, Shop } from '@menno/types';
-import { PwaService } from './pwa.service';
 import { environment } from '../../../environments/environment';
 import { AuthService } from './auth.service';
 import { ThemeService } from './theme.service';
@@ -16,7 +15,6 @@ export class ShopService {
 
   constructor(
     private http: HttpClient,
-    private pwa: PwaService,
     private auth: AuthService,
     private themeService: ThemeService,
   ) {
@@ -42,9 +40,6 @@ export class ShopService {
     if (shop) {
       if (shop.appConfig?.theme) {
         this.themeService.setThemeFromColor(shop.appConfig.theme.primaryColor, shop.appConfig.themeMode);
-        this.pwa.setManifest(shop, this.url, this.themeService.primary, this.themeService.background);
-      } else {
-        this.pwa.setManifest(shop, this.url);
       }
 
       try {
