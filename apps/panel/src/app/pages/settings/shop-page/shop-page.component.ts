@@ -170,7 +170,7 @@ export class ShopPageComponent implements OnInit {
       const savedFile = await this.fileService.upload(this.imageCropperResult.file, `logo`);
       if (savedFile) {
         const imageFile = await this.fileService.saveFileImage(savedFile.key, 'logo');
-        dto.images = [imageFile];
+        dto.logoImage = [imageFile];
       }
       dto.logo = savedFile?.key;
     }
