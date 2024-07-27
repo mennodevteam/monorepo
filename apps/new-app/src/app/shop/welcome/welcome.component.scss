@@ -6,18 +6,22 @@
   left: 0;
 }
 #logo {
-  width: 64px;
+  width: 60px;
   border-radius: 16px;
-  margin: 0 auto !important;
+  margin: 0 auto;
+  margin-bottom: 8px;
 }
 h1 {
   font-size: 34px;
-  margin: 0 !important;
+  margin: 0;
 }
 p {
-  margin: 0 !important;
+  margin: 0;
+  margin-bottom: 16px;
+  font-weight: 500;
 }
 .content {
   text-align: center;
-  gap: 8px;
+  padding: 16px;
+  padding-bottom: 32px;
 }

@@ -16,7 +16,7 @@
   <a mat-flat-button (click)="submit()" class="large" [disabled]="saving()">
     {{ 'order.add' | translate }} ({{ total() | menuCurrency }})
     @if (saving()) {
-      <i class="fa-regular fa-circle-notch fa-spin"></i> 
+      ...
     }
   </a>
 </mat-toolbar>

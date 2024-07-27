@@ -1,6 +1,6 @@
 <div fxLayout="column" id="container">
   <app-slider fxFlex [shop]="shop" />
-  <div fxLayout="column" p-md class="content">
+  <div fxLayout="column" class="content">
     <img [imageLoader]="shop.logo" [imageFile]="shop.logoImage" id="logo" />
     <h1>{{ shop.title }}</h1>
     @if (shop.description) {
