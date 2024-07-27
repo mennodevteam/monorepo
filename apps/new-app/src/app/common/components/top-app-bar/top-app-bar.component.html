@@ -1,16 +1,12 @@
-<mat-toolbar
-  [class.sticky]="sticky"
-  fxLayout="row"
-  class="mat-elevation-z3"
->
+<mat-toolbar [class.sticky]="sticky" fxLayout="row" class="mat-elevation-z3" fxLayoutGap="4px">
   <button mat-icon-button goBack>
     <i class="fa-regular fa-chevron-right fa-sm"></i>
   </button>
   <span fxFlex></span>
   <label>{{ title }}</label>
-  @if (showActions && !pwa.isStandalone && pwa.deferredPrompt) {
-    <button mat-icon-button (click)="pwa.install()">
-      <i class="fa-regular fa-arrow-down-to-bracket fa-xs"></i>
+  @if (showActions && canShare) {
+    <button mat-icon-button (click)="menuService.share()">
+      <i class="fa-regular fa-share-nodes fa-sm"></i>
     </button>
   }
   @if (!hideMenu) {

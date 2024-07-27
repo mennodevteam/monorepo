@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { environment } from '../../../environments/environment';
 import { Meta, Title } from '@angular/platform-browser';
 import { FilesService } from './files.service';
-import { ThemeService } from './theme.service';
 import { ShopService } from './shop.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuService } from './menu.service';
@@ -44,7 +41,6 @@ export class SeoService {
       this.meta.addTag({ name: 'twitter:type', content: 'website' });
       this.meta.addTag({ name: 'twitter:site', content: shop.title });
       this.meta.addTag({ name: 'og:url', content: location.origin });
-      
 
       const favIconElem: HTMLLinkElement | null = document.querySelector('#favicon');
       if (favIconElem) favIconElem.href = logo;

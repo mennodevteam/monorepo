@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { COMMON } from '../..';
-import { PwaService, ShopService } from '../../../core';
+import { MenuService, PwaService, ShopService } from '../../../core';
 
 @Component({
   selector: 'app-top-app-bar',
@@ -21,9 +21,14 @@ export class TopAppBarComponent {
   constructor(
     private shopService: ShopService,
     public pwa: PwaService,
+    public menuService: MenuService
   ) {}
 
   get shop() {
     return this.shopService.shop;
+  }
+
+  get canShare() {
+    return 'share' in navigator;
   }
 }
