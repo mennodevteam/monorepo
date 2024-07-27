@@ -13,7 +13,10 @@
     <app-alert-banner
       type="error"
       title="{{ 'shop.disabledOrderingBanner.title' | translate }}"
-      description="{{ 'shop.disabledOrderingBanner.description' | translate }}"
+      description="{{
+        shopService.shop.appConfig?.disableOrderingText ||
+          ('shop.disabledOrderingBanner.description' | translate)
+      }}"
     />
   </div>
 } @else if (shopService.isCloseTime) {
