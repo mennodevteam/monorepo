@@ -2,16 +2,48 @@
 
 #carousel {
   overflow-x: auto;
+  overflow-y: hidden;
   flex-wrap: nowrap;
   position: sticky;
   z-index: 100;
   top: -1px;
+  height: fit-content;
+  transition: 0.3s padding;
 
   button {
     padding: 0 12px;
+    font-size: 11px;
+    font-weight: 600;
+    min-width: 72px;
+
+    i {
+      font-size: 18px;
+    }
+
+    &.big-icon {
+      padding: 4px;
+      height: 64px;
+      transition: 0.3s;
+      i {
+        height: 24px;
+        font-size: 24px;
+        transform: translateY(0);
+        transition: 0.1s;
+      }
+    }
   }
 
-  &.shadow {
+  &.sticky {
     @include mat.elevation(4);
+    padding: 16px;
+
+    button.big-icon {
+      height: 36px;
+      i {
+        height: 0;
+        opacity: 0;
+        transform: translateY(-100%);
+      }
+    }
   }
 }

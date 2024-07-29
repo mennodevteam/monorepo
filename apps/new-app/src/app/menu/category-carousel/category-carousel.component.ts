@@ -35,6 +35,7 @@ export class CategoryCarouselComponent implements AfterViewInit {
     const element = this.categoryButtons.get(this.debounceSelectedIndex())?._elementRef.nativeElement;
     return element;
   });
+  bigIcon = this.menuService.categories().find((x) => !x.faIcon) == undefined;
 
   constructor(public menuService: MenuService) {
     effect(() => {
@@ -64,7 +65,7 @@ export class CategoryCarouselComponent implements AfterViewInit {
       },
       {
         rootMargin: '-200px',
-      }
+      },
     );
 
     this.sections.forEach((element) => {
@@ -75,7 +76,7 @@ export class CategoryCarouselComponent implements AfterViewInit {
       (entries) => {
         this.isCarouselStick.set(Boolean(entries[0]?.isIntersecting) === false);
       },
-      { threshold: 1 }
+      { threshold: 1 },
     );
 
     carouselObserver.observe(this.carousel['_elementRef'].nativeElement);

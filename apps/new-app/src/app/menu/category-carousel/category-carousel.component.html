@@ -1,21 +1,29 @@
-<mat-toolbar fxLayout="row" id="carousel" [class.mat-elevation-z2]="true" [class.shadow]="isCarouselStick()" class="background-background">
+<mat-toolbar
+  fxLayout="row"
+  id="carousel"
+  [class.mat-elevation-z2]="true"
+  [class.sticky]="isCarouselStick()"
+  class="background-background"
+  fxLayoutGap="4px"
+>
   @for (category of menuService.categories(); track category.id; let index = $index) {
     <button
       mat-button
       [ngClass]="
-        index === selectedIndex()
-          ? 'mat-mdc-unelevated-button tertiary-button'
-          : 'mat-mdc-outlined-button'
+        index === selectedIndex() ? 'mat-mdc-unelevated-button tertiary-button' : 'mat-mdc-outlined-button'
       "
+      [class.big-icon]="bigIcon"
       fxFlex="none"
       (click)="selectCategory(index)"
       #categoryButton
     >
-      @if (category.faIcon) {
-        <i class="fa-solid fa-{{ category.faIcon }}"></i>
-        &nbsp;
-      }
-      {{ category.title }}
+      <div fxLayout="{{ bigIcon ? 'column' : 'row' }}" fxLayoutGap="4px" fxLayoutAlign="center center">
+        @if (category.faIcon) {
+          <i class="fa-regular fa-{{ category.faIcon }}"></i>
+          &nbsp;
+        }
+        {{ category.title }}
+      </div>
     </button>
   }
 </mat-toolbar>
