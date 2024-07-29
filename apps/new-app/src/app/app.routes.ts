@@ -8,6 +8,7 @@ import { PaymentComponent } from './payment/payment.component';
 import { authRoutes } from './auth/auth.routes';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { ordersRoutes } from './orders/orders.routes';
+import { addressRoutes } from './address/address.routes';
 
 export const appRoutes: Route[] = [
   {
@@ -24,6 +25,7 @@ export const appRoutes: Route[] = [
       { path: 'login', children: authRoutes },
       { path: 'menu', children: menuRoutes, data: { animation: 'menu' } },
       { path: 'orders', children: ordersRoutes, data: { animation: 'orders' } },
+      { path: 'address', children: addressRoutes, data: { animation: 'address' } },
       { path: 'cart', component: CartComponent, data: { animation: 'cart' } },
       { path: 'payment', component: PaymentComponent, data: { animation: 'payment' } },
       { path: '', children: shopRoutes },

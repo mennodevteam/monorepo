@@ -1,0 +1,11 @@
+<main fxLayout="column">
+  <app-top-app-bar />
+  <div id="map" fxFlex>
+    <i id="marker" class="fa-solid fa-location-dot fa-lg error-text"></i>
+  </div>
+  <mat-toolbar fxLayout="column" fxLayoutAlign="center" p-md>
+    <button mat-flat-button class="large" (click)="submit()">
+      {{ 'app.select' | translate }}
+    </button>
+  </mat-toolbar>
+</main>
