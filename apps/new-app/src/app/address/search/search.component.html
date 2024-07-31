@@ -1,0 +1,28 @@
+<app-top-app-bar [hideMenu]="true">
+  <div fxLayout="row" id="searchbox">
+    <input autofocus fxFlex [formControl]="searchControl" placeholder="{{ 'app.typeHere' | translate }}" />
+  </div>
+</app-top-app-bar>
+<mat-nav-list>
+  @for (item of items(); track $index) {
+    <a
+      mat-list-item
+      routerLink="../map"
+      (click)="select(item)"
+    >
+      @switch (item.category) {
+        @case ('municipal') {
+          <i matListItemIcon class="fa-solid fa-road"></i>
+        }
+        @case ('place') {
+          <i matListItemIcon class="fa-solid fa-building"></i>
+        }
+        @case ('region') {
+          <i matListItemIcon class="fa-solid fa-map"></i>
+        }
+      }
+      <span matListItemTitle>{{ item.title }}</span>
+      <span matListItemLine f-sm> {{ item.region }} > {{ item.address }} </span>
+    </a>
+  }
+</mat-nav-list>

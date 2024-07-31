@@ -10,6 +10,10 @@ export const AddressSchema = new EntitySchema<Address>({
       primary: true,
       generated: true,
     },
+    title: {
+      type: String,
+      nullable: true,
+    },
     description: {
       type: String,
       nullable: true,

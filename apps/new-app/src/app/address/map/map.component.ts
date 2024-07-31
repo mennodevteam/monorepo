@@ -3,54 +3,83 @@ import { CommonModule } from '@angular/common';
 import { COMMON } from '../../common';
 import { TopAppBarComponent } from '../../common/components/top-app-bar/top-app-bar.component';
 import { ShopService } from '../../core';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { environment } from '../../../environments/environment';
+import { ActivatedRoute, Router } from '@angular/router';
 declare let nmp_mapboxgl: any;
 
 const DEFAULT_LOCATION = [51.389, 35.6892];
-const API_KEY = 'web.3cdc9a4724a44c6a8bb12e00390bddd7';
 
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [CommonModule, COMMON, TopAppBarComponent],
+  imports: [CommonModule, COMMON, TopAppBarComponent, MatToolbarModule],
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss',
 })
 export class MapComponent implements AfterViewInit {
   map: any;
-  constructor(private shopService: ShopService) {}
+  constructor(
+    private shopService: ShopService,
+    private router: Router,
+    private route: ActivatedRoute,
+  ) {
+    this.route.queryParams.subscribe((params) => {
+      if (this.coordinate) {
+        this.map?.setCenter([this.coordinate[1], this.coordinate[0]]);
+        this.map?.setZoom(15);
+      }
+    });
+  }
 
   ngAfterViewInit(): void {
     let center = DEFAULT_LOCATION;
     const shop = this.shopService.shop;
-    if (shop.latitude && shop.longitude) center = [shop.latitude, shop.longitude];
+
+    if (this.coordinate) center = [this.coordinate[1], this.coordinate[0]];
+    else if (shop.latitude && shop.longitude) center = [shop.longitude, shop.latitude];
     else if (shop.region?.latitude && shop.region?.longitude)
-      center = [shop.region.latitude, shop.region.longitude];
+      center = [shop.region.longitude, shop.region.latitude];
 
-    this.map = new nmp_mapboxgl.Map({
-      mapType: nmp_mapboxgl.Map.mapTypes.neshanVectorNight,
-      container: 'map',
-      zoom: 11,
-      pitch: 0,
-      center: [51.389, 35.6892],
-      minZoom: 2,
-      maxZoom: 21,
-      trackResize: true,
-      mapKey: API_KEY,
-      poi: true,
-      traffic: false,
-      mapTypeControllerOptions: {
-        show: false,
-      },
-    });
+    setTimeout(() => {
+      this.map = new nmp_mapboxgl.Map({
+        mapType: nmp_mapboxgl.Map.mapTypes.neshanVectorNight,
+        container: 'map',
+        zoom: this.coordinate ? 15 : 11,
+        pitch: 0,
+        center: center,
+        minZoom: 2,
+        maxZoom: 21,
+        trackResize: true,
+        mapKey: environment.neshanMapApiKey,
+        poi: true,
+        traffic: false,
+        mapTypeControllerOptions: {
+          show: false,
+        },
+      });
 
-    navigator?.geolocation?.getCurrentPosition((position) => {
-      this.map.flyTo({ center: [position.coords.longitude, position.coords.latitude], zoom: 18 });
-    });
+      if (!this.coordinate) {
+        navigator?.geolocation?.getCurrentPosition((position) => {
+          this.map.flyTo({ center: [position.coords.longitude, position.coords.latitude], zoom: 15 });
+        });
+      }
+    }, 300);
   }
 
-  submit() {
-    const center = this.map.getCenter();
+  get center() {
+    return this.map?.getCenter();
+  }
 
-    console.log(`${center.lat}, ${center.lng}`);
+  async submit() {
+    const params = { lat: this.center.lat, lng: this.center.lng };
+    await this.router.navigate([], { queryParams: params, replaceUrl: true });
+    this.router.navigate(['/address/edit'], { queryParams: params });
+  }
+
+  get coordinate() {
+    const query = this.route.snapshot.queryParams;
+    if (query['lat'] && query['lng']) return [Number(query['lat']), query['lng']];
+    return;
   }
 }

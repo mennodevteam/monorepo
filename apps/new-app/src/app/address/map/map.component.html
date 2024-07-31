@@ -1,6 +1,15 @@
 <main fxLayout="column">
-  <app-top-app-bar />
+  <app-top-app-bar [hideMenu]="true" title="{{ 'map.title' | translate }}" />
   <div id="map" fxFlex>
+    <button
+      id="search"
+      mat-raised-button
+      class="surface-variant-background on-surface-variant-text"
+      routerLink="../search"
+      [queryParams]="center"
+    >
+      {{ 'app.search' | translate }}
+    </button>
     <i id="marker" class="fa-solid fa-location-dot fa-lg error-text"></i>
   </div>
   <mat-toolbar fxLayout="column" fxLayoutAlign="center" p-md>

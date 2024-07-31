@@ -1,3 +1,4 @@
+export * from './addresses.service';
 export * from './auth.service';
 export * from './cart.service';
 export * from './club.service';

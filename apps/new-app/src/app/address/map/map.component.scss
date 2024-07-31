@@ -8,6 +8,14 @@ main {
   #map {
     position: relative;
 
+    #search {
+      position: absolute;
+      z-index: 10000;
+      top: 16px;
+      right: 16px;
+      left: 16px;
+    }
+
     #marker {
       position: absolute;
       top: 50%;
@@ -20,5 +28,11 @@ main {
       z-index: 10000;
       transform: translate(-24px, -36px);
     }
+  }
+
+  mat-toolbar {
+    flex: none;
+    padding: 16px !important;
+    height: fit-content;
   }
 }

@@ -1,0 +1,38 @@
+<app-top-app-bar
+  [hideMenu]="true"
+  title="{{ 'editAddress.' + (this.address ? 'editTitle' : 'newTitle') | translate }}"
+/>
+<form [formGroup]="addressForm" p-md fxLayout="column" (ngSubmit)="submit()">
+  <div id="map">
+    <i id="marker" class="fa-solid fa-location-dot fa-lg error-text"></i>
+  </div>
+  <br />
+
+  <mat-form-field>
+    <mat-label>{{ 'editAddress.titleLabel' | translate }}</mat-label>
+    <input
+      matInput
+      formControlName="title"
+      type="text"
+      placeholder="{{ 'editAddress.titlePlaceholder' | translate }}"
+    />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>{{ 'editAddress.addressLabel' | translate }}</mat-label>
+    <textarea
+      matInput
+      type="text"
+      formControlName="description"
+      placeholder="{{ 'editAddress.addressPlaceholder' | translate }}"
+      rows="3"
+    ></textarea>
+  </mat-form-field>
+
+  <button id="submit" type="submit" mat-flat-button class="large" [disabled]="saving()">
+    {{ 'app.select' | translate }}
+    @if (saving()) {
+      ...
+    }
+  </button>
+</form>

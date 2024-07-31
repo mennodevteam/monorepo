@@ -1,0 +1,34 @@
+<app-top-app-bar [hideMenu]="true" [sticky]="true">
+  <div fxLayout="row" fxLayoutAlign="end">
+    <a mat-flat-button color="tertiary-button" routerLink="../map">
+      {{ 'addressList.new' | translate }}
+    </a>
+  </div>
+</app-top-app-bar>
+<main p-md>
+  <mat-nav-list>
+    @for (address of addresses(); track address.id) {
+      <a mat-list-item (click)="select(address)">
+        @if (cart.address()?.id === address.id) {
+          <i matListItemIcon class="fa-solid fa-circle fa-sm primary-text"></i>
+        } @else {
+          <i matListItemIcon class="fa-regular fa-circle fa-sm"></i>
+        }
+        @if (address.title) {
+          <span matListItemTitle>{{ address.title }}</span>
+        }
+        <span matListItemLine f-sm>{{ address.description }}</span>
+      </a>
+    }
+  </mat-nav-list>
+</main>
+<!-- <mat-selection-list [multiple]="false" fxLayout="column" fxLayoutGap="16">
+    @for (address of addresses(); track address.id) {
+      <mat-list-option [class.active]="true">
+        @if (address.title) {
+          <span matListItemTitle>{{ address.title }}</span>
+        }
+        <span matListItemLine f-sm>{{ address.description }}</span>
+      </mat-list-option>
+    }
+  </mat-selection-list> -->

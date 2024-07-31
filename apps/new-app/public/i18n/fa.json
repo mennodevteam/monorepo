@@ -3,6 +3,8 @@
     "free": "رایگان",
     "toman": "تومانءءء",
     "search": "جستجو",
+    "typeHere": "اینجا بنویسید...",
+    "select": "انتخاب",
     "description": "توضیحات",
     "total": "جمع کل",
     "save": "ذخیره",
@@ -121,5 +123,20 @@
   },
   "orderDetails": {
     "title": "جزئیات سفارش"
+  },
+  "editAddress": {
+    "newTitle": "ثبت آدرس جدید",
+    "editTitle": "ویرایش آدرس",
+    "titleLabel": "عنوان آدرس",
+    "titlePlaceholder": "مثلا: خونه",
+    "addressLabel": "جزئیات آدرس",
+    "addressPlaceholder": "خیابان، کوچه، پلاک، واحد"
+  },
+  "map": {
+    "title": "انتخاب موقعیت"
+  },
+  "addressList": {
+    "title": "انتخاب آدرس",
+    "new": "ثبت آدرس جدید"
   }
 }

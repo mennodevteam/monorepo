@@ -1,0 +1,12 @@
+#searchbox {
+  width: -webkit-fill-available;
+  color: var(--sys-on-surface);
+  
+  input {
+    height: 40px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: inherit;
+  }
+}
