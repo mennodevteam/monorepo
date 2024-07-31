@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
-import { Region, Shop } from '@menno/types';
+import { BusinessCategory, Region, Shop } from '@menno/types';
 import { COMMA, ENTER, P } from '@angular/cdk/keycodes';
 import { CropperOptions } from 'ngx-image-cropper';
 import { ShopService } from '../../../core/services/shop.service';
@@ -24,6 +24,7 @@ import { MatomoService } from '../../../core/services/matomo.service';
 })
 export class ShopPageComponent implements OnInit {
   form: FormGroup;
+  categories = Object.values(BusinessCategory);
   imageCropperResult?: { base64: string; file: File };
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   formBuilderData: FieldSection[];
@@ -66,6 +67,7 @@ export class ShopPageComponent implements OnInit {
 
     this.form = this.fb.group({
       title: [shop?.title, Validators.required],
+      businessCategory: [shop?.businessCategory, Validators.required],
       description: [shop?.description],
       instagram: [shop?.instagram],
       phones: [shop?.phones || []],

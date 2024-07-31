@@ -1,9 +1,7 @@
 @if (!searching()) {
   <app-top-app-bar [showActions]="true" />
-  <div max-center>
-    <app-header (searchClick)="searching.set(true)" />
-    <app-category-carousel />
-  </div>
+  <app-header (searchClick)="searching.set(true)" />
+  <app-category-carousel />
 } @else {
   <mat-toolbar id="searchbox-toolbar" fxLayout="row">
     <input
@@ -26,13 +24,9 @@
 </main>
 
 @if (cart.length()) {
-  <mat-toolbar
-    @flyInOutFromDown
-    fxLayout="row"
-    id="actionbar"
-    class="background-background"
-    p-md
-  >
-    <a mat-flat-button fxFlex routerLink="/cart" class="large" max-center>{{ 'cart.complete' | translate }}</a>
+  <mat-toolbar @flyInOutFromDown fxLayout="row" id="actionbar" class="background-background" p-md>
+    <a mat-flat-button fxFlex routerLink="/cart" class="large" max-center>{{
+      'cart.complete' | translate
+    }}</a>
   </mat-toolbar>
 }

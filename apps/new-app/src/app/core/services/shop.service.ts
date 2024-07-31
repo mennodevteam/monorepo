@@ -41,7 +41,7 @@ export class ShopService {
 
     if (shop) {
       if (shop.appConfig?.theme) {
-        this.themeService.setThemeFromColor(shop.appConfig.theme.primaryColor, shop.appConfig.themeMode);
+        this.themeService.setThemeFromColor(shop.appConfig.themeHex || shop.appConfig.theme.primaryColor, shop.appConfig.themeMode);
       }
 
       try {

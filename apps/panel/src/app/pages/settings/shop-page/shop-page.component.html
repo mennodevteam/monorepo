@@ -21,6 +21,14 @@
             <input matInput formControlName="title" required />
           </mat-form-field>
           <mat-form-field>
+            <mat-label> {{'shopPage.businessCategory' | translate}} </mat-label>
+            <mat-select matInput formControlName="businessCategory">
+              <mat-option *ngFor="let cat of categories" [value]="cat">
+                {{ cat | businessCategory }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
             <mat-label>{{ 'shopPage.description' | translate }}</mat-label>
             <input matInput formControlName="description" />
           </mat-form-field>

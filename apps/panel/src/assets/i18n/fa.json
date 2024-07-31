@@ -207,6 +207,7 @@
   "shopPage": {
     "baseSection": "اطلاعات پایه",
     "title": "عنوان مجموعه",
+    "businessCategory": "نوع مجموعه",
     "description": "توضیحات مجموعه",
     "descriptionHint": "توضیحات در صفحه اصلی به کاربر نمایش داده می‌شود.",
     "addressSection": "آدرس",
