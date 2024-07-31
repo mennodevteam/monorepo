@@ -1,7 +1,7 @@
 <app-top-app-bar title="{{ 'payment.title' | translate }}" [sticky]="true" [hideMenu]="true" />
 
 @if (cart.length()) {
-  <main fxLayout="column" fxLayoutGap="16" p-md>
+  <main fxLayout="column" fxLayoutGap="16" p-md max-center>
     @if (menu.type() === OrderType.Delivery) {
       @if (cart.address()) {
         <mat-list>
@@ -38,8 +38,8 @@
   </main>
 }
 
-<mat-toolbar fxLayout="column" fxLayoutAlign="center" id="actionbar" class="background-background" p-md>
-  <a mat-flat-button (click)="submit()" class="large" [disabled]="cart.saving()">
+<mat-toolbar fxLayout="row" fxLayoutAlign="center" id="actionbar" class="background-background" p-md>
+  <a mat-flat-button fxFlex (click)="submit()" class="large" [disabled]="cart.saving()" max-center>
     {{ 'order.add' | translate }} ({{ total() | menuCurrency }})
     @if (cart.saving()) {
       ...

@@ -1,6 +1,6 @@
 <app-top-app-bar title="{{ 'cart.title' | translate }}" [sticky]="true" [hideMenu]="true" />
 
-<main p-md fxLayout="column" fxLayoutGap="24">
+<main p-md fxLayout="column" fxLayoutGap="24" max-center>
   <app-product-items />
 
   <mat-form-field appearance="outline">
@@ -9,6 +9,6 @@
   </mat-form-field>
 </main>
 
-<mat-toolbar fxLayout="column" fxLayoutAlign="center" id="actionbar" class="background-background" p-md>
-  <a mat-flat-button (click)="submit()" class="large">{{ 'cart.complete' | translate }}</a>
+<mat-toolbar fxLayout="row" fxLayoutAlign="center" id="actionbar" class="background-background" p-md>
+  <a mat-flat-button fxFlex max-center (click)="submit()" class="large">{{ 'cart.complete' | translate }}</a>
 </mat-toolbar>

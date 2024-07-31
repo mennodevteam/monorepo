@@ -69,6 +69,10 @@ p {
 *[pb] {
   padding-bottom: 80px;
 }
+*[max-center] {
+  max-width: 960px;
+  margin: auto;
+}
 
 .mdc-button {
   border-radius: 8px !important;

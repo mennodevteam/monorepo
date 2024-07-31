@@ -1,4 +1,4 @@
-<mat-grid-list cols="2" rowHeight="1:1" gutterSize="16">
+<mat-grid-list [cols]="isDesktop ? 4 : 2" rowHeight="1:1" gutterSize="16">
   @for (product of category.products; track product.id; let isLast = $last) {
     <mat-grid-tile
       routerLink="product/{{ product.id }}"

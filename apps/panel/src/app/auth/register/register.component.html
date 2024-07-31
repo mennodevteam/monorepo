@@ -1,7 +1,7 @@
 <mat-toolbar color="accent">
   <h1>ثبت‌نام و دریافت رایگان منوی دیجیتال</h1>
 </mat-toolbar>
-<div class="container">
+<div class="container" max-center>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <mat-card>
       <mat-card-header>
@@ -124,76 +124,5 @@
       </mat-card-content>
     </mat-card>
     <button mat-flat-button color="primary" class="submit-button" [disabled]="loading">ثبت نام</button>
-    <!-- <div class="flex-col">
-      <h3>اطلاعات اولیه مجموعه</h3>
-      <mat-form-field appearance="outline">
-        <mat-label> نام مجموعه </mat-label>
-        <input matInput formControlName="title" required />
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label> شهر </mat-label>
-        <mat-select [disabled]="!regions" matInput formControlName="regionId">
-          <mat-option *ngFor="let region of regions || []" [value]="region.id">{{ region.title }}</mat-option>
-          <mat-option [value]="null">ایجاد شهر جدید</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field appearance="outline" *ngIf="form.controls['regionId'].value === null">
-        <mat-label> نام شهر </mat-label>
-        <input matInput formControlName="regionTitle" />
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label> شناسه (id) </mat-label>
-        <input matInput formControlName="username" class="ltr eng" required />
-        <mat-hint> متشکل از حروف انگلیسی کوچک و اعداد </mat-hint>
-      </mat-form-field>
-
-      <h3>اطلاعات مدیر مجموعه</h3>
-      <mat-form-field appearance="outline">
-        <mat-label> نام مدیر مجموعه </mat-label>
-        <input matInput formControlName="firstName" required />
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label> نام‌خانوادگی مدیر مجموعه </mat-label>
-        <input matInput formControlName="lastName" required />
-      </mat-form-field>
-    </div>
-
-    <div class="flex-col">
-      <h3>اطلاعات ورود به سیستم</h3>
-      <mat-form-field appearance="outline">
-        <mat-label> نام‌کاربری </mat-label>
-        <input matInput class="ltr eng" formControlName="loginUsername" required />
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label> رمز ورود </mat-label>
-        <input matInput class="ltr eng" formControlName="loginPassword" required />
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>تلفن همراه</mat-label>
-        <input matInput class="ltr" formControlName="mobilePhone" required />
-        <span spacer matSuffix></span>
-        <span matSuffix>0</span>
-        <span matSuffix>9</span>
-      </mat-form-field>
-      <p>
-        لطفا با استفاده از دکمه زیر کد‌ تاییدیه پیامک شده را دریافت کنید و در کادر زیر وارد کنید
-        <button
-          mat-stroked-button
-          color="primary"
-          [disabled]="otpStatus !== 'none'"
-          (click)="sentToken()"
-          type="button"
-        >
-          <span *ngIf="otpStatus === 'none'">ارسال کد</span>
-          <span *ngIf="otpStatus === 'sending'">درحال ارسال...</span>
-          <span *ngIf="otpStatus === 'sent'">ارسال مجدد ({{ otpTimer }})</span>
-        </button>
-      </p>
-      <mat-form-field appearance="outline">
-        <mat-label>کد تاییدیه</mat-label>
-        <input [disabled]="loading || otpStatus !== 'sent'" matInput formControlName="otp" required />
-      </mat-form-field>
-      <button mat-flat-button color="primary" class="submit-button">ثبت نام</button>
-    </div> -->
   </form>
 </div>

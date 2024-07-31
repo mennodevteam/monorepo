@@ -3,6 +3,15 @@
   padding-top: 100%;
   background-color: gray;
   position: relative;
+
+  @media only screen and (min-width: 960px) {
+    width: 400px;
+    height: 400px;
+    margin-top: 24px;
+    padding-top: 0;
+    flex: none;
+    border-radius: 16px;
+  }
 }
 button#back-button {
   position: fixed;
@@ -39,7 +48,7 @@ h1 {
   bottom: 0;
   left: 0;
   right: 0;
-  box-shadow: 0px -2px 11px 0px var(--sys-shadow);
+  // box-shadow: 0px -2px 11px 0px var(--sys-shadow);
   height: 88px;
   z-index: 100;
 }

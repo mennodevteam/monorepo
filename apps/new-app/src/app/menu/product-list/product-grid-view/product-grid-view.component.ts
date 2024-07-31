@@ -2,7 +2,8 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Product, ProductCategory } from '@menno/types';
 import { COMMON } from '../../../common';
-import { MatGridListModule } from '@angular/material/grid-list'
+import { MatGridListModule } from '@angular/material/grid-list';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-product-grid-view',
@@ -14,4 +15,7 @@ import { MatGridListModule } from '@angular/material/grid-list'
 export class ProductGridViewComponent {
   Product = Product;
   @Input() category: ProductCategory;
+  isDesktop = this.breakpoint.isMatched('(min-width: 800px)');
+
+  constructor(private breakpoint: BreakpointObserver) {}
 }

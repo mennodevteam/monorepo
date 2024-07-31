@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, signal } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, signal } from '@angular/core';
 import { CommonModule, PlatformLocation } from '@angular/common';
 import { COMMON } from '../../common';
 import { TopAppBarComponent } from '../../common/components';
@@ -19,10 +19,11 @@ declare let nmp_mapboxgl: any;
   templateUrl: './address-edit.component.html',
   styleUrl: './address-edit.component.scss',
 })
-export class AddressEditComponent implements AfterViewInit {
+export class AddressEditComponent implements AfterViewInit, OnDestroy {
   addressForm: FormGroup;
   address?: Address;
   saving = signal<boolean>(false);
+  timeout: any;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -43,7 +44,7 @@ export class AddressEditComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
+    this.timeout = setTimeout(() => {
       new nmp_mapboxgl.Map({
         mapType: nmp_mapboxgl.Map.mapTypes.neshanVectorNight,
         container: 'map',
@@ -60,7 +61,7 @@ export class AddressEditComponent implements AfterViewInit {
           show: false,
         },
       });
-    }, 300);
+    }, 800);
   }
 
   get coordinate() {
@@ -86,5 +87,9 @@ export class AddressEditComponent implements AfterViewInit {
       this.location.back();
       this.location.back();
     }
+  }
+
+  ngOnDestroy(): void {
+      if (this.timeout) clearTimeout(this.timeout);
   }
 }

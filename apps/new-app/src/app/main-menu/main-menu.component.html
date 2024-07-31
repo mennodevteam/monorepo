@@ -1,6 +1,6 @@
 <app-top-app-bar [hideMenu]="true" />
 
-<main p-md>
+<main p-md max-center>
   <mat-nav-list fxLayout="column" fxLayoutGap="8">
     @if (auth.isGuestUser) {
       <a mat-list-item class="surface-background" routerLink="/login">

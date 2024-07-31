@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { COMMON } from '../../common';
 import { TopAppBarComponent } from '../../common/components/top-app-bar/top-app-bar.component';
@@ -17,8 +17,9 @@ const DEFAULT_LOCATION = [51.389, 35.6892];
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss',
 })
-export class MapComponent implements AfterViewInit {
+export class MapComponent implements AfterViewInit, OnDestroy {
   map: any;
+  timeout: any
   constructor(
     private shopService: ShopService,
     private router: Router,
@@ -41,7 +42,7 @@ export class MapComponent implements AfterViewInit {
     else if (shop.region?.latitude && shop.region?.longitude)
       center = [shop.region.longitude, shop.region.latitude];
 
-    setTimeout(() => {
+    this.timeout = setTimeout(() => {
       this.map = new nmp_mapboxgl.Map({
         mapType: nmp_mapboxgl.Map.mapTypes.neshanVectorNight,
         container: 'map',
@@ -65,7 +66,7 @@ export class MapComponent implements AfterViewInit {
           this.map.setZoom(15);
         });
       }
-    }, 300);
+    }, 800);
   }
 
   get center() {
@@ -83,4 +84,8 @@ export class MapComponent implements AfterViewInit {
     if (query['lat'] && query['lng']) return [Number(query['lat']), query['lng']];
     return;
   }
+
+  ngOnDestroy(): void {
+    if (this.timeout) clearTimeout(this.timeout);
+}
 }
