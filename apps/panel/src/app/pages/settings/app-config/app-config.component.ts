@@ -5,14 +5,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { HomePage, MenuViewType, OrderType, Shop, Theme, ThemeMode } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { ShopService } from '../../../core/services/shop.service';
-import { MatChipInputEvent } from '@angular/material/chips';
 import { ENTER } from '@angular/cdk/keycodes';
 import { MatDialog } from '@angular/material/dialog';
 import { ImageCropperDialogComponent } from '../../../shared/dialogs/image-cropper-dialog/image-cropper-dialog.component';
 import { CropperOptions } from 'ngx-image-cropper';
 import { FilesService } from '../../../core/services/files.service';
-import { PersianNumberService } from '@menno/utils';
 import { MatomoService } from '../../../core/services/matomo.service';
+import { MenuService } from '../../../core/services/menu.service';
 
 @Component({
   selector: 'app-config',
@@ -32,7 +31,8 @@ export class AppConfigComponent {
   readonly separatorKeysCodes = [ENTER] as const;
 
   constructor(
-    private shopService: ShopService,
+    public shopService: ShopService,
+    public menu: MenuService,
     private http: HttpClient,
     private snack: MatSnackBar,
     private translate: TranslateService,
@@ -49,20 +49,9 @@ export class AppConfigComponent {
     this.form = new FormGroup({
       theme: new FormControl(this.appConfig.theme),
       themeMode: new FormControl(this.appConfig.themeMode),
-      disableOrdering: new FormControl(this.appConfig.disableOrdering),
-      disablePayment: new FormControl(this.appConfig.disablePayment),
-      disableOrderingText: new FormControl(this.appConfig.disableOrderingText),
-      orderingTypes: new FormControl(this.appConfig.orderingTypes),
-      selectableOrderTypes: new FormControl(this.appConfig.selectableOrderTypes),
-      requiredPayment: new FormControl(this.appConfig.requiredPayment),
-      requiredRegister: new FormControl(this.appConfig.requiredRegister),
       menuViewType: new FormControl(this.appConfig.menuViewType),
       homePage: new FormControl(this.appConfig.homePage),
-      disableOrderingOnClose: new FormControl(this.appConfig.disableOrderingOnClose),
-      ding: new FormControl(this.appConfig.ding),
-      dings: new FormControl(this.appConfig.dings || []),
       menuCols: new FormControl(this.appConfig.menuCols, [Validators.min(2), Validators.max(4)]),
-      smsOnNewOrder: new FormControl(this.appConfig?.smsOnNewOrder || [])
     });
 
     this.http.get<Theme[]>('appConfigs/themes').subscribe((themes) => {
@@ -85,7 +74,7 @@ export class AppConfigComponent {
       .open(ImageCropperDialogComponent, {
         data: <CropperOptions>{
           resizeToWidth: 800,
-          aspectRatio: 390 / 844,
+          aspectRatio: 390 / 560,
         },
       })
       .afterClosed()
@@ -98,9 +87,10 @@ export class AppConfigComponent {
             const imageFile = await this.fileService.saveFileImage(savedFile.key, 'hr-cover');
             await this.shopService.saveShop({
               verticalCover: savedFile.key,
-              verticalCoverImage: imageFile
+              verticalCoverImage: imageFile,
             } as Shop);
             this.shopService.shop!.verticalCover = savedFile.key;
+            if (imageFile) this.shopService.shop!.verticalCoverImage = imageFile;
             this.snack.open(this.translate.instant('appConfig.coverSaved'), '', {
               panelClass: 'success',
               duration: 1000,
@@ -136,42 +126,5 @@ export class AppConfigComponent {
     this.form.markAsUntouched();
 
     this.matomo.trackEvent('setting', 'app config', 'save changes');
-
-  }
-
-  addDing(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-    if (value) {
-      this.form.get('dings')?.value.push(value);
-    }
-    event.chipInput!.clear();
-    this.form.markAsDirty();
-  }
-
-  removeDing(phone: string): void {
-    const index = this.form.get('dings')?.value?.indexOf(phone);
-
-    if (index >= 0) {
-      this.form.get('dings')?.value.splice(index, 1);
-    }
-    this.form.markAsDirty();
-  }
-
-  addSmsOnNewOrder(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-    if (value) {
-      this.form.get('smsOnNewOrder')?.value.push(PersianNumberService.toEnglish(value));
-    }
-    event.chipInput!.clear();
-    this.form.markAsDirty();
-  }
-
-  removeSmsOnNewOrder(phone: string): void {
-    const index = this.form.get('smsOnNewOrder')?.value?.indexOf(phone);
-
-    if (index >= 0) {
-      this.form.get('smsOnNewOrder')?.value.splice(index, 1);
-    }
-    this.form.markAsDirty();
   }
 }

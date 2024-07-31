@@ -22,7 +22,7 @@ import { HttpStatusCode } from '@angular/common/http';
 export class SettingsComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
-    private shopService: ShopService,
+    public shopService: ShopService,
     private snack: MatSnackBar,
     private translate: TranslateService,
     private auth: AuthService

@@ -14,8 +14,13 @@
         </a>
         <mat-divider></mat-divider>
         <a mat-list-item routerLink="app-config">
-          <i matListItemIcon class="fa-solid fa-mobile-screen-button"></i>
+          <i matListItemIcon class="fa-solid fa-palette"></i>
           <span matListItemTitle>{{ 'settings.appConfig' | translate }}</span>
+        </a>
+        <mat-divider />
+        <a mat-list-item routerLink="order-config">
+          <i matListItemIcon class="fa-solid fa-{{shopService.orderIcon}}"></i>
+          <span matListItemTitle>{{ 'settings.orderConfig' | translate }}</span>
         </a>
         <mat-divider></mat-divider>
         <a mat-list-item routerLink="sms">

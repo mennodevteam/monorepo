@@ -38,7 +38,7 @@ export class HomeComponent {
   };
 
   constructor(
-    private shopService: ShopService,
+    public shopService: ShopService,
     private dialog: MatDialog,
     private translate: TranslateService,
     private snack: MatSnackBar,

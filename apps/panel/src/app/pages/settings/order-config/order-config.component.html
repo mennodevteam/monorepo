@@ -1,0 +1,230 @@
+<form [formGroup]="form">
+  <mat-toolbar class="page-toolbar">
+    <button mat-icon-button goBack>
+      <i class="fa-regular fa-arrow-right fa-large"></i>
+    </button>
+    <h1 fxHide.lt-md="true">{{ 'settings.orderConfig' | translate }}</h1>
+    <span fxFlex></span>
+    <button mat-flat-button color="primary" (click)="save()" [disabled]="loading || saving || !form.dirty">
+      {{ 'app.save' | translate }}
+    </button>
+  </mat-toolbar>
+  <mat-spinner *ngIf="loading" [diameter]="36"></mat-spinner>
+  <main class="form-page-layout content-wrapper" *ngIf="!loading">
+    <div class="flex-col">
+      <mat-card>
+        <mat-toolbar>
+          <b flex>
+            {{ 'appConfig.disableOrdering' | translate }}
+          </b>
+          <mat-button-toggle-group formControlName="disableOrdering">
+            <mat-button-toggle [value]="false">{{ 'app.active' | translate }}</mat-button-toggle>
+            <mat-button-toggle [value]="true" color="warn">{{
+              'app.inactive' | translate
+            }}</mat-button-toggle>
+          </mat-button-toggle-group>
+        </mat-toolbar>
+        <mat-card-content>
+          @if (form.controls['disableOrdering']?.value) {
+            <br />
+            <mat-form-field *ngIf="form.controls['disableOrdering']?.value">
+              <mat-label>{{ 'appConfig.disableOrderingText' | translate }}</mat-label>
+              <textarea matInput formControlName="disableOrderingText" rows="2"></textarea>
+              <mat-hint>{{ 'app.optional' | translate }}</mat-hint>
+            </mat-form-field>
+            <span spacer></span>
+          } @else {
+            <p>{{ 'appConfig.orderingTypesDescription' | translate }}</p>
+
+            <mat-form-field *ngIf="!form.controls['disableOrdering']?.value">
+              <mat-label>{{ 'appConfig.orderingTypes' | translate }}</mat-label>
+              <mat-select formControlName="orderingTypes" multiple>
+                @if (shopService.isRestaurantOrCoffeeShop) {
+                  <mat-option [value]="OrderType.DineIn">
+                    {{ 'orderType.dineIn' | translate }}
+                  </mat-option>
+                }
+                <mat-option [value]="OrderType.Takeaway">
+                  {{ 'orderType.takeaway' | translate }}
+                </mat-option>
+                <mat-option [value]="OrderType.Delivery">
+                  {{ 'orderType.delivery' | translate }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-checkbox formControlName="disableOrderingOnClose" color="warn">
+              {{ 'appConfig.disableOrderingOnClose' | translate }}
+            </mat-checkbox>
+          }
+          <span spacer></span>
+
+          <mat-divider />
+          <p>
+            {{
+              'appConfig.selectableOrderTypesDescription'
+                | translate: { shop: shopService.businessCategoryTitle }
+            }}
+          </p>
+          <mat-form-field>
+            <mat-label>{{ 'appConfig.selectableOrderTypes' | translate }}</mat-label>
+            <mat-select formControlName="selectableOrderTypes" multiple>
+              @if (shopService.isRestaurantOrCoffeeShop) {
+                <mat-option [value]="OrderType.DineIn">
+                  {{ 'orderType.dineIn' | translate }}
+                </mat-option>
+              }
+              <mat-option [value]="OrderType.Takeaway">
+                {{ 'orderType.takeaway' | translate }}
+              </mat-option>
+              <mat-option [value]="OrderType.Delivery">
+                {{ 'orderType.delivery' | translate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card>
+        <mat-toolbar>
+          <b flex>
+            {{ 'appConfig.registering' | translate }}
+          </b>
+        </mat-toolbar>
+        <mat-card-content>
+          <span spacer></span>
+
+          <p>{{ 'appConfig.requiredRegisterDescription' | translate }}</p>
+          <mat-form-field>
+            <mat-label>{{ 'appConfig.requiredRegister' | translate }}</mat-label>
+            <mat-select formControlName="requiredRegister" multiple>
+              @if (shopService.isRestaurantOrCoffeeShop) {
+                <mat-option [value]="OrderType.DineIn">
+                  {{ 'orderType.dineIn' | translate }}
+                </mat-option>
+              }
+              <mat-option [value]="OrderType.Takeaway">
+                {{ 'orderType.takeaway' | translate }}
+              </mat-option>
+              <mat-option [value]="OrderType.Delivery">
+                {{ 'orderType.delivery' | translate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+
+      @if (shopService.shop?.paymentGateway) {
+        <mat-card>
+          <mat-toolbar>
+            <b class="flex">
+              {{ 'appConfig.disablePayment' | translate }}
+            </b>
+            <mat-button-toggle-group formControlName="disablePayment">
+              <mat-button-toggle [value]="false">{{ 'app.active' | translate }}</mat-button-toggle>
+              <mat-button-toggle [value]="true" color="warn">{{
+                'app.inactive' | translate
+              }}</mat-button-toggle>
+            </mat-button-toggle-group>
+          </mat-toolbar>
+          @if (!form.controls['disablePayment']?.value) {
+            <span spacer-2x></span>
+            <mat-card-content>
+              <mat-form-field>
+                <mat-label>{{ 'appConfig.requiredPayment' | translate }}</mat-label>
+                <mat-select formControlName="requiredPayment" multiple>
+                  @if (shopService.isRestaurantOrCoffeeShop) {
+                    <mat-option [value]="OrderType.DineIn">
+                      {{ 'orderType.dineIn' | translate }}
+                    </mat-option>
+                  }
+                  <mat-option [value]="OrderType.Takeaway">
+                    {{ 'orderType.takeaway' | translate }}
+                  </mat-option>
+                  <mat-option [value]="OrderType.Delivery">
+                    {{ 'orderType.delivery' | translate }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-card-content>
+          }
+        </mat-card>
+      }
+
+      @if (shopService.isRestaurantOrCoffeeShop) {
+        <mat-card>
+          <mat-toolbar>
+            <b class="flex">
+              {{ 'appConfig.ding' | translate }}
+            </b>
+            <mat-button-toggle-group formControlName="ding">
+              <mat-button-toggle [value]="true">{{ 'app.active' | translate }}</mat-button-toggle>
+              <mat-button-toggle [value]="false" color="warn">{{
+                'app.inactive' | translate
+              }}</mat-button-toggle>
+            </mat-button-toggle-group>
+          </mat-toolbar>
+          <span spacer-2x></span>
+          <mat-card-content *ngIf="form.controls['ding']?.value">
+            <mat-form-field>
+              <mat-label>{{ 'appConfig.dingsLabel' | translate }}</mat-label>
+              <mat-chip-grid #chipGrid>
+                <mat-chip-row
+                  *ngFor="let phone of form.controls['dings'].value"
+                  (removed)="removeDing(phone)"
+                >
+                  {{ phone }}
+                  <button matChipRemove>
+                    <i class="fa-regular fa-close"></i>
+                  </button>
+                </mat-chip-row>
+                <input
+                  placeholder="{{ 'appConfig.dingsPlaceholder' | translate }}"
+                  [matChipInputFor]="chipGrid"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  [matChipInputAddOnBlur]="true"
+                  (matChipInputTokenEnd)="addDing($event)"
+                />
+              </mat-chip-grid>
+              <mat-hint>{{ 'appConfig.dingsHint' | translate }}</mat-hint>
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+      }
+
+      <mat-card>
+        <mat-toolbar>
+          <b class="flex">
+            {{ 'appConfig.smsOnNewOrder' | translate }}
+          </b>
+        </mat-toolbar>
+        <mat-card-content>
+          <p>
+            {{ 'appConfig.smsOnNewOrderDescription' | translate }}
+          </p>
+          <mat-form-field>
+            <mat-label>{{ 'appConfig.smsOnNewOrderLabel' | translate }}</mat-label>
+            <mat-chip-grid #chipGrid>
+              <mat-chip-row
+                *ngFor="let phone of form.controls['smsOnNewOrder'].value"
+                (removed)="removeSmsOnNewOrder(phone)"
+              >
+                {{ phone }}
+                <button matChipRemove>
+                  <i class="fa-regular fa-close"></i>
+                </button>
+              </mat-chip-row>
+              <input
+                placeholder="{{ 'appConfig.smsOnNewOrderPlaceholder' | translate }}"
+                [matChipInputFor]="chipGrid"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                [matChipInputAddOnBlur]="true"
+                (matChipInputTokenEnd)="addSmsOnNewOrder($event)"
+              />
+            </mat-chip-grid>
+            <mat-hint>{{ 'appConfig.smsOnNewOrderHint' | translate }}</mat-hint>
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </main>
+</form>

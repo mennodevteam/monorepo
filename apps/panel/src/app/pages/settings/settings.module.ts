@@ -19,10 +19,12 @@ import { QrComponent } from './qr/qr.component';
 import { OpeningHoursDialogComponent } from './shop-page/opening-hours-dialog/opening-hours-dialog.component';
 import { SmsComponent } from './sms/sms.component';
 import { OrderMessagesTableComponent } from './sms/order-messages-table/order-messages-table.component';
+import { OrderConfigComponent } from './order-config/order-config.component';
 
 @NgModule({
   declarations: [
     ShopPageComponent,
+    OrderConfigComponent,
     SettingsComponent,
     AppConfigComponent,
     PrintersComponent,

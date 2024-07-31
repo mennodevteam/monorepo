@@ -9,6 +9,8 @@ import { ShopPageComponent } from './shop-page/shop-page.component';
 import { UserManagementComponent } from './user-management/user-management.component';
 import { QrComponent } from './qr/qr.component';
 import { SmsComponent } from './sms/sms.component';
+import { OrderConfig } from '@menno/types';
+import { OrderConfigComponent } from './order-config/order-config.component';
 
 export const settingsRoutes: Route[] = [
   {
@@ -18,6 +20,7 @@ export const settingsRoutes: Route[] = [
   { path: 'shop', component: ShopPageComponent },
   { path: 'delivery-areas', component: DeliveryAreasPageComponent },
   { path: 'app-config', component: AppConfigComponent },
+  { path: 'order-config', component: OrderConfigComponent },
   { path: 'users', component: UserManagementComponent },
   { path: 'qr', component: QrComponent },
   { path: 'sms', component: SmsComponent },

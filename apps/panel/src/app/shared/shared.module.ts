@@ -72,6 +72,7 @@ import { TablePipe } from './pipes/table.pipe';
 import { SelectIsManualCardComponent } from './components/select-is-manual-card/select-is-manual-card.component';
 import { MatomoClickDirective } from './directives/matomo-click.directive';
 import { businessCategoryPipe } from './pipes/business-category.pipe';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -117,6 +118,7 @@ import { businessCategoryPipe } from './pipes/business-category.pipe';
     FormsModule,
     RouterLink,
     DragDropModule,
+    FlexLayoutModule,
     ReactiveFormsModule,
     LayoutModule,
     ImageCropperModule,
@@ -154,6 +156,7 @@ import { businessCategoryPipe } from './pipes/business-category.pipe';
   exports: [
     AdvancedPromptDialogComponent,
     ImageCropperDialogComponent,
+    FlexLayoutModule,
     GoBackDirective,
     ScreenDirective,
     SanitizeUrlPipe,

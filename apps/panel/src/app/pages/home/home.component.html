@@ -113,7 +113,7 @@
             </a>
             <mat-divider></mat-divider>
             <a mat-list-item routerLink="/orders">
-              <i matListItemIcon class="fa-solid mat-icon fa-utensils"></i>
+              <i matListItemIcon class="fa-solid mat-icon fa-{{ shopService.orderIcon }}"></i>
               <span matListItemTitle>{{ 'home.order' | translate }}</span>
               <span matListItemMeta class="red" *ngIf="plugin?.plugins?.indexOf(Plugin.Ordering) == -1">
                 {{ 'home.upgradePlan' | translate }}
@@ -148,7 +148,7 @@
             <mat-list-item>
               <span matListItemLine>{{ 'home.smsAccountCharge' | translate }}</span>
               <span matListItemMeta [ngClass]="{ red: shop.smsAccount.charge <= 1000 }">{{
-                shop.smsAccount.charge | menuCurrency: '1.0-0':true
+                shop.smsAccount.charge | menuCurrency: '1.0-0' : true
               }}</span>
             </mat-list-item>
             <mat-list-item>
@@ -182,6 +182,14 @@
             <a mat-list-item routerLink="/settings/app-config">
               <i matListItemIcon class="fa-solid mat-icon fa-palette"></i>
               <span matListItemTitle>{{ 'home.appConfig' | translate }}</span>
+              <div matListItemMeta class="secondary">
+                <i class="fa-regular fa-angle-left"></i>
+              </div>
+            </a>
+            <mat-divider></mat-divider>
+            <a mat-list-item routerLink="/settings/order-config">
+              <i matListItemIcon class="fa-solid mat-icon fa-{{ shopService.orderIcon }}"></i>
+              <span matListItemTitle>{{ 'home.orderConfig' | translate }}</span>
               <div matListItemMeta class="secondary">
                 <i class="fa-regular fa-angle-left"></i>
               </div>

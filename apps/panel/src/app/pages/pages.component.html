@@ -16,10 +16,15 @@
       {{ 'shell.menu' | translate }}
     </button>
     <button mat-menu-item routerLink="orders" [matomoClick]="['top app bar', 'tabs', 'orders']">
-      <i class="fa-solid mat-icon fa-utensils"></i>
+      <i class="fa-solid mat-icon fa-{{ shopService.orderIcon }}"></i>
       {{ 'shell.orders' | translate }}
     </button>
-    <button mat-menu-item routerLink="club" [disabled]="isClubDisabled" [matomoClick]="['top app bar', 'tabs', 'club']">
+    <button
+      mat-menu-item
+      routerLink="club"
+      [disabled]="isClubDisabled"
+      [matomoClick]="['top app bar', 'tabs', 'club']"
+    >
       <i class="fa-solid mat-icon fa-crown"></i>
       {{ 'shell.club' | translate }}
     </button>
@@ -34,7 +39,12 @@
     <i class="fa-solid fa-home"></i>
     {{ 'shell.home' | translate }}
   </button>
-  <button mat-button routerLink="dashboard" class="hide-xs" [matomoClick]="['top app bar', 'tabs', 'dashboard']">
+  <button
+    mat-button
+    routerLink="dashboard"
+    class="hide-xs"
+    [matomoClick]="['top app bar', 'tabs', 'dashboard']"
+  >
     <i class="fa-solid fa-chart-pie"></i>
     {{ 'shell.dashboard' | translate }}
   </button>
@@ -43,7 +53,7 @@
     {{ 'shell.menu' | translate }}
   </button>
   <button mat-button routerLink="orders" class="hide-xs" [matomoClick]="['top app bar', 'tabs', 'orders']">
-    <i class="fa-solid fa-utensils"></i>
+    <i class="fa-solid fa-{{ shopService.orderIcon }}"></i>
     {{ 'shell.orders' | translate }}
   </button>
   <button
@@ -57,7 +67,12 @@
     {{ 'shell.club' | translate }}
   </button>
   <div flex></div>
-  <button mat-flat-button id="add-order" routerLink="/pos" [matomoClick]="['order', 'pos', 'add order top app bar click']">
+  <button
+    mat-flat-button
+    id="add-order"
+    routerLink="/pos"
+    [matomoClick]="['order', 'pos', 'add order top app bar click']"
+  >
     <i class="fa-solid fa-plus-circle"></i>
     {{ 'shell.addOrder' | translate }}
   </button>
@@ -91,14 +106,19 @@
     <mat-divider></mat-divider>
     <button
       mat-menu-item
-      routerLink="/settings/app-config"
+      routerLink="/settings/order-config"
       [matomoClick]="['top app bar', 'app config click']"
     >
       <i class="fa-solid mat-icon fa-gear"></i>
       {{ 'shell.appConfig' | translate }}
     </button>
   </mat-menu>
-  <button mat-icon-button routerLink="settings" class="hide-xs" [matomoClick]="['top app bar', 'settings click']">
+  <button
+    mat-icon-button
+    routerLink="settings"
+    class="hide-xs"
+    [matomoClick]="['top app bar', 'settings click']"
+  >
     <i class="fa-solid fa-gear"></i>
   </button>
   <button

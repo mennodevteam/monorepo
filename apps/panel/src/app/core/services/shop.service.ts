@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Shop, ShopUser, ThirdParty } from '@menno/types';
+import { BusinessCategory, Shop, ShopUser, ThirdParty } from '@menno/types';
 import { environment } from '../../../environments/environment';
 import { BehaviorSubject } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 declare var dataLayer: any[];
 
 @Injectable({
@@ -11,7 +12,10 @@ declare var dataLayer: any[];
 export class ShopService {
   private shop$: BehaviorSubject<Shop | null>;
   private _loading = true;
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private translate: TranslateService,
+  ) {
     this.shop$ = new BehaviorSubject<Shop | null>(null);
     this.loadShop();
     setInterval(() => {
@@ -34,7 +38,7 @@ export class ShopService {
       const shop = await this.http.get<Shop>('shops').toPromise();
       if (shop) {
         this.shop$.next(shop);
-        
+
         dataLayer.push({
           event: 'setShopInfo',
           username: shop.username,
@@ -78,5 +82,26 @@ export class ShopService {
 
   async removeShopUser(shopUserId: string): Promise<void> {
     await this.http.delete(`shopUsers/${shopUserId}`).toPromise();
+  }
+
+  get businessCategoryTitle() {
+    return this.translate.instant(
+      `shopPage.category.${this.shop?.businessCategory || BusinessCategory.Other}`,
+    );
+  }
+
+  get isRestaurantOrCoffeeShop() {
+    return (
+      !this.shop?.businessCategory ||
+      [
+        BusinessCategory.Cafe,
+        BusinessCategory.Restaurant,
+        BusinessCategory.CafeRestaurant,
+      ].indexOf(this.shop.businessCategory) > -1
+    );
+  }
+
+  get orderIcon() {
+    return this.isRestaurantOrCoffeeShop ? 'utensils' : 'receipt';
   }
 }

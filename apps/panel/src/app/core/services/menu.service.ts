@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Menu, MenuCost, Product, ProductCategory, Shop } from '@menno/types';
+import { BusinessCategory, Menu, MenuCost, Product, ProductCategory, Shop } from '@menno/types';
 import { BehaviorSubject } from 'rxjs';
+import { ShopService } from './shop.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +12,11 @@ export class MenuService {
   private menu$: BehaviorSubject<Menu | null>;
   private _baseMenu: Menu | undefined;
   private _loading = true;
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private shopService: ShopService,
+    private translate: TranslateService,
+  ) {
     this.menu$ = new BehaviorSubject<Menu | null>(null);
     this.loadMenu();
     setInterval(() => {
@@ -176,6 +182,11 @@ export class MenuService {
       }
     }
     return res;
+  }
+  get businessCategoryTitle() {
+    return this.translate.instant(
+      `menu.category.${this.shopService.shop?.businessCategory || BusinessCategory.Cafe}`,
+    );
   }
 
   sync() {

@@ -3,7 +3,8 @@
     <button mat-icon-button goBack>
       <i class="fa-regular fa-arrow-right fa-large"></i>
     </button>
-    <h1 flex>{{ 'settings.appConfig' | translate }}</h1>
+    <h1 fxHide.lt-md="true">{{ 'settings.appConfig' | translate }}</h1>
+    <span fxFlex></span>
     <button mat-stroked-button color="primary" (click)="openApp()">
       {{ 'shell.openApp' | translate }}
     </button>
@@ -21,49 +22,52 @@
           </b>
         </mat-toolbar>
         <mat-card-content>
-          <p>
-            {{ 'appConfig.homeDescription' | translate }}
-          </p>
-          <div class="image-options">
-            <div
-              class="image-option"
-              [class.selected]="form.value?.homePage === HomePage.Info"
-              (click)="form.controls['homePage'].setValue(HomePage.Info)"
-            >
+          <div fxLayout="row" fxLayout.sm="column">
+            <div fxFlex>
               <p>
-                {{ 'appConfig.homePageInfo' | translate }}
+                {{ 'appConfig.homeDescription' | translate }}
               </p>
-              <img src="assets/images/screenshots/home.jpg" />
+              <mat-radio-group formControlName="homePage" fxLayout="column">
+                <mat-radio-button [value]="HomePage.Menu">{{ menu.businessCategoryTitle }}</mat-radio-button>
+                <mat-radio-button [value]="HomePage.Welcome">{{
+                  'appConfig.homePageWelcome' | translate
+                }}</mat-radio-button>
+              </mat-radio-group>
+              @if (form.value?.homePage === HomePage.Welcome) {
+                <div style="padding: 24px">
+                  {{ 'appConfig.homePageCover' | translate }}
+                  <button
+                    mat-button
+                    color="primary"
+                    type="button"
+                    (click)="upload()"
+                    [disabled]="savingCover"
+                  >
+                    <i class="fa-regular fa-upload"></i>
+                    {{ 'app.upload' | translate }}
+                  </button>
+                  <img
+                    style="display: block; border-radius: 16px; width: 200px"
+                    [imageLoader]="shopService.shop?.verticalCover"
+                    [imageFile]="shopService.shop?.verticalCoverImage"
+                    [imageSize]="'sm'"
+                  />
+                </div>
+              }
             </div>
-            <div
-              class="image-option"
-              [class.selected]="form.value?.homePage === HomePage.Welcome"
-              (click)="form.controls['homePage'].setValue(HomePage.Welcome)"
-            >
-              <p>
-                {{ 'appConfig.homePageWelcome' | translate }}
-              </p>
-              <img src="assets/images/screenshots/welcome.jpg" />
-            </div>
-            <div
-              class="image-option"
-              [class.selected]="form.value?.homePage === HomePage.Menu"
-              (click)="form.controls['homePage'].setValue(HomePage.Menu)"
-            >
-              <p>
-                {{ 'appConfig.homePageMenu' | translate }}
-              </p>
-              <img src="assets/images/screenshots/menu.jpg" />
+            <div class="image-section" fxFlex="none">
+              @switch (form.value?.homePage) {
+                @case (HomePage.Welcome) {
+                  <img src="assets/images/screenshots/welcome.jpg" />
+                }
+                @default {
+                  <img src="assets/images/screenshots/menu.jpg" />
+                }
+              }
             </div>
           </div>
         </mat-card-content>
-        <mat-card-actions *ngIf="form.value?.homePage === HomePage.Welcome">
-          {{ 'appConfig.homePageCover' | translate }}
-          <button mat-button color="primary" type="button" (click)="upload()" [disabled]="savingCover">
-            <i class="fa-regular fa-upload"></i>
-            {{ 'app.upload' | translate }}
-          </button>
-        </mat-card-actions>
+        <mat-card-actions *ngIf="form.value?.homePage === HomePage.Welcome"> </mat-card-actions>
       </mat-card>
 
       <mat-card>
@@ -74,52 +78,39 @@
         </mat-toolbar>
         <span spacer-2x></span>
         <mat-card-content>
-          <mat-form-field>
-            <mat-label>{{ 'appConfig.theme' | translate }}</mat-label>
-            <mat-select formControlName="theme">
-              <mat-option *ngFor="let t of themes" [value]="t">
-                <i class="fa-solid fa-circle" [style.color]="t.primaryColor"></i>
-                {{ t.title }}
-              </mat-option>
-            </mat-select>
-            <i
-              matSuffix
-              [style.color]="form.controls['theme'].value?.primaryColor"
-              class="fa-solid fa-circle"
-              style="width: 48px; text-align: center"
-            ></i>
-          </mat-form-field>
-          <h5>{{ 'appConfig.themeMode' | translate }}</h5>
-          <div class="image-options">
-            <div
-              class="image-option"
-              [class.selected]="form.value?.themeMode === ThemeMode.Dark"
-              (click)="form.controls['themeMode'].setValue(ThemeMode.Dark)"
-            >
-              <p>
-                {{ 'appConfig.themeModeDark' | translate }}
-              </p>
-              <img src="assets/images/screenshots/menu.jpg" />
+          <div fxLayout="row" fxLayout.sm="column">
+            <div fxFlex>
+              <mat-form-field>
+                <mat-label>{{ 'appConfig.theme' | translate }}</mat-label>
+                <mat-select formControlName="theme">
+                  <mat-option *ngFor="let t of themes" [value]="t">
+                    <i class="fa-solid fa-circle" [style.color]="t.primaryColor"></i>
+                    {{ t.title }}
+                  </mat-option>
+                </mat-select>
+                <i
+                  matSuffix
+                  [style.color]="form.controls['theme'].value?.primaryColor"
+                  class="fa-solid fa-circle"
+                  style="width: 48px; text-align: center"
+                ></i>
+              </mat-form-field>
+              <h5>{{ 'appConfig.themeMode' | translate }}</h5>
+              <mat-radio-group formControlName="themeMode" fxLayout="column">
+                <mat-radio-button [value]="ThemeMode.Dark">
+                  {{ 'appConfig.themeModeDark' | translate }}
+                </mat-radio-button>
+                <mat-radio-button [value]="ThemeMode.Light">
+                  {{ 'appConfig.themeModeLight' | translate }}
+                </mat-radio-button>
+              </mat-radio-group>
             </div>
-            <div
-              class="image-option"
-              [class.selected]="form.value?.themeMode === ThemeMode.Light"
-              (click)="form.controls['themeMode'].setValue(ThemeMode.Light)"
-            >
-              <p>
-                {{ 'appConfig.themeModeLight' | translate }}
-              </p>
-              <img src="assets/images/screenshots/menu light.jpg" />
-            </div>
-            <div
-              class="image-option"
-              [class.selected]="form.value?.themeMode === ThemeMode.Auto"
-              (click)="form.controls['themeMode'].setValue(ThemeMode.Auto)"
-            >
-              <p>
-                {{ 'appConfig.themeModeAuto' | translate }}
-              </p>
-              <img src="assets/images/screenshots/theme auto.jpg" />
+            <div class="image-section" fxFlex="none">
+              @if (form.value?.themeMode === ThemeMode.Light) {
+                <img style="border: 1px solid gray" src="assets/images/screenshots/menu light.jpg" />
+              } @else {
+                <img src="assets/images/screenshots/menu.jpg" />
+              }
             </div>
           </div>
         </mat-card-content>
@@ -127,251 +118,38 @@
 
       <mat-card>
         <mat-toolbar>
-          <b class="flex">
-            {{ 'appConfig.menuSection' | translate }}
-          </b>
+          <b class="flex"> {{ 'appConfig.menuSection' | translate }} {{ menu.businessCategoryTitle }} </b>
         </mat-toolbar>
         <span spacer-2x></span>
         <mat-card-content>
-          <div class="image-options">
-            <div
-              class="image-option"
-              [class.selected]="form.value?.menuViewType === MenuViewType.Grid"
-              (click)="form.controls['menuViewType'].setValue(MenuViewType.Grid)"
-            >
-              <p>
-                {{ 'appConfig.menuViewTypeGrid' | translate }}
-              </p>
-              <img src="assets/images/screenshots/grid.jpg" />
+          <div fxLayout="row" fxLayout.sm="column">
+            <div fxFlex>
+              <mat-radio-group formControlName="menuViewType" fxLayout="column">
+                <mat-radio-button [value]="MenuViewType.Grid">{{
+                  'appConfig.menuViewTypeGrid' | translate
+                }}</mat-radio-button>
+                <mat-radio-button [value]="MenuViewType.Card">{{
+                  'appConfig.menuViewTypeCard' | translate
+                }}</mat-radio-button>
+                <mat-radio-button [value]="MenuViewType.Compact">{{
+                  'appConfig.menuViewTypeCompact' | translate
+                }}</mat-radio-button>
+              </mat-radio-group>
             </div>
-            <div
-              class="image-option"
-              [class.selected]="form.value?.menuViewType === MenuViewType.Card"
-              (click)="form.controls['menuViewType'].setValue(MenuViewType.Card)"
-            >
-              <p>
-                {{ 'appConfig.menuViewTypeCard' | translate }}
-              </p>
-              <img src="assets/images/screenshots/card.jpg" />
-            </div>
-            <div
-              class="image-option"
-              [class.selected]="form.value?.menuViewType === MenuViewType.Compact"
-              (click)="form.controls['menuViewType'].setValue(MenuViewType.Compact)"
-            >
-              <p>
-                {{ 'appConfig.menuViewTypeCompact' | translate }}
-              </p>
-              <img src="assets/images/screenshots/compact.jpg" />
-            </div>
-            <div
-              class="image-option"
-              [class.selected]="form.value?.menuViewType === MenuViewType.Manual"
-              (click)="form.controls['menuViewType'].setValue(MenuViewType.Manual)"
-            >
-              <p>
-                {{ 'appConfig.menuViewTypeManual' | translate }}
-              </p>
-              <img src="assets/images/screenshots/menu manual.jpg" />
+            <div class="image-section" fxFlex="none">
+              @switch (form.value?.menuViewType) {
+                @case (MenuViewType.Card) {
+                  <img src="assets/images/screenshots/card.jpg" />
+                }
+                @case (MenuViewType.Compact) {
+                  <img src="assets/images/screenshots/compact.jpg" />
+                }
+                @default {
+                  <img src="assets/images/screenshots/menu.jpg" />
+                }
+              }
             </div>
           </div>
-          <span spacer-2x></span>
-          <ng-container>
-            <mat-form-field>
-              <mat-label>{{ 'appConfig.menuCols' | translate }}</mat-label>
-              <mat-select formControlName="menuCols">
-                <mat-option [value]="2">
-                  {{ 'appConfig.menuColsText' | translate: { value: 2 } }}
-                </mat-option>
-                <mat-option [value]="3">
-                  {{ 'appConfig.menuColsText' | translate: { value: 3 } }}
-                </mat-option>
-                <mat-option [value]="4">
-                  {{ 'appConfig.menuColsText' | translate: { value: 4 } }}
-                </mat-option>
-              </mat-select>
-              <mat-hint>{{ 'appConfig.menuColsHint' | translate }}</mat-hint>
-            </mat-form-field>
-          </ng-container>
-        </mat-card-content>
-      </mat-card>
-    </div>
-
-    <div class="static-col">
-      <mat-card>
-        <mat-toolbar>
-          <b flex>
-            {{ 'appConfig.disableOrdering' | translate }}
-          </b>
-          <mat-button-toggle-group formControlName="disableOrdering">
-            <mat-button-toggle [value]="false">{{ 'app.active' | translate }}</mat-button-toggle>
-            <mat-button-toggle [value]="true" color="warn">{{
-              'app.inactive' | translate
-            }}</mat-button-toggle>
-          </mat-button-toggle-group>
-        </mat-toolbar>
-        <mat-card-content>
-          <mat-form-field *ngIf="form.controls['disableOrdering']?.value">
-            <mat-label>{{ 'appConfig.disableOrderingText' | translate }}</mat-label>
-            <textarea matInput formControlName="disableOrderingText" rows="2"></textarea>
-            <mat-hint>{{ 'app.optional' | translate }}</mat-hint>
-          </mat-form-field>
-
-          <span spacer-2x></span>
-
-          <mat-form-field *ngIf="!form.controls['disableOrdering']?.value">
-            <mat-label>{{ 'appConfig.orderingTypes' | translate }}</mat-label>
-            <mat-select formControlName="orderingTypes" multiple>
-              <mat-option [value]="OrderType.DineIn">
-                {{ 'orderType.dineIn' | translate }}
-              </mat-option>
-              <mat-option [value]="OrderType.Takeaway">
-                {{ 'orderType.takeaway' | translate }}
-              </mat-option>
-              <mat-option [value]="OrderType.Delivery">
-                {{ 'orderType.delivery' | translate }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <span spacer></span>
-
-          <mat-form-field>
-            <mat-label>{{ 'appConfig.selectableOrderTypes' | translate }}</mat-label>
-            <mat-select formControlName="selectableOrderTypes" multiple>
-              <mat-option [value]="OrderType.DineIn">
-                {{ 'orderType.dineIn' | translate }}
-              </mat-option>
-              <mat-option [value]="OrderType.Takeaway">
-                {{ 'orderType.takeaway' | translate }}
-              </mat-option>
-              <mat-option [value]="OrderType.Delivery">
-                {{ 'orderType.delivery' | translate }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <span spacer></span>
-
-          <mat-form-field>
-            <mat-label>{{ 'appConfig.requiredRegister' | translate }}</mat-label>
-            <mat-select formControlName="requiredRegister" multiple>
-              <mat-option [value]="OrderType.DineIn">
-                {{ 'orderType.dineIn' | translate }}
-              </mat-option>
-              <mat-option [value]="OrderType.Takeaway">
-                {{ 'orderType.takeaway' | translate }}
-              </mat-option>
-              <mat-option [value]="OrderType.Delivery">
-                {{ 'orderType.delivery' | translate }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <span spacer></span>
-
-          <mat-checkbox formControlName="disableOrderingOnClose" color="warn">
-            {{ 'appConfig.disableOrderingOnClose' | translate }}
-          </mat-checkbox>
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card>
-        <mat-toolbar>
-          <b class="flex">
-            {{ 'appConfig.disablePayment' | translate }}
-          </b>
-          <mat-button-toggle-group formControlName="disablePayment">
-            <mat-button-toggle [value]="false">{{ 'app.active' | translate }}</mat-button-toggle>
-            <mat-button-toggle [value]="true" color="warn">{{
-              'app.inactive' | translate
-            }}</mat-button-toggle>
-          </mat-button-toggle-group>
-        </mat-toolbar>
-        <span spacer-2x></span>
-        <mat-card-content *ngIf="!form.controls['disablePayment']?.value">
-          <mat-form-field>
-            <mat-label>{{ 'appConfig.requiredPayment' | translate }}</mat-label>
-            <mat-select formControlName="requiredPayment" multiple>
-              <mat-option [value]="OrderType.DineIn">
-                {{ 'orderType.dineIn' | translate }}
-              </mat-option>
-              <mat-option [value]="OrderType.Takeaway">
-                {{ 'orderType.takeaway' | translate }}
-              </mat-option>
-              <mat-option [value]="OrderType.Delivery">
-                {{ 'orderType.delivery' | translate }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card>
-        <mat-toolbar>
-          <b class="flex">
-            {{ 'appConfig.ding' | translate }}
-          </b>
-          <mat-button-toggle-group formControlName="ding">
-            <mat-button-toggle [value]="true">{{ 'app.active' | translate }}</mat-button-toggle>
-            <mat-button-toggle [value]="false" color="warn">{{
-              'app.inactive' | translate
-            }}</mat-button-toggle>
-          </mat-button-toggle-group>
-        </mat-toolbar>
-        <span spacer-2x></span>
-        <mat-card-content *ngIf="form.controls['ding']?.value">
-          <mat-form-field>
-            <mat-label>{{ 'appConfig.dingsLabel' | translate }}</mat-label>
-            <mat-chip-grid #chipGrid>
-              <mat-chip-row *ngFor="let phone of form.controls['dings'].value" (removed)="removeDing(phone)">
-                {{ phone }}
-                <button matChipRemove>
-                  <i class="fa-regular fa-close"></i>
-                </button>
-              </mat-chip-row>
-              <input
-                placeholder="{{ 'appConfig.dingsPlaceholder' | translate }}"
-                [matChipInputFor]="chipGrid"
-                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                [matChipInputAddOnBlur]="true"
-                (matChipInputTokenEnd)="addDing($event)"
-              />
-            </mat-chip-grid>
-            <mat-hint>{{ 'appConfig.dingsHint' | translate }}</mat-hint>
-          </mat-form-field>
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card>
-        <mat-toolbar>
-          <b class="flex">
-            {{ 'appConfig.smsOnNewOrder' | translate }}
-          </b>
-        </mat-toolbar>
-        <mat-card-content>
-          <p>
-            {{ 'appConfig.smsOnNewOrderDescription' | translate }}
-          </p>
-          <mat-form-field>
-            <mat-label>{{ 'appConfig.smsOnNewOrderLabel' | translate }}</mat-label>
-            <mat-chip-grid #chipGrid>
-              <mat-chip-row *ngFor="let phone of form.controls['smsOnNewOrder'].value" (removed)="removeSmsOnNewOrder(phone)">
-                {{ phone }}
-                <button matChipRemove>
-                  <i class="fa-regular fa-close"></i>
-                </button>
-              </mat-chip-row>
-              <input
-                placeholder="{{ 'appConfig.smsOnNewOrderPlaceholder' | translate }}"
-                [matChipInputFor]="chipGrid"
-                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                [matChipInputAddOnBlur]="true"
-                (matChipInputTokenEnd)="addSmsOnNewOrder($event)"
-              />
-            </mat-chip-grid>
-            <mat-hint>{{ 'appConfig.smsOnNewOrderHint' | translate }}</mat-hint>
-          </mat-form-field>
         </mat-card-content>
       </mat-card>
     </div>
