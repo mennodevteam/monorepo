@@ -119,10 +119,21 @@ const fadeInOut = [
 export const routeAnimations = trigger('routeAnimations', [
   transition('mainMenu => *', slideOutToLeft),
   transition('* => mainMenu', slideInFromLeft),
+
+  transition('address-list => map', slideOutToLeft),
+  transition('map => address-list', slideOutToRight),
+  transition('map => map-search', slideOutToLeft),
+  transition('map-search => map', slideOutToRight),
+  transition('* => address-edit', slideOutToLeft),
+  transition('address-edit => *', slideOutToRight),
+  transition('* => address-list', slideOutToLeft),
+  transition('address-list => *', slideOutToRight),
+
   transition('payment => cart', slideOutToRight),
   transition('cart => payment', slideOutToLeft),
   transition('cart <=> login', fadeInOut),
   transition('payment <=> login', fadeInOut),
+
   transition('* <=> orders', fadeInOut),
   transition('* => cart', slideInFromRight),
   transition('cart => *', slideOutToRight),

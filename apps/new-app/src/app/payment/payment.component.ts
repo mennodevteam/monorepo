@@ -7,23 +7,34 @@ import { TopAppBarComponent } from '../common/components/top-app-bar/top-app-bar
 import { CartService } from '../core/services/cart.service';
 import { ClubService } from '../core/services/club.service';
 import { Router } from '@angular/router';
-import { ShopService } from '../core';
+import { AddressesService, MenuService, ShopService } from '../core';
+import { MatListModule } from '@angular/material/list';
+import { OrderType } from '@menno/types';
 
 @Component({
   selector: 'app-payment',
   standalone: true,
-  imports: [CommonModule, COMMON, InvoiceComponent, PaymentMethodsComponent, TopAppBarComponent],
+  imports: [
+    CommonModule,
+    COMMON,
+    InvoiceComponent,
+    PaymentMethodsComponent,
+    TopAppBarComponent,
+    MatListModule,
+  ],
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.scss',
 })
 export class PaymentComponent {
-  saving = signal(false);
+  OrderType = OrderType;
   constructor(
-    private cart: CartService,
+    public cart: CartService,
     private club: ClubService,
     private router: Router,
     private location: PlatformLocation,
     private shopService: ShopService,
+    private addressesService: AddressesService,
+    public menu: MenuService,
   ) {
     if (this.cart.length() === 0) {
       this.location.back();
@@ -40,7 +51,6 @@ export class PaymentComponent {
   });
 
   async submit() {
-    this.saving.set(true);
     const order = await this.cart.complete();
     if (order) {
       (order.shop = this.shopService.shop),

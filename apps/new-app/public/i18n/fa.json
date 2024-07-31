@@ -64,7 +64,18 @@
     "complete": "تکمیل خرید",
     "addCoupon": "افزودن کد تخفیف",
     "sum": "مجموع آیتم‌ها",
-    "notePlaceholder": "توضیحات اضافی درباره سفارش خود را اینجا ثبت کنید"
+    "deliveryPrice": "هزینه ارسال",
+    "addressOutOfRange": "خارج از محدوده",
+    "notePlaceholder": "توضیحات اضافی درباره سفارش خود را اینجا ثبت کنید",
+    "changeAddress": "تغییر آدرس",
+    "selectAddress": "انتخاب آدرس",
+    "noAddressWarning": "لطفا آدرس جهت ارسال را مشخص کنید",
+    "discountCouponAddDescription": "کد تخفیف را وارد کنید",
+    "discountCouponNotFound": "کد وارد شده اشتباه است",
+    "discountCouponMinPriceWarning": "حداقل سفارش برای کد تخفیف {{value}} است",
+    "discountCouponOrderTypeWarning": "این کد تخفیف برای نوع سفارش دیگری است",
+    "stockLimit": "موجودی آیتم انتخاب شده {{value}} عدد بیشتر نیست",
+    "sendTo": "ارسال به"
   },
   "menu": {
     "add": "افزودن",

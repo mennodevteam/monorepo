@@ -7,18 +7,26 @@
 </app-top-app-bar>
 <main p-md>
   <mat-nav-list>
-    @for (address of addresses(); track address.id) {
+    @for (address of addresses(); track address.id; let isLast = $last) {
       <a mat-list-item (click)="select(address)">
-        @if (cart.address()?.id === address.id) {
-          <i matListItemIcon class="fa-solid fa-circle fa-sm primary-text"></i>
-        } @else {
-          <i matListItemIcon class="fa-regular fa-circle fa-sm"></i>
-        }
         @if (address.title) {
           <span matListItemTitle>{{ address.title }}</span>
         }
         <span matListItemLine f-sm>{{ address.description }}</span>
+        @if (address.deliveryArea) {
+          <span matListItemLine f-sm
+            >{{ 'cart.deliveryPrice' | translate }}:
+            {{ address.deliveryArea.price | menuCurrency }}
+          </span>
+        } @else {
+          <span matListItemLine f-sm class="error-text">
+            {{ 'cart.addressOutOfRange' | translate }}
+          </span>
+        }
       </a>
+      @if (!isLast) {
+        <mat-divider />
+      }
     }
   </mat-nav-list>
 </main>

@@ -18,6 +18,7 @@ import { OrdersService } from './orders.service';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
+import { AddressesService } from './addresses.service';
 
 type SignalProductItem = { productId: string; variantId?: number; quantity: WritableSignal<number> };
 
@@ -32,6 +33,7 @@ export class CartService {
   address = signal<Address | undefined>(undefined);
   coupon = signal<DiscountCoupon | undefined>(undefined);
   table = signal<string | undefined>(undefined);
+  saving = signal<boolean>(false);
 
   private dto = computed(() => {
     return {
@@ -78,6 +80,7 @@ export class CartService {
     private http: HttpClient,
     private snack: MatSnackBar,
     private translate: TranslateService,
+    private addressesService: AddressesService,
   ) {
     effect(() => {
       const menu = this.menuService.menu();
@@ -90,6 +93,19 @@ export class CartService {
         this.quantity.set(copy);
       });
     });
+
+    effect(
+      () => {
+        if (
+          this.menuService.type() === OrderType.Delivery &&
+          !this.address() &&
+          this.addressesService.addresses()?.length
+        ) {
+          this.address.set(this.addressesService.addresses()?.[0]);
+        } else if (this.menuService.type() !== OrderType.Delivery) this.address.set(undefined);
+      },
+      { allowSignalWrites: true },
+    );
     // this.menuService.typeObservable.subscribe((type) => {
     //   if (type != undefined) {
     //     if (this.type != type) this.clear();
@@ -104,7 +120,7 @@ export class CartService {
 
     if (!OrderDto.isStockValidForAddOne(product, variant, item)) {
       this.snack.open(
-        this.translate.instant('basket.stockLimit', { value: variant?.stock || product.stock }),
+        this.translate.instant('cart.stockLimit', { value: variant?.stock || product.stock }),
         '',
         { panelClass: 'warning' },
       );
@@ -162,6 +178,7 @@ export class CartService {
     this.table.set(undefined);
     this.paymentType.set(undefined);
     this.useWallet.set(false);
+    this.saving.set(false);
     if (deep) {
       this.menuService.load();
       this.coupon.set(undefined);
@@ -193,7 +210,7 @@ export class CartService {
       .get<DiscountCoupon | undefined>(`discountCoupons/check/${this.shopService.shop.id}/${code}`)
       .toPromise();
     if (coupon) this.coupon.set(coupon);
-    else this.snack.open(this.translate.instant('basket.discountCouponNotFound'));
+    else this.snack.open(this.translate.instant('cart.discountCouponNotFound'));
   }
 
   async complete() {
@@ -222,11 +239,14 @@ export class CartService {
 
     if (
       this.menuService.type() === OrderType.Delivery &&
-      (!this.address ||
+      (!this.address() ||
         this.address()?.deliveryArea == null ||
         this.address()?.deliveryArea?.status != Status.Active)
-    )
+    ) {
+      this.snack.open(this.translate.instant('cart.noAddressWarning'));
       return;
+    }
+
     if (
       this.menuService.type() === OrderType.DineIn &&
       this.shopService.shop.details?.tables?.length &&
@@ -238,7 +258,7 @@ export class CartService {
     if (coupon) {
       if (coupon.minPrice && this.sum() < coupon.minPrice) {
         this.snack.open(
-          this.translate.instant('basket.discountCouponMinPriceWarning', {
+          this.translate.instant('cart.discountCouponMinPriceWarning', {
             value: coupon.minPrice,
           }),
         );
@@ -246,11 +266,12 @@ export class CartService {
       }
 
       if (coupon.orderTypes?.length && coupon.orderTypes.indexOf(this.menuService.type()!) === -1) {
-        this.snack.open(this.translate.instant('basket.discountCouponOrderTypeWarning'));
+        this.snack.open(this.translate.instant('cart.discountCouponOrderTypeWarning'));
         return;
       }
     }
 
+    this.saving.set(true);
     if (
       this.isPaymentRequired ||
       (this.isPaymentAvailable && this.paymentType() === OrderPaymentType.Online)

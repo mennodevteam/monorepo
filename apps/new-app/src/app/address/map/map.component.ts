@@ -61,7 +61,8 @@ export class MapComponent implements AfterViewInit {
 
       if (!this.coordinate) {
         navigator?.geolocation?.getCurrentPosition((position) => {
-          this.map.flyTo({ center: [position.coords.longitude, position.coords.latitude], zoom: 15 });
+          this.map.setCenter([position.coords.longitude, position.coords.latitude]);
+          this.map.setZoom(15);
         });
       }
     }, 300);

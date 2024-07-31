@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, PlatformLocation } from '@angular/common';
 import { COMMON } from '../../common';
 import { TopAppBarComponent } from '../../common/components';
 import { MatListModule } from '@angular/material/list';
@@ -17,6 +17,7 @@ export class AddressListComponent {
   constructor(
     private addressesService: AddressesService,
     public cart: CartService,
+    private location: PlatformLocation,
   ) {}
 
   get addresses() {
@@ -25,5 +26,6 @@ export class AddressListComponent {
 
   select(address: Address) {
     this.cart.address.set(address);
+    this.location.back();
   }
 }

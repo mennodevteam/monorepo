@@ -1,21 +1,47 @@
-<app-top-app-bar title="{{ 'payment.title' | translate }}" [sticky]="true" />
+<app-top-app-bar title="{{ 'payment.title' | translate }}" [sticky]="true" [hideMenu]="true" />
 
-<main fxLayout="column" fxLayoutGap="16" p-md>
-  <button mat-stroked-button>
-    <i class="fa-regular fa-circle-plus"></i>
-    &nbsp;
-    {{ 'cart.addCoupon' | translate }}
-  </button>
+@if (cart.length()) {
+  <main fxLayout="column" fxLayoutGap="16" p-md>
+    @if (menu.type() === OrderType.Delivery) {
+      @if (cart.address()) {
+        <mat-list>
+          <mat-list-item>
+            <span matListItemTitle
+              >{{ 'cart.sendTo' | translate }}
+              {{ cart.address()?.title }}
+            </span>
+            <span matListItemLine>{{ cart.address()?.description }}</span>
+            <div matListItemMeta>
+              <button mat-stroked-button class="tertiary-button" routerLink="/address/list">
+                {{ 'cart.changeAddress' | translate }}
+              </button>
+            </div>
+          </mat-list-item>
+        </mat-list>
+        <mat-divider />
+      } @else {
+        <button mat-stroked-button routerLink="/address/list">
+          {{ 'cart.selectAddress' | translate }}
+        </button>
+      }
+    }
 
-  <app-invoice />
+    <app-invoice />
 
-  <app-payment-methods />
-</main>
+    <button mat-stroked-button>
+      <i class="fa-regular fa-circle-plus"></i>
+      &nbsp;
+      {{ 'cart.addCoupon' | translate }}
+    </button>
+
+    <app-payment-methods />
+  </main>
+}
 
 <mat-toolbar fxLayout="column" fxLayoutAlign="center" id="actionbar" class="background-background" p-md>
-  <a mat-flat-button (click)="submit()" class="large" [disabled]="saving()">
+  <a mat-flat-button (click)="submit()" class="large" [disabled]="cart.saving()">
     {{ 'order.add' | translate }} ({{ total() | menuCurrency }})
-    @if (saving()) {
+    @if (cart.saving()) {
       ...
     }
   </a>

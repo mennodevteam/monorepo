@@ -19,7 +19,7 @@
   </mat-toolbar>
 }
 
-<main fxLayout="column" fxLayoutGap="32" p-md [class.searching]="searching()">
+<main fxLayout="column" fxLayoutGap="32" p-md [class.searching]="searching()" pb>
   @for (category of menuService.categories(); track category.id) {
     <app-category-section [category]="category" />
   }
