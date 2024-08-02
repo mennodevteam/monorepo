@@ -64,7 +64,7 @@ export class ProductEditPageComponent {
     });
 
     this.route.queryParams.subscribe(async (params) => {
-      const categories = this.menuService?.menu?.categories;
+      const categories = this.menuService.categories();
       if (params['id']) {
         this.product = this.menuService.getProductById(params['id']);
         if (this.product) {
@@ -102,7 +102,7 @@ export class ProductEditPageComponent {
   }
 
   get categories() {
-    return this.menuService.menu?.categories;
+    return this.menuService.categories();
   }
 
   async save() {

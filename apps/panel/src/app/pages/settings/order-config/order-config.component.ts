@@ -7,10 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ShopService } from '../../../core/services/shop.service';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ENTER } from '@angular/cdk/keycodes';
-import { MatDialog } from '@angular/material/dialog';
-import { FilesService } from '../../../core/services/files.service';
 import { PersianNumberService } from '@menno/utils';
-import { MatomoService } from '../../../core/services/matomo.service';
 import { MenuService } from '../../../core/services/menu.service';
 
 @Component({
@@ -31,9 +28,6 @@ export class OrderConfigComponent {
     private http: HttpClient,
     private snack: MatSnackBar,
     private translate: TranslateService,
-    private dialog: MatDialog,
-    private fileService: FilesService,
-    private matomo: MatomoService,
   ) {
     this.load();
   }

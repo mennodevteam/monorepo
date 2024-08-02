@@ -10,7 +10,7 @@ import { ShopService } from '../../core/services/shop.service';
 export class TablePipe implements PipeTransform {
   constructor(private shopService: ShopService) {}
   transform(value?: string): string {
-    let res = ''
+    let res = '';
     if (value) {
       res += value;
       const table = this.shopService.shop?.details?.tables?.find((x) => x.code === value);

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ShopService } from './shop.service';
 import { HttpClient } from '@angular/common/http';
-import { Order, Product, ProductCategory, ThirdPartyApp } from '@menno/types';
+import { Order, ProductCategory, ThirdPartyApp } from '@menno/types';
 import { MenuService } from './menu.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from '../../shared/dialogs/alert-dialog/alert-dialog.component';
@@ -58,7 +58,7 @@ export class HamiService {
 
         groups = groupsResponse?.GoodsGroup;
         if (groups) {
-          const categories = this.menu.menu?.categories || [];
+          const categories = this.menu.categories();
           for (const c of categories) {
             if (c.thirdPartyId) {
               const g = groups?.find((x) => x.GroupId.toString() === c.thirdPartyId);
@@ -126,7 +126,7 @@ export class HamiService {
 
         for (const g of goods) {
           if (!products.find((x) => x.thirdPartyId === g.GoodsId.toString())) {
-            const cat = this.menu.menu?.categories?.find((x) => x.thirdPartyId === g.GoodsGroupId.toString());
+            const cat = this.menu.categories().find((x) => x.thirdPartyId === g.GoodsGroupId.toString());
             if (cat) {
               await this.menu.saveProduct({
                 thirdPartyId: g.GoodsId.toString(),

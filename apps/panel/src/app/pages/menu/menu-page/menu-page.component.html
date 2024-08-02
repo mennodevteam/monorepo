@@ -27,7 +27,12 @@
   >
     <i class="fa-regular fa-grid-2-plus"></i>
   </button>
-  <button mat-flat-button color="primary" routerLink="category" [matomoClick]="['menu', 'category', 'add click']">
+  <button
+    mat-flat-button
+    color="primary"
+    routerLink="category"
+    [matomoClick]="['menu', 'category', 'add click']"
+  >
     {{ 'menu.addCategory' | translate }}
   </button>
   <button mat-icon-button [matMenuTriggerFor]="menu">
@@ -51,7 +56,11 @@
   </mat-menu>
 </mat-toolbar>
 
-<mat-tab-group mat-stretch-tabs="false" (selectedIndexChange)="selectedTabChange($event)">
+<mat-tab-group
+  mat-stretch-tabs="false"
+  (selectedIndexChange)="selectedTabChange($event)"
+  animationDuration="0"
+>
   <mat-tab *ngFor="let cat of categories">
     <ng-template mat-tab-label>
       {{ cat.title }}

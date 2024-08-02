@@ -27,7 +27,7 @@ export class CategoryEditPageComponent {
     private location: PlatformLocation,
     private route: ActivatedRoute,
     private snack: MatSnackBar,
-    private translate: TranslateService
+    private translate: TranslateService,
   ) {
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
@@ -36,12 +36,11 @@ export class CategoryEditPageComponent {
       status: new FormControl(Status.Active, Validators.required),
       orderTypes: new FormControl(
         [OrderType.Delivery, OrderType.DineIn, OrderType.Takeaway],
-        Validators.required
+        Validators.required,
       ),
     });
 
     this.route.queryParams.subscribe(async (params) => {
-      const categories = this.menuService?.menu?.categories;
       if (params['id']) {
         this.category = this.menuService.getCategoryById(Number(params['id']));
         if (this.category) {

@@ -32,7 +32,7 @@ export class MenuPageComponent implements AfterViewInit {
     private route: ActivatedRoute,
     private matomo: MatomoService,
     private snack: MatSnackBar,
-    private translate: TranslateService
+    private translate: TranslateService,
   ) {}
 
   ngAfterViewInit(): void {
@@ -43,13 +43,13 @@ export class MenuPageComponent implements AfterViewInit {
   }
 
   get categories() {
-    return this.menuService.menu?.categories;
+    return this.menuService.categories();
   }
 
   openSort() {
     this.dialog
       .open(SortDialogComponent, {
-        data: this.menuService.menu?.categories?.map((x) => ({ key: x.id, value: x.title })),
+        data: this.menuService.categories().map((x) => ({ key: x.id, value: x.title })),
         disableClose: true,
       })
       .afterClosed()
@@ -84,7 +84,9 @@ export class MenuPageComponent implements AfterViewInit {
           if (!line?.trim()) continue;
           const cols = line.split(',');
           if (!cols[CSVCols.Title]) continue;
-          let category = this.categories?.find((x) => x.title === (cols[CSVCols.Category] || 'بدون دسته‌بندی'));
+          let category = this.categories?.find(
+            (x) => x.title === (cols[CSVCols.Category] || 'بدون دسته‌بندی'),
+          );
           if (!category) {
             category = await this.menuService.saveCategory({
               title: cols[CSVCols.Category] || 'بدون دسته‌بندی',

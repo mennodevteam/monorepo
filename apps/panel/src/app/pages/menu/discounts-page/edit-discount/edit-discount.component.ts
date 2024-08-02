@@ -23,9 +23,8 @@ export class EditDiscountComponent {
     private menuService: MenuService,
     private location: PlatformLocation,
     private route: ActivatedRoute,
-    private dialog: MatDialog,
     private snack: MatSnackBar,
-    private translate: TranslateService
+    private translate: TranslateService,
   ) {
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
@@ -41,7 +40,7 @@ export class EditDiscountComponent {
 
     this.route.queryParams.subscribe(async (params) => {
       if (params['id']) {
-        this.discount = this.menuService.menu?.costs.find((x) => x.id.toString() === params['id']);
+        this.discount = this.menuService.costs().find((x) => x.id.toString() === params['id']);
         if (this.discount) {
           const d = this.discount;
           this.form.setValue({
@@ -85,7 +84,7 @@ export class EditDiscountComponent {
   }
 
   get categories() {
-    return this.menuService.menu?.categories;
+    return this.menuService.categories();
   }
 
   async save() {

@@ -13,7 +13,7 @@ export class MenuCurrencyPipe implements PipeTransform {
     private translateService: TranslateService
   ) {}
   transform(value: any, digitsInfo?: string, skipFree?: boolean): string {
-    const currency = this.menuService.menu?.currency || 'تومان';
+    const currency = this.menuService.currency() || 'تومان';
     try {
       if (value !== '' && value != null && !isNaN(value)) {
         if (value != 0 || skipFree) {

@@ -1,8 +1,7 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component } from '@angular/core';
-import { Product, ProductCategory } from '@menno/types';
+import { Product } from '@menno/types';
 import { map, Observable, shareReplay } from 'rxjs';
-import { MenuService } from '../../../core/services/menu.service';
 import { PosService } from '../../../core/services/pos.service';
 
 @Component({

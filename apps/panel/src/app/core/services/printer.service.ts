@@ -24,7 +24,7 @@ export class PrinterService {
     private menuService: MenuService,
     private dialog: MatDialog,
     private translate: TranslateService,
-    private snack: MatSnackBar
+    private snack: MatSnackBar,
   ) {
     this.loginLocal();
     this.load();
@@ -93,7 +93,7 @@ export class PrinterService {
           .catch((error) => {
             const pids: string = savedPrintActions.map((x) => 'paid=' + x.id).join('&');
             this.makeLocalPrinterRequest(
-              `printActions/${this.shopsService.shop!.id}?shopId=${this.shopsService.shop!.id}&${pids}`
+              `printActions/${this.shopsService.shop!.id}?shopId=${this.shopsService.shop!.id}&${pids}`,
             ).then((res) => {});
           });
       }
@@ -143,7 +143,7 @@ export class PrinterService {
         label: this.translate.instant('printers.printers'),
         control: new FormControl(
           printView ? printerOptions.find((x) => x.value.id === printView.printer.id)?.value : undefined,
-          Validators.required
+          Validators.required,
         ),
         type: 'select',
         options: printerOptions,
@@ -163,7 +163,7 @@ export class PrinterService {
         label: this.translate.instant('printers.includeCategories'),
         control: new FormControl(printView ? printView.includeProductCategoryIds || [] : []),
         type: 'multiple',
-        options: this.menuService.menu!.categories!.map((x) => ({ text: x.title, value: x.id })),
+        options: this.menuService.categories().map((x) => ({ text: x.title, value: x.id })),
       },
       defaultCount: {
         label: this.translate.instant('printers.defaultCount'),
@@ -192,7 +192,7 @@ export class PrinterService {
         label: this.translate.instant('printers.autoPrintOnManualSettlement'),
         control: new FormControl(
           printView ? printView.autoPrintOnManualSettlement : false,
-          Validators.required
+          Validators.required,
         ),
         type: 'select',
         options: [

@@ -1,23 +1,43 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BusinessCategory, Menu, MenuCost, Product, ProductCategory, Shop } from '@menno/types';
-import { BehaviorSubject } from 'rxjs';
+import { computed, Injectable, signal, WritableSignal } from '@angular/core';
+import { BusinessCategory, Menu, MenuCost, Product, ProductCategory } from '@menno/types';
 import { ShopService } from './shop.service';
 import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MenuService {
-  private menu$: BehaviorSubject<Menu | null>;
-  private _baseMenu: Menu | undefined;
-  private _loading = true;
+  private _loading = new BehaviorSubject<void>(undefined);
+  menu: WritableSignal<Menu>;
+  currency = computed(() => {
+    return this.menu()?.currency;
+  });
+  categories = computed(() => {
+    return this.menu()?.categories || [];
+  });
+  costs = computed(() => {
+    return this.menu()?.costs || [];
+  });
+  allProducts = computed(() => {
+    const res = [];
+    const categories = this.menu()?.categories;
+    if (categories) {
+      for (const cat of categories) {
+        if (cat.products) {
+          res.push(...cat.products);
+        }
+      }
+    }
+    return res;
+  });
+
   constructor(
     private http: HttpClient,
     private shopService: ShopService,
     private translate: TranslateService,
   ) {
-    this.menu$ = new BehaviorSubject<Menu | null>(null);
     this.loadMenu();
     setInterval(() => {
       this.loadMenu();
@@ -25,41 +45,26 @@ export class MenuService {
   }
 
   async loadMenu() {
-    this._loading = true;
     try {
-      this._baseMenu = await this.http.get<Menu>(`menus`).toPromise();
-      if (this._baseMenu) {
-        const m = this.baseMenu;
-        Menu.setRefsAndSort(m, undefined, true, true);
-        this.menu$.next(m);
+      const menu = await this.http.get<Menu>(`menus`).toPromise();
+      if (menu) {
+        Menu.setRefsAndSort(menu, undefined, true, true);
+        if (this.menu) this.menu.set(menu);
+        else this.menu = signal(menu);
+        this._loading.complete();
       }
-    } finally {
-      this._loading = false;
-    }
-  }
-
-  get baseMenu() {
-    return JSON.parse(JSON.stringify(this._baseMenu));
-  }
-
-  get menuObservable() {
-    if (!this.menu && !this._loading) this.loadMenu();
-    return this.menu$.asObservable();
-  }
-
-  get menu() {
-    return this.menu$.value;
+    } catch (ex) {}
   }
 
   async saveCategory(dto: Partial<ProductCategory>) {
-    dto.menu = <Menu>{ id: this.menu?.id };
+    dto.menu = <Menu>{ id: this.menu()?.id };
     const newCat = await this.http.post<ProductCategory>(`productCategories`, dto).toPromise();
     await this.loadMenu();
     return newCat;
   }
 
   async deleteCategory(categoryId: number) {
-    const category = this.menu?.categories?.findIndex((x) => x.id === categoryId);
+    const category = this.categories()?.findIndex((x) => x.id === categoryId);
     await this.http.delete(`productCategories/${categoryId}`).toPromise();
     await this.loadMenu();
   }
@@ -106,7 +111,7 @@ export class MenuService {
   }
 
   async saveMenuCost(dto: MenuCost) {
-    dto.menu = <Menu>{ id: this.menu?.id };
+    dto.menu = <Menu>{ id: this.menu()?.id };
     if (dto.includeProductCategory) {
       dto.includeProductCategory = dto.includeProductCategory.map((x) => <ProductCategory>{ id: x.id });
     }
@@ -128,61 +133,22 @@ export class MenuService {
     return saved;
   }
 
-  allProducts() {
-    const p: Product[] = [];
-    if (this.menu?.categories) {
-      for (const cat of this.menu?.categories) {
-        if (cat.products) {
-          p.push(...cat.products);
-        }
-      }
-    }
-    return p;
-  }
-
   getProductById(id: string) {
-    if (this.menu?.categories) {
-      for (const cat of this.menu?.categories) {
-        if (cat.products) {
-          for (const p of cat.products) {
-            if (p.id === id) return p;
-          }
-        }
-      }
-    }
-    return undefined;
+    return this.allProducts().find((x) => x.id === id);
   }
 
   getCategoryById(id: number) {
-    if (this.menu?.categories) {
-      return this.menu.categories.find((x) => x.id === id);
-    }
-    return undefined;
+    return this.categories()?.find((x) => x.id === id);
   }
 
   filterProductsByIds(ids: string[]) {
-    const res = [];
-    if (this.menu?.categories) {
-      for (const cat of this.menu?.categories) {
-        if (cat.products) {
-          for (const p of cat.products) {
-            if (ids.indexOf(p.id) > -1) res.push(p);
-          }
-        }
-      }
-    }
-    return res;
+    return this.allProducts()?.filter((x) => ids.indexOf(x.id) > -1);
   }
 
   filterCategoriesByIds(ids: number[]) {
-    const res = [];
-    if (this.menu?.categories) {
-      for (const cat of this.menu?.categories) {
-        if (ids.indexOf(cat.id) > -1) res.push(cat);
-      }
-    }
-    return res;
+    return this.categories().filter((x) => ids.indexOf(x.id) > -1);
   }
+
   get businessCategoryTitle() {
     return this.translate.instant(
       `menu.category.${this.shopService.shop?.businessCategory || BusinessCategory.Cafe}`,
@@ -191,5 +157,10 @@ export class MenuService {
 
   sync() {
     this.http.get('menus/sync/103').toPromise();
+  }
+
+  async getResolver() {
+    if (this.menu && this.menu()?.id) return;
+    return this._loading.asObservable().toPromise();
   }
 }

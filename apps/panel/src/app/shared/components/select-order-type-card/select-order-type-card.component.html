@@ -4,9 +4,11 @@
   </mat-card-header>
   <mat-card-content>
     <mat-selection-list [formControl]="control">
-      <mat-list-option [value]="OrderType.DineIn">
-        {{ 'orderType.dineIn' | translate }}
-      </mat-list-option>
+      @if (shopService.isRestaurantOrCoffeeShop) {
+        <mat-list-option [value]="OrderType.DineIn">
+          {{ 'orderType.dineIn' | translate }}
+        </mat-list-option>
+      }
       <mat-list-option [value]="OrderType.Delivery">
         {{ 'orderType.delivery' | translate }}
       </mat-list-option>

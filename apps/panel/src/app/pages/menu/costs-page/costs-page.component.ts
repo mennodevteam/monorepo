@@ -22,9 +22,7 @@ export class CostsPageComponent {
   }
 
   load() {
-    this.costs = this.menuService.menu!.costs.filter(
-      (x) => x.fixedCost > 0 || x.percentageCost > 0
-    );
+    this.costs = this.menuService.costs().filter((x) => x.fixedCost > 0 || x.percentageCost > 0);
   }
 
   async changeStatus(discount: MenuCost, ev: MatSlideToggleChange) {
@@ -46,6 +44,6 @@ export class CostsPageComponent {
         await this.menuService.deleteMenuCost(discount.id);
         this.load();
       }
-    })
+    });
   }
 }

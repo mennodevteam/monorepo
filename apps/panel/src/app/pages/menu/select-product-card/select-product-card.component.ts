@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { MenuService } from '../../../core/services/menu.service';
 
 @Component({
@@ -50,6 +50,6 @@ export class SelectProductCardComponent implements OnChanges {
   }
 
   get categories() {
-    return this.menuService.menu?.categories;
+    return this.menuService.categories();
   }
 }

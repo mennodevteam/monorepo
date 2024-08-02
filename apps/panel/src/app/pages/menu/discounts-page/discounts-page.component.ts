@@ -1,18 +1,8 @@
-import { Dialog } from '@angular/cdk/dialog';
 import { Component } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MenuCost, Status } from '@menno/types';
-import { TranslateService } from '@ngx-translate/core';
 import { AlertDialogService } from '../../../core/services/alert-dialog.service';
 import { MenuService } from '../../../core/services/menu.service';
-import {
-  AdvancedPromptDialogComponent,
-  PromptKeyFields,
-} from '../../../shared/dialogs/advanced-prompt-dialog/advanced-prompt-dialog.component';
-import { AlertDialogComponent } from '../../../shared/dialogs/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'discounts-page',
@@ -24,12 +14,15 @@ export class DiscountsPageComponent {
   discounts: MenuCost[];
   Status = Status;
 
-  constructor(private menuService: MenuService, private alertDialogService: AlertDialogService) {
+  constructor(
+    private menuService: MenuService,
+    private alertDialogService: AlertDialogService,
+  ) {
     this.load();
   }
 
   load() {
-    this.discounts = this.menuService.menu!.costs.filter((x) => x.fixedCost < 0 || x.percentageCost < 0);
+    this.discounts = this.menuService.costs().filter((x) => x.fixedCost < 0 || x.percentageCost < 0);
   }
 
   async changeStatus(discount: MenuCost, ev: MatSlideToggleChange) {
