@@ -7,7 +7,7 @@
     [ngClass]="{ finished: product.status === Status.Blocked }"
     *ngFor="let product of category.products"
     routerLink="/menu/product/{{ product.id }}"
-    [imageLoader]="product.imageFiles?.xs || (product.images ? product.images[0] : undefined) || undefined"
+    [imageLoader]="product.imageFiles?.[0]?.xs || (product.images ? product.images[0] : undefined) || undefined"
   >
     <!-- <div class="badge tertiary on-tertiary-text mat-elevation-z3" *ngIf="product._orderItem?.quantity">
       {{ product._orderItem?.quantity }}

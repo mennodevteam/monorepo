@@ -10,7 +10,7 @@
 <main *ngIf="product">
   <img
     id="product-image"
-    [imageLoader]="product.imageFiles?.origin || (product.images ? product.images[0] : undefined) || undefined"
+    [imageLoader]="product.imageFiles?.[0]?.origin || (product.images ? product.images[0] : undefined) || undefined"
   />
   <span spacer></span>
   <p class="outline-text description">{{ product.description }}</p>

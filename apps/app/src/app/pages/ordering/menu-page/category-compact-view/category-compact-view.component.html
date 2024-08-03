@@ -5,7 +5,7 @@
         matListItemAvatar
         [ngClass]="{ finished: product.status === Status.Blocked }"
         [imageLoader]="
-          product.imageFiles?.xs || (product.images ? product.images[0] : undefined) || undefined
+          product.imageFiles?.[0]?.xs || (product.images ? product.images[0] : undefined) || undefined
         "
       />
       <h3 matListItemTitle class="title">{{ product.title }}</h3>
