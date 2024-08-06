@@ -40,7 +40,7 @@
                     mat-button
                     color="primary"
                     type="button"
-                    (click)="upload()"
+                    (click)="uploadVertical()"
                     [disabled]="savingCover"
                   >
                     <i class="fa-regular fa-upload"></i>
@@ -151,6 +151,43 @@
             </div>
           </div>
         </mat-card-content>
+      </mat-card>
+
+      <mat-card>
+        <mat-toolbar>
+          <b class="flex">
+            {{ 'appConfig.horizontalCover' | translate }}
+          </b>
+        </mat-toolbar>
+        <mat-card-content>
+          <div fxLayout="row" fxLayout.sm="column">
+            <div fxFlex>
+              <p>
+                {{ 'appConfig.horizontalCoverDescription' | translate }}
+              </p>
+              <button
+                mat-button
+                color="primary"
+                type="button"
+                (click)="uploadHorizontal()"
+                [disabled]="savingCover"
+              >
+                <i class="fa-regular fa-upload"></i>
+                {{ 'app.upload' | translate }}
+              </button>
+              <img
+                style="display: block; border-radius: 16px; width: 200px"
+                [imageLoader]="shopService.shop?.cover"
+                [imageFile]="shopService.shop?.coverImage"
+                [imageSize]="'sm'"
+              />
+            </div>
+            <div class="image-section" fxFlex="none">
+              <img src="assets/images/screenshots/welcome.jpg" />
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-actions *ngIf="form.value?.homePage === HomePage.Welcome"> </mat-card-actions>
       </mat-card>
     </div>
   </main>

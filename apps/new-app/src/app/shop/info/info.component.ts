@@ -20,4 +20,8 @@ export class InfoComponent {
   get shop() {
     return this.shopService.shop!;
   }
+
+  get hasOpeningHours() {
+    return this.shop.details.openingHours?.find((x) => x.length);
+  }
 }

@@ -69,7 +69,7 @@ export class AppConfigComponent {
     window.open(this.shopService.appLink, this.shopService.shop?.title, 'width=400,height=700');
   }
 
-  upload() {
+  uploadVertical() {
     this.dialog
       .open(ImageCropperDialogComponent, {
         data: <CropperOptions>{
@@ -91,6 +91,38 @@ export class AppConfigComponent {
             } as Shop);
             this.shopService.shop!.verticalCover = savedFile.key;
             if (imageFile) this.shopService.shop!.verticalCoverImage = imageFile;
+            this.snack.open(this.translate.instant('appConfig.coverSaved'), '', {
+              panelClass: 'success',
+              duration: 1000,
+            });
+          }
+          this.savingCover = false;
+        }
+      });
+  }
+
+  uploadHorizontal() {
+    this.dialog
+      .open(ImageCropperDialogComponent, {
+        data: <CropperOptions>{
+          resizeToWidth: 800,
+          aspectRatio: 390 / 190,
+        },
+      })
+      .afterClosed()
+      .subscribe(async (data) => {
+        if (data) {
+          this.savingCover = true;
+          this.snack.open(this.translate.instant('app.uploading'), '', { duration: 5000 });
+          const savedFile = await this.fileService.upload(data.file, 'cover');
+          if (savedFile?.key) {
+            const imageFile = await this.fileService.saveFileImage(savedFile.key, 'cover');
+            await this.shopService.saveShop({
+              cover: savedFile.key,
+              coverImage: imageFile,
+            } as Shop);
+            this.shopService.shop!.cover = savedFile.key;
+            if (imageFile) this.shopService.shop!.coverImage = imageFile;
             this.snack.open(this.translate.instant('appConfig.coverSaved'), '', {
               panelClass: 'success',
               duration: 1000,

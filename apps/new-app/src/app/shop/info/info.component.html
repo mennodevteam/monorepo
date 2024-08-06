@@ -1,5 +1,5 @@
 <div id="cover" max-center>
-  <img src="https://pic.uhomes.com/onlineblog/cdn/uploads/2023/12/seo-manchester-restaurant-header.jpg" />
+  <img [imageLoader]="shop.cover" [imageFile]="shop.coverImage" />
 </div>
 <main fxLayout="column" p-md max-center>
   <button mat-mini-fab id="back-button" goBack class="tertiary-button">
@@ -12,13 +12,14 @@
       <p f-md class="outline-text">{{ shop.description }}</p>
     }
   </header>
-  <mat-toolbar fxLayout="row">
+  <mat-toolbar fxLayout="row" fxLayoutAlign="space-between">
     @if (shop.instagram) {
       <a
         fxFlex
         mat-stroked-button
         class="tertiary-button"
         href="https://www.instagram.com/{{ shop.instagram }}"
+        target="_blank"
       >
         <i class="fab fa-instagram fa-lg"></i>
         &nbsp;
@@ -44,44 +45,52 @@
           ')'
         "
       >
-        <i class="fab fa-instagram"></i>
-        {{ 'info.instagram' | translate }}
+        <i class="fa-regular fa-map-location-dot"></i>
+        {{ 'info.direction' | translate }}
       </a>
     }
   </mat-toolbar>
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>{{ 'info.about' | translate: { value: shop.title } }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-list class="about-list">
-        <mat-list-item>
-          <span matListItemLine>
-            <i class="fa-solid fa-clock"></i>
-            &nbsp;
-            {{ 'app.fromTo' | translate: { from: 10, to: 14 } }}
-          </span>
-        </mat-list-item>
-        <mat-list-item [matTooltip]="shop.address">
-          <span matListItemLine>
-            <i class="fa-solid fa-location-dot"></i>
-            &nbsp;
-            {{ shop.address }}
-          </span>
-        </mat-list-item>
-        <mat-list-item>
-          <span matListItemLine>
-            <i class="fa-solid fa-phone"></i>
-            &nbsp;
-            @for (phone of shop.phones; track phone; let last = $last) {
-              <a href="tel:{{ phone }}">{{ phone }}</a>
-              @if (!last) {
-                &nbsp;-&nbsp;
-              }
-            }
-          </span>
-        </mat-list-item>
-      </mat-list>
-    </mat-card-content>
-  </mat-card>
+  @if (shop.address || shop.phones.length || shop.details?.openingHours?.length) {
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{ 'info.about' | translate: { value: shop.title } }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list class="about-list">
+          @if (hasOpeningHours) {
+            <mat-list-item>
+              <span matListItemLine>
+                <i class="fa-solid fa-clock"></i>
+                &nbsp;
+                {{ 'app.fromTo' | translate: { from: 10, to: 14 } }}
+              </span>
+            </mat-list-item>
+          }
+          @if (shop.address) {
+            <mat-list-item [matTooltip]="shop.address">
+              <span matListItemLine>
+                <i class="fa-solid fa-location-dot"></i>
+                &nbsp;
+                {{ shop.address }}
+              </span>
+            </mat-list-item>
+          }
+          @if (shop.phones?.length) {
+            <mat-list-item>
+              <span matListItemLine>
+                <i class="fa-solid fa-phone"></i>
+                &nbsp;
+                @for (phone of shop.phones; track phone; let last = $last) {
+                  <a href="tel:{{ phone }}">{{ phone }}</a>
+                  @if (!last) {
+                    &nbsp;-&nbsp;
+                  }
+                }
+              </span>
+            </mat-list-item>
+          }
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  }
 </main>
