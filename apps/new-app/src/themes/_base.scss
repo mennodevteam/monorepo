@@ -61,6 +61,10 @@ $dark-theme: mat.define-theme(
   .error-button {
     @include mat.button-color($theme, $color-variant: error);
   }
+
+  .tertiary-fab {
+    @include mat.fab-color($theme, $color-variant: tertiary);
+  }
 }
 
 html,

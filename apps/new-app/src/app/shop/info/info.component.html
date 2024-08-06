@@ -1,6 +1,8 @@
-<div id="cover" max-center>
-  <img [imageLoader]="shop.cover" [imageFile]="shop.coverImage" />
-</div>
+@if (shop.cover || shop.coverImage) {
+  <div id="cover" max-center>
+    <img [imageLoader]="shop.cover" [imageFile]="shop.coverImage" />
+  </div>
+}
 <main fxLayout="column" p-md max-center>
   <button mat-mini-fab id="back-button" goBack class="tertiary-button">
     <i class="fa-regular fa-chevron-right"></i>
