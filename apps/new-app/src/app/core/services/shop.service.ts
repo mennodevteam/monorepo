@@ -41,7 +41,10 @@ export class ShopService {
 
     if (shop) {
       if (shop.appConfig?.theme) {
-        this.themeService.setThemeFromColor(shop.appConfig.themeHex || shop.appConfig.theme.primaryColor, shop.appConfig.themeMode);
+        this.themeService.setThemeFromColor(
+          shop.appConfig.themeHex || shop.appConfig.theme.primaryColor,
+          shop.appConfig.themeMode,
+        );
       }
 
       try {
@@ -104,7 +107,7 @@ export class ShopService {
   }
 
   get businessCategoryTitle() {
-    return this.translate.instant(`shop.category.${this.shop.businessCategory || BusinessCategory.Other}`);
+    return this.translate.instant(`shop.category.${this.shop.businessCategory || 'DEFAULT'}`);
   }
 
   async getResolver() {

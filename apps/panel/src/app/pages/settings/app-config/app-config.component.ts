@@ -74,7 +74,7 @@ export class AppConfigComponent {
       .open(ImageCropperDialogComponent, {
         data: <CropperOptions>{
           resizeToWidth: 800,
-          aspectRatio: 390 / 560,
+          aspectRatio: 390 / 840,
         },
       })
       .afterClosed()

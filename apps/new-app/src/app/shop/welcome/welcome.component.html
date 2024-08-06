@@ -4,10 +4,15 @@
     <img [imageLoader]="shop.logo" [imageFile]="shop.logoImage" id="logo" />
     <h1>{{ shop.title }}</h1>
     @if (shop.description) {
-      <p f-md class="outline-text">{{ shop.description }}</p>
+      <p f-md>{{ shop.description }}</p>
     }
     <a mat-flat-button class="large" routerLink="/menu">
       {{ 'welcome.viewMenu' | translate: { value: menuService.businessCategoryTitle } }}
     </a>
+    <div fxLayout="column" fxLayoutAlign="space-between">
+      <a mat-button routerLink="/info" class="tertiary-button">
+        {{ 'welcome.info' | translate: { value: shopService.businessCategoryTitle } }}
+      </a>
+    </div>
   </div>
 </div>

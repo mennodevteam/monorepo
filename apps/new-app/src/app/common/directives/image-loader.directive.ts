@@ -12,6 +12,13 @@ export enum ImagePlaceholder {
   selector: '[imageLoader]',
 })
 export class ImageLoaderDirective {
+  @Input() imageLoader?: string | undefined;
+  @Input() imageFile?: Image;
+  @Input() imageSize?: keyof Image;
+  @Input() placeholderImageSize: keyof Image = 'xxs';
+  @Input() placeholder: string;
+  @Input() defaultPlaceholder = ImagePlaceholder.default;
+
   static observer = new IntersectionObserver(
     (entries, observer) => {
       for (const entry of entries) {
@@ -41,11 +48,6 @@ export class ImageLoaderDirective {
     },
     { rootMargin: '200px', threshold: 0.1 },
   );
-  @Input() imageLoader?: string | undefined;
-  @Input() imageFile?: Image;
-  @Input() imageSize?: keyof Image;
-  @Input() placeholder: string;
-  @Input() defaultPlaceholder = ImagePlaceholder.default;
 
   constructor(
     private el: ElementRef,
@@ -72,8 +74,8 @@ export class ImageLoaderDirective {
   init() {
     let src: string | undefined = '';
     if (this.imageFile) {
-      if (this.imageFile.xxs && !this.placeholder) this.placeholder = this.getUrl(this.imageFile.xxs);
-
+      if (this.imageFile[this.placeholderImageSize] && !this.placeholder)
+        this.placeholder = this.getUrl(this.imageFile[this.placeholderImageSize]);
       src = this.getUrl(
         this.imageSize && this.imageFile[this.imageSize] ? this.imageFile[this.imageSize] : this.imageFile.md,
       );
@@ -89,9 +91,7 @@ export class ImageLoaderDirective {
     nativeEl.setAttribute('imageSrc', src);
     nativeEl.setAttribute('imagePlaceholder', placeholderSrc);
     nativeEl.setAttribute('defaultPlaceholder', this.defaultPlaceholderUrl);
-
-    ImageLoaderDirective.observer.observe(nativeEl);
-
+    
     if (nativeEl.tagName.toLowerCase() === 'img') {
       (nativeEl as HTMLImageElement).src = placeholderSrc;
       (nativeEl as HTMLImageElement).onerror = function () {
@@ -103,6 +103,8 @@ export class ImageLoaderDirective {
       nativeEl.style.backgroundSize = 'cover';
       nativeEl.style.backgroundPosition = 'center';
     }
+    console.log(placeholderSrc)
+    ImageLoaderDirective.observer.observe(nativeEl);
   }
 
   private getUrl(url: string) {

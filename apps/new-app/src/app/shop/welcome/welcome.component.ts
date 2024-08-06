@@ -13,7 +13,10 @@ import { COMMON } from '../../common';
   styleUrl: './welcome.component.scss',
 })
 export class WelcomeComponent {
-  constructor(public shopService: ShopService, public menuService: MenuService) {}
+  constructor(
+    public shopService: ShopService,
+    public menuService: MenuService,
+  ) {}
 
   get shop() {
     return this.shopService.shop!;

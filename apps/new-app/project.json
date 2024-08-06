@@ -22,6 +22,11 @@
           {
             "glob": "**/*",
             "input": "apps/new-app/public"
+          },
+          {
+            "glob": "*.txt",
+            "input": "apps/new-app/public/enamads",
+            "output": "/"
           }
         ],
         "styles": ["apps/new-app/src/themes/_base.scss", "apps/new-app/src/styles.scss"],

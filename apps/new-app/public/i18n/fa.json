@@ -17,7 +17,8 @@
     "about": "درباره {{value}}"
   },
   "welcome": {
-    "viewMenu": "مشاهده {{value}}"
+    "viewMenu": "مشاهده {{value}}",
+    "info": "اطلاعات {{value}}"
   },
   "orderType": {
     "title": "نوع سفارش",
@@ -30,6 +31,7 @@
   },
   "shop": {
     "category": {
+      "DEFAULT": "مجموعه",
       "CAFE": "کافه",
       "RESTAURANT": "رستوران",
       "CAFE_RESTAURANT": "کافه رستوران",
@@ -81,6 +83,7 @@
     "add": "افزودن",
     "searchPlaceholder": "جستجوی در {{value}}...",
     "category": {
+      "DEFAULT": "منو",
       "CAFE": "منو",
       "RESTAURANT": "منو",
       "CAFE_RESTAURANT": "منو",
