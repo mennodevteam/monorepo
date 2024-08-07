@@ -24,6 +24,7 @@ export class AddressesService {
         },
       })
       .subscribe((addresses) => {
+        addresses.sort((a, b) => b.id - a.id);
         this.addresses.set(addresses);
       });
   }

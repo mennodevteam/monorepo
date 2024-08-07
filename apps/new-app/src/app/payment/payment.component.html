@@ -1,29 +1,10 @@
 <app-top-app-bar title="{{ 'payment.title' | translate }}" [sticky]="true" [hideMenu]="true" />
 
 @if (cart.length()) {
-  <main fxLayout="column" fxLayoutGap="16" p-md max-center>
+  <main fxLayout="column" fxLayoutGap="16" p-md max-center pb>
     @if (menu.type() === OrderType.Delivery) {
-      @if (cart.address()) {
-        <mat-list>
-          <mat-list-item>
-            <span matListItemTitle
-              >{{ 'cart.sendTo' | translate }}
-              {{ cart.address()?.title }}
-            </span>
-            <span matListItemLine>{{ cart.address()?.description }}</span>
-            <div matListItemMeta>
-              <button mat-stroked-button class="tertiary-button" routerLink="/address/list">
-                {{ 'cart.changeAddress' | translate }}
-              </button>
-            </div>
-          </mat-list-item>
-        </mat-list>
-        <mat-divider />
-      } @else {
-        <button mat-stroked-button routerLink="/address/list">
-          {{ 'cart.selectAddress' | translate }}
-        </button>
-      }
+      <app-address-list />
+      <mat-divider />
     }
 
     <app-invoice />

@@ -52,6 +52,9 @@ export class AddressesController {
       where: {
         user: { id: userId },
       },
+      order: {
+        id: 'desc'
+      },
       relations: ['deliveryArea'],
     });
     if (!addresses?.length) {

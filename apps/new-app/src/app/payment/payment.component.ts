@@ -9,7 +9,9 @@ import { ClubService } from '../core/services/club.service';
 import { Router } from '@angular/router';
 import { AddressesService, MenuService, ShopService } from '../core';
 import { MatListModule } from '@angular/material/list';
-import { OrderType } from '@menno/types';
+import { Address, OrderType } from '@menno/types';
+import { FormsModule } from '@angular/forms';
+import { AddressListComponent } from './address-list/address-list.component';
 
 @Component({
   selector: 'app-payment',
@@ -21,6 +23,8 @@ import { OrderType } from '@menno/types';
     PaymentMethodsComponent,
     TopAppBarComponent,
     MatListModule,
+    FormsModule,
+    AddressListComponent,
   ],
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.scss',
@@ -33,7 +37,7 @@ export class PaymentComponent {
     private router: Router,
     private location: PlatformLocation,
     private shopService: ShopService,
-    private addressesService: AddressesService,
+    public addressesService: AddressesService,
     public menu: MenuService,
   ) {
     if (this.cart.length() === 0) {
@@ -45,7 +49,6 @@ export class PaymentComponent {
     if (!this.cart.useWallet()) return this.cart.total();
     else {
       const useWallet = this.club.wallet?.charge || 0;
-      console.log(useWallet);
       return Math.max(0, this.cart.total() - useWallet);
     }
   });

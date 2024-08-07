@@ -103,7 +103,6 @@ export class ImageLoaderDirective {
       nativeEl.style.backgroundSize = 'cover';
       nativeEl.style.backgroundPosition = 'center';
     }
-    console.log(placeholderSrc)
     ImageLoaderDirective.observer.observe(nativeEl);
   }
 

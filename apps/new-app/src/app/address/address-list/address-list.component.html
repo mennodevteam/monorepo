@@ -1,6 +1,8 @@
 <app-top-app-bar [hideMenu]="true" [sticky]="true">
   <div fxLayout="row" fxLayoutAlign="end">
-    <a mat-flat-button color="tertiary-button" routerLink="../map">
+    <a mat-button class="tertiary-button" routerLink="../map">
+      <i class="fa-regular fa-circle-plus"></i>
+      &nbsp;
       {{ 'addressList.new' | translate }}
     </a>
   </div>
@@ -9,20 +11,11 @@
   <mat-nav-list>
     @for (address of addresses(); track address.id; let isLast = $last) {
       <a mat-list-item (click)="select(address)">
+        <i matListItemIcon class="fa-regular fa-location-dot"></i>
         @if (address.title) {
           <span matListItemTitle>{{ address.title }}</span>
         }
         <span matListItemLine f-sm>{{ address.description }}</span>
-        @if (address.deliveryArea) {
-          <span matListItemLine f-sm
-            >{{ 'cart.deliveryPrice' | translate }}:
-            {{ address.deliveryArea.price | menuCurrency }}
-          </span>
-        } @else {
-          <span matListItemLine f-sm class="error-text">
-            {{ 'cart.addressOutOfRange' | translate }}
-          </span>
-        }
       </a>
       @if (!isLast) {
         <mat-divider />

@@ -1,0 +1,36 @@
+<div fxLayout="row" fxLayoutAlign="space-between center">
+  <h4>{{ 'addressList.title' | translate }}</h4>
+  <a mat-button routerLink="/address/map" class="tertiary-button">
+    <i class="fa-regular fa-circle-plus"></i>
+    {{ 'addressList.new' | translate }}
+  </a>
+</div>
+@if (addressesService.addresses()?.length) {
+  <mat-selection-list
+    [multiple]="false"
+    fxLayout="column"
+    fxLayoutGap="16"
+    [(ngModel)]="address"
+    (ngModelChange)="cart.address.set($event[0])"
+  >
+    @for (address of addresses; track address.id) {
+      <mat-list-option [class.active]="cart.address()?.id === address.id" [value]="address">
+        @if (address.title) {
+          <span matListItemTitle>
+            {{ address.title }}
+          </span>
+        }
+        <span matListItemLine f-sm>
+          {{ address.description }}
+        </span>
+      </mat-list-option>
+    }
+  </mat-selection-list>
+  @if (addressesService.addresses() && addressesService.addresses()!.length > addresses.length) {
+    <a mat-button class="tertiary-button" id="view-more-address" routerLink="/address/list">
+      {{ 'app.viewMore' | translate }}
+      &nbsp;
+      <i class="fa-regular fa-angle-down"></i>
+    </a>
+  }
+}
