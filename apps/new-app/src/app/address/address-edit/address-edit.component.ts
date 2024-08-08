@@ -8,14 +8,22 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Address } from '@menno/types';
-import { AddressesService, CartService, ShopService } from '../../core';
+import { Address, ThemeMode } from '@menno/types';
+import { AddressesService, CartService, ShopService, ThemeService } from '../../core';
 declare let nmp_mapboxgl: any;
 
 @Component({
   selector: 'app-address-edit',
   standalone: true,
-  imports: [CommonModule, COMMON, TopAppBarComponent, MatToolbarModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    COMMON,
+    TopAppBarComponent,
+    MatToolbarModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './address-edit.component.html',
   styleUrl: './address-edit.component.scss',
 })
@@ -31,6 +39,7 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
     private shopService: ShopService,
     private cart: CartService,
     private addressesService: AddressesService,
+    private theme: ThemeService,
   ) {
     this.address = this.router.getCurrentNavigation()?.extras?.state?.['address'];
     if (!this.coordinate) this.location.back();
@@ -46,7 +55,10 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.timeout = setTimeout(() => {
       new nmp_mapboxgl.Map({
-        mapType: nmp_mapboxgl.Map.mapTypes.neshanVectorNight,
+        mapType:
+          this.theme.mode === ThemeMode.Light
+            ? nmp_mapboxgl.Map.mapTypes.neshanVector
+            : nmp_mapboxgl.Map.mapTypes.neshanVectorNight,
         container: 'map',
         zoom: 15,
         pitch: 0,
@@ -87,6 +99,6 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-      if (this.timeout) clearTimeout(this.timeout);
+    if (this.timeout) clearTimeout(this.timeout);
   }
 }

@@ -150,4 +150,8 @@ export class ThemeService {
   get background() {
     return hexFromArgb(this.schema.background);
   }
+
+  get mode() {
+    return this.themeMode;
+  }
 }

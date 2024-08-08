@@ -14,6 +14,8 @@ main {
       top: 16px;
       right: 16px;
       left: 16px;
+      height: 56px;
+      border-radius: 16px !important;
     }
 
     #marker {
@@ -35,4 +37,8 @@ main {
     padding: 16px !important;
     height: fit-content;
   }
+}
+
+::ng-deep #search .mdc-button__label {
+  width: -webkit-fill-available;
 }
