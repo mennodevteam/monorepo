@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { CartService } from '../../core/services/cart.service';
 import { COMMON } from '../../common';
 import { MatListModule } from '@angular/material/list';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { DiscountCouponModalComponent } from '../../common/components';
 
 @Component({
   selector: 'app-invoice',
@@ -12,5 +14,12 @@ import { MatListModule } from '@angular/material/list';
   styleUrl: './invoice.component.scss',
 })
 export class InvoiceComponent {
-  constructor(public cart: CartService) {}
+  constructor(
+    public cart: CartService,
+    private sheet: MatBottomSheet,
+  ) {}
+
+  addCoupon() {
+    this.sheet.open(DiscountCouponModalComponent);
+  }
 }

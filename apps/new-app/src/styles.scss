@@ -27,6 +27,10 @@ textarea {
   font-family: monospace !important;
 }
 
+*.ltr {
+  direction: ltr;
+}
+
 *:not(.eng) {
   -moz-font-feature-settings: 'ss02';
   -webkit-font-feature-settings: 'ss02';

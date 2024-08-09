@@ -19,6 +19,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { AddressesService } from './addresses.service';
+import { ClubService } from './club.service';
 
 type SignalProductItem = { productId: string; variantId?: number; quantity: WritableSignal<number> };
 
@@ -44,7 +45,7 @@ export class CartService {
       address: this.address(),
       note: this.note(),
       useWallet: this.useWallet(),
-      discountCoupon: this.coupon() ? { id: this.coupon()?.id } : undefined,
+      discountCoupon: this.coupon(),
       details: { table: this.table() },
     } as OrderDto;
   });
@@ -81,6 +82,7 @@ export class CartService {
     private snack: MatSnackBar,
     private translate: TranslateService,
     private addressesService: AddressesService,
+    private club: ClubService,
   ) {
     effect(() => {
       const menu = this.menuService.menu();
@@ -106,6 +108,13 @@ export class CartService {
       },
       { allowSignalWrites: true },
     );
+
+    effect(() => {
+      const coupons = this.club.coupons();
+      untracked(() => {
+        if (coupons[0] && !this.coupon()) this.coupon.set(coupons[0]);
+      });
+    });
     // this.menuService.typeObservable.subscribe((type) => {
     //   if (type != undefined) {
     //     if (this.type != type) this.clear();
@@ -122,7 +131,7 @@ export class CartService {
       this.snack.open(
         this.translate.instant('cart.stockLimit', { value: variant?.stock || product.stock }),
         '',
-        { panelClass: 'warning' },
+        { panelClass: 'warning', duration: 2000 },
       );
       return;
     }
@@ -205,14 +214,6 @@ export class CartService {
     }
   }
 
-  async checkDiscountCouponCode(code: string) {
-    const coupon = await this.http
-      .get<DiscountCoupon | undefined>(`discountCoupons/check/${this.shopService.shop.id}/${code}`)
-      .toPromise();
-    if (coupon) this.coupon.set(coupon);
-    else this.snack.open(this.translate.instant('cart.discountCouponNotFound'));
-  }
-
   async complete() {
     if (this.menuService.type() == undefined || !this.shopService.shop) return;
     // await this.shopService.load(true);
@@ -243,7 +244,7 @@ export class CartService {
         this.address()?.deliveryArea == null ||
         this.address()?.deliveryArea?.status != Status.Active)
     ) {
-      this.snack.open(this.translate.instant('cart.noAddressWarning'));
+      this.snack.open(this.translate.instant('cart.noAddressWarning'), '', { duration: 2000 });
       return;
     }
 
@@ -261,12 +262,16 @@ export class CartService {
           this.translate.instant('cart.discountCouponMinPriceWarning', {
             value: coupon.minPrice,
           }),
+          '',
+          { duration: 4000 },
         );
         return;
       }
 
       if (coupon.orderTypes?.length && coupon.orderTypes.indexOf(this.menuService.type()!) === -1) {
-        this.snack.open(this.translate.instant('cart.discountCouponOrderTypeWarning'));
+        this.snack.open(this.translate.instant('cart.discountCouponOrderTypeWarning'), '', {
+          duration: 4000,
+        });
         return;
       }
     }

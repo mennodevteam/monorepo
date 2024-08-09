@@ -1,0 +1,17 @@
+<br />
+<h4>{{ 'discountCouponModal.title' | translate }}</h4>
+<br />
+<p>{{ 'discountCouponModal.description' | translate }}</p>
+<br />
+<form fxLayout="column" [formGroup]="form" (ngSubmit)="submit()">
+  <mat-form-field>
+    <mat-label>{{ 'discountCouponModal.label' | translate }}</mat-label>
+    <input matInput autofocus formControlName="code" class="eng ltr mono" [disabled]="loading()" />
+  </mat-form-field>
+  <button mat-flat-button type="submit" class="large" [disabled]="loading()">
+    {{ 'discountCouponModal.submit' | translate }}
+    @if (loading()) {
+      ...
+    }
+  </button>
+</form>

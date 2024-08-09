@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { ShopService } from './shop.service';
 import { DiscountCoupon, Member } from '@menno/types';
 import { AuthService } from './auth.service';
@@ -9,8 +9,8 @@ import { MenuService } from './menu.service';
   providedIn: 'root',
 })
 export class ClubService {
-  member?: Member;
-  coupons?: DiscountCoupon[];
+  member = signal<Member | undefined>(undefined);
+  coupons = signal<DiscountCoupon[]>([]);
 
   constructor(
     private http: HttpClient,
@@ -19,7 +19,7 @@ export class ClubService {
     private menu: MenuService,
   ) {
     this.getMember().then((member) => {
-      if (member) this.member = member;
+      if (member) this.member.set(member);
     });
     this.getCoupons();
   }
@@ -53,12 +53,12 @@ export class ClubService {
       .get<DiscountCoupon[]>(`discountCoupons/app/${this.shopService.shop?.id}`)
       .toPromise();
     if (coupons?.length) {
-      this.coupons = coupons;
+      this.coupons.set(coupons);
     }
     return coupons;
   }
 
   get wallet() {
-    return this.member?.wallet;
+    return this.member()?.wallet;
   }
 }

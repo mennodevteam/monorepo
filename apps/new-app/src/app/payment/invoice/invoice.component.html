@@ -28,3 +28,17 @@
     </div>
   </mat-list-item>
 </mat-list>
+
+@if (cart.coupon()) {
+  <button mat-stroked-button (click)="cart.coupon.set(undefined)" class="coupon-button error-button">
+    <i class="fa-regular fa-circle-minus"></i>
+    &nbsp;
+    {{ 'cart.removeCoupon' | translate }}
+  </button>
+} @else {
+  <button mat-stroked-button (click)="addCoupon()" class="coupon-button tertiary-button">
+    <i class="fa-regular fa-circle-plus"></i>
+    &nbsp;
+    {{ 'cart.addCoupon' | translate }}
+  </button>
+}

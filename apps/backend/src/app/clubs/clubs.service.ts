@@ -40,7 +40,7 @@ export class ClubsService {
     @InjectRepository(Member) private membersRepo: Repository<Member>,
     @InjectRepository(User) private usersRepo: Repository<User>,
     @InjectRepository(DiscountCoupon) private discountCouponsRepo: Repository<DiscountCoupon>,
-    private redis: RedisService
+    private redis: RedisService,
   ) {}
 
   async saveMember(member: Member): Promise<Member> {
@@ -233,7 +233,8 @@ export class ClubsService {
           (x) =>
             (!x.user || x.user?.id === dto.userId) &&
             x.star <= member.star &&
-            (!x.tag || member.tags?.find((tag) => tag.id === x.tag.id))
+            !x.code &&
+            (!x.tag || member.tags?.find((tag) => tag.id === x.tag.id)),
         );
       }
     }
@@ -250,7 +251,7 @@ export class ClubsService {
       }
       if (c.maxUsePerUser && dto.userId) {
         const userUse = orders.filter(
-          (x) => x.customer.id === dto.userId && x.discountCoupon?.id === c.id
+          (x) => x.customer.id === dto.userId && x.discountCoupon?.id === c.id,
         ).length;
         if (userUse >= c.maxUsePerUser) return false;
       }
@@ -342,7 +343,7 @@ export class ClubsService {
             coupon.startedAt = new Date();
             coupon.expiredAt = new Date();
             coupon.expiredAt.setDate(
-              coupon.expiredAt.getDate() + c.config.anniversary.discountCoupon.durationInDay
+              coupon.expiredAt.getDate() + c.config.anniversary.discountCoupon.durationInDay,
             );
             coupon.expiredAt.setHours(23, 59, 59, 99);
             coupon.user = m.user;
@@ -366,9 +367,10 @@ export class ClubsService {
     const shop = await this.shopsRepo.findOne({ where: { code }, relations: ['club'] });
     if (!shop) return;
     const res = await this.http
-      .get<{ club: OldTypes.Club; members: [OldTypes.Member[], number] }>(
-        `http://65.21.237.12:3002/shops/club-data/xmje/${code}`
-      )
+      .get<{
+        club: OldTypes.Club;
+        members: [OldTypes.Member[], number];
+      }>(`http://65.21.237.12:3002/shops/club-data/xmje/${code}`)
       .toPromise();
 
     const { members, club } = res.data;
@@ -391,7 +393,7 @@ export class ClubsService {
       : [];
 
     const newMembers = members[0].filter(
-      (nm) => !currentMembers.find((om) => om.user.mobilePhone === nm.user.mobilePhone)
+      (nm) => !currentMembers.find((om) => om.user.mobilePhone === nm.user.mobilePhone),
     );
 
     const users = await this.usersRepo.find({

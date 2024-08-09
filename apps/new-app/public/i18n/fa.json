@@ -67,6 +67,7 @@
     "title": "سبد خرید",
     "complete": "تکمیل خرید",
     "addCoupon": "افزودن کد تخفیف",
+    "removeCoupon": "حذف کد تخفیف",
     "sum": "مجموع آیتم‌ها",
     "deliveryPrice": "هزینه ارسال",
     "addressOutOfRange": "خارج از محدوده",
@@ -154,5 +155,12 @@
   "addressList": {
     "title": "انتخاب آدرس",
     "new": "آدرس جدید"
+  },
+  "discountCouponModal": {
+    "title": "افزودن کد تخفیف",
+    "description": "کد تخفیف خود را وارد کنید:",
+    "label": "کد تخفیف",
+    "submit": "ثبت کد",
+    "wrongCodeAlert": "کد وارد شده صحیح نیست"
   }
 }
