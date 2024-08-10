@@ -90,31 +90,41 @@ export class ThemeService {
   }
 
   private createCustomProperties(schemes: any) {
-    try {
-      let sheet = (globalThis as any)['material-tokens-class'];
+    let sheet = (globalThis as any)['material-tokens-class'];
 
-      if (!sheet) {
+    if (!sheet) {
+      try {
         sheet = new CSSStyleSheet();
-        (globalThis as any)['material-tokens-class'] = sheet;
+      } catch (error) {
+        const styleElement = document.createElement('style');
+        document.head.appendChild(styleElement);
+        sheet = styleElement.sheet;
+      }
+      (globalThis as any)['material-tokens-class'] = sheet;
+      try {
         document.adoptedStyleSheets.push(sheet);
+      } catch (error) {
+        //
       }
+    }
 
-      let tokenClassString = ``;
-      for (const key in schemes) {
-        if (Object.prototype.hasOwnProperty.call(schemes, key)) {
-          const keyText = key
-            .replace(/([a-z])([A-Z])/g, '$1-$2')
-            .replace(/[\s_]+/g, '-')
-            .toLowerCase();
+    let tokenClassString = ``;
+    for (const key in schemes) {
+      if (Object.prototype.hasOwnProperty.call(schemes, key)) {
+        const keyText = key
+          .replace(/([a-z])([A-Z])/g, '$1-$2')
+          .replace(/[\s_]+/g, '-')
+          .toLowerCase();
 
-          const value = hexFromArgb(schemes[key]);
-          document.body.style.setProperty(`--sys-${keyText}`, value);
-          tokenClassString += `.${keyText}-text{color:${value} !important}.${keyText}-background{background-color:${value} !important}`;
-        }
+        const value = hexFromArgb(schemes[key]);
+        document.body.style.setProperty(`--sys-${keyText}`, value);
+        tokenClassString += `.${keyText}-text{color:${value} !important}.${keyText}-background{background-color:${value} !important}`;
       }
+    }
+    try {
       sheet.replaceSync(tokenClassString);
     } catch (error) {
-      console.log(error);
+      //
     }
   }
 
