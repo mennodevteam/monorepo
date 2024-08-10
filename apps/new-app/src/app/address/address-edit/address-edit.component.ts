@@ -94,8 +94,7 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
     this.saving.set(true);
     const address = await this.addressesService.save(this.dto);
     if (address) this.cart.address.set(address);
-    this.location.back();
-    this.location.back();
+    window.history.go(-2);
   }
 
   ngOnDestroy(): void {

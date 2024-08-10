@@ -20,6 +20,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { AddressesService } from './addresses.service';
 import { ClubService } from './club.service';
+import { PersianNumberService } from '@menno/utils';
 
 type SignalProductItem = { productId: string; variantId?: number; quantity: WritableSignal<number> };
 
@@ -239,13 +240,20 @@ export class CartService {
     }
 
     if (this.menuService.type() === OrderType.Delivery) {
-      if (!this.address()) {
+      const address = this.address();
+      if (!address) {
         this.snack.open(this.translate.instant('cart.noAddressWarning'), '', { duration: 2000 });
-      } else if (
-        this.address()?.deliveryArea == null ||
-        this.address()?.deliveryArea?.status != Status.Active
-      ) {
+      } else if (address.deliveryArea == null || address.deliveryArea.status != Status.Active) {
         this.snack.open(this.translate.instant('cart.addressOutOfRangeWarning'), '', { duration: 2000 });
+        return;
+      } else if (address?.deliveryArea.minOrderPrice && address.deliveryArea.minOrderPrice > this.sum()) {
+        this.snack.open(
+          this.translate.instant('cart.addressMinPriceWarning', {
+            value: PersianNumberService.withCommas(address.deliveryArea.minOrderPrice),
+          }),
+          '',
+          { duration: 4000 },
+        );
         return;
       }
     }

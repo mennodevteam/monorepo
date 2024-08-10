@@ -23,7 +23,7 @@ export class DeliveryAreasPageComponent implements OnInit {
     private dialog: MatDialog,
     private translate: TranslateService,
     private shopService: ShopService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -37,11 +37,10 @@ export class DeliveryAreasPageComponent implements OnInit {
             okText: this.translate.instant('deliveryArea.shopNotSetDialog.okText'),
             hideCancel: true,
           },
-          disableClose: true,
         })
         .afterClosed()
-        .subscribe(() => {
-          this.router.navigateByUrl('/settings/shop');
+        .subscribe((ok) => {
+          if (ok) this.router.navigateByUrl('/settings/shop');
         });
     }
   }
@@ -60,7 +59,7 @@ export class DeliveryAreasPageComponent implements OnInit {
         width: '600px',
         data: {
           title: this.translate.instant(
-            area ? 'deliveryAreaDialog.editTitle' : 'deliveryAreaDialog.newTitle'
+            area ? 'deliveryAreaDialog.editTitle' : 'deliveryAreaDialog.newTitle',
           ),
           fields: {
             title: {
