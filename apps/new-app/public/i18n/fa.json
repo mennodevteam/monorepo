@@ -115,7 +115,7 @@
   "login": {
     "phoneTitle": "عضویت/ ثبت‌نام",
     "phoneDescription": "شماره موبایل خود را وارد کنید",
-    "phonePlaceholder": "123456789",
+    "phonePlaceholder": "0912123456789",
     "phoneAction": "ارسال کد تایید",
     "otpTitle": "تایید شماره موبایل",
     "otpDescription": "رمز یکبار مصرف ارسال شده به شماره زیر را وارد کنید",

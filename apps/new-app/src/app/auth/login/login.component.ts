@@ -35,12 +35,12 @@ export class LoginComponent {
   ) {}
 
   async sendToken(phone: string, ev: SubmitEvent) {
-    if (phone.length !== 9) return;
+    if (phone.length !== 11) return;
     phone = PersianNumberService.toEnglish(phone);
     this.loading.set(true);
-    await this.auth.sendToken(`09${phone}`).toPromise();
+    await this.auth.sendToken(`${phone}`).toPromise();
     this.router.navigate(['/login/otp'], {
-      state: { phone: `09${phone}` },
+      state: { phone: `${phone}` },
       queryParams: this.route.snapshot.queryParams,
     });
     ev.preventDefault();

@@ -12,11 +12,10 @@
       type="tel"
       placeholder="{{ 'login.phonePlaceholder' | translate }}"
       [readonly]="loading()"
-      minlength="9"
-      maxlength="9"
+      minlength="11"
+      maxlength="11"
       class="mono"
     />
-    <span matTextSuffix class="mono">09</span>
   </mat-form-field>
 
   <button id="action" type="submit" [disabled]="loading()" mat-flat-button class="large">
