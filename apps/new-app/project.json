@@ -13,7 +13,7 @@
         "outputPath": "dist/apps/new-app",
         "index": "apps/new-app/src/index.html",
         "main": "apps/new-app/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": ["zone.js", "apps/new-app/src/polyfills.ts"],
         "tsConfig": "apps/new-app/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [

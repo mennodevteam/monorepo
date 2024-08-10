@@ -13,10 +13,12 @@
         <span class="item__content__title">{{ product.title }}</span>
         <span class="item__content__subtitle">
           @if (Product.hasDiscount(product)) {
-            <span class="line-price error-text">{{ Product.realPrice(product) | number }}</span
+            <span class="line-price error-text">{{
+              Product.realPrice(product, product.variants?.[0]) | number
+            }}</span
             >&nbsp;
           }
-          <span>{{ Product.totalPrice(product) | menuCurrency }}</span>
+          <span>{{ Product.totalPrice(product, product.variants?.[0]) | menuCurrency }}</span>
         </span>
       </div>
     </mat-grid-tile>
