@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
+import { effect, Injectable, signal } from '@angular/core';
 import { Address } from '@menno/types';
 import { ShopService } from './shop.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +13,13 @@ export class AddressesService {
   constructor(
     private http: HttpClient,
     private shopService: ShopService,
+    private auth: AuthService,
   ) {
-    this.load();
+    effect(() => {
+      if (this.auth.user()) {
+        this.load();
+      }
+    });
   }
 
   private load() {
