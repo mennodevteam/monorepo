@@ -39,7 +39,7 @@ export class ProductDetailsComponent {
   submit() {
     if (this.product.variants?.length)
       this.variantsListElement()?.nativeElement.scrollIntoView({
-        block: 'nearest',
+        block: 'start',
         behavior: 'smooth',
       });
 

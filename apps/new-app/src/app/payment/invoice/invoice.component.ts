@@ -20,6 +20,8 @@ export class InvoiceComponent {
   ) {}
 
   addCoupon() {
-    this.sheet.open(DiscountCouponModalComponent);
+    this.sheet.open(DiscountCouponModalComponent, {
+      disableClose: true,
+    });
   }
 }

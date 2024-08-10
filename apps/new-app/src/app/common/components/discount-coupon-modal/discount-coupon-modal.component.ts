@@ -61,4 +61,8 @@ export class DiscountCouponModalComponent {
       }
     }
   }
+
+  cancel() {
+    this._bottomSheetRef.dismiss();
+  }
 }

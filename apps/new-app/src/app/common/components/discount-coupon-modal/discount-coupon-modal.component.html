@@ -14,4 +14,9 @@
       ...
     }
   </button>
+  <br>
+  <button mat-button (click)="cancel()" class="tertiary-button" type="button" [disabled]="loading()">
+    {{ 'app.cancel' | translate }}
+  </button>
+  <br>
 </form>

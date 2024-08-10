@@ -115,12 +115,12 @@
     "phoneTitle": "عضویت/ ثبت‌نام",
     "phoneDescription": "شماره موبایل خود را وارد کنید",
     "phonePlaceholder": "123456789",
-    "phoneAction": "ارسال توکن",
+    "phoneAction": "ارسال کد تاییدیه",
     "otpTitle": "تایید شماره موبایل",
     "otpDescription": "رمز یکبار مصرف ارسال شده به شماره زیر را وارد کنید",
     "remainingTime": "زمان باقی مانده: {{value}} ثانیه",
-    "resendToken": "ارسال مجدد توکن",
-    "tokenExpired": "توکن منقضی شده است",
+    "resendToken": "ارسال مجدد کد",
+    "tokenExpired": "کد منقضی شده است",
     "otpError": "کد وارد شده صحیح نیست"
   },
   "register": {
