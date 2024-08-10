@@ -2,7 +2,7 @@
   [hideMenu]="true"
   title="{{ 'editAddress.' + (this.address ? 'editTitle' : 'newTitle') | translate }}"
 />
-<form [formGroup]="addressForm" p-md fxLayout="column" (ngSubmit)="submit()">
+<form [formGroup]="addressForm" p-md fxLayout="column" (ngSubmit)="submit()" pb>
   <div id="map">
     <i id="marker" class="fa-solid fa-location-dot fa-lg error-text"></i>
   </div>
