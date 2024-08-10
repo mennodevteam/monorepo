@@ -29,6 +29,7 @@ export const appRoutes: Route[] = [
       { path: 'cart', component: CartComponent, data: { animation: 'cart' } },
       { path: 'payment', component: PaymentComponent, data: { animation: 'payment' } },
       { path: '', children: shopRoutes },
+      { path: 'complete/:id', pathMatch: 'full', redirectTo: 'orders/thanks/:id' },
     ],
   },
 ];

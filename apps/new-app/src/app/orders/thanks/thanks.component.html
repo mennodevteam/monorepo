@@ -1,0 +1,9 @@
+<main fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="32px">
+  <div class="form-theme">
+    <i class="fa-solid fa-circle-check"></i>
+  </div>
+  <!-- <h1>{{ 'thanks.title' | translate }}</h1> -->
+  <p>{{ 'thanks.description' | translate }}</p>
+  <button mat-stroked-button class="tertiary-button">{{ 'thanks.actions' | translate }}</button>
+  <mat-progress-bar dir="ltr" [value]="value()" />
+</main>
