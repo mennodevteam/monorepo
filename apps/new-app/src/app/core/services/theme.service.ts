@@ -44,6 +44,8 @@ export class ThemeService {
     darkSchema.onBackground = argbFromHex('#FFFFFF');
     darkSchema.tertiary = argbFromHex('#E6E6E6');
     darkSchema.onTertiary = argbFromHex('#131313');
+    darkSchema.tertiaryContainer = argbFromHex('#E6E6E6');
+    darkSchema.onTertiaryContainer = argbFromHex('#131313');
     darkSchema.error = argbFromHex('#DB3B21');
     darkSchema.onError = argbFromHex('#FFFFFF');
     darkSchema.surface = argbFromHex('#131313');
@@ -62,6 +64,8 @@ export class ThemeService {
     lightSchema.onBackground = argbFromHex('#161616');
     lightSchema.tertiary = argbFromHex('#161616');
     lightSchema.onTertiary = argbFromHex('#FFFFFF');
+    lightSchema.tertiaryContainer = argbFromHex('#161616');
+    lightSchema.onTertiaryContainer = argbFromHex('#FFFFFF');
     lightSchema.error = argbFromHex('#DB3B21');
     lightSchema.onError = argbFromHex('#FFFFFF');
     lightSchema.surface = argbFromHex('#FFFFFF');

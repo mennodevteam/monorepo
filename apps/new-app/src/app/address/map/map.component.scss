@@ -30,6 +30,13 @@ main {
       z-index: 10000;
       transform: translate(-24px, -36px);
     }
+
+    #gps {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      z-index: 10000;
+    }
   }
 
   mat-toolbar {

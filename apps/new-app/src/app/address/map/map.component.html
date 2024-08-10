@@ -14,6 +14,13 @@
       </div>
     </button>
     <i id="marker" class="fa-solid fa-location-dot fa-lg error-text"></i>
+    <button mat-mini-fab id="gps" class="tertiary-fab" (click)="gotToGps()">
+      @if (gpsLoading()) {
+        <i class="fa-regular fa-spinner-third fa-spin"></i>
+      } @else {
+        <i class="fa-regular fa-location-crosshairs"></i>
+      }
+    </button>
   </div>
   <mat-toolbar fxLayout="column" fxLayoutAlign="center" p-md>
     <button mat-flat-button class="large" (click)="submit()">

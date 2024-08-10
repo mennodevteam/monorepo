@@ -116,7 +116,7 @@
     "phoneTitle": "عضویت/ ثبت‌نام",
     "phoneDescription": "شماره موبایل خود را وارد کنید",
     "phonePlaceholder": "123456789",
-    "phoneAction": "ارسال کد تاییدیه",
+    "phoneAction": "ارسال کد تایید",
     "otpTitle": "تایید شماره موبایل",
     "otpDescription": "رمز یکبار مصرف ارسال شده به شماره زیر را وارد کنید",
     "remainingTime": "زمان باقی مانده: {{value}} ثانیه",
@@ -151,7 +151,8 @@
     "addressPlaceholder": "خیابان، کوچه، پلاک، واحد"
   },
   "map": {
-    "title": "انتخاب موقعیت"
+    "title": "انتخاب موقعیت",
+    "errorGps": "امکان دسترسی به موقعیت gps وجود ندارد"
   },
   "addressList": {
     "title": "انتخاب آدرس",

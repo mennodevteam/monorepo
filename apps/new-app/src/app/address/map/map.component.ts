@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { COMMON } from '../../common';
 import { TopAppBarComponent } from '../../common/components/top-app-bar/top-app-bar.component';
@@ -7,6 +7,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { environment } from '../../../environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ThemeMode } from '@menno/types';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 declare let nmp_mapboxgl: any;
 
 const DEFAULT_LOCATION = [51.389, 35.6892];
@@ -21,11 +23,15 @@ const DEFAULT_LOCATION = [51.389, 35.6892];
 export class MapComponent implements AfterViewInit, OnDestroy {
   map: any;
   timeout: any;
+  gpsLoading = signal(false);
+
   constructor(
     private shopService: ShopService,
     private router: Router,
     private route: ActivatedRoute,
     private theme: ThemeService,
+    private snack: MatSnackBar,
+    private translate: TranslateService,
   ) {
     this.route.queryParams.subscribe((params) => {
       setTimeout(() => {
@@ -67,12 +73,11 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         },
       });
 
-      if (!this.coordinate) {
-        navigator?.geolocation?.getCurrentPosition((position) => {
-          this.map.setCenter([position.coords.longitude, position.coords.latitude]);
-          this.map.setZoom(15);
-        });
-      }
+      setTimeout(() => {
+        if (!this.coordinate) {
+          this.gotToGps();
+        }
+      }, 1000);
     }, 800);
   }
 
@@ -90,6 +95,21 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     const query = this.route.snapshot.queryParams;
     if (query['lat'] && query['lng']) return [Number(query['lat']), Number(query['lng'])];
     return;
+  }
+
+  gotToGps() {
+    this.gpsLoading.set(true);
+    navigator?.geolocation?.getCurrentPosition(
+      (position) => {
+        this.map.setCenter([position.coords.longitude, position.coords.latitude]);
+        this.map.setZoom(15);
+        this.gpsLoading.set(false);
+      },
+      (error) => {
+        this.snack.open(this.translate.instant('map.errorGps'), '', { duration: 3000 });
+        this.gpsLoading.set(false);
+      },
+    );
   }
 
   ngOnDestroy(): void {
