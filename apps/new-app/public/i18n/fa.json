@@ -75,6 +75,7 @@
     "changeAddress": "تغییر آدرس",
     "selectAddress": "انتخاب آدرس",
     "noAddressWarning": "لطفا آدرس جهت ارسال را مشخص کنید",
+    "addressOutOfRangeWarning": "آدرس انتخاب شده خارج از محدوده ارسال است.",
     "discountCouponAddDescription": "کد تخفیف را وارد کنید",
     "discountCouponNotFound": "کد وارد شده اشتباه است",
     "discountCouponMinPriceWarning": "حداقل سفارش برای کد تخفیف {{value}} است",

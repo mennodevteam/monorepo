@@ -238,14 +238,16 @@ export class CartService {
       return;
     }
 
-    if (
-      this.menuService.type() === OrderType.Delivery &&
-      (!this.address() ||
+    if (this.menuService.type() === OrderType.Delivery) {
+      if (!this.address()) {
+        this.snack.open(this.translate.instant('cart.noAddressWarning'), '', { duration: 2000 });
+      } else if (
         this.address()?.deliveryArea == null ||
-        this.address()?.deliveryArea?.status != Status.Active)
-    ) {
-      this.snack.open(this.translate.instant('cart.noAddressWarning'), '', { duration: 2000 });
-      return;
+        this.address()?.deliveryArea?.status != Status.Active
+      ) {
+        this.snack.open(this.translate.instant('cart.addressOutOfRangeWarning'), '', { duration: 2000 });
+        return;
+      }
     }
 
     if (
