@@ -25,29 +25,6 @@
     }"
   ></ng-otp-input>
 
-  <!-- <mat-form-field>
-    <input
-      matInput
-      #input
-      [formControl]="inputFormControl"
-      autofocus
-      type="tel"
-      [readonly]="loading()"
-      minlength="4"
-      maxlength="4"
-      class="mono"
-    />
-    @if (!time()) {
-      <mat-error>{{ 'login.tokenExpired' | translate }}</mat-error>
-    } @else if (error()) {
-      <mat-error>{{ 'login.otpError' | translate }}</mat-error>
-    } @else {
-      <mat-hint>{{ 'login.remainingTime' | translate: { value: time() } }}</mat-hint>
-    }
-  </mat-form-field> -->
-  <!-- <div fxLayout="row" fxLayoutAlign="space-between" id="token-containers">
-  </div> -->
-
   @if (time()) {
     <label class="timer outline-text">{{ 'login.remainingTime' | translate: { value: time() } }}</label>
 

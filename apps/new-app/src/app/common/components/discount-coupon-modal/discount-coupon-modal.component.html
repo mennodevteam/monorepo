@@ -6,7 +6,7 @@
 <form fxLayout="column" [formGroup]="form" (ngSubmit)="submit()">
   <mat-form-field>
     <mat-label>{{ 'discountCouponModal.label' | translate }}</mat-label>
-    <input matInput autofocus formControlName="code" class="eng ltr mono" [disabled]="loading()" />
+    <input matInput [autoFocus]="500" formControlName="code" class="eng ltr mono" [disabled]="loading()" />
   </mat-form-field>
   <button mat-flat-button type="submit" class="large" [disabled]="loading()">
     {{ 'discountCouponModal.submit' | translate }}
@@ -14,9 +14,8 @@
       ...
     }
   </button>
-  <br>
+  <br />
   <button mat-button (click)="cancel()" class="tertiary-button" type="button" [disabled]="loading()">
     {{ 'app.cancel' | translate }}
   </button>
-  <br>
 </form>
