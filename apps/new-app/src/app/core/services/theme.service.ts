@@ -97,6 +97,7 @@ export class ThemeService {
         sheet = new CSSStyleSheet();
       } catch (error) {
         const styleElement = document.createElement('style');
+        styleElement.id = 'material-tokens-class';
         document.head.appendChild(styleElement);
         sheet = styleElement.sheet;
       }
@@ -124,7 +125,9 @@ export class ThemeService {
     try {
       sheet.replaceSync(tokenClassString);
     } catch (error) {
-      //
+      const rules = tokenClassString.split('.').forEach((rule) => {
+        if (rule) (sheet as any).insertRule(`.${rule}`, (sheet as any).cssRules.length);
+      });
     }
   }
 
