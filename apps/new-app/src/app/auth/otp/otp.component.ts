@@ -71,16 +71,14 @@ export class OtpComponent implements OnDestroy {
     try {
       const user = await this.auth.loginWithToken(this.phone, token);
       if (user?.firstName) {
-        await this.location.back();
-        await this.location.back();
+        window.history.go(-2);
         setTimeout(() => {
           if (returnPath) {
             this.router.navigate([returnPath]);
           }
         }, 100);
       } else {
-        await this.location.back();
-        await this.location.back();
+        window.history.go(-2);
         setTimeout(() => {
           this.router.navigate(['/login/register'], {
             queryParams: this.route.snapshot.queryParams,

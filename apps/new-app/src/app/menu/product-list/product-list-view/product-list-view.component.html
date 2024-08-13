@@ -5,10 +5,13 @@
         <img matListItemAvatar class="item__image" [imageLoader]="product.images?.[0]" [imageSize]="'sm'" />
         <span matListItemTitle class="item__title">{{ product.title }}</span>
         <span matListItemLine class="item__subtitle">
-          @if (Product.hasDiscount(product)) {
-            <span class="line-price error-text">{{ Product.realPrice(product) | number }}</span> &nbsp;
+          @if (Product.hasDiscount(product, product.variants?.[0])) {
+            <span class="line-price error-text">{{
+              Product.realPrice(product, product.variants?.[0]) | number
+            }}</span>
+            &nbsp;
           }
-          <span>{{ Product.totalPrice(product) | menuCurrency }}</span>
+          <span>{{ Product.totalPrice(product, product.variants?.[0]) | menuCurrency }}</span>
         </span>
         <div matListItemMeta>
           <i class="fa-regular fa-chevron-left"></i>

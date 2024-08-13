@@ -6,7 +6,7 @@
         <img matListItemAvatar imageLoader [imageFile]="shop()?.logoImage" [imageSize]="'sm'" />
         <span matListItemTitle>{{ shop()?.title }}</span>
         <div matListItemMeta>
-          <span>{{ order()?.createdAt | date }}</span>
+          <span>{{ order()?.createdAt | pdate }}</span>
         </div>
       </mat-list-item>
       <mat-divider />

@@ -243,6 +243,7 @@ export class CartService {
       const address = this.address();
       if (!address) {
         this.snack.open(this.translate.instant('cart.noAddressWarning'), '', { duration: 2000 });
+        return
       } else if (address.deliveryArea == null || address.deliveryArea.status != Status.Active) {
         this.snack.open(this.translate.instant('cart.addressOutOfRangeWarning'), '', { duration: 2000 });
         return;

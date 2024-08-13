@@ -14,7 +14,7 @@
       <span fxLayout="row" class="price-section" fxLayoutAlign="start center" fxLayoutGap="8px">
         <span class="price">{{ Product.totalPrice(product) | menuCurrency }}</span>
         @if (Product.hasDiscount(product)) {
-          <span class="line-price error-text">
+          &nbsp;<span class="line-price error-text">
             {{ Product.realPrice(product) | menuCurrency }}
           </span>
         }
@@ -34,8 +34,8 @@
             <span matListItemLine>
               @if (Product.hasDiscount(product, variant)) {
                 <span class="line-price error-text">
-                  {{ Product.realPrice(product, variant) | menuCurrency }}&nbsp;
-                </span>
+                  {{ Product.realPrice(product, variant) | menuCurrency }}
+                </span>&nbsp;
               }
               <span class="price">{{ Product.totalPrice(product, variant) | menuCurrency }}</span>
             </span>

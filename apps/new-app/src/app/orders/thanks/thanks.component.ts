@@ -14,12 +14,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ThanksComponent implements OnDestroy {
   value = signal(0);
   interval: any;
+  id?: string;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
   ) {
     const params = this.route.snapshot.params;
+    this.id = params['id']
     this.interval = setInterval(() => {
       if (this.value() < 100) this.value.update((prev) => prev + 1);
       else {

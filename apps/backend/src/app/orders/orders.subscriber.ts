@@ -28,6 +28,7 @@ import { PrintersService } from '../printers/printers.service';
 import * as Sentry from '@sentry/node';
 import { RedisKey, RedisService } from '../core/redis.service';
 import { Guid } from 'guid-typescript';
+import { PersianNumberService } from '@menno/utils';
 
 @EventSubscriber()
 export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
@@ -50,7 +51,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     private webPush: WebPushNotificationsService,
     private printersService: PrintersService,
     private smsService: SmsService,
-    private redis: RedisService
+    private redis: RedisService,
   ) {
     dataSource.subscribers.push(this);
   }
@@ -94,6 +95,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     this.redis.updateMenu(shop.id);
 
     const customer = order.customer ? await this.usersRepo.findOneBy({ id: order.customer.id }) : undefined;
+    if (!order.customer && customer) order.customer = customer;
 
     if (!order.isManual) {
       this.webPush.notifToShop(order.shop.id, {
@@ -165,9 +167,12 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
 
   private async appConfigSmsNewOrder(order: Order, shop: Shop) {
     if (!order.isManual && !order.mergeFrom?.length && shop.smsAccount && shop.smsAccount.charge > 0) {
-      const shopWithConfig = await this.shopsRepo.findOne({ where: { id: shop.id }, relations: ['appConfig'] });
+      const shopWithConfig = await this.shopsRepo.findOne({
+        where: { id: shop.id },
+        relations: ['appConfig'],
+      });
       if (shopWithConfig?.appConfig?.smsOnNewOrder?.length) {
-        let message = `سفارش جدید: `
+        let message = `سفارش جدید: `;
         switch (order.type) {
           case OrderType.DineIn:
             if (order.details.table) message += `${order.details.table}  میز  `;
@@ -175,7 +180,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
               message += 'داخل مجموعه';
             }
             break;
-    
+
           case OrderType.Delivery:
             message += 'ارسال با پیک';
             break;
@@ -184,13 +189,18 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
             break;
         }
 
-        message += `\n\n فیش شماره ${order.qNumber}`
+        message += `\n\n فیش شماره ${order.qNumber}\n${order.items
+          .filter((x) => !x.isAbstract)
+          .map((x) => `${x.title} ${x.quantity} عدد`)
+          .join('\n')}\n\n جمع‌کل: ${PersianNumberService.withCommas(order.totalPrice)} تومان`;
+
+        if (order.customer) message += `\n\n${User.fullName(order.customer)}\n${order.customer.mobilePhone}`;
 
         this.smsService.send({
           accountId: shop.smsAccount.id,
-          messages: shopWithConfig.appConfig.smsOnNewOrder.map(x => message),
-          receptors: shopWithConfig.appConfig.smsOnNewOrder
-        })
+          messages: shopWithConfig.appConfig.smsOnNewOrder.map((x) => message),
+          receptors: shopWithConfig.appConfig.smsOnNewOrder,
+        });
       }
     }
   }

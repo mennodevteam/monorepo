@@ -4,6 +4,8 @@
   </div>
   <!-- <h1>{{ 'thanks.title' | translate }}</h1> -->
   <p>{{ 'thanks.description' | translate }}</p>
-  <button mat-stroked-button class="tertiary-button">{{ 'thanks.actions' | translate }}</button>
+  <button mat-stroked-button class="tertiary-button" routerLink="/orders/{{ id }}">
+    {{ 'thanks.actions' | translate }}
+  </button>
   <mat-progress-bar dir="ltr" [value]="value()" />
 </main>

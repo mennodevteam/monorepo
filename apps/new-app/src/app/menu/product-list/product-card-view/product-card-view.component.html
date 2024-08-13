@@ -22,7 +22,7 @@
             </p>
 
             @if (!product.variants.length) {
-              <div fxLayout="row" style="margin-top: 10px;">
+              <div fxLayout="row" style="margin-top: 10px">
                 <div
                   class="product-card__price-section"
                   fxFlex
@@ -45,9 +45,11 @@
               <mat-list-item>
                 <span matListItemTitle>{{ variant.title }}</span>
                 <span matListItemLine>
-                  <span>{{ Product.totalPrice(product) | menuCurrency }}</span> &nbsp;
-                  @if (Product.hasDiscount(product)) {
-                    <span class="line-price error-text">{{ Product.realPrice(product) | number }}</span>
+                  <span>{{ Product.totalPrice(product, variant) | menuCurrency }}</span> &nbsp;
+                  @if (Product.hasDiscount(product, variant)) {
+                    <span class="line-price error-text">{{
+                      Product.realPrice(product, variant) | number
+                    }}</span>
                   }
                 </span>
                 <div matListItemMeta>
