@@ -99,7 +99,7 @@ export class AuthService {
     if (user) {
       const prevUser = sessionStorage.getItem('appLoginUser') || localStorage.getItem('appLoginUser');
       if (user && prevUser) {
-        this.user.set({ ...JSON.parse(prevUser), ...user });
+        this.user.set({ ...JSON.parse(prevUser), ...dto });
         this.saveLocal();
       }
     }

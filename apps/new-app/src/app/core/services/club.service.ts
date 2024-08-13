@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
+import { effect, Injectable, signal, untracked } from '@angular/core';
 import { ShopService } from './shop.service';
 import { DiscountCoupon, Member } from '@menno/types';
 import { AuthService } from './auth.service';
@@ -18,24 +18,27 @@ export class ClubService {
     private auth: AuthService,
     private menu: MenuService,
   ) {
-    this.getMember().then((member) => {
-      if (member) this.member.set(member);
+    effect(() => {
+      if (this.auth.user()) {
+        this.getMember().then((member) => {
+          if (member) this.member.set(member);
+          else this.join();
+        });
+        untracked(() => {
+          this.getCoupons();
+        });
+      }
     });
-    this.getCoupons();
   }
 
-  // async join() {
-  //   if (this.auth.isGuestUser) {
-  //     const u = await this.auth.openLoginPrompt();
-  //     if (!u) return;
-  //   }
-  //   if (this.shopService.shop?.club) {
-  //     try {
-  //       return await this.http.get<Member>(`clubs/join/${this.shopService.shop.club.id}`).toPromise();
-  //     } catch (error) {}
-  //   }
-  //   return;
-  // }
+  async join() {
+    if (!this.auth.isGuestUser && this.shopService.shop?.club) {
+      try {
+        return await this.http.get<Member>(`clubs/join/${this.shopService.shop.club.id}`).toPromise();
+      } catch (error) {}
+    }
+    return;
+  }
 
   async getMember() {
     if (this.shopService.shop?.club) {
