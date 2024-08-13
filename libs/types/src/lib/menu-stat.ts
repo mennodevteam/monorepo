@@ -11,6 +11,8 @@ export class MenuStat {
   id: string;
   createdAt: Date;
   action: StatAction;
+  referrer?: string;
+  campaign?: string;
   user: User;
   menu: Menu;
   product?: Product;

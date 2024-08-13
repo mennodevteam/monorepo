@@ -18,6 +18,14 @@ export const MemberSchema = new EntitySchema<Member>({
       type: String,
       nullable: true,
     },
+    referrer: {
+      type: String,
+      nullable: true,
+    },
+    campaign: {
+      type: String,
+      nullable: true,
+    },
     joinedAt: {
       type: 'timestamptz',
       createDate: true,

@@ -14,6 +14,14 @@ export const MenuStatSchema = new EntitySchema<MenuStat>({
       type: 'enum',
       enum: StatAction,
     },
+    referrer: {
+      type: String,
+      nullable: true,
+    },
+    campaign: {
+      type: String,
+      nullable: true,
+    },
     createdAt: {
       type: 'timestamptz',
       createDate: true,

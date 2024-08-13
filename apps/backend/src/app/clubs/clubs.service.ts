@@ -73,7 +73,7 @@ export class ClubsService {
     return this.membersRepo.save(member);
   }
 
-  async join(clubId: string, userId: string) {
+  async join(clubId: string, userId: string, referrer?: string, campaign?: string) {
     const existMember = await this.membersRepo.findOne({
       where: {
         user: { id: userId },
@@ -93,6 +93,8 @@ export class ClubsService {
     const newMember = new Member();
     newMember.club = <Club>{ id: clubId };
     newMember.user = <User>{ id: userId };
+    newMember.referrer = referrer;
+    newMember.campaign = campaign;
     return this.membersRepo.save(newMember);
   }
 

@@ -5,6 +5,7 @@ import { BusinessCategory, Menu, OrderType, Product } from '@menno/types';
 import { ShopService } from './shop.service';
 import { BehaviorSubject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { CampaignService } from './campaign.service';
 
 @Injectable({
   providedIn: 'root',
@@ -43,6 +44,7 @@ export class MenuService {
     private http: HttpClient,
     private shopService: ShopService,
     private translate: TranslateService,
+    private campaign: CampaignService,
   ) {
     effect(() => {
       const menu = this.menu();
@@ -61,7 +63,8 @@ export class MenuService {
       this.baseMenu.set({ ...baseMenu });
 
       if (sendStat) {
-        this.http.get(`menuStats/loadMenu/${baseMenu.id}`).toPromise();
+        console.log(this.campaign.params)
+        this.http.get(`menuStats/loadMenu/${baseMenu.id}`, { params: this.campaign.params }).toPromise();
       }
     }
   }

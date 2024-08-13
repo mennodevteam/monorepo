@@ -4,6 +4,7 @@ import { ShopService } from './shop.service';
 import { DiscountCoupon, Member } from '@menno/types';
 import { AuthService } from './auth.service';
 import { MenuService } from './menu.service';
+import { CampaignService } from './campaign.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,7 @@ export class ClubService {
     private shopService: ShopService,
     private auth: AuthService,
     private menu: MenuService,
+    private campaign: CampaignService,
   ) {
     effect(() => {
       if (this.auth.user()) {
@@ -34,7 +36,11 @@ export class ClubService {
   async join() {
     if (!this.auth.isGuestUser && this.shopService.shop?.club) {
       try {
-        return await this.http.get<Member>(`clubs/join/${this.shopService.shop.club.id}`).toPromise();
+        return await this.http
+          .get<Member>(`clubs/join/${this.shopService.shop.club.id}`, {
+            params: this.campaign.params,
+          })
+          .toPromise();
       } catch (error) {}
     }
     return;

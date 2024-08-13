@@ -11,6 +11,8 @@ export class Member {
   gem: number;
   star: number;
   tags: MemberTag[];
+  referrer?: string;
+  campaign?: string;
   joinedAt: Date;
   description: string;
   wallet?: Wallet;

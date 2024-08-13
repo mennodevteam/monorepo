@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ChildrenOutletContexts, RouterModule } from '@angular/router';
 import { ClubService } from '../core/services/club.service';
 import { AddressesService, PwaService, SeoService, ShopService, routeAnimations } from '../core';
+import { CampaignService } from '../core/services/campaign.service';
 
 @Component({
   selector: 'app-shell',
@@ -19,6 +20,7 @@ export class ShellComponent {
     private pwa: PwaService,
     private seo: SeoService,
     private address: AddressesService,
+    private campaign: CampaignService,
     private contexts: ChildrenOutletContexts,
   ) {
     const elem: HTMLElement | null = document.querySelector('#pre-load-data-container');

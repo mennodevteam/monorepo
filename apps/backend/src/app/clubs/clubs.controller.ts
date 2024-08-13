@@ -1,5 +1,5 @@
 import { Club, ClubConfig, User, UserRole } from '@menno/types';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
@@ -15,7 +15,7 @@ export class ClubsController {
     private auth: AuthService,
     private clubsService: ClubsService,
     @InjectRepository(Club)
-    private clubsRepo: Repository<Club>
+    private clubsRepo: Repository<Club>,
   ) {}
 
   @Post('config')
@@ -35,8 +35,13 @@ export class ClubsController {
 
   @Get('join/:clubId')
   @Roles(UserRole.App)
-  async joinClub(@Param('clubId') clubId: string, @LoginUser() user: AuthPayload) {
-    return this.clubsService.join(clubId, user.id);
+  async joinClub(
+    @Param('clubId') clubId: string,
+    @LoginUser() user: AuthPayload,
+    @Query('referrer') referrer?: string,
+    @Query('campaign') campaign?: string,
+  ) {
+    return this.clubsService.join(clubId, user.id, referrer, campaign);
   }
 
   @Public()
