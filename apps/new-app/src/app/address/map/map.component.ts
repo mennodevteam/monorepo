@@ -9,9 +9,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ThemeMode } from '@menno/types';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
-declare let nmp_mapboxgl: any;
+import nmp_mapboxgl from '@neshan-maps-platform/mapbox-gl';
 
-const DEFAULT_LOCATION = [51.389, 35.6892];
+const DEFAULT_LOCATION: [number, number] = [51.389, 35.6892];
 
 @Component({
   selector: 'app-map',
@@ -44,7 +44,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    let center = DEFAULT_LOCATION;
+    let center: [number, number] = DEFAULT_LOCATION;
     const shop = this.shopService.shop;
 
     if (this.coordinate) center = [this.coordinate[1], this.coordinate[0]];

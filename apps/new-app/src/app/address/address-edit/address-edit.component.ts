@@ -10,7 +10,8 @@ import { MatInputModule } from '@angular/material/input';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Address, ThemeMode } from '@menno/types';
 import { AddressesService, CartService, ShopService, ThemeService } from '../../core';
-declare let nmp_mapboxgl: any;
+import nmp_mapboxgl from '@neshan-maps-platform/mapbox-gl';
+
 
 @Component({
   selector: 'app-address-edit',
@@ -65,7 +66,7 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
         center: [this.coordinate?.[1], this.coordinate?.[0]],
         trackResize: true,
         mapKey: environment.neshanMapApiKey,
-        dragPin: false,
+        dragPan: false,
         poi: true,
         traffic: false,
 
