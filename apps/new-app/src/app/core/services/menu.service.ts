@@ -63,7 +63,6 @@ export class MenuService {
       this.baseMenu.set({ ...baseMenu });
 
       if (sendStat) {
-        console.log(this.campaign.params)
         this.http.get(`menuStats/loadMenu/${baseMenu.id}`, { params: this.campaign.params }).toPromise();
       }
     }
