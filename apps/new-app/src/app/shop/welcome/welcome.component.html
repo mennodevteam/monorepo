@@ -1,7 +1,7 @@
 <div fxLayout="column" id="container">
   <app-slider fxFlex [shop]="shop" />
   <div fxLayout="column" class="content">
-    <img [imageLoader]="shop.logo" [imageFile]="shop.logoImage" id="logo" />
+    <img [imageLoader]="shop.logo" [imageFile]="shop.logoImage" id="logo" alt="{{ shop.title }}" />
     <h1>{{ shop.title }}</h1>
     @if (shop.description) {
       <p f-md>{{ shop.description }}</p>
@@ -10,7 +10,7 @@
       {{ 'welcome.viewMenu' | translate: { value: menuService.businessCategoryTitle } }}
     </a>
     <div fxLayout="column" fxLayoutAlign="space-between">
-      <a mat-button routerLink="/info" class="tertiary-button" style="color: white;">
+      <a mat-button routerLink="/info" class="tertiary-button" style="color: white">
         {{ 'welcome.info' | translate: { value: shopService.businessCategoryTitle } }}
       </a>
     </div>

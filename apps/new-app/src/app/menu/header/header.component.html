@@ -1,5 +1,11 @@
 <header fxLayout="row" fxLayoutGap="12" fxLayoutAlign="start center" p-md routerLink="/info">
-  <img [imageLoader]="shop.logo" [imageFile]="shop.logoImage" id="logo" fxFlex="none" />
+  <img
+    [imageLoader]="shop.logo"
+    [imageFile]="shop.logoImage"
+    id="logo"
+    fxFlex="none"
+    alt="{{ shop.title }}"
+  />
   <div fxLayout="column">
     <h1>{{ shop.title }}</h1>
     @if (shop.description) {

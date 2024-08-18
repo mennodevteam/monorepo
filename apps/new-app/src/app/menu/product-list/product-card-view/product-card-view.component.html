@@ -10,6 +10,7 @@
             [imageLoader]="product.images?.[0]"
             [imageFile]="product.imageFiles?.[0]"
             [imageSize]="'sm'"
+            alt="{{product.title}}"
           />
           <div fxFlex fxLayout="column">
             <h3 class="product-card__title">{{ product.title }}</h3>

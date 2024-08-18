@@ -53,8 +53,9 @@
             if (div) {
               div.innerHTML = `
             <img
-              style="border-radius: 24px; width: 180px;"
+              style="border-radius: 24px; width: 180px; height: 180px;"
               src="${shop.logo}"
+              alt="${shop.title}"
               onerror="this.style.display='none'"
             />
             <h1 style="font-size: 24px">${shop.title}</h1>`;

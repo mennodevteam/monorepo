@@ -2,7 +2,13 @@
   @for (product of category.products; track product.id; let isLast = $last) {
     @defer {
       <a mat-list-item class="item" routerLink="product/{{ product.id }}">
-        <img matListItemAvatar class="item__image" [imageLoader]="product.images?.[0]" [imageSize]="'sm'" />
+        <img
+          matListItemAvatar
+          class="item__image"
+          [imageLoader]="product.images?.[0]"
+          [imageSize]="'sm'"
+          alt="{{ product.title }}"
+        />
         <span matListItemTitle class="item__title">{{ product.title }}</span>
         <span matListItemLine class="item__subtitle">
           @if (Product.hasDiscount(product, product.variants?.[0])) {
