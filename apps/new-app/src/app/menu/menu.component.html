@@ -18,7 +18,10 @@
 }
 
 <main fxLayout="column" fxLayoutGap="32" p-md [class.searching]="searching()" pb max-center>
-  @for (category of menuService.categories(); track category.id) {
+  @for (
+    category of searching() ? menuService.searchCategories() : menuService.categories();
+    track category.id
+  ) {
     <app-category-section [category]="category" />
   }
 </main>

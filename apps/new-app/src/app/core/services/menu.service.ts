@@ -18,6 +18,19 @@ export class MenuService {
   searchText = signal('');
   menu = computed(() => {
     const menu: Menu = JSON.parse(JSON.stringify(this.baseMenu() || {}));
+    Menu.setRefsAndSort(
+      menu,
+      this.type() == null ? undefined : this.type(),
+      undefined,
+      undefined,
+      this.star(),
+      false,
+    );
+    return menu;
+  });
+
+  searchCategories = computed(() => {
+    const menu: Menu = JSON.parse(JSON.stringify(this.baseMenu() || {}));
     if (this.searchText()) {
       menu.categories = Menu.search(menu, this.searchText());
     }
@@ -29,7 +42,7 @@ export class MenuService {
       this.star(),
       false,
     );
-    return menu;
+    return menu.categories || [];
   });
 
   categories = computed(() => {
