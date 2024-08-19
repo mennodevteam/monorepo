@@ -14,7 +14,7 @@ export class DashboardController {
     private menuStatsRepo: Repository<MenuStat>,
     @InjectRepository(Order)
     private ordersRepo: Repository<Order>,
-    private auth: AuthService
+    private auth: AuthService,
   ) {}
 
   @Roles(UserRole.Panel)
@@ -30,8 +30,8 @@ export class DashboardController {
       .addSelect('COUNT(stat.id)', 'count')
       .where('stat.action = :action', { action: StatAction.LoadMenu })
       .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
-      .andWhere('stat.createdAt >= :from', { from })
-      .andWhere('stat.createdAt <= :to', { to })
+      .andWhere('stat.createdAt >= :from', { from: `${from} 04:00:00` })
+      .andWhere('stat.createdAt <= :to', { to: `${to} 23:59:59` })
       .groupBy('DATE(stat.createdAt)')
       .getRawMany();
 
@@ -43,8 +43,8 @@ export class DashboardController {
       .where('order.deletedAt IS NULL')
       .andWhere('order.mergeToId IS NULL')
       .andWhere('order.shop = :shopId', { shopId: shop.id })
-      .andWhere('order.createdAt >= :from', { from })
-      .andWhere('order.createdAt <= :to', { to })
+      .andWhere('order.createdAt >= :from', { from: `${from} 04:00:00` })
+      .andWhere('order.createdAt <= :to', { to: `${to} 23:59:59` })
       .groupBy('DATE(order.createdAt)')
       .getRawMany();
 

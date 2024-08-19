@@ -239,26 +239,27 @@ export class ClubsService {
             (!x.tag || member.tags?.find((tag) => tag.id === x.tag.id)),
         );
       }
+
+      const orders = await this.ordersRepo.find({
+        where: { discountCoupon: In(coupons.map((x) => x.id)) },
+        relations: ['customer', 'discountCoupon'],
+      });
+  
+      coupons = coupons.filter((c) => {
+        if (c.maxUse) {
+          const totalUse = orders.length;
+          if (totalUse >= c.maxUse) return false;
+        }
+        if (c.maxUsePerUser) {
+          const userUse = orders.filter(
+            (x) => x.customer.id === dto.userId && x.discountCoupon?.id === c.id,
+          ).length;
+          if (userUse >= c.maxUsePerUser) return false;
+        }
+        return true;
+      });
     }
 
-    const orders = await this.ordersRepo.find({
-      where: { discountCoupon: In(coupons.map((x) => x.id)) },
-      relations: ['customer', 'discountCoupon'],
-    });
-
-    coupons = coupons.filter((c) => {
-      if (c.maxUse) {
-        const totalUse = orders.length;
-        if (totalUse >= c.maxUse) return false;
-      }
-      if (c.maxUsePerUser && dto.userId) {
-        const userUse = orders.filter(
-          (x) => x.customer.id === dto.userId && x.discountCoupon?.id === c.id,
-        ).length;
-        if (userUse >= c.maxUsePerUser) return false;
-      }
-      return true;
-    });
     if (dto.star) {
       coupons = coupons.filter((x) => x.star != undefined && x.star >= dto.star);
     }

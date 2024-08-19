@@ -47,7 +47,6 @@ export class DashboardComponent {
       .replace(/\//g, '-');
 
     const endDate = new Date();
-    endDate.setDate(endDate.getDate() - 1);
     const endDateString = endDate
       .toLocaleDateString('en-CA', { year: 'numeric', day: '2-digit', month: '2-digit' })
       .replace(/\//g, '-');
