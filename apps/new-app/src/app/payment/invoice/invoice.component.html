@@ -5,7 +5,7 @@
       <span>{{ cart.sum() | menuCurrency }}</span>
     </div>
   </mat-list-item>
-  @for (item of cart.abstractItems(); track $index) {
+  @for (item of cart.abstractItems(); track item.title) {
     <mat-list-item>
       <span matListItemTitle>{{ item.title }}</span>
       <div matListItemMeta>

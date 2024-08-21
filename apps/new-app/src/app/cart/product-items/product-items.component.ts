@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { COMMON } from '../../common';
 import { MatCardModule } from '@angular/material/card';
 import { CartService } from '../../core/services/cart.service';
 import { Product } from '@menno/types';
-import { QuantitySelectorComponent } from "../../common/components/quantity-selector/quantity-selector.component";
+import { QuantitySelectorComponent } from '../../common/components/quantity-selector/quantity-selector.component';
 
 @Component({
   selector: 'app-product-items',
@@ -15,5 +15,9 @@ import { QuantitySelectorComponent } from "../../common/components/quantity-sele
 })
 export class ProductItemsComponent {
   Product = Product;
-  constructor(public cart: CartService){}
+  constructor(public cart: CartService) {
+    effect(() => {
+      console.log(this.cart.orderItems());
+    });
+  }
 }

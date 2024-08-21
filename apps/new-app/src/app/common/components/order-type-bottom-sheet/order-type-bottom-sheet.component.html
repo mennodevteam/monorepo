@@ -2,7 +2,7 @@
   <h3>{{ 'orderType.title' | translate }}</h3>
   <mat-divider />
   <mat-selection-list [(ngModel)]="type" [multiple]="false" fxLayout="column" fxLayoutGap="16">
-    @for (t of shopService.selectableOrderTypes; track $index) {
+    @for (t of shopService.selectableOrderTypes; track t) {
       <mat-list-option [class.active]="type[0] === t" [value]="t">
         {{ t | orderType }}
       </mat-list-option>

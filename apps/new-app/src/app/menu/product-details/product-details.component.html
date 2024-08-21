@@ -28,7 +28,7 @@
     }
     @if (product.variants.length) {
       <mat-list #variantsList>
-        @for (variant of product.variants; track $index; let last = $last) {
+        @for (variant of product.variants; track variant.id; let last = $last) {
           <mat-list-item>
             <span matListItemTitle>{{ variant.title }}</span>
             <span matListItemLine>

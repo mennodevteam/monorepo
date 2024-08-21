@@ -1,5 +1,5 @@
 <section fxLayout="column" fxLayoutGap="16">
-  @for (item of cart.orderItems(); track $index) {
+  @for (item of cart.orderItems(); track item.title) {
     <mat-card class="product-card">
       <!-- <img mat-card-image [imageLoader]="product.images?.[0]" /> -->
       <mat-card-content fxLayout="row" fxLayoutGap="8" fxLayoutAlign="start center">

@@ -20,6 +20,7 @@ export class QuantitySelectorComponent {
     effect(() => {
       const item = this.cart.getSignalItem(this.product?.id, this.variant?.id);
       this.value = item?.quantity;
+      console.log(this.value?.())
     });
   }
 }

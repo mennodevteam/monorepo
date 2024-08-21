@@ -10,7 +10,7 @@
         </div>
       </mat-list-item>
       <mat-divider />
-      @for (item of order()?.items; track $index) {
+      @for (item of order()?.items; track item.id) {
         <mat-list-item>
           <span matListItemLine>{{ item.title }}</span>
           <div matListItemMeta>
