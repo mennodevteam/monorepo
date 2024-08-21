@@ -1,5 +1,4 @@
 import { Address } from './address';
-import { DeliveryArea } from './delivery-area';
 import { DiscountCoupon } from './discount-coupon';
 import { Menu } from './menu';
 import { Order, OrderDetails } from './order';
@@ -64,7 +63,7 @@ export class OrderDto {
     product: Product,
     productVariant?: ProductVariant,
     item?: ProductItem,
-    editOrder?: Order
+    editOrder?: Order,
   ) {
     if (!productVariant && product.stock == null) return true;
     if (productVariant && productVariant.stock == null) return true;
@@ -85,6 +84,15 @@ export class OrderDto {
     const items = OrderDto.productItems(dto, menu);
     for (const i of items) {
       sum += i.quantity * i.price;
+    }
+    return sum;
+  }
+
+  static realSum(dto: OrderDto, menu: Menu) {
+    let sum = 0;
+    const items = OrderDto.productItems(dto, menu);
+    for (const i of items) {
+      sum += i.quantity * (i.realPrice || i.price);
     }
     return sum;
   }
@@ -164,5 +172,23 @@ export class OrderDto {
       total += item.quantity * item.price;
     }
     return Math.max(Math.floor(total / FLOOR) * FLOOR, 0);
+  }
+
+  static realTotal(dto: OrderDto, menu: Menu) {
+    let total = OrderDto.realSum(dto, menu);
+    const abstractItems = OrderDto.abstractItems(dto, menu);
+    for (const item of abstractItems) {
+      total += item.quantity * item.price;
+    }
+    return Math.max(Math.floor(total / FLOOR) * FLOOR, 0);
+  }
+
+  static totalDiscount(dto: OrderDto, menu: Menu) {
+    let sum = OrderDto.realSum(dto, menu) - OrderDto.sum(dto, menu);
+    const abstractItems = OrderDto.abstractItems(dto, menu);
+    for (const item of abstractItems) {
+      if (item.price < 0) sum -= item.price;
+    }
+    return Math.max(Math.floor(sum / FLOOR) * FLOOR, 0);
   }
 }

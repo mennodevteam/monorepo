@@ -9,6 +9,7 @@ export class OrderItem {
   productVariant?: ProductVariant;
   title?: string;
   price: number;
+  realPrice?: number;
   isAbstract: boolean;
   quantity: number;
   note?: string;
@@ -19,13 +20,15 @@ export class OrderItem {
     this.quantity = quantity || 1;
     if (product) {
       this.title = product.title;
-      this.price = Product.totalPrice(product);
       this.product = product;
 
       if (productVariant) {
-        this.title = `${product.title} - ${productVariant.title}`;
-        this.price = Product.totalPrice(product, productVariant);
+        this.title += ` - ${productVariant.title}`;
         this.productVariant = productVariant;
+      }
+      this.price = Product.totalPrice(product, productVariant);
+      if (Product.hasDiscount(product, productVariant)) {
+        this.realPrice = Product.realPrice(product, productVariant);
       }
     }
   }

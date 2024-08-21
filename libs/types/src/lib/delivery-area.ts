@@ -14,12 +14,22 @@ export class DeliveryArea {
 
   static isInWitchArea(areas: DeliveryArea[], point: [number, number]): DeliveryArea | null {
     try {
-      areas.sort((a, b) => a.price - b.price);
+      areas.sort((a, b) => this.sampleArea(a) - this.sampleArea(b));
       for (const area of areas) {
         if (DeliveryArea.isInside(point, area.polygon)) return area;
       }
     } catch (error) {}
     return null;
+  }
+
+  static sampleArea(area?: DeliveryArea) {
+    if (area?.polygon?.length) {
+      const lats = area.polygon.map((x) => x[0]);
+      const longs = area.polygon.map((x) => x[1]);
+      const res = (Math.max(...lats) - Math.min(...lats)) * (Math.max(...longs) - Math.min(...longs));
+      return res;
+    }
+    return 9999999;
   }
 
   static isInside(point: [number, number], polygon: [number, number][]) {

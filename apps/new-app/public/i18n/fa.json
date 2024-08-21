@@ -69,6 +69,7 @@
     "addCoupon": "افزودن کد تخفیف",
     "removeCoupon": "حذف کد تخفیف",
     "sum": "مجموع آیتم‌ها",
+    "totalDiscount": "سود شما (مجموع کل تخفیف)",
     "deliveryPrice": "هزینه ارسال",
     "addressOutOfRange": "خارج از محدوده",
     "notePlaceholder": "توضیحات اضافی درباره سفارش خود را اینجا ثبت کنید",

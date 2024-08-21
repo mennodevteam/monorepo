@@ -71,8 +71,20 @@ export class CartService {
     return OrderDto.sum(this.dto(), this.menuService.menu());
   });
 
+  realSum = computed(() => {
+    return OrderDto.realSum(this.dto(), this.menuService.menu());
+  });
+
   total = computed(() => {
     return OrderDto.total(this.dto(), this.menuService.menu());
+  });
+
+  realTotal = computed(() => {
+    return OrderDto.realTotal(this.dto(), this.menuService.menu());
+  });
+
+  totalDiscount = computed(() => {
+    return OrderDto.totalDiscount(this.dto(), this.menuService.menu());
   });
 
   constructor(
@@ -243,7 +255,7 @@ export class CartService {
       const address = this.address();
       if (!address) {
         this.snack.open(this.translate.instant('cart.noAddressWarning'), '', { duration: 2000 });
-        return
+        return;
       } else if (address.deliveryArea == null || address.deliveryArea.status != Status.Active) {
         this.snack.open(this.translate.instant('cart.addressOutOfRangeWarning'), '', { duration: 2000 });
         return;
