@@ -41,35 +41,3 @@
     </ng-container>
   </mat-drawer-content>
 </mat-drawer-container>
-<!-- 
-<div class="content-wrapper" *ngIf="deliveryAreas">
-  <mat-toolbar>
-    <mat-chip>
-      <mat-chip
-        *ngFor="let area of deliveryAreas"
-        [class.isDisabled]="area.status === Status.Inactive"
-        [matMenuTriggerFor]="actionMenu"
-      >
-        {{ area.title }}
-        ({{ area.price | menuCurrency }})
-        <mat-menu #actionMenu="matMenu">
-          <button mat-menu-item (click)="openEditDialog(area)">
-            <i class="far fa-pencil-alt mat-icon"></i>
-            {{ 'app.edit' | translate }}
-          </button>
-          <button mat-menu-item (click)="openDeletePrompt(area)">
-            <i class="far fa-trash-alt mat-icon"></i>
-            {{ 'app.remove' | translate }}
-          </button>
-        </mat-menu>
-      </mat-chip>
-    </mat-chip>
-  </mat-toolbar>
-  <mat-divider></mat-divider>
-  <app-delivery-map
-    class="map"
-    [deliveryAreas]="deliveryAreas"
-    (onAdd)="openEditDialog(undefined, $event)"
-    (onEdit)="onEditDraw($event)"
-  ></app-delivery-map>
-</div> -->

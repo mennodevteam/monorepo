@@ -13,6 +13,10 @@ export const DeliveryAreaSchema = new EntitySchema<DeliveryArea>({
     title: {
       type: String,
     },
+    label: {
+      type: String,
+      nullable: true,
+    },
     price: {
       type: 'real',
     },

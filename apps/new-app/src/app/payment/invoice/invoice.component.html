@@ -7,9 +7,14 @@
   </mat-list-item>
   @for (item of cart.abstractItems(); track item.title) {
     <mat-list-item>
-      <span matListItemTitle>{{ item.title }}</span>
+      <span matListItemTitle>
+        {{ item.title }}
+        @if (item.title === DELIVERY_COST_TITLE && cart.address()?.deliveryArea?.label) {
+          &nbsp; ({{ cart.address()?.deliveryArea?.label }})
+        }
+      </span>
       <div matListItemMeta>
-        <span>{{ item.price | menuCurrency }}</span>
+        <span>{{ item.price | menuCurrency: true }}</span>
       </div>
     </mat-list-item>
   }

@@ -66,6 +66,11 @@ export class DeliveryAreasPageComponent implements OnInit {
               label: this.translate.instant('app.title'),
               control: new FormControl(area ? area.title : undefined, [Validators.required]),
             },
+            label: {
+              label: this.translate.instant('deliveryAreaDialog.label'),
+              placeholder: this.translate.instant('deliveryAreaDialog.labelPlaceholder'),
+              control: new FormControl(area ? area.label : undefined),
+            },
             status: {
               label: this.translate.instant('app.status'),
               control: new FormControl(area ? area.status : Status.Active, [Validators.required]),

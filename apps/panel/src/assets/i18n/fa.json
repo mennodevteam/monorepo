@@ -750,6 +750,8 @@
   "deliveryAreaDialog": {
     "editTitle": "ویرایش محدوده",
     "newTitle": "درج محدوده جدید",
+    "label": "برچسب (به کاربر نمایش داده ‌می‌شود)",
+    "labelPlaceholder": "مثلا: پس‌ کرایه یا به عهده مشتری",
     "minOrderPrice": "حداقل سفارش جهت ارسال",
     "minOrderPriceHint": "درصورت کمتر بودن از مبلغ مشخص شده، امکان ثبت سفارش وجود ندارد",
     "minPriceForFree": "حداقل سفارش ارسال رایگان",
