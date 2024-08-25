@@ -5,6 +5,18 @@
       <span>{{ cart.realSum() | menuCurrency }}</span>
     </div>
   </mat-list-item>
+  @if (cart.sumDiscount()) {
+    <mat-list-item>
+      <span matListItemTitle>
+        {{ 'cart.sumDiscount' | translate }}
+      </span>
+      <div matListItemMeta>
+        <span>
+          {{ cart.sumDiscount() | menuCurrency }}
+        </span>
+      </div>
+    </mat-list-item>
+  }
   @for (item of cart.abstractItems(); track item.title) {
     <mat-list-item>
       <span matListItemTitle>
@@ -20,20 +32,8 @@
             }
           </span>
         } @else {
-          <span>{{ item.price | menuCurrency: true }}</span>
+          <span>{{ (item.price > 0 ? item.price : -item.price) | menuCurrency: true }}</span>
         }
-      </div>
-    </mat-list-item>
-  }
-  @if (cart.totalDiscount()) {
-    <mat-list-item>
-      <span matListItemTitle class="secondary-text">
-          {{ 'cart.totalDiscount' | translate }}
-      </span>
-      <div matListItemMeta>
-        <span class="secondary-text">
-            {{ cart.totalDiscount() | menuCurrency }}
-        </span>
       </div>
     </mat-list-item>
   }
@@ -51,6 +51,18 @@
       </span>
     </div>
   </mat-list-item>
+  @if (cart.totalDiscount()) {
+    <mat-list-item>
+      <span matListItemTitle class="secondary-text">
+        {{ 'cart.totalDiscount' | translate }}
+      </span>
+      <div matListItemMeta>
+        <span class="secondary-text">
+          {{ cart.totalDiscount() | menuCurrency }}
+        </span>
+      </div>
+    </mat-list-item>
+  }
 </mat-list>
 
 @if (cart.coupon()) {

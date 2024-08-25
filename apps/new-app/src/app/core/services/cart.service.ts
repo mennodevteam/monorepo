@@ -75,6 +75,10 @@ export class CartService {
     return OrderDto.realSum(this.dto(), this.menuService.menu());
   });
 
+  sumDiscount = computed(() => {
+    return this.realSum() - this.sum();
+  });
+
   total = computed(() => {
     return OrderDto.total(this.dto(), this.menuService.menu());
   });
