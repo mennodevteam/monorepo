@@ -1,30 +1,34 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Region } from '@menno/types';
+import { computed, Injectable, signal } from '@angular/core';
+import { Region, State } from '@menno/types';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RegionsService {
-  private regions$: BehaviorSubject<Region[] | null>;
+  private _loading = new BehaviorSubject<void>(undefined);
+  regions = signal<Region[]>([]);
+  states = computed(() => {
+    const regions = this.regions();
+    return Region.states(regions);
+  });
   constructor(private http: HttpClient) {
-    this.regions$ = new BehaviorSubject<Region[] | null>(null);
     this.loadRegion();
   }
 
-  get regionsObservable() {
-    return this.regions$.asObservable();
-  }
-
-  get regions() {
-    return this.regions$.value;
-  }
-
   async loadRegion() {
-    const regions = await this.http.get<Region[]>('regions').toPromise();
+    let regions = await this.http.get<Region[]>('regions').toPromise();
     if (regions) {
-      this.regions$.next(regions);
+      regions = regions.filter((x) => x.state);
+      regions.sort((a, b) => `${a.state} > $${a.title}`.localeCompare(`${b.state} > $${b.title}`));
+      this.regions.set(regions);
     }
+    this._loading.complete();
+  }
+
+  async getResolver() {
+    if (this.regions()?.length) return;
+    return this._loading.asObservable().toPromise();
   }
 }

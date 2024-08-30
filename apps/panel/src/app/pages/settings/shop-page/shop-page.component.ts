@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, computed, OnInit, signal, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
@@ -30,6 +30,13 @@ export class ShopPageComponent implements OnInit {
   formBuilderData: FieldSection[];
   saving = false;
   mapEdit = false;
+  regionState = signal('');
+  regions = computed(() => {
+    if (this.regionState()) {
+      return this.regionService.regions().filter((x) => x.state === this.regionState());
+    }
+    return [];
+  });
   mapOptions: L.MapOptions = {
     layers: [
       L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' }),
@@ -52,13 +59,13 @@ export class ShopPageComponent implements OnInit {
   map: L.Map;
 
   constructor(
-    private shopService: ShopService,
+    public shopService: ShopService,
     private fb: FormBuilder,
     private dialog: MatDialog,
     private snack: MatSnackBar,
     private fileService: FilesService,
     private translate: TranslateService,
-    private regionsService: RegionsService,
+    public regionService: RegionsService,
     private matomo: MatomoService,
   ) {
     const shop = this.shopService.shop;
@@ -78,8 +85,10 @@ export class ShopPageComponent implements OnInit {
       logo: [shop?.logo],
     });
 
-    this.regionsService.regionsObservable.pipe(filter((x) => x != undefined)).subscribe((regions) => {
+    this.regionService.getResolver().then(() => {
+      const regions = this.regionService.regions();
       if (shop?.region) {
+        this.regionState.set(shop?.region?.state || '');
         this.form.get('region')?.setValue(regions?.find((x) => x.id === shop.region.id));
       }
       this.form.get('region')?.valueChanges.subscribe((r) => {
@@ -186,9 +195,5 @@ export class ShopPageComponent implements OnInit {
     this.matomo.trackEvent('settings', 'shop', 'save changes');
 
     this.saving = false;
-  }
-
-  get regions() {
-    return this.regionsService.regions;
   }
 }

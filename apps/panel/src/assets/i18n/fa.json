@@ -225,6 +225,7 @@
     "description": "توضیحات مجموعه",
     "descriptionHint": "توضیحات در صفحه اصلی به کاربر نمایش داده می‌شود.",
     "addressSection": "آدرس",
+    "regionState": "استان",
     "region": "شهر",
     "address": "آدرس متنی",
     "locationDraft": "با کلیک روی نقشه موقعیت را مشخص کنید و سپس ذخیره کنید",

@@ -22,12 +22,23 @@
           </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline">
+          <mat-label> استان </mat-label>
+          <mat-select
+            [disabled]="!regionService.regions().length"
+            matInput
+            (selectionChange)="regionState.set($event.value)"
+          >
+            <mat-option *ngFor="let state of regionService.states()" [value]="state.title">
+              {{ state.title }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label> شهر </mat-label>
-          <mat-select [disabled]="!regions" matInput formControlName="regionId">
-            <mat-option *ngFor="let region of regions || []" [value]="region.id">
+          <mat-select [disabled]="!regions().length" matInput formControlName="regionId">
+            <mat-option *ngFor="let region of regions() || []" [value]="region.id">
               {{ region.title }}
             </mat-option>
-            <mat-option [value]="null">ایجاد شهر جدید</mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline" *ngIf="form.controls['regionId'].value === null">

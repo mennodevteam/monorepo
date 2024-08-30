@@ -15,7 +15,10 @@ export class AuthService {
   private user$: BehaviorSubject<User | null>;
   shopUser: ShopUser;
 
-  constructor(private http: HttpClient, private matomo: MatomoService) {
+  constructor(
+    private http: HttpClient,
+    private matomo: MatomoService,
+  ) {
     const _item: any =
       sessionStorage?.getItem(environment.localStorageUserKey) ||
       localStorage?.getItem(environment.localStorageUserKey);
@@ -30,14 +33,6 @@ export class AuthService {
 
     this.user$.subscribe((u) => {
       this.loadShopUser();
-
-      if (u) {
-        dataLayer = dataLayer || [];
-        dataLayer.push({
-          event: 'setUserId',
-          user_id: u.id,
-        });
-      }
     });
   }
 
@@ -53,7 +48,7 @@ export class AuthService {
         sessionStorage.setItem(environment.localStorageUserKey, JSON.stringify(user));
         this.user$.next(user);
         return user;
-      })
+      }),
     );
   }
 

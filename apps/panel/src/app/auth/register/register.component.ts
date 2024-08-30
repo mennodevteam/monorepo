@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, computed, signal } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -24,6 +24,13 @@ export class RegisterComponent {
   otpStatus: 'none' | 'sending' | 'sent' = 'none';
   otpInterval: any;
   otpTimer: any;
+  regionState = signal('');
+  regions = computed(() => {
+    if (this.regionState()) {
+      return this.regionService.regions().filter((x) => x.state === this.regionState());
+    }
+    return [];
+  });
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,14 +38,10 @@ export class RegisterComponent {
     private router: Router,
     private auth: AuthService,
     private snack: MatSnackBar,
-    private regionService: RegionsService,
+    public regionService: RegionsService,
     private http: HttpClient,
-    private matomo: MatomoService
+    private matomo: MatomoService,
   ) {}
-
-  get regions() {
-    return this.regionService.regions;
-  }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -57,7 +60,6 @@ export class RegisterComponent {
       mobilePhone: [undefined, [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
       otp: [undefined, Validators.required],
     });
-
     // get return url from route parameters or default to '/'
     this.returnUrl = '/';
   }

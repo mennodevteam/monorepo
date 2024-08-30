@@ -21,7 +21,7 @@
             <input matInput formControlName="title" required />
           </mat-form-field>
           <mat-form-field>
-            <mat-label> {{'shopPage.businessCategory' | translate}} </mat-label>
+            <mat-label> {{ 'shopPage.businessCategory' | translate }} </mat-label>
             <mat-select matInput formControlName="businessCategory">
               <mat-option *ngFor="let cat of categories" [value]="cat">
                 {{ cat | businessCategory }}
@@ -42,9 +42,24 @@
         <div spacer></div>
         <mat-card-content>
           <mat-form-field>
-            <mat-label>{{ 'shopPage.region' | translate }}</mat-label>
-            <mat-select formControlName="region">
-              <mat-option *ngFor="let r of regions" [value]="r">{{ r.title }}</mat-option>
+            <mat-label> {{ 'shopPage.regionState' | translate }} </mat-label>
+            <mat-select
+              [disabled]="!regionService.regions().length"
+              matInput
+              (selectionChange)="regionState.set($event.value)"
+              [value]="regionState()"
+            >
+              <mat-option *ngFor="let state of regionService.states()" [value]="state.title">
+                {{ state.title }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label> {{ 'shopPage.region' | translate }} </mat-label>
+            <mat-select [disabled]="!regions().length" matInput formControlName="region">
+              <mat-option *ngFor="let region of regions() || []" [value]="region">
+                {{ region.title }}
+              </mat-option>
             </mat-select>
           </mat-form-field>
 
