@@ -33,7 +33,7 @@ import {
   SelectItem,
 } from '../../shared/dialogs/select-dialog/select-dialog.component';
 import { MenuCurrencyPipe } from '../../shared/pipes/menu-currency.pipe';
-import { MatomoService } from './matomo.service';
+import { AnalyticsService } from './analytics.service';
 
 declare let persianDate: any;
 
@@ -73,7 +73,7 @@ export class PosService extends OrderDto {
     private http: HttpClient,
     private dialog: MatDialog,
     private menuCurrency: MenuCurrencyPipe,
-    private matomo: MatomoService
+    private analytics: AnalyticsService
   ) {
     super();
     this.clear();
@@ -370,7 +370,7 @@ export class PosService extends OrderDto {
       panelClass: 'success',
     });
 
-    this.matomo.trackEvent('order', 'pos', this.editOrder ? 'edit order' : 'add order');
+    this.analytics.event(this.editOrder ? 'edit order' : 'add order');
 
     this.clear();
     this.saving = false;

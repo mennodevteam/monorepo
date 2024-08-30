@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RegionsService } from './core/services/regions.service';
 import { TodayOrdersService } from './core/services/today-orders.service';
 import { AuthService } from './core/services/auth.service';
-import { MatomoService } from './core/services/matomo.service';
+import { AnalyticsService } from './core/services/analytics.service';
 
 @Component({
   selector: 'menno-root',
@@ -13,7 +13,7 @@ export class AppComponent {
   title = 'panel';
 
   constructor(
+    private analytics: AnalyticsService,
     private auth: AuthService,
-    private matomo: MatomoService,
   ) {}
 }

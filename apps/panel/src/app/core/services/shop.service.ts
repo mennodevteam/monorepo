@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BusinessCategory, Plugin, Shop, ShopUser, ThirdParty } from '@menno/types';
+import { BusinessCategory, Shop, ShopUser, ThirdParty } from '@menno/types';
 import { environment } from '../../../environments/environment';
 import { BehaviorSubject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-declare var dataLayer: any[];
 
 @Injectable({
   providedIn: 'root',
@@ -17,37 +16,7 @@ export class ShopService {
     private translate: TranslateService,
   ) {
     this.shop$ = new BehaviorSubject<Shop | null>(null);
-    this.loadShop().then((shop) => {
-      if (shop) {
-        const dataLayerObject: any = {
-          event: 'login',
-          userId: shop.id,
-          userCode: shop.code,
-          userTitle: shop.title,
-        };
-
-        if (shop.plugins) {
-          const subscriptionAllDayDiff =
-            (new Date(shop.plugins.expiredAt).valueOf() - new Date(shop.plugins.renewAt).valueOf()) /
-            1000 /
-            3600 /
-            24;
-          if (subscriptionAllDayDiff < 10) dataLayerObject.userSubscriptionPlan = 'demo';
-          else {
-            if (shop.plugins.plugins.includes(Plugin.Club)) dataLayerObject.userSubscriptionPlan = 'club';
-            else if (shop.plugins.plugins.includes(Plugin.Ordering))
-              dataLayerObject.userSubscriptionPlan = 'ordering';
-            else if (shop.plugins.plugins.includes(Plugin.Menu))
-              dataLayerObject.userSubscriptionPlan = 'menu';
-            dataLayerObject.userSubscriptionPeriod = subscriptionAllDayDiff < 40 ? 'monthly' : 'yearly';
-          }
-          dataLayerObject.userSubscriptionRemain = Math.round(
-            (new Date(shop.plugins.expiredAt).valueOf() - Date.now()) / 1000 / 3600 / 24,
-          );
-        }
-        dataLayer.push(dataLayerObject);
-      }
-    });
+    this.loadShop();
     setInterval(() => {
       this.loadShop();
     }, 60000);

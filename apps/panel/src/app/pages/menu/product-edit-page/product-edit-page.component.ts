@@ -19,7 +19,7 @@ import {
 } from '../../../shared/dialogs/advanced-prompt-dialog/advanced-prompt-dialog.component';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { PromptDialogComponent } from '../../../shared/dialogs/prompt-dialog/prompt-dialog.component';
-import { MatomoService } from '../../../core/services/matomo.service';
+import { AnalyticsService } from '../../../core/services/analytics.service';
 
 @Component({
   selector: 'product-edit-page',
@@ -44,7 +44,7 @@ export class ProductEditPageComponent {
     private translate: TranslateService,
     private fileService: FilesService,
     private sanitizer: DomSanitizer,
-    private matomo: MatomoService,
+    private analytics: AnalyticsService,
   ) {
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
@@ -138,7 +138,7 @@ export class ProductEditPageComponent {
       panelClass: 'success',
     });
 
-    this.matomo.trackEvent('menu', 'product', dto.id ? 'edit product save' : 'add product save');
+    this.analytics.event(dto.id ? 'edit product' : 'add product');
 
     this.saving = false;
     this.location.back();
@@ -165,7 +165,7 @@ export class ProductEditPageComponent {
           this.form.markAsDirty();
         }
 
-        this.matomo.trackEvent('menu', 'product', 'upload photo', data != undefined);
+        this.analytics.event('upload product photo');
       });
   }
 
@@ -209,7 +209,7 @@ export class ProductEditPageComponent {
       this.form.markAsDirty();
     }
 
-    this.matomo.trackEvent('menu', 'product variant', variant ? 'edit' : 'add', dto != undefined);
+    this.analytics.event(variant ? 'edit product variant' : 'add product variant');
   }
 
   removePhoto() {

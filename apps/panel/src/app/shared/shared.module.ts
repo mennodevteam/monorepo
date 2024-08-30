@@ -70,9 +70,9 @@ import { ExtendPluginsModalComponent } from './components/extend-plugins-modal/e
 import { ScreenDirective } from './directives/screen.directive';
 import { TablePipe } from './pipes/table.pipe';
 import { SelectIsManualCardComponent } from './components/select-is-manual-card/select-is-manual-card.component';
-import { MatomoClickDirective } from './directives/matomo-click.directive';
 import { businessCategoryPipe } from './pipes/business-category.pipe';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { GtmClickDirective } from './directives/gtm-click.directive';
 
 @NgModule({
   declarations: [
@@ -93,7 +93,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     SelectOrderTypeCardComponent,
     SelectStatusCardComponent,
     ImageLoaderDirective,
-    MatomoClickDirective,
+    GtmClickDirective,
     FormBuilderComponent,
     OrdersTableComponent,
     OrderTypePipe,
@@ -183,7 +183,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MessageTemplateSelectorDialogComponent,
     TranslateModule,
     ImageLoaderDirective,
-    MatomoClickDirective,
+    GtmClickDirective,
     FormBuilderComponent,
     MemberAutocompleteComponent,
     SelectIsManualCardComponent,

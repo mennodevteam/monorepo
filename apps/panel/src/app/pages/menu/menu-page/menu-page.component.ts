@@ -6,9 +6,9 @@ import { Product, ProductCategory, Status } from '@menno/types';
 import { SortDialogComponent } from '../../../shared/dialogs/sort-dialog/sort-dialog.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTabGroup } from '@angular/material/tabs';
-import { MatomoService } from '../../../core/services/matomo.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
+import { AnalyticsService } from '../../../core/services/analytics.service';
 
 const enum CSVCols {
   Title = 0,
@@ -30,7 +30,7 @@ export class MenuPageComponent implements AfterViewInit {
     private dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
-    private matomo: MatomoService,
+    private analytics: AnalyticsService,
     private snack: MatSnackBar,
     private translate: TranslateService,
   ) {}
@@ -56,8 +56,8 @@ export class MenuPageComponent implements AfterViewInit {
       .subscribe((items) => {
         if (items) {
           this.menuService.sortCategories(items.map((x: any) => x.key));
+          this.analytics.event('sort product categories');
         }
-        this.matomo.trackEvent('menu', 'category', 'sort', items != undefined);
       });
   }
 
@@ -66,7 +66,6 @@ export class MenuPageComponent implements AfterViewInit {
       queryParams: { category: index },
       replaceUrl: true,
     });
-    this.matomo.trackEvent('menu', 'category', 'select', index);
   }
 
   importFromCSV(event: any) {

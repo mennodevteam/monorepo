@@ -10,8 +10,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ImageCropperDialogComponent } from '../../../shared/dialogs/image-cropper-dialog/image-cropper-dialog.component';
 import { CropperOptions } from 'ngx-image-cropper';
 import { FilesService } from '../../../core/services/files.service';
-import { MatomoService } from '../../../core/services/matomo.service';
 import { MenuService } from '../../../core/services/menu.service';
+import { AnalyticsService } from '../../../core/services/analytics.service';
 
 @Component({
   selector: 'app-config',
@@ -38,7 +38,7 @@ export class AppConfigComponent {
     private translate: TranslateService,
     private dialog: MatDialog,
     private fileService: FilesService,
-    private matomo: MatomoService,
+    private analytics: AnalyticsService,
   ) {
     this.load();
   }
@@ -157,6 +157,6 @@ export class AppConfigComponent {
     this.saving = false;
     this.form.markAsUntouched();
 
-    this.matomo.trackEvent('setting', 'app config', 'save changes');
+    this.analytics.event('update app config');
   }
 }

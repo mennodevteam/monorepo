@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Plugin } from '@menno/types';
 import { ShopService } from '../../../core/services/shop.service';
 import { PayService } from '../../../core/services/pay.service';
-import { MatomoService } from '../../../core/services/matomo.service';
+import { AnalyticsService } from '../../../core/services/analytics.service';
 
 @Component({
   selector: 'menno-extend-plugins-modal',
@@ -14,7 +14,11 @@ export class ExtendPluginsModalComponent {
   isMonthly = false;
   loading = false;
 
-  constructor(private shopService: ShopService, private payService: PayService, private matomo: MatomoService) {}
+  constructor(
+    private shopService: ShopService,
+    private payService: PayService,
+    private analytics: AnalyticsService,
+  ) {}
 
   get plugin() {
     return this.shopService.shop?.plugins;
@@ -31,7 +35,7 @@ export class ExtendPluginsModalComponent {
     if (this.selected === 2) plugins = [Plugin.Menu, Plugin.Ordering];
     if (this.selected === 3) plugins = [Plugin.Menu, Plugin.Ordering, Plugin.Club];
     this.loading = true;
-    this.matomo.trackEvent('subscription', 'renew', 'go to bank', this.selected);
+    this.analytics.event('subscription go to bank', { eventLabel: this.selected });
     this.payService.redirect(`extendPlugin`, undefined, {
       isMonthly: this.isMonthly,
       plugins,

@@ -7,7 +7,7 @@ import { ApiError } from '../../core/api-error';
 import { HttpClient, HttpStatusCode } from '@angular/common/http';
 import { BusinessCategory, CreateShopDto, Region } from '@menno/types';
 import { RegionsService } from '../../core/services/regions.service';
-import { MatomoService } from '../../core/services/matomo.service';
+import { AnalyticsService } from '../../core/services/analytics.service';
 
 @Component({
   selector: 'register',
@@ -40,7 +40,7 @@ export class RegisterComponent {
     private snack: MatSnackBar,
     public regionService: RegionsService,
     private http: HttpClient,
-    private matomo: MatomoService,
+    private analytics: AnalyticsService,
   ) {}
 
   ngOnInit() {
@@ -99,8 +99,7 @@ export class RegisterComponent {
     this.loading = true;
     try {
       await this.http.post(`shops/register`, dto).toPromise();
-      this.matomo.trackEvent('auth', 'register');
-
+      this.analytics.event('register');
       await this.auth.login(dto.loginUsername, dto.loginPassword).toPromise();
       this.router.navigate([this.returnUrl], {
         replaceUrl: true,

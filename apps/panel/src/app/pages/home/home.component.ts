@@ -12,7 +12,7 @@ import { PayService } from '../../core/services/pay.service';
 import { WebPushNotificationsService } from '../../core/services/web-push-notifications.service';
 import { ExtendPluginsModalComponent } from '../../shared/components/extend-plugins-modal/extend-plugins-modal.component';
 import { environment } from 'apps/panel/src/environments/environment';
-import { MatomoService } from '../../core/services/matomo.service';
+import { AnalyticsService } from '../../core/services/analytics.service';
 
 @Component({
   selector: 'home',
@@ -44,7 +44,7 @@ export class HomeComponent {
     private snack: MatSnackBar,
     private payService: PayService,
     public webPush: WebPushNotificationsService,
-    private matomo: MatomoService,
+    private analytics: AnalyticsService,
   ) {
     const fromDate = new Date(this.plugin?.renewAt || 0).valueOf();
     const toDate = new Date(this.plugin?.expiredAt || 0).valueOf();
@@ -95,7 +95,7 @@ export class HomeComponent {
     if (engPhone && engPhone.length === 10 && engPhone[0] === '9') engPhone = '0' + engPhone;
     if (engPhone && engPhone.length == 11 && engPhone.search('09') === 0) {
       await this.shopService.smsLink(engPhone);
-      this.matomo.trackEvent('app link', 'send', 'send sms link', engPhone);
+      this.analytics.event('send sms link', { eventLabel: engPhone });
       this.snack.open(this.translate.instant('sendShopLink.sentSuccess'), '', { panelClass: 'success' });
     } else {
       this.snack.open(this.translate.instant('sendShopLink.numberError'), '', { panelClass: 'warning' });
@@ -117,7 +117,7 @@ export class HomeComponent {
       .toPromise();
     if (amount >= 1000) {
       this.redirectingChargeSms = true;
-      this.matomo.trackEvent('club', 'charge sms', 'go to bank', amount);
+      this.analytics.event('charge sms account go to bank', { eventValue: amount });
       this.payService.redirect('chargeSmsAccount', amount);
     }
   }

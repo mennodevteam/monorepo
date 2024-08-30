@@ -15,7 +15,7 @@ import { RegionsService } from '../../../core/services/regions.service';
 import { filter } from 'rxjs';
 import * as L from 'leaflet';
 import { OpeningHoursDialogComponent } from './opening-hours-dialog/opening-hours-dialog.component';
-import { MatomoService } from '../../../core/services/matomo.service';
+import { AnalyticsService } from '../../../core/services/analytics.service';
 
 @Component({
   selector: 'shop-page',
@@ -66,7 +66,7 @@ export class ShopPageComponent implements OnInit {
     private fileService: FilesService,
     private translate: TranslateService,
     public regionService: RegionsService,
-    private matomo: MatomoService,
+    private analytics: AnalyticsService,
   ) {
     const shop = this.shopService.shop;
 
@@ -154,12 +154,12 @@ export class ShopPageComponent implements OnInit {
           this.form.markAsDirty();
         }
 
-        this.matomo.trackEvent('setting', 'shop', 'upload logo', data != undefined);
+        this.analytics.event('upload shop logo');
       });
   }
 
   openOpeningHoursDialog() {
-    this.matomo.trackEvent('settings', 'shop', 'opening hour click');
+    this.analytics.event('opening hour click');
 
     this.dialog.open(OpeningHoursDialogComponent, {
       disableClose: true,
@@ -192,7 +192,7 @@ export class ShopPageComponent implements OnInit {
       panelClass: 'success',
     });
 
-    this.matomo.trackEvent('settings', 'shop', 'save changes');
+    this.analytics.event('update shop info');
 
     this.saving = false;
   }
