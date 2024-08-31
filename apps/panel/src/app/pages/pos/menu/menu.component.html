@@ -14,7 +14,7 @@
         </ng-container>
         <div class="texts">
           <p>{{ product.title }}</p>
-          <h4>{{ Product.totalPrice(product) | menuCurrency }}</h4>
+          <h4>{{ Product.totalPrice(product, product.variants[0]) | menuCurrency }}</h4>
         </div>
       </mat-grid-tile>
     </mat-grid-list>

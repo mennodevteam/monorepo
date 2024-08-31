@@ -76,6 +76,15 @@ export class Product {
     return Math.max(total, 0);
   }
 
+  static isFinished(product: Product, productVariant?: ProductVariant) {
+    return (
+      product.status === Status.Blocked ||
+      productVariant?.status === Status.Blocked ||
+      product.stock === 0 ||
+      productVariant?.stock === 0
+    );
+  }
+
   static fixedDiscount(product: Product, productVariant?: ProductVariant) {
     const cost = Product.realPrice(product, productVariant) - Product.totalPrice(product, productVariant);
     if (cost > 0) return cost;
