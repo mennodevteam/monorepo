@@ -159,6 +159,7 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
   get dto() {
     const dto: Address = this.addressForm.getRawValue();
     if (this.address) dto.id = this.address.id;
+    if (this.deliveryArea) dto.deliveryArea = { id: this.deliveryArea.id } as DeliveryArea;
     return dto;
   }
 

@@ -8,7 +8,11 @@
         *ngIf="order.state === OrderState.Processing"
       ></i>
       <i matListItemIcon class="fa-solid fa-check blue" *ngIf="order.state === OrderState.Ready"></i>
-      <i matListItemIcon class="fa-solid fa-moped blue" *ngIf="order.state === OrderState.Shipping"></i>
+      @if (order.address?.deliveryArea?.isPost) {
+        <i matListItemIcon *ngSwitchCase="OrderType.Delivery" class="fa-solid fa-truck"></i>
+      } @else {
+        <i matListItemIcon *ngSwitchCase="OrderType.Delivery" class="fa-solid fa-moped"></i>
+      }
       <i
         matListItemIcon
         class="fa-solid fa-circle-check green"
@@ -31,7 +35,7 @@
         <span class="eng gray">{{ order.createdAt | date: 'HH:mm' }}</span>
       </span>
       <span matListItemLine [ngSwitch]="order.type" class="row">
-        {{ order.type | orderType }}
+        {{ order.type | orderType: order.address?.deliveryArea?.isPost }}
         <span spacer-sm></span>
         <span class="eng" *ngIf="order.type === OrderType.DineIn && order.details?.table">
           {{ order.details.table | shopTable }}
@@ -103,12 +107,16 @@
     <td mat-cell *matCellDef="let order" [ngSwitch]="order.type">
       <i matListItemIcon *ngSwitchCase="OrderType.DineIn" class="fa-solid fa-mug-hot"></i>
       <i matListItemIcon *ngSwitchCase="OrderType.Takeaway" class="fa-solid fa-cup-togo"></i>
-      <i matListItemIcon *ngSwitchCase="OrderType.Delivery" class="fa-solid fa-moped"></i>
+      @if (order.address?.deliveryArea?.isPost) {
+        <i matListItemIcon *ngSwitchCase="OrderType.Delivery" class="fa-solid fa-truck"></i>
+      } @else {
+        <i matListItemIcon *ngSwitchCase="OrderType.Delivery" class="fa-solid fa-moped"></i>
+      }
       <span class="eng" *ngIf="order.type === OrderType.DineIn && order.details?.table">
         {{ order.details?.table | shopTable }}
       </span>
       <span *ngIf="order.type !== OrderType.DineIn || !order.details?.table">
-        {{ order.type | orderType }}
+        {{ order.type | orderType: order.address?.deliveryArea?.isPost }}
       </span>
     </td>
   </ng-container>
@@ -126,7 +134,7 @@
           red: order.state === OrderState.Pending,
           yellow: order.state === OrderState.Processing,
           blue: order.state === OrderState.Shipping || order.state === OrderState.Ready,
-          green: order.state === OrderState.Completed
+          green: order.state === OrderState.Completed,
         }"
       >
         {{ order.state | orderState }}
@@ -140,7 +148,7 @@
       {{ order.totalPrice | menuCurrency }}
       <span *ngIf="order.paymentType" class="payed-label">
         <i class="fa-solid fa-circle-check"></i>
-        {{ order.paymentType | orderPayment: order.details.posPayed:order.totalPrice }}
+        {{ order.paymentType | orderPayment: order.details.posPayed : order.totalPrice }}
       </span>
       <button
         stopPropagation
@@ -187,7 +195,13 @@
         <button mat-icon-button (click)="print(order)" stopPropagation>
           <i class="fa-regular fa-print"></i>
         </button>
-        <button mat-icon-button routerLink="/pos" [queryParams]="{ id: order.id }" stopPropagation [disabled]="!!order.paymentType">
+        <button
+          mat-icon-button
+          routerLink="/pos"
+          [queryParams]="{ id: order.id }"
+          stopPropagation
+          [disabled]="!!order.paymentType"
+        >
           <i class="fa-regular fa-pencil"></i>
         </button>
         <button mat-icon-button stopPropagation (click)="remove(order)">

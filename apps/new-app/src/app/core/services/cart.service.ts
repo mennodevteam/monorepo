@@ -263,7 +263,7 @@ export class CartService {
       } else if (address.deliveryArea == null || address.deliveryArea.status != Status.Active) {
         this.snack.open(this.translate.instant('cart.addressOutOfRangeWarning'), '', { duration: 2000 });
         return;
-      } else if (address?.deliveryArea.minOrderPrice && address.deliveryArea.minOrderPrice > this.sum()) {
+      } else if (address?.deliveryArea.minOrderPrice && address.deliveryArea.minOrderPrice > this.realSum()) {
         this.snack.open(
           this.translate.instant('cart.addressMinPriceWarning', {
             value: PersianNumberService.withCommas(address.deliveryArea.minOrderPrice),

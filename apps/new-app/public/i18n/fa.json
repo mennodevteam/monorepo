@@ -80,8 +80,9 @@
     "addressOutOfRangeWarning": "آدرس انتخاب شده خارج از محدوده ارسال است.",
     "discountCouponAddDescription": "کد تخفیف را وارد کنید",
     "discountCouponNotFound": "کد وارد شده اشتباه است",
-    "addressMinPriceWarning": "حداقل سفارش برای ارسال {{value}} است",
-    "discountCouponMinPriceWarning": "حداقل سفارش برای کد تخفیف {{value}} است",
+    "addressMinPriceWarning": "حداقل مجموع آیتم‌ها برای ارسال {{value}} است",
+    "addressMinPriceWarningInline": "حداقل خرید: {{value}}",
+    "discountCouponMinPriceWarning": "حداقل مجموع آیتم‌ها برای کد تخفیف {{value}} است",
     "discountCouponOrderTypeWarning": "این کد تخفیف برای نوع سفارش دیگری است",
     "stockLimit": "موجودی آیتم انتخاب شده {{value}} عدد بیشتر نیست",
     "sendTo": "ارسال به"

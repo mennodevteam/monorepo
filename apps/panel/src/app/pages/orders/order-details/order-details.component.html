@@ -138,7 +138,7 @@
           <i *ngIf="order.paymentType" class="fa-solid fa-circle-check green"></i>
           <i *ngIf="!order.paymentType" class="fa-solid fa-circle-xmark red"></i>
           <span flex [ngClass]="{ green: order.paymentType, red: !order.paymentType }">
-            {{ order.paymentType | orderPayment: order.details.posPayed:order.totalPrice }}
+            {{ order.paymentType | orderPayment: order.details.posPayed : order.totalPrice }}
           </span>
           <button
             mat-stroked-button
@@ -160,7 +160,11 @@
             <i *ngSwitchCase="OrderState.Pending" class="fa-solid fa-spinner fa-spin"></i>
             <i *ngSwitchCase="OrderState.Processing" class="fa-solid fa-hat-chef"></i>
             <i *ngSwitchCase="OrderState.Ready" class="fa-solid fa-check"></i>
-            <i *ngSwitchCase="OrderState.Shipping" class="fa-solid fa-moped"></i>
+            @if (order.address?.deliveryArea?.isPost) {
+              <i matListItemIcon *ngSwitchCase="OrderType.Delivery" class="fa-solid fa-truck"></i>
+            } @else {
+              <i matListItemIcon *ngSwitchCase="OrderType.Delivery" class="fa-solid fa-moped"></i>
+            }
             <i *ngSwitchCase="OrderState.Completed" class="fa-solid fa-circle-check green"></i>
             <i *ngSwitchCase="OrderState.Canceled" class="fa-solid fa-circle-xmark red"></i>
             {{ order.state | orderState }}
@@ -293,19 +297,29 @@
           <mat-card-title>
             <i *ngSwitchCase="OrderType.DineIn" class="fa-solid fa-mug-hot"></i>
             <i *ngSwitchCase="OrderType.Takeaway" class="fa-solid fa-cup-togo"></i>
-            <i *ngSwitchCase="OrderType.Delivery" class="fa-solid fa-moped"></i>
-            {{ order.type | orderType }}
+            @if (order.address?.deliveryArea?.isPost) {
+              <i matListItemIcon *ngSwitchCase="OrderType.Delivery" class="fa-solid fa-truck"></i>
+            } @else {
+              <i matListItemIcon *ngSwitchCase="OrderType.Delivery" class="fa-solid fa-moped"></i>
+            }
+            {{ order.type | orderType: order.address?.deliveryArea?.isPost }}
           </mat-card-title>
           <mat-card-subtitle>
             <span *ngSwitchCase="OrderType.DineIn">{{ order.details.table | shopTable }}</span>
             <span *ngSwitchCase="OrderType.Delivery">
+              @if (order.address?.region) {
+                {{ order.address?.region?.state }}، {{ order.address?.region?.title }}،
+              }
               {{ order.address?.description }}
+              @if (order.address?.postalCode) {
+                {{ 'orderDetails.postalCode' | translate }}: {{ order.address?.postalCode }}
+              }
             </span>
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-actions *ngSwitchCase="OrderType.Delivery">
           <button
-            *ngIf="!hasAlopeyk"
+            *ngIf="!hasAlopeyk && !order?.address?.deliveryArea?.isPost"
             mat-stroked-button
             (click)="sendLinkToPeyk()"
             [disabled]="loading.sendingLinkToPayk"
@@ -366,115 +380,6 @@
           </ng-container>
         </mat-card-actions>
       </mat-card>
-
-      <!-- <mat-card>
-        <mat-card-content>
-          <mat-list>
-            <mat-list-item [ngSwitch]="order.type" [lines]="order.type === OrderType.Delivery ? 3 : 1">
-              <b matListItemTitle>
-                <i *ngSwitchCase="OrderType.DineIn" class="fa-solid fa-mug-hot"></i>
-                <i *ngSwitchCase="OrderType.Takeaway" class="fa-solid fa-cup-togo"></i>
-                <i *ngSwitchCase="OrderType.Delivery" class="fa-solid fa-moped"></i>
-                {{ order.type | orderType }}
-              </b>
-              <span matListItemMeta *ngSwitchCase="OrderType.DineIn">{{ order.details.table }}</span>
-              <span *ngSwitchCase="OrderType.Delivery" [matTooltip]="order.address?.description || ''">
-                {{ order.address?.description }}
-              </span>
-            </mat-list-item>
-            <mat-divider *ngIf="hasAlopeyk"></mat-divider>
-            <ng-container *ngIf="hasAlopeyk">
-              <mat-list-item
-                style="cursor: pointer"
-                *ngIf="!deliveryOrder && order.type === OrderType.Delivery"
-                (click)="addAlopeyk()"
-              >
-                <img matListItemAvatar src="assets/icons/alopeyk.svg" />
-                <span matListItemTitle>{{ 'alopeyk.title' | translate }}</span>
-                <span matListItemLine>{{ 'alopeyk.requestPeyk' | translate }}</span>
-              </mat-list-item>
-              <mat-list-item *ngIf="deliveryOrder" [ngSwitch]="deliveryOrder.status">
-                <i matListItemIcon *ngSwitchCase="'new'" class="fa-solid fa-spinner fa-spin mat-icon"></i>
-                <i
-                  matListItemIcon
-                  *ngSwitchCase="'searching'"
-                  class="fa-solid fa-spinner fa-spin mat-icon"
-                ></i>
-                <i matListItemIcon *ngSwitchCase="'accepted'" class="fa-solid fa-moped mat-icon"></i>
-                <i matListItemIcon *ngSwitchCase="'picking'" class="fa-solid fa-moped mat-icon"></i>
-                <i matListItemIcon *ngSwitchCase="'delivering'" class="fa-solid fa-moped mat-icon"></i>
-                <i matListItemIcon *ngSwitchCase="'delivered'" class="fa-solid fa-check-circle mat-icon"></i>
-                <i matListItemIcon *ngSwitchCase="'finished'" class="fa-solid fa-check-circle mat-icon"></i>
-                <span matListItemTitle>{{ 'alopeyk.status.title' | translate }}</span>
-                <span matListItemLine *ngSwitchCase="'new'">{{ 'alopeyk.status.new' | translate }}</span>
-                <span matListItemLine *ngSwitchCase="'searching'">{{
-                  'alopeyk.status.new' | translate
-                }}</span>
-                <span matListItemLine *ngSwitchCase="'accepted'">
-                  {{ 'alopeyk.status.accepted' | translate }}
-                </span>
-                <span matListItemLine *ngSwitchCase="'picking'">
-                  {{ 'alopeyk.status.delivering' | translate }}
-                </span>
-                <span matListItemLine *ngSwitchCase="'delivering'">
-                  {{ 'alopeyk.status.delivering' | translate }}
-                </span>
-                <span matListItemLine *ngSwitchCase="'delivered'">
-                  {{ 'alopeyk.status.finished' | translate }}
-                </span>
-                <span matListItemLine *ngSwitchCase="'finished'">
-                  {{ 'alopeyk.status.finished' | translate }}
-                </span>
-                <button mat-icon-button matListItemMeta [matMenuTriggerFor]="alopeykMenu">
-                  <i class="fa-regular fa-ellipsis-vertical"></i>
-                </button>
-                <mat-menu #alopeykMenu="matMenu">
-                  <button mat-menu-item (click)="cancelAlopeyk()">
-                    <i class="fa-solid fa-circle-close mat-icon"></i>
-                    <span>{{ 'alopeyk.cancel' | translate }}</span>
-                  </button>
-                </mat-menu>
-              </mat-list-item>
-            </ng-container>
-            <mat-divider></mat-divider>
-            <mat-list-item *ngIf="order.customer && order.customer.mobilePhone">
-              <b matListItemTitle>
-                <i class="fa-solid fa-user"></i>
-                {{ User.fullName(order.customer) }}
-              </b>
-              <span matListItemLine>{{ order.customer.mobilePhone | phone }}</span>
-              <button mat-icon-button matListItemMeta color="primary">
-                <i class="fas fa-circle-info"></i>
-              </button>
-              <ng-container *ngIf="!order.customer?.mobilePhone">
-                <b matListItemTitle>
-                  <i class="fa-solid fa-user"></i>
-                  {{ 'ordersTable.customer' | translate }}
-                </b>
-                <span matListItemLine>{{ 'app.notSet' | translate }}</span>
-              </ng-container>
-              <button
-                *ngIf="!order.customer?.mobilePhone"
-                mat-icon-button
-                matListItemMeta
-                color="primary"
-                (click)="openSelectMember()"
-              >
-                <i class="fas fa-circle-plus"></i>
-              </button>
-            </mat-list-item>
-            <mat-list-item *ngIf="!order.customer?.mobilePhone">
-              <b matListItemTitle>
-                <i class="fa-solid fa-user"></i>
-                {{ 'app.notSet' | translate }}
-              </b>
-              <button mat-icon-button matListItemMeta color="primary" (click)="openSelectMember()">
-                <i class="fas fa-circle-plus"></i>
-              </button>
-            </mat-list-item>
-          </mat-list>
-        </mat-card-content>
-      </mat-card> -->
     </div>
   </div>
 </main>

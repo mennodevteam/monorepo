@@ -161,6 +161,7 @@
   "orderType": {
     "dineIn": "داخل مجموعه",
     "delivery": "ارسال با پیک",
+    "post": "ارسال با پست",
     "takeaway": "مراجعه حضوری"
   },
   "businessCategory": {
@@ -609,6 +610,7 @@
     "complete": "تحویل به مشتری",
     "ready": "آماده شد",
     "ship": "تحویل به پیک",
+    "postalCode": "کدپستی",
     "estimateTime": "زمان تحویل",
     "todayEstimate": "امروز (چند دقیقه دیگر؟)",
     "nextDaysEstimate": "روزهای آینده (چه تاریخی؟)",

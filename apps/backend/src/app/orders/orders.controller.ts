@@ -37,7 +37,7 @@ export class OrdersController {
     private ordersRepo: Repository<Order>,
     private ordersService: OrdersService,
     private auth: AuthService,
-    private sms: SmsService
+    private sms: SmsService,
   ) {}
 
   @Post()
@@ -76,7 +76,7 @@ export class OrdersController {
   async deleteOrder(
     @Param('id') id: string,
     @Query('description') description: string,
-    @LoginUser() user: AuthPayload
+    @LoginUser() user: AuthPayload,
   ) {
     const shop = await this.auth.getPanelUserShop(user);
     return this.ordersService.remove(id, shop?.id, description);
@@ -110,7 +110,8 @@ export class OrdersController {
       'reviews',
       'payment',
       'address.deliveryArea',
-      'discountCoupon'
+      'address.region',
+      'discountCoupon',
     ];
 
     if (withProduct) {
@@ -131,7 +132,7 @@ export class OrdersController {
   async changeState(
     @Param('id') id: string,
     @Param('state') state: string,
-    @LoginUser() user: AuthPayload
+    @LoginUser() user: AuthPayload,
   ): Promise<Order> {
     const order = await this.ordersRepo.findOne({ where: { id }, relations: ['waiter'] });
     const update: Partial<Order> = {
@@ -163,7 +164,7 @@ export class OrdersController {
 
     const mergeOrder = Order.merge(
       orders,
-      orders.find((x) => x.id === dto[0])
+      orders.find((x) => x.id === dto[0]),
     );
     mergeOrder.updatedAt = new Date();
     mergeOrder.isManual = true;
@@ -182,7 +183,7 @@ export class OrdersController {
   async updateOrderDetails(
     @LoginUser() user: AuthPayload,
     @Param('id') id: string,
-    @Body() body: any
+    @Body() body: any,
   ): Promise<Order> {
     const order = await this.ordersRepo.findOne({ where: { id } });
     const update: Partial<Order> = {
@@ -210,7 +211,7 @@ export class OrdersController {
         order.id,
         shop,
         process.env.APP_ORIGIN,
-        process.env.APP_ORDER_PAGE_PATH
+        process.env.APP_ORDER_PAGE_PATH,
       );
       return this.sms.send({
         accountId: shop.smsAccount.id,
@@ -227,7 +228,7 @@ export class OrdersController {
   async sendLinkToPeyk(
     @Param('orderId') orderId: string,
     @Param('phone') phone: string,
-    @LoginUser() user: AuthPayload
+    @LoginUser() user: AuthPayload,
   ) {
     const shop = await this.auth.getPanelUserShop(user, ['smsAccount']);
     const order = await this.ordersRepo.findOne({

@@ -100,7 +100,7 @@ export class OrderDto {
   static abstractItems(dto: OrderDto, menu: Menu) {
     const costs = menu?.costs?.filter((x) => !x.showOnItem) || [];
     const abstractItems: OrderItem[] = [];
-    const sum = OrderDto.sum(dto, menu);
+    const sum = OrderDto.realSum(dto, menu);
     for (const c of costs) {
       let price = 0;
       if (c.fixedCost) price += c.fixedCost;
