@@ -7,6 +7,7 @@ export class DeliveryArea {
   price: number;
   minOrderPrice?: number;
   minPriceForFree?: number;
+  isPost: boolean;
   label?: string;
   polygon: [number, number][];
   status: Status;

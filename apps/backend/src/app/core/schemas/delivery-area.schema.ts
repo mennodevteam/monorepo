@@ -17,6 +17,10 @@ export const DeliveryAreaSchema = new EntitySchema<DeliveryArea>({
       type: String,
       nullable: true,
     },
+    isPost: {
+      type: Boolean,
+      default: false,
+    },
     price: {
       type: 'real',
     },

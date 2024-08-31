@@ -80,6 +80,15 @@ export class DeliveryAreasPageComponent implements OnInit {
               ],
               type: 'select',
             },
+            isPost: {
+              label: this.translate.instant('deliveryAreaDialog.isPostLabel'),
+              control: new FormControl(area?.isPost ?? false, [Validators.required]),
+              options: [
+                { value: false, text: this.translate.instant('deliveryAreaDialog.isPostFalse') },
+                { value: true, text: this.translate.instant('deliveryAreaDialog.isPostTrue') },
+              ],
+              type: 'select',
+            },
             price: {
               label: this.translate.instant('app.price'),
               control: new FormControl(area ? area.price : undefined, [Validators.required]),

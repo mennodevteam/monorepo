@@ -23,7 +23,7 @@
     </button>
   </div>
   <mat-toolbar fxLayout="column" fxLayoutAlign="center" p-md>
-    <button mat-flat-button class="large" (click)="submit()">
+    <button mat-flat-button class="large" (click)="submit()" [disabled]="loading()">
       {{ 'app.select' | translate }}
     </button>
   </mat-toolbar>

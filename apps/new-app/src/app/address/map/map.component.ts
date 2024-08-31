@@ -6,10 +6,11 @@ import { ShopService, ThemeService } from '../../core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { environment } from '../../../environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ThemeMode } from '@menno/types';
+import { DeliveryArea, Status, ThemeMode } from '@menno/types';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import nmp_mapboxgl from '@neshan-maps-platform/mapbox-gl';
+import { HttpClient } from '@angular/common/http';
 
 const DEFAULT_LOCATION: [number, number] = [51.389, 35.6892];
 
@@ -24,6 +25,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   map: any;
   timeout: any;
   gpsLoading = signal(false);
+  loading = signal(false);
 
   constructor(
     private shopService: ShopService,
@@ -32,6 +34,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     private theme: ThemeService,
     private snack: MatSnackBar,
     private translate: TranslateService,
+    private http: HttpClient,
   ) {
     this.route.queryParams.subscribe((params) => {
       setTimeout(() => {
@@ -86,9 +89,19 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   async submit() {
-    const params = { lat: this.center.lat, lng: this.center.lng };
-    await this.router.navigate([], { queryParams: params, replaceUrl: true });
-    this.router.navigate(['/address/edit'], { queryParams: params });
+    this.loading.set(true);
+    const deliveryArea = await this.http
+      .get<DeliveryArea>(`deliveryAreas/${this.shopService.shop.id}/${this.center.lat}/${this.center.lng}`)
+      .toPromise();
+
+    if (!deliveryArea || deliveryArea.status !== Status.Active) {
+      this.snack.open(this.translate.instant('map.noDeliveryArea'), '', { duration: 3000 });
+      this.loading.set(false);
+    } else {
+      const params = { lat: this.center.lat, lng: this.center.lng };
+      await this.router.navigate([], { queryParams: params, replaceUrl: true });
+      this.router.navigate(['/address/edit'], { queryParams: params, state: { deliveryArea } });
+    }
   }
 
   get coordinate() {

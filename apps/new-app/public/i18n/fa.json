@@ -149,13 +149,17 @@
     "newTitle": "ثبت آدرس جدید",
     "editTitle": "ویرایش آدرس",
     "titleLabel": "عنوان آدرس",
+    "regionLabel": "استان",
+    "stateLabel": "شهر",
     "titlePlaceholder": "مثلا: خونه",
     "addressLabel": "جزئیات آدرس",
-    "addressPlaceholder": "خیابان، کوچه، پلاک، واحد"
+    "addressHint": "محله، کوچه، پلاک و واحد",
+    "postalCode": "کد پستی"
   },
   "map": {
     "title": "انتخاب موقعیت",
-    "errorGps": "امکان دسترسی به موقعیت gps وجود ندارد"
+    "errorGps": "امکان دسترسی به موقعیت gps وجود ندارد",
+    "noDeliveryArea": "موقعیت انتخاب شده خارج از محدوده ارسال است"
   },
   "addressList": {
     "title": "انتخاب آدرس",

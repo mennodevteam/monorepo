@@ -18,6 +18,10 @@ export const AddressSchema = new EntitySchema<Address>({
       type: String,
       nullable: true,
     },
+    postalCode: {
+      type: String,
+      nullable: true,
+    },
     latitude: {
       type: 'real',
       nullable: true,

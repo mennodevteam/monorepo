@@ -19,17 +19,53 @@
   </mat-form-field>
 
   <mat-form-field>
+    <mat-label>{{ 'editAddress.stateLabel' | translate }}</mat-label>
+    <mat-select
+      #regionStateElem
+      [value]="regionState"
+      (valueChange)="regionState.set($event)"
+      [disabled]="loading()"
+    >
+      @for (state of states; track state.title) {
+        <mat-option [value]="state">
+          {{ state.title }}
+        </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>{{ 'editAddress.regionLabel' | translate }}</mat-label>
+    <mat-select formControlName="region">
+      @for (region of regions(); track region.id) {
+        <mat-option [value]="region">
+          {{ region.title }}
+        </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
     <mat-label>{{ 'editAddress.addressLabel' | translate }}</mat-label>
     <textarea
       matInput
       type="text"
       formControlName="description"
-      placeholder="{{ 'editAddress.addressPlaceholder' | translate }}"
+      placeholder="{{ 'editAddress.addressHint' | translate }}"
       rows="3"
     ></textarea>
+    <mat-hint>{{ 'editAddress.addressHint' | translate }}</mat-hint>
   </mat-form-field>
+  <br>
 
-  <button id="submit" type="submit" mat-flat-button class="large" [disabled]="saving()">
+  @if (deliveryArea?.isPost || address?.postalCode) {
+    <mat-form-field>
+      <mat-label>{{ 'editAddress.postalCode' | translate }}</mat-label>
+      <input matInput formControlName="postalCode" type="text" />
+    </mat-form-field>
+  }
+
+  <button id="submit" type="submit" mat-flat-button class="large" [disabled]="saving() || loading()">
     {{ 'app.select' | translate }}
     @if (saving()) {
       ...

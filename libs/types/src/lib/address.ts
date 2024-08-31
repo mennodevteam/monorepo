@@ -10,6 +10,7 @@ export class Address {
   description: string;
   user: User;
   deliveryArea?: DeliveryArea | null;
+  postalCode?: string;
   region: Region;
 
   static haversine(address1: Address, address2: Address): number {
