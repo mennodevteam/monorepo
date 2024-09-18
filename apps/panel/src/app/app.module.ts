@@ -20,10 +20,10 @@ import { PaginatorIntl } from './core/mat-paginator-intl';
 import { NotificationsComponent } from './pages/notifications/notifications.component';
 import { MenuCurrencyPipe } from './shared/pipes/menu-currency.pipe';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { provideAngularQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { Chart } from 'chart.js';
 
 Chart.defaults.font.family = 'IRANSans';
-
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n/');
@@ -58,6 +58,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     { provide: MatPaginatorIntl, useClass: PaginatorIntl },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 3000 } },
     MenuCurrencyPipe,
+    provideAngularQuery(new QueryClient()),
   ],
   bootstrap: [AppComponent],
 })

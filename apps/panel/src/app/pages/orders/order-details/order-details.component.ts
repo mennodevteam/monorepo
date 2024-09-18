@@ -2,7 +2,7 @@ import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   Member,
   Order,
@@ -57,21 +57,21 @@ export class OrderDetailsComponent implements OnDestroy {
     private route: ActivatedRoute,
     public orderService: OrdersService,
     private dialog: MatDialog,
-    private todayOrders: TodayOrdersService,
     private printService: PrinterService,
     private alopeyk: AlopeykService,
     private translate: TranslateService,
     private snack: MatSnackBar,
     private decimalPipe: DecimalPipe,
     private shopService: ShopService,
-    private breakpoints: BreakpointObserver
+    private breakpoints: BreakpointObserver,
+    private router: Router,
   ) {
+    this.order = this.router.getCurrentNavigation()?.extras?.state?.['order'];
     const isMobile = this.breakpoints.isMatched('(max-width: 800px)');
     if (isMobile) {
       this.displayedColumns = ['title', 'quantity', 'sum'];
     }
     this.route.params.subscribe((params) => {
-      this.order = this.todayOrders.getById(this.orderId);
       this.loadOrder();
       if (this.interval) clearInterval(this.interval);
       this.interval = setInterval(() => {

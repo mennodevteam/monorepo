@@ -67,13 +67,12 @@ export class PosService extends OrderDto {
     private snack: MatSnackBar,
     private translate: TranslateService,
     private printer: PrinterService,
-    private todayOrders: TodayOrdersService,
     private shopService: ShopService,
     private club: ClubService,
     private http: HttpClient,
     private dialog: MatDialog,
     private menuCurrency: MenuCurrencyPipe,
-    private analytics: AnalyticsService
+    private analytics: AnalyticsService,
   ) {
     super();
     this.clear();
@@ -118,7 +117,7 @@ export class PosService extends OrderDto {
       }
 
       const item = this.productItems?.find(
-        (x) => x.productId === productId && x.productVariantId == productVariant?.id
+        (x) => x.productId === productId && x.productVariantId == productVariant?.id,
       );
 
       if (!OrderDto.isStockValidForAddOne(product, productVariant, item, this.editOrder)) {
@@ -148,12 +147,12 @@ export class PosService extends OrderDto {
               data: {
                 title: this.translate.instant(`pos.addProductWarning.title`, {
                   value: this.translate.instant(
-                    product.status === Status.Inactive ? 'app.inactive' : 'app.finished'
+                    product.status === Status.Inactive ? 'app.inactive' : 'app.finished',
                   ),
                 }),
                 description: this.translate.instant(`pos.addProductWarning.description`, {
                   value: this.translate.instant(
-                    product.status === Status.Inactive ? 'app.inactive' : 'app.finished'
+                    product.status === Status.Inactive ? 'app.inactive' : 'app.finished',
                   ),
                 }),
                 status: 'warning',
@@ -180,7 +179,7 @@ export class PosService extends OrderDto {
     const product = this.menuService.getProductById(productId);
     if (product) {
       const item = this.productItems?.find(
-        (x) => x.productId === product.id && x.productVariantId == productVariantId
+        (x) => x.productId === product.id && x.productVariantId == productVariantId,
       );
       if (item) {
         if (item.quantity > 1) item.quantity--;
@@ -211,7 +210,7 @@ export class PosService extends OrderDto {
         }));
         this.note = order.note;
         this.manualDiscount = Math.abs(
-          Order.abstractItems(order).find((x) => x.title === MANUAL_DISCOUNT_TITLE)?.price || 0
+          Order.abstractItems(order).find((x) => x.title === MANUAL_DISCOUNT_TITLE)?.price || 0,
         );
         this.customer = order.customer;
         this.manualCost = Order.abstractItems(order).find((x) => x.title === MANUAL_COST_TITLE)?.price;
@@ -289,7 +288,7 @@ export class PosService extends OrderDto {
       this.club.getDiscountCoupons(user.id).then((coupons) => {
         this.discountCoupons = coupons.filter(
           (x) =>
-            new Date(x.startedAt).valueOf() <= Date.now() && new Date(x.expiredAt).valueOf() >= Date.now()
+            new Date(x.startedAt).valueOf() <= Date.now() && new Date(x.expiredAt).valueOf() >= Date.now(),
         );
         if (!this.editOrder) this.discountCoupon = this.discountCoupons[0];
         else if (this.editOrder && this.editOrder.discountCoupon) {
@@ -341,7 +340,7 @@ export class PosService extends OrderDto {
           value: this.menuCurrency.transform(this.discountCoupon.minPrice),
         }),
         '',
-        { panelClass: 'warning' }
+        { panelClass: 'warning' },
       );
       return;
     }
@@ -375,8 +374,7 @@ export class PosService extends OrderDto {
     this.clear();
     this.saving = false;
     this.menuService.loadMenu();
-    this.todayOrders.loadData();
-
+    this.orderService.invalidateTodayQuery();
     if (print && savedOrder) this.printer.printOrder(savedOrder?.id);
   }
 }

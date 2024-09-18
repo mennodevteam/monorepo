@@ -8,16 +8,12 @@ import { LocalNotification, LocalNotificationsService } from './local-notificati
 import { TranslateService } from '@ngx-translate/core';
 import { MenuCurrencyPipe } from '../../shared/pipes/menu-currency.pipe';
 import { Router } from '@angular/router';
-import { sortByCreatedAt, sortByCreatedAtDesc } from '@menno/utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TodayOrdersService {
-  private lastUpdate: Date;
-  orders = signal<Order[] | undefined>(undefined);
-
-  onUpdate = new EventEmitter<void>();
+  private lastUpdate = signal<Date | null>(null);
 
   constructor(
     private ordersService: OrdersService,
@@ -26,16 +22,18 @@ export class TodayOrdersService {
     private localNotificationsService: LocalNotificationsService,
     private translate: TranslateService,
     private menuCurrencyPipe: MenuCurrencyPipe,
-    private router: Router
+    private router: Router,
   ) {
-    this.loadData();
-    setInterval(() => {
-      this.loadData();
-    }, 10000);
+    // this.loadData();
+    // setInterval(() => {
+    //   this.loadData();
+    // }, 10000);
 
     this.swPush.messages.subscribe((message: any) => {
       try {
-        if (message.notification.data.newOrder) this.loadData();
+        if (message.notification.data.newOrder) {
+          this.ordersService.invalidateTodayQuery();
+        }
       } catch (error) {}
     });
   }
@@ -98,67 +96,5 @@ export class TodayOrdersService {
           break;
       }
     });
-  }
-
-  get today() {
-    const date = new Date();
-    date.setHours(date.getHours() - 3);
-    return date;
-  }
-
-  async loadData() {
-    if (!this.auth.instantUser) return;
-    const fromDate = new Date(this.today);
-    fromDate.setHours(0, 0, 0, 0);
-    fromDate.setHours(fromDate.getHours() + 3);
-    const toDate = new Date(this.today);
-    toDate.setHours(23, 59, 59, 999);
-    toDate.setHours(toDate.getHours() + 3);
-    const updatedAt = this.lastUpdate ? new Date(this.lastUpdate) : undefined;
-    const orders = await this.ordersService.filter({
-      fromDate,
-      toDate,
-      updatedAt,
-    });
-
-    if (orders) {
-      let newOrders: Order[] = [];
-      let currentUpdate: Date | undefined;
-      for (const ord of orders) {
-        if (ord.mergeTo) {
-          const mergeToOrder = orders.find((x) => x.id === ord.mergeTo?.id);
-          if (mergeToOrder) {
-            if (!mergeToOrder.mergeFrom) mergeToOrder.mergeFrom = [];
-            mergeToOrder.mergeFrom.push(ord);
-          }
-        }
-        if (!currentUpdate) currentUpdate = new Date(ord.updatedAt || ord.createdAt);
-        else if (currentUpdate.valueOf() < new Date(ord.updatedAt || ord.createdAt).valueOf())
-          currentUpdate = new Date(ord.updatedAt || ord.createdAt);
-        const existOrd = this.orders()?.find((x) => x.id === ord.id);
-        if (existOrd) {
-          Object.assign(existOrd, ord);
-        } else {
-          newOrders.push(ord);
-          this.notifOrder(ord);
-        }
-      }
-      if (currentUpdate) this.lastUpdate = currentUpdate;
-      if (orders.length) {
-        if (newOrders.length) {
-          this.orders.update((orders) =>
-            [...newOrders, ...(orders?.filter((x) => !x.mergeTo) || [])].sort(sortByCreatedAtDesc)
-          );
-        }
-        this.onUpdate.emit();
-      }
-    }
-  }
-
-  getById(id: string): Order | undefined {
-    try {
-      return this.orders()?.find((x) => x.id === id);
-    } catch (error) {}
-    return;
   }
 }

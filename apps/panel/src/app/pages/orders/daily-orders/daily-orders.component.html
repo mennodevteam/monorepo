@@ -3,14 +3,14 @@
     <i class="fa-regular fa-angle-right"></i>
   </button>
   <button mat-stroked-button (click)="picker.open()" style="width: 100px">
-    {{ date | pdate: 'YYYY/MM/DD' }}
+    {{ date() | pdate: 'YYYY/MM/DD' }}
   </button>
-  <input hidden [matDatepicker]="picker" [formControl]="dateControl" [max]="OS.today" />
+  <input hidden [matDatepicker]="picker" [formControl]="dateControl" [max]="today" />
   <mat-datepicker touchUi #picker></mat-datepicker>
-  <button mat-icon-button [disabled]="OS.isToday" (click)="goToNextDate()" class="hide-xs">
+  <button mat-icon-button [disabled]="isToday()" (click)="goToNextDate()" class="hide-xs">
     <i class="fa-regular fa-angle-left"></i>
   </button>
-  <button mat-icon-button *ngIf="!OS.isToday" color="warn" (click)="goToToday()">
+  <button mat-icon-button *ngIf="!isToday()" color="warn" (click)="goToToday()">
     <i class="fa-regular fa-angles-left"></i>
   </button>
   <span flex></span>
@@ -37,10 +37,10 @@
   </button>
   <mat-menu #reportMenu="matMenu">
     <button mat-menu-item disabled>
-      {{ 'dailyOrder.totalPrice' | translate }}: {{ OS.totalPrice() | menuCurrency: undefined:true }}
+      {{ 'dailyOrder.totalPrice' | translate }}: {{ totalPrice() | menuCurrency: undefined : true }}
     </button>
     <button mat-menu-item disabled>
-      {{ 'dailyOrder.payedTotalPrice' | translate }}: {{ payedTotalPrice | menuCurrency: undefined:true }}
+      {{ 'dailyOrder.payedTotalPrice' | translate }}: {{ payedTotalPrice() | menuCurrency: undefined : true }}
     </button>
     <mat-divider></mat-divider>
     <button mat-menu-item routerLink="report">
@@ -67,35 +67,35 @@
   <mat-spinner [diameter]="24" *ngIf="savingGroup"></mat-spinner>
 </mat-toolbar>
 <nav mat-tab-nav-bar mat-stretch-tabs="false" class="border-bottom" [tabPanel]="tabPanel">
-  <a mat-tab-link (click)="stateFilter = 'all'" [active]="stateFilter === 'all'">
+  <a mat-tab-link (click)="stateFilter.set('all')" [active]="stateFilter() === 'all'">
     {{ 'dailyOrder.filter.all' | translate }}
   </a>
-  <a mat-tab-link (click)="stateFilter = 'pending'" [active]="stateFilter === 'pending'">
+  <a mat-tab-link (click)="stateFilter.set('pending')" [active]="stateFilter() === 'pending'">
     {{ 'dailyOrder.filter.pending' | translate }}
   </a>
-  <a mat-tab-link (click)="stateFilter = 'complete'" [active]="stateFilter === 'complete'">
+  <a mat-tab-link (click)="stateFilter.set('complete')" [active]="stateFilter() === 'complete'">
     {{ 'dailyOrder.filter.complete' | translate }}
   </a>
-  <a mat-tab-link (click)="stateFilter = 'notPayed'" [active]="stateFilter === 'notPayed'">
+  <a mat-tab-link (click)="stateFilter.set('notPayed')" [active]="stateFilter() === 'notPayed'">
     {{ 'dailyOrder.filter.notPayed' | translate }}
   </a>
-  <a mat-tab-link (click)="stateFilter = 'payed'" [active]="stateFilter === 'payed'">
+  <a mat-tab-link (click)="stateFilter.set('payed')" [active]="stateFilter() === 'payed'">
     {{ 'dailyOrder.filter.payed' | translate }}
   </a>
-  <a mat-tab-link (click)="stateFilter = 'edited'" [active]="stateFilter === 'edited'">
+  <a mat-tab-link (click)="stateFilter.set('edited')" [active]="stateFilter() === 'edited'">
     {{ 'dailyOrder.filter.edited' | translate }}
   </a>
-  <a mat-tab-link (click)="stateFilter = 'deleted'" [active]="stateFilter === 'deleted'">
+  <a mat-tab-link (click)="stateFilter.set('deleted')" [active]="stateFilter() === 'deleted'">
     {{ 'dailyOrder.filter.deleted' | translate }}
   </a>
 </nav>
 <main class="content-wrapper">
   <mat-chip-listbox
-    (change)="tableFilter = $event.value"
-    [value]="tableFilter"
+    (change)="tableFilter.set($event.value)"
+    [value]="tableFilter()"
     *ngIf="tables && tables.length"
   >
-    <mat-chip-option [value]="null" color="warn" *ngIf="tableFilter">
+    <mat-chip-option [value]="null" color="warn" *ngIf="tableFilter()">
       <i class="fa-solid fa-close"></i>
       {{ 'dailyOrder.removeTableFilter' | translate }}
     </mat-chip-option>
@@ -105,19 +105,19 @@
   <mat-tab-nav-panel #tabPanel>
     <mat-card>
       <mat-card-content style="overflow-x: auto">
-        <ng-container *ngIf="orders && !loading">
+        <ng-container *ngIf="orders() && !ordersQuery.isLoading()">
           <orders-table
             [showCheckbox]="grouping"
-            [orders]="orders"
+            [orders]="orders()"
             (orderClicked)="orderClicked($event)"
           ></orders-table>
           <empty-state
-            *ngIf="!orders?.length"
+            *ngIf="!orders().length"
             icon="fa-face-frown"
             text="{{ 'dailyOrder.emptyState' | translate }}"
           ></empty-state>
         </ng-container>
-        <mat-spinner class="loading-spinner" *ngIf="loading" [diameter]="24"></mat-spinner>
+        <mat-spinner class="loading-spinner" *ngIf="ordersQuery.isLoading()" [diameter]="24"></mat-spinner>
       </mat-card-content>
     </mat-card>
   </mat-tab-nav-panel>

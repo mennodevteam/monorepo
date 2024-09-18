@@ -13,17 +13,19 @@ import { AuthService } from './auth.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ShopService } from './shop.service';
+import { injectQueryClient } from '@tanstack/angular-query-experimental';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrdersService {
+  queryClient = injectQueryClient();
   constructor(
     private http: HttpClient,
     private auth: AuthService,
     private translate: TranslateService,
     private snack: MatSnackBar,
-    private shop: ShopService
+    private shop: ShopService,
   ) {}
 
   async filter(dto: FilterOrderDto) {
@@ -59,12 +61,16 @@ export class OrdersService {
     }
   }
 
+  invalidateTodayQuery() {
+    this.queryClient.invalidateQueries({ queryKey: ['orders/daily', 'today'] });
+  }
+
   async merge(orders: Order[]) {
     try {
       const order = await this.http
         .post<Order>(
           `orders/merge`,
-          orders.map((x) => x.id)
+          orders.map((x) => x.id),
         )
         .toPromise();
     } catch (error) {
