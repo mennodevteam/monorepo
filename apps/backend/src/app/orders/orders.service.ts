@@ -234,7 +234,9 @@ export class OrdersService {
           orders,
           (order) => {
             const date = new Date(order.createdAt);
-            date.setHours(date.getHours() - 3);
+            if (Shop.isRestaurantOrCoffeeShop(shop.businessCategory)) {
+              date.setHours(date.getHours() - 3);
+            }
             return date.toDateString();
           },
           (order) => order.totalPrice,

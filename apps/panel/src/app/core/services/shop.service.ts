@@ -83,12 +83,7 @@ export class ShopService {
   }
 
   get isRestaurantOrCoffeeShop() {
-    return (
-      !this.shop?.businessCategory ||
-      [BusinessCategory.Cafe, BusinessCategory.Restaurant, BusinessCategory.CafeRestaurant].indexOf(
-        this.shop.businessCategory,
-      ) > -1
-    );
+    return Shop.isRestaurantOrCoffeeShop(this.shop?.businessCategory);
   }
 
   get orderIcon() {

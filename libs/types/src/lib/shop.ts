@@ -108,6 +108,15 @@ export class Shop {
     }
   }
 
+  static isRestaurantOrCoffeeShop(businessCategory?: BusinessCategory) {
+    return (
+      !businessCategory ||
+      [BusinessCategory.Cafe, BusinessCategory.Restaurant, BusinessCategory.CafeRestaurant].indexOf(
+        businessCategory,
+      ) > -1
+    );
+  }
+
   static isUsernameValid(username: string): boolean {
     const regex = /^[a-zA-Z0-9_]{3,}$/.test(username);
     return regex;

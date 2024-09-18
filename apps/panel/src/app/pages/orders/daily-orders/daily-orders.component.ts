@@ -33,10 +33,10 @@ export class DailyOrdersComponent {
     const date = this.date();
     const fromDate = new Date(date);
     fromDate.setHours(0, 0, 0, 0);
-    fromDate.setHours(fromDate.getHours() + 3);
+    if (this.shopService.isRestaurantOrCoffeeShop) fromDate.setHours(fromDate.getHours() + 3);
     const toDate = new Date(date);
     toDate.setHours(23, 59, 59, 999);
-    toDate.setHours(toDate.getHours() + 3);
+    if (this.shopService.isRestaurantOrCoffeeShop) toDate.setHours(toDate.getHours() + 3);
     return { fromDate, toDate };
   });
   isToday = computed(() => {
@@ -120,7 +120,7 @@ export class DailyOrdersComponent {
     public auth: AuthService,
     private ordersService: OrdersService,
   ) {
-    this.today.setHours(this.today.getHours() - 3);
+    if (this.shopService.isRestaurantOrCoffeeShop) this.today.setHours(this.today.getHours() - 3);
     this.dateControl.valueChanges.subscribe((value: any) => {
       if (value) {
         this.date.set(value._d ? new Date(value._d) : value ? new Date(value) : new Date());
