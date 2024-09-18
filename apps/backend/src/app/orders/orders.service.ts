@@ -389,7 +389,9 @@ export class OrdersService {
   }
 
   async filter(dto: FilterOrderDto) {
-    const condition: FindOptionsWhere<Order> = {};
+    const condition: FindOptionsWhere<Order> = {
+      mergeTo: null,
+    };
 
     if (dto.fromDate && dto.toDate) {
       condition.createdAt = Between(dto.fromDate, dto.toDate);
@@ -429,6 +431,7 @@ export class OrdersService {
     const relations = [
       'items',
       'mergeTo',
+      'mergeFrom',
       'reviews',
       'customer',
       'creator',
@@ -440,7 +443,7 @@ export class OrdersService {
       order: { createdAt: 'DESC' },
       relations,
       select: {
-        mergeTo: {
+        mergeFrom: {
           id: true,
         },
       },

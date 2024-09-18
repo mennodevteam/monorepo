@@ -33,6 +33,7 @@ export class TodayOrdersService {
       try {
         if (message.notification.data.newOrder) {
           this.ordersService.invalidateTodayQuery();
+          this.notifOrder(message.notification.data.newOrder);
         }
       } catch (error) {}
     });

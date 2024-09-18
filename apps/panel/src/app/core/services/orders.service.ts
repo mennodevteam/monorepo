@@ -34,6 +34,7 @@ export class OrdersService {
 
   async save(dto: OrderDto) {
     const order = await this.http.post<Order>(`orders`, dto).toPromise();
+    this.invalidateTodayQuery();
     return order;
   }
 
@@ -54,6 +55,7 @@ export class OrdersService {
       order._changingState = true;
       const result = await this.http.get<Order>(`orders/changeState/${order.id}/${state}`).toPromise();
       order.state = state;
+      this.invalidateTodayQuery();
       if (result?.waiter) order.waiter = this.auth.instantUser!;
     } catch (error) {
     } finally {
@@ -73,6 +75,7 @@ export class OrdersService {
           orders.map((x) => x.id),
         )
         .toPromise();
+      this.invalidateTodayQuery();
     } catch (error) {
     } finally {
       // order._changingState = false;
@@ -106,6 +109,7 @@ export class OrdersService {
         order.items = res.items;
         order.totalPrice = res.totalPrice;
       }
+      this.invalidateTodayQuery();
     } catch (error: any) {
       throw new Error(error);
     } finally {
@@ -119,6 +123,8 @@ export class OrdersService {
       const savedOrder = await this.http.get<Order>(`orders/setCustomer/${order.id}/${memberId}`).toPromise();
       if (savedOrder) {
         order.customer = savedOrder.customer;
+        this.invalidateTodayQuery();
+
         return order;
       }
     } catch (error) {
@@ -138,5 +144,6 @@ export class OrdersService {
       .toPromise();
     order.deletedAt = new Date();
     order.state = OrderState.Canceled;
+    this.invalidateTodayQuery();
   }
 }

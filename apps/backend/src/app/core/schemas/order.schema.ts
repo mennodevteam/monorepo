@@ -93,6 +93,11 @@ export const OrderSchema = new EntitySchema<Order>({
       inverseSide: 'mergeFrom',
       nullable: true,
     },
+    mergeFrom: {
+      type: 'one-to-many',
+      target: 'Order',
+      inverseSide: 'mergeTo',
+    },
     shop: {
       type: 'many-to-one',
       target: 'Shop',
