@@ -1,0 +1,43 @@
+footer {
+  padding: 16px 32px;
+}
+
+#logo {
+  height: 20px;
+  background-color: #ffc107;
+  border-radius: 4px;
+}
+
+h5 {
+  font-weight: 16px;
+  font-family: monospace;
+  font-weight: bold;
+}
+
+p {
+  font-size: 11px;
+  margin: 0;
+  margin-top: 16px;
+}
+
+#enamad {
+  border-radius: 4px;
+  padding: 4px;
+  width: 120px;
+
+  img {
+    width: 100%;
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+::ng-deep {
+  .dark {
+    #enamad {
+      background-color: var(--sys-inverse-surface);
+    }
+  }
+}

@@ -1,0 +1,23 @@
+<a href="https://menno.pro" target="_blank">
+  <footer class="surface-background">
+    <div fxLayout="row" fxLayoutGap="16px">
+      <div class="content">
+        <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
+          <img id="logo" src="images/logo.svg" />
+          <h5 class="on-background-text">MENNO</h5>
+        </div>
+        <p class="outline-text">
+          ارائه دهنده راهکارهای حرفه‌ای و مدرن برای ساخت سایت‌ برای مجموعه‌های غذایی و فروشگاه‌های آنلاین.
+        </p>
+      </div>
+      @if (enamad()) {
+        <div id="enamad" [innerHTML]="enamad() | safeHtml"></div>
+      } @else {
+        <div id="enamad">
+          <img src="images/enamad.png" />
+        </div>
+      }
+    </div>
+    <p class="outline-text">این وب‌سایت با استفاده از پلتفرم menno.pro طراحی و توسعه یافته است.</p>
+  </footer>
+</a>

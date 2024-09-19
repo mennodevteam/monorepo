@@ -9,6 +9,7 @@ import { CategorySectionComponent } from './category-section/category-section.co
 import { CartService } from '../core/services/cart.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FooterComponent } from '../common/components/footer/footer.component';
 
 @Component({
   selector: 'app-menu',
@@ -22,6 +23,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
     CategorySectionComponent,
     MatToolbarModule,
     ReactiveFormsModule,
+    FooterComponent,
   ],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
