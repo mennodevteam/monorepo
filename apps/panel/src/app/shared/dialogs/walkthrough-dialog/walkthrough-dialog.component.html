@@ -1,0 +1,13 @@
+<h3 mat-dialog-title>{{ title() }}</h3>
+<mat-dialog-content>
+  <button mat-icon-button mat-dialog-close id="close-button" tabindex="-1">
+    <i class="fa-solid fa-xmark-circle"></i>
+  </button>
+  <img [src]="image()" />
+  <p>{{ description() }}</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-flat-button [mat-dialog-close]="true" color="primary">
+    {{ action() ?? ('app.understand' | translate) }}
+  </button>
+</mat-dialog-actions>

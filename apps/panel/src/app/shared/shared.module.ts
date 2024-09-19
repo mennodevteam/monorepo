@@ -73,11 +73,13 @@ import { SelectIsManualCardComponent } from './components/select-is-manual-card/
 import { businessCategoryPipe } from './pipes/business-category.pipe';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { GtmClickDirective } from './directives/gtm-click.directive';
+import { WalkthroughDialogComponent } from './dialogs/walkthrough-dialog/walkthrough-dialog.component';
 
 @NgModule({
   declarations: [
     PromptDialogComponent,
     AdvancedPromptDialogComponent,
+    WalkthroughDialogComponent,
     ImageCropperDialogComponent,
     GoBackDirective,
     ScreenDirective,
@@ -155,6 +157,7 @@ import { GtmClickDirective } from './directives/gtm-click.directive';
   ],
   exports: [
     AdvancedPromptDialogComponent,
+    WalkthroughDialogComponent,
     ImageCropperDialogComponent,
     FlexLayoutModule,
     GoBackDirective,

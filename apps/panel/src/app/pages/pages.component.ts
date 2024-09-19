@@ -18,6 +18,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ClubService } from '../core/services/club.service';
 import { GoftinoService } from '../core/services/goftino.service';
 import { bounceIn } from '../core/animations/bounce.animation';
+import { WalkthroughService } from '../core/services/walkthrough.service';
 
 @Component({
   selector: 'menno-pages',
@@ -47,6 +48,7 @@ export class PagesComponent implements OnInit {
     private translate: TranslateService,
     public club: ClubService,
     private goftino: GoftinoService,
+    private walkthrough: WalkthroughService,
   ) {
     this.isHandset$ = this.breakpointObserver.observe('(max-width: 1024px)').pipe(
       map((result) => result.matches),
