@@ -18,7 +18,7 @@
     <i class="fa-regular fa-code-merge fa-sm"></i>
     {{ 'dailyOrder.group' | translate }}
   </button>
-  <button mat-stroked-button routerLink="filter" class="hide-xs" [disabled]="!accessReport">
+  <button mat-stroked-button routerLink="../filter" class="hide-xs" [disabled]="!accessReport">
     <i class="fa-regular fa-filter-list fa-sm"></i>
     {{ 'dailyOrder.advancedFilter' | translate }}
   </button>
@@ -29,7 +29,7 @@
   <button mat-icon-button class="show-xs" (click)="grouping = true">
     <i class="fa-regular fa-code-merge fa-sm"></i>
   </button>
-  <button mat-icon-button routerLink="filter" class="show-xs" [disabled]="!accessReport">
+  <button mat-icon-button routerLink="../filter" class="show-xs" [disabled]="!accessReport">
     <i class="fa-regular fa-filter-list fa-sm"></i>
   </button>
   <button mat-icon-button [matMenuTriggerFor]="reportMenu" class="show-xs" [disabled]="!accessReport">
@@ -43,7 +43,7 @@
       {{ 'dailyOrder.payedTotalPrice' | translate }}: {{ payedTotalPrice() | menuCurrency: undefined : true }}
     </button>
     <mat-divider></mat-divider>
-    <button mat-menu-item routerLink="report">
+    <button mat-menu-item routerLink="../report">
       {{ 'dailyOrder.advancedReport' | translate }}
     </button>
   </mat-menu>

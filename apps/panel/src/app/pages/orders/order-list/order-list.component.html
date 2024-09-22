@@ -1,0 +1,77 @@
+<mat-toolbar class="page-toolbar">
+  <button mat-stroked-button [matMenuTriggerFor]="stateMenu">
+    @switch (state()) {
+      @case ('all') {
+        {{ 'app.status' | translate }}: {{ 'dailyOrder.filter.all' | translate }}
+      }
+      @case ('pending') {
+        {{ 'dailyOrder.filter.pending' | translate }}
+      }
+      @case ('complete') {
+        {{ 'dailyOrder.filter.complete' | translate }}
+      }
+      @case ('deleted') {
+        {{ 'dailyOrder.filter.deleted' | translate }}
+      }
+    }
+  </button>
+  @if (state() !== 'all') {
+    <button mat-icon-button color="warn" routerLink="." [queryParams]="{ state: 'all' }" [replaceUrl]="true">
+      <i class="fa-solid fa-xmark-circle"></i>
+    </button>
+  }
+  <mat-menu #stateMenu="matMenu">
+    <button mat-menu-item routerLink="." [queryParams]="{ state: 'all' }" [replaceUrl]="true">
+      {{ 'dailyOrder.filter.all' | translate }}
+    </button>
+    <button mat-menu-item routerLink="." [queryParams]="{ state: 'pending' }" [replaceUrl]="true">
+      {{ 'dailyOrder.filter.pending' | translate }}
+    </button>
+    <button mat-menu-item routerLink="." [queryParams]="{ state: 'complete' }" [replaceUrl]="true">
+      {{ 'dailyOrder.filter.complete' | translate }}
+    </button>
+    <button mat-menu-item routerLink="." [queryParams]="{ state: 'deleted' }" [replaceUrl]="true">
+      {{ 'dailyOrder.filter.deleted' | translate }}
+    </button>
+  </mat-menu>
+  <span flex></span>
+  <button mat-stroked-button routerLink="../filter" class="hide-xs" [disabled]="!accessReport">
+    <i class="fa-regular fa-filter-list fa-sm"></i>
+    {{ 'dailyOrder.advancedFilter' | translate }}
+  </button>
+  <button mat-stroked-button routerLink="../report" class="hide-xs" [disabled]="!accessReport">
+    <i class="fa-regular fa-chart-line fa-sm"></i>
+    {{ 'dailyOrder.report' | translate }}
+  </button>
+  <button mat-icon-button routerLink="../filter" class="show-xs" [disabled]="!accessReport">
+    <i class="fa-regular fa-filter-list fa-sm"></i>
+  </button>
+  <button mat-icon-button routerLink="../report" class="show-xs" [disabled]="!accessReport">
+    <i class="fa-regular fa-chart-line fa-sm"></i>
+  </button>
+</mat-toolbar>
+<main class="content-wrapper">
+  <mat-card>
+    <mat-card-content style="overflow-x: auto">
+      <ng-container *ngIf="data() && !ordersQuery.isPending()">
+        <orders-table [orders]="data()" (orderClicked)="orderClicked($event)"></orders-table>
+        <empty-state
+          *ngIf="!data().length"
+          icon="fa-face-frown"
+          text="{{ 'dailyOrder.emptyState' | translate }}"
+        ></empty-state>
+      </ng-container>
+      @if (ordersQuery.isLoading() || ordersQuery.isFetchingNextPage()) {
+        <mat-spinner
+          class="center-align"
+          *ngIf="ordersQuery.isLoading() || ordersQuery.isFetchingNextPage()"
+          [diameter]="24"
+        ></mat-spinner>
+      } @else {
+        <button mat-button color="primary" class="center-align" (click)="ordersQuery.fetchNextPage()">
+          {{ 'app.loadMore' | translate }}
+        </button>
+      }
+    </mat-card-content>
+  </mat-card>
+</main>

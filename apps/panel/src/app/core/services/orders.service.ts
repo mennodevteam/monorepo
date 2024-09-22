@@ -65,6 +65,7 @@ export class OrdersService {
 
   invalidateTodayQuery() {
     this.queryClient.invalidateQueries({ queryKey: ['orders/daily', 'today'] });
+    this.queryClient.invalidateQueries({ queryKey: ['orders/list'] });
   }
 
   async merge(orders: Order[]) {

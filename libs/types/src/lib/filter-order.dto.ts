@@ -13,6 +13,8 @@ export class FilterOrderDto {
   paymentTypes?: OrderPaymentType[];
   states?: OrderState[];
   types?: OrderType[];
+  skip?: number;
+  take?: number;
   hasReview?: boolean;
   withDeleted?: boolean;
   updatedAt?: Date;

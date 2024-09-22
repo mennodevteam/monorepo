@@ -19,10 +19,12 @@ export class UserActionsGuard implements CanActivate {
     private translate: TranslateService
   ) {}
 
-  canActivate(
+  async canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  ): Promise<boolean | UrlTree> {
+    debugger
+    await this.auth.getShopUserResolver();
     if (route.data && route.data['userActions']) {
       for (const a of route.data['userActions']) {
         if (!this.auth.hasAccess(a)) {

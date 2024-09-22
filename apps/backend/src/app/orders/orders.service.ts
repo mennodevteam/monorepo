@@ -449,6 +449,8 @@ export class OrdersService {
           id: true,
         },
       },
+      skip: dto.skip,
+      take: dto.take,
       withDeleted: dto.withDeleted,
     });
 

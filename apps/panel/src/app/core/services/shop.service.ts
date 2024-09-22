@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BusinessCategory, Shop, ShopUser, ThirdParty } from '@menno/types';
 import { environment } from '../../../environments/environment';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, filter, lastValueFrom, take } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
@@ -88,5 +88,15 @@ export class ShopService {
 
   get orderIcon() {
     return this.isRestaurantOrCoffeeShop ? 'utensils' : 'receipt';
+  }
+
+  async getResolver() {
+    if (this.shop) return this.shop;
+    return this.shopObservable
+      .pipe(
+        filter((s) => !!s),
+        take(1),
+      )
+      .toPromise();
   }
 }

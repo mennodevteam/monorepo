@@ -18,10 +18,11 @@ export class PluginGuard implements CanActivate {
     private translate: TranslateService
   ) {}
 
-  canActivate(
+  async canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  ): Promise<boolean | UrlTree> {
+    await this.shopsService.getResolver();
     const plugin = this.shopsService.shop?.plugins ? this.shopsService.shop?.plugins : undefined;
     if (route.data && route.data['plugins']) {
       for (const p of route.data['plugins']) {

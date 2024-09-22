@@ -1,4 +1,13 @@
-import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Member, Order, OrderPaymentType, OrderState, OrderType, ShopPrintView, User } from '@menno/types';
@@ -9,6 +18,7 @@ import { SettlementDialogComponent } from '../../dialogs/settlement-dialog/settl
 import { PromptDialogComponent } from '../../dialogs/prompt-dialog/prompt-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
 import { MemberDialogComponent } from '../../dialogs/member-dialog/member-dialog.component';
+import { ShopService } from '../../../core/services/shop.service';
 
 @Component({
   selector: 'orders-table',
@@ -24,7 +34,9 @@ export class OrdersTableComponent implements AfterViewInit, OnChanges {
 
   @Input() showCheckbox = false;
   @Input() pageSizeOptions: number[];
-  @Input() columns = ['qNumber', 'customer', 'type', 'total', 'state', 'waiter', 'date', 'actions'];
+  @Input() columns = this.shopService.isRestaurantOrCoffeeShop
+    ? ['qNumber', 'customer', 'type', 'total', 'state', 'waiter', 'date', 'actions']
+    : ['customer', 'type', 'total', 'state', 'date', 'actions'];
   @Input() orders: Order[];
   @Output() orderClicked = new EventEmitter<Order>();
 
@@ -33,13 +45,14 @@ export class OrdersTableComponent implements AfterViewInit, OnChanges {
     private cdr: ChangeDetectorRef,
     private ordersService: OrdersService,
     private printService: PrinterService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    public shopService: ShopService,
   ) {}
-  
+
   ngOnChanges(changes: SimpleChanges): void {
-      if (changes['orders']) {
-        this.setOrders();
-      }
+    if (changes['orders']) {
+      this.setOrders();
+    }
   }
 
   ngAfterViewInit() {

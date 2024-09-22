@@ -1,12 +1,12 @@
 import { Route } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
-import { MenuGuard } from './core/guards/menu.guard';
-import { ShopGuard } from './core/guards/shop.guard';
 import { TranslateGuard } from './core/guards/translate.guard';
 import { PagesComponent } from './pages/pages.component';
 import { PluginGuard } from './core/guards/plugin.guard';
 import { Plugin, UserAction } from '@menno/types';
 import { UserActionsGuard } from './core/guards/user-actions.guard';
+import { shopResolver } from './core/guards/shop.resolver';
+import { menuResolver } from './core/guards/menu.resolver';
 
 export const appRoutes: Route[] = [
   {
@@ -21,7 +21,10 @@ export const appRoutes: Route[] = [
     children: [
       {
         path: '',
-        canActivate: [ShopGuard, MenuGuard],
+        resolve: {
+          shop: shopResolver,
+          menu: menuResolver,
+        },
         children: [
           {
             path: 'dashboard',

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map, take } from 'rxjs/operators';
 import { ChangePasswordDto, ShopUser, ShopUserRole, User, UserAction } from '@menno/types';
 import { environment } from '../../../environments/environment';
 
@@ -10,6 +10,7 @@ import { environment } from '../../../environments/environment';
 })
 export class AuthService {
   private user$: BehaviorSubject<User | null>;
+  shopUser$ = new BehaviorSubject<ShopUser | null>(null);
   shopUser: ShopUser;
 
   constructor(private http: HttpClient) {
@@ -73,9 +74,33 @@ export class AuthService {
     return this.http.post<void>(`auth/changePassword`, dto).toPromise();
   }
 
+  async getResolver() {
+    if (this.instantUser) return this.instantUser;
+    return this.user
+      .pipe(
+        filter((u) => !!u),
+        take(1),
+      )
+      .toPromise();
+  }
+
+  async getShopUserResolver() {
+    if (this.shopUser) return this.shopUser;
+    return this.shopUser$
+      .pipe(
+        filter((u) => !!u),
+        take(1),
+      )
+      .toPromise();
+  }
+
   private async loadShopUser() {
     const s = await this.http.get<ShopUser>('shopUsers/info').toPromise();
-    if (s) this.shopUser = s;
+    if (s) {
+      this.shopUser = s;
+      this.shopUser$.next(s);
+      this.shopUser$.complete();
+    }
   }
 
   get actions() {
