@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import {
   FilterOrderDto,
   ManualSettlementDto,
@@ -13,7 +13,7 @@ import { AuthService } from './auth.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ShopService } from './shop.service';
-import { injectQueryClient } from '@tanstack/angular-query-experimental';
+import { injectQueryClient, QueryKey } from '@tanstack/angular-query-experimental';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +34,7 @@ export class OrdersService {
 
   async save(dto: OrderDto) {
     const order = await this.http.post<Order>(`orders`, dto).toPromise();
-    this.invalidateTodayQuery();
+    if (order) this.updateQuery(order, !dto.id);
     return order;
   }
 
@@ -51,21 +51,58 @@ export class OrdersService {
   }
 
   async changeState(order: Order, state: OrderState) {
+    const prevState = order.state;
     try {
       order._changingState = true;
-      const result = await this.http.get<Order>(`orders/changeState/${order.id}/${state}`).toPromise();
       order.state = state;
-      this.invalidateTodayQuery();
+      this.updateQuery(order);
+      const result = await this.http.get<Order>(`orders/changeState/${order.id}/${state}`).toPromise();
       if (result?.waiter) order.waiter = this.auth.instantUser!;
+      this.updateQuery(order);
     } catch (error) {
+      order.state = prevState;
+      this.updateQuery(order);
     } finally {
       order._changingState = false;
+      this.updateQuery(order);
     }
   }
 
   invalidateTodayQuery() {
     this.queryClient.invalidateQueries({ queryKey: ['orders/daily', 'today'] });
     this.queryClient.invalidateQueries({ queryKey: ['orders/list'] });
+    console.log('invalidate queries')
+  }
+
+  updateQuery(order: Order, isNew?: boolean) {
+    const todayData = this.queryClient.getQueryData<Order[]>(['orders/daily', 'today']);
+    const listData = this.queryClient.getQueryData<Order[]>(['orders/list']);
+    if (todayData) {
+      if (isNew) {
+        order.waiter = this.auth.instantUser!;
+        todayData.unshift(order);
+      } else {
+        const existId = todayData.findIndex((x) => x.id === order.id);
+        if (existId > -1) {
+          todayData[existId] = order;
+        }
+      }
+      this.queryClient.setQueryData(['orders/daily', 'today'], [...todayData]);
+    }
+
+    if (listData) {
+      if (isNew) {
+        order.waiter = this.auth.instantUser!;
+        listData.unshift(order);
+      } else {
+        const existId = listData.findIndex((x) => x.id === order.id);
+        if (existId > -1) {
+          listData[existId] = order;
+        }
+      }
+      this.queryClient.setQueryData(['orders/list'], [...listData]);
+    }
+    console.log('updateQuery', order, isNew, todayData, listData);
   }
 
   async merge(orders: Order[]) {
@@ -110,11 +147,12 @@ export class OrdersService {
         order.items = res.items;
         order.totalPrice = res.totalPrice;
       }
-      this.invalidateTodayQuery();
+      this.updateQuery(order);
     } catch (error: any) {
       throw new Error(error);
     } finally {
       order._settlementing = false;
+      this.updateQuery(order);
     }
   }
 
@@ -124,8 +162,7 @@ export class OrdersService {
       const savedOrder = await this.http.get<Order>(`orders/setCustomer/${order.id}/${memberId}`).toPromise();
       if (savedOrder) {
         order.customer = savedOrder.customer;
-        this.invalidateTodayQuery();
-
+        this.updateQuery(order);
         return order;
       }
     } catch (error) {
@@ -145,6 +182,6 @@ export class OrdersService {
       .toPromise();
     order.deletedAt = new Date();
     order.state = OrderState.Canceled;
-    this.invalidateTodayQuery();
+    this.updateQuery(order);
   }
 }

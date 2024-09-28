@@ -392,6 +392,7 @@
     "filter": {
       "all": "همه",
       "pending": "در انتظار تایید",
+      "notCompleted": "تحویل نشده",
       "complete": "تحویل شده",
       "notPayed": "پرداخت نشده",
       "payed": "پرداخت شده",

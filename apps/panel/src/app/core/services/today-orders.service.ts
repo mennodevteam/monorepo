@@ -32,7 +32,7 @@ export class TodayOrdersService {
     this.swPush.messages.subscribe((message: any) => {
       try {
         if (message.notification.data.newOrder) {
-          this.ordersService.invalidateTodayQuery();
+          this.ordersService.updateQuery(message.notification.data.newOrder, true);
           this.notifOrder(message.notification.data.newOrder);
         }
       } catch (error) {}

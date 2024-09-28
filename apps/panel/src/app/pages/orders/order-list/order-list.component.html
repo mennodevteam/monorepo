@@ -25,7 +25,7 @@
       {{ 'dailyOrder.filter.all' | translate }}
     </button>
     <button mat-menu-item routerLink="." [queryParams]="{ state: 'pending' }" [replaceUrl]="true">
-      {{ 'dailyOrder.filter.pending' | translate }}
+      {{ 'dailyOrder.filter.notCompleted' | translate }}
     </button>
     <button mat-menu-item routerLink="." [queryParams]="{ state: 'complete' }" [replaceUrl]="true">
       {{ 'dailyOrder.filter.complete' | translate }}
@@ -67,7 +67,7 @@
           *ngIf="ordersQuery.isLoading() || ordersQuery.isFetchingNextPage()"
           [diameter]="24"
         ></mat-spinner>
-      } @else {
+      } @else if (ordersQuery.hasNextPage()) {
         <button mat-button color="primary" class="center-align" (click)="ordersQuery.fetchNextPage()">
           {{ 'app.loadMore' | translate }}
         </button>

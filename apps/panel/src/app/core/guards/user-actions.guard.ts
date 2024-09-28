@@ -23,7 +23,6 @@ export class UserActionsGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Promise<boolean | UrlTree> {
-    debugger
     await this.auth.getShopUserResolver();
     if (route.data && route.data['userActions']) {
       for (const a of route.data['userActions']) {

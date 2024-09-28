@@ -22,6 +22,7 @@ export class DailyOrdersComponent {
     queryKey: ['orders/daily', this.isToday() ? 'today' : this.dateString()],
     queryFn: () => this.ordersService.filter(this.dateFilterRange()),
     refetchInterval: this.isToday() ? 30000 : false,
+    refetchOnMount: false,
   }));
   today = new Date();
   date = signal(new Date());
@@ -129,11 +130,15 @@ export class DailyOrdersComponent {
 
     this.route.queryParams.subscribe((params) => {
       if (params['date']) this.dateControl.setValue(new Date(params['date']));
+      if (params['state']) this.stateFilter.set(params['state']);
+      if (params['table']) this.tableFilter.set(params['table']);
     });
 
     effect(() => {
       const qp = JSON.parse(JSON.stringify(this.route.snapshot.queryParams || {}));
       qp.date = this.dateString();
+      qp.state = this.stateFilter();
+      qp.table = this.tableFilter();
       this.router.navigate([], {
         queryParams: qp,
         replaceUrl: true,

@@ -52,8 +52,11 @@ export class OrderListComponent {
     queryFn: ({ pageParam }) =>
       this.ordersService.filter({ take: TAKE_COUNT, skip: pageParam, withDeleted: true }),
     initialPageParam: 0,
-    getNextPageParam: (orders) => orders?.length ?? 0,
+    getNextPageParam: (last, pages) => {
+      return last?.length === TAKE_COUNT ? pages.length * TAKE_COUNT : null;
+    },
     refetchInterval: 30000,
+    refetchOnMount: false,
   }));
 
   data = computed(() => {
