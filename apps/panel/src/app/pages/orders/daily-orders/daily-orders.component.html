@@ -108,7 +108,7 @@
         <ng-container *ngIf="orders() && !ordersQuery.isLoading()">
           <orders-table
             [showCheckbox]="grouping"
-            [orders]="orders()"
+            [orders]="orders"
             (orderClicked)="orderClicked($event)"
           ></orders-table>
           <empty-state

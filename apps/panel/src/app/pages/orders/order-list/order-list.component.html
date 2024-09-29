@@ -54,7 +54,7 @@
   <mat-card>
     <mat-card-content style="overflow-x: auto">
       <ng-container *ngIf="data() && !ordersQuery.isPending()">
-        <orders-table [orders]="data()" (orderClicked)="orderClicked($event)"></orders-table>
+        <orders-table [orders]="data" (orderClicked)="orderClicked($event)"></orders-table>
         <empty-state
           *ngIf="!data().length"
           icon="fa-face-frown"

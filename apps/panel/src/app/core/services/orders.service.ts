@@ -13,7 +13,7 @@ import { AuthService } from './auth.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ShopService } from './shop.service';
-import { injectQueryClient, QueryKey } from '@tanstack/angular-query-experimental';
+import { InfiniteData, injectQueryClient } from '@tanstack/angular-query-experimental';
 
 @Injectable({
   providedIn: 'root',
@@ -71,38 +71,41 @@ export class OrdersService {
   invalidateTodayQuery() {
     this.queryClient.invalidateQueries({ queryKey: ['orders/daily', 'today'] });
     this.queryClient.invalidateQueries({ queryKey: ['orders/list'] });
-    console.log('invalidate queries')
   }
 
   updateQuery(order: Order, isNew?: boolean) {
     const todayData = this.queryClient.getQueryData<Order[]>(['orders/daily', 'today']);
-    const listData = this.queryClient.getQueryData<Order[]>(['orders/list']);
+    const listData = this.queryClient.getQueryData<InfiniteData<Order[]>>(['orders/list']);
     if (todayData) {
+      const copy = [...todayData];
       if (isNew) {
         order.waiter = this.auth.instantUser!;
-        todayData.unshift(order);
+        copy.unshift(order);
       } else {
-        const existId = todayData.findIndex((x) => x.id === order.id);
+        const existId = copy.findIndex((x) => x.id === order.id);
         if (existId > -1) {
-          todayData[existId] = order;
+          copy[existId] = order;
         }
       }
-      this.queryClient.setQueryData(['orders/daily', 'today'], [...todayData]);
+      this.queryClient.setQueryData(['orders/daily', 'today'], copy);
     }
 
-    if (listData) {
+    if (listData?.pages?.length) {
+      const copy = { ...listData };
       if (isNew) {
         order.waiter = this.auth.instantUser!;
-        listData.unshift(order);
+        copy.pages[0].unshift(order);
       } else {
-        const existId = listData.findIndex((x) => x.id === order.id);
-        if (existId > -1) {
-          listData[existId] = order;
+        const pageIndex = copy.pages.findIndex((x) => x.find((x) => x.id === order.id));
+        if (pageIndex > -1) {
+          const existId = copy.pages[pageIndex].findIndex((x) => x.id === order.id);
+          if (existId > -1) {
+            copy.pages[pageIndex][existId] = order;
+          }
         }
       }
-      this.queryClient.setQueryData(['orders/list'], [...listData]);
+      this.queryClient.setQueryData(['orders/list'], copy);
     }
-    console.log('updateQuery', order, isNew, todayData, listData);
   }
 
   async merge(orders: Order[]) {

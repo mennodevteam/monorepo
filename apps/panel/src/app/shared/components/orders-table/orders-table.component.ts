@@ -2,10 +2,12 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
+  effect,
   EventEmitter,
   Input,
   OnChanges,
   Output,
+  Signal,
   SimpleChanges,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -25,7 +27,7 @@ import { ShopService } from '../../../core/services/shop.service';
   templateUrl: './orders-table.component.html',
   styleUrls: ['./orders-table.component.scss'],
 })
-export class OrdersTableComponent implements AfterViewInit, OnChanges {
+export class OrdersTableComponent {
   User = User;
   OrderType = OrderType;
   OrderState = OrderState;
@@ -37,7 +39,7 @@ export class OrdersTableComponent implements AfterViewInit, OnChanges {
   @Input() columns = this.shopService.isRestaurantOrCoffeeShop
     ? ['qNumber', 'customer', 'type', 'total', 'state', 'waiter', 'date', 'actions']
     : ['customer', 'type', 'total', 'state', 'date', 'actions'];
-  @Input() orders: Order[];
+  @Input() orders: Signal<Order[]>;
   @Output() orderClicked = new EventEmitter<Order>();
 
   constructor(
@@ -47,24 +49,11 @@ export class OrdersTableComponent implements AfterViewInit, OnChanges {
     private printService: PrinterService,
     private translate: TranslateService,
     public shopService: ShopService,
-  ) {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['orders']) {
-      this.setOrders();
-    }
-  }
-
-  ngAfterViewInit() {
-    this.setOrders();
-  }
-
-  setOrders(orders: Order[] = this.orders) {
-    if (orders) {
-      this.orders = orders;
-      this.dataSource = new MatTableDataSource(this.orders);
-      this.cdr.detectChanges();
-    }
+  ) {
+    effect(() => {
+      const orders = this.orders();
+      this.dataSource = new MatTableDataSource(orders);
+    });
   }
 
   changeState(order: Order) {
