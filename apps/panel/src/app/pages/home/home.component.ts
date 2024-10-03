@@ -29,11 +29,12 @@ export class HomeComponent {
   env = environment;
 
   update = {
-    date: new Date(2024, 6, 26),
+    date: new Date(2024, 8, 29),
     items: [
-      { title: 'بروزرسانی سریع قیمت آیتم', type: 'feature' },
-      { title: 'بروزرسانی سریع عکس آیتم', type: 'feature' },
-      { title: 'امکان آپلود عکس با پسوند HEIC (گوشی آیفون)', type: 'feature' },
+      { title: 'امکان ثبت‌نام مجموعه‌های فروشگاهی (غیر رستورانی)', type: 'feature' },
+      { title: 'امکان مشخص کردن لزوم دریافت اطلاعات پستی برای مجموعه‌های فروشگاهی', type: 'feature' },
+      { title: 'ورژن ۲ اپ مشتری با دیزاین جدید', type: 'feature' },
+      { title: 'حل مشکل عدم نمایش صحیح لیست سفارشات', type: 'bug' },
     ],
   };
 

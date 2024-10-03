@@ -1,6 +1,6 @@
-import { EventEmitter, Injectable, signal } from '@angular/core';
+import { effect, EventEmitter, Injectable, signal, untracked } from '@angular/core';
 import { Order, OrderState, OrderType } from '@menno/types';
-import { BehaviorSubject, Observable, filter, map } from 'rxjs';
+import { BehaviorSubject, Observable, filter, lastValueFrom, map } from 'rxjs';
 import { OrdersService } from './orders.service';
 import { SwPush } from '@angular/service-worker';
 import { AuthService } from './auth.service';
@@ -8,12 +8,23 @@ import { LocalNotification, LocalNotificationsService } from './local-notificati
 import { TranslateService } from '@ngx-translate/core';
 import { MenuCurrencyPipe } from '../../shared/pipes/menu-currency.pipe';
 import { Router } from '@angular/router';
+import { injectQuery } from '@tanstack/angular-query-experimental';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TodayOrdersService {
-  private lastUpdate = signal<Date | null>(null);
+  private lastFilterUpdate = signal<Date>(new Date());
+  private newOrdersIds = new Set<string>();
+
+  query = injectQuery(() => ({
+    queryKey: ['checkForUpdate'],
+    queryFn: () =>
+      this.ordersService.filter({
+        updatedAt: this.lastFilterUpdate(),
+      }),
+    refetchInterval: 10000,
+  }));
 
   constructor(
     private ordersService: OrdersService,
@@ -24,18 +35,37 @@ export class TodayOrdersService {
     private menuCurrencyPipe: MenuCurrencyPipe,
     private router: Router,
   ) {
-    // this.loadData();
-    // setInterval(() => {
-    //   this.loadData();
-    // }, 10000);
-
     this.swPush.messages.subscribe((message: any) => {
       try {
         if (message.notification.data.newOrder) {
-          this.ordersService.updateQuery(message.notification.data.newOrder, true);
-          this.notifOrder(message.notification.data.newOrder);
+          const order = message.notification.data.newOrder;
+          if (!this.newOrdersIds.has(order.id)) {
+            this.newOrdersIds.add(order.id);
+            this.ordersService.updateQuery(order, true);
+            this.notifOrder(order);
+          }
         }
       } catch (error) {}
+    });
+
+    effect(() => {
+      const orders = this.query.data() || [];
+      untracked(() => {
+        this.lastFilterUpdate.set(new Date());
+        for (const order of orders) {
+          console.log(Date.now(), order);
+          const isNew = order.updatedAt === order.createdAt;
+          if (isNew) {
+            if (!this.newOrdersIds.has(order.id)) {
+              this.newOrdersIds.add(order.id);
+              this.ordersService.updateQuery(order, true);
+              this.notifOrder(order);
+            }
+          } else {
+            this.ordersService.updateQuery(order);
+          }
+        }
+      });
     });
   }
 

@@ -79,8 +79,8 @@ export class OrdersService {
     if (todayData) {
       const copy = [...todayData];
       if (isNew) {
-        order.waiter = this.auth.instantUser!;
-        copy.unshift(order);
+        if (order.isManual) order.waiter = this.auth.instantUser!;
+        if (!copy.find((x) => x.id === order.id)) copy.unshift(order);
       } else {
         const existId = copy.findIndex((x) => x.id === order.id);
         if (existId > -1) {
@@ -93,8 +93,8 @@ export class OrdersService {
     if (listData?.pages?.length) {
       const copy = { ...listData };
       if (isNew) {
-        order.waiter = this.auth.instantUser!;
-        copy.pages[0].unshift(order);
+        if (order.isManual) order.waiter = this.auth.instantUser!;
+        if (!copy.pages[0]?.find((x) => x.id === order.id)) copy.pages[0].unshift(order);
       } else {
         const pageIndex = copy.pages.findIndex((x) => x.find((x) => x.id === order.id));
         if (pageIndex > -1) {

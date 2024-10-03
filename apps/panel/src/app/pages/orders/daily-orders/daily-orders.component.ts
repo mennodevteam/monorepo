@@ -57,7 +57,7 @@ export class DailyOrdersComponent {
         case 'pending':
           data = data.filter((x) => !x.deletedAt && x.state === OrderState.Pending);
           break;
-        case 'complete':
+        case 'complete':  
           data = data.filter((x) => !x.deletedAt && x.state === OrderState.Completed);
           break;
         case 'notPayed':
