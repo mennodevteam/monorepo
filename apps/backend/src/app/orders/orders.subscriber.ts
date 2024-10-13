@@ -95,7 +95,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     this.redis.updateMenu(shop.id);
 
     const customer = order.customer ? await this.usersRepo.findOneBy({ id: order.customer.id }) : undefined;
-    if (!order.customer && customer) order.customer = customer;
+    if (customer) order.customer = customer;
 
     if (!order.isManual) {
       this.webPush.notifToShop(order.shop.id, {

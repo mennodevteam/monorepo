@@ -20,6 +20,7 @@ export class UpdateService {
             } else if (
               !ev.latestVersion?.appData.lazyReload &&
               ev.latestVersion?.appData.version != currentVersion
+              && currentVersion
             ) {
               this.dialog
                 .open(UpdateDialogComponent, {
