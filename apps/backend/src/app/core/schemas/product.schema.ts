@@ -30,6 +30,10 @@ export const ProductSchema = new EntitySchema<Product>({
       type: Number,
       nullable: true,
     },
+    maxBasket: {
+      type: Number,
+      nullable: true,
+    },
     price: {
       type: 'real',
     },

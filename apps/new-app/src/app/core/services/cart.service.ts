@@ -153,6 +153,21 @@ export class CartService {
       return;
     }
 
+    // check max basket
+    if (product.maxBasket) {
+      const productItemsQuantity = this.getSignalItemsBasedOnProduct(product.id).map((item) =>
+        item.quantity(),
+      );
+      const productSum = productItemsQuantity.reduce((partialSum, a) => partialSum + a, 0);
+      if (productSum >= 1) {
+        this.snack.open(this.translate.instant('cart.basketLimit', { value: product.maxBasket }), '', {
+          panelClass: 'warning',
+          duration: 2000,
+        });
+        return;
+      }
+    }
+
     if (signalItem) {
       signalItem.quantity.update((v) => v + 1);
     } else {
@@ -187,6 +202,10 @@ export class CartService {
 
   getSignalItem(productId: string, variantId?: number) {
     return this.quantity().find((x) => x.productId === productId && x.variantId == variantId);
+  }
+
+  getSignalItemsBasedOnProduct(productId: string) {
+    return this.quantity().filter((x) => x.productId === productId);
   }
 
   private getItem(item: SignalProductItem) {
@@ -263,7 +282,7 @@ export class CartService {
       } else if (address.deliveryArea == null || address.deliveryArea.status != Status.Active) {
         this.snack.open(this.translate.instant('cart.addressOutOfRangeWarning'), '', { duration: 2000 });
         return;
-      } else if (address?.deliveryArea.minOrderPrice && address.deliveryArea.minOrderPrice > this.realSum()) {
+      } else if (address?.deliveryArea.minOrderPrice && address.deliveryArea.minOrderPrice > this.total()) {
         this.snack.open(
           this.translate.instant('cart.addressMinPriceWarning', {
             value: PersianNumberService.withCommas(address.deliveryArea.minOrderPrice),

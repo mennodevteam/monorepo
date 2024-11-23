@@ -1,18 +1,6 @@
 <mat-list>
   <mat-list-item>
     <span matListItemTitle>{{ 'cart.sum' | translate }}</span>
-    @if (
-      cart.address()?.deliveryArea?.minOrderPrice &&
-      cart.address()!.deliveryArea!.minOrderPrice! > cart.realSum()
-    ) {
-      <span matListItemLine class="error-text">
-        <i class="fa-solid fa-triangle-exclamation fa-xs"></i>
-        {{
-          'cart.addressMinPriceWarningInline'
-            | translate: { value: cart.address()?.deliveryArea?.minOrderPrice | menuCurrency }
-        }}
-      </span>
-    }
     <div matListItemMeta>
       <span>{{ cart.realSum() | menuCurrency }}</span>
     </div>
@@ -67,6 +55,18 @@
         {{ 'app.total' | translate }}
       </b>
     </span>
+    @if (
+      cart.address()?.deliveryArea?.minOrderPrice &&
+      cart.address()!.deliveryArea!.minOrderPrice! > cart.realSum()
+    ) {
+      <span matListItemLine class="error-text">
+        <i class="fa-solid fa-triangle-exclamation fa-xs"></i>
+        {{
+          'cart.addressMinPriceWarningInline'
+            | translate: { value: cart.address()?.deliveryArea?.minOrderPrice | menuCurrency }
+        }}
+      </span>
+    }
     <div matListItemMeta>
       <span>
         <b>

@@ -22,6 +22,7 @@ export class Product {
   stock?: number | null;
   costs?: MenuCost[];
   variants: ProductVariant[];
+  maxBasket?: number;
   thirdPartyId?: string;
   _orderItem?: ProductItem;
   _changingStatus?: boolean;
