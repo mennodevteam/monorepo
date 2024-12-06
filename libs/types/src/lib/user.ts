@@ -31,6 +31,7 @@ export class User {
   clubId: string;
   token: string;
   members: Member[];
+  exp?: number;
 
   static fullName(user: User) {
     try {

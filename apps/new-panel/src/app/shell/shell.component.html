@@ -1,0 +1,43 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    mode="side"
+    [opened]="!!auth.user"
+    disableClose
+  >
+    @if (auth.user) {
+      <nav fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="32px">
+        <img id="logo" src="icons/logo.svg" alt="menno logo" />
+        <a mat-icon-button routerLink="/leads" matTooltip="مدیریت آیتم‌ها" matTooltipPosition="after">
+          <i class="fa-solid fa-list"></i>
+        </a>
+        <a mat-icon-button routerLink="/orders" matTooltip="سفارشات" matTooltipPosition="after">
+          <i class="fa-solid fa-receipt"></i>
+        </a>
+        <a mat-icon-button routerLink="/reports" matTooltip="کزارشات" matTooltipPosition="after">
+          <i class="fa-solid fa-chart-simple"></i>
+        </a>
+        <span fxFlex></span>
+        <button mat-icon-button [mat-menu-trigger-for]="settingsMenu">
+          <i class="fa-solid fa-gear"></i>
+        </button>
+        <mat-menu #settingsMenu="matMenu">
+          <button mat-menu-item routerLink="/settings/interaction-types">
+            مدیریت وضعیت لیدها
+          </button>
+          <button mat-menu-item routerLink="/settings/products">
+            مدیریت محصولات
+          </button>
+          <button mat-menu-item routerLink="/settings/users">
+            مدیریت کابران
+          </button>
+        </mat-menu>
+      </nav>
+    }
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet />
+  </mat-sidenav-content>
+</mat-sidenav-container>

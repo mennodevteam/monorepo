@@ -1,0 +1,27 @@
+<form
+  p-md
+  w-xs
+  fxLayout="column"
+  fxLayoutAlign="center stretch"
+  center-align
+  [formGroup]="loginForm"
+  (ngSubmit)="submit()"
+  fxLayoutAlign="center default"
+>
+  <img id="logo" src="icons/logo.svg" alt="menno logo" />
+  <h1>
+    {{ 'menno' | translate }}
+    <br>
+    {{ 'login.title' | translate }}
+  </h1>
+  <mat-form-field>
+    <mat-label>نام کاربری</mat-label>
+    <input matInput formControlName="username" eng ltr />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>رمز عبور</mat-label>
+    <input matInput formControlName="password" eng ltr type="password" />
+  </mat-form-field>
+
+  <button mat-flat-button>ورود</button>
+</form>

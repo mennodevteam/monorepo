@@ -39,6 +39,13 @@ export class AuthController {
     return this.auth.loginPanel(req.user);
   }
 
+  @Public()
+  @UseGuards(PanelLocalAuthGuard)
+  @Post('login/panel/v2')
+  async loginPanelV2(@Request() req) {
+    return this.auth.loginPanelV2(req.user);
+  }
+
   @Roles(UserRole.Panel)
   @Post('changePassword')
   async changePanelPassword(@Body() dto: ChangePasswordDto, @LoginUser() user: AuthPayload) {

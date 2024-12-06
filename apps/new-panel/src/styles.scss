@@ -1,0 +1,97 @@
+@use '../public/fonts/fontawesome/scss/fontawesome.scss';
+
+@use '../public/fonts/iransans/iransans.scss';
+@use '../public/fonts/fontawesome/scss/regular.scss';
+@use '../public/fonts/fontawesome/scss/brands.scss';
+@use '../public/fonts/fontawesome/scss/solid.scss';
+@use '../public/fonts/fontawesome/scss/light.scss';
+@use '../public/fonts/fontawesome/scss/thin.scss';
+@use '@angular/material' as mat;
+
+html {
+  @include mat.theme(
+    (
+      color: mat.$yellow-palette,
+      typography: IRANSans,
+      density: -1,
+    )
+  );
+}
+
+.form-theme {
+  @include mat.theme(
+    (
+      color: mat.$azure-palette,
+      typography: IRANSans,
+    )
+  );
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: IRANSans, 'Helvetica Neue', sans-serif;
+}
+
+*[p-md] {
+  padding: 16px;
+}
+
+*[w-xs] {
+  max-width: 600px !important;
+  margin: auto;
+}
+
+*[w-sm] {
+  max-width: 960px !important;
+  margin: auto;
+}
+
+*[w-md] {
+  max-width: 1024px !important;
+  margin: auto;
+}
+
+*[center-align] {
+  text-align: center;
+}
+
+*[ltr] {
+  direction: ltr;
+}
+
+*[eng] {
+  font-family: monospace !important;
+}
+
+i.middle {
+  vertical-align: middle !important;
+}
+
+//material override
+mat-card {
+  box-shadow: none !important;
+}
+
+.mat-mdc-table,
+.mat-mdc-paginator {
+  background-color: transparent !important;
+}
+
+.mat-mdc-list-item-meta {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.mdc-icon-button {
+  i {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2rem;
+  }
+}

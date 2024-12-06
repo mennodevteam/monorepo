@@ -1,0 +1,43 @@
+<h4 matDialogTitle>{{ title }}</h4>
+<mat-dialog-content fxLayout="column" fxLayoutGap="16px">
+  @if (description) {
+    <p>{{ description }}</p>
+  }
+
+  @for (key of keys; track $index) {
+    <mat-form-field>
+      @if (fields[key].label) {
+        <mat-label>{{ fields[key].label }}</mat-label>
+      }
+      @switch (fields[key].type) {
+        @case ('date') {
+          <ng-container>
+            <input
+              (click)="picker.open()"
+              matInput
+              [matDatepicker]="picker"
+              [formControl]="fields[key].control"
+              placeholder="YYYY-MM-DD"
+            />
+            <mat-datepicker #picker></mat-datepicker>
+          </ng-container>
+        }
+        @default {
+          <input
+            matInput
+            [placeholder]="fields[key].placeholder || ''"
+            [formControl]="fields[key].control"
+            [type]="fields[key].type || 'text'"
+          />
+        }
+      }
+      @if (fields[key].hint) {
+        <mat-hint>{{ fields[key].hint }}</mat-hint>
+      }
+    </mat-form-field>
+  }
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>انصراف</button>
+  <button mat-flat-button (click)="submit()">تایید</button>
+</mat-dialog-actions>

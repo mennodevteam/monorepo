@@ -1,0 +1,16 @@
+<h4 matDialogTitle>{{ title }}</h4>
+@if (description) {
+  <mat-dialog-content>
+    <p>{{ description }}</p>
+  </mat-dialog-content>
+}
+<mat-dialog-actions>
+  @if (!hideCancel) {
+    <button mat-button [mat-dialog-close]="false">
+      {{ cancelText || 'انصراف' }}
+    </button>
+  }
+  <button mat-flat-button [mat-dialog-close]="true">
+    {{ okText || 'تایید' }}
+  </button>
+</mat-dialog-actions>

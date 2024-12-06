@@ -79,6 +79,22 @@ export class AuthService {
     return user;
   }
 
+  loginPanelV2(user: User, expireTokenIn = '90d') {
+    const payload: Partial<User> = {
+      id: user.id,
+      mobilePhone: user.mobilePhone,
+      username: user.username,
+      role: UserRole.Panel,
+    };
+
+    const token = this.jwtService.sign(payload, {
+      secret: process.env.JWT_ACCESS_SECRET,
+      expiresIn: expireTokenIn,
+    });
+
+    return token;
+  }
+
   async loginApp(user: User) {
     return this.login(user, UserRole.App, '90d');
   }
