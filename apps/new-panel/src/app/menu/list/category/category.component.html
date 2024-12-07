@@ -1,0 +1,15 @@
+<mat-card>
+  <mat-card-content>
+    <mat-toolbar>
+      <h3>{{ category()?.title }}</h3>
+    </mat-toolbar>
+    <div class="category-toolbar" fxLayout="row" fxLayoutGap="16px">
+      <button mat-button>
+        <i class="fa-regular fa-plus fa-sm"></i>
+        {{ 'menu.addProduct' | translate }}
+      </button>
+    </div>
+    <mat-divider />
+    <app-product-table [category]="category()" />
+  </mat-card-content>
+</mat-card>

@@ -1,15 +1,26 @@
 import { Route } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { authRoutes } from './auth/auth.routes';
+import { menuRoutes } from './menu/menu.routes';
+import { translateActivator } from './core/guards/translate.guard';
 
 export const appRoutes: Route[] = [
   {
-    path: 'auth',
-    children: authRoutes,
-  },
-  {
     path: '',
-    canActivate: [authGuard],
-    children: [{ path: '', redirectTo: 'leads', pathMatch: 'full' }],
+    canActivate: [translateActivator],
+    children: [
+      {
+        path: 'auth',
+        children: authRoutes,
+      },
+      {
+        path: '',
+        canActivate: [authGuard],
+        children: [
+          { path: 'menu', children: menuRoutes },
+          { path: '', redirectTo: 'menu', pathMatch: 'full' },
+        ],
+      },
+    ],
   },
 ];

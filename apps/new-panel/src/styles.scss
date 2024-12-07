@@ -7,15 +7,28 @@
 @use '../public/fonts/fontawesome/scss/light.scss';
 @use '../public/fonts/fontawesome/scss/thin.scss';
 @use '@angular/material' as mat;
+@use 'theme' as theme;
 
 html {
   @include mat.theme(
     (
-      color: mat.$yellow-palette,
+      color: theme.$primary-palette,
       typography: IRANSans,
       density: -1,
     )
   );
+
+  .dark-mode {
+    color-scheme: dark;
+  }
+
+  // @include mat.theme-overrides(
+  //   (
+  //     'primary': #005cbb,
+  //     'on-primary': white,
+  //     'background': white,
+  //   )
+  // );
 }
 
 .form-theme {
@@ -84,6 +97,16 @@ mat-card {
 .mat-mdc-list-item-meta {
   display: flex !important;
   align-items: center !important;
+}
+
+.mat-toolbar {
+  background-color: transparent !important;
+}
+
+.mdc-button {
+  i {
+    vertical-align: baseline;
+  }
 }
 
 .mdc-icon-button {

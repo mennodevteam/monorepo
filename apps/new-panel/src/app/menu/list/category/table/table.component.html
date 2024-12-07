@@ -1,0 +1,57 @@
+<table mat-table [dataSource]="category()?.products || []">
+  <ng-container matColumnDef="index">
+    <th mat-header-cell *matHeaderCellDef>{{ 'app.index' | translate }}</th>
+    <td mat-cell *matCellDef="let product; let i = index" style="width: 24px">
+      <span eng>
+        {{ i + 1 }}
+      </span>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="image">
+    <th mat-header-cell *matHeaderCellDef>{{ 'app.image' | translate }}</th>
+    <td mat-cell *matCellDef="let product" style="width: 48px">
+      <div
+        class="product-image"
+        [imageLoader]="product.images?.[0]"
+        [imageFile]="product.imageFiles?.[0]"
+        placeholderImageSize="sm"
+        FFB300
+      ></div>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="title">
+    <th mat-header-cell *matHeaderCellDef>{{ 'app.title' | translate }}</th>
+    <td mat-cell *matCellDef="let product">
+      {{ product.title }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="price">
+    <th mat-header-cell *matHeaderCellDef>{{ 'app.price' | translate }}</th>
+    <td mat-cell *matCellDef="let product">
+      <mat-chip-set>
+        @if (product.variants?.length) {
+          @for (variant of product.variants; track variant.id) {
+            <mat-chip> {{ variant.title }}: {{ variant.price | number | menuCurrency }} </mat-chip>
+          }
+        } @else {
+          <mat-chip> {{ product.price | number | menuCurrency }} </mat-chip>
+        }
+      </mat-chip-set>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let product"></td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
+@if (category()?.products?.length === 0) {
+  <app-empty-state />
+}

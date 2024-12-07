@@ -4,8 +4,9 @@
 
 export const environment = {
   production: false,
-  // apiUrl: 'https://uptodate-api.darkube.app',
-  apiUrl: 'http://localhost:3000',
+  apiUrl: 'https://api.menno.pro',
+  // apiUrl: 'http://localhost:3000',
+  bucketUrl: 'https://menno.storage.iran.liara.space',
 };
 
 /*

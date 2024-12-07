@@ -1,0 +1,14 @@
+<mat-toolbar>
+  <h1>{{ 'menu.title' | translate }}</h1>
+</mat-toolbar>
+<main p-md>
+  @if (menuService.categories()) {
+    <div fxLayout="column" fxLayoutGap="24px">
+      @for (category of menuService.categories(); track category.id) {
+        <app-menu-category [category]="category" />
+      }
+    </div>
+  } @else {
+    <app-data-loading />
+  }
+</main>
