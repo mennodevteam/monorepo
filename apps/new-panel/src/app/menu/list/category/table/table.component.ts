@@ -13,6 +13,7 @@ import {
 } from '../../../../shared/dialogs/prompt-dialog/prompt-dialog.component';
 import { FormControl, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { DialogService } from '../../../../core/services/dialog.service';
 const COLS = ['index', 'image', 'title', 'price', 'status', 'actions'];
 @Component({
   selector: 'app-product-table',
@@ -24,7 +25,7 @@ const COLS = ['index', 'image', 'title', 'price', 'status', 'actions'];
 export class ProductTableComponent {
   category = input<ProductCategory>();
   menu = inject(MenuService);
-  dialog = inject(MatDialog);
+  dialog = inject(DialogService);
   t = inject(TranslateService);
   readonly displayedColumns = COLS;
 
@@ -45,38 +46,32 @@ export class ProductTableComponent {
         hint: this.t.instant('app.currency'),
       },
     };
-    this.dialog
-      .open(PromptDialogComponent, {
-        data: { title: product.title, fields },
-      })
-      .afterClosed()
-      .subscribe((dto) => {
-        if (dto) {
-          this.menu.saveProductMutation.mutate({ id: product.id, price: dto.price });
-        }
-      });
+    this.dialog.prompt(product.title, fields).then((dto) => {
+      if (dto) {
+        this.menu.saveProductMutation.mutate({ id: product.id, price: dto.price });
+      }
+    });
   }
 
   changeProductVariantPrice(product: Product, variant: ProductVariant) {
     const fields: PromptFields = {
+      title: {
+        label: this.t.instant('app.title'),
+        control: new FormControl(variant.title, Validators.required),
+      },
       price: {
         label: this.t.instant('app.price'),
         control: new FormControl(variant.price, Validators.required),
         hint: this.t.instant('app.currency'),
       },
     };
-    this.dialog
-      .open(PromptDialogComponent, {
-        data: { title: `${product.title} ${variant.title}`, fields },
-      })
-      .afterClosed()
-      .subscribe((dto) => {
-        if (dto) {
-          const variants = product.variants.map((item) =>
-            item.id !== variant.id ? item : { ...item, price: dto.price },
-          );
-          this.menu.saveProductMutation.mutate({ id: product.id, variants });
-        }
-      });
+    this.dialog.prompt(`${product.title} ${variant.title}`, fields).then((dto) => {
+      if (dto) {
+        const variants = product.variants.map((item) =>
+          item.id !== variant.id ? item : { ...item, ...dto },
+        );
+        this.menu.saveProductMutation.mutate({ id: product.id, variants });
+      }
+    });
   }
 }
