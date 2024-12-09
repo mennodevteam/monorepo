@@ -9,6 +9,17 @@
 @use '@angular/material' as mat;
 @use 'theme' as theme;
 
+$success-container: #e8f5e9;
+$success-color: #388e3c;
+@mixin successContainer() {
+  color: $success-color !important;
+  background-color: $success-container !important;
+}
+@mixin errorContainer() {
+  color: var(--mat-sys-error) !important;
+  background-color: var(--mat-sys-error-container) !important;
+}
+
 html {
   @include mat.theme(
     (
@@ -21,21 +32,14 @@ html {
   .dark-mode {
     color-scheme: dark;
   }
-
-  // @include mat.theme-overrides(
-  //   (
-  //     'primary': #005cbb,
-  //     'on-primary': white,
-  //     'background': white,
-  //   )
-  // );
 }
 
-.form-theme {
+.accent-theme {
   @include mat.theme(
     (
-      color: mat.$azure-palette,
+      color: theme.$tertiary-palette,
       typography: IRANSans,
+      density: -1,
     )
   );
 }
@@ -50,7 +54,7 @@ body {
 }
 
 *[p-md] {
-  padding: 16px;
+  padding: 24px;
 }
 
 *[w-xs] {
@@ -84,14 +88,41 @@ i.middle {
   vertical-align: middle !important;
 }
 
-//material override
-mat-card {
-  box-shadow: none !important;
+.content-toolbar {
+  position: sticky;
+  top: 64px;
+  z-index: 99;
+  background-color: var(--mat-sys-surface-container) !important;
+  color: var(--mat-sys-on-surface-container-highest) !important;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
 }
 
-.mat-mdc-table,
-.mat-mdc-paginator {
-  background-color: transparent !important;
+.success,
+.status_1 {
+  @include successContainer();
+}
+
+.error,
+.status_0,
+.status_3 {
+  @include errorContainer();
+}
+
+//material override
+:root {
+  @include mat.card-overrides(
+    (
+      outlined-outline-color: var(--mat-sys-outline-variant),
+      outlined-container-color: var(--mat-sys-surface-container-lowest),
+    )
+  );
+
+  @include mat.table-overrides(
+    (
+      row-item-outline-color: var(--mat-sys-outline-variant),
+      background-color: transparent,
+    )
+  );
 }
 
 .mat-mdc-list-item-meta {
@@ -99,7 +130,7 @@ mat-card {
   align-items: center !important;
 }
 
-.mat-toolbar {
+.mat-toolbar.transparent {
   background-color: transparent !important;
 }
 

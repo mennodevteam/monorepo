@@ -1,10 +1,16 @@
-<mat-toolbar>
-  <h1>{{ 'menu.title' | translate }}</h1>
+<mat-toolbar class="content-toolbar">
+  <!-- <h1>{{ 'menu.title' | translate }}</h1> -->
 </mat-toolbar>
 <main p-md>
+  <div fxLayout="row">
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'app.search' | translate }}</mat-label>
+      <input matInput [(ngModel)]="searchInput" type="search" />
+    </mat-form-field>
+  </div>
   @if (menuService.categories()) {
     <div fxLayout="column" fxLayoutGap="24px">
-      @for (category of menuService.categories(); track category.id) {
+      @for (category of categories(); track category.id) {
         <app-menu-category [category]="category" />
       }
     </div>

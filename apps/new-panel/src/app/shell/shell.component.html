@@ -1,15 +1,34 @@
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav
-    #drawer
-    class="sidenav"
-    fixedInViewport
-    mode="side"
-    [opened]="!!auth.user"
-    disableClose
-  >
+<mat-toolbar fxLayout="row" fxLayoutGap="32px" class="accent-theme">
+  <img id="logo" src="icons/logo.svg" alt="menno logo" />
+  <a mat-button routerLink="/leads">
+    <i class="fa-solid fa-list"></i>
+    مدیریت آیتم‌ها
+  </a>
+  <a mat-button routerLink="/orders">
+    <i class="fa-solid fa-receipt"></i>
+    سفارشات
+  </a>
+  <a mat-button routerLink="/reports">
+    <i class="fa-solid fa-chart-simple"></i>
+    کزارشات
+  </a>
+  <span fxFlex></span>
+  <button mat-icon-button [mat-menu-trigger-for]="settingsMenu">
+    <i class="fa-solid fa-gear"></i>
+  </button>
+  <mat-menu #settingsMenu="matMenu">
+    <button mat-menu-item routerLink="/settings/interaction-types">مدیریت وضعیت لیدها</button>
+    <button mat-menu-item routerLink="/settings/products">مدیریت محصولات</button>
+    <button mat-menu-item routerLink="/settings/users">مدیریت کابران</button>
+  </mat-menu>
+</mat-toolbar>
+<main>
+  <router-outlet />
+</main>
+<!-- <mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport mode="side" [opened]="!!auth.user" disableClose>
     @if (auth.user) {
       <nav fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="32px">
-        <img id="logo" src="icons/logo.svg" alt="menno logo" />
         <a mat-icon-button routerLink="/leads" matTooltip="مدیریت آیتم‌ها" matTooltipPosition="after">
           <i class="fa-solid fa-list"></i>
         </a>
@@ -24,15 +43,9 @@
           <i class="fa-solid fa-gear"></i>
         </button>
         <mat-menu #settingsMenu="matMenu">
-          <button mat-menu-item routerLink="/settings/interaction-types">
-            مدیریت وضعیت لیدها
-          </button>
-          <button mat-menu-item routerLink="/settings/products">
-            مدیریت محصولات
-          </button>
-          <button mat-menu-item routerLink="/settings/users">
-            مدیریت کابران
-          </button>
+          <button mat-menu-item routerLink="/settings/interaction-types">مدیریت وضعیت لیدها</button>
+          <button mat-menu-item routerLink="/settings/products">مدیریت محصولات</button>
+          <button mat-menu-item routerLink="/settings/users">مدیریت کابران</button>
         </mat-menu>
       </nav>
     }
@@ -40,4 +53,4 @@
   <mat-sidenav-content>
     <router-outlet />
   </mat-sidenav-content>
-</mat-sidenav-container>
+</mat-sidenav-container> -->

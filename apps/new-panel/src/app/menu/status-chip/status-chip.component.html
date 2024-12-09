@@ -1,0 +1,35 @@
+<mat-chip [ngClass]="'status_' + status()" [matMenuTriggerFor]="menu">
+  @switch (status()) {
+    @case (Status.Active) {
+      <i class="fa-regular fa-check-circle middle"></i>
+    }
+    @case (Status.Inactive) {
+      <i class="fa-regular fa-xmark-circle middle"></i>
+    }
+    @case (Status.Blocked) {
+      <i class="fa-regular fa-ban middle"></i>
+    }
+  }
+  @if (title()) {
+    {{ title() }}:
+  }
+  {{ 'menu.status.' + status() | translate }}
+</mat-chip>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="statusChange.emit(Status.Active)" [disabled]="status() === Status.Active">
+    <i class="fa-regular fa-check-circle middle"></i>
+    {{ 'menu.status.' + Status.Active | translate }}
+  </button>
+  <button
+    mat-menu-item
+    (click)="statusChange.emit(Status.Inactive)"
+    [disabled]="status() === Status.Inactive"
+  >
+    <i class="fa-regular fa-xmark-circle middle"></i>
+    {{ 'menu.status.' + Status.Inactive | translate }}
+  </button>
+  <button mat-menu-item (click)="statusChange.emit(Status.Blocked)" [disabled]="status() === Status.Blocked">
+    <i class="fa-regular fa-ban middle"></i>
+    {{ 'menu.status.' + Status.Blocked | translate }}
+  </button>
+</mat-menu>
