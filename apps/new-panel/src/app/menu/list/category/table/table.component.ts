@@ -6,9 +6,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
 import { MenuStatusChipComponent } from '../../../status-chip/status-chip.component';
 import { MenuService } from '../../../menu.service';
-import { MatDialog } from '@angular/material/dialog';
 import {
-  PromptDialogComponent,
   PromptFields,
 } from '../../../../shared/dialogs/prompt-dialog/prompt-dialog.component';
 import { FormControl, Validators } from '@angular/forms';

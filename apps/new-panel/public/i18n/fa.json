@@ -1,6 +1,10 @@
 {
   "menno": "menno",
   "app": {
+    "save": "ذخیره",
+    "cancel": "انصراف",
+    "add": "افزودن",
+    "description": "توضیحات",
     "currency": "تومان",
     "search": "جستجو",
     "index": "ردیف",
@@ -14,11 +18,18 @@
   },
   "menu": {
     "title": "مدیریت",
+    "category": "دسته بندی",
     "addProduct": "افزودن محصول",
     "status": {
       "0": "غیر‌فعال",
       "1": "فعال",
       "3": "ناموجود"
     }
+  },
+  "productEdit": {
+    "newTitle": "افزودن محصول جدید",
+    "editTitle": "ویرایش {{value}}",
+    "baseSection": "اطلاعات پایه",
+    "variantSection": "انواع مختلف {{value}}"
   }
 }

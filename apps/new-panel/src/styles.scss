@@ -128,6 +128,7 @@ i.middle {
 .mat-mdc-list-item-meta {
   display: flex !important;
   align-items: center !important;
+  min-height: 100%;
 }
 
 .mat-toolbar.transparent {
@@ -146,6 +147,6 @@ i.middle {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 }

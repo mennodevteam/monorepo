@@ -12,7 +12,9 @@
 }
 
 main {
-  min-height: calc(100%);
+  min-height: calc(100% - 64px);
   background-color: var(--mat-sys-background) !important;
   color: var(--mat-sys-on-background) !important;
+  display: flex;
+  flex-direction: column;
 }

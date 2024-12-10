@@ -1,1 +1,101 @@
-<p>product-edit works!</p>
+@if (form) {
+  <form [formGroup]="form">
+    <mat-toolbar class="content-toolbar" fxLayout="row" fxLayoutGap="8px">
+      <button mat-icon-button goBack>
+        <i class="fa-regular fa-arrow-right"></i>
+      </button>
+      <h2 fxFlex>
+        @if (product()) {
+          {{ 'productEdit.editTitle' | translate: { value: this.product()?.title } }}
+        } @else {
+          {{ 'productEdit.newTitle' | translate }}
+        }
+      </h2>
+      <button mat-button>
+        {{ 'app.cancel' | translate }}
+      </button>
+      <button mat-flat-button [disabled]="!form.dirty">
+        {{ 'app.save' | translate }}
+      </button>
+    </mat-toolbar>
+    <main p-md w-md fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="24px">
+      <div fxFlex.gt-sm fxLayout="column" fxLayoutGap="24px">
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>
+              {{ 'productEdit.baseSection' | translate }}
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content fxLayout="column">
+            <mat-form-field>
+              <mat-label>{{ 'app.title' | translate }}</mat-label>
+              <input matInput formControlName="title" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>{{ 'menu.category' | translate }}</mat-label>
+              <mat-select formControlName="category">
+                @for (category of menuService.categories(); track category.id) {
+                  <mat-option [value]="category">{{ category.title }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>{{ 'app.description' | translate }}</mat-label>
+              <textarea matInput rows="3" formControlName="description"></textarea>
+            </mat-form-field>
+            @if (!hasVariant()) {
+              <mat-form-field>
+                <mat-label>{{ 'app.price' | translate }}</mat-label>
+                <input matInput formControlName="price" type="number" />
+                <mat-hint>{{ form.value.price | number | menuCurrency }} </mat-hint>
+              </mat-form-field>
+            }
+          </mat-card-content>
+        </mat-card>
+
+        @if (hasVariant()) {
+          <mat-card appearance="outlined">
+            <mat-card-header>
+              <mat-card-title>
+                {{ 'productEdit.variantSection' | translate: { value: form.value.title } }}
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content fxLayout="column">
+              <mat-list>
+                @for (variant of variantsForm.controls; track $index) {
+                  <mat-list-item>
+                    <span matListItemTitle>{{ variant.value.title }}</span>
+                    <span matListItemLine>{{ variant.value.price | number }}</span>
+                    <div matListItemMeta>
+                      <button mat-icon-button (click)="editVariant(variant)">
+                        <i class="fa-regular fa-edit"></i>
+                      </button>
+                      <button mat-icon-button>
+                        <i class="fa-regular fa-trash-alt"></i>
+                      </button>
+                    </div>
+                  </mat-list-item>
+                }
+              </mat-list>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button (click)="editVariant()">
+                <i class="fa-regular fa-circle-plus"></i>
+                {{ 'app.add' | translate }}
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        }
+      </div>
+      <div fxFlex.gt-sm="400px">
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>{{ 'productEdit.photoSection' | translate }}</mat-card-title>
+          </mat-card-header>
+        </mat-card>
+      </div>
+    </main>
+  </form>
+} @else {
+  <app-data-loading />
+}
