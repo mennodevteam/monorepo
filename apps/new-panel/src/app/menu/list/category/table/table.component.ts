@@ -26,6 +26,7 @@ export class ProductTableComponent {
   dialog = inject(DialogService);
   t = inject(TranslateService);
   readonly displayedColumns = COLS;
+  Status = Status;
 
   changeProductStatus(product: Product, status: Status) {
     this.menu.saveProductMutation.mutate({ id: product.id, status });

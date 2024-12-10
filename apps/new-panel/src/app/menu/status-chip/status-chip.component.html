@@ -1,4 +1,4 @@
-<mat-chip [ngClass]="'status_' + status()" [matMenuTriggerFor]="menu">
+<mat-chip [ngClass]="'status_' + status()" [matMenuTriggerFor]="menu" [disabled]="disabled()">
   @switch (status()) {
     @case (Status.Active) {
       <i class="fa-regular fa-check-circle middle"></i>

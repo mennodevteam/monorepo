@@ -14,7 +14,8 @@ import { MatMenuModule } from '@angular/material/menu';
 })
 export class MenuStatusChipComponent {
   Status = Status;
-  status = input<Status | null>(null);
+  status = input<Status | null | undefined>(null);
   title = input('');
+  disabled = input(false);
   statusChange = output<Status>();
 }

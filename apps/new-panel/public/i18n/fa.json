@@ -20,7 +20,8 @@
   },
   "menu": {
     "title": "مدیریت",
-    "category": "دسته بندی",
+    "editCategory": "ویرایش دسته‌بندی",
+    "category": "دسته‌بندی",
     "addProduct": "افزودن محصول",
     "status": {
       "0": "غیر‌فعال",

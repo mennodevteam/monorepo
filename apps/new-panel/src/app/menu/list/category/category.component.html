@@ -7,11 +7,20 @@
       {{ category()?.title }}
     </mat-card-title>
   </mat-card-header>
-  <mat-card-actions>
+  <mat-card-actions fxLayoutGap="8px">
     <button mat-stroked-button routerLink="../product" [queryParams]="{ categoryId: category()?.id }">
       <i class="fa-regular fa-plus fa-sm"></i>
       {{ 'menu.addProduct' | translate }}
     </button>
+    <button mat-button routerLink="../product" [queryParams]="{ categoryId: category()?.id }">
+      <i class="fa-regular fa-edit fa-sm"></i>
+      {{ 'menu.editCategory' | translate }}
+    </button>
+    <app-menu-status-chip
+      title="{{ 'menu.category' | translate }}"
+      [status]="category()?.status"
+      (statusChange)="statusChange($event)"
+    />
   </mat-card-actions>
   <mat-divider />
   <mat-card-content>

@@ -105,8 +105,8 @@ export class ImageLoaderDirective {
     ImageLoaderDirective.observer.observe(nativeEl);
   }
 
-  private getUrl(url: string) {
-    if (url.search('http') === 0) {
+  private getUrl(url?: string) {
+    if (url?.search('http') === 0) {
       return url;
     } else {
       return `${environment.bucketUrl}/${url}`;

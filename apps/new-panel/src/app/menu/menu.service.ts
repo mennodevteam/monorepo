@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Menu, Product, Status } from '@menno/types';
+import { Menu, Product, ProductCategory, Status } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { injectMutation, injectQuery, injectQueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
@@ -41,7 +41,7 @@ export class MenuService {
           cat.products = products;
         }
         data.categories = categories;
-        return {...data};
+        return { ...data };
       }
       return;
     },
@@ -53,7 +53,6 @@ export class MenuService {
 
   categories = computed(() => {
     const data = this.query.data();
-    console.log(data);
     return data?.categories;
   });
 
@@ -72,6 +71,37 @@ export class MenuService {
         } else if (dto.category) {
           const category = old.categories?.find((x) => x.id === dto.category!.id);
           category?.products?.push(dto as Product);
+          return { ...old };
+        }
+        return old;
+      });
+
+      return { previousData };
+    },
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: QUERY_KEY });
+    },
+    onError: (err, newData, context) => {
+      this.snack.open(this.t.instant('errors.changeError'), '', { duration: 2000 });
+      this.queryClient.setQueryData(QUERY_KEY, context?.previousData);
+    },
+  }));
+
+  saveCategoryMutation = injectMutation(() => ({
+    mutationFn: (dto: Partial<ProductCategory>) =>
+      lastValueFrom(this.http.post<ProductCategory>(`/productCategories`, dto)),
+    onMutate: (dto) => {
+      this.queryClient.cancelQueries({ queryKey: QUERY_KEY });
+      const previousData = this.queryClient.getQueryData<Menu>(QUERY_KEY);
+      this.queryClient.setQueryData(QUERY_KEY, (old: Menu) => {
+        if (dto.id) {
+          const category = old.categories?.find((x) => x.id === dto.id);
+          if (category) {
+            Object.assign(category, dto);
+            return { ...old };
+          }
+        } else {
+          old.categories?.push(dto as ProductCategory);
           return { ...old };
         }
         return old;
