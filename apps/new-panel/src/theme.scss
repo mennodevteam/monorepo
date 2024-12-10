@@ -135,3 +135,6 @@ $_rest: (
 
 $primary-palette: map.merge(map.get($_palettes, primary), $_rest);
 $tertiary-palette: map.merge(map.get($_palettes, tertiary), $_rest);
+
+$success-container: #e8f5e9;
+$success-color: #388e3c;

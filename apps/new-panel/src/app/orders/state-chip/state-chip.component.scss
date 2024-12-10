@@ -1,0 +1,16 @@
+@use '../../../theme' as theme;
+
+.state_0 {
+  color: var(--mat-sys-error) !important;
+  background-color: var(--mat-sys-error-container) !important;
+}
+.state_2,
+.state_5 {
+  color: var(--mat-sys-primary) !important;
+  background-color: var(--mat-sys-primary-container) !important;
+}
+.state_3,
+.state_4 {
+  color: theme.$success-color !important;
+  background-color: theme.$success-container !important;
+}

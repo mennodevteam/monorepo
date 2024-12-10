@@ -1,0 +1,62 @@
+<mat-chip [ngClass]="'state_' + state()" [matMenuTriggerFor]="menu" [disabled]="disabled()">
+  @switch (state()) {
+    @case (OrderState.Pending) {
+      <i class="fa-regular fa-hourglass-half middle"></i>
+    }
+    @case (OrderState.Processing) {
+      <i class="fa-regular fa-box-open middle"></i>
+    }
+    @case (OrderState.Completed) {
+      <i class="fa-regular fa-check-circle middle"></i>
+    }
+    @case (OrderState.Ready) {
+      <i class="fa-regular fa-box-check middle"></i>
+    }
+    @case (OrderState.Shipping) {
+      <i class="fa-regular fa-truck-fast middle"></i>
+    }
+    @case (OrderState.Canceled) {
+      <i class="fa-regular fa-xmark-circle middle"></i>
+    }
+  }
+  {{ 'order.state.' + state() | translate }}
+</mat-chip>
+<mat-menu #menu="matMenu">
+  <button
+    mat-menu-item
+    (click)="stateChange.emit(OrderState.Processing)"
+    *ngIf="state() !== OrderState.Processing"
+  >
+    <i class="fa-regular fa-box-open middle"></i>
+    {{ 'order.state.' + OrderState.Processing | translate }}
+  </button>
+  <button mat-menu-item (click)="stateChange.emit(OrderState.Ready)" *ngIf="state() !== OrderState.Ready">
+    <i class="fa-regular fa-box-check middle"></i>
+    {{ 'order.state.' + OrderState.Ready | translate }}
+  </button>
+  <button
+    mat-menu-item
+    (click)="stateChange.emit(OrderState.Shipping)"
+    *ngIf="state() !== OrderState.Shipping"
+  >
+    <i class="fa-regular fa-truck-fast middle"></i>
+    {{ 'order.state.' + OrderState.Shipping | translate }}
+  </button>
+  <button
+    mat-menu-item
+    (click)="stateChange.emit(OrderState.Completed)"
+    *ngIf="state() !== OrderState.Completed"
+  >
+    <i class="fa-regular fa-check-circle middle"></i>
+    {{ 'order.state.' + OrderState.Completed | translate }}
+  </button>
+  <mat-divider />
+  <button
+    mat-menu-item
+    (click)="stateChange.emit(OrderState.Canceled)"
+    *ngIf="state() !== OrderState.Canceled"
+  >
+    <i class="fa-regular fa-xmark-circle middle"></i>
+    {{ 'order.state.' + OrderState.Canceled | translate }}
+  </button>
+</mat-menu>

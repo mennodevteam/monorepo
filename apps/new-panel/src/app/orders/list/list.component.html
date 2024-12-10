@@ -1,0 +1,20 @@
+<mat-toolbar class="content-toolbar"> </mat-toolbar>
+<main p-md>
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <app-order-table [orders]="query.data()?.[0] || []" />
+      @if (!query.data()) {
+        <app-data-loading />
+      }
+
+      <mat-paginator
+        [pageSize]="currentSize()"
+        [pageIndex]="currentPage()"
+        [length]="pageSize()"
+        [pageSizeOptions]="[10, 25, 50, 100]"
+        showFirstLastButtons
+        (page)="pageChange($event)"
+      />
+    </mat-card-content>
+  </mat-card>
+</main>

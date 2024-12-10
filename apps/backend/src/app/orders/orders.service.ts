@@ -31,6 +31,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   Between,
+  FindManyOptions,
   FindOptionsWhere,
   In,
   IsNull,
@@ -440,7 +441,8 @@ export class OrdersService {
       'waiter',
       'address.deliveryArea',
     ];
-    let orders = await this.ordersRepo.find({
+
+    const params: FindManyOptions<Order> = {
       where: condition,
       order: { createdAt: 'DESC' },
       relations,
@@ -452,11 +454,11 @@ export class OrdersService {
       skip: dto.skip,
       take: dto.take,
       withDeleted: dto.withDeleted,
-    });
+    };
 
-    if (dto.hasReview) {
-      orders = orders.filter((x) => x.reviews.length > 0);
-    }
+    const orders = dto.withCount
+      ? await this.ordersRepo.findAndCount(params)
+      : await this.ordersRepo.find(params);
 
     return orders;
   }

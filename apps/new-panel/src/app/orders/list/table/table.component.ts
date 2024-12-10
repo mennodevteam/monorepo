@@ -1,0 +1,20 @@
+import { Component, input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Order, OrderType, User } from '@menno/types';
+import { SHARED } from '../../../shared';
+import { MatTableModule } from '@angular/material/table';
+import { OrderStateChipComponent } from "../../state-chip/state-chip.component";
+const COLS = ['createdAt', 'type', 'customer', 'price', 'state', 'actions']
+@Component({
+  selector: 'app-order-table',
+  standalone: true,
+  imports: [CommonModule, SHARED, MatTableModule, OrderStateChipComponent],
+  templateUrl: './table.component.html',
+  styleUrl: './table.component.scss',
+})
+export class TableComponent {
+  orders = input<Order[]>();
+  displayedColumns = COLS;
+  User = User;
+  OrderType = OrderType;
+}

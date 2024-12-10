@@ -9,11 +9,9 @@
 @use '@angular/material' as mat;
 @use 'theme' as theme;
 
-$success-container: #e8f5e9;
-$success-color: #388e3c;
 @mixin successContainer() {
-  color: $success-color !important;
-  background-color: $success-container !important;
+  color: theme.$success-color !important;
+  background-color: theme.$success-container !important;
 }
 @mixin errorContainer() {
   color: var(--mat-sys-error) !important;
@@ -46,6 +44,7 @@ html {
 
 body {
   min-height: 100vh;
+  background-color: var(--mat-sys-background);
 }
 body {
   margin: 0;
@@ -96,6 +95,10 @@ i.middle {
   border-bottom: 1px solid var(--mat-sys-outline-variant);
 }
 
+.success-text {
+  color: theme.$success-color;
+}
+
 .success,
 .status_1 {
   @include successContainer();
@@ -120,6 +123,12 @@ i.middle {
     (
       row-item-outline-color: var(--mat-sys-outline-variant),
       background-color: transparent,
+    )
+  );
+
+  @include mat.paginator-overrides(
+    (
+      container-background-color: transparent,
     )
   );
 }

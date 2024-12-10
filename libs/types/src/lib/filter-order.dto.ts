@@ -14,6 +14,7 @@ export class FilterOrderDto {
   states?: OrderState[];
   types?: OrderType[];
   skip?: number;
+  withCount?: boolean;
   take?: number;
   hasReview?: boolean;
   withDeleted?: boolean;
