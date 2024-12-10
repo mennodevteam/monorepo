@@ -9,6 +9,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatChipsModule } from '@angular/material/chips';
+import { ProductCategory } from '@menno/types';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-menu-list',
@@ -23,6 +26,9 @@ import { MatInputModule } from '@angular/material/input';
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatChipsModule,
+    CdkDropList,
+    CdkDrag,
   ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
@@ -49,4 +55,18 @@ export class MenuListComponent {
     }
     return this.menuService.categories();
   });
+
+  scrollTo(category: ProductCategory) {
+    const categoryElement = document.getElementById('category_' + category.id);
+    if (categoryElement) categoryElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  moveCategory(event: CdkDragDrop<any>) {
+    const categories = this.categories();
+    if (categories) {
+      moveItemInArray(categories, event.previousIndex, event.currentIndex);
+      const ids = categories.map((x) => x.id);
+      this.menuService.sortCategoriesMutation.mutate(ids);
+    }
+  }
 }

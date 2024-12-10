@@ -22,7 +22,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Menu, Product, ProductCategory, ProductVariant } from '@menno/types';
 import { DialogService } from '../../core/services/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
-import { CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FilesService } from '../../core/services/files.service';
@@ -45,6 +45,7 @@ import { FormComponent } from '../../core/guards/dirty-form-deactivator.guard';
     CdkDropList,
     CdkDrag,
     MatTooltipModule,
+    CdkDragHandle,
   ],
   templateUrl: './product-edit.component.html',
   styleUrl: './product-edit.component.scss',

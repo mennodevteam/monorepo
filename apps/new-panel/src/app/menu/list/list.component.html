@@ -8,9 +8,23 @@
       <input matInput [(ngModel)]="searchInput" type="search" />
     </mat-form-field>
   </div>
-  @if (menuService.categories()) {
+  @let categories = menuService.categories();
+  @if (categories && categories.length > 1) {
+    <mat-chip-set cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="moveCategory($event)">
+      @for (category of categories; track category.id) {
+        <mat-chip (click)="scrollTo(category)" cdkDrag>
+          @if (category.faIcon) {
+            <i class="fa-solid fa-{{category.faIcon}}"></i>
+          }
+          {{category.title}}
+        </mat-chip>
+      }
+    </mat-chip-set>
+    <br>
+  }
+  @if (categories) {
     <div fxLayout="column" fxLayoutGap="24px">
-      @for (category of categories(); track category.id) {
+      @for (category of categories; track category.id) {
         <app-menu-category [category]="category" />
       }
     </div>

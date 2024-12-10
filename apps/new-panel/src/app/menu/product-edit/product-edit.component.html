@@ -66,6 +66,7 @@
             <mat-list cdkDropList (cdkDropListDropped)="moveVariants($event)">
               @for (variant of variantsForm.controls; track $index) {
                 <mat-list-item cdkDrag>
+                  <i matListItemIcon class="fa-solid fa-grip-dots-vertical middle" cdkDragHandle></i>
                   <span matListItemTitle>{{ variant.value.title }}</span>
                   <span matListItemLine>{{ variant.value.price | number }}</span>
                   <div matListItemMeta>

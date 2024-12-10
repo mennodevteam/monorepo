@@ -15,7 +15,7 @@ const DEFAULT_SORT_FUNC = (
   if (a.position === b.position) {
     return new Date(a.createdAt || 0).valueOf() - new Date(b.createdAt || 0).valueOf();
   }
-  return (b.position || 1000) - (a.position || 1000);
+  return (a.position ?? 1000) - (b.position ?? 1000);
 };
 
 @Injectable({
@@ -53,6 +53,7 @@ export class MenuService {
 
   categories = computed(() => {
     const data = this.query.data();
+    console.log(data?.categories);
     return data?.categories;
   });
 
@@ -87,6 +88,41 @@ export class MenuService {
     },
   }));
 
+  sortProductsMutation = injectMutation(() => ({
+    mutationFn: (dto: { ids: string[]; categoryId: number }) =>
+      lastValueFrom(this.http.post<string[]>(`/products/sort`, dto.ids)),
+    onMutate: (dto) => {
+      this.queryClient.cancelQueries({ queryKey: QUERY_KEY });
+      const previousData = this.queryClient.getQueryData<Menu>(QUERY_KEY);
+      this.queryClient.setQueryData(QUERY_KEY, (old: Menu) => {
+        const category = old.categories?.find((x) => x.id === dto.categoryId);
+        if (category) {
+          const products = category.products;
+          if (products) {
+            for (const product of products) {
+              product.position = dto.ids.indexOf(product.id);
+            }
+            products.sort(DEFAULT_SORT_FUNC);
+            category.products = [...products];
+            old.categories = [...(old.categories || [])];
+            return { ...old };
+          }
+        }
+
+        return old;
+      });
+
+      return { previousData };
+    },
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: QUERY_KEY });
+    },
+    onError: (err, newData, context) => {
+      this.snack.open(this.t.instant('errors.changeError'), '', { duration: 2000 });
+      this.queryClient.setQueryData(QUERY_KEY, context?.previousData);
+    },
+  }));
+
   saveCategoryMutation = injectMutation(() => ({
     mutationFn: (dto: Partial<ProductCategory>) =>
       lastValueFrom(this.http.post<ProductCategory>(`/productCategories`, dto)),
@@ -95,15 +131,51 @@ export class MenuService {
       const previousData = this.queryClient.getQueryData<Menu>(QUERY_KEY);
       this.queryClient.setQueryData(QUERY_KEY, (old: Menu) => {
         if (dto.id) {
-          const category = old.categories?.find((x) => x.id === dto.id);
-          if (category) {
-            Object.assign(category, dto);
-            return { ...old };
+          if (old.categories) {
+            const index = old.categories.findIndex((x) => x.id === dto.id);
+            if (index > -1) {
+              const category = old.categories[index];
+              if (category) {
+                Object.assign(category, dto);
+                old.categories[index] = { ...category };
+              }
+              return { ...old };
+            }
           }
         } else {
           old.categories?.push(dto as ProductCategory);
           return { ...old };
         }
+        return old;
+      });
+
+      return { previousData };
+    },
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: QUERY_KEY });
+    },
+    onError: (err, newData, context) => {
+      this.snack.open(this.t.instant('errors.changeError'), '', { duration: 2000 });
+      this.queryClient.setQueryData(QUERY_KEY, context?.previousData);
+    },
+  }));
+
+  sortCategoriesMutation = injectMutation(() => ({
+    mutationFn: (dto: number[]) => lastValueFrom(this.http.post<number[]>(`/productCategories/sort`, dto)),
+    onMutate: (dto) => {
+      this.queryClient.cancelQueries({ queryKey: QUERY_KEY });
+      const previousData = this.queryClient.getQueryData<Menu>(QUERY_KEY);
+      this.queryClient.setQueryData(QUERY_KEY, (old: Menu) => {
+        const categories = old.categories;
+        if (categories) {
+          for (const category of categories) {
+            category.position = dto.indexOf(category.id);
+          }
+          categories.sort(DEFAULT_SORT_FUNC);
+          old.categories = categories;
+          return { ...old };
+        }
+
         return old;
       });
 
