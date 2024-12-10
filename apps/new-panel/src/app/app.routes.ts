@@ -3,6 +3,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { authRoutes } from './auth/auth.routes';
 import { menuRoutes } from './menu/menu.routes';
 import { translateActivator } from './core/guards/translate.guard';
+import { shopDataActivator } from './core/guards/shop.guard';
 
 export const appRoutes: Route[] = [
   {
@@ -15,7 +16,7 @@ export const appRoutes: Route[] = [
       },
       {
         path: '',
-        canActivate: [authGuard],
+        canActivate: [authGuard, shopDataActivator],
         children: [
           { path: 'menu', children: menuRoutes },
           { path: '', redirectTo: 'menu', pathMatch: 'full' },

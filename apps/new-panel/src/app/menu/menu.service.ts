@@ -8,6 +8,16 @@ import { lastValueFrom } from 'rxjs';
 
 const QUERY_KEY = ['menus'];
 
+const DEFAULT_SORT_FUNC = (
+  a: { createdAt?: Date; position?: number },
+  b: { createdAt?: Date; position?: number },
+) => {
+  if (a.position === b.position) {
+    return new Date(a.createdAt || 0).valueOf() - new Date(b.createdAt || 0).valueOf();
+  }
+  return (b.position || 1000) - (a.position || 1000);
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -20,6 +30,21 @@ export class MenuService {
   private query = injectQuery(() => ({
     queryKey: QUERY_KEY,
     queryFn: () => lastValueFrom(this.http.get<Menu>('/menus')),
+    select: (data) => {
+      if (data) {
+        const categories = data.categories?.filter((item) => !item.deletedAt).sort(DEFAULT_SORT_FUNC) || [];
+        for (const cat of categories) {
+          const products = cat.products?.sort(DEFAULT_SORT_FUNC) || [];
+          for (const pr of products) {
+            pr.variants.sort(DEFAULT_SORT_FUNC);
+          }
+          cat.products = products;
+        }
+        data.categories = categories;
+        return {...data};
+      }
+      return;
+    },
   }));
 
   data = computed(() => {
@@ -28,16 +53,8 @@ export class MenuService {
 
   categories = computed(() => {
     const data = this.query.data();
-    const categories = data?.categories
-      ?.filter((item) => !item.deletedAt)
-      .sort((a, b) => {
-        if (a.position === b.position) {
-          return new Date(a.createdAt || 0).valueOf() - new Date(b.createdAt || 0).valueOf();
-        }
-        return (b.position || 1000) - (a.position || 1000);
-      });
-
-    return categories;
+    console.log(data);
+    return data?.categories;
   });
 
   saveProductMutation = injectMutation(() => ({

@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment';
 import { map } from 'rxjs';
 // import { ShopService } from './shop.service';
 import { Image } from '@menno/types';
+import { ShopService } from '../../shop/shop.service';
 
 const API_PATH = '/files';
 
@@ -12,13 +13,13 @@ const API_PATH = '/files';
 })
 export class FilesService {
   constructor(
-    // private shopsService: ShopService,
+    private shopsService: ShopService,
     private http: HttpClient,
   ) {}
 
   upload(file: File, name: string): Promise<{ key: string; url: string } | undefined> {
     const formData = new FormData();
-    formData.append('path', `103`);
+    formData.append('path', `${this.shopsService?.data()?.code}`);
     formData.append('name', name);
     formData.append('file', file);
     return this.http
@@ -32,7 +33,7 @@ export class FilesService {
       .post<Image>(`${API_PATH}/upload/v2`, {
         url: this.getFileUrl(key),
         name,
-        path: `103`,
+        path: `${this.shopsService?.data()?.code}`,
       })
       .toPromise();
   }
