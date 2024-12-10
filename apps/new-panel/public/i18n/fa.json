@@ -19,7 +19,7 @@
     "title": "ورود به پنل مدیریت منوی دیجیتال"
   },
   "menu": {
-    "title": "مدیریت",
+    "title": "مدیریت آیتم‌ها",
     "editCategory": "ویرایش دسته‌بندی",
     "category": "دسته‌بندی",
     "addProduct": "افزودن محصول",
@@ -53,5 +53,18 @@
   "dirtyFormDialog": {
     "title": "عدم ذخیره تغییرات",
     "description": "شما تغییراتی انجام داده‌اید. آیا مطمئن هستید که می‌خواهید بدون ذخیره کردن از این صفحه خارج شوید؟"
+  },
+  "shopBusinessCategory": {
+    "CAFE": "کافی شاپ",
+    "RESTAURANT": "رستوران",
+    "CAFE_RESTAURANT": "کافه‌رستوران",
+    "PROTEIN": "پروتئین",
+    "CONFECTIONARY": "شیرینی",
+    "GAME_CAFE": "کافه بازی",
+    "JUICE_AND_ICE_CREAM": "آبمیوه و بستنی",
+    "HERBAL": "عطاری",
+    "NUTS": "آجیل و خشکبار",
+    "FRUITS": "میوه",
+    "OTHER": "سایر"
   }
 }

@@ -1,16 +1,16 @@
 <mat-toolbar fxLayout="row" fxLayoutGap="32px" class="accent-theme">
-  <img id="logo" src="icons/logo.svg" alt="menno logo" />
+  <img fxHide.xs id="logo" src="icons/logo.svg" alt="menno logo" />
   <a mat-button routerLink="/leads">
     <i class="fa-solid fa-list"></i>
-    مدیریت آیتم‌ها
+    <span fxHide.xs> مدیریت آیتم‌ها </span>
   </a>
   <a mat-button routerLink="/orders">
     <i class="fa-solid fa-receipt"></i>
-    سفارشات
+    <span fxHide.xs> سفارشات </span>
   </a>
   <a mat-button routerLink="/reports">
     <i class="fa-solid fa-chart-simple"></i>
-    کزارشات
+    <span fxHide.xs> کزارشات </span>
   </a>
   <span fxFlex></span>
   <button mat-icon-button [mat-menu-trigger-for]="settingsMenu">

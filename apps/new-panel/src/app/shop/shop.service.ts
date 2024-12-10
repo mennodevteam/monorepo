@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Shop } from '@menno/types';
+import { BusinessCategory, Shop } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { injectQuery, injectQueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
@@ -24,5 +24,13 @@ export class ShopService {
 
   data = computed(() => {
     return this.query.data();
+  });
+
+  businessCategoryTitle = computed(() => {
+    return this.t.instant(`shopBusinessCategory.${this.data()?.businessCategory || BusinessCategory.Other}`);
+  });
+
+  isRestaurantOrCoffeeShop = computed(() => {
+    return Shop.isRestaurantOrCoffeeShop(this.data()?.businessCategory);
   });
 }
