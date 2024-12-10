@@ -8,7 +8,7 @@
     </mat-card-title>
   </mat-card-header>
   <mat-card-actions>
-    <button mat-stroked-button>
+    <button mat-stroked-button routerLink="../product" [queryParams]="{ categoryId: category()?.id }">
       <i class="fa-regular fa-plus fa-sm"></i>
       {{ 'menu.addProduct' | translate }}
     </button>

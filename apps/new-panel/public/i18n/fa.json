@@ -33,8 +33,13 @@
     "editTitle": "ویرایش {{value}}",
     "baseSection": "اطلاعات پایه",
     "variantSection": "انواع مختلف {{value}}",
+    "variantEmpty": "هیچ تنوعی برای محصول تعریف نشده. مثلا: نوع خاص یا سایز خاص",
     "photoSection": "تصاویر",
     "mainImage": "تصویر اصلی",
+    "removeVariant": {
+      "title": "حذف {{value}}",
+      "description": "آیا از حذف آیتم نوع انتخاب شده اطمینان دارید؟"
+    },
     "removeImage": {
       "title": "حذف تصویر",
       "description": "آیا از حذف این تصویر اطمینان دارید؟"

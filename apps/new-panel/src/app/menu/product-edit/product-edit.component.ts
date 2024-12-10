@@ -59,11 +59,11 @@ export class ProductEditComponent implements FormComponent {
   private readonly fileService = inject(FilesService);
   private readonly t = inject(TranslateService);
   productId = this.route.snapshot.queryParams['id'];
+  categoryId = this.route.snapshot.queryParams['categoryId'];
 
   form: FormGroup;
   variantsForm: FormArray;
   imagesForm: FormArray;
-  hasVariant = signal(false);
   product = signal<Product | null>(null);
 
   constructor() {
@@ -72,10 +72,13 @@ export class ProductEditComponent implements FormComponent {
       if (menu && !this.form) {
         const product = this.productId ? Menu.getProductById(menu, this.productId) : null;
         this.product.set(product);
-        this.hasVariant.set(!!product?.variants?.length);
-        const category = product
-          ? this.menuService.categories()?.find((x) => x.products?.includes(product))
-          : undefined;
+        let category: ProductCategory | undefined;
+
+        if (product) {
+          category = this.menuService.categories()?.find((x) => x.products?.includes(product));
+        } else if (this.categoryId) {
+          category = this.menuService.categories()?.find((x) => x.id.toString() === this.categoryId);
+        }
 
         this.variantsForm = this.fb.array(
           product?.variants?.map((item) =>
@@ -89,11 +92,15 @@ export class ProductEditComponent implements FormComponent {
           ) || [],
         );
 
-        this.imagesForm = this.fb.array(
-          Array.isArray(product?.imageFiles)
-            ? product?.imageFiles?.map((item) => this.fb.control(item, Validators.required))
-            : [this.fb.control(product?.imageFiles, Validators.required)],
-        );
+        if (product) {
+          this.imagesForm = this.fb.array(
+            Array.isArray(product?.imageFiles)
+              ? product?.imageFiles?.map((item) => this.fb.control(item, Validators.required))
+              : [this.fb.control(product?.imageFiles, Validators.required)],
+          );
+        } else {
+          this.imagesForm = this.fb.array([]);
+        }
 
         this.form = this.fb.group({
           title: [product?.title, Validators.required],
@@ -172,6 +179,18 @@ export class ProductEditComponent implements FormComponent {
     }
   }
 
+  async deleteVariant(index: number) {
+    if (
+      await this.dialog.alert(
+        this.t.instant('productEdit.removeVariant.title'),
+        this.t.instant('productEdit.removeVariant.description'),
+      )
+    ) {
+      this.variantsForm.controls.splice(index, 1);
+      this.variantsForm.markAsDirty();
+    }
+  }
+
   async submit() {
     if (this.form.invalid) return;
     const fv = this.form.getRawValue();
@@ -196,6 +215,7 @@ export class ProductEditComponent implements FormComponent {
     }
 
     this.menuService.saveProductMutation.mutate(fv);
+    this.form.reset();
     this.location.back();
   }
 
