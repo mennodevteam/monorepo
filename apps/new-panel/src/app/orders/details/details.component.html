@@ -1,0 +1,99 @@
+<mat-toolbar class="content-toolbar" fxLayoutGap="8px">
+  <button mat-icon-button goBack>
+    <i class="fa-regular fa-arrow-right"></i>
+  </button>
+  @if (order()) {
+    <h4>{{ order()?.createdAt | pdate: true }}</h4>
+    <span fxFlex></span>
+    <app-order-state-chip [state]="order()?.state" />
+    <button mat-icon-button>
+      <i class="fa-regular fa-edit"></i>
+    </button>
+    <button mat-icon-button>
+      <i class="fa-regular fa-trash-alt"></i>
+    </button>
+  }
+</mat-toolbar>
+@if (order()) {
+  <main p-md w-lg fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="24px">
+    <div fxFlex.gt-sm>
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          <app-order-item-table [order]="order()" />
+        </mat-card-content>
+        <mat-divider />
+        <mat-card-actions>
+          <b> {{ 'app.total' | translate }}: </b>
+          <span fxFlex></span>
+          <b>
+            {{ order()?.totalPrice | number | menuCurrency }}
+          </b>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <div fxFlex.gt-sm="400px" fxLayout="column" fxLayoutGap="24px">
+      <mat-card appearance="outlined">
+        <mat-card-header>
+          <mat-card-title>
+            <i class="fa-solid fa-user middle"></i>
+            {{ 'order.customer' | translate }}
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          @let customer = order()?.customer;
+          @if (customer) {
+            <p>{{ User.fullName(customer) }} - {{ customer.mobilePhone }}</p>
+          } @else {
+            <app-empty-state />
+          }
+        </mat-card-content>
+      </mat-card>
+      <mat-card appearance="outlined">
+        <mat-card-header>
+          <mat-card-title>
+            @switch (order()?.type) {
+              @case (OrderType.DineIn) {
+                <i class="fa-solid middle fa-mug-hot"></i>
+              }
+              @case (OrderType.Delivery) {
+                @if (order()?.address?.deliveryArea?.isPost) {
+                  <i class="fa-solid middle fa-truck-fast"></i>
+                } @else {
+                  <i class="fa-solid middle fa-moped"></i>
+                }
+              }
+              @case (OrderType.Takeaway) {
+                <i class="fa-solid middle fa-cart-shopping"></i>
+              }
+            }
+            {{ 'order.type.' + order()?.type | translate }}
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          @let address = order()?.address;
+          @if (address) {
+            @if (address.region) {
+              <p>
+                @if (address.region.state) {
+                  {{ address.region.state }}،
+                }
+                {{ address.region.title }}
+              </p>
+            }
+            <p>
+              {{ address.description }}
+            </p>
+            @if (address.postalCode) {
+              <p>
+                {{ 'address.postalCode' | translate }}:
+                {{ address.region.title }}
+              </p>
+            }
+          }
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </main>
+} @else {
+  <app-data-loading />
+}
