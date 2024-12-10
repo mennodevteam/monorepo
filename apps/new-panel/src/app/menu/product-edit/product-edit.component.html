@@ -14,12 +14,12 @@
       <button mat-button>
         {{ 'app.cancel' | translate }}
       </button>
-      <button mat-flat-button [disabled]="!form.dirty">
+      <button mat-flat-button [disabled]="!form.dirty" (click)="submit()">
         {{ 'app.save' | translate }}
       </button>
     </mat-toolbar>
     <main p-md w-md fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="24px">
-      <div fxFlex.gt-sm fxLayout="column" fxLayoutGap="24px">
+      <div fxFlex.gt-sm="400px" fxLayout="column" fxLayoutGap="24px">
         <mat-card appearance="outlined">
           <mat-card-header>
             <mat-card-title>
@@ -61,9 +61,9 @@
               </mat-card-title>
             </mat-card-header>
             <mat-card-content fxLayout="column">
-              <mat-list>
+              <mat-list cdkDropList (cdkDropListDropped)="moveVariants($event)">
                 @for (variant of variantsForm.controls; track $index) {
-                  <mat-list-item>
+                  <mat-list-item cdkDrag>
                     <span matListItemTitle>{{ variant.value.title }}</span>
                     <span matListItemLine>{{ variant.value.price | number }}</span>
                     <div matListItemMeta>
@@ -87,11 +87,59 @@
           </mat-card>
         }
       </div>
-      <div fxFlex.gt-sm="400px">
+      <div fxFlex.gt-sm>
         <mat-card appearance="outlined">
           <mat-card-header>
             <mat-card-title>{{ 'productEdit.photoSection' | translate }}</mat-card-title>
           </mat-card-header>
+          <mat-card-content>
+            <mat-grid-list
+              cols="2"
+              rowHeight="1:1"
+              cdkDropList
+              cdkDropListOrientation="mixed"
+              (cdkDropListDropped)="moveImage($event)"
+            >
+              @for (imageControl of imagesForm.controls; track imageControl.value) {
+                <mat-grid-tile cdkDrag>
+                  <div class="product-image">
+                    <button mat-mini-fab class="delete-button" (click)="deleteImage($index)">
+                      <i class="fa-regular fa-trash-alt"></i>
+                    </button>
+                    @if (!$first) {
+                      <button
+                        mat-mini-fab
+                        class="main-image-button"
+                        matTooltip="{{ 'productEdit.mainImage' | translate }}"
+                        (click)="setMainImage($index)"
+                      >
+                        <i class="fa-regular fa-check-circle"></i>
+                      </button>
+                    }
+                    @if (imageControl.value?.base64) {
+                      <img [src]="imageControl.value.base64" />
+                    } @else {
+                      <img imageLoader [imageFile]="imageControl.value" imageSize="sm" />
+                    }
+                  </div>
+                  @if ($first && imagesForm.controls.length > 1) {
+                    <mat-grid-tile-footer>{{ 'productEdit.mainImage' | translate }}</mat-grid-tile-footer>
+                  }
+                </mat-grid-tile>
+              }
+              @if (imagesForm.controls.length === 0) {
+                <mat-grid-tile colspan="2">
+                  <app-empty-state />
+                </mat-grid-tile>
+              }
+            </mat-grid-list>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button (click)="addImage()">
+              <i class="fa-regular fa-circle-plus"></i>
+              {{ 'app.add' | translate }}
+            </button>
+          </mat-card-actions>
         </mat-card>
       </div>
     </main>

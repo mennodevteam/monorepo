@@ -30,7 +30,12 @@ export class MenuService {
     const data = this.query.data();
     const categories = data?.categories
       ?.filter((item) => !item.deletedAt)
-      .sort((a, b) => (b.position || 1000) - (a.position || 1000));
+      .sort((a, b) => {
+        if (a.position === b.position) {
+          return new Date(a.createdAt || 0).valueOf() - new Date(b.createdAt || 0).valueOf();
+        }
+        return (b.position || 1000) - (a.position || 1000);
+      });
 
     return categories;
   });

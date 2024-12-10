@@ -2,7 +2,9 @@
   "menno": "menno",
   "app": {
     "save": "ذخیره",
+    "ok": "تایید",
     "cancel": "انصراف",
+    "status": "وضعیت",
     "add": "افزودن",
     "description": "توضیحات",
     "currency": "تومان",
@@ -30,6 +32,16 @@
     "newTitle": "افزودن محصول جدید",
     "editTitle": "ویرایش {{value}}",
     "baseSection": "اطلاعات پایه",
-    "variantSection": "انواع مختلف {{value}}"
+    "variantSection": "انواع مختلف {{value}}",
+    "photoSection": "تصاویر",
+    "mainImage": "تصویر اصلی",
+    "removeImage": {
+      "title": "حذف تصویر",
+      "description": "آیا از حذف این تصویر اطمینان دارید؟"
+    }
+  },
+  "dirtyFormDialog": {
+    "title": "عدم ذخیره تغییرات",
+    "description": "شما تغییراتی انجام داده‌اید. آیا مطمئن هستید که می‌خواهید بدون ذخیره کردن از این صفحه خارج شوید؟"
   }
 }

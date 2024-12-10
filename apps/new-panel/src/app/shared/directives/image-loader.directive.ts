@@ -14,7 +14,7 @@ export enum ImagePlaceholder {
 export class ImageLoaderDirective {
   @Input() imageLoader?: string | undefined;
   @Input() imageFile?: Image;
-  @Input() imageSize?: keyof Image;
+  @Input() imageSize?: keyof Image = 'md';
   @Input() placeholderImageSize: keyof Image = 'xxs';
   @Input() placeholder: string;
   @Input() defaultPlaceholder = ImagePlaceholder.default;

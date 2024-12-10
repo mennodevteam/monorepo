@@ -5,6 +5,8 @@ import {
   PromptFields,
 } from '../../shared/dialogs/prompt-dialog/prompt-dialog.component';
 import { AlertDialogComponent } from '../../shared/dialogs/alert-dialog/alert-dialog.component';
+import { ImageCropperDialogComponent } from '../../shared/dialogs/image-cropper-dialog/image-cropper-dialog.component';
+import { CropperOptions } from 'ngx-image-cropper';
 
 @Injectable({
   providedIn: 'root',
@@ -22,11 +24,23 @@ export class DialogService {
       .toPromise();
   }
 
-  async alert(title: string, description: PromptFields, extra?: { config?: MatDialogConfig }) {
+  async alert(title: string, description: string, extra?: { config?: MatDialogConfig }) {
     return this.dialog
       .open(AlertDialogComponent, {
         ...extra?.config,
         data: { title, description },
+      })
+      .afterClosed()
+      .toPromise();
+  }
+
+  async imageCropper(options?: CropperOptions): Promise<{ base64: string; file: File } | undefined> {
+    return this.dialog
+      .open(ImageCropperDialogComponent, {
+        disableClose: true,
+        data: {
+          ...options,
+        },
       })
       .afterClosed()
       .toPromise();

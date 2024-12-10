@@ -15,7 +15,7 @@ export class Product {
   position?: number;
   category: ProductCategory;
   images?: string[];
-  imageFiles?: Image[];
+  imageFiles?: Image[] | Image;
   orderTypes: OrderType[];
   packItems: string[];
   details: any;
