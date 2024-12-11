@@ -5,7 +5,7 @@
   @if (order()) {
     <h4>{{ order()?.createdAt | pdate: true }}</h4>
     <span fxFlex></span>
-    <app-order-state-chip [state]="order()?.state" />
+    <app-order-state-chip [state]="order()?.state" (stateChange)="stateChange($event)" />
     <button mat-icon-button>
       <i class="fa-regular fa-edit"></i>
     </button>

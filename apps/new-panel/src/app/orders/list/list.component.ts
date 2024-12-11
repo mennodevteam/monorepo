@@ -5,11 +5,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
-import { FilterOrderDto, Order } from '@menno/types';
+import { FilterOrderDto, Order, OrderState } from '@menno/types';
 import { TableComponent } from './table/table.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
+import { OrdersService } from '../order.service';
 
 @Component({
   selector: 'app-list',
@@ -22,6 +23,7 @@ export class OrderListComponent {
   private readonly http = inject(HttpClient);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private ordersService = inject(OrdersService);
   private queryParams = this.route.snapshot.queryParams;
   currentPage = signal(Number(this.queryParams['page'] || 0));
   currentSize = signal(Number(this.queryParams['size'] || 10));
@@ -58,5 +60,9 @@ export class OrderListComponent {
     } else if (pageSize) {
       this.currentSize.set(pageSize);
     }
+  }
+
+  stateChange(dto: { id: string; state: OrderState }) {
+    this.ordersService.changeStateMutation.mutate({ ...dto, queryKey: ['orders', this.filterDto()] });
   }
 }

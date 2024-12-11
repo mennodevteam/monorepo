@@ -99,5 +99,8 @@
   },
   "address": {
     "postalCode": "کدپستی"
+  },
+  "errors": {
+    "changeError": "خطا در ذخیره‌سازی"
   }
 }

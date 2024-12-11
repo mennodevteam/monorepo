@@ -2,7 +2,7 @@
 <main p-md>
   <mat-card appearance="outlined">
     <mat-card-content>
-      <app-order-table [orders]="query.data()?.[0] || []" />
+      <app-order-table [orders]="query.data()?.[0] || []" (stateChange)="stateChange($event)" />
       @if (!query.data()) {
         <app-data-loading />
       }
