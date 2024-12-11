@@ -1,5 +1,33 @@
 <mat-toolbar class="content-toolbar"> </mat-toolbar>
 <main p-md>
+  <div fxLayout="row"></div>
+  <mat-toolbar>
+    <mat-chip-listbox [(ngModel)]="statesFilter" multiple>
+      @if (statesFilter().length < DEFAULT_STATES.length) {
+        <mat-chip-option (click)="statesFilter.set(DEFAULT_STATES)">
+          {{ 'app.all' | translate }}
+        </mat-chip-option>
+      }
+      <mat-chip-option [value]="OrderState.Pending">
+        {{ 'order.state.' + OrderState.Pending | translate }}
+      </mat-chip-option>
+      <mat-chip-option [value]="OrderState.Processing">
+        {{ 'order.state.' + OrderState.Processing | translate }}
+      </mat-chip-option>
+      <mat-chip-option [value]="OrderState.Ready">
+        {{ 'order.state.' + OrderState.Ready | translate }}
+      </mat-chip-option>
+      <mat-chip-option [value]="OrderState.Shipping">
+        {{ 'order.state.' + OrderState.Shipping | translate }}
+      </mat-chip-option>
+      <mat-chip-option [value]="OrderState.Completed">
+        {{ 'order.state.' + OrderState.Completed | translate }}
+      </mat-chip-option>
+      <mat-chip-option [value]="OrderState.Canceled">
+        {{ 'order.state.' + OrderState.Canceled | translate }}
+      </mat-chip-option>
+    </mat-chip-listbox>
+  </mat-toolbar>
   <mat-card appearance="outlined">
     <mat-card-content>
       <app-order-table [orders]="query.data()?.[0] || []" (stateChange)="stateChange($event)" />
