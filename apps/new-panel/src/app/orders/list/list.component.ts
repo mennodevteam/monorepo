@@ -5,7 +5,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
-import { FilterOrderDto, Order, OrderState } from '@menno/types';
+import { FilterOrderDto, Order, OrderState, User } from '@menno/types';
 import { TableComponent } from './table/table.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
+import { SearchMemberAutocompleteComponent } from '../../shared/components/search-member-autocomplete/search-member-autocomplete.component';
 
 const DEFAULT_STATES = [
   OrderState.Pending,
@@ -41,6 +42,7 @@ const DEFAULT_STATES = [
     MatSelectModule,
     FormsModule,
     MatChipsModule,
+    SearchMemberAutocompleteComponent,
   ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
@@ -56,12 +58,14 @@ export class OrderListComponent {
   currentSize = signal(Number(this.queryParams['size'] || 10));
   OrderState = OrderState;
   statesFilter = signal<OrderState[]>(
-    this.queryParams['states'] ? JSON.parse(this.queryParams['states']) : DEFAULT_STATES,
+    this.queryParams['states']?.split(',')?.map((x: string) => Number(x)) || DEFAULT_STATES,
   );
+  customerFilter = signal<string | undefined>(this.queryParams['customer']);
   filterDto = computed<FilterOrderDto>(() => ({
     take: this.currentSize(),
     skip: this.currentPage() * this.currentSize(),
     states: this.statesFilter(),
+    customerId: this.customerFilter() || undefined,
     withCount: true,
   }));
   query = injectQuery(() => ({
@@ -80,7 +84,8 @@ export class OrderListComponent {
         queryParams: {
           page: this.currentPage(),
           size: this.currentSize(),
-          states: JSON.stringify(this.statesFilter()),
+          customer: this.customerFilter(),
+          states: this.statesFilter()?.join(','),
         },
       });
     });

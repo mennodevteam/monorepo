@@ -103,5 +103,9 @@
   },
   "errors": {
     "changeError": "خطا در ذخیره‌سازی"
+  },
+  "member": {
+    "searchMember": "جستجوی مشتری",
+    "searchMemberPlaceholder": "نام و نام‌خانوادگی یا تلفن..."
   }
 }

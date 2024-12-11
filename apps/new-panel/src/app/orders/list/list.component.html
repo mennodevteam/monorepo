@@ -1,6 +1,8 @@
 <mat-toolbar class="content-toolbar"> </mat-toolbar>
 <main p-md>
-  <div fxLayout="row"></div>
+  <div fxLayout="row">
+    <app-search-member-autocomplete (userSelect)="customerFilter.set($event?.user?.id)" />
+  </div>
   <mat-toolbar>
     <mat-chip-listbox [(ngModel)]="statesFilter" multiple>
       @if (statesFilter().length < DEFAULT_STATES.length) {

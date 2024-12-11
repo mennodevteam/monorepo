@@ -1,0 +1,27 @@
+<mat-form-field class="example-full-width">
+  <mat-label>{{ 'club.searchMember' | translate }}</mat-label>
+  <input
+    type="text"
+    placeholder="{{ 'club.searchMemberPlaceholder' | translate }}"
+    matInput
+    [formControl]="searchControl"
+    [matAutocomplete]="auto"
+  />
+  @if (query.isLoading()) {
+    <i matIconSuffix class="fa-regular fa-spinner-third fa-spin"></i>
+  } @else if (selectedMember()) {
+    <button mat-icon-button matSuffix (click)="selectedMember.set(null); searchControl.setValue('')">
+      <i class="fa-solid fa-xmark-circle"></i>
+    </button>
+  }
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="select($event)">
+    @if (query.data()) {
+      @for (member of query.data()?.[0]; track member.id) {
+        <mat-option [value]="member">
+          {{ User.fullName(member.user) }}
+          <span eng>{{ member.user.mobilePhone }}</span>
+        </mat-option>
+      }
+    }
+  </mat-autocomplete>
+</mat-form-field>
