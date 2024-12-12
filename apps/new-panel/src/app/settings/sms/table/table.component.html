@@ -1,0 +1,90 @@
+<table mat-table [dataSource]="messages() || []">
+  <ng-container matColumnDef="event">
+    <th mat-header-cell *matHeaderCellDef>{{ 'orderMessagesSetting.event' | translate }}</th>
+    <td mat-cell *matCellDef="let message">
+      {{ 'orderMessagesSetting.eventType.' + message.event | translate }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="state">
+    <th mat-header-cell *matHeaderCellDef>{{ 'orderMessagesSetting.orderState' | translate }}</th>
+    <td mat-cell *matCellDef="let message">
+      @if (message.state === null) {
+        {{ 'app.all' | translate }}
+      } @else {
+        {{ 'order.state.' + message.state | translate }}
+      }
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="template">
+    <th mat-header-cell *matHeaderCellDef>{{ 'orderMessagesSetting.template' | translate }}</th>
+    <td mat-cell *matCellDef="let message">
+      <button mat-button>
+        {{ message.smsTemplate?.title }}
+      </button>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef>{{ 'app.status' | translate }}</th>
+    <td mat-cell *matCellDef="let message">
+      <mat-chip class="status_{{ message.status }}" [matMenuTriggerFor]="menu">
+        @switch (message.status) {
+          @case (Status.Active) {
+            <i class="fa-regular fa-check-circle middle"></i>
+          }
+          @case (Status.Inactive) {
+            <i class="fa-regular fa-xmark-circle middle"></i>
+          }
+          @case (Status.Active) {
+            <i class="fa-regular fa-check middle"></i>
+          }
+        }
+        {{ 'orderMessagesSetting.status.' + message.status | translate }}
+      </mat-chip>
+
+      <mat-menu #menu="matMenu">
+        <button
+          mat-menu-item
+          (click)="changeStatus(message, Status.Active)"
+          [disabled]="message.status === Status.Active"
+        >
+          <i class="fa-regular fa-check-circle middle"></i>
+          {{ 'orderMessagesSetting.status.' + Status.Active | translate }}
+        </button>
+        <button
+          mat-menu-item
+          (click)="changeStatus(message, Status.Pending)"
+          [disabled]="message.status === Status.Pending"
+        >
+          <i class="fa-regular fa-check middle"></i>
+          {{ 'orderMessagesSetting.status.' + Status.Pending | translate }}
+        </button>
+        <button
+          mat-menu-item
+          (click)="changeStatus(message, Status.Inactive)"
+          [disabled]="message.status === Status.Inactive"
+        >
+          <i class="fa-regular fa-xmark-circle middle"></i>
+          {{ 'orderMessagesSetting.status.' + Status.Inactive | translate }}
+        </button>
+      </mat-menu>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let order" style="width: 128px">
+      <button mat-icon-button>
+        <i class="fa-regular fa-edit"></i>
+      </button>
+      <button mat-icon-button>
+        <i class="fa-regular fa-trash-alt"></i>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>

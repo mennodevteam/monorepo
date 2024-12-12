@@ -18,6 +18,7 @@ export type PromptField = {
   control: FormControl;
   hint?: string;
   placeholder?: string;
+  rows?: number;
 };
 
 @Component({

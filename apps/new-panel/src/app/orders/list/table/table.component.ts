@@ -16,7 +16,7 @@ const COLS = ['createdAt', 'type', 'customer', 'price', 'state', 'actions'];
 export class TableComponent {
   private readonly router = inject(Router);
   orders = input<Order[]>();
-  stateChange = output<{ id: string; state: OrderState }>();
+  stateChange = output<{ order: Order; state: OrderState }>();
   displayedColumns = COLS;
   User = User;
   OrderType = OrderType;

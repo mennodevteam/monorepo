@@ -100,7 +100,12 @@ export class OrderListComponent {
     }
   }
 
-  stateChange(dto: { id: string; state: OrderState }) {
-    this.ordersService.changeStateMutation.mutate({ ...dto, queryKey: ['orders', this.filterDto()] });
+  stateChange(order: Order, state: OrderState) {
+    this.ordersService.changeStateMutation.mutate({
+      id: order.id,
+      state,
+      customer: order.customer,
+      queryKey: ['orders', this.filterDto()],
+    });
   }
 }

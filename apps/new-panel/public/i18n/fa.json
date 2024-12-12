@@ -96,6 +96,10 @@
       "0": "داخل مجموعه",
       "1": "ارسالی",
       "2": "مراجعه حضوری"
+    },
+    "statusSmsSnack": {
+      "text": "اطلاع‌رسانی تغییر وضعیت به مشتری",
+      "action": "ارسال پیامک"
     }
   },
   "address": {
@@ -104,8 +108,31 @@
   "errors": {
     "changeError": "خطا در ذخیره‌سازی"
   },
-  "member": {
+  "club": {
     "searchMember": "جستجوی مشتری",
     "searchMemberPlaceholder": "نام و نام‌خانوادگی یا تلفن..."
+  },
+  "orderMessagesSetting": {
+    "event": "رخداد",
+    "orderState": "وضعیت سفارش",
+    "template": "قالب پیام",
+    "eventType": {
+      "onAdd": "بعد از ثبت سفارش",
+      "onEdit": "بعد از ویرایش سفارش",
+      "onChangeState": "بعد از تغییر وضعیت",
+      "onPayment": "بعد از پرداخت"
+    },
+    "status": {
+      "0": "غیر‌فعال",
+      "1": "ارسال‌خودکار",
+      "2": "ارسال دستی"
+    }
+  },
+  "sms": {
+    "sentSuccessfully": "پیامک با موفقیت ارسال شد",
+    "newDialog": {
+      "title": "ارسال پیام به {{value}}",
+      "textLabel": "امتن پیام"
+    }
   }
 }

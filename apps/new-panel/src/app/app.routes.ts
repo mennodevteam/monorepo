@@ -5,6 +5,7 @@ import { menuRoutes } from './menu/menu.routes';
 import { translateActivator } from './core/guards/translate.guard';
 import { shopDataActivator } from './core/guards/shop.guard';
 import { orderRoutes } from './orders/orders.routes';
+import { settingsRoutes } from './settings/settings.routes';
 
 export const appRoutes: Route[] = [
   {
@@ -21,6 +22,7 @@ export const appRoutes: Route[] = [
         children: [
           { path: 'menu', children: menuRoutes },
           { path: 'orders', children: orderRoutes },
+          { path: 'settings', children: settingsRoutes },
           { path: '', redirectTo: 'menu', pathMatch: 'full' },
         ],
       },

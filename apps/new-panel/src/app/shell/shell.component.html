@@ -13,14 +13,9 @@
     <span fxHide.xs> کزارشات </span>
   </a>
   <span fxFlex></span>
-  <button mat-icon-button [mat-menu-trigger-for]="settingsMenu">
+  <button mat-icon-button routerLink="/settings">
     <i class="fa-solid fa-gear"></i>
   </button>
-  <mat-menu #settingsMenu="matMenu">
-    <button mat-menu-item routerLink="/settings/interaction-types">مدیریت وضعیت لیدها</button>
-    <button mat-menu-item routerLink="/settings/products">مدیریت محصولات</button>
-    <button mat-menu-item routerLink="/settings/users">مدیریت کابران</button>
-  </mat-menu>
 </mat-toolbar>
 <main>
   <router-outlet />

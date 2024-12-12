@@ -1,0 +1,13 @@
+<mat-toolbar class="content-toolbar"> </mat-toolbar>
+
+<main p-md w-md>
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      @if (query.data()) {
+        <app-order-messages-table [messages]="query.data()" />
+      } @else {
+        <app-data-loading />
+      }
+    </mat-card-content>
+  </mat-card>
+</main>

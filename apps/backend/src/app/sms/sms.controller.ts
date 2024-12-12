@@ -45,8 +45,13 @@ export class SmsController {
   }
 
   @Post('send')
+  @Roles(UserRole.Panel)
   @Roles(UserRole.Admin)
   async send(@Body() dto: NewSmsDto, @LoginUser() user: AuthPayload) {
+    if (user.role === UserRole.Panel) {
+      const { smsAccount } = await this.authService.getPanelUserShop(user, ['smsAccount']);
+      dto.accountId = smsAccount.id;
+    }
     return this.smsService.send(dto)
   }
 

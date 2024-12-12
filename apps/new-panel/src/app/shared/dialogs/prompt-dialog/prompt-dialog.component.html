@@ -22,6 +22,14 @@
             <mat-datepicker #picker></mat-datepicker>
           </ng-container>
         }
+        @case ('textarea') {
+          <textarea
+            matInput
+            [placeholder]="fields[key].placeholder || ''"
+            [formControl]="fields[key].control"
+            [rows]="fields[key].rows || 3"
+          ></textarea>
+        }
         @default {
           <input
             matInput

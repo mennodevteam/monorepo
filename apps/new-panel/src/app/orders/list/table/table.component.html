@@ -59,7 +59,7 @@
       <app-order-state-chip
         stopPropagation
         [state]="order.state"
-        (stateChange)="stateChange.emit({ id: order.id, state: $event })"
+        (stateChange)="stateChange.emit({ order, state: $event })"
       />
     </td>
   </ng-container>
