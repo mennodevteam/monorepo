@@ -1,10 +1,24 @@
-<mat-toolbar class="content-toolbar"> </mat-toolbar>
+<mat-toolbar class="content-toolbar">
+  <button mat-icon-button goBack>
+    <i class="fa-regular fa-arrow-right"></i>
+  </button>
+  <h3 fxFlex>{{ 'orderMessagesSetting.title' | translate }}</h3>
+  <button mat-flat-button (click)="editDialog()">
+    <i class="fa-regular fa-plus"></i>
+    {{ 'app.add' | translate }}
+  </button>
+</mat-toolbar>
 
 <main p-md w-md>
   <mat-card appearance="outlined">
     <mat-card-content>
       @if (query.data()) {
-        <app-order-messages-table [messages]="query.data()" />
+        <app-order-messages-table
+          [messages]="query.data()"
+          (statusChange)="saveMutation.mutate({ id: $event.message.id, status: $event.status })"
+          (editClick)="editDialog($event)"
+          (setTemplateClick)="setTemplate($event)"
+        />
       } @else {
         <app-data-loading />
       }

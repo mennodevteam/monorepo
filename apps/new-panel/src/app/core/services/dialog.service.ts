@@ -14,11 +14,16 @@ import { CropperOptions } from 'ngx-image-cropper';
 export class DialogService {
   private readonly dialog = inject(MatDialog);
 
-  async prompt(title: string, fields: PromptFields, extra?: { config?: MatDialogConfig }) {
+  async prompt(
+    title: string,
+    fields: PromptFields,
+    extra?: { config?: MatDialogConfig; description?: string },
+  ) {
     return this.dialog
       .open(PromptDialogComponent, {
+        disableClose: true,
         ...extra?.config,
-        data: { title, fields },
+        data: { title, fields, description: extra?.description },
       })
       .afterClosed()
       .toPromise();

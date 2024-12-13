@@ -113,6 +113,9 @@
     "searchMemberPlaceholder": "نام و نام‌خانوادگی یا تلفن..."
   },
   "orderMessagesSetting": {
+    "title": "ارسال خودکار پیام به مشتری",
+    "editTitel": "ویرایش پیام خودکار",
+    "addTitle": "افزودن پیام خودکار",
     "event": "رخداد",
     "orderState": "وضعیت سفارش",
     "template": "قالب پیام",
@@ -129,6 +132,12 @@
     }
   },
   "sms": {
+    "newTemplateDialog": {
+      "title": "ایجاد قالب پیام",
+      "titleLabel": "عنوان قالب",
+      "description": "در متن قالب از @@@ استفاده کنید تا هنگام ارسال پیام به مشتری با نام مشتری جایگزین شود.",
+      "messageLabel": "متن پیام"
+    },
     "sentSuccessfully": "پیامک با موفقیت ارسال شد",
     "newDialog": {
       "title": "ارسال پیام به {{value}}",

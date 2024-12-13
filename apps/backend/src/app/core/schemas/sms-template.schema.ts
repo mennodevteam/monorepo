@@ -22,7 +22,7 @@ export const SmsTemplateSchema = new EntitySchema<SmsTemplate>({
     },
     isVerified: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     creatorId: {
       type: String,

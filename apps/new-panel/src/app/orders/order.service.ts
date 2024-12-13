@@ -89,7 +89,7 @@ export class OrdersService {
             .open(
               this.t.instant('order.statusSmsSnack.text'),
               this.t.instant('order.statusSmsSnack.action'),
-              { duration: 3000 },
+              { duration: 7000 },
             )
             .onAction()
             .subscribe(() => {

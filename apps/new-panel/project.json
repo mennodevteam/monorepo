@@ -20,7 +20,9 @@
           {
             "glob": "**/*",
             "input": "apps/new-panel/public"
-          }
+          },
+          "apps/new-panel/src/liara_nginx.conf",
+          "apps/new-panel/src/liara.json"
         ],
         "styles": ["apps/new-panel/src/styles.scss"],
         "scripts": []
@@ -31,7 +33,7 @@
             {
               "type": "initial",
               "maximumWarning": "500kb",
-              "maximumError": "1mb"
+              "maximumError": "2mb"
             },
             {
               "type": "anyComponentStyle",

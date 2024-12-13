@@ -30,6 +30,13 @@
             [rows]="fields[key].rows || 3"
           ></textarea>
         }
+        @case ('select') {
+          <mat-select [placeholder]="fields[key].placeholder || ''" [formControl]="fields[key].control">
+            @for (option of fields[key].options; track option.value) {
+              <mat-option [value]="option.value">{{ option.text }}</mat-option>
+            }
+          </mat-select>
+        }
         @default {
           <input
             matInput

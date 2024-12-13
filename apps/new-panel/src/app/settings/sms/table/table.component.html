@@ -20,7 +20,7 @@
   <ng-container matColumnDef="template">
     <th mat-header-cell *matHeaderCellDef>{{ 'orderMessagesSetting.template' | translate }}</th>
     <td mat-cell *matCellDef="let message">
-      <button mat-button>
+      <button mat-button (click)="setTemplateClick.emit(message)">
         {{ message.smsTemplate?.title }}
       </button>
     </td>
@@ -47,7 +47,7 @@
       <mat-menu #menu="matMenu">
         <button
           mat-menu-item
-          (click)="changeStatus(message, Status.Active)"
+          (click)="statusChange.emit({ message, status: Status.Active })"
           [disabled]="message.status === Status.Active"
         >
           <i class="fa-regular fa-check-circle middle"></i>
@@ -55,7 +55,7 @@
         </button>
         <button
           mat-menu-item
-          (click)="changeStatus(message, Status.Pending)"
+          (click)="statusChange.emit({ message, status: Status.Pending })"
           [disabled]="message.status === Status.Pending"
         >
           <i class="fa-regular fa-check middle"></i>
@@ -63,7 +63,7 @@
         </button>
         <button
           mat-menu-item
-          (click)="changeStatus(message, Status.Inactive)"
+          (click)="statusChange.emit({ message, status: Status.Inactive })"
           [disabled]="message.status === Status.Inactive"
         >
           <i class="fa-regular fa-xmark-circle middle"></i>
@@ -75,8 +75,8 @@
 
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let order" style="width: 128px">
-      <button mat-icon-button>
+    <td mat-cell *matCellDef="let message" style="width: 128px">
+      <button mat-icon-button (click)="editClick.emit(message)">
         <i class="fa-regular fa-edit"></i>
       </button>
       <button mat-icon-button>

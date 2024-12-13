@@ -1,21 +1,19 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogModule,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { SHARED } from '../..';
+import { MatSelectModule } from '@angular/material/select';
 
 export type PromptFields = { [key: string]: PromptField };
 export type PromptField = {
   label?: string;
   type?: string;
   control: FormControl;
+  options?: { value: any; text: string }[];
   hint?: string;
   placeholder?: string;
   rows?: number;
@@ -31,6 +29,7 @@ export type PromptField = {
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
+    MatSelectModule,
     MatDatepickerModule,
   ],
   templateUrl: './prompt-dialog.component.html',
@@ -46,7 +45,7 @@ export class PromptDialogComponent {
   readonly title = this.data.title;
   readonly description = this.data.description;
   readonly fields = this.data.fields;
-  readonly keys = Object.keys(this.fields)
+  readonly keys = Object.keys(this.fields);
 
   submit() {
     const dto: any = {};
@@ -54,10 +53,7 @@ export class PromptDialogComponent {
       const field = this.fields[key];
       if (field.control.invalid) return;
       if (field.control.value)
-        dto[key] =
-          field.type === 'date'
-            ? new Date(field.control.value.valueOf())
-            : field.control.value;
+        dto[key] = field.type === 'date' ? new Date(field.control.value.valueOf()) : field.control.value;
     }
     this.dialogRef.close(dto);
   }
