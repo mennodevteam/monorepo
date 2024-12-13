@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://ebtekar-crm-api.darkube.app',
+  apiUrl: 'https://api.menno.pro',
   bucketUrl: 'https://menno.storage.iran.liara.space',
 };

@@ -28,7 +28,7 @@
           <i class="fa-solid fa-mug-hot"></i>
         }
         @case (OrderType.Delivery) {
-          @if (order.address.deliveryArea?.isPost) {
+          @if (order.address?.deliveryArea?.isPost) {
             <i class="fa-solid fa-truck-fast"></i>
           } @else {
             <i class="fa-solid fa-moped"></i>

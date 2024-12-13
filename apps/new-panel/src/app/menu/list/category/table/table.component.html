@@ -59,7 +59,7 @@
     <td mat-cell *matCellDef="let product">
       <mat-chip-set>
         @if (category()?.status === Status.Active) {
-          @if (product.variants?.length) {
+          @if (product.variants?.length && product.status === Status.Active) {
             @for (variant of product.variants; track variant.id) {
               <app-menu-status-chip
                 [title]="variant.title"
