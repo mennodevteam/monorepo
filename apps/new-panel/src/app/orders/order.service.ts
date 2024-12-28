@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   Menu,
   Order,
+  OrderDto,
   OrderMessage,
   OrderMessageEvent,
   OrderState,
@@ -102,6 +103,19 @@ export class OrdersService {
       this.snack.open(this.t.instant('errors.changeError'), '', { duration: 2000 });
       if (dto.queryKey) this.queryClient.setQueryData(dto.queryKey, context?.previousListData);
       this.queryClient.setQueryData(['orderDetails', dto.id], context?.previousDetailsData);
+    },
+  }));
+
+  saveMutation = injectMutation(() => ({
+    mutationFn: (dto: OrderDto) => lastValueFrom(this.http.post<Order>(`/orders`, dto)),
+    onMutate: () => {
+      this.snack.open(this.t.instant('app.saving'), '', { duration: 4000 });
+    },
+    onSuccess: () => {
+      this.snack.open(this.t.instant('app.savedSuccessfully'), '', { duration: 2000 });
+    },
+    onError: () => {
+      this.snack.open(this.t.instant('errors.changeError'), '', { duration: 2000 });
     },
   }));
 }

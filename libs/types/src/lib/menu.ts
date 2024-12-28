@@ -160,22 +160,6 @@ export class Menu {
     return products;
   }
 
-  static searchOrderItem(menu: Menu, query?: string) {
-    const items: OrderItem[] = [];
-    if (menu.categories) {
-      for (const cat of menu.categories) {
-        if (cat.products) {
-          for (const product of cat.products) {
-            if (product.variants?.length) items.push(...product.variants.map((variant) => ({
-              title: `${product.title} ${variant.title}`
-            } as OrderItem)))
-          }
-        }
-      }
-    }
-    // return products;
-  }
-
   static isBasedOrderType(menu: Menu) {
     if (menu.costs.find((x) => x.orderTypes.length > 0 && x.orderTypes.length < 3)) return true;
     if (menu.categories?.find((x) => x.orderTypes.length > 0 && x.orderTypes.length < 3)) return true;

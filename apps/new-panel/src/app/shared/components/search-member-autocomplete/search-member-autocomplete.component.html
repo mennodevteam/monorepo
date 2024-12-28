@@ -14,7 +14,7 @@
       <i class="fa-solid fa-xmark-circle"></i>
     </button>
   }
-  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="select($event)">
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="select($event)" autoActiveFirstOption>
     @if (query.data()) {
       @for (member of query.data()?.[0]; track member.id) {
         <mat-option [value]="member">

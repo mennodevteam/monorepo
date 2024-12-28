@@ -82,6 +82,12 @@
             }
             <p>
               {{ address.description }}
+              @if (address.unit) {
+                {{ 'address.unit' | translate }} {{ address.unit }}
+              }
+              @if (address.ring) {
+                {{ 'address.ring' | translate }} {{ address.ring }}
+              }
             </p>
             @if (address.postalCode) {
               <p>

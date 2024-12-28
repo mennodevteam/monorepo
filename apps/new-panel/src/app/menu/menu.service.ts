@@ -53,7 +53,6 @@ export class MenuService {
 
   categories = computed(() => {
     const data = this.query.data();
-    console.log(data?.categories);
     return data?.categories;
   });
 

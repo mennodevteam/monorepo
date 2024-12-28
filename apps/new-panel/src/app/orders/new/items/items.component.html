@@ -1,8 +1,10 @@
-<table mat-table [dataSource]="service.productItems()">
+<table mat-table [dataSource]="items()">
   <ng-container matColumnDef="index">
-    <th mat-header-cell *matHeaderCellDef>{{ 'app.index' | translate }}</th>
+    <th mat-header-cell *matHeaderCellDef style="width: 64px">{{ 'app.index' | translate }}</th>
     <td mat-cell *matCellDef="let item; let i = index">
-      {{ i + 1 }}
+      @if (!item.isAbstract) {
+        {{ i + 1 }}
+      }
     </td>
   </ng-container>
 
@@ -14,29 +16,35 @@
   </ng-container>
 
   <ng-container matColumnDef="fee">
-    <th mat-header-cell *matHeaderCellDef>{{ 'app.fee' | translate }}</th>
+    <th mat-header-cell *matHeaderCellDef style="width: 128px">{{ 'app.fee' | translate }}</th>
     <td mat-cell *matCellDef="let item">
-      {{ item.price | number | menuCurrency }}
+      @if (!item.isAbstract) {
+        {{ item.price | number | menuCurrency }}
+      }
     </td>
   </ng-container>
 
   <ng-container matColumnDef="quantity">
-    <th mat-header-cell *matHeaderCellDef>{{ 'app.quantity' | translate }}</th>
+    <th mat-header-cell *matHeaderCellDef style="width: 160px">{{ 'app.count' | translate }}</th>
     <td mat-cell *matCellDef="let item">
-      <button mat-icon-button>
-        <i class="fa-regular fa-plus-circle"></i>
-      </button>
-      <span>
-        {{ 'app.number' | translate: { value: item.quantity } }}
-      </span>
-      <button mat-icon-button>
-        <i class="fa-regular fa-minus-circle"></i>
-      </button>
+      @if (!item.isAbstract) {
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <button mat-icon-button (click)="service.add(item.product, item.productVariant)">
+            <i class="fa-regular fa-plus-circle"></i>
+          </button>
+          <span>
+            {{ 'app.number' | translate: { value: item.quantity } }}
+          </span>
+          <button mat-icon-button (click)="service.minus(item.product, item.productVariant)">
+            <i class="fa-regular fa-minus-circle"></i>
+          </button>
+        </div>
+      }
     </td>
   </ng-container>
 
   <ng-container matColumnDef="total">
-    <th mat-header-cell *matHeaderCellDef>{{ 'app.total' | translate }}</th>
+    <th mat-header-cell *matHeaderCellDef style="width: 160px">{{ 'app.sum' | translate }}</th>
     <td mat-cell *matCellDef="let item">
       {{ item.price * item.quantity | number | menuCurrency }}
     </td>
@@ -45,12 +53,18 @@
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let item" style="width: 64px">
-      <button mat-icon-button>
-        <i class="fa-regular fa-trash-alt"></i>
-      </button>
+      @if (!item.isAbstract) {
+        <button mat-icon-button (click)="service.remove(item.product, item.productVariant)">
+          <i class="fa-regular fa-trash-alt"></i>
+        </button>
+      }
     </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns; let last = last" [class.total]="last"></tr>
 </table>
+
+@if (!items().length) {
+  <app-empty-state />
+}

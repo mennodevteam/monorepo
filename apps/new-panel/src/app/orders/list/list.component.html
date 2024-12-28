@@ -1,4 +1,9 @@
-<mat-toolbar class="content-toolbar"> </mat-toolbar>
+<mat-toolbar class="content-toolbar">
+  <span fxFlex></span>
+  <button mat-flat-button routerLink="../new">
+    {{ 'newOrder.newTitle' | translate }}
+  </button>
+</mat-toolbar>
 <main p-md>
   <div fxLayout="row">
     <app-search-member-autocomplete (userSelect)="customerFilter.set($event?.user?.id)" />

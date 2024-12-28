@@ -14,6 +14,9 @@
     "sum": "مجموع",
     "status": "وضعیت",
     "add": "افزودن",
+    "remove": "حذف",
+    "saving": "درحال ذخیره‌سازی",
+    "savedSuccessfully": "با موفقیت ذخیره شد",
     "description": "توضیحات",
     "currency": "تومان",
     "search": "جستجو",
@@ -77,6 +80,7 @@
   },
   "order": {
     "customer": "مشتری",
+    "typeTitle": "نوع سفارش",
     "state": {
       "0": "لغو شده",
       "1": "پیش‌سفارش",
@@ -103,7 +107,9 @@
     }
   },
   "address": {
-    "postalCode": "کدپستی"
+    "postalCode": "کدپستی",
+    "unit": "پلاک",
+    "ring": "واحد"
   },
   "errors": {
     "changeError": "خطا در ذخیره‌سازی"
@@ -143,5 +149,12 @@
       "title": "ارسال پیام به {{value}}",
       "textLabel": "امتن پیام"
     }
+  },
+  "newOrder": {
+    "newTitle": "ثبت سفارش جدید",
+    "searchItemLabel": "اضافه کردن آیتم",
+    "manualDiscount": "تخفیف دستی",
+    "manualCost": "هزینه مازاد",
+    "addressTitle": "انتخاب آدرس"
   }
 }
