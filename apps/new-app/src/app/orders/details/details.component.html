@@ -13,8 +13,13 @@
       @for (item of order()?.items; track item.id) {
         <mat-list-item>
           <span matListItemLine>{{ item.title }}</span>
+          @if (!item.isAbstract) {
+            <span matListItemLine>{{ 'app.number' | translate: { value: item.quantity } }}</span>
+          }
           <div matListItemMeta>
-            <span>{{ item.price | menuCurrency }}</span>
+            <span>
+              {{ item.price * item.quantity | menuCurrency }}
+            </span>
           </div>
         </mat-list-item>
       }

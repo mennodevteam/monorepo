@@ -7,6 +7,7 @@
     "select": "انتخاب",
     "description": "توضیحات",
     "finished": "ناموجود",
+    "number": "{{value}} عدد",
     "total": "جمع کل",
     "viewMore": "مشاهده بیشتر",
     "save": "ذخیره",
