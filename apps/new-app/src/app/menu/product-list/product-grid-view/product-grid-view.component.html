@@ -4,7 +4,7 @@
       routerLink="product/{{ product.id }}"
       class="item"
       [imageLoader]="product.images?.[0]"
-      [imageFile]="product.imageFiles?.[0]"
+      [imageFile]="Product.mainImageFile(product)"
       [imageSize]="'sm'"
       [rowspan]="product.details?.rowspan || 1"
       [colspan]="product.details?.colspan || 1"

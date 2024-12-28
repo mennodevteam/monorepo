@@ -32,7 +32,7 @@ export class CategoryCarouselComponent implements AfterViewInit {
   isObserverDisabled = signal(false);
   debounceSelectedIndex = debounceSignal(this.selectedIndex, 300);
   selectedTarget = computed(() => {
-    const element = this.categoryButtons.get(this.debounceSelectedIndex())?._elementRef.nativeElement;
+    const element = this.categoryButtons?.get(this.debounceSelectedIndex())?._elementRef.nativeElement;
     return element;
   });
   bigIcon = this.menuService.categories().find((x) => !x.faIcon) == undefined;

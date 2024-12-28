@@ -7,7 +7,7 @@
           fxFlex="none"
           class="product-card__image"
           [imageLoader]="item.product?.images?.[0]"
-          [imageFile]="item.product?.imageFiles?.[0]"
+          [imageFile]="Product.mainImageFile(item?.product)"
         />
         <div fxFlex fxLayout="column" fxLayoutAlign="space-around">
           <h3 class="product-card__title">{{ item.product?.title }}</h3>

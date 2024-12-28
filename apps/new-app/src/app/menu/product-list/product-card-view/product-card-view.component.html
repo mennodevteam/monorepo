@@ -1,6 +1,6 @@
 <section fxLayout="column" fxLayoutGap="16">
   @for (product of category.products; track product.id; let isLast = $last) {
-    <mat-card class="product-card" routerLink="product/{{ product.id }}">
+    <mat-card class="product-card" routerLink="product/{{ product.id }}" appearance="outlined">
       <!-- <img mat-card-image [imageLoader]="product.images?.[0]" /> -->
       <mat-card-content>
         <div fxLayout="row" fxLayoutGap="8">
@@ -8,9 +8,9 @@
             fxFlex="none"
             class="product-card__image"
             [imageLoader]="product.images?.[0]"
-            [imageFile]="product.imageFiles?.[0]"
+            [imageFile]="Product.mainImageFile(product)"
             [imageSize]="'sm'"
-            alt="{{product.title}}"
+            alt="{{ product.title }}"
           />
           <div fxFlex fxLayout="column">
             <h3 class="product-card__title">{{ product.title }}</h3>

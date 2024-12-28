@@ -5,7 +5,7 @@
   <div
     class="image-container"
     [imageLoader]="product.images?.[0]"
-    [imageFile]="product.imageFiles?.[0]"
+    [imageFile]="Product.mainImageFile(product)"
     placeholderImageSize="sm"
   ></div>
   <main fxLayout="column" p-md fxLayoutGap="16">
@@ -34,8 +34,8 @@
             <span matListItemLine>
               @if (Product.hasDiscount(product, variant)) {
                 <span class="line-price error-text">
-                  {{ Product.realPrice(product, variant) | menuCurrency }}
-                </span>&nbsp;
+                  {{ Product.realPrice(product, variant) | menuCurrency }} </span
+                >&nbsp;
               }
               <span class="price">{{ Product.totalPrice(product, variant) | menuCurrency }}</span>
             </span>
@@ -52,7 +52,13 @@
     }
   </main>
 </div>
-<mat-toolbar @flyInOutFromDown fxLayout="row" fxLayoutAlign="space-between center" id="actionbar" fxLayoutGap="24px">
+<mat-toolbar
+  @flyInOutFromDown
+  fxLayout="row"
+  fxLayoutAlign="space-between center"
+  id="actionbar"
+  fxLayoutGap="24px"
+>
   @if (hasInCart()) {
     <button mat-flat-button fxFlex max-center class="large" routerLink="/cart">
       {{ 'cart.complete' | translate }}
