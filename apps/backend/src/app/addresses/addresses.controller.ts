@@ -19,7 +19,7 @@ export class AddressesController {
     @InjectRepository(User)
     private usersRepo: Repository<User>,
     private auth: AuthService,
-    private http: HttpService
+    private http: HttpService,
   ) {}
 
   @Roles(UserRole.App)
@@ -46,49 +46,16 @@ export class AddressesController {
   @Roles(UserRole.Panel)
   @Get(':userId')
   async getMemberAddresses(@LoginUser() user: AuthPayload, @Param('userId') userId: string) {
-    const { mobilePhone } = await this.usersRepo.findOneBy({ id: userId });
     const shop = await this.auth.getPanelUserShop(user, ['deliveryAreas']);
-    let addresses = await this.repo.find({
+    const addresses = await this.repo.find({
       where: {
         user: { id: userId },
       },
       order: {
-        id: 'desc'
+        id: 'desc',
       },
-      relations: ['deliveryArea'],
+      relations: ['deliveryArea', 'region'],
     });
-    if (!addresses?.length) {
-      try {
-        const res = await this.http
-          .get<{ user: OldTypes.User; addresses: OldTypes.Address[] }>(
-            `http://65.21.237.12:3002/auth/getUserPhone/${mobilePhone}`,
-            {
-              timeout: 4000,
-            }
-          )
-          .toPromise();
-        if (res?.data?.addresses?.length) {
-          await this.repo.save(
-            res?.data?.addresses.map(
-              (x) =>
-                ({
-                  description: x.description,
-                  latitude: x.latitude,
-                  longitude: x.longitude,
-                  user: { id: userId },
-                  deliveryArea: x.deliveryArea && { id: x.deliveryArea.id },
-                } as Address)
-            )
-          );
-          addresses = await this.repo.find({
-            where: {
-              user: { id: userId },
-            },
-            relations: ['deliveryArea'],
-          });
-        }
-      } catch (error) {}
-    }
     if (shop && addresses) {
       for (const add of addresses) {
         if (add.latitude && add.longitude)
