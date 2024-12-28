@@ -1,3 +1,35 @@
+<mat-form-field id="search-item" appearance="outline">
+  <mat-label>{{ 'newOrder.searchItemLabel' | translate }}</mat-label>
+  <input
+    type="text"
+    matInput
+    autofocus
+    [(ngModel)]="searchInput"
+    [matAutocomplete]="auto"
+    [ngModelOptions]="{ standalone: true }"
+  />
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectItem($event)" autoActiveFirstOption>
+    @for (item of searchedItems(); track $index) {
+      <mat-option [value]="item">
+        <span style="display: inline-block">
+          {{ item.product.title }}
+        </span>
+        @if (item.variant) {
+          <span style="display: inline-block"> - {{ item.variant.title }} </span>
+        }
+        <span style="display: inline-block"> ({{ item.category.title }}) </span> |
+        @if (Product.hasDiscount(item.product, item.variant)) {
+          <span class="line-through">
+            {{ Product.realPrice(item.product, item.variant) | number | menuCurrency }}
+          </span>
+        }
+
+        {{ Product.totalPrice(item.product, item.variant) | number | menuCurrency }}
+      </mat-option>
+    }
+  </mat-autocomplete>
+</mat-form-field>
+
 <table mat-table [dataSource]="items()">
   <ng-container matColumnDef="index">
     <th mat-header-cell *matHeaderCellDef style="width: 64px">{{ 'app.index' | translate }}</th>
@@ -54,7 +86,10 @@
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let item" style="width: 64px">
       @if (!item.isAbstract) {
-        <button mat-icon-button (click)="service.remove(item.product, item.productVariant)">
+        <button
+          mat-icon-button
+          (click)="service.remove(item.product, item.productVariant)"
+        >
           <i class="fa-regular fa-trash-alt"></i>
         </button>
       }

@@ -1,0 +1,20 @@
+<mat-button-toggle-group [(ngModel)]="service.type">
+  @for (type of shop.data()?.appConfig?.orderingTypes; track $index) {
+    <mat-button-toggle [value]="type">
+      @switch (type) {
+        @case (OrderType.DineIn) {
+          <i class="fa-solid middle fa-mug-hot"></i>
+        }
+        @case (OrderType.Delivery) {
+          <i class="fa-solid middle fa-truck-fast"></i>
+        }
+        @case (OrderType.Takeaway) {
+          <i class="fa-solid middle fa-cart-shopping"></i>
+        }
+      }
+      @if (service.type() === type) {
+        {{ 'order.type.' + type | translate }}
+      }
+    </mat-button-toggle>
+  }
+</mat-button-toggle-group>

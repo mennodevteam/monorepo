@@ -2,3 +2,18 @@
   font-weight: 800;
   font-size: 16px;
 }
+
+#search-item {
+  width: fill-available;
+}
+
+.line-through {
+  text-decoration: line-through;
+}
+
+.address-card {
+  mat-card-content {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+}

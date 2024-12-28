@@ -32,15 +32,7 @@ export class MenuService {
     queryFn: () => lastValueFrom(this.http.get<Menu>('/menus')),
     select: (data) => {
       if (data) {
-        const categories = data.categories?.filter((item) => !item.deletedAt).sort(DEFAULT_SORT_FUNC) || [];
-        for (const cat of categories) {
-          const products = cat.products?.sort(DEFAULT_SORT_FUNC) || [];
-          for (const pr of products) {
-            pr.variants.sort(DEFAULT_SORT_FUNC);
-          }
-          cat.products = products;
-        }
-        data.categories = categories;
+        Menu.setRefsAndSort(data);
         return { ...data };
       }
       return;

@@ -1,0 +1,53 @@
+<mat-card appearance="outlined" class="address-card">
+  <mat-card-header>
+    <mat-card-title>
+      <i class="fa-solid fa-location-dot middle"></i>
+      {{ 'newOrder.addressTitle' | translate }}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    @if (addressesQuery.data()) {
+      <mat-nav-list>
+        @for (address of addressesQuery.data(); track address.id) {
+          <a mat-list-item [lines]="3" (click)="service.address.set(address)">
+            <span matListItemTitle>
+              <i
+                class="{{
+                  address.id === service.address()?.id ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle'
+                }}"
+              ></i>
+              @if (address.title) {
+                {{ address.title }} .
+              }
+              {{ address.region?.title }}
+            </span>
+            {{ address.description }}
+            @if (address.unit) {
+              {{ 'address.unit' | translate }} {{ address.unit }}
+            }
+            @if (address.ring) {
+              {{ 'address.ring' | translate }} {{ address.ring }}
+            }
+          </a>
+        }
+      </mat-nav-list>
+      <!-- <mat-radio-group fxLayout="column" [(ngModel)]="service.address">
+        @for (address of addressesQuery.data(); track address.id) {
+          <mat-radio-button [value]="address">
+            {{ address.description }}
+            @if (address.unit) {
+              {{ 'newOrder.addressUnit' | translate }}:
+              {{ address.unit }}
+            }
+            @if (address.ring) {
+              {{ 'newOrder.addressRing' | translate }}:
+              {{ address.ring }}
+            }
+          </mat-radio-button>
+        }
+      </mat-radio-group> -->
+    } @else {
+      <app-data-loading />
+    }
+  </mat-card-content>
+</mat-card>

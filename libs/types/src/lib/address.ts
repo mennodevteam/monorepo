@@ -13,7 +13,7 @@ export class Address {
   user: User;
   deliveryArea?: DeliveryArea | null;
   postalCode?: string;
-  region: Region;
+  region?: Region;
 
   static haversine(address1: Address, address2: Address): number {
     const R = 6371; // Earth radius in kilometers

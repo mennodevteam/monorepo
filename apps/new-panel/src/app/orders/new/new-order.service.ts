@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import {
   Address,
   DiscountCoupon,
@@ -25,6 +25,7 @@ export class NewOrdersService {
   private readonly snack = inject(MatSnackBar);
   private readonly translate = inject(TranslateService);
   private items = signal<ProductItem[]>([]);
+  dirty = signal(false);
   customer = signal<User | undefined>(undefined);
   order = signal<Order | undefined>(undefined);
   address = signal<Address | undefined>(undefined);
@@ -38,7 +39,7 @@ export class NewOrdersService {
       ({
         productItems: this.items(),
         customerId: this.customer()?.id,
-        address: this.customer() ? this.address() : undefined,
+        address: this.customer() && this.type() === OrderType.Delivery ? this.address() : undefined,
         manualCost: this.manualCost(),
         manualDiscount: this.manualDiscount(),
         type: this.type(),
@@ -79,6 +80,7 @@ export class NewOrdersService {
   });
 
   add(product: Product, variant?: ProductVariant) {
+    this.dirty.set(true);
     this.items.update((items) => {
       const exist = items.find((x) => x.productId === product.id && x.productVariantId === variant?.id);
       if (exist) exist.quantity++;
@@ -88,6 +90,7 @@ export class NewOrdersService {
   }
 
   minus(product: Product, variant?: ProductVariant) {
+    this.dirty.set(true);
     this.items.update((items) => {
       const exist = items.find((x) => x.productId === product.id && x.productVariantId === variant?.id);
       if (exist) {
@@ -100,6 +103,7 @@ export class NewOrdersService {
   }
 
   remove(product: Product, variant?: ProductVariant) {
+    this.dirty.set(true);
     this.items.update((items) => {
       const exist = items.find((x) => x.productId === product.id && x.productVariantId === variant?.id);
       if (exist) {
@@ -108,6 +112,17 @@ export class NewOrdersService {
       }
       return items;
     });
+  }
+
+  clear() {
+    this.dirty.set(false);
+    this.type.set(this.shop.data()?.appConfig?.orderingTypes[0]);
+    this.items.set([]);
+    this.address.set(undefined);
+    this.manualCost.set(0);
+    this.manualDiscount.set(0);
+    this.discountCoupon.set(undefined);
+    this.order.set(undefined);
   }
 
   async save(print = false) {
@@ -127,6 +142,7 @@ export class NewOrdersService {
 
     this.snack.open(this.translate.instant('app.saving'), '', { duration: 3000 });
     const savedOrder = await this.ordersService.saveMutation.mutateAsync(dto);
+    this.clear();
     this.snack.open(this.translate.instant('app.savedSuccessfully'), '', {
       duration: 5000,
       panelClass: 'success',
@@ -134,8 +150,6 @@ export class NewOrdersService {
 
     // this.analytics.event(this.editOrder ? 'edit order' : 'add order');
 
-    // this.clear();
-    // this.saving = false;
     // this.menuService.loadMenu();
     // if (print && savedOrder) this.printer.printOrder(savedOrder?.id);
   }

@@ -10,6 +10,7 @@ export class PdatePipe implements PipeTransform {
       const date = new Date(value);
       if (time) {
         const formatter = new Intl.DateTimeFormat('fa-IR', {
+          weekday: 'long',
           day: 'numeric',
           month: 'long',
           hour: 'numeric',

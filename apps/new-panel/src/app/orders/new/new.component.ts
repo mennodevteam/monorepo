@@ -1,26 +1,19 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule, PlatformLocation } from '@angular/common';
 import { NewOrdersService } from './new-order.service';
 import { SHARED } from '../../shared';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { NewOrderItemsComponent } from './items/items.component';
-import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormControl, FormsModule, Validators } from '@angular/forms';
-import { MenuService } from '../../menu/menu.service';
-import { Address, Member, OrderType, Product, ProductCategory, ProductVariant, User } from '@menno/types';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatRadioModule } from '@angular/material/radio';
-import { SearchMemberAutocompleteComponent } from '../../shared/components/search-member-autocomplete/search-member-autocomplete.component';
+import { FormControl, Validators } from '@angular/forms';
+import { OrderType } from '@menno/types';
 import { ShopService } from '../../shop/shop.service';
-import { injectQuery } from '@tanstack/angular-query-experimental';
-import { lastValueFrom } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import { FormComponent } from '../../core/guards/dirty-form-deactivator.guard';
 import { DialogService } from '../../core/services/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
+import { AddressListComponent } from './address-list/address-list.component';
+import { CustomerComponent } from './customer/customer.component';
+import { OrderTypeComponent } from './order-type/order-type.component';
 
 @Component({
   selector: 'app-new',
@@ -31,75 +24,25 @@ import { TranslateService } from '@ngx-translate/core';
     MatToolbarModule,
     MatCardModule,
     NewOrderItemsComponent,
-    MatAutocompleteModule,
-    MatFormFieldModule,
-    FormsModule,
-    MatInputModule,
-    SearchMemberAutocompleteComponent,
-    MatButtonToggleModule,
-    MatRadioModule,
+    AddressListComponent,
+    CustomerComponent,
+    OrderTypeComponent,
   ],
   providers: [NewOrdersService],
   templateUrl: './new.component.html',
   styleUrl: './new.component.scss',
 })
 export class NewOrderComponent implements FormComponent {
-  private readonly http = inject(HttpClient);
   readonly t = inject(TranslateService);
   readonly shop = inject(ShopService);
   readonly dialog = inject(DialogService);
   readonly service = inject(NewOrdersService);
   readonly location = inject(PlatformLocation);
   saving = signal(false);
-  private menu = inject(MenuService);
-  Product = Product;
-  User = User;
   OrderType = OrderType;
-  searchInput = signal('');
-  searchedItems = computed(() => {
-    const query = this.searchInput();
-    const categories = this.menu.categories();
-    const filtered: { category: ProductCategory; product: Product; variant?: ProductVariant }[] = [];
-
-    if (categories && query) {
-      for (const category of categories) {
-        if (category.products) {
-          for (const product of category.products) {
-            if (category.title.search(query) > -1 || product.title.search(query) > -1) {
-              if (product.variants?.length) {
-                filtered.push(...product.variants.map((variant) => ({ category, product, variant })));
-              } else {
-                filtered.push({ category, product });
-              }
-            }
-          }
-        }
-      }
-    }
-    return filtered;
-  });
-
-  addressesQuery = injectQuery(() => ({
-    queryKey: ['addresses', this.service.customer()?.id],
-    queryFn: () => lastValueFrom(this.http.get<Address[]>(`/addresses/${this.service.customer()?.id}`)),
-    enabled: !!this.service.customer(),
-  }));
-
-  selectItem(item: MatAutocompleteSelectedEvent) {
-    const value = item.option.value;
-    if (value) {
-      this.service.add(value.product, value.variant);
-      this.searchInput.set('');
-    }
-  }
-
-  selectUser(member?: Member | null) {
-    if (member) this.service.customer.set(member.user);
-  }
 
   canDeactivate() {
-    const itemCount = this.service.productItems()?.length || 0;
-    return this.saving() || itemCount === 0;
+    return !this.service.dirty();
   }
 
   setManualDiscount() {

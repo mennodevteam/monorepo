@@ -6,10 +6,14 @@
       {{ 'newOrder.newTitle' | translate }}
     }
   </h3>
+  @let orderingTypes = shop.data()?.appConfig?.orderingTypes || [];
+  @if (orderingTypes.length > 1) {
+    <app-order-type />
+  }
   <button mat-button tabindex="-1">
     {{ 'app.cancel' | translate }}
   </button>
-  <button mat-flat-button tabindex="-1" (click)="save()">
+  <button mat-flat-button tabindex="-1" (click)="save()" [disabled]="!service.dirty()">
     {{ 'app.save' | translate }}
   </button>
 </mat-toolbar>
@@ -18,39 +22,6 @@
     <div fxLayout="column" fxLayoutGap="16px" fxFlex>
       <mat-card appearance="outlined" fxFlex>
         <mat-card-content>
-          <mat-form-field id="search-item" appearance="outline">
-            <mat-label>{{ 'newOrder.searchItemLabel' | translate }}</mat-label>
-            <input
-              type="text"
-              matInput
-              autofocus
-              [(ngModel)]="searchInput"
-              [matAutocomplete]="auto"
-              [ngModelOptions]="{ standalone: true }"
-            />
-            <mat-autocomplete
-              #auto="matAutocomplete"
-              (optionSelected)="selectItem($event)"
-              autoActiveFirstOption
-            >
-              @for (item of searchedItems(); track $index) {
-                <mat-option [value]="item">
-                  {{ item.product.title }}
-                  @if (item.variant) {
-                    - {{ item.variant.title }}
-                  }
-                  ({{ item.category.title }}) |
-                  @if (Product.hasDiscount(item.product, item.variant)) {
-                    <span class="line-through">
-                      {{ Product.realPrice(item.product, item.variant) | number | menuCurrency }}
-                    </span>
-                  }
-
-                  {{ Product.totalPrice(item.product, item.variant) | number | menuCurrency }}
-                </mat-option>
-              }
-            </mat-autocomplete>
-          </mat-form-field>
           <app-new-order-items />
         </mat-card-content>
         <mat-card-actions>
@@ -67,91 +38,9 @@
     </div>
 
     <div fxLayout="column" fxLayoutGap="16px" fxFlex.gt-md="360px">
-      @let orderingTypes = shop.data()?.appConfig?.orderingTypes || [];
-      @if (orderingTypes.length > 1) {
-        <mat-card appearance="outlined">
-          <mat-card-header>
-            <mat-card-title>
-              {{ 'order.typeTitle' | translate }}
-            </mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <mat-button-toggle-group [(ngModel)]="service.type">
-              @for (type of shop.data()?.appConfig?.orderingTypes; track $index) {
-                <mat-button-toggle [value]="type">
-                  @switch (type) {
-                    @case (OrderType.DineIn) {
-                      <i class="fa-solid middle fa-mug-hot"></i>
-                    }
-                    @case (OrderType.Delivery) {
-                      <i class="fa-solid middle fa-truck-fast"></i>
-                    }
-                    @case (OrderType.Takeaway) {
-                      <i class="fa-solid middle fa-cart-shopping"></i>
-                    }
-                  }
-                  {{ 'order.type.' + type | translate }}
-                </mat-button-toggle>
-              }
-            </mat-button-toggle-group>
-          </mat-card-content>
-        </mat-card>
-      }
-      <mat-card appearance="outlined">
-        @let customer = service.customer();
-        <mat-card-header>
-          <mat-card-title>
-            <i class="fa-solid fa-user middle"></i>
-            {{ 'order.customer' | translate }}
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          @if (customer) {
-            <p>{{ User.fullName(customer) }} - {{ customer.mobilePhone }}</p>
-          } @else {
-            <br />
-            <app-search-member-autocomplete (userSelect)="selectUser($event)" />
-          }
-        </mat-card-content>
-        @if (customer) {
-          <mat-card-actions>
-            <button mat-button (click)="service.customer.set(undefined)">
-              <i class="fa-regular fa-xmark-circle"></i>
-              {{ 'app.remove' | translate }}
-            </button>
-          </mat-card-actions>
-        }
-      </mat-card>
+      <app-customer />
       @if (service.type() === OrderType.Delivery && service.customer()) {
-        <mat-card appearance="outlined" class="address-card">
-          <mat-card-header>
-            <mat-card-title>
-              <i class="fa-solid fa-location-dot middle"></i>
-              {{ 'newOrder.addressTitle' | translate }}
-            </mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            @if (addressesQuery.data()) {
-              <mat-radio-group fxLayout="column" [(ngModel)]="service.address">
-                @for (address of addressesQuery.data(); track address.id) {
-                  <mat-radio-button [value]="address">
-                    {{ address.description }}
-                    @if (address.unit) {
-                      {{ 'newOrder.addressUnit' | translate }}:
-                      {{ address.unit }}
-                    }
-                    @if (address.ring) {
-                      {{ 'newOrder.addressRing' | translate }}:
-                      {{ address.ring }}
-                    }
-                  </mat-radio-button>
-                }
-              </mat-radio-group>
-            } @else {
-              <app-data-loading />
-            }
-          </mat-card-content>
-        </mat-card>
+        <app-address-list />
       }
     </div>
   </div>
