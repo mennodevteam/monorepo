@@ -1,6 +1,6 @@
 import { Component, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Product, ProductCategory, ProductVariant, Status } from '@menno/types';
+import { MenuCost, Product, ProductCategory, ProductVariant, Status } from '@menno/types';
 import { SHARED } from '../../../../shared';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
@@ -11,7 +11,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../../core/services/dialog.service';
 import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-const COLS = ['index', 'image', 'title', 'price', 'status', 'actions'];
+const COLS = ['index', 'image', 'title', 'price', 'costs', 'status', 'actions'];
 @Component({
   selector: 'app-product-table',
   standalone: true,
@@ -96,5 +96,9 @@ export class ProductTableComponent {
         this.menu.sortProductsMutation.mutate({ ids, categoryId: this.category()!.id });
       }
     }
+  }
+
+  editCost(cost: MenuCost) {
+    
   }
 }
