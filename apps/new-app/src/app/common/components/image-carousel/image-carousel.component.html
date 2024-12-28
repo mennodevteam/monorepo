@@ -1,0 +1,24 @@
+<div id="container" #container>
+  <div id="images-container" #imagesContainer>
+    @if (images()) {
+      @for (image of images(); track $index) {
+        <div class="image-wrapper" imageLoader [imageFile]="image" placeholderImageSize="sm"></div>
+      }
+    }
+  </div>
+  @let count = images()?.length || 0;
+  @if (count > 1) {
+    <div class="dots">
+      @for (image of images(); track $index) {
+        <span class="dot" [class.selected]="$index === index()"></span>
+      }
+    </div>
+  }
+
+  <button mat-button class="arrow-button right" (click)="prev()" tabindex="-1">
+    <i class="fa-regular fa-angle-right"></i>
+  </button>
+  <button mat-button class="arrow-button left" (click)="next()" tabindex="-1">
+    <i class="fa-regular fa-angle-left"></i>
+  </button>
+</div>

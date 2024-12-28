@@ -2,12 +2,9 @@
   <button mat-mini-fab id="back-button" goBack class="tertiary-button">
     <i class="fa-regular fa-chevron-right"></i>
   </button>
-  <div
-    class="image-container"
-    [imageLoader]="product.images?.[0]"
-    [imageFile]="Product.mainImageFile(product)"
-    placeholderImageSize="sm"
-  ></div>
+  <div class="image-container">
+    <app-image-carousel [images]="imageFiles" />
+  </div>
   <main fxLayout="column" p-md fxLayoutGap="16">
     <h1>{{ product.title }}</h1>
     @if (!product.variants.length) {
