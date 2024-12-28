@@ -103,7 +103,8 @@ export class OrdersController {
   @Roles(UserRole.Panel)
   getOrderDetailsPanel(@Param('id') id: string, @Query('withProduct') withProduct: string) {
     const relations = [
-      'items',
+      'items.product',
+      'items.productVariant',
       'customer',
       'waiter',
       'creator',
