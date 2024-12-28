@@ -13,12 +13,11 @@
         <span class="dot" [class.selected]="$index === index()"></span>
       }
     </div>
+    <button mat-button class="arrow-button right" (click)="prev()" tabindex="-1">
+      <i class="fa-regular fa-angle-right"></i>
+    </button>
+    <button mat-button class="arrow-button left" (click)="next()" tabindex="-1">
+      <i class="fa-regular fa-angle-left"></i>
+    </button>
   }
-
-  <button mat-button class="arrow-button right" (click)="prev()" tabindex="-1">
-    <i class="fa-regular fa-angle-right"></i>
-  </button>
-  <button mat-button class="arrow-button left" (click)="next()" tabindex="-1">
-    <i class="fa-regular fa-angle-left"></i>
-  </button>
 </div>

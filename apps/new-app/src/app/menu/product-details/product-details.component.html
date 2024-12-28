@@ -19,14 +19,16 @@
     }
     @if (product.description) {
       <div>
-        <b>{{ 'app.description' | translate }}:</b>
+        @if (!product.variants.length) {
+          <b>{{ 'app.description' | translate }}:</b>
+        }
         <p class="description outline-text">{{ product.description }}</p>
       </div>
     }
     @if (product.variants.length) {
       <mat-list #variantsList>
         @for (variant of product.variants; track variant.id; let last = $last) {
-          <mat-list-item>
+          <mat-list-item style="padding: 0">
             <span matListItemTitle>{{ variant.title }}</span>
             <span matListItemLine>
               @if (Product.hasDiscount(product, variant)) {
@@ -36,7 +38,7 @@
               }
               <span class="price">{{ Product.totalPrice(product, variant) | menuCurrency }}</span>
             </span>
-            <div matListItemMeta>
+            <div matListItemMeta style="margin: 0">
               <app-quantity-selector [product]="product" [variant]="variant" />
             </div>
           </mat-list-item>

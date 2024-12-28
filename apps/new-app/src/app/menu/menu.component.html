@@ -25,7 +25,9 @@
     <app-category-section [category]="category" />
   }
 </main>
-<app-footer />
+@if (!searching()) {
+  <app-footer />
+}
 @if (cart.length()) {
   <mat-toolbar @flyInOutFromDown fxLayout="row" id="actionbar" class="background-background" p-md>
     <a mat-flat-button fxFlex routerLink="/cart" class="large" max-center>{{

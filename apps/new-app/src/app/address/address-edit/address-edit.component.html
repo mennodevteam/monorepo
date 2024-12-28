@@ -56,7 +56,19 @@
     ></textarea>
     <mat-hint>{{ 'editAddress.addressHint' | translate }}</mat-hint>
   </mat-form-field>
-  <br>
+  <br />
+
+  <div fxLayout="row" fxLayoutGap="8px">
+    <mat-form-field>
+      <mat-label>{{ 'editAddress.unit' | translate }}</mat-label>
+      <input matInput formControlName="unit" type="text" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>{{ 'editAddress.ring' | translate }}</mat-label>
+      <input matInput formControlName="ring" type="text" />
+    </mat-form-field>
+  </div>
 
   @if (deliveryArea?.isPost || address?.postalCode) {
     <mat-form-field>

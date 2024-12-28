@@ -8,6 +8,8 @@ export class Address {
   latitude: number;
   longitude: number;
   description: string;
+  unit?: string;
+  ring?: string;
   user: User;
   deliveryArea?: DeliveryArea | null;
   postalCode?: string;

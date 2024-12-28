@@ -17,7 +17,8 @@
   &__description {
     font-size: 10px;
     display: -webkit-box;
-    max-width: 200px;
+    text-align: justify;
+    // max-width: 200px;
     max-height: 80px;
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
@@ -41,7 +42,6 @@
     span {
       display: block;
     }
-
   }
 }
 

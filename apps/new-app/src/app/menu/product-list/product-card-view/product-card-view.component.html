@@ -43,7 +43,7 @@
         @if (product.variants.length) {
           <mat-list>
             @for (variant of product.variants; track variant.id; let last = $last) {
-              <mat-list-item>
+              <mat-list-item style="padding: 0">
                 <span matListItemTitle>{{ variant.title }}</span>
                 <span matListItemLine>
                   <span>{{ Product.totalPrice(product, variant) | menuCurrency }}</span> &nbsp;
@@ -53,7 +53,7 @@
                     }}</span>
                   }
                 </span>
-                <div matListItemMeta>
+                <div matListItemMeta style="margin: 0">
                   <app-quantity-selector [product]="product" [variant]="variant" />
                 </div>
               </mat-list-item>

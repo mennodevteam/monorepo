@@ -67,6 +67,7 @@
   "cart": {
     "title": "سبد خرید",
     "complete": "تکمیل خرید",
+    "viewInvoiceAndComplete": "مشاهده فاکتور و تکمیل خرید",
     "addCoupon": "افزودن کد تخفیف",
     "removeCoupon": "حذف کد تخفیف",
     "sum": "مجموع آیتم‌ها",
@@ -156,7 +157,9 @@
     "stateLabel": "شهر",
     "titlePlaceholder": "مثلا: خونه",
     "addressLabel": "جزئیات آدرس",
-    "addressHint": "محله، کوچه، پلاک و واحد",
+    "addressHint": "محله، خیابان، کوچه",
+    "unit": "پلاک",
+    "ring": "واحد",
     "postalCode": "کد پستی"
   },
   "map": {

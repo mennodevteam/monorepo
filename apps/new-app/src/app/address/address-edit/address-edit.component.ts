@@ -73,6 +73,8 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
         region: new FormControl(this.address?.region),
         title: new FormControl(this.address?.title, Validators.required),
         description: new FormControl(this.address?.description, Validators.required),
+        unit: new FormControl(this.address?.unit, Validators.required),
+        ring: new FormControl(this.address?.ring, Validators.required),
         postalCode: new FormControl(this.address?.postalCode),
         latitude: new FormControl(this.coordinate?.[0], Validators.required),
         longitude: new FormControl(this.coordinate?.[1], Validators.required),

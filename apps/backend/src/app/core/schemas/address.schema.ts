@@ -18,6 +18,14 @@ export const AddressSchema = new EntitySchema<Address>({
       type: String,
       nullable: true,
     },
+    unit: {
+      type: String,
+      nullable: true,
+    },
+    ring: {
+      type: String,
+      nullable: true,
+    },
     postalCode: {
       type: String,
       nullable: true,
