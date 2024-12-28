@@ -9,7 +9,7 @@
     @if (addressesQuery.data()) {
       <mat-nav-list>
         @for (address of addressesQuery.data(); track address.id) {
-          <a mat-list-item [lines]="3" (click)="service.address.set(address)">
+          <a mat-list-item [lines]="3" (click)="selectAddress(address)">
             <span matListItemTitle>
               <i
                 class="{{
@@ -31,21 +31,6 @@
           </a>
         }
       </mat-nav-list>
-      <!-- <mat-radio-group fxLayout="column" [(ngModel)]="service.address">
-        @for (address of addressesQuery.data(); track address.id) {
-          <mat-radio-button [value]="address">
-            {{ address.description }}
-            @if (address.unit) {
-              {{ 'newOrder.addressUnit' | translate }}:
-              {{ address.unit }}
-            }
-            @if (address.ring) {
-              {{ 'newOrder.addressRing' | translate }}:
-              {{ address.ring }}
-            }
-          </mat-radio-button>
-        }
-      </mat-radio-group> -->
     } @else {
       <app-data-loading />
     }

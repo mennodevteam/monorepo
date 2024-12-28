@@ -6,7 +6,7 @@
     <h4>{{ order()?.createdAt | pdate: true }}</h4>
     <span fxFlex></span>
     <app-order-state-chip [state]="order()?.state" (stateChange)="stateChange($event)" />
-    <button mat-icon-button>
+    <button mat-icon-button routerLink="../../edit/{{ orderId() }}">
       <i class="fa-regular fa-edit"></i>
     </button>
     <button mat-icon-button>

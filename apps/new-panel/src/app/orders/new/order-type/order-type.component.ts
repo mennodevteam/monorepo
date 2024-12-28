@@ -18,4 +18,11 @@ export class OrderTypeComponent {
   readonly service = inject(NewOrdersService);
   readonly shop = inject(ShopService);
   OrderType = OrderType;
+
+  setType(type: OrderType) {
+    if (type != undefined) {
+      this.service.type.set(type);
+      this.service.dirty.set(true);
+    }
+  }
 }

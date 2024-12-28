@@ -2,6 +2,8 @@ import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import {
   Address,
   DiscountCoupon,
+  MANUAL_COST_TITLE,
+  MANUAL_DISCOUNT_TITLE,
   Order,
   OrderDto,
   OrderState,
@@ -34,16 +36,40 @@ export class NewOrdersService {
   discountCoupon = signal<DiscountCoupon | undefined>(undefined);
   type = signal<OrderType | undefined>(this.shop.data()?.appConfig?.orderingTypes[0]);
 
+  constructor() {
+    effect(() => {
+      const order = this.order();
+      if (order) {
+        this.type.set(order.type);
+        if (order.customer) this.customer.set(order.customer);
+        if (order.address) this.address.set(order.address);
+        const productItems = order.items
+          .filter((x) => !x.isAbstract && x.product)
+          .map((x) => ({
+            productId: x.product!.id,
+            productVariantId: x.productVariant?.id,
+            quantity: x.quantity,
+          }));
+        this.items.set(productItems);
+        const manualCost = order.items.find((x) => x.title === MANUAL_COST_TITLE && x.isAbstract);
+        if (manualCost) this.manualCost.set(manualCost.price);
+        const manualDiscount = order.items.find((x) => x.title === MANUAL_DISCOUNT_TITLE && x.isAbstract);
+        if (manualDiscount) this.manualDiscount.set(-manualDiscount.price);
+      }
+    });
+  }
+
   dto = computed(
     () =>
       ({
+        id: this.order()?.id,
         productItems: this.items(),
-        customerId: this.customer()?.id,
-        address: this.customer() && this.type() === OrderType.Delivery ? this.address() : undefined,
+        customerId: this.customer()?.id || null,
+        address: this.customer() && this.type() === OrderType.Delivery ? this.address() : null,
         manualCost: this.manualCost(),
         manualDiscount: this.manualDiscount(),
         type: this.type(),
-        state: OrderState.Pending,
+        state: !this.order() ? OrderState.Pending : undefined,
       }) as OrderDto,
   );
 

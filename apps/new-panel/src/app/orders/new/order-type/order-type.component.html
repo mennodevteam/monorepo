@@ -1,4 +1,8 @@
-<mat-button-toggle-group [(ngModel)]="service.type">
+<mat-button-toggle-group
+  (change)="setType($event.value)"
+  [value]="service.type()"
+  hideSingleSelectionIndicator
+>
   @for (type of shop.data()?.appConfig?.orderingTypes; track $index) {
     <mat-button-toggle [value]="type">
       @switch (type) {
@@ -12,9 +16,7 @@
           <i class="fa-solid middle fa-cart-shopping"></i>
         }
       }
-      @if (service.type() === type) {
-        {{ 'order.type.' + type | translate }}
-      }
+      {{ 'order.type.' + type | translate }}
     </mat-button-toggle>
   }
 </mat-button-toggle-group>

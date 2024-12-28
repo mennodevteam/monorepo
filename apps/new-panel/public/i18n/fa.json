@@ -152,6 +152,7 @@
   },
   "newOrder": {
     "newTitle": "ثبت سفارش جدید",
+    "editTitle": "ویرایش سفارش",
     "searchItemLabel": "اضافه کردن آیتم",
     "manualDiscount": "تخفیف دستی",
     "manualCost": "هزینه مازاد",

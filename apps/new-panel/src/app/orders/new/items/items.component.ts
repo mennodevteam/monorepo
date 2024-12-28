@@ -78,6 +78,7 @@ export class NewOrderItemsComponent {
     if (value) {
       this.service.add(value.product, value.variant);
       this.searchInput.set('');
+      this.service.dirty.set(true);
     }
   }
 }

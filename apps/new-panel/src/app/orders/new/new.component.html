@@ -1,47 +1,52 @@
 <mat-toolbar class="content-toolbar" fxLayoutGap="8px">
+  <button mat-icon-button goBack>
+    <i class="fa-regular fa-arrow-right"></i>
+  </button>
   <h3 fxFlex>
-    @if (service.order()) {
+    @if (orderId()) {
       {{ 'newOrder.editTitle' | translate }}
     } @else {
       {{ 'newOrder.newTitle' | translate }}
     }
   </h3>
-  @let orderingTypes = shop.data()?.appConfig?.orderingTypes || [];
-  @if (orderingTypes.length > 1) {
-    <app-order-type />
-  }
-  <button mat-button tabindex="-1">
-    {{ 'app.cancel' | translate }}
-  </button>
-  <button mat-flat-button tabindex="-1" (click)="save()" [disabled]="!service.dirty()">
+  <button mat-flat-button tabindex="-1" (click)="save()" [disabled]="!service.dirty() || saving()">
     {{ 'app.save' | translate }}
   </button>
 </mat-toolbar>
-<main p-md>
-  <div fxLayout.gt-md="row" fxLayout="column" fxLayoutGap="16px" fxLayoutAlign.gt-md="start start">
-    <div fxLayout="column" fxLayoutGap="16px" fxFlex>
-      <mat-card appearance="outlined" fxFlex>
-        <mat-card-content>
-          <app-new-order-items />
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-button (click)="setManualDiscount()">
-            <i class="fa-regular fa-badge-percent"></i>
-            {{ 'newOrder.manualDiscount' | translate }}
-          </button>
-          <button mat-button (click)="setManualCost()">
-            <i class="fa-regular fa-circle-dollar"></i>
-            {{ 'newOrder.manualCost' | translate }}
-          </button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
 
-    <div fxLayout="column" fxLayoutGap="16px" fxFlex.gt-md="360px">
-      <app-customer />
-      @if (service.type() === OrderType.Delivery && service.customer()) {
-        <app-address-list />
-      }
+@if (!orderId() || service.order()) {
+  <main p-md>
+    <div fxLayout.gt-md="row" fxLayout="column" fxLayoutGap="16px" fxLayoutAlign.gt-md="start start">
+      <div fxLayout="column" fxLayoutGap="16px" fxFlex>
+        <mat-card appearance="outlined" fxFlex>
+          <mat-card-content>
+            <app-new-order-items />
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button (click)="setManualDiscount()">
+              <i class="fa-regular fa-badge-percent"></i>
+              {{ 'newOrder.manualDiscount' | translate }}
+            </button>
+            <button mat-button (click)="setManualCost()">
+              <i class="fa-regular fa-circle-dollar"></i>
+              {{ 'newOrder.manualCost' | translate }}
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+      <div fxLayout="column" fxLayoutGap="16px" fxFlex.gt-md="360px">
+        @let orderingTypes = shop.data()?.appConfig?.orderingTypes || [];
+        @if (orderingTypes.length > 1) {
+          <app-order-type />
+        }
+        <app-customer />
+        @if (service.type() === OrderType.Delivery && service.customer()) {
+          <app-address-list />
+        }
+      </div>
     </div>
-  </div>
-</main>
+  </main>
+} @else {
+  <app-data-loading />
+}

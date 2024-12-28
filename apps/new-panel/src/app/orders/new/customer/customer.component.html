@@ -16,7 +16,7 @@
   </mat-card-content>
   @if (customer) {
     <mat-card-actions>
-      <button mat-button class="warn-theme" (click)="service.customer.set(undefined)">
+      <button mat-button class="warn-theme" (click)="clearMember()">
         <i class="fa-regular fa-xmark-circle"></i>
         {{ 'app.remove' | translate }}
       </button>

@@ -36,4 +36,8 @@ export class AddressListComponent {
       }
     });
   }
+
+  selectAddress(address: Address) {
+    this.service.address.set(address);
+  }
 }

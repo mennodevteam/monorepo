@@ -18,6 +18,14 @@ export class CustomerComponent {
   User = User;
 
   selectUser(member?: Member | null) {
-    if (member) this.service.customer.set(member.user);
+    if (member) {
+      this.service.customer.set(member?.user);
+      this.service.dirty.set(true);
+    }
+  }
+
+  clearMember() {
+    this.service.customer.set(undefined);
+    this.service.dirty.set(true);
   }
 }
