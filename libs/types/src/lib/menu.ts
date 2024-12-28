@@ -1,4 +1,5 @@
 import { MenuCost } from './menu-cost';
+import { OrderItem } from './order-item';
 import { OrderType } from './order-type.enum';
 import { Product } from './product';
 import { ProductCategory } from './product-category';
@@ -18,7 +19,7 @@ export class Menu {
     showInactive?: boolean,
     showEmpty?: boolean,
     star?: number,
-    isManual?: boolean
+    isManual?: boolean,
   ) {
     if (star != undefined) {
       menu.categories = menu.categories?.filter((x) => !x.star || star >= x.star);
@@ -27,14 +28,14 @@ export class Menu {
     if (orderType != undefined) {
       menu.categories = menu.categories?.filter(
         (x) =>
-          (showInactive || x.status !== Status.Inactive) && x.orderTypes && x.orderTypes.includes(orderType)
+          (showInactive || x.status !== Status.Inactive) && x.orderTypes && x.orderTypes.includes(orderType),
       );
       menu.costs = menu.costs?.filter(
         (x) =>
           (showInactive || x.status !== Status.Inactive) &&
           x.orderTypes &&
           x.orderTypes.includes(orderType) &&
-          (isManual == undefined || x.isManual == null || isManual === x.isManual)
+          (isManual == undefined || x.isManual == null || isManual === x.isManual),
       );
     }
     if (menu.costs) {
@@ -48,13 +49,13 @@ export class Menu {
             (x) =>
               (showInactive || x.status !== Status.Inactive) &&
               x.orderTypes &&
-              x.orderTypes.includes(orderType)
+              x.orderTypes.includes(orderType),
           );
         }
         cat.costs = menu.costs?.filter(
           (x) =>
             (!x.includeProduct?.length && !x.includeProductCategory?.length) ||
-            x.includeProductCategory.find((y) => y.id === cat.id)
+            x.includeProductCategory.find((y) => y.id === cat.id),
         );
         if (cat.products) {
           Product.sort(cat.products);
@@ -70,7 +71,7 @@ export class Menu {
               (x) =>
                 (!x.includeProduct?.length && !x.includeProductCategory?.length) ||
                 x.includeProductCategory?.find((y) => y.id === p.category.id) ||
-                x.includeProduct?.find((y) => y.id === p.id)
+                x.includeProduct?.find((y) => y.id === p.id),
             );
 
             if (p.variants) {
@@ -157,6 +158,22 @@ export class Menu {
       }
     }
     return products;
+  }
+
+  static searchOrderItem(menu: Menu, query?: string) {
+    const items: OrderItem[] = [];
+    if (menu.categories) {
+      for (const cat of menu.categories) {
+        if (cat.products) {
+          for (const product of cat.products) {
+            if (product.variants?.length) items.push(...product.variants.map((variant) => ({
+              title: `${product.title} ${variant.title}`
+            } as OrderItem)))
+          }
+        }
+      }
+    }
+    // return products;
   }
 
   static isBasedOrderType(menu: Menu) {

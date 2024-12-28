@@ -1,0 +1,22 @@
+<mat-toolbar class="content-toolbar" fxLayoutGap="8px">
+  <h3 fxFlex>
+    @if (service.order()) {
+      {{ 'newOrder.editTitle' | translate }}
+    } @else {
+      {{ 'newOrder.newTitle' | translate }}
+    }
+  </h3>
+  <button mat-button>
+    {{ 'app.cancel' | translate }}
+  </button>
+  <button mat-flat-button>
+    {{ 'app.save' | translate }}
+  </button>
+</mat-toolbar>
+<main p-md>
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <app-new-order-items />
+    </mat-card-content>
+  </mat-card>
+</main>

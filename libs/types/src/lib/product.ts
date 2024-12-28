@@ -60,6 +60,10 @@ export class Product {
     return Math.max(total, 0);
   }
 
+  static mainImageFile(product?: Product) {
+    return Array.isArray(product?.imageFiles) ? product.imageFiles[0] : product?.imageFiles;
+  }
+
   static totalPrice(product: Product, productVariant?: ProductVariant, round = 500) {
     let cost = 0;
     const price = productVariant ? productVariant.price : product.price;
