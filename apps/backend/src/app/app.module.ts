@@ -30,6 +30,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './core/http-exception.filter';
 import { HealthModule } from './health/health.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { BasalamModule } from './basalam/basalam.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -82,6 +83,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     WebPushNotificationModule,
     DingModule,
     WindowsLocalNotificationModule,
+    BasalamModule
   ],
   controllers: [AppController, AppRedirectController],
   providers: [

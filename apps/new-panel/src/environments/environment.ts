@@ -4,9 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://api.menno.pro',
-  // apiUrl: 'http://localhost:3000',
-  bucketUrl: 'https://menno.storage.iran.liara.space',
+  apiUrl: 'http://localhost:3000',
+  bucketUrl: 'https://test-menno.storage.iran.liara.space',
+  // apiUrl: 'https://api.menno.pro',
+  // bucketUrl: 'https://menno.storage.iran.liara.space',
 };
 
 /*

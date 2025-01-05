@@ -1,5 +1,6 @@
 export * from './address.schema';
 export * from './app-config.schema';
+export * from './basalam-oauth.schema';
 export * from './club.schema';
 export * from './delivery-area.schema';
 export * from './ding.schema';

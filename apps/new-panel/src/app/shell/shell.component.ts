@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { SHARED } from '../shared';
 import { AuthService } from '../auth/auth.service';
 import { MatMenuModule } from '@angular/material/menu';
+import { ShopService } from '../shop/shop.service';
 
 @Component({
   selector: 'app-shell',
@@ -28,4 +29,5 @@ import { MatMenuModule } from '@angular/material/menu';
 })
 export class ShellComponent {
   readonly auth = inject(AuthService);
+  readonly shop = inject(ShopService);
 }
