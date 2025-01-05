@@ -1,0 +1,65 @@
+<mat-toolbar class="page-toolbar">
+  <button mat-icon-button goBack>
+    <i class="fa-regular fa-arrow-right"></i>
+  </button>
+  <h1>{{ 'thirdParties.zibal.title' | translate }}</h1>
+</mat-toolbar>
+<main p-md w-md *ngIf="gatewayForm">
+  <div class="static-col">
+    <mat-card class="form-theme" appearance="outlined">
+      <mat-card-header>
+        <img src="assets/images/zibal.png" mat-card-avatar />
+        <mat-card-title>{{ 'thirdParties.zibal.title' | translate }}</mat-card-title>
+        <mat-card-subtitle>{{ 'thirdParties.zibal.description' | translate }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        <p>
+          {{ 'thirdParties.zibal.formDescription' | translate }}
+        </p>
+        <form [formGroup]="gatewayForm">
+          <mat-form-field appearance="fill">
+            <mat-label>{{ 'thirdParties.zibal.merchantId' | translate }}</mat-label>
+            <input matInput formControlName="merchantId" class="ltr eng" />
+          </mat-form-field>
+        </form>
+      </mat-card-content>
+      <mat-card-actions>
+        <ng-container *ngIf="gatewayForm.disabled">
+          <button mat-stroked-button color="primary" (click)="gatewayForm.enable()">
+            {{ 'app.edit' | translate }}
+          </button>
+          <button mat-button (click)="test()" *ngIf="gateway">
+            {{ 'thirdParties.zibal.test' | translate }}
+          </button>
+        </ng-container>
+        <ng-container *ngIf="!gatewayForm.disabled">
+          <button mat-flat-button color="accent" (click)="save()">
+            {{ 'app.save' | translate }}
+          </button>
+          <button mat-button (click)="initForm()">
+            {{ 'app.cancel' | translate }}
+          </button>
+        </ng-container>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div class="flex-col">
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <mat-nav-list>
+          <a mat-list-item href="https://zibal.ir/" target="_blank">
+            <span matListItemTitle>{{ 'thirdParties.zibal.site' | translate }}</span>
+            <span matListItemLine>{{ 'thirdParties.zibal.siteDescription' | translate }}</span>
+          </a>
+          <mat-divider></mat-divider>
+          <a mat-list-item href="https://panel.zibal.ir/" target="_blank">
+            <span matListItemTitle>{{ 'thirdParties.zibal.portal' | translate }}</span>
+            <span matListItemLine>{{ 'thirdParties.zibal.portalDescription' | translate }}</span>
+          </a>
+        </mat-nav-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</main>

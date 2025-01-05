@@ -46,6 +46,7 @@ import {
   WebPushSubscriptionSchema,
   WindowsLocalNotificationSchema,
   BasalamOAuthSchema,
+  BasalamProductSchema,
 } from './schemas';
 import { RedisService } from './redis.service';
 
@@ -55,6 +56,7 @@ import { RedisService } from './redis.service';
       AppConfigSchema,
       AddressSchema,
       BasalamOAuthSchema,
+      BasalamProductSchema,
       ClubSchema,
       DingSchema,
       DiscountCouponSchema,

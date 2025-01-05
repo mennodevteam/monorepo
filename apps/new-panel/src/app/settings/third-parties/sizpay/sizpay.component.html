@@ -1,0 +1,82 @@
+<mat-toolbar class="page-toolbar">
+  <button mat-icon-button goBack>
+    <i class="fa-regular fa-arrow-right"></i>
+  </button>
+  <h1>{{ 'thirdParties.sizpay.title' | translate }}</h1>
+</mat-toolbar>
+<main class="content-wrapper form-page-layout" *ngIf="gatewayForm">
+  <div class="static-col">
+    <mat-card class="form-theme">
+      <mat-card-header>
+        <img src="assets/images/sizpay.png" mat-card-avatar />
+        <mat-card-title>{{ 'thirdParties.sizpay.title' | translate }}</mat-card-title>
+        <mat-card-subtitle>{{ 'thirdParties.sizpay.description' | translate }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        <p>
+          {{ 'thirdParties.sizpay.formDescription' | translate }}
+        </p>
+        <form [formGroup]="gatewayForm">
+          <mat-form-field appearance="fill">
+            <mat-label>{{ 'thirdParties.sizpay.merchantId' | translate }}</mat-label>
+            <input matInput formControlName="merchantId" class="ltr eng" />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>{{ 'thirdParties.sizpay.terminalId' | translate }}</mat-label>
+            <input matInput formControlName="terminalId" class="ltr eng" />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>{{ 'thirdParties.sizpay.username' | translate }}</mat-label>
+            <input matInput type="password" formControlName="username" class="ltr eng" />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>{{ 'thirdParties.sizpay.password' | translate }}</mat-label>
+            <input matInput type="password" formControlName="password" class="ltr eng" />
+          </mat-form-field>
+        </form>
+      </mat-card-content>
+      <mat-card-actions>
+        <ng-container *ngIf="gatewayForm.disabled">
+          <button mat-stroked-button color="primary" (click)="gatewayForm.enable()">
+            {{ 'app.edit' | translate }}
+          </button>
+          <button mat-button (click)="test()" *ngIf="gateway">
+            {{ 'thirdParties.sizpay.test' | translate }}
+          </button>
+        </ng-container>
+        <ng-container *ngIf="!gatewayForm.disabled">
+          <button mat-flat-button color="accent" (click)="save()">
+            {{ 'app.save' | translate }}
+          </button>
+          <button mat-button (click)="initForm()">
+            {{ 'app.cancel' | translate }}
+          </button>
+        </ng-container>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div class="flex-col">
+    <mat-card>
+      <mat-card-content>
+        <mat-nav-list>
+          <a mat-list-item>
+            <span matListItemTitle>{{ 'thirdParties.sizpay.register' | translate }}</span>
+            <span matListItemLine>{{ 'thirdParties.sizpay.registerDescription' | translate }}</span>
+          </a>
+          <mat-divider></mat-divider>
+          <a mat-list-item href="https://www.sizpay.ir/" target="_blank">
+            <span matListItemTitle>{{ 'thirdParties.sizpay.site' | translate }}</span>
+            <span matListItemLine>{{ 'thirdParties.sizpay.siteDescription' | translate }}</span>
+          </a>
+          <mat-divider></mat-divider>
+          <a mat-list-item href="https://merchant.sizpay.ir/" target="_blank">
+            <span matListItemTitle>{{ 'thirdParties.sizpay.portal' | translate }}</span>
+            <span matListItemLine>{{ 'thirdParties.sizpay.portalDescription' | translate }}</span>
+          </a>
+        </mat-nav-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</main>
