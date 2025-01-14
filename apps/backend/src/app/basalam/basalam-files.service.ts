@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { BasalamOAuth } from '@menno/types';
 import { HttpService } from '@nestjs/axios';
 import { OauthService } from './oauth.service';
 import { Readable } from 'stream';
@@ -21,8 +20,6 @@ export type FileType =
 @Injectable()
 export class BasalamFilesService {
   constructor(
-    @InjectRepository(BasalamOAuth)
-    private readonly repo: Repository<BasalamOAuth>,
     private http: HttpService,
     private oauth: OauthService,
   ) {}

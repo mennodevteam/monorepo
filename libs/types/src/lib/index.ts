@@ -1,6 +1,5 @@
 export * from './address';
 export * from './app-config';
-export * from './basalam-oauth';
 export * from './basalam-products';
 export * from './change-password.dto';
 export * from './club';

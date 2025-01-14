@@ -45,7 +45,6 @@ import {
   WalletSchema,
   WebPushSubscriptionSchema,
   WindowsLocalNotificationSchema,
-  BasalamOAuthSchema,
   BasalamProductSchema,
 } from './schemas';
 import { RedisService } from './redis.service';
@@ -55,7 +54,6 @@ import { RedisService } from './redis.service';
     TypeOrmModule.forFeature([
       AppConfigSchema,
       AddressSchema,
-      BasalamOAuthSchema,
       BasalamProductSchema,
       ClubSchema,
       DingSchema,

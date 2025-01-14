@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { BasalamOAuth, Product } from '@menno/types';
+import { Product } from '@menno/types';
 import { HttpService } from '@nestjs/axios';
 import { BasalamFilesService } from './basalam-files.service';
 import { OauthService } from './oauth.service';
@@ -9,8 +7,6 @@ import { OauthService } from './oauth.service';
 @Injectable()
 export class BasalamProductService {
   constructor(
-    @InjectRepository(BasalamOAuth)
-    private readonly repo: Repository<BasalamOAuth>,
     private http: HttpService,
     private oauth: OauthService,
     private basalamFiles: BasalamFilesService,
@@ -35,5 +31,16 @@ export class BasalamProductService {
         headers: await this.oauth.getAuthorizationHeader(shopId),
       })
       .toPromise();
+  }
+
+  async getProductList(shopId: string) {
+    const res = await this.http
+      .get(`https://core.basalam.com/v3/products`, {
+        params: { vendor_ids: [shopId] },
+        headers: await this.oauth.getAuthorizationHeader(shopId),
+      })
+      .toPromise();
+
+    return res.data;
   }
 }

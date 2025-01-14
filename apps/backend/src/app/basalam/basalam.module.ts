@@ -6,9 +6,10 @@ import { OauthService } from './oauth.service';
 import { BasalamFilesService } from './basalam-files.service';
 import { FilesModule } from '../files/files.module';
 import { BasalamProductService } from './basalam-product.service';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [CoreModule, HttpModule, FilesModule],
+  imports: [CoreModule, HttpModule, FilesModule, AuthModule],
   controllers: [BasalamController],
   providers: [OauthService, BasalamFilesService, BasalamProductService],
 })

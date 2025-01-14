@@ -5,10 +5,14 @@ import { FilesService } from '../files/files.service';
 import { BasalamFilesService } from './basalam-files.service';
 import { Product } from '@menno/types';
 import { BasalamProductService } from './basalam-product.service';
+import { LoginUser } from '../auth/user.decorator';
+import { AuthPayload } from '../core/types/auth-payload';
+import { AuthService } from '../auth/auth.service';
 
 @Controller('basalam')
 export class BasalamController {
   constructor(
+    private readonly auth: AuthService,
     private readonly oauth: OauthService,
     private readonly filesService: FilesService,
     private readonly basalamFiles: BasalamFilesService,
@@ -17,19 +21,32 @@ export class BasalamController {
 
   @Public()
   @Get('auth')
-  async callback(@Query('code') code: string, @Query('state') state: string, @Req() req) {
-    return this.oauth.callback(code, state);
+  async callback(@Query('code') code: string, @Query('state') state: string, @Res() res) {
+    await this.oauth.callback(code, state);
+    res.redirect(`http://localhost:4200`);
   }
 
-  @Public()
-  @Get('uploadProductPhoto/:shopId/:imageKey')
-  async uploadProductPhoto(@Param('shopId') shopId: string, @Param('imageKey') imageKey: string) {
-    return this.basalamFiles.uploadFile(shopId, this.filesService.getUrl(imageKey), 'product.photo');
+  @Get('uploadProductPhoto/:imageKey')
+  async uploadProductPhoto(
+    @Param('shopId') shopId: string,
+    @Param('imageKey') imageKey: string,
+    @LoginUser() user: AuthPayload,
+  ) {
+    const shop = await this.auth.getPanelUserShop(user);
+    if (shop)
+      return this.basalamFiles.uploadFile(shop.id, this.filesService.getUrl(imageKey), 'product.photo');
   }
 
-  @Public()
-  @Post('updateProduct/:shopId/:id')
+  @Post('updateProduct/:id')
   updateProduct(@Body() body: Partial<Product>, @Param('id') id: string, @Param('shopId') shopId: string) {
     return this.basalamProductsService.updateProduct(shopId, Number(id), body);
+  }
+
+  @Get('products/list')
+  async productList(@LoginUser() user: AuthPayload) {
+    const shop = await this.auth.getPanelUserShop(user);
+    if (shop) {
+      return this.basalamProductsService.getProductList(shop.id);
+    }
   }
 }

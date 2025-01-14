@@ -1,0 +1,28 @@
+<mat-toolbar class="content-toolbar">
+  <button mat-icon-button goBack>
+    <i class="fa-regular fa-arrow-right"></i>
+  </button>
+  <h1 flex>{{ 'thirdParties.basalam.title' | translate }}</h1>
+</mat-toolbar>
+
+@if (thirdParty()) {
+  <app-basalam-products-table />
+} @else {
+  <main p-md w-xs>
+    <mat-card appearance="outlined">
+      <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+        <img src="images/basalam.jpg" class="logo" />
+        <h2>{{ 'thirdParties.basalam.title' | translate }}</h2>
+        <p>{{ 'thirdParties.basalam.description' | translate }}</p>
+        <a
+          mat-flat-button
+          href="https://basalam.com/accounts/sso?client_id=660&scope=vendor.profile.read customer.profile.read vendor.product.read&redirect_uri=http://localhost:3000/basalam/auth&state={{
+            shop.data()?.id
+          }}"
+        >
+          {{ 'thirdParties.setup' | translate }}
+        </a>
+      </mat-card-content>
+    </mat-card>
+  </main>
+}

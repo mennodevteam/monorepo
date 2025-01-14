@@ -3,6 +3,7 @@ import { Shop } from './shop';
 export enum ThirdPartyApp {
   Hami = 'hami',
   Alopeyk = 'alopeyk',
+  Basalam = 'basalam',
 }
 
 export class ThirdParty {
