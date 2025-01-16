@@ -48,7 +48,8 @@ export class OrdersService {
       if (dto.queryKey) {
         this.queryClient.cancelQueries({ queryKey: dto.queryKey });
         previousListData = this.queryClient.getQueryData<[Order[], number]>(dto.queryKey);
-        this.queryClient.setQueryData(dto.queryKey, (old: [Order[], number]) => {
+        this.queryClient.setQueryData(dto.queryKey, (oldData: [Order[], number]) => {
+          const old = structuredClone(oldData);
           const item = old[0].find((x) => x.id === dto.id);
           if (item) {
             item.state = dto.state;
@@ -61,8 +62,9 @@ export class OrdersService {
       const detailsQueryKey = ['orderDetails', dto.id];
       this.queryClient.cancelQueries({ queryKey: detailsQueryKey });
       const previousDetailsData = this.queryClient.getQueryData<Order>(detailsQueryKey);
-      this.queryClient.setQueryData(detailsQueryKey, (old: Order) => {
-        if (old) {
+      this.queryClient.setQueryData(detailsQueryKey, (oldData: Order) => {
+          const old = structuredClone(oldData);
+          if (old) {
           old.state = dto.state;
           return { ...old };
         }

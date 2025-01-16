@@ -17,6 +17,7 @@ export type PromptField = {
   hint?: string;
   placeholder?: string;
   rows?: number;
+  ltr?: boolean;
 };
 
 @Component({

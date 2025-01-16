@@ -68,6 +68,7 @@ export class NewOrdersService {
         address: this.customer() && this.type() === OrderType.Delivery ? this.address() : null,
         manualCost: this.manualCost(),
         manualDiscount: this.manualDiscount(),
+        isManual: this.order()?.isManual ?? true,
         type: this.type(),
         state: !this.order() ? OrderState.Pending : undefined,
       }) as OrderDto,

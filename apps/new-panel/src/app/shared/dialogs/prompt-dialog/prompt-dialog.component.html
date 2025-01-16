@@ -29,6 +29,7 @@
               [placeholder]="fields[key].placeholder || ''"
               [formControl]="fields[key].control"
               [rows]="fields[key].rows || 3"
+              [attr.ltr]="fields[key].ltr"
             ></textarea>
           }
           @case ('select') {
@@ -44,6 +45,7 @@
               [placeholder]="fields[key].placeholder || ''"
               [formControl]="fields[key].control"
               [type]="fields[key].type || 'text'"
+              [attr.ltr]="fields[key].ltr"
             />
           }
         }

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Menu, Product, ProductCategory, Status } from '@menno/types';
+import { Menu, Product, ProductCategory } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { injectMutation, injectQuery, injectQueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
@@ -30,33 +30,44 @@ export class MenuService {
   private query = injectQuery(() => ({
     queryKey: QUERY_KEY,
     queryFn: () => lastValueFrom(this.http.get<Menu>('/menus')),
-    select: (data) => {
-      if (data) {
-        Menu.setRefsAndSort(data);
-        return { ...data };
-      }
-      return;
-    },
   }));
 
   data = computed(() => {
-    return this.query.data();
+    const data = this.query.data();
+    if (data) {
+      const cloned = structuredClone(data);
+      Menu.setRefsAndSort(cloned, undefined, true, true);
+      return { ...cloned };
+    }
+    return;
   });
 
   categories = computed(() => {
-    const data = this.query.data();
-    return data?.categories;
+    return this.data()?.categories;
   });
 
   saveProductMutation = injectMutation(() => ({
-    mutationFn: (dto: Partial<Product>) => lastValueFrom(this.http.post<Product>(`/products`, dto)),
+    mutationFn: (dto: Partial<Product>) => {
+      return lastValueFrom(this.http.post<Product>(`/products`, dto));
+    },
     onMutate: (dto) => {
       this.queryClient.cancelQueries({ queryKey: QUERY_KEY });
       const previousData = this.queryClient.getQueryData<Menu>(QUERY_KEY);
-      this.queryClient.setQueryData(QUERY_KEY, (old: Menu) => {
+      this.queryClient.setQueryData(QUERY_KEY, (oldData: Menu) => {
+        const old = structuredClone(oldData);
         if (dto.id) {
           const product = Menu.getProductById(old, dto.id);
           if (product) {
+            dto.variants = dto.variants?.map((variant) => {
+              if (variant.id) {
+                const exist = product.variants?.find((x) => x.id === variant.id);
+                if (exist) {
+                  Object.assign(exist, variant);
+                  return exist;
+                }
+              }
+              return variant;
+            });
             Object.assign(product, dto);
             return { ...old };
           }
@@ -85,7 +96,8 @@ export class MenuService {
     onMutate: (dto) => {
       this.queryClient.cancelQueries({ queryKey: QUERY_KEY });
       const previousData = this.queryClient.getQueryData<Menu>(QUERY_KEY);
-      this.queryClient.setQueryData(QUERY_KEY, (old: Menu) => {
+      this.queryClient.setQueryData(QUERY_KEY, (oldData: Menu) => {
+        const old = structuredClone(oldData);
         const category = old.categories?.find((x) => x.id === dto.categoryId);
         if (category) {
           const products = category.products;
@@ -120,7 +132,8 @@ export class MenuService {
     onMutate: (dto) => {
       this.queryClient.cancelQueries({ queryKey: QUERY_KEY });
       const previousData = this.queryClient.getQueryData<Menu>(QUERY_KEY);
-      this.queryClient.setQueryData(QUERY_KEY, (old: Menu) => {
+      this.queryClient.setQueryData(QUERY_KEY, (oldData: Menu) => {
+        const old = structuredClone(oldData);
         if (dto.id) {
           if (old.categories) {
             const index = old.categories.findIndex((x) => x.id === dto.id);
@@ -156,7 +169,8 @@ export class MenuService {
     onMutate: (dto) => {
       this.queryClient.cancelQueries({ queryKey: QUERY_KEY });
       const previousData = this.queryClient.getQueryData<Menu>(QUERY_KEY);
-      this.queryClient.setQueryData(QUERY_KEY, (old: Menu) => {
+      this.queryClient.setQueryData(QUERY_KEY, (oldData: Menu) => {
+        const old = structuredClone(oldData);
         const categories = old.categories;
         if (categories) {
           for (const category of categories) {
