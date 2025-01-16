@@ -1,14 +1,7 @@
-<table
-  mat-table
-  [dataSource]="category()?.products || []"
-  cdkDropList
-  (cdkDropListDropped)="drop($event)"
-  cdkDropListData="dataSource"
->
+<table mat-table [dataSource]="category()?.products || []">
   <ng-container matColumnDef="index">
     <th mat-header-cell *matHeaderCellDef>{{ 'app.index' | translate }}</th>
     <td mat-cell *matCellDef="let product; let i = index" style="width: 72px">
-      <i class="fa-solid fa-grip-dots-vertical middle" cdkDragHandle></i>
       <span eng>
         {{ i + 1 }}
       </span>
@@ -118,7 +111,7 @@
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns" cdkDrag></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </table>
 
 @if (category()?.products?.length === 0) {

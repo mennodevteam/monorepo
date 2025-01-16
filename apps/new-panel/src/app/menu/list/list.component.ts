@@ -11,7 +11,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { ProductCategory } from '@menno/types';
-import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { DialogService } from '../../core/services/dialog.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-menu-list',
@@ -27,8 +28,6 @@ import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk
     MatFormFieldModule,
     MatInputModule,
     MatChipsModule,
-    CdkDropList,
-    CdkDrag,
   ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
@@ -36,6 +35,8 @@ import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk
 export class MenuListComponent {
   searchInput = signal('');
   menuService = inject(MenuService);
+  dialog = inject(DialogService);
+  t = inject(TranslateService);
   categories = computed(() => {
     const query = this.searchInput();
     if (query) {
@@ -61,12 +62,16 @@ export class MenuListComponent {
     if (categoryElement) categoryElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  moveCategory(event: CdkDragDrop<any>) {
-    const categories = this.categories();
-    if (categories) {
-      moveItemInArray(categories, event.previousIndex, event.currentIndex);
-      const ids = categories.map((x) => x.id);
-      this.menuService.sortCategoriesMutation.mutate(ids);
-    }
+  openSortCategoriesDialog() {
+    const categories = this.menuService.categories();
+    if (categories)
+      this.dialog
+        .sort(
+          this.t.instant('menu.sortCategories'),
+          categories.map((item) => ({ id: item.id, text: item.title })),
+        )
+        .then((data) => {
+          if (data) this.menuService.sortCategoriesMutation.mutate(data.map((x: ProductCategory) => x.id));
+        });
   }
 }

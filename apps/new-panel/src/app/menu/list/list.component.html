@@ -1,5 +1,17 @@
-<mat-toolbar class="content-toolbar">
-  <h1>{{ 'menu.title' | translate }}</h1>
+<mat-toolbar class="content-toolbar" fxLayoutGap="8px">
+  <h1 fxFlex>{{ 'menu.title' | translate }}</h1>
+  <button mat-button (click)="openSortCategoriesDialog()">
+    <i class="fa-regular fa-sort"></i>
+    <span fxHide.xs>
+      {{ 'menu.sortCategories' | translate }}
+    </span>
+  </button>
+  <button mat-stroked-button>
+    <i class="fa-regular fa-plus"></i>
+    <span fxHide.xs>
+      {{ 'menu.addCategory' | translate }}
+    </span>
+  </button>
 </mat-toolbar>
 <main p-md>
   <div fxLayout="row">
@@ -10,17 +22,17 @@
   </div>
   @let cats = categories();
   @if (cats && cats.length > 1) {
-    <mat-chip-set cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="moveCategory($event)">
+    <mat-chip-set>
       @for (category of cats; track category.id) {
-        <mat-chip (click)="scrollTo(category)" cdkDrag>
+        <mat-chip (click)="scrollTo(category)">
           @if (category.faIcon) {
-            <i class="fa-solid fa-{{category.faIcon}}"></i>
+            <i class="fa-solid fa-{{ category.faIcon }}"></i>
           }
-          {{category.title}}
+          {{ category.title }}
         </mat-chip>
       }
     </mat-chip-set>
-    <br>
+    <br />
   }
   @if (cats) {
     <div fxLayout="column" fxLayoutGap="24px">

@@ -7,6 +7,7 @@ import {
 import { AlertDialogComponent } from '../../shared/dialogs/alert-dialog/alert-dialog.component';
 import { ImageCropperDialogComponent } from '../../shared/dialogs/image-cropper-dialog/image-cropper-dialog.component';
 import { CropperOptions } from 'ngx-image-cropper';
+import { SortDialogComponent, SortItem } from '../../shared/dialogs/sort-dialog/sort-dialog.component';
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +35,17 @@ export class DialogService {
       .open(AlertDialogComponent, {
         ...extra?.config,
         data: { title, description },
+      })
+      .afterClosed()
+      .toPromise();
+  }
+
+  async sort(title: string, items: SortItem[], extra?: { config?: MatDialogConfig }) {
+    return this.dialog
+      .open(SortDialogComponent, {
+        disableClose: true,
+        ...extra?.config,
+        data: { title, items },
       })
       .afterClosed()
       .toPromise();

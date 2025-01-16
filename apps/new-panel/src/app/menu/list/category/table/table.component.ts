@@ -1,6 +1,6 @@
-import { Component, effect, inject, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Menu, MenuCost, Product, ProductCategory, ProductVariant, Status } from '@menno/types';
+import { MenuCost, Product, ProductCategory, ProductVariant, Status } from '@menno/types';
 import { SHARED } from '../../../../shared';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
@@ -10,22 +10,11 @@ import { PromptFields } from '../../../../shared/dialogs/prompt-dialog/prompt-di
 import { FormControl, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../../core/services/dialog.service';
-import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { injectQueryClient } from '@tanstack/angular-query-experimental';
 const COLS = ['index', 'image', 'title', 'price', 'costs', 'status', 'actions'];
 @Component({
   selector: 'app-product-table',
   standalone: true,
-  imports: [
-    CommonModule,
-    SHARED,
-    MatTableModule,
-    MatChipsModule,
-    MenuStatusChipComponent,
-    CdkDropList,
-    CdkDrag,
-    CdkDragHandle,
-  ],
+  imports: [CommonModule, SHARED, MatTableModule, MatChipsModule, MenuStatusChipComponent],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })
@@ -89,22 +78,6 @@ export class ProductTableComponent {
         this.menu.saveProductMutation.mutate({ id: product.id, variants });
       }
     });
-  }
-
-  async drop(event: CdkDragDrop<any>) {
-    if (
-      await this.dialog.alert(
-        this.t.instant('menu.sortProductDialog.title'),
-        this.t.instant('menu.sortProductDialog.description'),
-      )
-    ) {
-      const previousIndex = event.previousIndex;
-      const ids = this.category()?.products?.map((x) => x.id);
-      if (ids && previousIndex != undefined) {
-        moveItemInArray(ids, previousIndex, event.currentIndex);
-        this.menu.sortProductsMutation.mutate({ ids, categoryId: this.category()!.id });
-      }
-    }
   }
 
   editCost(cost: MenuCost) {

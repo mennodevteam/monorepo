@@ -5,6 +5,12 @@
         <i class="fa-solid fa-{{ category()?.faIcon }}"></i>
       }
       {{ category()?.title }}
+      <button mat-button routerLink="../product" [queryParams]="{ categoryId: category()?.id }">
+        <i class="fa-regular fa-edit fa-sm"></i>
+        <span fxHide.xs>
+          {{ 'menu.editCategory' | translate }}
+        </span>
+      </button>
     </mat-card-title>
   </mat-card-header>
   <mat-card-actions fxLayoutGap="8px">
@@ -14,10 +20,10 @@
         {{ 'menu.addProduct' | translate }}
       </span>
     </button>
-    <button mat-button routerLink="../product" [queryParams]="{ categoryId: category()?.id }">
-      <i class="fa-regular fa-edit fa-sm"></i>
+    <button mat-button (click)="openSortItemsDialog()">
+      <i class="fa-regular fa-sort fa-sm"></i>
       <span fxHide.xs>
-        {{ 'menu.editCategory' | translate }}
+        {{ 'menu.sortProducts' | translate: { value: '' } }}
       </span>
     </button>
     <app-menu-status-chip
