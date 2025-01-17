@@ -5,6 +5,7 @@
     "type": "نوع",
     "all": "همه",
     "save": "ذخیره",
+    "edit": "ویرایش",
     "ok": "تایید",
     "cancel": "انصراف",
     "count": "تعداد",
@@ -265,5 +266,27 @@
     "icon": "آیکون دسته‌بندی",
     "iconHint": "جستجو آیکو‌ن‌ها در سایت",
     "iconPlaceholder": "مثلا: mug-hot..."
+  },
+  "shop": {
+    "baseSection": "اطلاعات پایه",
+    "title": "عنوان مجموعه",
+    "businessCategory": "نوع مجموعه",
+    "description": "توضیحات مجموعه",
+    "descriptionHint": "توضیحات در صفحه اصلی به کاربر نمایش داده می‌شود.",
+    "addressSection": "آدرس",
+    "regionState": "استان",
+    "region": "شهر",
+    "address": "آدرس متنی",
+    "locationDraft": "با کلیک روی نقشه موقعیت را مشخص کنید و سپس ذخیره کنید",
+    "location": "موقعیت مکانی",
+    "logo": "لوگو مجموعه",
+    "connectionSection": "راه‌های ارتباطی",
+    "phonesLabel": "شماره‌های تماس",
+    "phonesPlaceholder": "همراه با پیش شماره...",
+    "phonesHint": "با enter شماره جدید وارد کنید",
+    "instagram": "آی‌دی اینستاگرام",
+    "instagramHint": "بدون @",
+    "moreSection": "سایر اطلاعات",
+    "openingHours": "ساعات کاری مجموعه"
   }
 }

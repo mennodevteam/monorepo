@@ -1,0 +1,94 @@
+<form p-md w-md [formGroup]="form">
+  <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="16px">
+    <div fxLayout="column" fxLayoutGap="16px" fxFlex.gt-sm>
+      <mat-card appearance="outlined">
+        <mat-card-header>
+          <mat-card-title>
+            {{ 'shop.baseSection' | translate }}
+          </mat-card-title>
+        </mat-card-header>
+        <br />
+        <mat-card-content fxLayout="column">
+          <mat-form-field>
+            <mat-label>{{ 'shop.title' | translate }}</mat-label>
+            <input matInput formControlName="title" required />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label> {{ 'shop.businessCategory' | translate }} </mat-label>
+            <mat-select matInput formControlName="businessCategory">
+              <mat-option *ngFor="let cat of categories" [value]="cat">
+                {{ cat | businessCategory }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>{{ 'shop.description' | translate }}</mat-label>
+            <textarea matInput rows="3" formControlName="description"></textarea>
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div fxLayout="column" fxLayoutGap="16px" fxFlex.gt-sm="360px">
+      <mat-card appearance="outlined">
+        <mat-card-header>
+          <mat-card-title>
+            {{ 'shop.logo' | translate }}
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          @let image = form.controls.logoImage.value;
+          @if (image?.base64) {
+            <img id="logo" [src]="image.base64" />
+          } @else {
+            <img id="logo" imageLoader [imageFile]="image" imageSize="sm" />
+          }
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button (click)="editLogo()">
+            <i class="fa-regular fa-edit"></i>
+            {{ 'app.edit' | translate }}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <mat-card appearance="outlined">
+        <mat-card-header>
+          <mat-card-title>
+            {{ 'shop.connectionSection' | translate }}
+          </mat-card-title>
+        </mat-card-header>
+        <br />
+        <mat-card-content fxLayout="column" fxLayoutGap="16px">
+          <mat-form-field>
+            <mat-label>{{ 'shop.phonesLabel' | translate }}</mat-label>
+            <mat-chip-grid #chipGrid>
+              <mat-chip-row
+                *ngFor="let phone of form.controls['phones'].value"
+                (removed)="removePhone(phone)"
+              >
+                {{ phone }}
+                <button matChipRemove>
+                  <i class="fa-regular fa-close"></i>
+                </button>
+              </mat-chip-row>
+              <input
+                placeholder="{{ 'shop.phonesPlaceholder' | translate }}"
+                [matChipInputFor]="chipGrid"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                [matChipInputAddOnBlur]="true"
+                (matChipInputTokenEnd)="addPhone($event)"
+              />
+            </mat-chip-grid>
+            <mat-hint>{{ 'shop.phonesHint' | translate }}</mat-hint>
+          </mat-form-field>
+          <div spacer></div>
+          <mat-form-field>
+            <mat-label>{{ 'shop.instagram' | translate }}</mat-label>
+            <input matInput formControlName="instagram" />
+            <mat-hint>{{ 'shop.instagramHint' | translate }}</mat-hint>
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</form>
