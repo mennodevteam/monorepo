@@ -23,10 +23,19 @@
   @let cats = categories();
   @if (cats && cats.length > 1) {
     <mat-chip-set>
+      <mat-chip class="primary-chip" (click)="editCategory()">
+        <i class="fa-regular fa-plus"></i>
+        {{ 'menu.addCategory' | translate }}
+      </mat-chip>
+      <mat-chip class="primary-chip" (click)="openSortCategoriesDialog()">
+        <i class="fa-regular fa-sort"></i>
+        {{ 'menu.sortCategories' | translate }}
+      </mat-chip>
+      <mat-divider vertical />
       @for (category of cats; track category.id) {
         <mat-chip (click)="scrollTo(category)">
           @if (category.faIcon) {
-            <i class="fa-solid fa-{{ category.faIcon }}"></i>
+            <i class="fa-regular fa-{{ category.faIcon }}"></i>
           }
           {{ category.title }}
         </mat-chip>
@@ -37,7 +46,7 @@
   @if (cats) {
     <div fxLayout="column" fxLayoutGap="24px">
       @for (category of cats; track category.id) {
-        <app-menu-category [category]="category" />
+        <app-menu-category [category]="category" (categoryEditClick)="editCategory($event)" />
       }
     </div>
   } @else {

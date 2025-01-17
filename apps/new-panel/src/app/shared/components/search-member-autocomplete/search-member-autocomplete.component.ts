@@ -39,7 +39,7 @@ export class SearchMemberAutocompleteComponent {
       lastValueFrom(
         this.http.post<[Member[], number]>('/members/filter', {
           query: this.searchQuery(),
-          take: 5,
+          take: 25,
         } as FilterMemberDto),
       ),
     enabled: this.searchQuery().length > 2,

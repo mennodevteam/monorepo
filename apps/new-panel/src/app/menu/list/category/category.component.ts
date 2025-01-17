@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SHARED } from '../../../shared';
 import { MatCardModule } from '@angular/material/card';
@@ -30,6 +30,7 @@ export class MenuCategoryComponent {
   private readonly menu = inject(MenuService);
   private readonly t = inject(TranslateService);
   category = input<ProductCategory>();
+  categoryEditClick = output<ProductCategory | undefined>();
   statusChange(status: Status) {
     this.menu.saveCategoryMutation.mutate({ id: this.category()!.id, status });
   }

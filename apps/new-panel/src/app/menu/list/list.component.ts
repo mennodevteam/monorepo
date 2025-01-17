@@ -13,6 +13,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { ProductCategory } from '@menno/types';
 import { DialogService } from '../../core/services/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
+import { MatDialog } from '@angular/material/dialog';
+import { CategoryFormDialogComponent } from '../category-form-dialog/category-form-dialog.component';
 
 @Component({
   selector: 'app-menu-list',
@@ -36,6 +38,7 @@ export class MenuListComponent {
   searchInput = signal('');
   menuService = inject(MenuService);
   dialog = inject(DialogService);
+  matDialog = inject(MatDialog);
   t = inject(TranslateService);
   categories = computed(() => {
     const query = this.searchInput();
@@ -73,5 +76,13 @@ export class MenuListComponent {
         .then((data) => {
           if (data) this.menuService.sortCategoriesMutation.mutate(data.map((x: ProductCategory) => x.id));
         });
+  }
+
+  editCategory(category?: ProductCategory) {
+    this.matDialog.open(CategoryFormDialogComponent, {
+      data: category,
+      width: '360px',
+      disableClose: true
+    });
   }
 }

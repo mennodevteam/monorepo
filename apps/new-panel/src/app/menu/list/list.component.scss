@@ -1,0 +1,9 @@
+.primary-chip {
+  color: var(--mat-sys-primary) !important;
+}
+
+mat-chip-set {
+  mat-divider {
+    margin-inline-start: 8px;
+  }
+}

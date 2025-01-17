@@ -1,0 +1,49 @@
+<h3 mat-dialog-title>
+  @if (data) {
+    {{ 'categoryDialog.editTitle' | translate: { value: data.title } }}
+  } @else {
+    {{ 'categoryDialog.newTitle' | translate }}
+  }
+</h3>
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <mat-dialog-content fxLayout="column">
+    <mat-form-field>
+      <mat-label>
+        {{ 'app.title' | translate }}
+      </mat-label>
+      <input matInput formControlName="title" required />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>
+        {{ 'categoryDialog.icon' | translate }}
+      </mat-label>
+      <input
+        matInput
+        placeholder="{{ 'categoryDialog.iconPlaceholder' | translate }}"
+        formControlName="faIcon"
+        ltr
+        eng
+      />
+      <i matIconSuffix class="fa-regular mat-icon fa-{{ form.controls.faIcon.value }}"></i>
+      <mat-hint>
+        {{ 'categoryDialog.iconHint' | translate }}
+        <a href="https://fontawesome.com/" target="_blank">fontawesome</a>
+      </mat-hint>
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+      <mat-label>
+        {{ 'app.description' | translate }}
+      </mat-label>
+      <textarea rows="3" matInput formControlName="description"></textarea>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button type="button" matDialogClose>
+      {{ 'app.cancel' | translate }}
+    </button>
+    <button mat-flat-button type="submit">
+      {{ 'app.save' | translate }}
+    </button>
+  </mat-dialog-actions>
+</form>

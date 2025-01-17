@@ -1,23 +1,22 @@
 <mat-card appearance="outlined" id="category_{{ category()?.id }}">
-  <mat-card-header>
-    <mat-card-title>
+  <mat-card-actions fxLayoutGap="8px">
+    <h3 fxFlex>
       @if (category()?.faIcon) {
-        <i class="fa-solid fa-{{ category()?.faIcon }}"></i>
+        <i class="fa-regular fa-{{ category()?.faIcon }}"></i>
       }
       {{ category()?.title }}
-      <button mat-button routerLink="../product" [queryParams]="{ categoryId: category()?.id }">
-        <i class="fa-regular fa-edit fa-sm"></i>
-        <span fxHide.xs>
-          {{ 'menu.editCategory' | translate }}
-        </span>
-      </button>
-    </mat-card-title>
-  </mat-card-header>
+    </h3>
+    <app-menu-status-chip
+      title="{{ 'menu.category' | translate }}"
+      [status]="category()?.status"
+      (statusChange)="statusChange($event)"
+    />
+  </mat-card-actions>
   <mat-card-actions fxLayoutGap="8px">
-    <button mat-stroked-button routerLink="../product" [queryParams]="{ categoryId: category()?.id }">
-      <i class="fa-regular fa-plus fa-sm"></i>
+    <button mat-button (click)="categoryEditClick.emit(category())">
+      <i class="fa-regular fa-edit fa-sm"></i>
       <span fxHide.xs>
-        {{ 'menu.addProduct' | translate }}
+        {{ 'menu.editCategory' | translate }}
       </span>
     </button>
     <button mat-button (click)="openSortItemsDialog()">
@@ -26,11 +25,13 @@
         {{ 'menu.sortProducts' | translate: { value: '' } }}
       </span>
     </button>
-    <app-menu-status-chip
-      title="{{ 'menu.category' | translate }}"
-      [status]="category()?.status"
-      (statusChange)="statusChange($event)"
-    />
+    <span fxFlex></span>
+    <button mat-stroked-button routerLink="../product" [queryParams]="{ categoryId: category()?.id }">
+      <i class="fa-regular fa-plus fa-sm"></i>
+      <span fxHide.xs>
+        {{ 'menu.addProduct' | translate }}
+      </span>
+    </button>
   </mat-card-actions>
   <mat-divider />
   <mat-card-content>

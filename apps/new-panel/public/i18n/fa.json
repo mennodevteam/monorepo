@@ -258,5 +258,12 @@
   },
   "sortDialog": {
     "description": "با کشیدن آیتم‌ها (drag drop) آنها را جابجا کنید"
+  },
+  "categoryDialog": {
+    "editTitle": "ویرایش {{value}}",
+    "newTitle": "افزودن دسته‌بندی جدید",
+    "icon": "آیکون دسته‌بندی",
+    "iconHint": "جستجو آیکو‌ن‌ها در سایت",
+    "iconPlaceholder": "مثلا: mug-hot..."
   }
 }
