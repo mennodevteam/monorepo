@@ -1,62 +1,69 @@
-<main p-md w-xs>
+<mat-drawer-container>
+  <mat-drawer mode="side" opened disableClose>
+    <mat-nav-list>
+      <a mat-list-item routerLink="shop">
+        <i matListItemIcon class="fa-solid fa-store"></i>
+        <span matListItemTitle>{{ 'settings.shop' | translate }}</span>
+      </a>
+      <mat-divider></mat-divider>
+      <a mat-list-item routerLink="app-config">
+        <i matListItemIcon class="fa-solid fa-palette"></i>
+        <span matListItemTitle>{{ 'settings.appConfig' | translate }}</span>
+      </a>
+      <mat-divider />
+      <a mat-list-item routerLink="order-config">
+        <i matListItemIcon class="fa-solid fa-receipt"></i>
+        <span matListItemTitle>{{ 'settings.orderConfig' | translate }}</span>
+      </a>
+      <mat-divider></mat-divider>
+      <a mat-list-item routerLink="sms">
+        <i matListItemIcon class="fa-solid fa-message-smile"></i>
+        <span matListItemTitle>{{ 'orderMessagesSetting.title' | translate }}</span>
+      </a>
+      <mat-divider></mat-divider>
+      <a mat-list-item routerLink="printers">
+        <i matListItemIcon class="fa-solid fa-print"></i>
+        <span matListItemTitle>{{ 'settings.printers' | translate }}</span>
+      </a>
+      <mat-divider></mat-divider>
+      <a mat-list-item routerLink="delivery-areas">
+        <i matListItemIcon class="fa-solid fa-map-location-dot"></i>
+        <span matListItemTitle>{{ 'settings.deliveryAreas' | translate }}</span>
+      </a>
+      <mat-divider></mat-divider>
+      <a mat-list-item routerLink="users">
+        <i matListItemIcon class="fa-solid fa-users"></i>
+        <span matListItemTitle>{{ 'settings.users' | translate }}</span>
+      </a>
+      <mat-divider></mat-divider>
+      <a mat-list-item routerLink="qr">
+        <i matListItemIcon class="fa-solid fa-qrcode"></i>
+        <span matListItemTitle>{{ 'settings.qr' | translate }}</span>
+      </a>
+      <mat-divider></mat-divider>
+      <a mat-list-item>
+        <i matListItemIcon class="fa-solid fa-key"></i>
+        <span matListItemTitle>{{ 'settings.changePassword' | translate }}</span>
+      </a>
+      <mat-divider></mat-divider>
+      <a mat-list-item>
+        <i matListItemIcon class="fa-solid fa-credit-card"></i>
+        <span matListItemTitle>{{ 'settings.poses' | translate }}</span>
+      </a>
+      <mat-divider></mat-divider>
+      <a mat-list-item routerLink="third-parties">
+        <i matListItemIcon class="fa-solid fa-puzzle-piece"></i>
+        <span matListItemTitle>{{ 'settings.thirdParties' | translate }}</span>
+      </a>
+    </mat-nav-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    <router-outlet />
+  </mat-drawer-content>
+</mat-drawer-container>
+<!-- <main p-md w-xs>
   <mat-card appearance="outlined">
     <mat-card-content>
-      <mat-nav-list>
-        <a mat-list-item routerLink="shop">
-          <i matListItemIcon class="fa-solid fa-store"></i>
-          <span matListItemTitle>{{ 'settings.shop' | translate }}</span>
-        </a>
-        <mat-divider></mat-divider>
-        <a mat-list-item routerLink="app-config">
-          <i matListItemIcon class="fa-solid fa-palette"></i>
-          <span matListItemTitle>{{ 'settings.appConfig' | translate }}</span>
-        </a>
-        <mat-divider />
-        <a mat-list-item routerLink="order-config">
-          <i matListItemIcon class="fa-solid fa-receipt"></i>
-          <span matListItemTitle>{{ 'settings.orderConfig' | translate }}</span>
-        </a>
-        <mat-divider></mat-divider>
-        <a mat-list-item routerLink="sms">
-          <i matListItemIcon class="fa-solid fa-message-smile"></i>
-          <span matListItemTitle>{{ 'orderMessagesSetting.title' | translate }}</span>
-        </a>
-        <mat-divider></mat-divider>
-        <a mat-list-item routerLink="printers">
-          <i matListItemIcon class="fa-solid fa-print"></i>
-          <span matListItemTitle>{{ 'settings.printers' | translate }}</span>
-        </a>
-        <mat-divider></mat-divider>
-        <a mat-list-item routerLink="delivery-areas">
-          <i matListItemIcon class="fa-solid fa-map-location-dot"></i>
-          <span matListItemTitle>{{ 'settings.deliveryAreas' | translate }}</span>
-        </a>
-        <mat-divider></mat-divider>
-        <a mat-list-item routerLink="users">
-          <i matListItemIcon class="fa-solid fa-users"></i>
-          <span matListItemTitle>{{ 'settings.users' | translate }}</span>
-        </a>
-        <mat-divider></mat-divider>
-        <a mat-list-item routerLink="qr">
-          <i matListItemIcon class="fa-solid fa-qrcode"></i>
-          <span matListItemTitle>{{ 'settings.qr' | translate }}</span>
-        </a>
-        <mat-divider></mat-divider>
-        <a mat-list-item>
-          <i matListItemIcon class="fa-solid fa-key"></i>
-          <span matListItemTitle>{{ 'settings.changePassword' | translate }}</span>
-        </a>
-        <mat-divider></mat-divider>
-        <a mat-list-item>
-          <i matListItemIcon class="fa-solid fa-credit-card"></i>
-          <span matListItemTitle>{{ 'settings.poses' | translate }}</span>
-        </a>
-        <mat-divider></mat-divider>
-        <a mat-list-item routerLink="third-parties">
-          <i matListItemIcon class="fa-solid fa-puzzle-piece"></i>
-          <span matListItemTitle>{{ 'settings.thirdParties' | translate }}</span>
-        </a>
-      </mat-nav-list>
     </mat-card-content>
   </mat-card>
-</main>
+</main> -->

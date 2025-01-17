@@ -1,10 +1,10 @@
-<mat-toolbar class="page-toolbar">
-  <button mat-icon-button goBack>
-    <i class="fa-regular fa-arrow-right"></i>
-  </button>
-  <h1>{{ 'thirdParties.sizpay.title' | translate }}</h1>
-</mat-toolbar>
 <main class="content-wrapper form-page-layout" *ngIf="gatewayForm">
+  <mat-toolbar>
+    <button mat-icon-button goBack>
+      <i class="fa-regular fa-arrow-right"></i>
+    </button>
+    <h1>{{ 'thirdParties.sizpay.title' | translate }}</h1>
+  </mat-toolbar>
   <div class="static-col">
     <mat-card class="form-theme">
       <mat-card-header>

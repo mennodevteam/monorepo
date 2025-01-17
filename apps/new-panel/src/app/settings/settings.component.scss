@@ -1,0 +1,7 @@
+mat-drawer-container {
+  height: calc(100vh - 64px);
+}
+
+mat-drawer {
+  border-left: 1px solid var(--mat-sys-outline) !important;
+}

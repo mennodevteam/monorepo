@@ -146,6 +146,12 @@ i.middle {
       container-background-color: transparent,
     )
   );
+
+  @include mat.divider-overrides(
+    (
+      color: var(--mat-sys-outline-variant),
+    )
+  );
 }
 
 .mat-mdc-list-item-meta {

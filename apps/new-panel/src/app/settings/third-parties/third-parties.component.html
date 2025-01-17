@@ -1,11 +1,11 @@
-<mat-toolbar class="content-toolbar">
-  <button mat-icon-button goBack>
-    <i class="fa-regular fa-arrow-right"></i>
-  </button>
-  <h1 flex>{{ 'thirdParties.pageTitle' | translate }}</h1>
-</mat-toolbar>
 
 <main w-xs p-md>
+  <mat-toolbar>
+    <button mat-icon-button goBack fxHide.gt-xs>
+      <i class="fa-regular fa-arrow-right"></i>
+    </button>
+    <h1 flex>{{ 'thirdParties.pageTitle' | translate }}</h1>
+  </mat-toolbar>
   <mat-card appearance="outlined">
     <mat-card-content>
       <mat-list>
