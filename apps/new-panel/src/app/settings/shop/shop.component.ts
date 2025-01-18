@@ -1,17 +1,20 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SHARED } from '../../shared';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-import { BusinessCategory } from '@menno/types';
+import { BusinessCategory, Region, State } from '@menno/types';
 import { ShopService } from '../../shop/shop.service';
 import { DialogService } from '../../core/services/dialog.service';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { REGIONS } from '../../core/constants';
+import { FormComponent } from '../../core/guards/dirty-form-deactivator.guard';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-shop',
@@ -26,16 +29,19 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
     ReactiveFormsModule,
     MatSelectModule,
     MatChipsModule,
+    FormsModule,
   ],
   templateUrl: './shop.component.html',
   styleUrl: './shop.component.scss',
 })
-export class ShopComponent {
-  readonly separatorKeysCodes = [ENTER, COMMA] as const;
+export class ShopComponent implements FormComponent {
   private readonly shopService = inject(ShopService);
   private readonly fb = inject(FormBuilder);
   private readonly dialog = inject(DialogService);
-  categories = Object.values(BusinessCategory);
+  readonly separatorKeysCodes = [ENTER, COMMA] as const;
+  readonly states = Region.states(REGIONS);
+  readonly categories = Object.values(BusinessCategory);
+  selectedState = signal<State | undefined>(undefined);
 
   form = this.fb.group({
     title: [this.shopService.data()?.title, Validators.required],
@@ -44,11 +50,22 @@ export class ShopComponent {
     instagram: [this.shopService.data()?.instagram],
     phones: [this.shopService.data()?.phones || []],
     address: [this.shopService.data()?.address],
-    region: [this.shopService.data()?.region],
+    region: [this.getRegion()],
     latitude: [this.shopService.data()?.latitude],
     longitude: [this.shopService.data()?.longitude],
     logoImage: [(this.shopService.data()?.logoImage || this.shopService.data()?.logo) as any],
   });
+
+  private getRegion() {
+    const region = this.shopService.data()?.region
+      ? REGIONS.find((item) => item.id === this.shopService.data()?.region?.id)
+      : null;
+    if (region) {
+      const state = this.states.find((item) => item.title === region.state);
+      this.selectedState.set(state);
+    }
+    return region;
+  }
 
   editLogo() {
     this.dialog.imageCropper().then((res) => {
@@ -75,5 +92,20 @@ export class ShopComponent {
       this.form.controls.phones?.value?.splice(index, 1);
     }
     this.form.markAsDirty();
+  }
+
+  canDeactivate() {
+    return !this.form.dirty;
+  }
+
+  async submit() {
+    const dto: any = this.form.getRawValue();
+    if (dto.logoImage === null) dto.logo = null;
+    try {
+      this.form.markAsPristine();
+      await this.shopService.saveMutation.mutateAsync(dto);
+    } catch (error) {
+      this.form.markAsDirty();
+    }
   }
 }

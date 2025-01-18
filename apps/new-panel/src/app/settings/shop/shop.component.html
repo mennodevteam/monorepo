@@ -1,4 +1,10 @@
-<form p-md w-md [formGroup]="form">
+<form p-md w-md [formGroup]="form" (ngSubmit)="submit()">
+  <mat-toolbar>
+    <span fxFlex></span>
+    <button mat-flat-button [disabled]="!form.dirty" type="submit">
+      {{ 'app.save' | translate }}
+    </button>
+  </mat-toolbar>
   <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="16px">
     <div fxLayout="column" fxLayoutGap="16px" fxFlex.gt-sm>
       <mat-card appearance="outlined">
@@ -24,6 +30,36 @@
           <mat-form-field>
             <mat-label>{{ 'shop.description' | translate }}</mat-label>
             <textarea matInput rows="3" formControlName="description"></textarea>
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card appearance="outlined">
+        <mat-card-header>
+          <mat-card-title>{{ 'shop.addressSection' | translate }}</mat-card-title>
+        </mat-card-header>
+        <br />
+        <mat-card-content fxLayout="column">
+          <mat-form-field>
+            <mat-label> {{ 'shop.regionState' | translate }} </mat-label>
+            <mat-select [(ngModel)]="selectedState" [ngModelOptions]="{ standalone: true }">
+              <mat-option *ngFor="let state of states" [value]="state">
+                {{ state.title }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label> {{ 'shop.region' | translate }} </mat-label>
+            <mat-select formControlName="region">
+              <mat-option *ngFor="let region of selectedState()?.regions" [value]="region">
+                {{ region.title }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>{{ 'shop.address' | translate }}</mat-label>
+            <textarea rows="2" matInput formControlName="address"></textarea>
           </mat-form-field>
         </mat-card-content>
       </mat-card>

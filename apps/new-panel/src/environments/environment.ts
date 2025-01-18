@@ -8,6 +8,7 @@ export const environment = {
   // bucketUrl: 'https://test-menno.storage.iran.liara.space',
   apiUrl: 'https://api.menno.pro',
   bucketUrl: 'https://menno.storage.iran.liara.space',
+  appDomain: 'localhost:4300',
 };
 
 /*

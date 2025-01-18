@@ -1,0 +1,151 @@
+<form [formGroup]="form">
+  <main p-md w-md>
+    <mat-toolbar fxLayoutGap="8px">
+      <h1>{{ 'settings.appConfig' | translate }}</h1>
+      <span fxFlex></span>
+      <button mat-stroked-button (click)="openApp()">
+        {{ 'appConfig.openApp' | translate }}
+      </button>
+      <button mat-flat-button (click)="save()" [disabled]="!form.dirty">
+        {{ 'app.save' | translate }}
+      </button>
+    </mat-toolbar>
+    <mat-divider />
+    <br />
+    <div fxLayout="column">
+      <b>
+        {{ 'appConfig.homeSection' | translate }}
+      </b>
+      <div fxLayout="row" fxLayout.sm="column">
+        <div fxFlex>
+          <p>
+            {{ 'appConfig.homeDescription' | translate }}
+          </p>
+          <mat-radio-group formControlName="homePage" fxLayout="column">
+            <mat-radio-button [value]="HomePage.Menu">
+              {{ shopService.businessCategoryMenuTitle() }}
+            </mat-radio-button>
+            <mat-radio-button [value]="HomePage.Welcome">
+              {{ 'appConfig.homePageWelcome' | translate }}
+            </mat-radio-button>
+          </mat-radio-group>
+          @if (form.value?.homePage === HomePage.Welcome) {
+            <div style="padding: 24px">
+              {{ 'appConfig.homePageCover' | translate }}
+              <button mat-button type="button" (click)="uploadVerticalCover()">
+                <i class="fa-regular fa-upload"></i>
+                {{ 'app.upload' | translate }}
+              </button>
+              <br />
+              @let image = form.controls.shop.controls.verticalCoverImage.value;
+              @if (image?.base64) {
+                <img class="uploaded-photo" [src]="image.base64" />
+              } @else {
+                <img class="uploaded-photo" imageLoader [imageFile]="image" imageSize="sm" />
+              }
+            </div>
+          }
+        </div>
+        <div class="image-section" fxFlex="none">
+          @switch (form.value?.homePage) {
+            @case (HomePage.Welcome) {
+              <img src="images/screenshots/welcome.jpg" />
+            }
+            @default {
+              <img src="images/screenshots/menu.jpg" />
+            }
+          }
+        </div>
+      </div>
+
+      <br />
+      <b>
+        {{ 'appConfig.themeSection' | translate }}
+      </b>
+
+      <div fxLayout="row" fxLayout.sm="column">
+        <div fxFlex>
+          <p>
+            {{ 'appConfig.themeSectionDescription' | translate }}
+          </p>
+          <input formControlName="themeHex" type="color" />
+          <h5>{{ 'appConfig.themeMode' | translate }}</h5>
+          <mat-radio-group formControlName="themeMode" fxLayout="column">
+            <mat-radio-button [value]="ThemeMode.Dark">
+              {{ 'appConfig.themeModeDark' | translate }}
+            </mat-radio-button>
+            <mat-radio-button [value]="ThemeMode.Light">
+              {{ 'appConfig.themeModeLight' | translate }}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div class="image-section" fxFlex="none">
+          @if (form.value?.themeMode === ThemeMode.Light) {
+            <img style="border: 1px solid gray" src="images/screenshots/menu light.jpg" />
+          } @else {
+            <img src="images/screenshots/menu.jpg" />
+          }
+        </div>
+      </div>
+
+      <br />
+      <b> {{ 'appConfig.menuSection' | translate }} {{ shopService.businessCategoryMenuTitle() }} </b>
+
+      <div fxLayout="row" fxLayout.sm="column">
+        <div fxFlex>
+          <mat-radio-group formControlName="menuViewType" fxLayout="column">
+            <mat-radio-button [value]="MenuViewType.Grid">{{
+              'appConfig.menuViewTypeGrid' | translate
+            }}</mat-radio-button>
+            <mat-radio-button [value]="MenuViewType.Card">{{
+              'appConfig.menuViewTypeCard' | translate
+            }}</mat-radio-button>
+            <mat-radio-button [value]="MenuViewType.Compact">{{
+              'appConfig.menuViewTypeCompact' | translate
+            }}</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div class="image-section" fxFlex="none">
+          @switch (form.value.menuViewType) {
+            @case (MenuViewType.Card) {
+              <img src="images/screenshots/card.jpg" />
+            }
+            @case (MenuViewType.Compact) {
+              <img src="images/screenshots/compact.jpg" />
+            }
+            @default {
+              <img src="images/screenshots/menu.jpg" />
+            }
+          }
+        </div>
+      </div>
+      <br />
+
+      <b>
+        {{ 'appConfig.horizontalCover' | translate }}
+      </b>
+
+      <div fxLayout="row" fxLayout.sm="column">
+        <div fxFlex>
+          <p>
+            {{ 'appConfig.horizontalCoverDescription' | translate }}
+          </p>
+          <button mat-button type="button" (click)="uploadCover()">
+            <i class="fa-regular fa-upload"></i>
+            {{ 'app.upload' | translate }}
+          </button>
+          <br />
+          @let image = form.controls.shop.controls.coverImage.value;
+          @if (image?.base64) {
+            <img class="uploaded-photo" [src]="image.base64" />
+          } @else {
+            <img class="uploaded-photo" imageLoader [imageFile]="image" imageSize="sm" />
+          }
+        </div>
+        <div class="image-section" fxFlex="none">
+          <img src="images/screenshots/welcome.jpg" />
+        </div>
+      </div>
+    </div>
+  </main>
+</form>

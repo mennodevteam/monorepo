@@ -34,7 +34,7 @@ export class DialogService {
     return this.dialog
       .open(AlertDialogComponent, {
         ...extra?.config,
-        data: { title, description },
+        data: { title, description, ...extra?.config?.data },
       })
       .afterClosed()
       .toPromise();
@@ -51,7 +51,7 @@ export class DialogService {
       .toPromise();
   }
 
-  async imageCropper(options?: CropperOptions): Promise<{ base64: string; file: File } | undefined> {
+  async imageCropper(options?: Partial<CropperOptions>): Promise<{ base64: string; file: File } | undefined> {
     return this.dialog
       .open(ImageCropperDialogComponent, {
         disableClose: true,

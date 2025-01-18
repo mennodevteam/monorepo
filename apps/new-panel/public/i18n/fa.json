@@ -6,8 +6,10 @@
     "all": "همه",
     "save": "ذخیره",
     "edit": "ویرایش",
+    "yes": "بله",
     "ok": "تایید",
     "cancel": "انصراف",
+    "upload": "آپلود",
     "count": "تعداد",
     "number": "{{value}} عدد",
     "fee": "فی",
@@ -43,6 +45,19 @@
       "0": "غیر‌فعال",
       "1": "فعال",
       "3": "ناموجود"
+    },
+    "businessCategory": {
+      "CAFE": "منو",
+      "RESTAURANT": "منو",
+      "CAFE_RESTAURANT": "منو",
+      "PROTEIN": "محصولات",
+      "CONFECTIONARY": "آیتم‌ها",
+      "GAME_CAFE": "آیتم‌ها",
+      "JUICE_AND_ICE_CREAM": "آیتم‌ها",
+      "HERBAL": "آیتم‌ها",
+      "NUTS": "آیتم‌ها",
+      "FRUITS": "آیتم‌ها",
+      "OTHER": "محصولات"
     }
   },
   "productEdit": {
@@ -64,6 +79,7 @@
   },
   "dirtyFormDialog": {
     "title": "عدم ذخیره تغییرات",
+    "ok": "بله، خروج از صفحه",
     "description": "شما تغییراتی انجام داده‌اید. آیا مطمئن هستید که می‌خواهید بدون ذخیره کردن از این صفحه خارج شوید؟"
   },
   "shopBusinessCategory": {
@@ -288,5 +304,31 @@
     "instagramHint": "بدون @",
     "moreSection": "سایر اطلاعات",
     "openingHours": "ساعات کاری مجموعه"
+  },
+  "appConfig": {
+    "homeSection": "دیزاین صفحه اصلی",
+    "homeDescription": "صفحه ورود کاربر بعد از وارد شدن به سایت شما چه صفحه‌ای باشد؟",
+    "homePageCover": "آپلود تصویر پشت زمینه",
+    "coverSaved": "تصویر پشت زمینه با موفقیت بروزرسانی شد",
+    "horizontalCover": "صفحه اطلاعات مجموعه",
+    "horizontalCoverDescription": "تصویر پشت زمینه در بالای صفحه اطلاعات مجموعه",
+    "noCoverError": "تصویر پشت زمینه برای صفحه خوش آمد انتخاب کنید",
+    "homePageInfo": "اطلاعات مجموعه",
+    "homePageWelcome": "خوش آمد",
+    "homePageMenu": "منو",
+    "themeSection": "رنگبندی اپلیکیشن",
+    "themeSectionDescription": "رنگ اصلی دکمه‌ها چه رنگی باشد؟ ترجیحا از رنگ اصلی استفاده شده در لوگو یا تم کلی مجموعه استفاده کنید.",
+    "theme": "رنگ",
+    "themeMode": "تاریک / روشن",
+    "themeModeAutoHint": "برمبنای تنظیمات dark mode گوشی",
+    "themeModeDark": "پوسته تاریک",
+    "themeModeLight": "پوسته روشن",
+    "themeModeAuto": "خودکار",
+    "menuSection": "نحوه نمایش",
+    "menuViewType": "نوع آیتم‌ها",
+    "menuViewTypeCompact": "به صورت فشرده",
+    "menuViewTypeCard": "به صورت کارتی",
+    "menuViewTypeGrid": "به صورت گرید",
+    "openApp": "مشاهده سایت"
   }
 }

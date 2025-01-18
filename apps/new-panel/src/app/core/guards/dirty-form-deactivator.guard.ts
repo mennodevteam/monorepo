@@ -11,7 +11,13 @@ export const dirtyFormDeactivator: CanDeactivateFn<FormComponent> = async (compo
   const dialog = inject(DialogService);
   const t = inject(TranslateService);
   if (!component.canDeactivate()) {
-    if (await dialog.alert(t.instant('dirtyFormDialog.title'), t.instant('dirtyFormDialog.description'))) {
+    if (await dialog.alert(t.instant('dirtyFormDialog.title'), t.instant('dirtyFormDialog.description'), {
+      config: {
+        data: {
+          okText: t.instant('dirtyFormDialog.ok')
+        }
+      }
+    })) {
       return true;
     }
     return false;
