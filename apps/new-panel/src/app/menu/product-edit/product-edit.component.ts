@@ -95,9 +95,11 @@ export class ProductEditComponent implements FormComponent {
 
         if (product) {
           this.imagesForm = this.fb.array(
-            Array.isArray(product?.imageFiles)
-              ? product?.imageFiles?.map((item) => this.fb.control(item, Validators.required))
-              : [this.fb.control(product?.imageFiles, Validators.required)],
+            product?.imageFiles
+              ? Array.isArray(product?.imageFiles)
+                ? product?.imageFiles?.map((item) => this.fb.control(item, Validators.required))
+                : [this.fb.control(product?.imageFiles, Validators.required)]
+              : [],
           );
         } else {
           this.imagesForm = this.fb.array([]);
@@ -193,6 +195,8 @@ export class ProductEditComponent implements FormComponent {
   }
 
   async submit() {
+    if (!this.form.controls['price'].value) this.form.controls['price'].setValue(0);
+    console.log(this.form);
     if (this.form.invalid) return;
     const fv = this.form.getRawValue();
     if (this.productId) fv.id = this.productId;
