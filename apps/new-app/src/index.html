@@ -46,7 +46,7 @@
     </script>
 
     <script>
-      fetch('https://api.menno.pro/shops/baseInfo')
+      fetch('https://api.menno.pro/shops/baseInfo2/'+location.hostname)
         .then((response) => {
           return response.json();
         })

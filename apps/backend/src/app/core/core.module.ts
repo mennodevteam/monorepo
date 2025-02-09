@@ -48,9 +48,11 @@ import {
   BasalamProductSchema,
 } from './schemas';
 import { RedisService } from './redis.service';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
+    HttpModule,
     TypeOrmModule.forFeature([
       AppConfigSchema,
       AddressSchema,

@@ -21,15 +21,17 @@ class ApiInterceptor implements HttpInterceptor {
         url: `${environment.apiUrl}/${req.url}`,
       });
 
-      const user = sessionStorage.getItem('appLoginUser') || localStorage.getItem('appLoginUser');
-
-      if (user) {
-        const token = JSON.parse(user).token;
-        req = req.clone({
-          setHeaders: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+      if (!req.headers.get('skipJwt')) {
+        const user = sessionStorage.getItem('appLoginUser') || localStorage.getItem('appLoginUser');
+  
+        if (user) {
+          const token = JSON.parse(user).token;
+          req = req.clone({
+            setHeaders: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+        }
       }
     }
 

@@ -68,7 +68,13 @@ export class MenuService {
 
   async load(sendStat?: boolean) {
     const query = this.shopService.getShopUsernameFromQuery();
-    const baseMenu = await this.http.get<Menu>(`menus/${query}`).toPromise();
+    const baseMenu = await this.http
+      .get<Menu>(`menus/${query}`, {
+        headers: {
+          skipJwt: 'true',
+        },
+      })
+      .toPromise();
     await this.shopService.getResolver();
     if (baseMenu) {
       if (this.shopService.selectableOrderTypes.length > 0) this.type.set(this.shopService.defaultOrderType);

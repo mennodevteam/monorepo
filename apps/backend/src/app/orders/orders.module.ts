@@ -10,9 +10,18 @@ import { PrintersModule } from '../printers/printers.module';
 import { ClubsModule } from '../clubs/clubs.module';
 import { OrderItemsSubscriber } from './order-items.subscriber';
 import { RedisService } from '../core/redis.service';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [CoreModule, AuthModule, SmsModule, WebPushNotificationModule, PrintersModule, ClubsModule],
+  imports: [
+    CoreModule,
+    AuthModule,
+    SmsModule,
+    WebPushNotificationModule,
+    PrintersModule,
+    ClubsModule,
+    HttpModule,
+  ],
   controllers: [OrdersController],
   providers: [OrdersService, RedisService, OrdersSubscriber, OrderItemsSubscriber],
   exports: [OrdersService],

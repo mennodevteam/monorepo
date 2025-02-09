@@ -25,7 +25,7 @@ export class ShopService {
 
   private async load() {
     const query = this.getShopUsernameFromQuery();
-    const shop = await this.http.get<Shop>(`shops/${query}`).toPromise();
+    const shop = await this.http.get<Shop>(`shops/${query}`, { headers: { skipJwt: 'true' } }).toPromise();
     // if (Date.now() - new Date(shop?.plugins?.expiredAt || 0).valueOf() > 2 * 24 * 3600 * 1000) {
     //   this.dialog.open(AlertDialogComponent, {
     //     data: {

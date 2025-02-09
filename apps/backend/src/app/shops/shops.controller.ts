@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Get,
+  Header,
   HttpException,
   HttpStatus,
   Param,
@@ -33,7 +34,35 @@ export class ShopsController {
 
   @Public()
   @Get('baseInfo')
+  @Header('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')
   async shopInit(@Request() req: Request) {
+    try {
+      let shop: Shop;
+      const referer: string = req.headers['referer'];
+      const url = referer.split('://')[1];
+      if (url.search(process.env.APP_ORIGIN.split('.')[0]) > -1) {
+        const username = url.split('.')[0];
+        shop = await this.shopsRepo.findOneBy({ username });
+      } else {
+        shop = await this.shopsRepo.findOneBy({
+          domain: url[url.length - 1] === '/' ? url.substring(0, url.length - 1) : url,
+        });
+      }
+
+      if (shop) {
+        const logo = `https://${process.env.LIARA_BUCKET_NAME}.${process.env.LIARA_BUCKET_ENDPOINT}/${
+          shop.logoImage?.sm || shop.logo
+        }`;
+        const title = shop.title;
+        const description = shop.description;
+        return { logo, title, description };
+      }
+    } catch (error) {}
+    return;
+  }
+
+  @Get('baseInfo2/:origin')
+  async shopInit2(@Request() req: Request) {
     try {
       let shop: Shop;
       const referer: string = req.headers['referer'];

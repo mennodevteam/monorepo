@@ -14,10 +14,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   Between,
+  FindOptionsOrder,
   FindOptionsWhere,
   In,
   IsNull,
   LessThanOrEqual,
+  Like,
   MoreThanOrEqual,
   Not,
   Repository,
@@ -104,6 +106,8 @@ export class ClubsService {
       user: { mobilePhone: Not(IsNull()) },
     };
 
+    const findOptions: FindOptionsWhere<Member>[] = [];
+
     if (filter.userId) {
       conditions.user = { id: filter.userId };
     }
@@ -138,71 +142,55 @@ export class ClubsService {
       };
     }
 
-    let members = await this.membersRepo.find({
-      where: conditions,
-      relations: ['tags', 'wallet', 'user'],
-    });
+    if (filter.tagIds?.length) {
+      conditions.tags = {
+        id: In(filter.tagIds),
+      };
+    }
 
     if (filter.query) {
-      members = members.filter((x) => {
-        if (x.publicKey && x.publicKey === filter.query) return true;
-        if (x.user) {
-          const name: string[] = [];
-          if (x.user.firstName) name.push(x.user.firstName);
-          if (x.user.lastName) name.push(x.user.lastName);
-          if (name.join(' ').search(filter.query) > -1) return true;
-
-          if (x.user.mobilePhone && x.user.mobilePhone.search(filter.query) > -1) return true;
-          if (x.user.email && x.user.email.search(filter.query) > -1) return true;
-          if (x.user.username && x.user.username.search(filter.query) > -1) return true;
-        }
-        return false;
-      });
+      findOptions.push(
+        { ...conditions, user: { firstName: Like(filter.query) } },
+        { ...conditions, user: { lastName: Like(filter.query) } },
+        { ...conditions, user: { mobilePhone: Like(filter.query) } },
+        { ...conditions, publicKey: Like(filter.query) },
+      );
+    } else {
+      findOptions.push(conditions);
     }
 
-    if (filter.tagIds && filter.tagIds.length) {
-      members = members.filter((m) => m.tags.find((t) => filter.tagIds.indexOf(t.id) > -1));
-    }
+    const sort: FindOptionsOrder<Member> = {};
 
+    const sortType = filter.sortType == 'ASC' ? 1 : -1;
     switch (filter.sortBy) {
       case 'credit':
-        if (filter.sortType == 'ASC') {
-          members.sort((a, b) => (a.wallet ? a.wallet.charge : 0) - (b.wallet ? b.wallet.charge : 0));
-        } else {
-          members.sort((b, a) => (a.wallet ? a.wallet.charge : 0) - (b.wallet ? b.wallet.charge : 0));
-        }
+        sort.wallet = {
+          charge: sortType,
+        };
         break;
       case 'gem':
-        if (filter.sortType == 'ASC') {
-          members.sort((a, b) => (a.gem || 0) - (b.gem || 0));
-        } else {
-          members.sort((b, a) => (a.gem || 0) - (b.gem || 0));
-        }
+        sort.gem = sortType;
         break;
       case 'mobilePhone':
-        if (filter.sortType == 'ASC') {
-          members.sort((a, b) => Number(a.user.mobilePhone) - Number(b.user.mobilePhone));
-        } else {
-          members.sort((b, a) => Number(a.user.mobilePhone) - Number(b.user.mobilePhone));
-        }
+        sort.user = {
+          mobilePhone: sortType,
+        };
         break;
       case 'star':
-        if (filter.sortType == 'ASC') {
-          members.sort((a, b) => a.star - b.star);
-        } else {
-          members.sort((b, a) => a.star - b.star);
-        }
+        sort.star = sortType;
         break;
       default: // and 'joinedAt'
-        if (filter.sortType == 'ASC') {
-          members.sort((a, b) => new Date(a.joinedAt).valueOf() - new Date(b.joinedAt).valueOf());
-        } else {
-          members.sort((b, a) => new Date(a.joinedAt).valueOf() - new Date(b.joinedAt).valueOf());
-        }
+        sort.joinedAt = sortType;
         break;
     }
-    const res = members.slice(filter.skip, filter.take ? (filter.skip || 0) + filter.take : undefined);
-    return [res, members.length];
+
+    return this.membersRepo.findAndCount({
+      where: findOptions,
+      relations: ['tags', 'wallet', 'user'],
+      order: sort,
+      take: filter.take,
+      skip: filter.skip,
+    });
   }
 
   async filterDiscountCoupons(dto: FilterDiscountCouponsDto): Promise<DiscountCoupon[]> {
@@ -244,7 +232,7 @@ export class ClubsService {
         where: { discountCoupon: In(coupons.map((x) => x.id)) },
         relations: ['customer', 'discountCoupon'],
       });
-  
+
       coupons = coupons.filter((c) => {
         if (c.maxUse) {
           const totalUse = orders.length;

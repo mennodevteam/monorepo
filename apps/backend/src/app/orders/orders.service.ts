@@ -435,11 +435,9 @@ export class OrdersService {
       'items',
       'mergeTo',
       'mergeFrom',
-      'reviews',
       'customer',
       'creator',
       'waiter',
-      'address.deliveryArea',
     ];
 
     const params: FindManyOptions<Order> = {
