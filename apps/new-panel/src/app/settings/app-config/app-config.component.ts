@@ -10,6 +10,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatRadioModule } from '@angular/material/radio';
 import { DialogService } from '../../core/services/dialog.service';
 import { FormComponent } from '../../core/guards/dirty-form-deactivator.guard';
+import { FilesService } from '../../core/services/files.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-config',
@@ -20,6 +23,9 @@ import { FormComponent } from '../../core/guards/dirty-form-deactivator.guard';
 export class AppConfigComponent implements FormComponent {
   public readonly shopService = inject(ShopService);
   public readonly dialog = inject(DialogService);
+  public readonly fileService = inject(FilesService);
+  public readonly snack = inject(MatSnackBar);
+  public readonly t = inject(TranslateService);
   form = new FormGroup({
     themeHex: new FormControl(this.appConfig.themeHex),
     themeMode: new FormControl(this.appConfig.themeMode),
@@ -78,6 +84,24 @@ export class AppConfigComponent implements FormComponent {
       const hasCoversEdited = this.form.controls.shop.dirty;
       const { shop, ...appConfig } = this.form.getRawValue();
       this.form.markAsPristine();
+      if (shop.coverImage.file) {
+        const snackRef = this.snack.open(this.t.instant('app.uploading'), '', { duration: 5000 });
+        const savedFile = await this.fileService.upload(shop.coverImage.file, 'coverImage');
+        if (savedFile) {
+          const imageFile = await this.fileService.saveFileImage(savedFile.key, 'coverImage');
+          shop.coverImage = imageFile;
+        }
+        snackRef.dismiss();
+      }
+      if (shop.verticalCoverImage.file) {
+        const snackRef = this.snack.open(this.t.instant('app.uploading'), '', { duration: 5000 });
+        const savedFile = await this.fileService.upload(shop.verticalCoverImage.file, 'verticalCoverImage');
+        if (savedFile) {
+          const imageFile = await this.fileService.saveFileImage(savedFile.key, 'verticalCoverImage');
+          shop.verticalCoverImage = imageFile;
+        }
+        snackRef.dismiss();
+      }
       await this.shopService.saveAppConfigMutation.mutateAsync({
         appConfig: appConfig as any,
         shop: hasCoversEdited ? shop : null,

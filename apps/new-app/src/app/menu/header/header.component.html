@@ -6,12 +6,13 @@
     fxFlex="none"
     alt="{{ shop.title }}"
   />
-  <div fxLayout="column">
+  <div fxLayout="column" fxFlex>
     <h1>{{ shop.title }}</h1>
     @if (shop.description) {
       <p class="outline-text">{{ shop.description }}</p>
     }
   </div>
+  <i class="fa-regular fa-circle-info outline-text"></i>
 </header>
 
 @if (shopService.isOrderingTemporaryDisabled) {
