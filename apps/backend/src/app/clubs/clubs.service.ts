@@ -150,9 +150,9 @@ export class ClubsService {
 
     if (filter.query) {
       findOptions.push(
-        { ...conditions, user: { firstName: Like(filter.query) } },
-        { ...conditions, user: { lastName: Like(filter.query) } },
-        { ...conditions, user: { mobilePhone: Like(filter.query) } },
+        { ...conditions, user: { firstName: Like(`%${filter.query}%`) } },
+        { ...conditions, user: { lastName: Like(`%${filter.query}%`) } },
+        { ...conditions, user: { mobilePhone: Like(`%${filter.query}%`) } },
         { ...conditions, publicKey: Like(filter.query) },
       );
     } else {
