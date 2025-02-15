@@ -30,6 +30,7 @@ import { SmsService } from '../sms/sms.service';
 import { OldTypes } from '@menno/old-types';
 import { HttpService } from '@nestjs/axios';
 import { RedisService } from '../core/redis.service';
+import { PersianNumberService } from '@menno/utils';
 
 @Injectable()
 export class ClubsService {
@@ -150,9 +151,9 @@ export class ClubsService {
 
     if (filter.query) {
       findOptions.push(
-        { ...conditions, user: { firstName: Like(`%${filter.query}%`) } },
-        { ...conditions, user: { lastName: Like(`%${filter.query}%`) } },
-        { ...conditions, user: { mobilePhone: Like(`%${filter.query}%`) } },
+        { ...conditions, user: { firstName: Like(`%${PersianNumberService.toEnglish(filter.query)}%`) } },
+        { ...conditions, user: { lastName: Like(`%${PersianNumberService.toEnglish(filter.query)}%`) } },
+        { ...conditions, user: { mobilePhone: Like(`%${PersianNumberService.toEnglish(filter.query)}%`) } },
         { ...conditions, publicKey: Like(filter.query) },
       );
     } else {
