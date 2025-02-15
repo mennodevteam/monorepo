@@ -61,6 +61,7 @@ export class ShopsController {
     return;
   }
 
+  @Public()
   @Get('baseInfo2/:origin')
   async shopInit2(@Request() req: Request) {
     try {
