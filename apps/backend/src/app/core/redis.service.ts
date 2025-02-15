@@ -49,13 +49,13 @@ export class RedisService {
         const shopMenuRedisKey = this.key(RedisKey.PanelMenu, shop.id);
         await this.client.set(shopMenuRedisKey, JSON.stringify(shop.menu));
         this.client.expire(shopMenuRedisKey, 3600 * 12);
-        this.http
-          .request({
-            url: `https://api.menno.pro/menus/${shop.username}`,
-            method: 'PURGE',
-            headers: { 'X-Purge-Method': 'PURGE' },
-          })
-          .subscribe();
+        // this.http
+        //   .request({
+        //     url: `https://api.menno.pro/menus/${shop.username}`,
+        //     method: 'PURGE',
+        //     headers: { 'X-Purge-Method': 'PURGE' },
+        //   })
+        //   .subscribe();
 
         if (shop.menu.costs) shop.menu.costs = shop.menu.costs.filter((x) => x.status !== Status.Inactive);
         if (shop.menu.categories) {
@@ -88,13 +88,13 @@ export class RedisService {
         relations: ['region', 'shopGroup', 'appConfig.theme', 'paymentGateway', 'plugins', 'club'],
       });
 
-      this.http
-        .request({
-          url: `https://api.menno.pro/shops/${shop.username}`,
-          method: 'PURGE',
-          headers: { 'X-Purge-Method': 'PURGE' },
-        })
-        .subscribe();
+      // this.http
+      //   .request({
+      //     url: `https://api.menno.pro/shops/${shop.username}`,
+      //     method: 'PURGE',
+      //     headers: { 'X-Purge-Method': 'PURGE' },
+      //   })
+      //   .subscribe();
 
       if (!(shop.plugins?.plugins?.indexOf(Plugin.Ordering) >= 0)) shop.appConfig.disableOrdering = true;
       const redisKey = this.key(RedisKey.Shop, shop.id);
