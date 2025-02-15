@@ -224,7 +224,7 @@ export class ClubsService {
           (x) =>
             (!x.user || x.user?.id === dto.userId) &&
             x.star <= member.star &&
-            !x.code &&
+            (!x.code || x.user?.id === dto.userId) &&
             (!x.tag || member.tags?.find((tag) => tag.id === x.tag.id)),
         );
       }
