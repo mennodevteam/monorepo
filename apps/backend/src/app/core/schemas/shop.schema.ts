@@ -95,6 +95,14 @@ export const ShopSchema = new EntitySchema<Shop>({
       type: String,
       nullable: true,
     },
+    seo: {
+      type: 'simple-json',
+      nullable: true,
+    },
+    scripts: {
+      type: 'simple-json',
+      nullable: true,
+    },
     logoImage: {
       type: 'simple-json',
       nullable: true,
