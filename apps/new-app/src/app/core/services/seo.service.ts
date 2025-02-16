@@ -19,7 +19,8 @@ export class SeoService {
   ) {
     this.shopService.getResolver().then(() => {
       const shop = this.shopService.shop;
-      const description = this.translate.instant('seo.description', {
+      const title = shop.seo?.title || shop.title;
+      const description = shop.seo?.description || this.translate.instant('seo.description', {
         title: shop.title,
         address: shop.address || '',
         phone: shop.phones.join(', '),
@@ -29,17 +30,17 @@ export class SeoService {
 
       const logo = this.fileService.getFileUrl(shop.logoImage?.xs || shop.logo);
 
-      this.Title.setTitle(shop.title);
+      this.Title.setTitle(title);
       this.meta.addTag({ name: 'description', content: description });
       this.meta.addTag({ name: 'og:description', content: description });
       this.meta.addTag({ name: 'twitter:description', content: description });
-      this.meta.addTag({ name: 'og:site_name', content: shop.title });
+      this.meta.addTag({ name: 'og:site_name', content: title });
       this.meta.addTag({ name: 'og:type', content: 'website' });
       this.meta.addTag({ name: 'og:locale', content: 'fa_IR' });
       this.meta.addTag({ name: 'og:image', content: logo });
       this.meta.addTag({ name: 'twitter:card', content: 'summary_large_image' });
       this.meta.addTag({ name: 'twitter:type', content: 'website' });
-      this.meta.addTag({ name: 'twitter:site', content: shop.title });
+      this.meta.addTag({ name: 'twitter:site', content: title });
       this.meta.addTag({ name: 'og:url', content: location.origin });
 
       const favIconElem: HTMLLinkElement | null = document.querySelector('#favicon');

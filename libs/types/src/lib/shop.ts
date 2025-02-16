@@ -42,6 +42,11 @@ export interface ShopDetails {
   enamadInnerHtml?: string;
 }
 
+export interface WebScript {
+  head?: string;
+  body?: string;
+}
+
 export class Shop {
   id: string;
   title: string;
@@ -75,6 +80,8 @@ export class Shop {
   appConfig?: AppConfig;
   connectionAt: Date;
   shopGroup?: ShopGroup;
+  seo?: any;
+  scripts?: WebScript[];
   options: any;
   plugins?: ShopPlugins;
   thirdParties?: ThirdParty[];
