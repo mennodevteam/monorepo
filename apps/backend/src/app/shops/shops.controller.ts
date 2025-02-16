@@ -81,9 +81,14 @@ export class ShopsController {
         const logo = `https://${process.env.LIARA_BUCKET_NAME}.${process.env.LIARA_BUCKET_ENDPOINT}/${
           shop.logoImage?.sm || shop.logo
         }`;
+        const fav = `https://${process.env.LIARA_BUCKET_NAME}.${process.env.LIARA_BUCKET_ENDPOINT}/${
+          shop.logoImage?.xxs || shop.logo
+        }`;
         const title = shop.title;
         const description = shop.description;
-        return { logo, title, description };
+        const seo = shop.seo;
+        const scripts = shop.scripts;
+        return { logo, title, description, seo, scripts, fav};
       }
     } catch (error) {}
     return;
