@@ -42,6 +42,11 @@ export class SeoService {
       this.meta.addTag({ name: 'twitter:type', content: 'website' });
       this.meta.addTag({ name: 'twitter:site', content: title });
       this.meta.addTag({ name: 'og:url', content: location.origin });
+      
+      const link: HTMLLinkElement = document.createElement('link');
+      link.setAttribute('rel', 'canonical');
+      link.setAttribute('href', this.shopService.url);
+      document.head.appendChild(link);
 
       const favIconElem: HTMLLinkElement | null = document.querySelector('#favicon');
       if (favIconElem) favIconElem.href = logo;
