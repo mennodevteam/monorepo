@@ -46,23 +46,52 @@
     </script>
 
     <script>
-      fetch('https://api.menno.pro/shops/baseInfo2/'+location.hostname)
+      fetch('https://api.menno.pro/shops/baseInfo2/' + location.hostname)
         .then((response) => {
           return response.json();
         })
         .then((shop) => {
-          if (shop?.title) {
-            document.title = shop.title;
+          if (shop) {
+            const title = shop?.seo?.title || shop?.title;
+            const description = shop?.seo?.description || shop?.description;
+            const fav = shop?.fav;
+
+            if (title) document.title = title;
+
+            if (description) {
+              const metaDescription = document.querySelector('meta[name="description"]');
+              if (metaDescription) {
+                metaDescription.setAttribute('content', description);
+              } else {
+                const newMetaDescription = document.createElement('meta');
+                newMetaDescription.name = 'description';
+                newMetaDescription.content = description;
+                document.head.appendChild(newMetaDescription);
+              }
+            }
+
+            if (fav) {
+              const faviconLink = document.querySelector('link[rel="icon"]');
+              if (faviconLink) {
+                faviconLink.href = fav;
+              } else {
+                const newFaviconLink = document.createElement('link');
+                newFaviconLink.rel = 'icon';
+                newFaviconLink.href = fav;
+                document.head.appendChild(newFaviconLink);
+              }
+            }
+
             const div = document.querySelector(`#pre-load-data-container`);
             if (div) {
               div.innerHTML = `
-            <img
-              style="border-radius: 24px; width: 180px; height: 180px;"
-              src="${shop.logo}"
-              alt="${shop.title}"
-              onerror="this.style.display='none'"
-            />
-            <h1 style="font-size: 24px">${shop.title}</h1>`;
+              <img
+                style="border-radius: 24px; width: 180px; height: 180px;"
+                src="${shop.logo}"
+                alt="${shop.title}"
+                onerror="this.style.display='none'"
+              />
+              <h1 style="font-size: 24px">${shop.title}</h1>`;
             }
           }
         });
