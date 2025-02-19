@@ -108,16 +108,16 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     }
     if (customer?.mobilePhone && shop.smsAccount && shop.smsAccount.charge > 0) {
       this.orderMessagesRepo
-        .find({
-          where: {
-            shop: { id: shop.id },
-            event: OrderMessageEvent.OnAdd,
-            smsTemplate: { isVerified: true },
-            status: Status.Active,
-          },
-          relations: ['smsTemplate'],
-        })
-        .then((messages) => {
+      .find({
+        where: {
+          shop: { id: shop.id },
+          event: OrderMessageEvent.OnAdd,
+          smsTemplate: { isVerified: true },
+          status: Status.Active,
+        },
+        relations: ['smsTemplate'],
+      })
+      .then((messages) => {
           if (messages.length) {
             const message = OrderMessage.find(messages, order, OrderMessageEvent.OnAdd);
             if (message) {

@@ -62,7 +62,7 @@ export class SmsService {
           message: JSON.stringify(messages),
           sender: JSON.stringify(messages.map((x) => process.env.KAVENEGAR_SENDER_NUMBER)),
           receptor: JSON.stringify(receptors),
-          date: dto.sentAt ? new Date(dto.sentAt).valueOf() / 1000 : undefined,
+          date: dto.sentAt ? Math.floor(new Date(dto.sentAt).valueOf() / 1000) : undefined,
         };
         kavenegarDtos.push(kavenegarDto);
       }
