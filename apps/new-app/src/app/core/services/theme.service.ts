@@ -24,24 +24,24 @@ export class ThemeService {
     this.background = this.isDark ? '#0B0B0B' : '#FFFFFF';
 
     const schemes: any = {
-      '--mat-sys-background': `light-dark(#FFFFFF, #0B0B0B)`,
-      '--mat-sys-on-background': `light-dark(#161616, #FFFFFF)`,
-      '--mat-sys-primary': `light-dark(${this.primary}, ${this.primary})`,
+      '--mat-sys-background': `${this.isDark ? '#0B0B0B' : '#FFFFFF'}`,
+      '--mat-sys-on-background': `${this.isDark ? '#FFFFFF' : '#161616'}`,
+      '--mat-sys-primary': this.primary,
       '--mat-sys-on-primary': this.chooseTextColor(this.primary),
-      '--mat-sys-primary-container': `light-dark(${this.primary}, ${this.primary})`,
+      '--mat-sys-primary-container': this.primary,
       '--mat-sys-on-primary-container': this.chooseTextColor(this.primary),
-      '--mat-sys-tertiary': `light-dark(#161616, #E6E6E6)`,
-      '--mat-sys-on-tertiary': `light-dark(#FFFFFF, #131313)`,
-      '--mat-sys-tertiary-container': `light-dark(#161616, #E6E6E6)`,
-      '--mat-sys-on-tertiary-container': `light-dark(#FFFFFF, #131313)`,
+      '--mat-sys-tertiary': `${this.isDark ? '#E6E6E6' : '#161616'}`,
+      '--mat-sys-on-tertiary': `${this.isDark ? '#131313' : '#FFFFFF'}`,
+      '--mat-sys-tertiary-container': `${this.isDark ? '#E6E6E6' : '#161616'}`,
+      '--mat-sys-on-tertiary-container': `${this.isDark ? '#131313' : '#FFFFFF'}`,
       '--mat-sys-error': `#DB3B21`,
       '--mat-sys-on-error': `#FFFFFF`,
-      '--mat-sys-surface': `light-dark(#FFFFFF, #131313)`,
-      '--mat-sys-on-surface': `light-dark(#161616, #FFFFFF)`,
-      '--mat-sys-surface-variant': `light-dark(#F2F3F4, #292B2B)`,
-      '--mat-sys-on-surface-variant': `light-dark(#A5AAB0, #8C9090)`,
-      '--mat-sys-outline': `light-dark(#727A82, #8C9090)`,
-      '--mat-sys-outline-variant': `light-dark(#E5E7E8, #292B2B)`,
+      '--mat-sys-surface': `${this.isDark ? '#131313' : '#FFFFFF'}`,
+      '--mat-sys-on-surface': `${this.isDark ? '#FFFFFF' : '#161616'}`,
+      '--mat-sys-surface-variant': `${this.isDark ? '#292B2B' : '#F2F3F4'}`,
+      '--mat-sys-on-surface-variant': `${this.isDark ? '#8C9090' : '#A5AAB0'}`,
+      '--mat-sys-outline': `${this.isDark ? '#8C9090' : '#727A82'}`,
+      '--mat-sys-outline-variant': `${this.isDark ? '#292B2B' : '#E5E7E8'}`,
     };
 
     let sheet = (globalThis as any)['material-tokens-class'];

@@ -36,8 +36,8 @@ body {
   .tertiary-button {
     @include mat.theme-overrides(
       (
-        primary: light-dark(#161616, #e6e6e6),
-        on-primary: light-dark(#ffffff, #131313),
+        primary: #161616,
+        on-primary: #ffffff,
       )
     );
   }
@@ -62,5 +62,14 @@ body {
 
   &.dark {
     color-scheme: dark;
+
+    .tertiary-button {
+      @include mat.theme-overrides(
+        (
+          primary: #e6e6e6,
+          on-primary: #131313,
+        )
+      );
+    }
   }
 }
