@@ -121,8 +121,8 @@ export class MenusController {
 
       return {
         count: torobProducts.length,
-        products: paginatedProducts,
         max_pages: Math.ceil(torobProducts.length / 100),
+        products: paginatedProducts,
       };
     }
   }
