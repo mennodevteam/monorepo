@@ -48,7 +48,6 @@ export class ImageCropperDialogComponent implements AfterViewInit {
       // event.target.files = [convertedFile];
       // this.imageChangedEvent = list;
       this.fileInput.nativeElement.files = list.files;
-      console.log(this.fileInput.nativeElement.files[0]);
       this.imageChangedEvent = event;
     } else {
       this.imageChangedEvent = event;

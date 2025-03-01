@@ -130,7 +130,7 @@ export class ProductEditComponent implements FormComponent {
         },
       })
       .then((dto) => {
-        if (variant) variant.setValue(dto);
+        if (variant) variant.setValue({ ...variant.value, ...dto });
         else
           this.variantsForm.push(
             this.fb.group({
@@ -139,6 +139,7 @@ export class ProductEditComponent implements FormComponent {
             }),
           );
       });
+      this.variantsForm.markAsDirty();
   }
 
   addImage() {
@@ -196,7 +197,6 @@ export class ProductEditComponent implements FormComponent {
 
   async submit() {
     if (!this.form.controls['price'].value) this.form.controls['price'].setValue(0);
-    console.log(this.form);
     if (this.form.invalid) return;
     const fv = this.form.getRawValue();
     if (this.productId) fv.id = this.productId;

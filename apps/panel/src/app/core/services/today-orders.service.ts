@@ -53,7 +53,6 @@ export class TodayOrdersService {
       untracked(() => {
         this.lastFilterUpdate.set(new Date());
         for (const order of orders) {
-          console.log(Date.now(), order);
           const isNew = order.updatedAt === order.createdAt;
           if (isNew) {
             if (!this.newOrdersIds.has(order.id)) {
