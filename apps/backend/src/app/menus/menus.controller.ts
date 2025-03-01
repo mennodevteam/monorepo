@@ -1,5 +1,5 @@
 import { Menu, OrderType, Product, Shop, Status } from '@menno/types';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
@@ -75,6 +75,7 @@ export class MenusController {
   }
 
   @Public()
+  @HttpCode(200)
   @Post('torob/:shopId/products')
   async torobProducts(
     @Body() dto: { page_unique?: string; page_url?: string; page?: number },
