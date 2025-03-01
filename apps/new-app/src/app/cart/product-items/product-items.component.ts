@@ -15,9 +15,5 @@ import { QuantitySelectorComponent } from '../../common/components/quantity-sele
 })
 export class ProductItemsComponent {
   Product = Product;
-  constructor(public cart: CartService) {
-    effect(() => {
-      console.log(this.cart.orderItems());
-    });
-  }
+  constructor(public cart: CartService) {}
 }

@@ -1,8 +1,8 @@
-import { Component, computed, ElementRef, viewChild, ViewChild } from '@angular/core';
+import { Component, computed, ElementRef, inject, viewChild, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { COMMON } from '../../common';
 import { Product } from '@menno/types';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MenuService, flyInOutFromDown } from '../../core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
@@ -26,15 +26,17 @@ import { ImageCarouselComponent } from '../../common/components/image-carousel/i
   animations: [flyInOutFromDown()],
 })
 export class ProductDetailsComponent {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   Product = Product;
   product: Product;
   variantsListElement = viewChild('variantsList', { read: ElementRef });
   hasInCart = computed(() => {
     return !!this.cart.quantity().find((x) => x.productId === this.product?.id && x.quantity);
   });
+  isFirstRoute = this.router.getCurrentNavigation()?.previousNavigation == null;
   constructor(
-    private route: ActivatedRoute,
-    private menuService: MenuService,
+    public menuService: MenuService,
     public cart: CartService,
   ) {
     const id = this.route.snapshot.params['id'];

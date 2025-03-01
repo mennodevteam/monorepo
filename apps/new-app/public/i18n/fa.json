@@ -94,6 +94,7 @@
   "menu": {
     "add": "افزودن",
     "searchPlaceholder": "جستجوی در {{value}}...",
+    "otherProducts": "سایر {{value}}",
     "category": {
       "DEFAULT": "منو",
       "CAFE": "منو",

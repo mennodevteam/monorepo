@@ -1,7 +1,15 @@
 <div fxLayout="column" fxLayout.gt-sm="row" pb max-center>
-  <button mat-mini-fab id="back-button" goBack class="tertiary-button">
-    <i class="fa-regular fa-chevron-right"></i>
-  </button>
+  @if (isFirstRoute) {
+    <button mat-fab extended id="back-button" routerLink="/" class="tertiary-button">
+      <i class="fa-regular fa-chevron-right"></i>
+      &nbsp;
+      {{ 'menu.otherProducts' | translate: { value: menuService.businessCategoryTitle } }}
+    </button>
+  } @else {
+    <button mat-fab id="back-button" goBack class="tertiary-button">
+      <i class="fa-regular fa-chevron-right"></i>
+    </button>
+  }
   <div class="image-container">
     <app-image-carousel [images]="imageFiles" />
   </div>
