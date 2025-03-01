@@ -110,8 +110,18 @@ export class MenusController {
         short_desc: p.description,
       }));
 
-      if (dto.page_url) return torobProducts.find((item) => item.page_url === dto.page_url);
-      if (dto.page_unique) return torobProducts.find((item) => item.page_unique === dto.page_unique);
+      if (dto.page_url)
+        return {
+          count: 1,
+          max_pages: 1,
+          products: [torobProducts.find((item) => item.page_url === dto.page_url)],
+        };
+      if (dto.page_unique)
+        return {
+          count: 1,
+          max_pages: 1,
+          products: [torobProducts.find((item) => item.page_unique === dto.page_unique)],
+        };
 
       const page = dto.page || 1;
       const pageSize = 100;
