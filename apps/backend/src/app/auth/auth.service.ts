@@ -79,6 +79,21 @@ export class AuthService {
     return user;
   }
 
+  loginAppV2(user: User, expireTokenIn = '90d') {
+    const payload: Partial<User> = {
+      id: user.id,
+      mobilePhone: user.mobilePhone,
+      role: UserRole.App,
+    };
+
+    const token = this.jwtService.sign(payload, {
+      secret: process.env.JWT_ACCESS_SECRET,
+      expiresIn: expireTokenIn,
+    });
+
+    return token;
+  }
+
   loginPanelV2(user: User, expireTokenIn = '90d') {
     const payload: Partial<User> = {
       id: user.id,
@@ -187,6 +202,22 @@ export class AuthService {
         user = await this.usersRepo.findOneBy({ mobilePhone });
       }
       return this.loginApp(user);
+    } else {
+      throw new HttpException('code is not valid', HttpStatus.FORBIDDEN);
+    }
+  }
+
+  async loginAppWithTokenV2(userId: string, mobilePhone: string, token: string): Promise<string> {
+    if (this.mobilePhoneTokens[mobilePhone] === PersianNumberService.toEnglish(token)) {
+      delete this.mobilePhoneTokens[mobilePhone];
+      let user = await this.usersRepo.findOneBy({ mobilePhone });
+      if (!user) {
+        await this.usersRepo.update(userId, {
+          mobilePhone,
+        });
+        user = await this.usersRepo.findOneBy({ mobilePhone });
+      }
+      return this.loginAppV2(user);
     } else {
       throw new HttpException('code is not valid', HttpStatus.FORBIDDEN);
     }

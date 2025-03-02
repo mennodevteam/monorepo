@@ -67,6 +67,13 @@ export class AuthController {
     return this.auth.loginApp(req.user);
   }
 
+  @Public()
+  @UseGuards(AppLocalAuthGuard)
+  @Post('login/app/v2')
+  async loginAppV2(@Request() req) {
+    return this.auth.loginAppV2(req.user);
+  }
+
   @Roles(UserRole.App)
   @Put('edit')
   async editUser(@Body() dto: User, @LoginUser() user: AuthPayload) {
@@ -89,6 +96,15 @@ export class AuthController {
       if (dbUser) return dbUser;
     }
     throw new HttpException('no user found', HttpStatus.NOT_FOUND);
+  }
+
+  @Get('login/app/v2/:userId/:mobile/:token')
+  async loginAppWithTokenV2(@Param() params) {
+    return this.auth.loginAppWithTokenV2(
+      params.userId,
+      PersianNumberService.toEnglish(params.mobile),
+      PersianNumberService.toEnglish(params.token),
+    );
   }
 
   @Get('login/app/:userId/:mobile/:token')
