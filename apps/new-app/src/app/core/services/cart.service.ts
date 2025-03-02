@@ -21,6 +21,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AddressesService } from './addresses.service';
 import { ClubService } from './club.service';
 import { PersianNumberService } from '@menno/utils';
+import { CampaignService } from './campaign.service';
 
 const LOCAL_CART_QUANTITY_KEY = 'cartQuantity';
 
@@ -97,6 +98,7 @@ export class CartService {
     private menuService: MenuService,
     private shopService: ShopService,
     private ordersService: OrdersService,
+    private campaign: CampaignService,
     private http: HttpClient,
     private snack: MatSnackBar,
     private translate: TranslateService,
@@ -206,6 +208,12 @@ export class CartService {
         ...items,
         { productId: product.id, variantId: variant?.id, quantity: signal(1) },
       ]);
+
+      this.http
+        .get(`menuStats/addToCart/${this.menuService.menu().id}/${product.id}`, {
+          params: this.campaign.params,
+        })
+        .toPromise();
     }
   }
 

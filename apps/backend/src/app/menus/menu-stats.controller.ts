@@ -48,4 +48,23 @@ export class MenuStatsController {
       user: { id: user.id },
     });
   }
+
+  @Roles(UserRole.App)
+  @Get('addToCart/:menuId/:id')
+  addToCart(
+    @Param('menuId') menuId: string,
+    @Param('id') id: string,
+    @LoginUser() user: AuthPayload,
+    @Query('referrer') referrer?: string,
+    @Query('campaign') campaign?: string,
+  ) {
+    this.repo.save({
+      action: StatAction.AddToCart,
+      menu: { id: menuId },
+      product: { id },
+      referrer,
+      campaign,
+      user: { id: user.id },
+    });
+  }
 }

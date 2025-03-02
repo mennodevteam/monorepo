@@ -5,6 +5,7 @@ import { User } from './user';
 export enum StatAction {
   LoadMenu = 'LOAD_MENU',
   ClickProduct = 'CLICK_PRODUCT',
+  AddToCart = 'ADD_TO_CART',
 }
 
 export class MenuStat {

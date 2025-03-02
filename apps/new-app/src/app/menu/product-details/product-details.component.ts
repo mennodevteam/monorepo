@@ -9,6 +9,8 @@ import { MatListModule } from '@angular/material/list';
 import { QuantitySelectorComponent } from '../../common/components/quantity-selector/quantity-selector.component';
 import { CartService } from '../../core/services/cart.service';
 import { ImageCarouselComponent } from '../../common/components/image-carousel/image-carousel.component';
+import { HttpClient } from '@angular/common/http';
+import { CampaignService } from '../../core/services/campaign.service';
 
 @Component({
   selector: 'app-product-details',
@@ -28,6 +30,8 @@ import { ImageCarouselComponent } from '../../common/components/image-carousel/i
 export class ProductDetailsComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly http = inject(HttpClient);
+  private readonly campaign = inject(CampaignService);
   Product = Product;
   product: Product;
   variantsListElement = viewChild('variantsList', { read: ElementRef });
@@ -44,6 +48,12 @@ export class ProductDetailsComponent {
     if (product) {
       this.product = product;
     }
+
+    this.http
+      .get(`menuStats/clickProduct/${this.menuService.menu().id}/${this.product.id}`, {
+        params: this.campaign.params,
+      })
+      .toPromise();
   }
 
   submit() {
