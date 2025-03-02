@@ -74,10 +74,21 @@
       <app-quantity-selector [product]="product" />
     }
   } @else {
-    <button mat-flat-button fxFlex max-center class="large tertiary-button" (click)="submit()">
-      <i class="fa-regular fa-circle-plus"></i>
-      &nbsp;
-      {{ 'menu.add' | translate }}
+    <button
+      mat-flat-button
+      fxFlex
+      max-center
+      class="large tertiary-button"
+      (click)="submit()"
+      [disabled]="Product.isFinished(product)"
+    >
+      @if (Product.isFinished(product)) {
+        {{ 'app.finished' | translate }}
+      } @else {
+        <i class="fa-regular fa-circle-plus"></i>
+        &nbsp;
+        {{ 'menu.add' | translate }}
+      }
     </button>
   }
 </mat-toolbar>

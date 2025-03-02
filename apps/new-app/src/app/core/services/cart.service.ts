@@ -134,7 +134,8 @@ export class CartService {
         let hasChange = false;
         for (const item of items) {
           const product = this.menuService.getProductById(item.productId);
-          if (!product || (item.variantId && !product.variants?.find((x) => x.id === item.variantId))) {
+          const variant = product?.variants?.find((x) => x.id === item.variantId);
+          if (!product || (item.variantId && !variant) || Product.isFinished(product, variant)) {
             copy.splice(copy.indexOf(item), 1);
             hasChange = true;
           }

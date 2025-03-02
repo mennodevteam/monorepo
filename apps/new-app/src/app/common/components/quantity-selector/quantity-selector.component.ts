@@ -15,6 +15,7 @@ export class QuantitySelectorComponent {
   @Input() product: Product;
   @Input() variant?: ProductVariant;
   value?: WritableSignal<number>;
+  Product = Product;
 
   constructor(public cart: CartService) {
     effect(() => {

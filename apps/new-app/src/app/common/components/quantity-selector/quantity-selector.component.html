@@ -25,9 +25,19 @@
   </div>
 } @else {
   <div fxLayout="column">
-    <button mat-flat-button class="tertiary-button compact" (click)="cart.plus(product, variant)" stopPropagation>
-      <i class="fa-regular fa-circle-plus"></i>
-      {{ 'menu.add' | translate }}
+    <button
+      mat-flat-button
+      class="tertiary-button compact"
+      [disabled]="Product.isFinished(product, variant)"
+      (click)="cart.plus(product, variant)"
+      stopPropagation
+    >
+      @if (Product.isFinished(product, variant)) {
+        {{ 'app.finished' | translate }}
+      } @else {
+        <i class="fa-regular fa-circle-plus"></i>
+        {{ 'menu.add' | translate }}
+      }
     </button>
   </div>
 }
