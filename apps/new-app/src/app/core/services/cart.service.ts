@@ -22,6 +22,8 @@ import { AddressesService } from './addresses.service';
 import { ClubService } from './club.service';
 import { PersianNumberService } from '@menno/utils';
 
+const LOCAL_CART_QUANTITY_KEY = 'cartQuantity';
+
 type SignalProductItem = { productId: string; variantId?: number; quantity: WritableSignal<number> };
 
 @Injectable({
@@ -101,16 +103,44 @@ export class CartService {
     private addressesService: AddressesService,
     private club: ClubService,
   ) {
+    const localQuantity = JSON.parse(localStorage.getItem(LOCAL_CART_QUANTITY_KEY) || 'null');
+    if (localQuantity?.items?.length && localQuantity.date > Date.now() - 1000 * 60 * 60 * 24) {
+      this.quantity.set(
+        localQuantity.items.map((x: any) => ({
+          productId: x.productId,
+          variantId: x.variantId,
+          quantity: signal(x.quantity),
+        })),
+      );
+    }
+
+    effect(() => {
+      const items = this.quantity();
+      if (items.length) {
+        localStorage.setItem(
+          LOCAL_CART_QUANTITY_KEY,
+          JSON.stringify({ date: Date.now(), items: items.map((x) => ({ ...x, quantity: x.quantity() })) }),
+        );
+      } else {
+        localStorage.removeItem(LOCAL_CART_QUANTITY_KEY);
+      }
+    });
+
     effect(() => {
       const menu = this.menuService.menu();
-      untracked(() => {
-        const items = this.quantity();
+      const items = untracked(() => this.quantity());
+      if (items.length) {
         const copy = [...items];
+        let hasChange = false;
         for (const item of items) {
-          if (!this.menuService.getProductById(item.productId)) copy.splice(copy.indexOf(item), 1);
+          const product = this.menuService.getProductById(item.productId);
+          if (!product || (item.variantId && !product.variants?.find((x) => x.id === item.variantId))) {
+            copy.splice(copy.indexOf(item), 1);
+            hasChange = true;
+          }
         }
-        this.quantity.set(copy);
-      });
+        if (hasChange) this.quantity.set(copy);
+      }
     });
 
     effect(
