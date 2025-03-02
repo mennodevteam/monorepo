@@ -71,6 +71,8 @@
     "viewInvoiceAndComplete": "مشاهده فاکتور و تکمیل خرید",
     "addCoupon": "افزودن کد تخفیف",
     "removeCoupon": "حذف کد تخفیف",
+    "clear": "حذف همه",
+    "count": "{{value}} آیتم",
     "sum": "مجموع آیتم‌ها",
     "sumDiscount": "تخفیف آیتم‌ها",
     "totalDiscount": "سود شما (مجموع کل تخفیف)",

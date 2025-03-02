@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { AuthService } from '../core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-cart',
@@ -21,6 +22,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
+    MatToolbarModule,
   ],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
@@ -28,7 +30,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 export class CartComponent {
   noteControl: FormControl;
   constructor(
-    private cart: CartService,
+    public cart: CartService,
     private location: PlatformLocation,
     private router: Router,
     private auth: AuthService,

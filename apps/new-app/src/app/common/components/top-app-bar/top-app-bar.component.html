@@ -6,6 +6,7 @@
     <ng-content></ng-content>
   </span>
   <label>{{ title }}</label>
+  <ng-content class="custom-action"></ng-content>
   @if (showActions && canShare) {
     <button mat-icon-button (click)="menuService.share()" class="on-background-text">
       <i class="fa-regular fa-share-nodes fa-sm"></i>

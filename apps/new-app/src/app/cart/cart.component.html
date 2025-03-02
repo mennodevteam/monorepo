@@ -1,5 +1,12 @@
-<app-top-app-bar title="{{ 'cart.title' | translate }}" [sticky]="true" [hideMenu]="true" />
-
+<app-top-app-bar
+  title="{{ 'cart.title' | translate }} ({{ cart.length() }})"
+  [sticky]="true"
+  [hideMenu]="true"
+>
+  <button mat-icon-button class="custom-action" (click)="cart.clear()" goBack>
+    <i class="fa-regular fa-trash-alt fa-sm"></i>
+  </button>
+</app-top-app-bar>
 <main p-md fxLayout="column" fxLayoutGap="24" max-center pb>
   <app-product-items />
 
@@ -16,5 +23,7 @@
 </main>
 
 <mat-toolbar fxLayout="row" fxLayoutAlign="center" id="actionbar" class="background-background" p-md>
-  <a mat-flat-button fxFlex max-center (click)="submit()" class="large">{{ 'cart.viewInvoiceAndComplete' | translate }}</a>
+  <a mat-flat-button fxFlex max-center (click)="submit()" class="large">
+    {{ 'cart.viewInvoiceAndComplete' | translate }}
+  </a>
 </mat-toolbar>

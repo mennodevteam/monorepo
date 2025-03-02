@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, effect, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild, effect, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TopAppBarComponent } from '../common/components';
 import { MenuService, ShopService, flyInOutFromDown } from '../core';
@@ -33,6 +33,8 @@ export class MenuComponent {
   @ViewChild('searchbox') searchboxInput: ElementRef;
   searchControl = new FormControl(this.menuService.searchText());
   searching = signal(!!this.menuService.searchText());
+  static scrollPosition = 0;
+
   constructor(
     private shopService: ShopService,
     public menuService: MenuService,

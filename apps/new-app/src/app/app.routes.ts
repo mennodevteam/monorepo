@@ -1,7 +1,7 @@
-import { Route } from '@angular/router';
+import { RedirectCommand, Route, Router } from '@angular/router';
 import { shopRoutes } from './shop/shop.routes';
 import { menuRoutes } from './menu/menu.routes';
-import { menuResolver, shopResolver, translateActivator, userResolver } from './core';
+import { menuResolver, shopResolver, ShopService, translateActivator, userResolver } from './core';
 import { ShellComponent } from './shell/shell.component';
 import { CartComponent } from './cart/cart.component';
 import { PaymentComponent } from './payment/payment.component';
@@ -9,6 +9,8 @@ import { authRoutes } from './auth/auth.routes';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { ordersRoutes } from './orders/orders.routes';
 import { addressRoutes } from './address/address.routes';
+import { inject } from '@angular/core';
+import { HomePage } from '@menno/types';
 
 export const appRoutes: Route[] = [
   {
@@ -52,7 +54,23 @@ export const appRoutes: Route[] = [
         loadComponent: () => import('./payment/payment.component').then((m) => m.PaymentComponent),
         data: { animation: 'payment' },
       },
-      { path: '', children: shopRoutes },
+      {
+        path: '',
+        canActivate: [
+          async () => {
+            const router = inject(Router);
+            const shopService = inject(ShopService);
+            await shopService.getResolver();
+
+            if (shopService.shop?.appConfig?.homePage !== HomePage.Menu) {
+              return new RedirectCommand(router.parseUrl('/shop'), { skipLocationChange: true });
+            }
+            return true;
+          },
+        ],
+        loadChildren: () => import('./menu/menu.routes').then((m) => m.menuRoutes),
+      },
+      { path: 'shop', children: shopRoutes },
       { path: 'complete/:id', pathMatch: 'full', redirectTo: 'orders/thanks/:id' },
     ],
   },

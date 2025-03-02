@@ -1,6 +1,6 @@
 <div fxLayout="column" fxLayout.gt-sm="row" pb max-center>
   @if (isFirstRoute) {
-    <button mat-fab extended id="back-button" routerLink="/" class="tertiary-button">
+    <button mat-fab extended id="back-button" routerLink="/menu" class="tertiary-button">
       <i class="fa-regular fa-chevron-right"></i>
       &nbsp;
       {{ 'menu.otherProducts' | translate: { value: menuService.businessCategoryTitle } }}
