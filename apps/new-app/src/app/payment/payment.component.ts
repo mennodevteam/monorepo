@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule, PlatformLocation } from '@angular/common';
 import { COMMON } from '../common';
 import { InvoiceComponent } from './invoice/invoice.component';
@@ -12,6 +12,10 @@ import { MatListModule } from '@angular/material/list';
 import { Address, OrderType } from '@menno/types';
 import { FormsModule } from '@angular/forms';
 import { AddressListComponent } from './address-list/address-list.component';
+import { AlertBannerComponent } from '../common/components/alert-banner/alert-banner.component';
+import { injectQuery } from '@tanstack/angular-query-experimental';
+import { lastValueFrom } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-payment',
@@ -25,12 +29,21 @@ import { AddressListComponent } from './address-list/address-list.component';
     MatListModule,
     FormsModule,
     AddressListComponent,
+    AlertBannerComponent,
   ],
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.scss',
 })
 export class PaymentComponent {
+  private readonly http = inject(HttpClient);
   OrderType = OrderType;
+
+  vpnQuery = injectQuery(() => ({
+    queryKey: ['vpn'],
+    queryFn: () => lastValueFrom(this.http.get<{ countryCode: string }>('http://ip-api.com/json/')),
+    select: (data) => data.countryCode !== 'IR',
+  }));
+
   constructor(
     public cart: CartService,
     private club: ClubService,

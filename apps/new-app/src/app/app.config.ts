@@ -4,11 +4,21 @@ import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading
 import { appRoutes } from './app.routes';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { apiInterceptorProvider, provideTranslation } from './core';
+import { QueryClient, provideTanStackQuery } from '@tanstack/angular-query-experimental';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideAnimationsAsync(),
+    provideTanStackQuery(
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            retry: false,
+          },
+        },
+      }),
+    ),
     provideRouter(
       appRoutes,
       withPreloading(PreloadAllModules),

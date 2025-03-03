@@ -33,6 +33,10 @@
   "seo": {
     "description": "{{title}}, مشاهده {{menuTitle}} و ثبت سفارش از {{shopTitle}}. آدرس: {{address}}. تلفن: {{phone}}"
   },
+  "vpnError": {
+    "title": "لطفا VPN را خاموش کنید",
+    "description": "ترجیجا قبل از ورود به درگاه پرداخت، VPN خود را خاموش کنید."
+  },
   "shop": {
     "category": {
       "DEFAULT": "مجموعه",

@@ -1,7 +1,14 @@
 <app-top-app-bar title="{{ 'payment.title' | translate }}" [sticky]="true" [hideMenu]="true" />
-
 @if (cart.length()) {
   <main fxLayout="column" fxLayoutGap="16" p-md max-center pb>
+    @if (cart.isPaymentRequired && vpnQuery.data() === true) {
+      <app-alert-banner
+        type="warning"
+        title="{{ 'vpnError.title' | translate }}"
+        description="{{ 'vpnError.description' | translate }}"
+      />
+    }
+
     @if (menu.type() === OrderType.Delivery) {
       <app-address-list />
       <mat-divider />
