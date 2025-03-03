@@ -362,19 +362,23 @@ export class CartService {
     }
 
     this.saving.set(true);
-    if (
-      this.isPaymentRequired ||
-      (this.isPaymentAvailable && this.paymentType() === OrderPaymentType.Online)
-    ) {
-      const order = await this.ordersService.payAndAddOrder(this.dto());
-      if (order) {
+    try {
+      if (
+        this.isPaymentRequired ||
+        (this.isPaymentAvailable && this.paymentType() === OrderPaymentType.Online)
+      ) {
+        const order = await this.ordersService.payAndAddOrder(this.dto());
+        if (order) {
+          this.clear(true);
+          return order;
+        }
+      } else {
+        const order = await this.ordersService.save(this.dto());
         this.clear(true);
         return order;
       }
-    } else {
-      const order = await this.ordersService.save(this.dto());
-      this.clear(true);
-      return order;
+    } catch (error) {
+      this.saving.set(false);
     }
     return null;
   }
