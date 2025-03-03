@@ -40,8 +40,8 @@ export class PaymentComponent {
 
   vpnQuery = injectQuery(() => ({
     queryKey: ['vpn'],
-    queryFn: () => lastValueFrom(this.http.get<{ countryCode: string }>('http://ip-api.com/json/')),
-    select: (data) => data.countryCode !== 'IR',
+    queryFn: () => lastValueFrom(this.http.get<{ country_code: string }>('https://api.ipbase.com/v1/json/')),
+    select: (data) => data.country_code !== 'IR',
   }));
 
   constructor(
