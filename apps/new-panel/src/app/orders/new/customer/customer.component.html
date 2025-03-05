@@ -16,6 +16,10 @@
   </mat-card-content>
   @if (customer) {
     <mat-card-actions>
+      <button mat-button (click)="editMember()">
+        <i class="fa-regular fa-edit-alt"></i>
+        {{ 'app.edit' | translate }}
+      </button>
       <button mat-button class="warn-theme" (click)="clearMember()">
         <i class="fa-regular fa-xmark-circle"></i>
         {{ 'app.remove' | translate }}

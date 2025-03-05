@@ -46,6 +46,7 @@
               [formControl]="fields[key].control"
               [type]="fields[key].type || 'text'"
               [attr.ltr]="fields[key].ltr"
+              [disabled]="!!fields[key].disabled"
             />
           }
         }

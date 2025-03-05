@@ -22,6 +22,12 @@
           <span eng>{{ member.user.mobilePhone }}</span>
         </mat-option>
       }
+      @if (!query.isLoading()) {
+        <mat-option (onSelectionChange)="addMember()">
+          <i class="fa-regular fa-plus-circle"></i>
+          {{ 'addMemberDialog.newTitle' | translate }}
+        </mat-option>
+      }
     }
   </mat-autocomplete>
 </mat-form-field>

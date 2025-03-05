@@ -10,6 +10,7 @@ import { debounceTime, distinctUntilChanged, lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { FilterMemberDto, Member, User } from '@menno/types';
 import { PersianNumberService } from '@menno/utils';
+import { ClubService } from '../../../core/services/club.service';
 
 @Component({
   selector: 'app-search-member-autocomplete',
@@ -27,6 +28,7 @@ import { PersianNumberService } from '@menno/utils';
 })
 export class SearchMemberAutocompleteComponent {
   private readonly http = inject(HttpClient);
+  private readonly club = inject(ClubService);
   searchControl = new FormControl('');
   searchQuery = signal('');
   userSelect = output<Member | null>();
@@ -69,5 +71,10 @@ export class SearchMemberAutocompleteComponent {
 
   select(ev: MatAutocompleteSelectedEvent) {
     if (ev.option.value) this.selectedMember.set(ev.option.value);
+  }
+
+  async addMember() {
+    const savedMember = await this.club.editMemberDialog();
+    if (savedMember) this.selectedMember.set(savedMember);
   }
 }

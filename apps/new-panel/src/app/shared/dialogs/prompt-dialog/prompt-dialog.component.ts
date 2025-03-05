@@ -18,6 +18,7 @@ export type PromptField = {
   placeholder?: string;
   rows?: number;
   ltr?: boolean;
+  disabled?: boolean;
 };
 
 @Component({
