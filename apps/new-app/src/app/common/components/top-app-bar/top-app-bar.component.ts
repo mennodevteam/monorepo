@@ -17,6 +17,7 @@ export class TopAppBarComponent {
   @Input() hideMenu?: boolean;
   @Input() showActions?: boolean;
   @Input() sticky = false;
+  @Input() hideBack = false;
 
   constructor(
     private shopService: ShopService,

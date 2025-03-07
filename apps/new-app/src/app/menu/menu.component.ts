@@ -10,6 +10,7 @@ import { CartService } from '../core/services/cart.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FooterComponent } from '../common/components/footer/footer.component';
+import { HomePage } from '@menno/types';
 
 @Component({
   selector: 'app-menu',
@@ -34,6 +35,7 @@ export class MenuComponent {
   searchControl = new FormControl(this.menuService.searchText());
   searching = signal(!!this.menuService.searchText());
   static scrollPosition = 0;
+  HomePage = HomePage;
 
   constructor(
     private shopService: ShopService,
