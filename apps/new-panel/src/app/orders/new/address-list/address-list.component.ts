@@ -4,12 +4,15 @@ import { MatCardModule } from '@angular/material/card';
 import { SHARED } from '../../../shared';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
-import { injectQuery } from '@tanstack/angular-query-experimental';
+import { injectQuery, injectQueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
-import { Address } from '@menno/types';
+import { Address, User } from '@menno/types';
 import { NewOrdersService } from '../new-order.service';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { AddressFormDialogComponent } from '../../../shared/dialogs/address-form-dialog/address-form-dialog.component';
+import { ClubService } from '../../../core/services/club.service';
 
 @Component({
   selector: 'app-address-list',
@@ -21,6 +24,9 @@ import { FormsModule } from '@angular/forms';
 export class AddressListComponent {
   readonly service = inject(NewOrdersService);
   private readonly http = inject(HttpClient);
+  private readonly dialog = inject(MatDialog);
+  private readonly club = inject(ClubService);
+  private readonly queryClient = injectQueryClient();
 
   addressesQuery = injectQuery(() => ({
     queryKey: ['addresses', this.service.customer()?.id],
@@ -39,5 +45,30 @@ export class AddressListComponent {
 
   selectAddress(address: Address) {
     this.service.address.set(address);
+    this.service.dirty.set(true);
+  }
+
+  addAddress() {
+    this.dialog
+      .open(AddressFormDialogComponent, {
+        disableClose: true,
+      })
+      .afterClosed()
+      .subscribe(async (dto: Address) => {
+        if (dto) {
+          const user = this.service.customer();
+          if (user) dto.user = { id: user.id } as User;
+          const newAddress = await this.club.saveAddressMutation.mutateAsync(dto);
+          if (newAddress) {
+            this.selectAddress(newAddress);
+            this.queryClient.setQueryData(
+              ['addresses', this.service.customer()?.id],
+              (oldData: Address[]) => {
+                return [newAddress, ...oldData];
+              },
+            );
+          }
+        }
+      });
   }
 }

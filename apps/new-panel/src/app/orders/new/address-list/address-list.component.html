@@ -31,14 +31,18 @@
           </a>
         }
       </mat-nav-list>
+
+      @if (!addressesQuery.data()?.length) {
+        <app-empty-state />
+      }
     } @else {
       <app-data-loading />
     }
   </mat-card-content>
   <mat-card-actions>
-    <button mat-button>
+    <button mat-button (click)="addAddress()">
       <i class="fa-regular fa-plus-circle"></i>
-      {{ 'newOrder.addAddress' | translate }}
+      {{ 'addressDialog.newTitle' | translate }}
     </button>
   </mat-card-actions>
 </mat-card>

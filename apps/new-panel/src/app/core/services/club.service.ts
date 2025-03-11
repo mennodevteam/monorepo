@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from './dialog.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { injectMutation } from '@tanstack/angular-query-experimental';
-import { FilterMemberDto, GenderType, Member, User } from '@menno/types';
+import { Address, FilterMemberDto, GenderType, Member, User } from '@menno/types';
 import { lastValueFrom } from 'rxjs';
 import { PromptFields } from '../../shared/dialogs/prompt-dialog/prompt-dialog.component';
 import { FormControl, Validators } from '@angular/forms';
@@ -35,7 +35,7 @@ export class ClubService {
   }));
 
   saveAddressMutation = injectMutation(() => ({
-    mutationFn: (member: Member) => lastValueFrom(this.http.post<Member>(`/members`, member)),
+    mutationFn: (address: Address) => lastValueFrom(this.http.post<Address>(`/addresses`, address)),
     onMutate: () => {
       this.snack.open(this.translate.instant('app.saving'), '', { duration: 4000 });
     },

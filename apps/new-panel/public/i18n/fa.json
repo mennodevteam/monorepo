@@ -351,5 +351,19 @@
     "existPhoneError": "تلفن همراه وارد شده تکراری و مطعلق به {{value}} است",
     "existPublicKeyError": "کارت باشگاه وارد شده تکراری و مطعلق به {{value}} است",
     "address": "آدرس"
+  },
+  "addressDialog": {
+    "editTitle": "ویرایش آدرس",
+    "newTitle": "افزودن آدرس",
+    "postalCode": "کدپستی",
+    "unit": "پلاک",
+    "ring": "واحد",
+    "address": "آدرس متنی",
+    "deliveryArea":"محدوده ارسال پیک",
+    "region": "شهر"
+  },
+  "regionAutocomplete": {
+    "search": "شهر",
+    "placeholder": "جستجوی شهر..."
   }
 }

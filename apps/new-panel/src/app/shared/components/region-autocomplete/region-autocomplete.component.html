@@ -1,0 +1,20 @@
+<mat-form-field class="example-full-width">
+  <mat-label>{{ 'regionAutocomplete.search' | translate }}</mat-label>
+  <input
+    type="text"
+    placeholder="{{ 'regionAutocomplete.placeholder' | translate }}"
+    matInput
+    [formControl]="searchControl"
+    [matAutocomplete]="auto"
+  />
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    [displayWith]="displayFn"
+    (optionSelected)="select($event)"
+    autoActiveFirstOption
+  >
+    @for (region of regions(); track region.id) {
+      <mat-option [value]="region"> {{ region.state }} > {{ region.title }} </mat-option>
+    }
+  </mat-autocomplete>
+</mat-form-field>
