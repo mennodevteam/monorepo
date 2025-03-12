@@ -1,8 +1,9 @@
-import { Component, OnDestroy, signal } from '@angular/core';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { COMMON } from '../../common';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CartService } from '../../core';
 
 @Component({
   selector: 'app-thanks',
@@ -12,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './thanks.component.scss',
 })
 export class ThanksComponent implements OnDestroy {
+  private readonly cart = inject(CartService);
   value = signal(0);
   interval: any;
   id?: string;
@@ -20,8 +22,9 @@ export class ThanksComponent implements OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
   ) {
+    this.cart.clear();
     const params = this.route.snapshot.params;
-    this.id = params['id']
+    this.id = params['id'];
     this.interval = setInterval(() => {
       if (this.value() < 100) this.value.update((prev) => prev + 1);
       else {
