@@ -6,19 +6,20 @@ import { MatListModule } from '@angular/material/list';
 import { Order } from '@menno/types';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrdersService } from '../../core/services/orders.service';
+import { AlertBannerComponent } from '../../common/components/alert-banner/alert-banner.component';
 
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [CommonModule, COMMON, TopAppBarComponent, MatListModule],
+  imports: [CommonModule, COMMON, TopAppBarComponent, MatListModule, AlertBannerComponent],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss',
 })
 export class DetailsComponent implements OnDestroy {
   order = signal<Order | undefined>(undefined);
   shop = computed(() => {
-    return this.order()?.shop
-  })
+    return this.order()?.shop;
+  });
   interval: any;
 
   constructor(

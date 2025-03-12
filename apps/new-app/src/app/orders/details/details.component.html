@@ -1,24 +1,42 @@
-<app-top-app-bar title="{{ 'orderDetails.title' | translate }}" [sticky]="true" />
-<main max-center>
+<app-top-app-bar [sticky]="true" />
+<main p-md max-center fxLayout="column" fxLayoutGap="16px">
   @if (order()) {
+    <app-alert-banner
+      title="{{ 'orderDetails.description' | translate }}"
+      description="{{ 'orderDetails.state.title' | translate }}: {{
+        'orderDetails.state.' + order()?.state | translate
+      }}"
+      type="success"
+    />
     <mat-list>
       <mat-list-item>
-        <img matListItemAvatar imageLoader [imageFile]="shop()?.logoImage" [imageSize]="'sm'" />
-        <span matListItemTitle>{{ shop()?.title }}</span>
+        <span matListItemTitle>{{ 'orderDetails.title' | translate }}</span>
+        <span matListItemLine>{{ order()?.createdAt | pdate }}</span>
         <div matListItemMeta>
-          <span>{{ order()?.createdAt | pdate }}</span>
+          <button mat-button class="tertiary-button" id="shop-button" routerLink="/">
+            <img
+              [imageLoader]="shop()?.logo"
+              [imageFile]="shop()?.logoImage"
+              alt="{{ shop()?.title }}"
+              [imageSize]="'sm'"
+            />
+            &nbsp;
+            {{ shop()?.title }}
+            &nbsp;
+            <i class="fa-regular fa-angle-left"></i>
+          </button>
         </div>
       </mat-list-item>
       <mat-divider />
       @for (item of order()?.items; track item.id) {
         <mat-list-item>
-          <span matListItemLine>{{ item.title }}</span>
+          <span matListItemTitle style="font-size: 13px">{{ item.title }}</span>
           @if (!item.isAbstract) {
             <span matListItemLine>{{ 'app.number' | translate: { value: item.quantity } }}</span>
           }
           <div matListItemMeta>
             <span>
-              {{ item.price * item.quantity | menuCurrency }}
+              {{ item.price | menuCurrency }}
             </span>
           </div>
         </mat-list-item>

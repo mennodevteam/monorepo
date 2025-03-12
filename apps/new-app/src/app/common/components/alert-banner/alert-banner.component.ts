@@ -11,7 +11,7 @@ import { MatCardModule } from '@angular/material/card';
   styleUrl: './alert-banner.component.scss',
 })
 export class AlertBannerComponent {
-  @Input() type?: 'info' | 'error' | 'warning';
+  @Input() type?: 'info' | 'error' | 'warning' | 'success';
   @Input() title: string;
   @Input() description: string;
 }

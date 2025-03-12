@@ -28,6 +28,8 @@ export class ThemeService {
       '--mat-sys-on-background': `${this.isDark ? '#FFFFFF' : '#161616'}`,
       '--mat-sys-primary': this.primary,
       '--mat-sys-on-primary': this.chooseTextColor(this.primary),
+      '--mat-sys-secondary': '#2EB85C',
+      '--mat-sys-on-secondary': '#ffffff',
       '--mat-sys-primary-container': this.primary,
       '--mat-sys-on-primary-container': this.chooseTextColor(this.primary),
       '--mat-sys-tertiary': `${this.isDark ? '#E6E6E6' : '#161616'}`,
