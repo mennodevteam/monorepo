@@ -10,6 +10,12 @@
 >
   @if (!query.data()) {
     <mat-spinner [diameter]="24" />
+  } @else if (!query.data()?.length) {
+    <div class="empty-state" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+      <i class="fa-solid fa-message-lines fa-2x"></i>
+      <h4>{{ 'chat.noDataTitle' | translate }}</h4>
+      <p>{{ 'chat.noDataDescription' | translate }}</p>
+    </div>
   }
   @for (chat of query.data(); track chat.id) {
     <mat-card [class.receive]="chat.type === ChatType.Receive">
@@ -17,9 +23,9 @@
         <img
           *ngIf="chat.type === ChatType.Receive"
           mat-card-avatar
-          [imageLoader]="shopService.shop.logo"
-          [imageFile]="shopService.shop.logoImage"
-          alt="{{ shopService.shop.title }}"
+          [imageLoader]="chat.shop.logo"
+          [imageFile]="chat.shop.logoImage"
+          alt="{{ chat.shop.title }}"
           [imageSize]="'sm'"
         />
         <mat-card-title>

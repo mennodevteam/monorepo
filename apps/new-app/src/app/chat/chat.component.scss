@@ -1,5 +1,5 @@
 main {
-  min-height: 100vh;
+  min-height: calc(100vh - 128px);
   box-sizing: border-box;
   padding-bottom: 88px;
 }
@@ -62,4 +62,19 @@ mat-spinner {
   position: absolute;
   left: 8px;
   top: 12px;
+}
+
+.empty-state {
+  padding: 64px 24px;
+  opacity: 0.5;
+  text-align: center;
+
+  p,
+  h4 {
+    margin: 0;
+  }
+
+  i {
+    font-size: 64px;
+  }
 }

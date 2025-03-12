@@ -1,4 +1,4 @@
-import { Address, Chat, ChatType, Order, Region, Shop, UserRole } from '@menno/types';
+import { Address, Chat, ChatType, Order, Region, Shop, User, UserRole } from '@menno/types';
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
@@ -38,7 +38,7 @@ export class ChatController {
   @Roles(UserRole.Panel, UserRole.App)
   async save(@Body() chat: Chat, @LoginUser() user: AuthPayload): Promise<Chat> {
     if (user.role === UserRole.Panel) {
-      const shop = await this.auth.getPanelUserShop(user);
+      const shop = await this.auth.getPanelUserShop(user, ['appConfig', 'smsAccount']);
       if (chat.order) {
         this.ordersRepo
           .findOne({ where: { id: chat.order.id }, relations: ['shop.smsAccount', 'customer'] })
@@ -62,6 +62,29 @@ export class ChatController {
 
       return this.repo.save({ ...chat, type: ChatType.Receive, shop: { id: shop.id } });
     } else {
+      this.ordersRepo
+        .findOne({
+          where: { id: chat.order.id },
+          relations: ['shop.smsAccount', 'shop.appConfig', 'customer'],
+        })
+        .then((order) => {
+          try {
+            if (order.shop?.smsAccount && order.shop?.appConfig?.smsOnNewOrder) {
+              this.sms.send({
+                accountId: order.shop.smsAccount.id,
+                receptors: order.shop.appConfig.smsOnNewOrder,
+                messages: order.shop.appConfig.smsOnNewOrder.map(
+                  (item) => `یک پیام جدید از ${User.fullName(order.customer)}: ${chat.text}`,
+                ),
+              });
+            }
+          } catch (error) {
+            // do nothing
+          }
+        })
+        .catch((error) => {
+          // do nothing
+        });
       return this.repo.save({ ...chat, type: ChatType.Send, user: { id: user.id } });
     }
   }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TopAppBarComponent } from '../common/components/top-app-bar/top-app-bar.component';
 import { COMMON } from '../common';
 import { MatCardModule } from '@angular/material/card';
-import { AuthService, ShopService } from '../core';
+import { AuthService, OrdersService } from '../core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormsModule } from '@angular/forms';
 import { injectMutation, injectQuery, injectQueryClient } from '@tanstack/angular-query-experimental';
@@ -29,9 +29,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './chat.component.scss',
 })
 export class ChatComponent {
-  public shopService = inject(ShopService);
   public auth = inject(AuthService);
   public http = inject(HttpClient);
+  public ordersService = inject(OrdersService);
   public route = inject(ActivatedRoute);
   public queryClient = injectQueryClient();
   text = signal<string>('');
@@ -49,12 +49,17 @@ export class ChatComponent {
     select: (data) => data.reverse(),
   }));
 
+  orderQuery = injectQuery(() => ({
+    queryKey: ['order', this.id],
+    queryFn: () => lastValueFrom(this.ordersService.getById(this.id)),
+  }));
+
   sendMutation = injectMutation(() => ({
     mutationFn: () =>
       lastValueFrom(
         this.http.post<Chat>(`chat`, {
           text: this.text(),
-          shop: this.shopService.shop,
+          shop: this.orderQuery.data()?.shop,
           order: { id: this.id },
         } as Chat),
       ),
