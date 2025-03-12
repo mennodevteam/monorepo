@@ -11,6 +11,7 @@ mat-card {
 
   &.receive {
     align-self: end;
+    background-color: var(--mat-sys-surface-variant);
 
     mat-card-header {
       direction: ltr;

@@ -9,7 +9,7 @@ export enum ChatType {
 
 export class Chat {
   id: string;
-  user: User;
+  user?: User;
   shop: Shop;
   text: string;
   type: ChatType;

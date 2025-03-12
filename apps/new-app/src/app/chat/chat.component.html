@@ -14,18 +14,21 @@
   @for (chat of query.data(); track chat.id) {
     <mat-card [class.receive]="chat.type === ChatType.Receive">
       <mat-card-header>
-        @if (chat.type === ChatType.Receive) {
-          <img
-            mat-card-avatar
-            [imageLoader]="shopService.shop.logo"
-            [imageFile]="shopService.shop.logoImage"
-            alt="{{ shopService.shop.title }}"
-            [imageSize]="'sm'"
-          />
-          <mat-card-title>{{ shopService.shop.title }}</mat-card-title>
-        } @else {
-          <mat-card-title>{{ auth.user()?.firstName }} {{ auth.user()?.lastName }}</mat-card-title>
-        }
+        <img
+          *ngIf="chat.type === ChatType.Receive"
+          mat-card-avatar
+          [imageLoader]="shopService.shop.logo"
+          [imageFile]="shopService.shop.logoImage"
+          alt="{{ shopService.shop.title }}"
+          [imageSize]="'sm'"
+        />
+        <mat-card-title>
+          @if (chat.type === ChatType.Receive) {
+            {{ chat.shop.title }}
+          } @else {
+            {{ User.fullName(chat.user || auth.user()!) }}
+          }
+        </mat-card-title>
         <mat-card-subtitle class="outline-text">
           {{ chat.createdAt | pdate: true }}
         </mat-card-subtitle>

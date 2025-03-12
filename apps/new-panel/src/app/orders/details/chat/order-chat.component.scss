@@ -1,0 +1,36 @@
+#container {
+  & > mat-card-content {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+}
+
+mat-card.chat {
+  max-width: 80%;
+  width: 100%;
+  position: relative;
+  background-color: var(--mat-sys-surface);
+
+  &.receive {
+    align-self: end;
+
+    mat-card-header {
+      direction: ltr;
+    }
+  }
+
+  mat-card-title {
+    font-size: 14px !important;
+    line-height: 24px !important;
+  }
+
+  mat-card-subtitle {
+    font-size: 11px !important;
+    line-height: 16px !important;
+  }
+
+  mat-card-content {
+    font-size: 13px;
+    word-break: break-word;
+  }
+}

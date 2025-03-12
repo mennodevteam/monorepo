@@ -11,6 +11,7 @@ import { Order, OrderState, OrderType, User } from '@menno/types';
 import { OrderItemTableComponent } from './table/table.component';
 import { OrderStateChipComponent } from '../state-chip/state-chip.component';
 import { OrdersService } from '../order.service';
+import { OrderChatComponent } from "./chat/order-chat.component";
 
 @Component({
   selector: 'app-order-details',
@@ -22,7 +23,8 @@ import { OrdersService } from '../order.service';
     MatToolbarModule,
     OrderItemTableComponent,
     OrderStateChipComponent,
-  ],
+    OrderChatComponent
+],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss',
 })

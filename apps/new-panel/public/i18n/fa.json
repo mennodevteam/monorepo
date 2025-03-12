@@ -359,11 +359,16 @@
     "unit": "پلاک",
     "ring": "واحد",
     "address": "آدرس متنی",
-    "deliveryArea":"محدوده ارسال پیک",
+    "deliveryArea": "محدوده ارسال پیک",
     "region": "شهر"
   },
   "regionAutocomplete": {
     "search": "شهر",
     "placeholder": "جستجوی شهر..."
+  },
+  "chat": {
+    "title": "پیگیری سفارش",
+    "send": "ارسال پیام",
+    "text": "متن پیام"
   }
 }

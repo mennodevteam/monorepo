@@ -39,6 +39,7 @@ export const ChatSchema = new EntitySchema<Chat>({
     user: {
       type: 'many-to-one',
       target: 'User',
+      nullable: true,
     },
   },
 });

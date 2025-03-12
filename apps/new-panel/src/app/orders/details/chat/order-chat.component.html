@@ -1,0 +1,64 @@
+<mat-card appearance="outlined" id="container">
+  <mat-card-header>
+    <mat-card-title>
+      <i class="fa-regular fa-message-lines fa-lg"></i>
+      {{ 'chat.title' | translate }}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <button mat-button (click)="sendMessage()">
+      {{ 'chat.send' | translate }}
+      <i class="fa-solid fa-paper-plane-top fa-flip-horizontal"></i>
+    </button>
+  </mat-card-actions>
+  <mat-divider />
+  <mat-card-content fxLayout="column" fxLayoutGap="16px">
+    <br />
+    @if (!query.data()) {
+      <app-data-loading />
+    } @else if (!query.data()?.length) {
+      <app-empty-state />
+    }
+    @for (chat of query.data(); track chat.id) {
+      <mat-card class="chat" [class.receive]="chat.type === ChatType.Receive" appearance="outlined">
+        <mat-card-header>
+          @if (chat.type === ChatType.Receive) {
+            <mat-card-title>{{ chat.shop.title }}</mat-card-title>
+          } @else if (chat.user) {
+            <mat-card-title>{{ User.fullName(chat.user) }}</mat-card-title>
+          }
+          <mat-card-subtitle class="outline-text">
+            {{ chat.createdAt | pdate: true }}
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p appLinkify>
+            {{ chat.text }}
+          </p>
+
+          @if (chat.seen && chat.type === ChatType.Send) {
+            <i class="fa-solid fa-eye fa-sm outline-text"></i>
+          }
+        </mat-card-content>
+      </mat-card>
+    }
+  </mat-card-content>
+</mat-card>
+
+<!-- <mat-toolbar id="actionbar" fxLayout="row" fxLayoutGap="16px">
+  <textarea
+    [(ngModel)]="text"
+    fxFlex
+    class="surface-variant-background"
+    [ngModelOptions]="{ standalone: true }"
+    [disabled]="sendMutation.status() === 'pending'"
+  ></textarea>
+  <button
+    mat-icon-button
+    class="tertiary-button"
+    (click)="sendMutation.mutate()"
+    [disabled]="sendMutation.status() === 'pending' || !text()"
+  >
+    <i class="fa-solid fa-paper-plane-top fa-flip-horizontal"></i>
+  </button>
+</mat-toolbar> -->

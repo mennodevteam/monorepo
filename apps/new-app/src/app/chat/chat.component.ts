@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { injectMutation, injectQuery, injectQueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Chat, ChatType } from '@menno/types';
+import { Chat, ChatType, User } from '@menno/types';
 import { ActivatedRoute } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -36,6 +36,7 @@ export class ChatComponent {
   public queryClient = injectQueryClient();
   text = signal<string>('');
   ChatType = ChatType;
+  User = User;
 
   get id() {
     return this.route.snapshot.params['id'];
@@ -45,6 +46,7 @@ export class ChatComponent {
     queryKey: ['chat', 'order', this.id],
     queryFn: () => lastValueFrom(this.http.get<Chat[]>(`chat/order/${this.id}`)),
     refetchInterval: 20000,
+    select: (data) => data.reverse(),
   }));
 
   sendMutation = injectMutation(() => ({
