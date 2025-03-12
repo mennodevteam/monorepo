@@ -43,7 +43,6 @@ export class ChatController {
 
   @Public()
   @Post('seen')
-  @Roles(UserRole.Panel, UserRole.App)
   async seen(@Body() ids: string[], @LoginUser() user: AuthPayload): Promise<void> {
     this.repo.update({ id: In(ids) }, { seen: true });
   }
