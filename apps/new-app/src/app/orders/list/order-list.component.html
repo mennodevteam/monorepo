@@ -1,0 +1,27 @@
+<app-top-app-bar title="{{ 'mainMenu.orders' | translate }}" [sticky]="true" />
+
+<main max-center>
+  @if (query.data()) {
+    <mat-nav-list>
+      @for (order of query.data(); track order.id) {
+        <a mat-list-item routerLink="/orders/{{ order.id }}">
+          <img
+            matListItemAvatar
+            [imageLoader]="order.shop?.logo"
+            [imageFile]="order.shop?.logoImage"
+            alt="{{ order.shop?.title }}"
+          />
+          <span matListItemTitle>{{ order.shop?.title }}</span>
+          <span matListItemLine>{{ order.createdAt | pdate }}</span>
+          <div matListItemMeta>
+            <span>{{ order.totalPrice | menuCurrency }}</span>
+            &nbsp;
+            <i class="fa-regular fa-angle-left"></i>
+          </div>
+        </a>
+      }
+    </mat-nav-list>
+  } @else {
+    <mat-spinner [diameter]="24" />
+  }
+</main>

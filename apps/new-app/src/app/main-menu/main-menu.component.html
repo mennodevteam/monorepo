@@ -2,8 +2,18 @@
 
 <main p-md max-center>
   <mat-nav-list fxLayout="column" fxLayoutGap="8">
+    <a mat-list-item class="surface-background" routerLink="/" replaceUrl="true">
+      <span matListItemLine>
+        <i class="fa-regular fa-home"></i>
+        &nbsp;
+        {{ 'mainMenu.home' | translate: { value: shopService.businessCategoryTitle } }}
+      </span>
+      <div matListItemMeta>
+        <i class="fa-regular fa-chevron-left"></i>
+      </div>
+    </a>
     @if (auth.isGuestUser) {
-      <a mat-list-item class="surface-background" routerLink="/login">
+      <a mat-list-item class="surface-background" routerLink="/login" replaceUrl="true">
         <span matListItemLine>
           <i class="fa-regular fa-user"></i>
           &nbsp;
@@ -14,7 +24,7 @@
         </div>
       </a>
     } @else {
-      <a mat-list-item class="surface-background" routerLink="/login/register">
+      <a mat-list-item class="surface-background" routerLink="/login/register" replaceUrl="true">
         <span matListItemLine>
           <i class="fa-regular fa-user"></i>
           &nbsp;
@@ -25,7 +35,7 @@
         </div>
       </a>
     }
-    <a mat-list-item class="surface-background" routerLink="/shop/info">
+    <a mat-list-item class="surface-background" routerLink="/shop/info" replaceUrl="true">
       <span matListItemLine>
         <i class="fa-regular fa-circle-info"></i>
         &nbsp;
@@ -35,7 +45,7 @@
         <i class="fa-regular fa-chevron-left"></i>
       </div>
     </a>
-    <a mat-list-item class="surface-background">
+    <a mat-list-item class="surface-background" routerLink="/orders" replaceUrl="true">
       <span matListItemLine>
         <i class="fa-regular fa-clock-rotate-left"></i>
         &nbsp;
