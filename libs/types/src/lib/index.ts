@@ -2,6 +2,7 @@ export * from './address';
 export * from './app-config';
 export * from './basalam-products';
 export * from './change-password.dto';
+export * from './chat';
 export * from './club';
 export * from './create-shop.dto';
 export * from './delivery-area';

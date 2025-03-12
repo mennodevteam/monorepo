@@ -49,6 +49,7 @@ import {
 } from './schemas';
 import { RedisService } from './redis.service';
 import { HttpModule } from '@nestjs/axios';
+import { ChatSchema } from './schemas/chat.schema';
 
 @Module({
   imports: [
@@ -80,6 +81,7 @@ import { HttpModule } from '@nestjs/axios';
       OrderCustomerMessageSchema,
       ShopUserSchema,
       PaymentGatewaySchema,
+      ChatSchema,
       PaymentTokenSchema,
       PaymentSchema,
       ShopSchema,

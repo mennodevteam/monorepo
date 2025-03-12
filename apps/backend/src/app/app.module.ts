@@ -31,6 +31,7 @@ import { HttpExceptionFilter } from './core/http-exception.filter';
 import { HealthModule } from './health/health.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { BasalamModule } from './basalam/basalam.module';
+import { ChatModule } from './chat/chat.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -71,6 +72,7 @@ import { BasalamModule } from './basalam/basalam.module';
     RegionsModule,
     ClubsModule,
     PrintersModule,
+    ChatModule,
     SmsModule,
     OrdersModule,
     PaymentsModule,

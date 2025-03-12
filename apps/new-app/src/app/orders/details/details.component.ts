@@ -1,4 +1,4 @@
-import { Component, computed, OnDestroy } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { COMMON } from '../../common';
 import { TopAppBarComponent } from '../../common/components';
@@ -9,6 +9,7 @@ import { AlertBannerComponent } from '../../common/components/alert-banner/alert
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @Component({
   selector: 'app-details',
@@ -20,6 +21,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatListModule,
     AlertBannerComponent,
     MatProgressSpinnerModule,
+    MatBadgeModule
   ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss',
