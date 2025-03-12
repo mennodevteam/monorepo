@@ -67,10 +67,11 @@ export class ShopsService {
   ) {}
 
   async sendShopLink(shopId: string, mobilePhone: string): Promise<Sms> {
-    const shop = await this.shopsRepository.findOne({
-      where: { id: shopId },
-      relations: ['smsAccount'],
-    });
+    const shop = await this.shopsRepository
+      .findOne({
+        where: { id: shopId },
+        relations: ['smsAccount'],
+      })
     if (shop) {
       const tokens: string[] = [];
       tokens[0] = Shop.appLink(shop, process.env.APP_ORIGIN);

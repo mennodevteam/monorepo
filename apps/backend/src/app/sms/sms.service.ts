@@ -28,7 +28,7 @@ export class SmsService {
     @InjectRepository(SmsTemplate)
     private smsTemplatesRepo: Repository<SmsTemplate>,
     @InjectRepository(SmsGroup)
-    private smsGroupsRepo: Repository<SmsGroup>
+    private smsGroupsRepo: Repository<SmsGroup>,
   ) {
     kavenegarApi = Kavenegar.KavenegarApi({
       apikey: process.env.KAVENEGAR_API_KEY,
@@ -128,7 +128,7 @@ export class SmsService {
     accountId: string,
     mobilePhone: string,
     kavenagarTemplate: string,
-    tokens: string[]
+    tokens: string[],
   ): Promise<Sms> {
     const account = await this.smsAccountsRepo.findOneBy({ id: accountId });
     if (account.charge < 20) {
@@ -164,7 +164,7 @@ export class SmsService {
           } else {
             reject(response);
           }
-        }
+        },
       );
     });
   }
