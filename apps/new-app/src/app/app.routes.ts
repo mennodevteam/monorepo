@@ -55,6 +55,11 @@ export const appRoutes: Route[] = [
         data: { animation: 'payment' },
       },
       {
+        path: 'chat',
+        loadChildren: () => import('./chat/chat.routes').then((m) => m.chatRoutes),
+        data: { animation: 'chat' },
+      },
+      {
         path: '',
         canActivate: [
           async () => {

@@ -1,7 +1,7 @@
 import { Address, Chat, ChatType, Region, Shop, UserRole } from '@menno/types';
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Public } from '../auth/public.decorator';
 import { Roles } from '../auth/roles.decorators';
 import { LoginUser } from '../auth/user.decorator';
@@ -23,6 +23,7 @@ export class ChatController {
       where: {
         order: { id },
       },
+      relations: ['user', 'shop'],
       order: {
         createdAt: 'DESC',
       },
@@ -41,9 +42,9 @@ export class ChatController {
   }
 
   @Public()
-  @Get('seen/:id')
+  @Post('seen')
   @Roles(UserRole.Panel, UserRole.App)
-  async seen(@Param('id') id: string, @LoginUser() user: AuthPayload): Promise<void> {
-    this.repo.update(id, { seen: true });
+  async seen(@Body() ids: string[], @LoginUser() user: AuthPayload): Promise<void> {
+    this.repo.update({ id: In(ids) }, { seen: true });
   }
 }

@@ -120,7 +120,10 @@ export const routeAnimations = trigger('routeAnimations', [
   transition('mainMenu => *', slideOutToLeft),
   transition('* => mainMenu', slideInFromLeft),
   transition('* <=> thanks', fadeInOut),
-
+  
+  transition('* => chat', slideInFromBottom),
+  transition('chat => *', slideOutToBottom),
+  
   transition('address-list => map', slideOutToLeft),
   transition('map => address-list', slideOutToRight),
   transition('map => map-search', slideOutToLeft),

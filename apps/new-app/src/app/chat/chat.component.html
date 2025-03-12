@@ -1,0 +1,65 @@
+<app-top-app-bar [hideMenu]="true" [sticky]="true" title="{{ 'chat.title' | translate }}" />
+<main
+  p-md
+  max-center
+  fxLayout="column"
+  fxLayoutGap="16px"
+  class="background-background"
+  fxLayout="column"
+  fxLayoutGap="16px"
+>
+  @if (!query.data()) {
+    <mat-spinner [diameter]="24" />
+  }
+  @for (chat of query.data(); track chat.id) {
+    <mat-card [class.receive]="chat.type === ChatType.Receive">
+      <mat-card-header>
+        @if (chat.type === ChatType.Receive) {
+          <img
+            mat-card-avatar
+            [imageLoader]="shopService.shop.logo"
+            [imageFile]="shopService.shop.logoImage"
+            alt="{{ shopService.shop.title }}"
+            [imageSize]="'sm'"
+          />
+          <mat-card-title>{{ shopService.shop.title }}</mat-card-title>
+        } @else {
+          <mat-card-title>{{ auth.user()?.firstName }} {{ auth.user()?.lastName }}</mat-card-title>
+        }
+        <mat-card-subtitle class="outline-text">
+          {{ chat.createdAt | pdate: true }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        @if (chat.type === ChatType.Send) {
+          <br />
+        }
+        <p appLinkify>
+          {{ chat.text }}
+        </p>
+
+        @if (chat.seen && chat.type === ChatType.Send) {
+          <i class="fa-solid fa-eye fa-sm outline-text"></i>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+</main>
+
+<mat-toolbar id="actionbar" fxLayout="row" fxLayoutGap="16px">
+  <textarea
+    [(ngModel)]="text"
+    fxFlex
+    class="surface-variant-background"
+    [ngModelOptions]="{ standalone: true }"
+    [disabled]="sendMutation.status() === 'pending'"
+  ></textarea>
+  <button
+    mat-icon-button
+    class="tertiary-button"
+    (click)="sendMutation.mutate()"
+    [disabled]="sendMutation.status() === 'pending' || !text()"
+  >
+    <i class="fa-solid fa-paper-plane-top fa-flip-horizontal"></i>
+  </button>
+</mat-toolbar>
