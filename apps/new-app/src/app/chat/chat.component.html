@@ -37,7 +37,7 @@
         @if (chat.type === ChatType.Send) {
           <br />
         }
-        <p appLinkify>
+        <p [appLinkify]="chat.text">
           {{ chat.text }}
         </p>
 

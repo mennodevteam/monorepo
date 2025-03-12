@@ -3,6 +3,9 @@
     <mat-card-title>
       <i class="fa-regular fa-message-lines fa-lg"></i>
       {{ 'chat.title' | translate }}
+      @if (query.data()?.length) {
+        ({{ query.data()?.length }})
+      }
     </mat-card-title>
   </mat-card-header>
   <mat-card-actions>
@@ -20,7 +23,7 @@
       <app-empty-state />
     }
     @for (chat of query.data(); track chat.id) {
-      <mat-card class="chat" [class.receive]="chat.type === ChatType.Receive" appearance="outlined">
+      <mat-card class="chat" [class.receive]="chat.type === ChatType.Send" appearance="outlined">
         <mat-card-header>
           @if (chat.type === ChatType.Receive) {
             <mat-card-title>{{ chat.shop.title }}</mat-card-title>
@@ -32,11 +35,11 @@
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-          <p appLinkify>
+          <p [appLinkify]="chat.text">
             {{ chat.text }}
           </p>
 
-          @if (chat.seen && chat.type === ChatType.Send) {
+          @if (chat.seen && chat.type === ChatType.Receive) {
             <i class="fa-solid fa-eye fa-sm outline-text"></i>
           }
         </mat-card-content>
@@ -44,21 +47,3 @@
     }
   </mat-card-content>
 </mat-card>
-
-<!-- <mat-toolbar id="actionbar" fxLayout="row" fxLayoutGap="16px">
-  <textarea
-    [(ngModel)]="text"
-    fxFlex
-    class="surface-variant-background"
-    [ngModelOptions]="{ standalone: true }"
-    [disabled]="sendMutation.status() === 'pending'"
-  ></textarea>
-  <button
-    mat-icon-button
-    class="tertiary-button"
-    (click)="sendMutation.mutate()"
-    [disabled]="sendMutation.status() === 'pending' || !text()"
-  >
-    <i class="fa-solid fa-paper-plane-top fa-flip-horizontal"></i>
-  </button>
-</mat-toolbar> -->

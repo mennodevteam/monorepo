@@ -3,6 +3,7 @@ import { EmptyStateComponent } from './components/empty-state/empty-state.compon
 import { CopyClipboardDirective } from './directives/copy-clipboard.directive';
 import { GoBackDirective } from './directives/go-back.directive';
 import { ImageLoaderDirective } from './directives/image-loader.directive';
+import { LinkifyDirective } from './directives/linkify.directive';
 import { StopPropagationDirective } from './directives/stop-propagation.directive';
 import { SHARED_MODULES } from './modules';
 import { COMMON_MATERIAL_ANGULAR_MODULES } from './modules/material-angular';
@@ -21,6 +22,7 @@ export const SHARED = [
   GoBackDirective,
   CopyClipboardDirective,
   ImageLoaderDirective,
+  LinkifyDirective,
   PdatePipe,
   BusinessCategoryPipe,
 

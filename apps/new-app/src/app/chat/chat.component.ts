@@ -62,7 +62,7 @@ export class ChatComponent {
       this.text.set('');
       this.queryClient.invalidateQueries({ queryKey: ['chat'] });
       this.queryClient.setQueryData(['chat', 'order', this.id], (oldData: Chat[]) => {
-        return [...oldData, response];
+        return [...oldData.reverse(), response];
       });
     },
   }));
@@ -72,7 +72,7 @@ export class ChatComponent {
     onSuccess: (response, ids) => {
       this.queryClient.invalidateQueries({ queryKey: ['chat'] });
       this.queryClient.setQueryData(['chat', 'order', this.id], (oldData: Chat[]) => {
-        return [...oldData.map((item) => (ids.includes(item.id) ? { ...item, seen: true } : item))];
+        return oldData.reverse().map((item) => (ids.includes(item.id) ? { ...item, seen: true } : item));
       });
     },
   }));
