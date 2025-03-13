@@ -10,6 +10,7 @@ mat-card.chat {
   width: 100%;
   position: relative;
   background-color: var(--mat-sys-surface);
+  white-space: break-spaces;
 
   &.receive {
     align-self: end;

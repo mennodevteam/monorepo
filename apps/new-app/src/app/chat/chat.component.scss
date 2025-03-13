@@ -8,6 +8,7 @@ mat-card {
   max-width: 80%;
   width: 100%;
   position: relative;
+  white-space: break-spaces;
 
   &.receive {
     align-self: end;
