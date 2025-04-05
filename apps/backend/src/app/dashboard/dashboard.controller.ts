@@ -4,8 +4,10 @@ import { MenuStat, Order, StatAction, UserRole } from '@menno/types';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { MoreThanOrEqual, Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
+import * as pd from 'persian-date';
+import { Public } from '../auth/public.decorator';
 
 @Controller('dashboard')
 export class DashboardController {
@@ -16,6 +18,45 @@ export class DashboardController {
     private ordersRepo: Repository<Order>,
     private auth: AuthService,
   ) {}
+
+  @Get('sum/count')
+  @Roles(UserRole.Panel)
+  async getSumAndCount(@LoginUser() user: AuthPayload) {
+    const shop = await this.auth.getPanelUserShop(user);
+
+    const startOfDay = new pd().startOf('day').toDate();
+    const startOfMonth = new pd().startOf('month').toDate();
+    const startOfYear = new pd().startOf('year').toDate();
+    return {
+      day: {
+        count: await this.ordersRepo.count({
+          where: { createdAt: MoreThanOrEqual(startOfDay), shop: { id: shop.id } },
+        }),
+        sum: await this.ordersRepo.sum('totalPrice', {
+          createdAt: MoreThanOrEqual(startOfDay),
+          shop: { id: shop.id },
+        }),
+      },
+      month: {
+        count: await this.ordersRepo.count({
+          where: { createdAt: MoreThanOrEqual(startOfMonth), shop: { id: shop.id } },
+        }),
+        sum: await this.ordersRepo.sum('totalPrice', {
+          createdAt: MoreThanOrEqual(startOfMonth),
+          shop: { id: shop.id },
+        }),
+      },
+      year: {
+        count: await this.ordersRepo.count({
+          where: { createdAt: MoreThanOrEqual(startOfYear), shop: { id: shop.id } },
+        }),
+        sum: await this.ordersRepo.sum('totalPrice', {
+          createdAt: MoreThanOrEqual(startOfYear),
+          shop: { id: shop.id },
+        }),
+      },
+    };
+  }
 
   @Roles(UserRole.Panel)
   @Get('daily/:from/:to')

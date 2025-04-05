@@ -1,0 +1,38 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>{{ 'dashboard.orderTotalTitle' | translate }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    @if (query.data()) {
+      <mat-list>
+        <mat-list-item>
+          <span matListItemTitle>{{ 'dashboard.today' | translate }}</span>
+          <span matListItemLine>{{ 'app.count' | translate }}: {{ query.data().day.count | number }}</span>
+          <span matListItemMeta>
+            {{ 'app.sum' | translate }}:
+            {{ query.data().day.sum | number | menuCurrency }}
+          </span>
+        </mat-list-item>
+        <mat-list-item>
+          <span matListItemTitle>{{ 'dashboard.thisMonth' | translate }}</span>
+          <span matListItemLine>{{ 'app.count' | translate }}: {{ query.data().month.count | number }}</span>
+          <span matListItemMeta>
+            {{ 'app.sum' | translate }}:
+            {{ query.data().month.sum | number | menuCurrency }}
+          </span>
+        </mat-list-item>
+        <mat-list-item>
+          <span matListItemTitle>{{ 'dashboard.thisYear' | translate }}</span>
+          <span matListItemLine>
+            {{ 'app.count' | translate }}:
+            {{ query.data().year.count | number }}
+          </span>
+          <span matListItemMeta>
+            {{ 'app.sum' | translate }}:
+            {{ query.data().year.sum | number | menuCurrency }}
+          </span>
+        </mat-list-item>
+      </mat-list>
+    }
+  </mat-card-content>
+</mat-card>

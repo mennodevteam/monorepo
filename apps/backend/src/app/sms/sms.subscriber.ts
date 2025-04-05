@@ -7,7 +7,7 @@ export class SmsSubscriber implements EntitySubscriberInterface<Sms> {
   constructor(
     dataSource: DataSource,
     @InjectRepository(SmsAccount)
-    private smsAccountsRepo: Repository<SmsAccount>
+    private smsAccountsRepo: Repository<SmsAccount>,
   ) {
     dataSource.subscribers.push(this);
   }
@@ -17,6 +17,7 @@ export class SmsSubscriber implements EntitySubscriberInterface<Sms> {
   }
 
   async afterInsert(event: InsertEvent<Sms>) {
+    console.log(event.entity);
     if (event.entity.account) {
       this.smsAccountsRepo.decrement({ id: event.entity.account.id }, 'charge', event.entity.cost);
     }

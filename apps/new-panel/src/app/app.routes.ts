@@ -6,6 +6,7 @@ import { translateActivator } from './core/guards/translate.guard';
 import { shopDataActivator } from './core/guards/shop.guard';
 import { orderRoutes } from './orders/orders.routes';
 import { settingsRoutes } from './settings/settings.routes';
+import { reportRoutes } from './reports/reports.routes';
 
 export const appRoutes: Route[] = [
   {
@@ -20,6 +21,7 @@ export const appRoutes: Route[] = [
         path: '',
         canActivate: [authGuard, shopDataActivator],
         children: [
+          { path: 'reports', children: reportRoutes },
           { path: 'menu', children: menuRoutes },
           { path: 'orders', children: orderRoutes },
           { path: 'settings', children: settingsRoutes },

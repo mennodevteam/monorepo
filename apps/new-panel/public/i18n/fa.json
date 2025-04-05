@@ -370,5 +370,11 @@
     "title": "پیگیری سفارش",
     "send": "ارسال پیام",
     "text": "متن پیام"
+  },
+  "dashboard": {
+    "orderTotalTitle": "گزارش فروش",
+    "today": "امروز",
+    "thisMonth": "این ماه",
+    "thisYear": "امسال"
   }
 }
