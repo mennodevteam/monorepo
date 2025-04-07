@@ -32,6 +32,11 @@ export const MenuStatSchema = new EntitySchema<MenuStat>({
       type: 'many-to-one',
       target: 'Menu',
     },
+    user: {
+      type: 'many-to-one',
+      target: 'User',
+      nullable: true,
+    },
     product: {
       type: 'many-to-one',
       target: 'Product',

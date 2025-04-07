@@ -18,7 +18,7 @@ export class OrderTotalComponent {
   private readonly http = inject(HttpClient);
 
   query = injectQuery(() => ({
-    queryKey: ['orderTotal'],
+    queryKey: ['orderTotalDashboard'],
     queryFn: () => lastValueFrom(this.http.get<any>('/dashboard/sum/count')),
   }));
 }

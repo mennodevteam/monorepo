@@ -7,7 +7,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { MoreThanOrEqual, Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
 import * as pd from 'persian-date';
-import { Public } from '../auth/public.decorator';
 
 @Controller('dashboard')
 export class DashboardController {
@@ -56,6 +55,44 @@ export class DashboardController {
         }),
       },
     };
+  }
+
+  @Roles(UserRole.Panel)
+  @Get('menuStat/:from/:to')
+  async menuStat(@LoginUser() user: AuthPayload, @Param('from') from: string, @Param('to') to: string) {
+    const shop = await this.auth.getPanelUserShop(user, ['menu']);
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
+    const result = await this.menuStatsRepo
+      .createQueryBuilder('stat')
+      .select(`DATE_TRUNC('day', stat.createdAt)`, 'day')
+      .addSelect('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'count')
+      .where('stat.createdAt BETWEEN :from AND :to', {
+        from: fromDate,
+        to: toDate,
+      })
+      // .andWhere('stat.action = :action', { action: StatAction.LoadMenu })
+      // .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
+      .groupBy('day')
+      .orderBy('day')
+      .getRawMany();
+
+    const dateMap = new Map(result.map((item) => [item.day.toISOString().slice(0, 10), Number(item.count)]));
+    const filled = [];
+
+    const current = new Date(from);
+    const end = new Date(to);
+
+    while (current <= end) {
+      const dateStr = current.toISOString().slice(0, 10); // YYYY-MM-DD
+      filled.push({
+        date: dateStr,
+        count: dateMap.get(dateStr) || 0,
+      });
+      current.setDate(current.getDate() + 1);
+    }
+
+    return filled;
   }
 
   @Roles(UserRole.Panel)
