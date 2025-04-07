@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { User } from '@menno/types';
 const JWT_KEY = 'jwtToken';
@@ -11,6 +11,7 @@ export class AuthService {
   private userInfo: User;
   private userLoaded: Promise<void>;
   private userLoadedResolver: () => void;
+  userSignal = signal<User | null>(null);
 
   constructor(private client: HttpClient) {
     this.userLoaded = new Promise((resolve) => {
@@ -22,6 +23,7 @@ export class AuthService {
   async revalidateUserInfo() {
     const user = await lastValueFrom(this.client.get<User>(`/auth/info`));
     if (user) this.userInfo = user;
+    this.userSignal.set(user);
     this.userLoadedResolver();
   }
 

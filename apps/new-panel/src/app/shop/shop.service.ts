@@ -5,6 +5,7 @@ import { AppConfig, BusinessCategory, Shop } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { injectMutation, injectQuery, injectQueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
 const QUERY_KEY = ['shops'];
 
@@ -13,6 +14,7 @@ const QUERY_KEY = ['shops'];
 })
 export class ShopService {
   readonly http = inject(HttpClient);
+  readonly auth = inject(AuthService);
   readonly snack = inject(MatSnackBar);
   readonly t = inject(TranslateService);
   readonly queryClient = injectQueryClient();
@@ -53,6 +55,7 @@ export class ShopService {
   private query = injectQuery(() => ({
     queryKey: QUERY_KEY,
     queryFn: () => lastValueFrom(this.http.get<Shop>('/shops')),
+    enabled: !!this.auth.userSignal(),
   }));
 
   data = computed(() => {
