@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { Roles } from '../auth/roles.decorators';
-import { MenuStat, Order, OrderState, StatAction, UserRole } from '@menno/types';
+import { Member, MenuStat, Order, OrderState, StatAction, UserRole } from '@menno/types';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -15,6 +15,8 @@ export class DashboardController {
     private menuStatsRepo: Repository<MenuStat>,
     @InjectRepository(Order)
     private ordersRepo: Repository<Order>,
+    @InjectRepository(Member)
+    private membersRepo: Repository<Member>,
     private auth: AuthService,
   ) {}
 
@@ -101,10 +103,10 @@ export class DashboardController {
   @Roles(UserRole.Panel)
   @Get('menuStat/:from/:to')
   async menuStat(@LoginUser() user: AuthPayload, @Param('from') from: string, @Param('to') to: string) {
-    const shop = await this.auth.getPanelUserShop(user, ['menu']);
+    const shop = await this.auth.getPanelUserShop(user, ['menu', 'club']);
     const fromDate = new Date(from);
     const toDate = new Date(to);
-    const result = await this.menuStatsRepo
+    const menuStatResult = await this.menuStatsRepo
       .createQueryBuilder('stat')
       .select(`DATE_TRUNC('day', stat.createdAt)`, 'day')
       .addSelect('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'count')
@@ -118,7 +120,22 @@ export class DashboardController {
       .orderBy('day')
       .getRawMany();
 
-    const dateMap = new Map(result.map((item) => [item.day.toISOString().slice(0, 10), Number(item.count)]));
+    const memberResult = await this.membersRepo
+      .createQueryBuilder('member')
+      .select(`DATE_TRUNC('day', member.joinedAt)`, 'day')
+      .addSelect('CAST(COUNT(member.id) AS INTEGER)', 'count')
+      .where('member.joinedAt BETWEEN :from AND :to', {
+        from: fromDate,
+        to: toDate,
+      })
+      .andWhere('member.clubId = :clubId', { clubId: shop.club.id })
+      .groupBy('day')
+      .orderBy('day')
+      .getRawMany();
+
+    const dateMap = new Map(
+      menuStatResult.map((item) => [item.day.toISOString().slice(0, 10), Number(item.count)]),
+    );
     const filled = [];
 
     const current = new Date(from);
@@ -128,7 +145,8 @@ export class DashboardController {
       const dateStr = current.toISOString().slice(0, 10); // YYYY-MM-DD
       filled.push({
         date: dateStr,
-        count: dateMap.get(dateStr) || 0,
+        menuCount: menuStatResult.find((item) => item.day.toISOString().slice(0, 10) === dateStr)?.count || 0,
+        memberCount: memberResult.find((item) => item.day.toISOString().slice(0, 10) === dateStr)?.count || 0,
       });
       current.setDate(current.getDate() + 1);
     }

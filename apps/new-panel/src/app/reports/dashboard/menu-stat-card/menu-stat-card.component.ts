@@ -8,6 +8,7 @@ import { lastValueFrom } from 'rxjs';
 import { BaseChartDirective } from 'ng2-charts';
 import { Chart, ChartConfiguration } from 'chart.js';
 import { ShopService } from '../../../shop/shop.service';
+import { TranslateService } from '@ngx-translate/core';
 Chart.defaults.font.family = 'IRANSans';
 
 @Component({
@@ -20,10 +21,11 @@ Chart.defaults.font.family = 'IRANSans';
 export class MenuStatCardComponent {
   private readonly http = inject(HttpClient);
   public readonly shopService = inject(ShopService);
+  public readonly t = inject(TranslateService);
 
   public chartOptions: ChartConfiguration['options'] = {
     plugins: {
-      legend: { display: false },
+      legend: { display: true },
     },
     scales: {
       y: {
@@ -55,7 +57,12 @@ export class MenuStatCardComponent {
     return {
       datasets: [
         {
-          data: data.map((x: any) => x.count),
+          data: data.map((x: any) => x.menuCount),
+          label: this.t.instant('dashboard.view'),
+        },
+        {
+          data: data.map((x: any) => x.memberCount),
+          label: this.t.instant('dashboard.joinClub'),
         },
       ],
       labels: data.map((x: any) => formatter.format(new Date(x.date))),

@@ -379,6 +379,8 @@
     "prevMonth": "ماه گذشته",
     "thisYear": "امسال",
     "menuStatTitle": "مشاهده {{value}}",
-    "menuStatSubtitle": "تعداد کاربر هایی که {{value}} را مشاهده کرده‌اند"
+    "menuStatSubtitle": "تعداد کاربر هایی که {{value}} را مشاهده کرده‌اند",
+    "view": "مشاهده",
+    "joinClub": "عضویت در باشگاه"
   }
 }
