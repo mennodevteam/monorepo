@@ -7,6 +7,7 @@ import { QueryClient, provideTanStackQuery } from '@tanstack/angular-query-exper
 import { apiInterceptorProvider, provideJalaliDatePickerProvider } from './core/providers';
 import { paginatorIntlProvider } from './core/providers/mat-paginator-intl.provider';
 import { provideTranslation } from './core/providers/translate-module.provider';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,5 +28,6 @@ export const appConfig: ApplicationConfig = {
     provideJalaliDatePickerProvider(),
     provideTranslation(),
     paginatorIntlProvider(),
+    provideCharts(withDefaultRegisterables())
   ],
 };

@@ -26,6 +26,7 @@
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
+    "persian-date": "^1.1.0",
     "md5": "^2.3.0",
     "guid-typescript": "^1.0.9",
     "pg": "^8.8.0",

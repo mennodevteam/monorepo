@@ -374,7 +374,10 @@
   "dashboard": {
     "orderTotalTitle": "گزارش فروش",
     "today": "امروز",
+    "yesterday": "دیروز",
     "thisMonth": "این ماه",
-    "thisYear": "امسال"
+    "prevMonth": "ماه گذشته",
+    "thisYear": "امسال",
+    "menuStatTitle": "مشاهده منو"
   }
 }

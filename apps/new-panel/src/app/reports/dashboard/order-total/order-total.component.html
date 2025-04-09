@@ -7,10 +7,20 @@
       <mat-list>
         <mat-list-item>
           <span matListItemTitle>{{ 'dashboard.today' | translate }}</span>
-          <span matListItemLine>{{ 'app.count' | translate }}: {{ query.data().day.count | number }}</span>
+          <span matListItemLine>{{ 'app.count' | translate }}: {{ query.data().today.count | number }}</span>
           <span matListItemMeta>
             {{ 'app.sum' | translate }}:
-            {{ query.data().day.sum | number | menuCurrency }}
+            {{ query.data().today.sum || 0 | number | menuCurrency }}
+          </span>
+        </mat-list-item>
+        <mat-list-item>
+          <span matListItemTitle>{{ 'dashboard.yesterday' | translate }}</span>
+          <span matListItemLine>
+            {{ 'app.count' | translate }}: {{ query.data().yesterday.count | number }}
+          </span>
+          <span matListItemMeta>
+            {{ 'app.sum' | translate }}:
+            {{ query.data().yesterday.sum || 0 | number | menuCurrency }}
           </span>
         </mat-list-item>
         <mat-list-item>
@@ -18,7 +28,17 @@
           <span matListItemLine>{{ 'app.count' | translate }}: {{ query.data().month.count | number }}</span>
           <span matListItemMeta>
             {{ 'app.sum' | translate }}:
-            {{ query.data().month.sum | number | menuCurrency }}
+            {{ query.data().month.sum || 0 | number | menuCurrency }}
+          </span>
+        </mat-list-item>
+        <mat-list-item>
+          <span matListItemTitle>{{ 'dashboard.prevMonth' | translate }}</span>
+          <span matListItemLine>
+            {{ 'app.count' | translate }}: {{ query.data().prevMonth.count | number }}
+          </span>
+          <span matListItemMeta>
+            {{ 'app.sum' | translate }}:
+            {{ query.data().prevMonth.sum || 0 | number | menuCurrency }}
           </span>
         </mat-list-item>
         <mat-list-item>
@@ -29,7 +49,7 @@
           </span>
           <span matListItemMeta>
             {{ 'app.sum' | translate }}:
-            {{ query.data().year.sum | number | menuCurrency }}
+            {{ query.data().year.sum || 0 | number | menuCurrency }}
           </span>
         </mat-list-item>
       </mat-list>
