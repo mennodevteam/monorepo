@@ -80,7 +80,7 @@ export class DashboardController {
         }),
         sum: await this.ordersRepo.sum('totalPrice', {
           ...defaultFilter,
-          createdAt: Between(endOfPrevMonth, endOfPrevMonth),
+          createdAt: Between(startOfPrevMonth, endOfPrevMonth),
         }),
       },
       year: {
