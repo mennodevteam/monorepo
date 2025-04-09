@@ -1,0 +1,14 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>
+      {{ 'dashboard.loadMenuRefTitle' | translate }}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    @if (query.data()) {
+      <canvas baseChart [data]="chartData()" [options]="chartOptions" type="pie" height="300"></canvas>
+    } @else {
+      <app-data-loading />
+    }
+  </mat-card-content>
+</mat-card>

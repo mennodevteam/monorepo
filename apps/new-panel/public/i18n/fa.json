@@ -378,6 +378,8 @@
     "thisMonth": "این ماه",
     "prevMonth": "ماه گذشته",
     "thisYear": "امسال",
+    "direct": "مستقیم",
+    "loadMenuRefTitle": "منبع ورود به سایت (۳۰ روز گذشته)",
     "menuStatTitle": "مشاهده سایت",
     "menuStatSubtitle": "تعداد کاربر هایی که سایت را مشاهده کرده‌اند",
     "view": "مشاهده",

@@ -209,11 +209,7 @@ export class CartService {
         { productId: product.id, variantId: variant?.id, quantity: signal(1) },
       ]);
 
-      this.http
-        .get(`menuStats/addToCart/${this.menuService.menu().id}/${product.id}`, {
-          params: this.campaign.params,
-        })
-        .toPromise();
+      this.menuService.sendAddToCardStat(product.id);
     }
   }
 

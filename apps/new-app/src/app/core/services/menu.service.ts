@@ -88,7 +88,17 @@ export class MenuService {
   }
 
   sendProductStat(productId: string) {
-    if (this.menu) this.http.get(`menuStats/clickProduct/${this.menu().id}/${productId}`).toPromise();
+    if (this.menu)
+      this.http
+        .get(`menuStats/clickProduct/${this.menu().id}/${productId}`, { params: this.campaign.params })
+        .toPromise();
+  }
+
+  sendAddToCardStat(productId: string) {
+    if (this.menu)
+      this.http
+        .get(`menuStats/addToCart/${this.menu().id}/${productId}`, { params: this.campaign.params })
+        .toPromise();
   }
 
   getProductById(id: string): Product | null {

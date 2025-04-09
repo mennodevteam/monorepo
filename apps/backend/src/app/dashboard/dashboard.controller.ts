@@ -101,6 +101,46 @@ export class DashboardController {
   }
 
   @Roles(UserRole.Panel)
+  @Get('loadMenuRef/:from/:to')
+  async loadMenuRef(@LoginUser() user: AuthPayload, @Param('from') from: string, @Param('to') to: string) {
+    const shop = await this.auth.getPanelUserShop(user, ['menu', 'club']);
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
+    const menuStatByRef = await this.menuStatsRepo
+      .createQueryBuilder('stat')
+      .select('stat.referrer', 'referrer')
+      .addSelect('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'count')
+      .where('stat.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
+      .andWhere('stat.action = :action', { action: StatAction.LoadMenu })
+      .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
+      .groupBy('stat.referrer')
+      .orderBy('count', 'DESC')
+      .getRawMany();
+
+    const result = {};
+
+    menuStatByRef.forEach(({ referrer, count }) => {
+      if (count === 0) return; // Skip zero counts
+
+      let source = 'direct';
+
+      if (referrer) {
+        try {
+          const url = new URL(referrer);
+          const hostParts = url.hostname.split('.');
+          source = hostParts.length >= 3 ? hostParts[hostParts.length - 2] : hostParts[0];
+        } catch (e) {
+          // If URL parsing fails, keep source as 'direct'
+        }
+      }
+
+      result[source] = (result[source] || 0) + count;
+    });
+
+    return Object.entries(result).map(([source, count]) => ({ source, count }));
+  }
+
+  @Roles(UserRole.Panel)
   @Get('menuStat/:from/:to')
   async menuStat(@LoginUser() user: AuthPayload, @Param('from') from: string, @Param('to') to: string) {
     const shop = await this.auth.getPanelUserShop(user, ['menu', 'club']);
@@ -133,9 +173,6 @@ export class DashboardController {
       .orderBy('day')
       .getRawMany();
 
-    const dateMap = new Map(
-      menuStatResult.map((item) => [item.day.toISOString().slice(0, 10), Number(item.count)]),
-    );
     const filled = [];
 
     const current = new Date(from);

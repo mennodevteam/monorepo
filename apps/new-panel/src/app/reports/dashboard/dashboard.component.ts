@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { SHARED } from '../../shared';
 import { OrderTotalComponent } from "./order-total/order-total.component";
 import { MenuStatCardComponent } from "./menu-stat-card/menu-stat-card.component";
+import { LoadMenuRefCardComponent } from "./load-menu-ref-card/load-menu-ref-card.component";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, SHARED, OrderTotalComponent, MenuStatCardComponent],
+  imports: [CommonModule, SHARED, OrderTotalComponent, MenuStatCardComponent, LoadMenuRefCardComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
