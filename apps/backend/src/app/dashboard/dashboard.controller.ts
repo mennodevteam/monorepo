@@ -112,8 +112,8 @@ export class DashboardController {
         from: fromDate,
         to: toDate,
       })
-      // .andWhere('stat.action = :action', { action: StatAction.LoadMenu })
-      // .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
+      .andWhere('stat.action = :action', { action: StatAction.LoadMenu })
+      .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
       .groupBy('day')
       .orderBy('day')
       .getRawMany();
