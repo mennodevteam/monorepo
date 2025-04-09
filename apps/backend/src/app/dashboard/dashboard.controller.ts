@@ -4,7 +4,7 @@ import { MenuStat, Order, OrderState, StatAction, UserRole } from '@menno/types'
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MoreThanOrEqual, Not, Repository } from 'typeorm';
+import { Between, FindOptionsWhere, MoreThanOrEqual, Not, Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
 import * as pd from 'persian-date';
 
@@ -30,70 +30,69 @@ export class DashboardController {
     const endOfYesterday = new pd().subtract('days', 1).endOf('day').toDate();
     const startOfPrevMonth = new pd().subtract('months', 1).startOf('month').toDate();
     const endOfPrevMonth = new pd().subtract('months', 1).endOf('month').toDate();
+    const defaultFilter: FindOptionsWhere<Order> = {
+      shop: { id: shop.id },
+      state: Not(OrderState.Canceled),
+    };
     return {
       today: {
         count: await this.ordersRepo.count({
           where: {
+            ...defaultFilter,
             createdAt: MoreThanOrEqual(startOfDay),
-            shop: { id: shop.id },
-            state: Not(OrderState.Canceled),
           },
         }),
         sum: await this.ordersRepo.sum('totalPrice', {
+          ...defaultFilter,
           createdAt: MoreThanOrEqual(startOfDay),
-          shop: { id: shop.id },
         }),
       },
       yesterday: {
         count: await this.ordersRepo.count({
           where: {
-            createdAt: MoreThanOrEqual(startOfYesterday),
-            shop: { id: shop.id },
-            state: Not(OrderState.Canceled),
+            ...defaultFilter,
+            createdAt: Between(startOfYesterday, endOfYesterday),
           },
         }),
         sum: await this.ordersRepo.sum('totalPrice', {
-          createdAt: MoreThanOrEqual(endOfYesterday),
-          shop: { id: shop.id },
+          ...defaultFilter,
+          createdAt: Between(startOfYesterday, endOfYesterday),
         }),
       },
       month: {
         count: await this.ordersRepo.count({
           where: {
+            ...defaultFilter,
             createdAt: MoreThanOrEqual(startOfMonth),
-            shop: { id: shop.id },
-            state: Not(OrderState.Canceled),
           },
         }),
         sum: await this.ordersRepo.sum('totalPrice', {
+          ...defaultFilter,
           createdAt: MoreThanOrEqual(startOfMonth),
-          shop: { id: shop.id },
         }),
       },
       prevMonth: {
         count: await this.ordersRepo.count({
           where: {
-            createdAt: MoreThanOrEqual(startOfPrevMonth),
-            shop: { id: shop.id },
-            state: Not(OrderState.Canceled),
+            ...defaultFilter,
+            createdAt: Between(startOfPrevMonth, endOfPrevMonth),
           },
         }),
         sum: await this.ordersRepo.sum('totalPrice', {
-          createdAt: MoreThanOrEqual(endOfPrevMonth),
-          shop: { id: shop.id },
+          ...defaultFilter,
+          createdAt: Between(endOfPrevMonth, endOfPrevMonth),
         }),
       },
       year: {
         count: await this.ordersRepo.count({
           where: {
+            ...defaultFilter,
             createdAt: MoreThanOrEqual(startOfYear),
-            shop: { id: shop.id },
-            state: Not(OrderState.Canceled),
           },
         }),
         sum: await this.ordersRepo.sum('totalPrice', {
+          ...defaultFilter,
           createdAt: MoreThanOrEqual(startOfYear),
-          shop: { id: shop.id },
         }),
       },
     };

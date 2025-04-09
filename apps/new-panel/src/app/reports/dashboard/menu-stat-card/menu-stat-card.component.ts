@@ -7,6 +7,7 @@ import { injectQuery } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 import { BaseChartDirective } from 'ng2-charts';
 import { Chart, ChartConfiguration } from 'chart.js';
+import { ShopService } from '../../../shop/shop.service';
 Chart.defaults.font.family = 'IRANSans';
 
 @Component({
@@ -18,6 +19,7 @@ Chart.defaults.font.family = 'IRANSans';
 })
 export class MenuStatCardComponent {
   private readonly http = inject(HttpClient);
+  public readonly shopService = inject(ShopService);
 
   public chartOptions: ChartConfiguration['options'] = {
     plugins: {
@@ -30,6 +32,8 @@ export class MenuStatCardComponent {
         },
       },
     },
+    responsive: true,
+    maintainAspectRatio: false,
   };
 
   chartData = computed(() => {

@@ -378,6 +378,7 @@
     "thisMonth": "این ماه",
     "prevMonth": "ماه گذشته",
     "thisYear": "امسال",
-    "menuStatTitle": "مشاهده منو"
+    "menuStatTitle": "مشاهده {{value}}",
+    "menuStatSubtitle": "تعداد کاربر هایی که {{value}} را مشاهده کرده‌اند"
   }
 }
