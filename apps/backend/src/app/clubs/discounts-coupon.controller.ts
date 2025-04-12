@@ -9,7 +9,7 @@ import {
 } from '@menno/types';
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
+import { ILike, LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
 import { Roles } from '../auth/roles.decorators';
 import { LoginUser } from '../auth/user.decorator';
@@ -24,14 +24,14 @@ export class DiscountsCouponController {
     @InjectRepository(DiscountCoupon) private discountCouponsRepo: Repository<DiscountCoupon>,
     @InjectRepository(Shop) private shopsRepo: Repository<Shop>,
     @InjectRepository(Member) private membersRepo: Repository<Member>,
-    @InjectRepository(Order) private ordersRepo: Repository<Order>
+    @InjectRepository(Order) private ordersRepo: Repository<Order>,
   ) {}
 
   @Post()
   @Roles(UserRole.Panel)
   async save(
     @Body() discountsCoupon: DiscountCoupon,
-    @LoginUser() user: AuthPayload
+    @LoginUser() user: AuthPayload,
   ): Promise<DiscountCoupon> {
     const { club } = await this.auth.getPanelUserShop(user, ['club']);
     discountsCoupon.club = club;
@@ -43,7 +43,7 @@ export class DiscountsCouponController {
   async check(
     @LoginUser() user: AuthPayload,
     @Param('shopId') shopId: string,
-    @Param('code') code: string
+    @Param('code') code: string,
   ): Promise<DiscountCoupon | undefined> {
     const { club } = await this.shopsRepo.findOne({ where: { id: shopId }, relations: ['club'] });
     if (club) {
@@ -61,7 +61,7 @@ export class DiscountsCouponController {
           startedAt: LessThanOrEqual(new Date()),
           expiredAt: MoreThanOrEqual(new Date()),
           status: Status.Active,
-          code,
+          code: ILike(code),
         },
         relations: ['tag'],
       });
@@ -97,7 +97,7 @@ export class DiscountsCouponController {
   @Get('app/:shopId')
   async filterApp(
     @LoginUser() user: AuthPayload,
-    @Param('shopId') shopId: string
+    @Param('shopId') shopId: string,
   ): Promise<DiscountCoupon[]> {
     const { club } = await this.shopsRepo.findOne({ where: { id: shopId }, relations: ['club'] });
     if (club) {
