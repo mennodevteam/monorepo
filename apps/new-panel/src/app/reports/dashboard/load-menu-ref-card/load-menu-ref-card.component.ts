@@ -9,12 +9,13 @@ import { BaseChartDirective } from 'ng2-charts';
 import { Chart, ChartConfiguration } from 'chart.js';
 import { ShopService } from '../../../shop/shop.service';
 import { TranslateService } from '@ngx-translate/core';
+import { MatMenuModule } from '@angular/material/menu';
 Chart.defaults.font.family = 'IRANSans';
 
 @Component({
   selector: 'app-load-menu-ref-card',
   standalone: true,
-  imports: [CommonModule, SHARED, MatCardModule, BaseChartDirective],
+  imports: [CommonModule, SHARED, MatCardModule, BaseChartDirective, MatMenuModule],
   templateUrl: './load-menu-ref-card.component.html',
   styleUrl: './load-menu-ref-card.component.scss',
 })
@@ -22,6 +23,7 @@ export class LoadMenuRefCardComponent {
   private readonly http = inject(HttpClient);
   public readonly shopService = inject(ShopService);
   public readonly t = inject(TranslateService);
+  days = signal(30);
 
   public chartOptions: ChartConfiguration['options'] = {
     plugins: {
@@ -58,12 +60,12 @@ export class LoadMenuRefCardComponent {
   now = signal(new Date());
   from = computed(() => {
     const date = new Date(this.now());
-    date.setDate(date.getDate() - 30);
+    date.setDate(date.getDate() - this.days());
     return date;
   });
 
   query = injectQuery(() => ({
-    queryKey: ['loadMenuRefDashboard'],
+    queryKey: ['loadMenuRefDashboard', this.days()],
     queryFn: () =>
       lastValueFrom(
         this.http.get<any>(`/dashboard/loadMenuRef/${this.from().toISOString()}/${this.now().toISOString()}`),

@@ -384,7 +384,7 @@
     "menuStatTitle": "مشاهده سایت",
     "menuStatSubtitle": "تعداد کاربر هایی که سایت را مشاهده کرده‌اند",
     "view": "مشاهده",
-    "last30days": "۳۰ روز گذشته",
+    "lastDays": "{{value}} روز اخیر",
     "joinClub": "عضویت در باشگاه"
   }
 }

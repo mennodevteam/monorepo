@@ -1,3 +1,10 @@
 mat-card {
   height: 380px;
+  position: relative;
+}
+
+#days-filter {
+  position: absolute;
+  left: 16px;
+  top: 16px;
 }

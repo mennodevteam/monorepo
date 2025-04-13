@@ -9,12 +9,13 @@ import { BaseChartDirective } from 'ng2-charts';
 import { Chart, ChartConfiguration } from 'chart.js';
 import { ShopService } from '../../../shop/shop.service';
 import { TranslateService } from '@ngx-translate/core';
+import { MatMenuModule } from '@angular/material/menu';
 Chart.defaults.font.family = 'IRANSans';
 
 @Component({
   selector: 'app-top-products-card',
   standalone: true,
-  imports: [CommonModule, SHARED, MatCardModule, BaseChartDirective],
+  imports: [CommonModule, SHARED, MatCardModule, BaseChartDirective, MatMenuModule],
   templateUrl: './top-products-card.component.html',
   styleUrl: './top-products-card.component.scss',
 })
@@ -22,6 +23,7 @@ export class TopProductsCardComponent {
   private readonly http = inject(HttpClient);
   public readonly shopService = inject(ShopService);
   public readonly t = inject(TranslateService);
+  days = signal(30);
 
   public chartOptions: ChartConfiguration['options'] = {
     plugins: {
@@ -62,12 +64,12 @@ export class TopProductsCardComponent {
   now = signal(new Date());
   from = computed(() => {
     const date = new Date(this.now());
-    date.setDate(date.getDate() - 30);
+    date.setDate(date.getDate() - this.days());
     return date;
   });
 
   query = injectQuery(() => ({
-    queryKey: ['topProductsDashboard'],
+    queryKey: ['topProductsDashboard', this.days()],
     queryFn: () =>
       lastValueFrom(
         this.http.get<any>(`/dashboard/topProducts/${this.from().toISOString()}/${this.now().toISOString()}`),
