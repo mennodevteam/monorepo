@@ -163,6 +163,7 @@ export class DashboardController {
       .groupBy('item.product')
       .groupBy('product.title')
       .orderBy('count', 'DESC')
+      .limit(20)
       .getRawMany();
 
     return topProducts;
