@@ -379,10 +379,12 @@
     "prevMonth": "ماه گذشته",
     "thisYear": "امسال",
     "direct": "مستقیم",
-    "loadMenuRefTitle": "منبع ورود به سایت (۳۰ روز گذشته)",
+    "loadMenuRefTitle": "منبع ورود به سایت",
+    "topProductsTitle": "پرفروش‌ترین‌ها",
     "menuStatTitle": "مشاهده سایت",
     "menuStatSubtitle": "تعداد کاربر هایی که سایت را مشاهده کرده‌اند",
     "view": "مشاهده",
+    "last30days": "۳۰ روز گذشته",
     "joinClub": "عضویت در باشگاه"
   }
 }

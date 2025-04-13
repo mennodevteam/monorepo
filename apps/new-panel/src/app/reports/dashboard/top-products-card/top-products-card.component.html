@@ -1,7 +1,7 @@
 <mat-card appearance="outlined">
   <mat-card-header>
     <mat-card-title>
-      {{ 'dashboard.loadMenuRefTitle' | translate }}
+      {{ 'dashboard.topProductsTitle' | translate }}
     </mat-card-title>
     <mat-card-subtitle>
       {{ 'dashboard.last30days' | translate }}
@@ -9,7 +9,7 @@
   </mat-card-header>
   <mat-card-content>
     @if (query.data()) {
-      <canvas baseChart [data]="chartData()" [options]="chartOptions" type="pie" height="300"></canvas>
+      <canvas baseChart [data]="chartData()" [options]="chartOptions" type="bar" height="300px"></canvas>
     }
   </mat-card-content>
 </mat-card>

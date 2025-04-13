@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { Roles } from '../auth/roles.decorators';
-import { Member, MenuStat, Order, OrderState, StatAction, UserRole } from '@menno/types';
+import { Member, MenuStat, Order, OrderItem, OrderState, StatAction, UserRole } from '@menno/types';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -17,6 +17,8 @@ export class DashboardController {
     private ordersRepo: Repository<Order>,
     @InjectRepository(Member)
     private membersRepo: Repository<Member>,
+    @InjectRepository(OrderItem)
+    private orderItemsRepo: Repository<OrderItem>,
     private auth: AuthService,
   ) {}
 
@@ -138,6 +140,44 @@ export class DashboardController {
     });
 
     return Object.entries(result).map(([source, count]) => ({ source, count }));
+  }
+
+  @Roles(UserRole.Panel)
+  @Get('topProducts/:from/:to')
+  async topProducts(@LoginUser() user: AuthPayload, @Param('from') from: string, @Param('to') to: string) {
+    const shop = await this.auth.getPanelUserShop(user, ['menu']);
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
+
+    const topProducts = await this.orderItemsRepo
+      .createQueryBuilder('item')
+      .select('product.title', 'product')
+      .addSelect('CAST(SUM(item.quantity) AS INTEGER)', 'count')
+      .innerJoin('item.order', 'order')
+      .innerJoin('item.product', 'product')
+      .where('item.productId IS NOT NULL')
+      .andWhere('order.shop = :shopId', { shopId: shop.id })
+      .andWhere('order.deletedAt IS NULL')
+      .andWhere('order.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
+      .andWhere('order.mergeToId IS NULL')
+      .groupBy('item.product')
+      .groupBy('product.title')
+      .orderBy('count', 'DESC')
+      .getRawMany();
+
+    return topProducts;
+
+    // const topProducts = await this.order
+    //   .createQueryBuilder('order')
+    //   .select('order.productId', 'productId')
+    //   .addSelect('SUM(order.count)', 'count')
+    //   .where('order.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
+    //   .andWhere('order.shop = :shopId', { shopId: shop.id })
+    //   .andWhere('order.deletedAt IS NULL')
+    //   .andWhere('order.mergeToId IS NULL')
+    //   .groupBy('order.productId')
+    //   .orderBy('count', 'DESC')
+    //   .getRawMany();
   }
 
   @Roles(UserRole.Panel)
