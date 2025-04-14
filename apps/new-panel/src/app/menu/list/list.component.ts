@@ -15,7 +15,8 @@ import { DialogService } from '../../core/services/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CategoryFormDialogComponent } from '../category-form-dialog/category-form-dialog.component';
-
+import { MatTabsModule } from '@angular/material/tabs';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-menu-list',
   standalone: true,
@@ -30,59 +31,57 @@ import { CategoryFormDialogComponent } from '../category-form-dialog/category-fo
     MatFormFieldModule,
     MatInputModule,
     MatChipsModule,
+    MatTabsModule,
   ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
 })
 export class MenuListComponent {
-  searchInput = signal('');
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+
   menuService = inject(MenuService);
-  dialog = inject(DialogService);
-  matDialog = inject(MatDialog);
-  t = inject(TranslateService);
-  categories = computed(() => {
-    const query = this.searchInput();
-    if (query) {
-      return this.menuService
-        .categories()
-        ?.filter((category) => {
-          if (category.title.search(query) >= 0) return true;
-          if (category.products?.find((product) => product.title.search(query) >= 0)) return true;
-          return false;
-        })
-        .map((category) => {
-          const newCategory = { ...category };
-          if (category.title.search(query) >= 0) return newCategory;
-          newCategory.products = category.products?.filter((product) => product.title.search(query) >= 0);
-          return newCategory;
-        });
+  selectedCategoryId = signal<number | undefined>(
+    this.route.snapshot.queryParams['id']
+      ? Number(this.route.snapshot.queryParams['id'])
+      : this.menuService.categories()?.[0].id,
+  );
+
+  category = computed(() => {
+    if (this.selectedCategoryId()) {
+      return this.menuService.categories()?.find((item) => item.id === this.selectedCategoryId());
     }
-    return this.menuService.categories();
+    return;
   });
 
-  scrollTo(category: ProductCategory) {
-    const categoryElement = document.getElementById('category_' + category.id);
-    if (categoryElement) categoryElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  setTab(category: ProductCategory) {
+    this.router.navigate(['.'], { queryParams: { id: category.id } });
+    this.selectedCategoryId.set(category.id);
   }
 
-  openSortCategoriesDialog() {
-    const categories = this.menuService.categories();
-    if (categories)
-      this.dialog
-        .sort(
-          this.t.instant('menu.sortCategories'),
-          categories.map((item) => ({ id: item.id, text: item.title })),
-        )
-        .then((data) => {
-          if (data) this.menuService.sortCategoriesMutation.mutate(data.map((x: ProductCategory) => x.id));
-        });
-  }
+  // scrollTo(category: ProductCategory) {
+  //   const categoryElement = document.getElementById('category_' + category.id);
+  //   if (categoryElement) categoryElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // }
 
-  editCategory(category?: ProductCategory) {
-    this.matDialog.open(CategoryFormDialogComponent, {
-      data: category,
-      width: '360px',
-      disableClose: true
-    });
-  }
+  // openSortCategoriesDialog() {
+  //   const categories = this.menuService.categories();
+  //   if (categories)
+  //     this.dialog
+  //       .sort(
+  //         this.t.instant('menu.sortCategories'),
+  //         categories.map((item) => ({ id: item.id, text: item.title })),
+  //       )
+  //       .then((data) => {
+  //         if (data) this.menuService.sortCategoriesMutation.mutate(data.map((x: ProductCategory) => x.id));
+  //       });
+  // }
+
+  // editCategory(category?: ProductCategory) {
+  //   this.matDialog.open(CategoryFormDialogComponent, {
+  //     data: category,
+  //     width: '360px',
+  //     disableClose: true,
+  //   });
+  // }
 }

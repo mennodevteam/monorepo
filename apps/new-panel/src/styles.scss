@@ -157,6 +157,12 @@ i.middle {
     )
   );
 
+  @include mat.menu-overrides(
+    (
+      container-color: var(--mat-sys-surface-container-lowest),
+    )
+  );
+
   @include mat.paginator-overrides(
     (
       container-background-color: transparent,

@@ -1,6 +1,6 @@
 <mat-toolbar class="content-toolbar" fxLayoutGap="8px">
   <h1 fxFlex>{{ 'menu.title' | translate }}</h1>
-  <button mat-button (click)="openSortCategoriesDialog()">
+  <!-- <button mat-button (click)="openSortCategoriesDialog()">
     <i class="fa-regular fa-sort"></i>
     <span fxHide.xs>
       {{ 'menu.sortCategories' | translate }}
@@ -11,10 +11,22 @@
     <span fxHide.xs>
       {{ 'menu.addCategory' | translate }}
     </span>
-  </button>
+  </button> -->
 </mat-toolbar>
-<main p-md>
-  <div fxLayout="row">
+@let cats = menuService.categories();
+<nav mat-tab-nav-bar [tabPanel]="tabPanel" mat-stretch-tabs="false" >
+  @for (cat of cats; track cat.id) {
+    <a mat-tab-link (click)="setTab(cat)" [active]="selectedCategoryId() === cat.id">
+      {{ cat.title }}
+    </a>
+  }
+</nav>
+<mat-tab-nav-panel #tabPanel>
+  <main p-md>
+    <app-menu-category [category]="category()" />
+  </main>
+</mat-tab-nav-panel>
+<!-- <div fxLayout="row">
     <mat-form-field appearance="outline">
       <mat-label>{{ 'app.search' | translate }}</mat-label>
       <input matInput [(ngModel)]="searchInput" type="search" />
@@ -51,5 +63,4 @@
     </div>
   } @else {
     <app-data-loading />
-  }
-</main>
+  } -->

@@ -8,6 +8,7 @@ import { orderRoutes } from './orders/orders.routes';
 import { settingsRoutes } from './settings/settings.routes';
 import { reportRoutes } from './reports/reports.routes';
 import { ShellComponent } from './shell/shell.component';
+import { menuDataActivator } from './core/guards/menu.guard';
 
 export const appRoutes: Route[] = [
   {
@@ -21,7 +22,7 @@ export const appRoutes: Route[] = [
       {
         path: '',
         component: ShellComponent,
-        canActivate: [authGuard, shopDataActivator],
+        canActivate: [authGuard, shopDataActivator, menuDataActivator],
         children: [
           { path: 'reports', children: reportRoutes },
           { path: 'menu', children: menuRoutes },
