@@ -11,6 +11,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ShopService } from '../shop/shop.service';
 import { MenuService } from '../menu/menu.service';
 import { signal } from '@angular/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-shell',
@@ -33,9 +34,17 @@ export class ShellComponent {
   readonly auth = inject(AuthService);
   readonly shop = inject(ShopService);
   readonly menuService = inject(MenuService);
-
+  private readonly breakpointObserver = inject(BreakpointObserver);
+  isSmallScreen = signal(false);
   isDrawerClose = signal(false);
   collapse = signal<{ [key: string]: boolean }>({ settings: true });
+
+  constructor() {
+    this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small]).subscribe((result) => {
+      if (result.matches) this.isDrawerClose.set(true);
+      this.isSmallScreen.set(result.matches);
+    });
+  }
 
   toggleSection(key: string) {
     this.collapse.update((old) => ({ ...old, [key]: !old[key] }));

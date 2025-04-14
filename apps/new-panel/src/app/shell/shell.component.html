@@ -20,7 +20,7 @@
     #drawer
     class="sidenav"
     fixedInViewport
-    mode="side"
+    [mode]="isSmallScreen() ? 'over' : 'side'"
     [opened]="!isDrawerClose()"
     [fixedTopGap]="64"
   >
