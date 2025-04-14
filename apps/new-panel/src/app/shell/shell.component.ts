@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -9,6 +9,8 @@ import { SHARED } from '../shared';
 import { AuthService } from '../auth/auth.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { ShopService } from '../shop/shop.service';
+import { MenuService } from '../menu/menu.service';
+import { signal } from '@angular/core';
 
 @Component({
   selector: 'app-shell',
@@ -30,4 +32,12 @@ import { ShopService } from '../shop/shop.service';
 export class ShellComponent {
   readonly auth = inject(AuthService);
   readonly shop = inject(ShopService);
+  readonly menuService = inject(MenuService);
+
+  isDrawerClose = signal(false);
+  collapse = signal<{ [key: string]: boolean }>({ settings: true });
+
+  toggleSection(key: string) {
+    this.collapse.update((old) => ({ ...old, [key]: !old[key] }));
+  }
 }

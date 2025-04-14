@@ -19,10 +19,23 @@ mat-sidenav {
     border-start-start-radius: 0px !important;
     border-end-start-radius: 0px !important;
 
+    .mat-mdc-list-item-title {
+      font-size: 13px;
+    }
+
     i.mat-mdc-list-item-icon {
       text-align: center;
       line-height: 24px;
       font-size: 20px;
+    }
+
+    .flip {
+      transform: scaleX(-1);
+    }
+
+    .fa-caret-down,
+    .fa-caret-left {
+      margin-inline-end: 8px;
     }
   }
 }
