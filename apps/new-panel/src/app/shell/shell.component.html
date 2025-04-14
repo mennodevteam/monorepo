@@ -1,6 +1,9 @@
 <mat-toolbar fxLayout="row" fxLayoutGap="32px" class="accent-theme">
-  <img fxHide.xs id="logo" src="icons/logo.svg" alt="menno logo" />
-  <a mat-button routerLink="/menu">
+  <button mat-icon-button (click)="drawer.toggle()">
+    <i class="fa-regular fa-bars"></i>
+  </button>
+  <!-- <img fxHide.xs id="logo" src="icons/logo.svg" alt="menno logo" /> -->
+  <!-- <a mat-button routerLink="/menu">
     <i class="fa-solid fa-list"></i>
     <span fxHide.xs> مدیریت آیتم‌ها </span>
   </a>
@@ -15,14 +18,37 @@
   <span fxFlex></span>
   <button mat-icon-button routerLink="/settings">
     <i class="fa-solid fa-gear"></i>
-  </button>
+  </button> -->
 </mat-toolbar>
-<main>
+<!-- <main>
   <router-outlet />
-</main>
-<!-- <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport mode="side" [opened]="!!auth.user" disableClose>
-    @if (auth.user) {
+</main> -->
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport mode="side" opened [fixedTopGap]="64">
+    <mat-nav-list>
+      <a mat-list-item>
+        <i matListItemIcon class="fa-solid fa-home"></i>
+        خانه
+      </a>
+      <mat-divider />
+      <a mat-list-item>
+        <i class="fa-solid fa-caret-down"></i>
+        منو و آیتم‌ها
+      </a>
+      <a mat-list-item>
+        <i matListItemIcon class="fa-solid fa-list"></i>
+        مدیریت محصولات
+      </a>
+      <a mat-list-item>
+        <i matListItemIcon class="fa-solid fa-folder-tree"></i>
+        دسته‌بندی محصولات
+      </a>
+      <a mat-list-item>
+        <i matListItemIcon class="fa-solid fa-badge-dollar"></i>
+        قیمت‌گذاری و تخفیف
+      </a>
+    </mat-nav-list>
+    <!-- @if (auth.user) {
       <nav fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="32px">
         <a mat-icon-button routerLink="/leads" matTooltip="مدیریت آیتم‌ها" matTooltipPosition="after">
           <i class="fa-solid fa-list"></i>
@@ -43,9 +69,9 @@
           <button mat-menu-item routerLink="/settings/users">مدیریت کابران</button>
         </mat-menu>
       </nav>
-    }
+    } -->
   </mat-sidenav>
   <mat-sidenav-content>
     <router-outlet />
   </mat-sidenav-content>
-</mat-sidenav-container> -->
+</mat-sidenav-container>
