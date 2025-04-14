@@ -125,9 +125,27 @@ i.middle {
 
 //material override
 :root {
+  @include mat.theme-overrides(
+    (
+      background: #f0f4f9,
+    )
+  );
+
+  @include mat.sidenav-overrides(
+    (
+      container-background-color: var(--mat-sys-background),
+    )
+  );
+
+  @include mat.toolbar-overrides(
+    (
+      container-background-color: var(--mat-sys-background),
+    )
+  );
+
   @include mat.card-overrides(
     (
-      outlined-outline-color: var(--mat-sys-outline-variant),
+      outlined-outline-color: transparent,
       outlined-container-color: var(--mat-sys-surface-container-lowest),
     )
   );

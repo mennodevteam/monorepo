@@ -1,28 +1,19 @@
-<mat-toolbar fxLayout="row" fxLayoutGap="32px" class="accent-theme">
+<mat-toolbar fxLayout="row" fxLayoutGap="8px">
   <button mat-icon-button (click)="isDrawerClose.set(!isDrawerClose())">
     <i class="fa-regular fa-bars"></i>
   </button>
-  <!-- <img fxHide.xs id="logo" src="icons/logo.svg" alt="menno logo" /> -->
-  <!-- <a mat-button routerLink="/menu">
-    <i class="fa-solid fa-list"></i>
-    <span fxHide.xs> مدیریت آیتم‌ها </span>
-  </a>
-  <a mat-button routerLink="/orders">
-    <i class="fa-solid fa-receipt"></i>
-    <span fxHide.xs> سفارشات </span>
-  </a>
-  <a mat-button routerLink="/reports">
-    <i class="fa-solid fa-chart-simple"></i>
-    <span fxHide.xs> کزارشات </span>
-  </a>
+  <h1>
+    MENNO 
+    <img src="icons/logo.svg" id="logo" />
+    {{ shop.data()?.title }}</h1>
   <span fxFlex></span>
-  <button mat-icon-button routerLink="/settings">
-    <i class="fa-solid fa-gear"></i>
-  </button> -->
+  <div id="shop-logo" [matMenuTriggerFor]="userMenu">
+    <img imageLoader [imageFile]="shop.data()?.logoImage" placeholderImageSize="sm" />
+  </div>
+  <mat-menu #userMenu="matMenu">
+    <button mat-menu-item>{{ 'shell.logout' | translate }}</button>
+  </mat-menu>
 </mat-toolbar>
-<!-- <main>
-  <router-outlet />
-</main> -->
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav
     #drawer
