@@ -10,7 +10,7 @@ import { PromptFields } from '../../../../shared/dialogs/prompt-dialog/prompt-di
 import { FormControl, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../../core/services/dialog.service';
-const COLS = ['image', 'title', 'price', 'costs', 'status', 'actions'];
+const COLS = ['index', 'image', 'title', 'price', 'costs', 'status', 'actions'];
 @Component({
   selector: 'app-product-table',
   standalone: true,

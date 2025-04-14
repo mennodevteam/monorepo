@@ -3,9 +3,10 @@
     <i class="fa-solid fa-bars"></i>
   </button>
   <h1>
-    MENNO 
+    MENNO
     <img src="icons/logo.svg" id="logo" />
-    {{ shop.data()?.title }}</h1>
+    {{ shop.data()?.title }}
+  </h1>
   <span fxFlex></span>
   <div id="shop-logo" [matMenuTriggerFor]="userMenu">
     <img imageLoader [imageFile]="shop.data()?.logoImage" placeholderImageSize="sm" />
@@ -44,13 +45,13 @@
         </span>
       </a>
       @if (!collapse()['menu']) {
-        <a mat-list-item routerLink="/menu">
+        <a mat-list-item routerLink="/menu/list">
           <i matListItemIcon class="fa-solid fa-list flip"></i>
           <span matListItemTitle>{{
             'nav.products' | translate: { value: shop.businessCategoryMenuTitle() }
           }}</span>
         </a>
-        <a mat-list-item>
+        <a mat-list-item routerLink="/menu/categories">
           <i matListItemIcon class="fa-solid fa-folder-tree flip"></i>
           <span matListItemTitle>{{ 'nav.categories' | translate }}</span>
         </a>
