@@ -2,18 +2,18 @@
   <button mat-icon-button (click)="isDrawerClose.set(!isDrawerClose())">
     <i class="fa-solid fa-bars"></i>
   </button>
-  <h1 fxHide.lt-sm>
-    MENNO
-    <img src="icons/logo.svg" id="logo" />
-    {{ shop.data()?.title }}
-  </h1>
   <span fxFlex></span>
-  <div id="shop-logo" [matMenuTriggerFor]="userMenu">
+  <button mat-stroked-button id="profile-button" [matMenuTriggerFor]="userMenu">
+    {{ shop.data()?.title }}
     <img imageLoader [imageFile]="shop.data()?.logoImage" placeholderImageSize="sm" />
-  </div>
+  </button>
   <mat-menu #userMenu="matMenu">
     <button mat-menu-item>{{ 'shell.logout' | translate }}</button>
   </mat-menu>
+  <h1 fxLayout="row" fxLayoutAlign="center center">
+    <b fxHide.lt-sm>MENNO</b>
+    <img src="icons/logo.svg" id="logo" />
+  </h1>
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav

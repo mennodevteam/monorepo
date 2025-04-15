@@ -1,18 +1,25 @@
 #logo {
-  width: 32px;
+  width: 40px;
   vertical-align: middle;
 }
 
-#shop-logo {
+#profile-button {
+  padding-inline-end: 4px;
+  padding-inline-start: 12px;
   img {
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 28px;
+    height: 28px;
+    vertical-align: middle;
   }
 }
 
 h1 {
   font-weight: 700 !important;
+  line-height: 48px;
+  b {
+    transform: translateY(4px);
+  }
 }
 
 .mat-toolbar {
