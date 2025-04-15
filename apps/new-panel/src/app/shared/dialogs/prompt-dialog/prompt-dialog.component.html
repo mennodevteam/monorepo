@@ -6,7 +6,7 @@
     }
 
     @for (key of keys; track $index) {
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         @if (fields[key].label) {
           <mat-label>{{ fields[key].label }}</mat-label>
         }

@@ -1,28 +1,28 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <h3 mat-dialog-title>{{ 'addressDialog.newTitle' | translate }}</h3>
   <mat-dialog-content fxLayout="column">
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>{{ 'app.title' | translate }}</mat-label>
       <input matInput formControlName="title" />
     </mat-form-field>
     <app-region-autocomplete (regionSelect)="form.controls['region'].setValue($event)" />
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>{{ 'addressDialog.address' | translate }}</mat-label>
       <textarea matInput formControlName="description" rows="3"></textarea>
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>{{ 'addressDialog.unit' | translate }}</mat-label>
       <input matInput formControlName="unit" />
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>{{ 'addressDialog.ring' | translate }}</mat-label>
       <input matInput formControlName="ring" />
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>{{ 'addressDialog.postalCode' | translate }}</mat-label>
       <input matInput formControlName="postalCode" />
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>{{ 'addressDialog.deliveryArea' | translate }}</mat-label>
       <mat-select formControlName="deliveryArea" [disabled]="!deliveryAreaQuery.data()">
         @for (area of deliveryAreaQuery.data(); track area.id) {
