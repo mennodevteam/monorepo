@@ -95,7 +95,9 @@ export class OrderChatComponent {
       })
       .then((dto) => {
         if (dto) {
-          this.sendMutation.mutate(dto.text);
+          const customer = this.order().customer;
+          const text = dto.text.replace(/@@@/g, customer ? User.fullName(customer) : 'مشتری');
+          this.sendMutation.mutate(text);
         }
       });
   }

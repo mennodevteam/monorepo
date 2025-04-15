@@ -2,7 +2,7 @@
   <button mat-icon-button (click)="isDrawerClose.set(!isDrawerClose())">
     <i class="fa-solid fa-bars"></i>
   </button>
-  <h1>
+  <h1 fxHide.lt-sm>
     MENNO
     <img src="icons/logo.svg" id="logo" />
     {{ shop.data()?.title }}
@@ -33,7 +33,7 @@
       </a>
       @if (!collapse()['report']) {
         <a mat-list-item routerLink="/reports">
-          <i matListItemIcon class="fa-solid fa-chart-simple"></i>
+          <i matListItemIcon class="fa-duotone fa-solid fa-grid-horizontal"></i>
           <span matListItemTitle>{{ 'nav.dashboard' | translate }}</span>
         </a>
       }

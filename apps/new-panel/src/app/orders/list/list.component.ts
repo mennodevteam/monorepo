@@ -55,7 +55,7 @@ export class OrderListComponent {
   DEFAULT_STATES = DEFAULT_STATES;
   private queryParams = this.route.snapshot.queryParams;
   currentPage = signal(Number(this.queryParams['page'] || 0));
-  currentSize = signal(Number(this.queryParams['size'] || 10));
+  currentSize = signal(Number(this.queryParams['size'] || 25));
   OrderState = OrderState;
   statesFilter = signal<OrderState[]>(
     this.queryParams['states']?.split(',')?.map((x: string) => Number(x)) || DEFAULT_STATES,
