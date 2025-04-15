@@ -403,5 +403,9 @@
     "view": "مشاهده",
     "lastDays": "{{value}} روز اخیر",
     "joinClub": "عضویت در باشگاه"
+  },
+  "menuCost": {
+    "add": "ایجاد",
+    "percentageCost": "{{value}} درصد"
   }
 }

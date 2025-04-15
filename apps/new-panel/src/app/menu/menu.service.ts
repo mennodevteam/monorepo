@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Menu, Product, ProductCategory } from '@menno/types';
+import { Menu, MenuCost, Product, ProductCategory } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { injectMutation, injectQuery, injectQueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
@@ -112,6 +112,43 @@ export class MenuService {
           }
         }
 
+        return old;
+      });
+
+      return { previousData };
+    },
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: QUERY_KEY });
+    },
+    onError: (err, newData, context) => {
+      this.snack.open(this.t.instant('errors.changeError'), '', { duration: 2000 });
+      this.queryClient.setQueryData(QUERY_KEY, context?.previousData);
+    },
+  }));
+
+  saveCostMutation = injectMutation(() => ({
+    mutationFn: (dto: Partial<MenuCost>) => lastValueFrom(this.http.post<MenuCost>(`/menuCosts`, dto)),
+    onMutate: (dto) => {
+      this.queryClient.cancelQueries({ queryKey: QUERY_KEY });
+      const previousData = this.queryClient.getQueryData<Menu>(QUERY_KEY);
+      this.queryClient.setQueryData(QUERY_KEY, (oldData: Menu) => {
+        const old = structuredClone(oldData);
+        if (dto.id) {
+          if (old.costs) {
+            const index = old.costs.findIndex((x) => x.id === dto.id);
+            if (index > -1) {
+              const cost = old.costs[index];
+              if (cost) {
+                Object.assign(cost, dto);
+                old.costs[index] = { ...cost };
+              }
+              return { ...old };
+            }
+          }
+        } else {
+          old.costs?.unshift(dto as MenuCost);
+          return { ...old };
+        }
         return old;
       });
 
