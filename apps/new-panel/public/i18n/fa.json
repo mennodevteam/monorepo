@@ -33,18 +33,19 @@
   "nav": {
     "home": "خانه",
     "products": "مدیریت {{value}}",
-    "categories": "دسته‌بندی‌ها",
+    "categories": "دسته‌بندی‌ {{value}}",
     "pricing": "قیمت‌گذاری و تخفیف",
     "orderSection": "سفارشات",
     "newOrder": "ثبت سفارش جدید",
-    "orderList": "لیست سفارشات",
-    "clubSection": "باشگاه مشتریان",
-    "clubMembers": "لیست اعضا",
+    "orderList": "سفارشات",
+    "clubSection": "مشتریان",
+    "clubMembers": "مشتریان",
     "marketing": "کد‌های تخفیف",
     "missions": "سناریو فروش",
     "settings": "تنظیمات",
     "reports": "گزارشات",
-    "dashboard": "داشبورد کلی"
+    "dashboard": "داشبورد عملکرد فروش",
+    "analytics": "آنالیتیکس"
   },
   "login": {
     "title": "ورود به پنل مدیریت منوی دیجیتال"
