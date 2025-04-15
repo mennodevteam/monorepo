@@ -1,5 +1,5 @@
 <mat-toolbar class="content-toolbar" fxLayoutGap="8px">
-  <h1 fxFlex>{{ 'nav.categories' | translate }}</h1>
+  <h1 fxFlex>{{ 'nav.categories' | translate: { value: shop.businessCategoryMenuTitle() } }}</h1>
   <button mat-button (click)="openSortCategoriesDialog()">
     <i class="fa-regular fa-sort"></i>
     <span fxHide.xs>

@@ -12,6 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
 import { MenuStatusChipComponent } from '../status-chip/status-chip.component';
+import { ShopService } from '../../shop/shop.service';
 const COLS = ['index', 'title', 'costs', 'status', 'actions'];
 
 @Component({
@@ -33,6 +34,7 @@ export class CategoryListComponent {
   private readonly matDialog = inject(MatDialog);
   private readonly dialog = inject(DialogService);
   private readonly t = inject(TranslateService);
+  readonly shop = inject(ShopService);
   readonly menuService = inject(MenuService);
   readonly displayedColumns = COLS;
   Status = Status;
