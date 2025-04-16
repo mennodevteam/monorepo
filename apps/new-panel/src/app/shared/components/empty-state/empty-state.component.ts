@@ -2,7 +2,6 @@ import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SHARED_MODULES } from '../../modules';
 import { MatButtonModule } from '@angular/material/button';
-import { SHARED } from '../..';
 
 export interface EmptyStateAction {
   label: string;

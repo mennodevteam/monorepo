@@ -53,7 +53,7 @@
             <button mat-icon-button routerLink="edit" [queryParams]="{ id: cost.id }">
               <i class="fa-regular fa-edit fa-xs"></i>
             </button>
-            <button mat-icon-button>
+            <button mat-icon-button (click)="deleteCost(cost)">
               <i class="fa-regular fa-trash-alt fa-xs"></i>
             </button>
           </td>

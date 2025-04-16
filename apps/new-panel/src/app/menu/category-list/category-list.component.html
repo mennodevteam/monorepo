@@ -16,9 +16,9 @@
   }
 </mat-toolbar>
 <main p-md>
-  <mat-card appearance="outlined">
-    <mat-card-content>
-      @if ((menuService.categories() || []).length > 0) {
+  @if ((menuService.categories() || []).length > 0) {
+    <mat-card appearance="outlined">
+      <mat-card-content>
         <table mat-table [dataSource]="menuService.categories() || []">
           <ng-container matColumnDef="index">
             <th mat-header-cell *matHeaderCellDef>{{ 'app.index' | translate }}</th>
@@ -84,17 +84,17 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
-      } @else {
-        <app-empty-state
-          icon="folder-open"
-          [text]="'menu.noCategories' | translate"
-          [action]="{
-            label: 'menu.addCategory' | translate,
-            icon: 'plus',
-          }"
-          (actionClick)="editCategory()"
-        />
-      }
-    </mat-card-content>
-  </mat-card>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <app-empty-state
+      icon="folder-open"
+      [text]="'menu.noCategories' | translate"
+      [action]="{
+        label: 'menu.addCategory' | translate,
+        icon: 'plus',
+      }"
+      (actionClick)="editCategory()"
+    />
+  }
 </main>

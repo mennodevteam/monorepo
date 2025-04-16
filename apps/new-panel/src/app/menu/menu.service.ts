@@ -189,4 +189,18 @@ export class MenuService {
       this.snack.open(this.t.instant('app.deleted'), '', { duration: 2000 });
     },
   });
+
+  deleteCostMutation = this.createBaseMutation<void, number>({
+    mutationFn: (id) => lastValueFrom(this.http.delete<void>(`/menuCosts/${id}`)),
+    updateCache: (old, id) => {
+      if (old.costs) {
+        old.costs = old.costs.filter(cost => cost.id !== id);
+        return { ...old };
+      }
+      return old;
+    },
+    onSuccess: () => {
+      this.snack.open(this.t.instant('app.deleted'), '', { duration: 2000 });
+    },
+  });
 }

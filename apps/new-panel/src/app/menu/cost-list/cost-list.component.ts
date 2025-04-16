@@ -12,7 +12,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
 import { MenuStatusChipComponent } from '../status-chip/status-chip.component';
 import { ShopService } from '../../shop/shop.service';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle'
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 const COLS = ['index', 'title', 'value', 'status', 'actions'];
 
 @Component({
@@ -26,7 +26,7 @@ const COLS = ['index', 'title', 'value', 'status', 'actions'];
     MatTableModule,
     MatChipsModule,
     MenuStatusChipComponent,
-    MatSlideToggleModule
+    MatSlideToggleModule,
   ],
   templateUrl: './cost-list.component.html',
   styleUrl: './cost-list.component.scss',
@@ -42,5 +42,16 @@ export class CostListComponent {
 
   changeStatus(cost: MenuCost, status: Status) {
     this.menuService.saveCostMutation.mutate({ id: cost.id, status });
+  }
+
+  async deleteCost(cost: MenuCost) {
+    const confirmed = await this.dialog.alert(
+      this.t.instant('app.confirmDelete'),
+      this.t.instant('app.deleteConfirmMessage', { value: cost.title }),
+    );
+
+    if (confirmed) {
+      this.menuService.deleteCostMutation.mutate(cost.id);
+    }
   }
 }

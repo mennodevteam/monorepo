@@ -16,19 +16,13 @@
     </main>
   </mat-tab-nav-panel>
 } @else {
-  <div p-md w-xs>
-    <mat-card appearance="outlined">
-      <mat-card-content>
-        <app-empty-state
-        [icon]="shopService.businessCategoryMenuIcon()"
-        [text]="'menu.noCategories' | translate"
-        [action]="{
-          label: 'menu.manageCategories' | translate,
-          icon: 'list',
-        }"
-        (actionClick)="goToCategories()"
-        />
-      </mat-card-content>
-    </mat-card>
-  </div>
+  <app-empty-state
+    [icon]="shopService.businessCategoryMenuIcon()"
+    [text]="'menu.noCategories' | translate"
+    [action]="{
+      label: 'menu.manageCategories' | translate,
+      icon: 'list',
+    }"
+    (actionClick)="goToCategories()"
+  />
 }
