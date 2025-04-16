@@ -12,6 +12,8 @@ import { ShopService } from '../shop/shop.service';
 import { MenuService } from '../menu/menu.service';
 import { signal } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { DialogService } from '../core/services/dialog.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-shell',
@@ -35,6 +37,8 @@ export class ShellComponent {
   readonly shop = inject(ShopService);
   readonly menuService = inject(MenuService);
   private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly dialog = inject(DialogService);
+  private readonly translate = inject(TranslateService);
   isSmallScreen = signal(false);
   isDrawerClose = signal(false);
   collapse = signal<{ [key: string]: boolean }>({ settings: true });
@@ -50,8 +54,15 @@ export class ShellComponent {
     this.collapse.update((old) => ({ ...old, [key]: !old[key] }));
   }
 
-  logout() {
-    this.auth.logout();
-    window.location.reload();
+  async logout() {
+    const confirmed = await this.dialog.alert(
+      this.translate.instant('shell.confirmTitle'),
+      this.translate.instant('shell.confirmMessage'),
+    );
+
+    if (confirmed) {
+      this.auth.logout();
+      window.location.reload();
+    }
   }
 }
