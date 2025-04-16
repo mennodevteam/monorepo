@@ -42,218 +42,151 @@ export class MenuService {
     return;
   });
 
-  categories = computed(() => {
-    return this.data()?.categories;
+  categories = computed(() => this.data()?.categories);
+
+  private createBaseMutation<T, D>(config: {
+    mutationFn: (dto: D) => Promise<T>;
+    updateCache: (oldData: Menu, dto: D) => Menu;
+    onSuccess?: () => void;
+  }) {
+    return injectMutation(() => ({
+      mutationFn: config.mutationFn,
+      onMutate: (dto) => {
+        this.queryClient.cancelQueries({ queryKey: QUERY_KEY });
+        const previousData = this.queryClient.getQueryData<Menu>(QUERY_KEY);
+        this.queryClient.setQueryData(QUERY_KEY, (oldData: Menu) => {
+          return config.updateCache(structuredClone(oldData), dto);
+        });
+        return { previousData };
+      },
+      onSuccess: () => {
+        this.queryClient.invalidateQueries({ queryKey: QUERY_KEY });
+        config.onSuccess?.();
+      },
+      onError: (err, newData, context) => {
+        this.snack.open(this.t.instant('errors.changeError'), '', { duration: 2000 });
+        this.queryClient.setQueryData(QUERY_KEY, context?.previousData);
+      },
+    }));
+  }
+
+  saveProductMutation = this.createBaseMutation<Product, Partial<Product>>({
+    mutationFn: (dto) => lastValueFrom(this.http.post<Product>(`/products`, dto)),
+    updateCache: (old, dto) => {
+      if (dto.id) {
+        const product = Menu.getProductById(old, dto.id);
+        if (product) {
+          dto.variants = dto.variants?.map((variant) => {
+            if (variant.id) {
+              const exist = product.variants?.find((x) => x.id === variant.id);
+              if (exist) {
+                Object.assign(exist, variant);
+                return exist;
+              }
+            }
+            return variant;
+          });
+          Object.assign(product, dto);
+          return { ...old };
+        }
+      } else if (dto.category) {
+        const category = old.categories?.find((x) => x.id === dto.category!.id);
+        category?.products?.push(dto as Product);
+        return { ...old };
+      }
+      return old;
+    },
   });
 
-  saveProductMutation = injectMutation(() => ({
-    mutationFn: (dto: Partial<Product>) => {
-      return lastValueFrom(this.http.post<Product>(`/products`, dto));
-    },
-    onMutate: (dto) => {
-      this.queryClient.cancelQueries({ queryKey: QUERY_KEY });
-      const previousData = this.queryClient.getQueryData<Menu>(QUERY_KEY);
-      this.queryClient.setQueryData(QUERY_KEY, (oldData: Menu) => {
-        const old = structuredClone(oldData);
-        if (dto.id) {
-          const product = Menu.getProductById(old, dto.id);
-          if (product) {
-            dto.variants = dto.variants?.map((variant) => {
-              if (variant.id) {
-                const exist = product.variants?.find((x) => x.id === variant.id);
-                if (exist) {
-                  Object.assign(exist, variant);
-                  return exist;
-                }
-              }
-              return variant;
-            });
-            Object.assign(product, dto);
-            return { ...old };
-          }
-        } else if (dto.category) {
-          const category = old.categories?.find((x) => x.id === dto.category!.id);
-          category?.products?.push(dto as Product);
-          return { ...old };
+  sortProductsMutation = this.createBaseMutation<string[], { ids: string[]; categoryId: number }>({
+    mutationFn: (dto) => lastValueFrom(this.http.post<string[]>(`/products/sort`, dto.ids)),
+    updateCache: (old, dto) => {
+      const category = old.categories?.find((x) => x.id === dto.categoryId);
+      if (category?.products) {
+        for (const product of category.products) {
+          product.position = dto.ids.indexOf(product.id);
         }
-        return old;
-      });
+        category.products.sort(DEFAULT_SORT_FUNC);
+        old.categories = [...(old.categories || [])];
+        return { ...old };
+      }
+      return old;
+    },
+  });
 
-      return { previousData };
-    },
-    onSuccess: () => {
-      this.queryClient.invalidateQueries({ queryKey: QUERY_KEY });
-    },
-    onError: (err, newData, context) => {
-      this.snack.open(this.t.instant('errors.changeError'), '', { duration: 2000 });
-      this.queryClient.setQueryData(QUERY_KEY, context?.previousData);
-    },
-  }));
-
-  sortProductsMutation = injectMutation(() => ({
-    mutationFn: (dto: { ids: string[]; categoryId: number }) =>
-      lastValueFrom(this.http.post<string[]>(`/products/sort`, dto.ids)),
-    onMutate: (dto) => {
-      this.queryClient.cancelQueries({ queryKey: QUERY_KEY });
-      const previousData = this.queryClient.getQueryData<Menu>(QUERY_KEY);
-      this.queryClient.setQueryData(QUERY_KEY, (oldData: Menu) => {
-        const old = structuredClone(oldData);
-        const category = old.categories?.find((x) => x.id === dto.categoryId);
-        if (category) {
-          const products = category.products;
-          if (products) {
-            for (const product of products) {
-              product.position = dto.ids.indexOf(product.id);
+  saveCostMutation = this.createBaseMutation<MenuCost, Partial<MenuCost>>({
+    mutationFn: (dto) => lastValueFrom(this.http.post<MenuCost>(`/menuCosts`, dto)),
+    updateCache: (old, dto) => {
+      if (dto.id) {
+        if (old.costs) {
+          const index = old.costs.findIndex((x) => x.id === dto.id);
+          if (index > -1) {
+            const cost = old.costs[index];
+            if (cost) {
+              Object.assign(cost, dto);
+              old.costs[index] = { ...cost };
             }
-            products.sort(DEFAULT_SORT_FUNC);
-            category.products = [...products];
-            old.categories = [...(old.categories || [])];
             return { ...old };
           }
         }
+      } else {
+        old.costs?.unshift(dto as MenuCost);
+        return { ...old };
+      }
+      return old;
+    },
+  });
 
-        return old;
-      });
-
-      return { previousData };
-    },
-    onSuccess: () => {
-      this.queryClient.invalidateQueries({ queryKey: QUERY_KEY });
-    },
-    onError: (err, newData, context) => {
-      this.snack.open(this.t.instant('errors.changeError'), '', { duration: 2000 });
-      this.queryClient.setQueryData(QUERY_KEY, context?.previousData);
-    },
-  }));
-
-  saveCostMutation = injectMutation(() => ({
-    mutationFn: (dto: Partial<MenuCost>) => lastValueFrom(this.http.post<MenuCost>(`/menuCosts`, dto)),
-    onMutate: (dto) => {
-      this.queryClient.cancelQueries({ queryKey: QUERY_KEY });
-      const previousData = this.queryClient.getQueryData<Menu>(QUERY_KEY);
-      this.queryClient.setQueryData(QUERY_KEY, (oldData: Menu) => {
-        const old = structuredClone(oldData);
-        if (dto.id) {
-          if (old.costs) {
-            const index = old.costs.findIndex((x) => x.id === dto.id);
-            if (index > -1) {
-              const cost = old.costs[index];
-              if (cost) {
-                Object.assign(cost, dto);
-                old.costs[index] = { ...cost };
-              }
-              return { ...old };
-            }
-          }
-        } else {
-          old.costs?.unshift(dto as MenuCost);
-          return { ...old };
-        }
-        return old;
-      });
-
-      return { previousData };
-    },
-    onSuccess: () => {
-      this.queryClient.invalidateQueries({ queryKey: QUERY_KEY });
-    },
-    onError: (err, newData, context) => {
-      this.snack.open(this.t.instant('errors.changeError'), '', { duration: 2000 });
-      this.queryClient.setQueryData(QUERY_KEY, context?.previousData);
-    },
-  }));
-
-  saveCategoryMutation = injectMutation(() => ({
-    mutationFn: (dto: Partial<ProductCategory>) =>
-      lastValueFrom(this.http.post<ProductCategory>(`/productCategories`, dto)),
-    onMutate: (dto) => {
-      this.queryClient.cancelQueries({ queryKey: QUERY_KEY });
-      const previousData = this.queryClient.getQueryData<Menu>(QUERY_KEY);
-      this.queryClient.setQueryData(QUERY_KEY, (oldData: Menu) => {
-        const old = structuredClone(oldData);
-        if (dto.id) {
-          if (old.categories) {
-            const index = old.categories.findIndex((x) => x.id === dto.id);
-            if (index > -1) {
-              const category = old.categories[index];
-              if (category) {
-                Object.assign(category, dto);
-                old.categories[index] = { ...category };
-              }
-              return { ...old };
-            }
-          }
-        } else {
-          old.categories?.push(dto as ProductCategory);
-          return { ...old };
-        }
-        return old;
-      });
-
-      return { previousData };
-    },
-    onSuccess: () => {
-      this.queryClient.invalidateQueries({ queryKey: QUERY_KEY });
-    },
-    onError: (err, newData, context) => {
-      this.snack.open(this.t.instant('errors.changeError'), '', { duration: 2000 });
-      this.queryClient.setQueryData(QUERY_KEY, context?.previousData);
-    },
-  }));
-
-  sortCategoriesMutation = injectMutation(() => ({
-    mutationFn: (dto: number[]) => lastValueFrom(this.http.post<number[]>(`/productCategories/sort`, dto)),
-    onMutate: (dto) => {
-      this.queryClient.cancelQueries({ queryKey: QUERY_KEY });
-      const previousData = this.queryClient.getQueryData<Menu>(QUERY_KEY);
-      this.queryClient.setQueryData(QUERY_KEY, (oldData: Menu) => {
-        const old = structuredClone(oldData);
-        const categories = old.categories;
-        if (categories) {
-          for (const category of categories) {
-            category.position = dto.indexOf(category.id);
-          }
-          categories.sort(DEFAULT_SORT_FUNC);
-          old.categories = categories;
-          return { ...old };
-        }
-
-        return old;
-      });
-
-      return { previousData };
-    },
-    onSuccess: () => {
-      this.queryClient.invalidateQueries({ queryKey: QUERY_KEY });
-    },
-    onError: (err, newData, context) => {
-      this.snack.open(this.t.instant('errors.changeError'), '', { duration: 2000 });
-      this.queryClient.setQueryData(QUERY_KEY, context?.previousData);
-    },
-  }));
-
-  deleteCategoryMutation = injectMutation(() => ({
-    mutationFn: (id: number) => lastValueFrom(this.http.delete(`/productCategories/${id}`)),
-    onMutate: (id) => {
-      this.queryClient.cancelQueries({ queryKey: QUERY_KEY });
-      const previousData = this.queryClient.getQueryData<Menu>(QUERY_KEY);
-      this.queryClient.setQueryData(QUERY_KEY, (oldData: Menu) => {
-        const old = structuredClone(oldData);
+  saveCategoryMutation = this.createBaseMutation<ProductCategory, Partial<ProductCategory>>({
+    mutationFn: (dto) => lastValueFrom(this.http.post<ProductCategory>(`/productCategories`, dto)),
+    updateCache: (old, dto) => {
+      if (dto.id) {
         if (old.categories) {
-          old.categories = old.categories.filter(category => category.id !== id);
-          return { ...old };
+          const index = old.categories.findIndex((x) => x.id === dto.id);
+          if (index > -1) {
+            const category = old.categories[index];
+            if (category) {
+              Object.assign(category, dto);
+              old.categories[index] = { ...category };
+            }
+            return { ...old };
+          }
         }
-        return old;
-      });
-      return { previousData };
+      } else {
+        old.categories?.push(dto as ProductCategory);
+        return { ...old };
+      }
+      return old;
+    },
+  });
+
+  sortCategoriesMutation = this.createBaseMutation<number[], number[]>({
+    mutationFn: (dto) => lastValueFrom(this.http.post<number[]>(`/productCategories/sort`, dto)),
+    updateCache: (old, dto) => {
+      const categories = old.categories;
+      if (categories) {
+        for (const category of categories) {
+          category.position = dto.indexOf(category.id);
+        }
+        categories.sort(DEFAULT_SORT_FUNC);
+        old.categories = categories;
+        return { ...old };
+      }
+      return old;
+    },
+  });
+
+  deleteCategoryMutation = this.createBaseMutation<void, number>({
+    mutationFn: (id) => lastValueFrom(this.http.delete<void>(`/productCategories/${id}`)),
+    updateCache: (old, id) => {
+      if (old.categories) {
+        old.categories = old.categories.filter(category => category.id !== id);
+        return { ...old };
+      }
+      return old;
     },
     onSuccess: () => {
-      this.queryClient.invalidateQueries({ queryKey: QUERY_KEY });
       this.snack.open(this.t.instant('app.deleted'), '', { duration: 2000 });
     },
-    onError: (err, newData, context) => {
-      this.snack.open(this.t.instant('errors.changeError'), '', { duration: 2000 });
-      this.queryClient.setQueryData(QUERY_KEY, context?.previousData);
-    },
-  }));
+  });
 }

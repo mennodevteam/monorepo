@@ -15,7 +15,7 @@
     </button>
   }
 </mat-toolbar>
-<main p-md [attr.w-xs]="(menuService.categories() || []).length === 0">
+<main p-md>
   <mat-card appearance="outlined">
     <mat-card-content>
       @if ((menuService.categories() || []).length > 0) {
