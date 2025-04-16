@@ -1,9 +1,26 @@
 form {
   height: 100%;
   margin-top: -128px;
+  position: relative;
+  
+  &.loading {
+    opacity: 0.7;
+    pointer-events: none;
+  }
 }
 
 #logo {
   width: 128px;
   margin: 0 auto;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  
+  mat-spinner {
+    margin: 0;
+  }
 }

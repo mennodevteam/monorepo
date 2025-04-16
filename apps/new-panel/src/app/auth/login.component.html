@@ -7,6 +7,7 @@
   [formGroup]="loginForm"
   (ngSubmit)="submit()"
   fxLayoutAlign="center default"
+  [class.loading]="isLoading()"
 >
   <img id="logo" src="icons/logo.svg" alt="menno logo" />
   <h1>
@@ -16,12 +17,15 @@
   </h1>
   <mat-form-field>
     <mat-label>نام کاربری</mat-label>
-    <input matInput formControlName="username" eng ltr />
+    <input matInput formControlName="username" eng ltr [disabled]="isLoading()" />
   </mat-form-field>
   <mat-form-field>
     <mat-label>رمز عبور</mat-label>
-    <input matInput formControlName="password" eng ltr type="password" />
+    <input matInput formControlName="password" eng ltr type="password" [disabled]="isLoading()" />
   </mat-form-field>
 
-  <button mat-flat-button>ورود</button>
+  <button mat-flat-button [disabled]="isLoading() || loginForm.invalid">
+    <span *ngIf="!isLoading()">ورود</span>
+    <mat-spinner *ngIf="isLoading()" diameter="24"></mat-spinner>
+  </button>
 </form>
