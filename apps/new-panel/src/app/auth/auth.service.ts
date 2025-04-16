@@ -69,4 +69,9 @@ export class AuthService {
   async complete(): Promise<void> {
     return this.userLoaded; // Wait for the user to be loaded
   }
+
+  logout() {
+    this.clearToken();
+    this.userSignal.set(null);
+  }
 }

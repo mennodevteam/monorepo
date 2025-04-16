@@ -8,7 +8,7 @@
     <img imageLoader [imageFile]="shop.data()?.logoImage" placeholderImageSize="sm" />
   </button>
   <mat-menu #userMenu="matMenu">
-    <button mat-menu-item>{{ 'shell.logout' | translate }}</button>
+    <button mat-menu-item (click)="logout()">{{ 'shell.logout' | translate }}</button>
   </mat-menu>
   <h1 fxLayout="row" fxLayoutAlign="center center">
     <b fxHide.lt-sm>MENNO</b>

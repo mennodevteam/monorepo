@@ -49,4 +49,9 @@ export class ShellComponent {
   toggleSection(key: string) {
     this.collapse.update((old) => ({ ...old, [key]: !old[key] }));
   }
+
+  logout() {
+    this.auth.logout();
+    window.location.reload();
+  }
 }
