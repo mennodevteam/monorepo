@@ -1,66 +1,34 @@
 <mat-toolbar class="content-toolbar" fxLayoutGap="8px">
   <h1 fxFlex>{{ 'menu.title' | translate }}</h1>
-  <!-- <button mat-button (click)="openSortCategoriesDialog()">
-    <i class="fa-regular fa-sort"></i>
-    <span fxHide.xs>
-      {{ 'menu.sortCategories' | translate }}
-    </span>
-  </button>
-  <button mat-stroked-button>
-    <i class="fa-regular fa-plus"></i>
-    <span fxHide.xs>
-      {{ 'menu.addCategory' | translate }}
-    </span>
-  </button> -->
 </mat-toolbar>
 @let cats = menuService.categories();
-<nav mat-tab-nav-bar [tabPanel]="tabPanel" mat-stretch-tabs="false" >
-  @for (cat of cats; track cat.id) {
-    <a mat-tab-link (click)="setTab(cat)" [active]="selectedCategoryId() === cat.id">
-      {{ cat.title }}
-    </a>
-  }
-</nav>
-<mat-tab-nav-panel #tabPanel>
-  <main p-md>
-    <app-menu-category [category]="category()" />
-  </main>
-</mat-tab-nav-panel>
-<!-- <div fxLayout="row">
-    <mat-form-field appearance="outline">
-      <mat-label>{{ 'app.search' | translate }}</mat-label>
-      <input matInput [(ngModel)]="searchInput" type="search" />
-    </mat-form-field>
+@if (cats && cats.length > 0) {
+  <nav mat-tab-nav-bar [tabPanel]="tabPanel" mat-stretch-tabs="false">
+    @for (cat of cats; track cat.id) {
+      <a mat-tab-link (click)="setTab(cat)" [active]="selectedCategoryId() === cat.id">
+        {{ cat.title }}
+      </a>
+    }
+  </nav>
+  <mat-tab-nav-panel #tabPanel>
+    <main p-md>
+      <app-menu-category [category]="category()" />
+    </main>
+  </mat-tab-nav-panel>
+} @else {
+  <div p-md w-xs>
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <app-empty-state
+        [icon]="shopService.businessCategoryMenuIcon()"
+        [text]="'menu.noCategories' | translate"
+        [action]="{
+          label: 'menu.manageCategories' | translate,
+          icon: 'list',
+        }"
+        (actionClick)="goToCategories()"
+        />
+      </mat-card-content>
+    </mat-card>
   </div>
-  @let cats = categories();
-  @if (cats && cats.length > 1) {
-    <mat-chip-set>
-      <mat-chip class="primary-chip" (click)="editCategory()">
-        <i class="fa-regular fa-plus"></i>
-        {{ 'menu.addCategory' | translate }}
-      </mat-chip>
-      <mat-chip class="primary-chip" (click)="openSortCategoriesDialog()">
-        <i class="fa-regular fa-sort"></i>
-        {{ 'menu.sortCategories' | translate }}
-      </mat-chip>
-      <mat-divider vertical />
-      @for (category of cats; track category.id) {
-        <mat-chip (click)="scrollTo(category)">
-          @if (category.faIcon) {
-            <i class="fa-regular fa-{{ category.faIcon }}"></i>
-          }
-          {{ category.title }}
-        </mat-chip>
-      }
-    </mat-chip-set>
-    <br />
-  }
-  @if (cats) {
-    <div fxLayout="column" fxLayoutGap="24px">
-      @for (category of cats; track category.id) {
-        <app-menu-category [category]="category" (categoryEditClick)="editCategory($event)" />
-      }
-    </div>
-  } @else {
-    <app-data-loading />
-  } -->
+}

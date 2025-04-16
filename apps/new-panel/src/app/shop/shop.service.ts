@@ -73,4 +73,34 @@ export class ShopService {
   businessCategoryMenuTitle = computed(() => {
     return this.t.instant(`menu.businessCategory.${this.data()?.businessCategory || BusinessCategory.Cafe}`);
   });
+
+  businessCategoryMenuIcon = computed(() => {
+    const category = this.data()?.businessCategory || BusinessCategory.Cafe;
+    switch (category) {
+      case BusinessCategory.Cafe:
+        return 'mug-hot';
+      case BusinessCategory.Restaurant:
+        return 'utensils';
+      case BusinessCategory.CafeRestaurant:
+        return 'mug-hot';
+      case BusinessCategory.Protein:
+        return 'dumbbell';
+      case BusinessCategory.Confectionary:
+        return 'cookie';
+      case BusinessCategory.GameCafe:
+        return 'gamepad';
+      case BusinessCategory.JuiceAndIceCream:
+        return 'ice-cream';
+      case BusinessCategory.Herbal:
+        return 'leaf';
+      case BusinessCategory.Nuts:
+        return 'seedling';
+      case BusinessCategory.Fruits:
+        return 'apple-whole';
+      case BusinessCategory.Other:
+        return 'store';
+      default:
+        return 'store';
+    }
+  });
 }

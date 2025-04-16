@@ -30,6 +30,7 @@ export class CategoryFormDialogComponent {
     if (this.form.invalid) return;
     const dto: any = this.form.getRawValue();
     if (this.data) dto.id = this.data.id;
+    dto.menu = { id: this.menu.data()?.id };
     this.menu.saveCategoryMutation.mutate(dto);
     this.dialogRef.close();
   }

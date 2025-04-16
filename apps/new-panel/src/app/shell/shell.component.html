@@ -35,15 +35,15 @@
         <span matListItemTitle>{{ 'nav.orderList' | translate }}</span>
       </a>
       <mat-divider />
+      <a mat-list-item routerLinkActive="active-link" routerLink="/menu/categories">
+        <i matListItemIcon class="fa-duotone fa-folder-tree flip"></i>
+        <span matListItemTitle>{{ 'nav.categories' | translate: { value: shop.businessCategoryMenuTitle() } }}</span>
+      </a>
       <a mat-list-item routerLinkActive="active-link" routerLink="/menu/list">
         <i matListItemIcon class="fa-duotone fa-list flip"></i>
         <span matListItemTitle>{{
           'nav.products' | translate: { value: shop.businessCategoryMenuTitle() }
         }}</span>
-      </a>
-      <a mat-list-item routerLinkActive="active-link" routerLink="/menu/categories">
-        <i matListItemIcon class="fa-duotone fa-folder-tree flip"></i>
-        <span matListItemTitle>{{ 'nav.categories' | translate: { value: shop.businessCategoryMenuTitle() } }}</span>
       </a>
       <a mat-list-item routerLinkActive="active-link" routerLink="/menu/costs">
         <i matListItemIcon class="fa-duotone fa-badge-dollar"></i>

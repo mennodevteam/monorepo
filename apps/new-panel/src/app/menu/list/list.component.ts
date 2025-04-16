@@ -17,6 +17,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { CategoryFormDialogComponent } from '../category-form-dialog/category-form-dialog.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
+import { ShopService } from '../../shop/shop.service';
+
 @Component({
   selector: 'app-menu-list',
   standalone: true,
@@ -32,6 +36,8 @@ import { ActivatedRoute, Router } from '@angular/router';
     MatInputModule,
     MatChipsModule,
     MatTabsModule,
+    MatIconModule,
+    EmptyStateComponent,
   ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
@@ -39,12 +45,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class MenuListComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly matDialog = inject(MatDialog);
 
   menuService = inject(MenuService);
+  shopService = inject(ShopService);
+  
   selectedCategoryId = signal<number | undefined>(
     this.route.snapshot.queryParams['id']
       ? Number(this.route.snapshot.queryParams['id'])
-      : this.menuService.categories()?.[0].id,
+      : this.menuService.categories()?.[0]?.id,
   );
 
   category = computed(() => {
@@ -59,29 +68,15 @@ export class MenuListComponent {
     this.selectedCategoryId.set(category.id);
   }
 
-  // scrollTo(category: ProductCategory) {
-  //   const categoryElement = document.getElementById('category_' + category.id);
-  //   if (categoryElement) categoryElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  // }
+  editCategory(category?: ProductCategory) {
+    this.matDialog.open(CategoryFormDialogComponent, {
+      data: category,
+      width: '360px',
+      disableClose: true,
+    });
+  }
 
-  // openSortCategoriesDialog() {
-  //   const categories = this.menuService.categories();
-  //   if (categories)
-  //     this.dialog
-  //       .sort(
-  //         this.t.instant('menu.sortCategories'),
-  //         categories.map((item) => ({ id: item.id, text: item.title })),
-  //       )
-  //       .then((data) => {
-  //         if (data) this.menuService.sortCategoriesMutation.mutate(data.map((x: ProductCategory) => x.id));
-  //       });
-  // }
-
-  // editCategory(category?: ProductCategory) {
-  //   this.matDialog.open(CategoryFormDialogComponent, {
-  //     data: category,
-  //     width: '360px',
-  //     disableClose: true,
-  //   });
-  // }
+  goToCategories() {
+    this.router.navigate(['/menu/categories']);
+  }
 }
