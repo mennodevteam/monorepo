@@ -67,4 +67,16 @@ export class CategoryListComponent {
   changeStatus(category: ProductCategory, status: Status) {
     this.menuService.saveCategoryMutation.mutate({ id: category.id, status });
   }
+
+  async deleteCategory(category: ProductCategory) {
+    const confirmed = await this.dialog.alert(
+      this.t.instant('app.confirmDelete'),
+      this.t.instant('app.deleteConfirmMessage', { value: category.title }),
+      { config: { data: { confirm: true } } }
+    );
+    
+    if (confirmed) {
+      this.menuService.deleteCategoryMutation.mutate(category.id);
+    }
+  }
 }

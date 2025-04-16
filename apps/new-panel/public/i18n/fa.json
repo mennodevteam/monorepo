@@ -28,7 +28,10 @@
     "title": "عنوان",
     "uploading": "درحال آپلود...",
     "price": "قیمت",
-    "free": "رایگان"
+    "free": "رایگان",
+    "deleted": "با موفقیت حذف شد",
+    "confirmDelete": "تایید حذف",
+    "deleteConfirmMessage": "آیا از حذف {{value}} اطمینان دارید؟"
   },
   "shell": {
     "logout": "خروج از حساب کاربری",

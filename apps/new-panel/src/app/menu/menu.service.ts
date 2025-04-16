@@ -231,4 +231,29 @@ export class MenuService {
       this.queryClient.setQueryData(QUERY_KEY, context?.previousData);
     },
   }));
+
+  deleteCategoryMutation = injectMutation(() => ({
+    mutationFn: (id: number) => lastValueFrom(this.http.delete(`/productCategories/${id}`)),
+    onMutate: (id) => {
+      this.queryClient.cancelQueries({ queryKey: QUERY_KEY });
+      const previousData = this.queryClient.getQueryData<Menu>(QUERY_KEY);
+      this.queryClient.setQueryData(QUERY_KEY, (oldData: Menu) => {
+        const old = structuredClone(oldData);
+        if (old.categories) {
+          old.categories = old.categories.filter(category => category.id !== id);
+          return { ...old };
+        }
+        return old;
+      });
+      return { previousData };
+    },
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: QUERY_KEY });
+      this.snack.open(this.t.instant('app.deleted'), '', { duration: 2000 });
+    },
+    onError: (err, newData, context) => {
+      this.snack.open(this.t.instant('errors.changeError'), '', { duration: 2000 });
+      this.queryClient.setQueryData(QUERY_KEY, context?.previousData);
+    },
+  }));
 }
