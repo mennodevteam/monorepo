@@ -1,8 +1,16 @@
-<div fxLayout="column" fxLayoutAlign="center center" p-md fxLayoutGap="16px">
+<div fxLayout="column" fxLayoutAlign="center center" p-md fxLayoutGap="16px" w-xs class="container">
   @if (icon()) {
     <i class="icon fa-duotone fa-{{ icon() }}"></i>
   }
-  <p>{{ text() }}</p>
+  @if (typeof text() === 'string') {
+    <p>{{ text() }}</p>
+  } @else {
+    <div>
+      @for (line of text(); track line) {
+        <p>{{ line }}</p>
+      }
+    </div>
+  }
   @if (action()) {
     <button mat-flat-button color="primary" (click)="actionClick.emit()">
       @if (action()?.icon) {

@@ -11,6 +11,6 @@ export const menuRoutes: Route[] = [
   { path: 'product', component: ProductEditComponent, canDeactivate: [dirtyFormDeactivator] },
   { path: 'categories', component: CategoryListComponent },
   { path: 'costs', component: CostListComponent },
-  { path: 'costs/edit', component: CostEditComponent },
+  { path: 'costs/edit', component: CostEditComponent, canDeactivate: [dirtyFormDeactivator] },
   { path: '', pathMatch: 'full', redirectTo: 'list' },
 ];

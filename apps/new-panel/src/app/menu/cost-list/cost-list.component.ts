@@ -13,6 +13,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MenuStatusChipComponent } from '../status-chip/status-chip.component';
 import { ShopService } from '../../shop/shop.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
+import { Router } from '@angular/router';
 const COLS = ['index', 'title', 'value', 'status', 'actions'];
 
 @Component({
@@ -27,6 +29,7 @@ const COLS = ['index', 'title', 'value', 'status', 'actions'];
     MatChipsModule,
     MenuStatusChipComponent,
     MatSlideToggleModule,
+    EmptyStateComponent,
   ],
   templateUrl: './cost-list.component.html',
   styleUrl: './cost-list.component.scss',
@@ -35,6 +38,7 @@ export class CostListComponent {
   private readonly matDialog = inject(MatDialog);
   private readonly dialog = inject(DialogService);
   private readonly t = inject(TranslateService);
+  private readonly router = inject(Router);
   readonly shop = inject(ShopService);
   readonly menuService = inject(MenuService);
   readonly displayedColumns = COLS;
@@ -53,5 +57,9 @@ export class CostListComponent {
     if (confirmed) {
       this.menuService.deleteCostMutation.mutate(cost.id);
     }
+  }
+
+  addCost() {
+    this.router.navigate(['/menu/costs/edit']);
   }
 }

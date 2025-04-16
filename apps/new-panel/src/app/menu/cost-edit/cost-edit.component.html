@@ -1,6 +1,6 @@
-<form [formGroup]="form">
+<form [formGroup]="form" (ngSubmit)="submit()">
   <mat-toolbar class="content-toolbar" fxLayout="row" fxLayoutGap="8px">
-    <button mat-icon-button goBack>
+    <button mat-icon-button goBack type="button">
       <i class="fa-regular fa-arrow-right"></i>
     </button>
     <h2 fxFlex>
@@ -10,10 +10,10 @@
         {{ 'menuCost.newTitle' | translate }}
       }
     </h2>
-    <button mat-button (click)="location.back()">
+    <button mat-button (click)="location.back()" type="button">
       {{ 'app.cancel' | translate }}
     </button>
-    <button mat-flat-button [disabled]="!form.dirty" (click)="submit()">
+    <button mat-flat-button [disabled]="!form.dirty" type="submit">
       {{ 'app.save' | translate }}
     </button>
   </mat-toolbar>
@@ -43,11 +43,6 @@
         <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
           <mat-label>{{ 'app.title' | translate }}</mat-label>
           <input matInput formControlName="title" />
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
-          <mat-label>{{ 'app.description' | translate }}</mat-label>
-          <textarea matInput formControlName="description" rows="3"></textarea>
         </mat-form-field>
       </mat-card-content>
     </mat-card>
@@ -87,7 +82,12 @@
         <h3>{{ 'menuCost.scope' | translate }}</h3>
         <p class="mat-caption">{{ 'menuCost.scopeDescription' | translate }}</p>
 
-        <mat-radio-group [(ngModel)]="scopeType" [ngModelOptions]="{ standalone: true }" fxLayout="column" fxLayoutGap="8px">
+        <mat-radio-group
+          [(ngModel)]="scopeType"
+          [ngModelOptions]="{ standalone: true }"
+          fxLayout="column"
+          fxLayoutGap="8px"
+        >
           <mat-radio-button value="all">{{ 'menuCost.scopeAll' | translate }}</mat-radio-button>
           <mat-radio-button value="categories">{{ 'menuCost.scopeCategories' | translate }}</mat-radio-button>
           <mat-radio-button value="products">{{ 'menuCost.scopeProducts' | translate }}</mat-radio-button>
@@ -98,7 +98,7 @@
             <mat-label>{{ 'menuCost.selectCategories' | translate }}</mat-label>
             <mat-select formControlName="includeProductCategory" multiple>
               @for (category of menuService.data()?.categories; track category) {
-                <mat-option [value]="category">{{ category.title }}</mat-option>
+                <mat-option [value]="category.id">{{ category.title }}</mat-option>
               }
             </mat-select>
           </mat-form-field>
@@ -111,7 +111,7 @@
               @for (category of menuService.data()?.categories; track category) {
                 <mat-optgroup [label]="category.title">
                   @for (product of category.products; track product) {
-                    <mat-option [value]="product">{{ product.title }}</mat-option>
+                    <mat-option [value]="product.id">{{ product.title }}</mat-option>
                   }
                 </mat-optgroup>
               }

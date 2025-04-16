@@ -17,7 +17,7 @@ export interface EmptyStateAction {
 })
 export class EmptyStateComponent {
   icon = input<string | undefined>();
-  text = input<string>('هیچ دیتایی وجود ندارد');
+  text = input<string | string[]>('هیچ دیتایی وجود ندارد');
   action = input<EmptyStateAction | undefined>();
   actionClick = output<void>();
 }
