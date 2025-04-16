@@ -1,6 +1,14 @@
 <div fxLayout="column" fxLayoutAlign="center center" p-md>
   @if (icon()) {
-    <i class="fa-solid fa-{{ icon() }}"></i>
+    <i class="icon fa-solid fa-{{ icon() }}"></i>
   }
   <p>{{ text() }}</p>
+  @if (action()) {
+    <button mat-flat-button color="primary" (click)="actionClick.emit()">
+      @if (action()?.icon) {
+        <i class="fa-regular fa-{{ action()?.icon }}"></i>
+      }
+      {{ action()?.label }}
+    </button>
+  }
 </div>

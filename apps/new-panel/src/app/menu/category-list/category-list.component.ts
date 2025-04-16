@@ -13,6 +13,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
 import { MenuStatusChipComponent } from '../status-chip/status-chip.component';
 import { ShopService } from '../../shop/shop.service';
+import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
+
 const COLS = ['index', 'title', 'costs', 'status', 'actions'];
 
 @Component({
@@ -26,6 +28,7 @@ const COLS = ['index', 'title', 'costs', 'status', 'actions'];
     MatTableModule,
     MatChipsModule,
     MenuStatusChipComponent,
+    EmptyStateComponent,
   ],
   templateUrl: './category-list.component.html',
   styleUrl: './category-list.component.scss',
