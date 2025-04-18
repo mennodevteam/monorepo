@@ -120,5 +120,29 @@
         }
       </mat-card-content>
     </mat-card>
+
+    <mat-card appearance="outlined">
+      <mat-card-content fxLayout="column" fxLayoutGap="24px">
+        <h3>{{ 'menuCost.display' | translate }}</h3>
+        <p class="mat-caption">{{ 'menuCost.displayDescription' | translate }}</p>
+
+        <mat-button-toggle-group formControlName="showOnItem">
+          <mat-button-toggle fxFlex [value]="true">
+            {{ 'menuCost.showOnItem' | translate }}
+          </mat-button-toggle>
+          <mat-button-toggle fxFlex [value]="false">
+            {{ 'menuCost.showOnInvoice' | translate }}
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+
+        <span class="mat-caption">
+          @if (form.get('showOnItem')?.value) {
+            {{ 'menuCost.showOnItemHint' | translate }}
+          } @else {
+            {{ 'menuCost.showOnInvoiceHint' | translate }}
+          }
+        </span>
+      </mat-card-content>
+    </mat-card>
   </main>
 </form>
