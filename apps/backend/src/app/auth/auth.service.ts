@@ -126,7 +126,9 @@ export class AuthService {
     );
     this.mobilePhoneTokens[mobilePhone] = token;
     setTimeout(() => {
-      delete this.mobilePhoneTokens[mobilePhone];
+      if (this.mobilePhoneTokens[mobilePhone] === token) {
+        delete this.mobilePhoneTokens[mobilePhone];
+      }
     }, validateTime);
     let user = await this.usersRepo.findOneBy({ mobilePhone });
     if (!user) {
