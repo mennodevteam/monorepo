@@ -8,7 +8,7 @@ export class PayService {
   constructor(private http: HttpClient) {}
 
   async redirect(type: string, amount?: number, body?: any) {
-    let link = `payments/${type}`;
+    let link = `/payments/${type}`;
     if (amount) link += `/${amount}`;
     try {
       const paymentLink = body

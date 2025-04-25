@@ -9,6 +9,7 @@ import { settingsRoutes } from './settings/settings.routes';
 import { reportRoutes } from './reports/reports.routes';
 import { ShellComponent } from './shell/shell.component';
 import { menuDataActivator } from './core/guards/menu.guard';
+import { HomeComponent } from './home/home.component';
 
 export const appRoutes: Route[] = [
   {
@@ -24,11 +25,12 @@ export const appRoutes: Route[] = [
         component: ShellComponent,
         canActivate: [authGuard, shopDataActivator, menuDataActivator],
         children: [
+          { path: 'home', component: HomeComponent },
           { path: 'reports', children: reportRoutes },
           { path: 'menu', children: menuRoutes },
           { path: 'orders', children: orderRoutes },
           { path: 'settings', children: settingsRoutes },
-          { path: '', redirectTo: 'menu', pathMatch: 'full' },
+          { path: '', redirectTo: 'home', pathMatch: 'full' },
         ],
       },
     ],

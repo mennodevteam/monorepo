@@ -72,17 +72,18 @@ export class SmsService {
             const entries = response;
             const sentSms: Sms[] = [];
             for (const entry of entries) {
-              sentSms.push(<Sms>{
-                account: dto.accountId && <SmsAccount>{ id: dto.accountId },
-                cost: this.getCost(entry.cost),
-                message: entry.message,
-                receptor: entry.receptor,
-                sentAt: dto.sentAt,
-                group,
-                status: this.getStatus(entry.status),
-                statusDescription: entry.statustext,
-                kavenegarId: entry.messageid,
-              });
+              if (entry.receptor)
+                sentSms.push(<Sms>{
+                  account: dto.accountId && <SmsAccount>{ id: dto.accountId },
+                  cost: this.getCost(entry.cost),
+                  message: entry.message,
+                  receptor: entry.receptor,
+                  sentAt: dto.sentAt,
+                  group,
+                  status: this.getStatus(entry.status),
+                  statusDescription: entry.statustext,
+                  kavenegarId: entry.messageid,
+                });
             }
             await this.smsRepo.save(sentSms);
             const g =

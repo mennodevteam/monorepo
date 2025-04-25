@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { injectMutation, injectQuery, injectQueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
+import { environment } from '../../environments/environment';
 
 const QUERY_KEY = ['shops'];
 
@@ -72,6 +73,12 @@ export class ShopService {
 
   businessCategoryMenuTitle = computed(() => {
     return this.t.instant(`menu.businessCategory.${this.data()?.businessCategory || BusinessCategory.Cafe}`);
+  });
+
+  appLink = computed(() => {
+    const shop = this.data();
+    if (shop) return Shop.appLink(shop, environment.appDomain);
+    return;
   });
 
   businessCategoryMenuIcon = computed(() => {

@@ -44,8 +44,9 @@ export class ShellComponent {
   collapse = signal<{ [key: string]: boolean }>({ settings: true });
 
   constructor() {
-    this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small]).subscribe((result) => {
+    this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small, Breakpoints.Medium]).subscribe((result) => {
       if (result.matches) this.isDrawerClose.set(true);
+      else this.isDrawerClose.set(false);
       this.isSmallScreen.set(result.matches);
     });
   }
