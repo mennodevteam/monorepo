@@ -1,3 +1,7 @@
 tr.selectable-row:hover {
   background-color: rgba(0, 0, 0, 0.02);
 }
+
+tr.new {
+  background-color: var(--mat-sys-error-container) !important;
+}

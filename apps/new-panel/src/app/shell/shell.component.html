@@ -3,6 +3,37 @@
     <i class="fa-solid fa-bars"></i>
   </button>
   <span fxFlex></span>
+  <button
+    mat-icon-button
+    [matBadge]="notifications.data()?.length"
+    [matBadgeHidden]="!notifications.data()?.length"
+    [disabled]="!notifications.data()?.length"
+    matBadgePosition="before"
+    [matMenuTriggerFor]="notificationMenu"
+  >
+    <i class="fa-solid fa-bell"></i>
+  </button>
+  <mat-menu #notificationMenu="matMenu">
+    <mat-nav-list>
+      @for (notification of notifications.data(); track notification) {
+        <a
+          mat-list-item
+          routerLink="/orders/details/{{ (notification.order || notification.chat?.order)?.id }}"
+        >
+          @if (notification.order) {
+            <span matListItemTitle>{{ 'notifications.newOrder' | translate }}</span>
+          }
+          @if (notification.chat) {
+            <span matListItemTitle>{{ 'notifications.newMessage' | translate }}</span>
+          }
+          <span matListItemLine>{{ notification.date | pdate: true }}</span>
+        </a>
+        @if (!$last) {
+          <mat-divider />
+        }
+      }
+    </mat-nav-list>
+  </mat-menu>
   <button mat-stroked-button id="profile-button" [matMenuTriggerFor]="userMenu">
     {{ shop.data()?.title }}
     <img imageLoader [imageFile]="shop.data()?.logoImage" placeholderImageSize="sm" />
@@ -37,7 +68,9 @@
       <mat-divider />
       <a mat-list-item routerLinkActive="active-link" routerLink="/menu/categories">
         <i matListItemIcon class="fa-duotone fa-folder-tree flip"></i>
-        <span matListItemTitle>{{ 'nav.categories' | translate: { value: shop.businessCategoryMenuTitle() } }}</span>
+        <span matListItemTitle>{{
+          'nav.categories' | translate: { value: shop.businessCategoryMenuTitle() }
+        }}</span>
       </a>
       <a mat-list-item routerLinkActive="active-link" routerLink="/menu/list">
         <i matListItemIcon class="fa-duotone fa-list flip"></i>

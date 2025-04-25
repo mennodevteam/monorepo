@@ -14,7 +14,8 @@ import { signal } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { DialogService } from '../core/services/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
-
+import { NotificationService } from '../core/services/notification.service';
+import { MatBadgeModule } from '@angular/material/badge';
 @Component({
   selector: 'app-shell',
   templateUrl: './shell.component.html',
@@ -30,12 +31,14 @@ import { TranslateService } from '@ngx-translate/core';
     SHARED,
     RouterModule,
     MatMenuModule,
+    MatBadgeModule,
   ],
 })
 export class ShellComponent {
   readonly auth = inject(AuthService);
   readonly shop = inject(ShopService);
   readonly menuService = inject(MenuService);
+  readonly notifications = inject(NotificationService);
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly dialog = inject(DialogService);
   private readonly translate = inject(TranslateService);
@@ -44,11 +47,13 @@ export class ShellComponent {
   collapse = signal<{ [key: string]: boolean }>({ settings: true });
 
   constructor() {
-    this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small, Breakpoints.Medium]).subscribe((result) => {
-      if (result.matches) this.isDrawerClose.set(true);
-      else this.isDrawerClose.set(false);
-      this.isSmallScreen.set(result.matches);
-    });
+    this.breakpointObserver
+      .observe([Breakpoints.XSmall, Breakpoints.Small, Breakpoints.Medium])
+      .subscribe((result) => {
+        if (result.matches) this.isDrawerClose.set(true);
+        else this.isDrawerClose.set(false);
+        this.isSmallScreen.set(result.matches);
+      });
   }
 
   toggleSection(key: string) {

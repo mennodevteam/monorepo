@@ -5,7 +5,9 @@ import { SHARED } from '../../../shared';
 import { MatTableModule } from '@angular/material/table';
 import { OrderStateChipComponent } from '../../state-chip/state-chip.component';
 import { Router } from '@angular/router';
-const COLS = ['createdAt', 'type', 'customer', 'price', 'state', 'actions'];
+import { ShopService } from '../../../shop/shop.service';
+const COLS = ['createdAt', 'customer', 'deliveryArea', 'price', 'state', 'actions'];
+const RESTAURANT_COLS = ['createdAt', 'type', 'customer', 'price', 'state', 'actions'];
 @Component({
   selector: 'app-order-table',
   standalone: true,
@@ -15,9 +17,10 @@ const COLS = ['createdAt', 'type', 'customer', 'price', 'state', 'actions'];
 })
 export class TableComponent {
   private readonly router = inject(Router);
+  private readonly shopService = inject(ShopService);
   orders = input<Order[]>();
   stateChange = output<{ order: Order; state: OrderState }>();
-  displayedColumns = COLS;
+  displayedColumns = this.shopService.isRestaurantOrCoffeeShop() ? RESTAURANT_COLS : COLS;
   User = User;
   OrderType = OrderType;
 

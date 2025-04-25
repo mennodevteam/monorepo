@@ -4,14 +4,14 @@ import { SHARED } from '../../shared';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { injectQuery } from '@tanstack/angular-query-experimental';
+import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Order, OrderState, OrderType, User } from '@menno/types';
 import { OrderItemTableComponent } from './table/table.component';
 import { OrderStateChipComponent } from '../state-chip/state-chip.component';
 import { OrdersService } from '../order.service';
-import { OrderChatComponent } from "./chat/order-chat.component";
+import { OrderChatComponent } from './chat/order-chat.component';
 
 @Component({
   selector: 'app-order-details',
@@ -23,8 +23,8 @@ import { OrderChatComponent } from "./chat/order-chat.component";
     MatToolbarModule,
     OrderItemTableComponent,
     OrderStateChipComponent,
-    OrderChatComponent
-],
+    OrderChatComponent,
+  ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss',
 })
@@ -32,6 +32,7 @@ export class OrderDetailsComponent {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly queryClient = inject(QueryClient);
   readonly ordersService = inject(OrdersService);
   User = User;
   OrderType = OrderType;
@@ -50,6 +51,11 @@ export class OrderDetailsComponent {
       this.route.paramMap.subscribe((params) => {
         this.orderId.set(params.get('id'));
       });
+    });
+
+    effect(() => {
+      this.order();
+      this.queryClient.invalidateQueries({ queryKey: ['notifications'] });
     });
   }
 

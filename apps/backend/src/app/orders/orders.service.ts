@@ -392,7 +392,10 @@ export class OrdersService {
     return this.ordersRepo.save(editedOrder);
   }
 
-  async filter(dto: FilterOrderDto) {
+  async filter(
+    dto: FilterOrderDto,
+    relations: string[] = ['items', 'mergeTo', 'mergeFrom', 'customer', 'creator', 'waiter'],
+  ) {
     const condition: FindOptionsWhere<Order> = {
       mergeTo: null,
     };
@@ -431,8 +434,6 @@ export class OrdersService {
       condition.waiter = { id: dto.waiterId };
     }
     if (dto.isManual === true || dto.isManual === false) condition.isManual = dto.isManual;
-
-    const relations = ['items', 'mergeTo', 'mergeFrom', 'customer', 'creator', 'waiter'];
 
     const params: FindManyOptions<Order> = {
       where: condition,

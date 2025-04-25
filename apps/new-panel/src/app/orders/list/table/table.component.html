@@ -41,6 +41,17 @@
     </td>
   </ng-container>
 
+  <ng-container matColumnDef="deliveryArea">
+    <th mat-header-cell *matHeaderCellDef>{{ 'order.deliveryArea' | translate }}</th>
+    <td mat-cell *matCellDef="let order">
+      @if (order.address?.region) {
+        {{ order.address?.region?.title }}
+      } @else {
+        {{ order.address?.deliveryArea?.title }}
+      }
+    </td>
+  </ng-container>
+
   <ng-container matColumnDef="price">
     <th mat-header-cell *matHeaderCellDef>{{ 'app.price' | translate }}</th>
     <td mat-cell *matCellDef="let order" style="width: 180px">
@@ -82,5 +93,6 @@
     *matRowDef="let row; columns: displayedColumns"
     class="selectable-row"
     (click)="navigateToOrder(row)"
+    [class.new]="!row.seenAt"
   ></tr>
 </table>

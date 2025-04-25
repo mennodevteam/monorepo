@@ -32,6 +32,8 @@ import { HealthModule } from './health/health.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { BasalamModule } from './basalam/basalam.module';
 import { ChatModule } from './chat/chat.module';
+import { PanelNotificationsModule } from './panel-notifications/panel-notifications.module';
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -85,7 +87,8 @@ import { ChatModule } from './chat/chat.module';
     WebPushNotificationModule,
     DingModule,
     WindowsLocalNotificationModule,
-    BasalamModule
+    BasalamModule,
+    PanelNotificationsModule,
   ],
   controllers: [AppController, AppRedirectController],
   providers: [

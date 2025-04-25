@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { computed, inject, Injectable } from '@angular/core';
+import { computed, effect, inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AppConfig, BusinessCategory, Shop } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
@@ -7,7 +7,7 @@ import { injectMutation, injectQuery, injectQueryClient } from '@tanstack/angula
 import { lastValueFrom } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { environment } from '../../environments/environment';
-
+import { Title } from '@angular/platform-browser';
 const QUERY_KEY = ['shops'];
 
 @Injectable({
@@ -18,7 +18,17 @@ export class ShopService {
   readonly auth = inject(AuthService);
   readonly snack = inject(MatSnackBar);
   readonly t = inject(TranslateService);
+  readonly title = inject(Title);
   readonly queryClient = injectQueryClient();
+
+  constructor() {
+    effect(() => {
+      const shop = this.data();
+      if (shop) {
+        this.title.setTitle(`MENNO | ${shop.title}`);
+      }
+    });
+  }
 
   saveMutation = injectMutation(() => ({
     mutationFn: (dto: Partial<Shop>) => lastValueFrom(this.http.put<Shop>(`/shops`, dto)),

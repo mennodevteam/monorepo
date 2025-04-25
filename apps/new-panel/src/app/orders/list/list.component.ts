@@ -70,7 +70,7 @@ export class OrderListComponent {
   }));
   query = injectQuery(() => ({
     queryKey: ['orders', this.filterDto()],
-    queryFn: () => lastValueFrom(this.http.post<[Order[], number]>('/orders/filter', this.filterDto())),
+    queryFn: () => lastValueFrom(this.http.post<[Order[], number]>('/orders/filter/v2', this.filterDto())),
   }));
 
   pageSize = computed(() => {
