@@ -93,6 +93,7 @@ export class OrdersService {
     if (dto.paymentType != undefined) order.paymentType = dto.paymentType;
     if (dto.state != undefined) order.state = dto.state;
     if (dto.type != undefined) order.type = dto.type;
+    if (dto.seenAt != undefined) order.seenAt = dto.seenAt;
     if (dto.discountCoupon) {
       dto.discountCoupon = order.discountCoupon = await this.discountCouponsRepo.findOneBy({
         id: dto.discountCoupon.id,
@@ -431,14 +432,7 @@ export class OrdersService {
     }
     if (dto.isManual === true || dto.isManual === false) condition.isManual = dto.isManual;
 
-    const relations = [
-      'items',
-      'mergeTo',
-      'mergeFrom',
-      'customer',
-      'creator',
-      'waiter',
-    ];
+    const relations = ['items', 'mergeTo', 'mergeFrom', 'customer', 'creator', 'waiter'];
 
     const params: FindManyOptions<Order> = {
       where: condition,

@@ -54,6 +54,7 @@ export class Order {
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
+  seenAt?: Date;
 
   static sum(order: Order) {
     let sum = 0;

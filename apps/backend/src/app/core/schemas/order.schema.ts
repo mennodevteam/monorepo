@@ -65,6 +65,10 @@ export const OrderSchema = new EntitySchema<Order>({
       nullable: true,
       deleteDate: true,
     },
+    seenAt: {
+      type: 'timestamptz',
+      nullable: true,
+    },
   },
   relations: {
     creator: {

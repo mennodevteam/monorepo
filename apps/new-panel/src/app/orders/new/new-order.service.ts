@@ -71,6 +71,7 @@ export class NewOrdersService {
         isManual: this.order()?.isManual ?? true,
         type: this.type(),
         state: !this.order() ? OrderState.Pending : undefined,
+        seenAt: !this.order() ? new Date() : undefined,
       }) as OrderDto,
   );
 

@@ -101,7 +101,7 @@ export class OrdersController {
 
   @Get('panel/:id')
   @Roles(UserRole.Panel)
-  getOrderDetailsPanel(@Param('id') id: string, @Query('withProduct') withProduct: string) {
+  async getOrderDetailsPanel(@Param('id') id: string, @Query('withProduct') withProduct: string) {
     const relations = [
       'items.product',
       'items.productVariant',
@@ -119,13 +119,20 @@ export class OrdersController {
       relations.push('items.product', 'items.productVariant');
     }
 
-    return this.ordersRepo.findOne({
+    const order = await this.ordersRepo.findOne({
       where: {
         id,
       },
       withDeleted: true,
       relations,
     });
+
+    if (!order?.seenAt) {
+      this.ordersRepo.update(id, { seenAt: new Date() });
+      order.seenAt = new Date();
+    }
+
+    return order;
   }
 
   @Roles(UserRole.Panel)
