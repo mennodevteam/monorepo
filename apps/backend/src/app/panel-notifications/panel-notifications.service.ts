@@ -56,6 +56,7 @@ export class PanelNotificationsService {
     return this.chatRepository.find({
       select: {
         id: true,
+        createdAt: true,
         order: {
           id: true,
         },
