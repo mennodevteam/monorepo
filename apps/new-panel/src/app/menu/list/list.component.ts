@@ -64,7 +64,7 @@ export class MenuListComponent {
   });
 
   setTab(category: ProductCategory) {
-    this.router.navigate(['.'], { queryParams: { id: category.id } });
+    this.router.navigate(['/menu/list'], { queryParams: { id: category.id } });
     this.selectedCategoryId.set(category.id);
   }
 
