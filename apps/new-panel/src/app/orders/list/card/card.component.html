@@ -1,0 +1,68 @@
+@for (order of orders(); track order.id) {
+  <mat-card appearance="outlined" class="order-card" (click)="navigateToOrder(order)" matRipple>
+    <mat-card-header>
+      @if (order.customer) {
+        <mat-card-title>
+          {{ User.fullName(order.customer) }} -
+          <span eng>
+            {{ order.customer.mobilePhone }}
+          </span>
+        </mat-card-title>
+      }
+      <mat-card-subtitle>
+        {{ order.createdAt | pdate: true }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div>
+        @switch (order.type) {
+          @case (OrderType.DineIn) {
+            <i class="fa-solid fa-mug-hot"></i>
+          }
+          @case (OrderType.Delivery) {
+            @if (order.address?.deliveryArea?.isPost) {
+              <i class="fa-solid fa-truck-fast"></i>
+            } @else {
+              <i class="fa-solid fa-moped"></i>
+            }
+          }
+          @case (OrderType.Takeaway) {
+            <i class="fa-solid fa-cart-shopping"></i>
+          }
+        }
+        @if (order.address?.region) {
+          {{ order.address?.region?.title }}
+        } @else {
+          {{ order.address?.deliveryArea?.title }}
+        }
+      </div>
+      <div>
+        <b>{{ 'app.price' | translate }}:</b>
+        <span [class.success-text]="order.paymentType">
+          {{ order.totalPrice | number | menuCurrency }}
+          @if (order.paymentType) {
+            <i class="fa-solid fa-check"></i>
+          }
+        </span>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <app-order-state-chip
+        [state]="order.state"
+        (stateChange)="stateChange.emit({ order, state: $event })"
+        stopPropagation
+      />
+      <span fxFlex></span>
+      <button mat-icon-button routerLink="/orders/edit/{{ order.id }}" stopPropagation>
+        <i class="fa-regular fa-edit"></i>
+      </button>
+      <button mat-icon-button stopPropagation>
+        <i class="fa-regular fa-trash-alt"></i>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+  <br />
+  <!-- @if (!$last) {
+    <mat-divider />
+  } -->
+}

@@ -37,10 +37,17 @@
   </mat-toolbar>
   <mat-card appearance="outlined">
     <mat-card-content>
-      <app-order-table
-        [orders]="query.data()?.[0] || []"
-        (stateChange)="stateChange($event.order, $event.state)"
-      />
+      @if (isMobile()) {
+        <app-order-card-view
+          [orders]="query.data()?.[0] || []"
+          (stateChange)="stateChange($event.order, $event.state)"
+        />
+      } @else {
+        <app-order-table
+          [orders]="query.data()?.[0] || []"
+          (stateChange)="stateChange($event.order, $event.state)"
+        />
+      }
       @if (!query.data()) {
         <app-data-loading />
       }

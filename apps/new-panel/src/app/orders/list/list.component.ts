@@ -17,6 +17,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
 import { SearchMemberAutocompleteComponent } from '../../shared/components/search-member-autocomplete/search-member-autocomplete.component';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { CardComponent } from './card/card.component';
 
 const DEFAULT_STATES = [
   OrderState.Pending,
@@ -43,6 +45,7 @@ const DEFAULT_STATES = [
     FormsModule,
     MatChipsModule,
     SearchMemberAutocompleteComponent,
+    CardComponent,
   ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
@@ -52,6 +55,7 @@ export class OrderListComponent {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private ordersService = inject(OrdersService);
+  private readonly breakpointObserver = inject(BreakpointObserver);
   DEFAULT_STATES = DEFAULT_STATES;
   private queryParams = this.route.snapshot.queryParams;
   currentPage = signal(Number(this.queryParams['page'] || 0));
@@ -77,7 +81,12 @@ export class OrderListComponent {
     return this.query.data()?.[1] || 0;
   });
 
+  isMobile = signal(false);
+
   constructor() {
+    this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small]).subscribe(result => {
+      this.isMobile.set(result.matches);
+    });
     effect(() => {
       this.router.navigate([], {
         replaceUrl: true,

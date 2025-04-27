@@ -6,7 +6,7 @@ import { MatTableModule } from '@angular/material/table';
 import { OrderStateChipComponent } from '../../state-chip/state-chip.component';
 import { Router } from '@angular/router';
 import { ShopService } from '../../../shop/shop.service';
-const COLS = ['createdAt', 'customer', 'deliveryArea', 'price', 'state', 'actions'];
+const COLS = ['createdAt', 'customer', 'type', 'price', 'state', 'actions'];
 const RESTAURANT_COLS = ['createdAt', 'type', 'customer', 'price', 'state', 'actions'];
 @Component({
   selector: 'app-order-table',

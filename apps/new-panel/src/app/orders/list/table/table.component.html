@@ -22,7 +22,7 @@
 
   <ng-container matColumnDef="type">
     <th mat-header-cell *matHeaderCellDef>{{ 'app.type' | translate }}</th>
-    <td mat-cell *matCellDef="let order" style="width: 48px">
+    <td mat-cell *matCellDef="let order">
       @switch (order.type) {
         @case (OrderType.DineIn) {
           <i class="fa-solid fa-mug-hot"></i>
@@ -38,12 +38,6 @@
           <i class="fa-solid fa-cart-shopping"></i>
         }
       }
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="deliveryArea">
-    <th mat-header-cell *matHeaderCellDef>{{ 'order.deliveryArea' | translate }}</th>
-    <td mat-cell *matCellDef="let order">
       @if (order.address?.region) {
         {{ order.address?.region?.title }}
       } @else {

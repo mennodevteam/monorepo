@@ -33,8 +33,9 @@ export class User {
   members: Member[];
   exp?: number;
 
-  static fullName(user: User) {
+  static fullName(user?: User | null) {
     try {
+      if (!user) return '';
       const arr = [];
       if (user.firstName) arr.push(user.firstName);
       if (user.lastName) arr.push(user.lastName);
