@@ -8,31 +8,33 @@
   <div fxLayout="row">
     <app-search-member-autocomplete (userSelect)="customerFilter.set($event?.user?.id)" />
   </div>
-  <mat-toolbar>
+  <mat-toolbar style="overflow-x: auto;">
     <mat-chip-listbox [(ngModel)]="statesFilter" multiple>
-      @if (statesFilter().length < DEFAULT_STATES.length) {
-        <mat-chip-option (click)="statesFilter.set(DEFAULT_STATES)">
-          {{ 'app.all' | translate }}
+      <div fxLayout="row">
+        @if (statesFilter().length < DEFAULT_STATES.length) {
+          <mat-chip-option (click)="statesFilter.set(DEFAULT_STATES)">
+            {{ 'app.all' | translate }}
+          </mat-chip-option>
+        }
+        <mat-chip-option [value]="OrderState.Pending">
+          {{ 'order.state.' + OrderState.Pending | translate }}
         </mat-chip-option>
-      }
-      <mat-chip-option [value]="OrderState.Pending">
-        {{ 'order.state.' + OrderState.Pending | translate }}
-      </mat-chip-option>
-      <mat-chip-option [value]="OrderState.Processing">
-        {{ 'order.state.' + OrderState.Processing | translate }}
-      </mat-chip-option>
-      <mat-chip-option [value]="OrderState.Ready">
-        {{ 'order.state.' + OrderState.Ready | translate }}
-      </mat-chip-option>
-      <mat-chip-option [value]="OrderState.Shipping">
-        {{ 'order.state.' + OrderState.Shipping | translate }}
-      </mat-chip-option>
-      <mat-chip-option [value]="OrderState.Completed">
-        {{ 'order.state.' + OrderState.Completed | translate }}
-      </mat-chip-option>
-      <mat-chip-option [value]="OrderState.Canceled">
-        {{ 'order.state.' + OrderState.Canceled | translate }}
-      </mat-chip-option>
+        <mat-chip-option [value]="OrderState.Processing">
+          {{ 'order.state.' + OrderState.Processing | translate }}
+        </mat-chip-option>
+        <mat-chip-option [value]="OrderState.Ready">
+          {{ 'order.state.' + OrderState.Ready | translate }}
+        </mat-chip-option>
+        <mat-chip-option [value]="OrderState.Shipping">
+          {{ 'order.state.' + OrderState.Shipping | translate }}
+        </mat-chip-option>
+        <mat-chip-option [value]="OrderState.Completed">
+          {{ 'order.state.' + OrderState.Completed | translate }}
+        </mat-chip-option>
+        <mat-chip-option [value]="OrderState.Canceled">
+          {{ 'order.state.' + OrderState.Canceled | translate }}
+        </mat-chip-option>
+      </div>
     </mat-chip-listbox>
   </mat-toolbar>
   <mat-card appearance="outlined">
