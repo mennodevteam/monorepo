@@ -62,7 +62,7 @@ export class RedisService {
           shop.menu.categories = shop.menu.categories.filter((x) => x.status !== Status.Inactive);
           for (const cat of shop.menu.categories) {
             if (cat.products) {
-              cat.products = cat.products.filter((x) => x.status !== Status.Inactive);
+              cat.products = cat.products.filter((x) => x.variants?.length > 0 ? x.variants.find(v => v.status !== Status.Inactive) : x.status !== Status.Inactive);
               for (const product of cat.products) {
                 if (product.variants)
                   product.variants = product.variants.filter((x) => x.status !== Status.Inactive);

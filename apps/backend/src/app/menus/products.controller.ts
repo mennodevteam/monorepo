@@ -24,7 +24,7 @@ export class ProductsController {
   async save(@Body() dto: Product, @LoginUser() user: AuthPayload): Promise<Product> {
     const shop = await this.auth.getPanelUserShop(user);
     const res = await this.productsRepo.save(dto);
-    this.redis.updateMenu(shop.id);
+    await this.redis.updateMenu(shop.id);
     return res;
   }
 
@@ -35,7 +35,7 @@ export class ProductsController {
       if (!d.category.id) d.category.menu = shop.menu;
     }
     const res = await this.productsRepo.save(dto);
-    this.redis.updateMenu(shop.id);
+    await this.redis.updateMenu(shop.id);
     return res;
   }
 
@@ -50,7 +50,7 @@ export class ProductsController {
   async sort(@Body() list: string[], @LoginUser() user: AuthPayload): Promise<Product[]> {
     const shop = await this.auth.getPanelUserShop(user);
     const res = await this.menuService.sortProducts(list);
-    this.redis.updateMenu(shop.id);
+    await this.redis.updateMenu(shop.id);
     return res;
   }
 }

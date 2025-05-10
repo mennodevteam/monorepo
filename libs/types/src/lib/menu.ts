@@ -79,7 +79,6 @@ export class Menu {
               for (const v of p.variants) {
                 v.product = p;
                 if (
-                  p.variants.length == 1 ||
                   p.status === Status.Inactive ||
                   (p.status === Status.Blocked && v.status === Status.Active)
                 )
@@ -88,7 +87,13 @@ export class Menu {
             }
           }
         }
-        cat.products = cat.products?.filter((x) => showInactive || x.status !== Status.Inactive);
+        cat.products = cat.products?.filter(
+          (x) =>
+            showInactive ||
+            (x.variants?.length > 0
+              ? x.variants.find((v) => v.status !== Status.Inactive)
+              : x.status !== Status.Inactive),
+        );
       }
       menu.categories = menu.categories.filter((x) => showEmpty || x.products?.length);
     }
