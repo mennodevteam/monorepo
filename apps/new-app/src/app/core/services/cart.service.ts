@@ -22,6 +22,7 @@ import { AddressesService } from './addresses.service';
 import { ClubService } from './club.service';
 import { PersianNumberService } from '@menno/utils';
 import { CampaignService } from './campaign.service';
+import { InitialParamsService } from './initial-params.service';
 
 const LOCAL_CART_QUANTITY_KEY = 'cartQuantity';
 
@@ -104,7 +105,14 @@ export class CartService {
     private translate: TranslateService,
     private addressesService: AddressesService,
     private club: ClubService,
+    private initialParamsService: InitialParamsService,
   ) {
+    const table = this.initialParamsService.getValue('table');
+    if (table) {
+      this.menuService.type.set(OrderType.DineIn);
+      this.table.set(table);
+    }
+
     const localQuantity = JSON.parse(localStorage.getItem(LOCAL_CART_QUANTITY_KEY) || 'null');
     if (localQuantity?.items?.length && localQuantity.date > Date.now() - 1000 * 60 * 60 * 24) {
       this.quantity.set(

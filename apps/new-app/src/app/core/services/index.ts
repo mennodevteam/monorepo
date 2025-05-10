@@ -10,3 +10,4 @@ export * from './pwa.service';
 export * from './seo.service';
 export * from './shop.service';
 export * from './theme.service';
+export * from './initial-params.service';

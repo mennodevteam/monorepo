@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { InitialParamsService } from './core';
 
 @Component({
   standalone: true,
@@ -10,6 +11,5 @@ import { RouterModule } from '@angular/router';
 })
 export class AppComponent {
   title = 'new-app';
-
-  constructor() {}
+  initialParamsService = inject(InitialParamsService);
 }
