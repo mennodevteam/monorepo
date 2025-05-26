@@ -124,7 +124,7 @@ export class AuthService {
       token,
       domain,
     );
-    console.log('send token', mobilePhone, token);
+    console.log('send token', domain, mobilePhone, token);
     this.mobilePhoneTokens[mobilePhone] = token;
     setTimeout(() => {
       if (this.mobilePhoneTokens[mobilePhone] === token) {
