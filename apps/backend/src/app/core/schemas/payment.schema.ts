@@ -33,7 +33,7 @@ export const PaymentSchema = new EntitySchema<Payment>({
     },
     referenceId: {
       type: String,
-      unique: true,
+      nullable: true,
     },
     message: {
       type: String,
