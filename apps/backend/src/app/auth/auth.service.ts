@@ -124,42 +124,15 @@ export class AuthService {
       token,
       domain,
     );
+    console.log('send token', mobilePhone, token);
     this.mobilePhoneTokens[mobilePhone] = token;
     setTimeout(() => {
       if (this.mobilePhoneTokens[mobilePhone] === token) {
+        console.log('delete token', mobilePhone, token);
         delete this.mobilePhoneTokens[mobilePhone];
       }
     }, validateTime);
-    let user = await this.usersRepo.findOneBy({ mobilePhone });
-    if (!user) {
-      try {
-        const res = await this.http
-          .get<{ user: OldTypes.User; addresses: OldTypes.Address[] }>(
-            `http://65.21.237.12:3002/auth/getUserPhone/${mobilePhone}`,
-            {
-              timeout: 4000,
-            },
-          )
-          .toPromise();
-        if (res && res.data) {
-          user = await this.usersRepo.save(res.data.user);
-          this.regionsRepo.find().then((regions) => {
-            this.addressesRepo.save(
-              res.data.addresses.map(
-                (add) =>
-                  ({
-                    description: add.description,
-                    latitude: add.latitude,
-                    longitude: add.longitude,
-                    region: regions.find((x) => x.id === add.region?.id || x.title === add.region?.title),
-                    user: { id: user.id },
-                  }) as Address,
-              ),
-            );
-          });
-        }
-      } catch (error) {}
-    }
+    const user = await this.usersRepo.findOneBy({ mobilePhone });
     if (user && user.firstName) return true;
     return false;
   }
@@ -182,18 +155,7 @@ export class AuthService {
   }
 
   async loginAppWithToken(userId: string, mobilePhone: string, token: string): Promise<User> {
-    Sentry.captureEvent({
-      level: 'debug',
-      tags: {
-        valid: token === this.mobilePhoneTokens[mobilePhone],
-      },
-      message: 'login app with token',
-      transaction: mobilePhone,
-      user: {
-        id: userId,
-      },
-      extra: { userId, mobilePhone, input: token, token: this.mobilePhoneTokens[mobilePhone] },
-    });
+    console.log('login app with token', mobilePhone, token, this.mobilePhoneTokens[mobilePhone]);
     if (this.mobilePhoneTokens[mobilePhone] === PersianNumberService.toEnglish(token)) {
       delete this.mobilePhoneTokens[mobilePhone];
       let user = await this.usersRepo.findOneBy({ mobilePhone });
