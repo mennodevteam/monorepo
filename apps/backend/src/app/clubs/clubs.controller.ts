@@ -43,10 +43,4 @@ export class ClubsController {
   ) {
     return this.clubsService.join(clubId, user.id, referrer, campaign);
   }
-
-  @Public()
-  @Get('sync/:code')
-  async syncClub(@Param('code') code: string) {
-    return this.clubsService.syncClub(code);
-  }
 }

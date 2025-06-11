@@ -212,12 +212,6 @@ export class ShopsController {
   }
 
   @Public()
-  @Get('createNewFromPrev/:code')
-  createNewShopFromPrev(@Param('code') code: string): Promise<Shop> {
-    return this.shopsService.createNewShopFromPrev(code);
-  }
-
-  @Public()
   @Get('optimizeImages/:code')
   async optimizeImages(@Param('code') code: string) {
     await this.shopsService.optimizeImages(code);

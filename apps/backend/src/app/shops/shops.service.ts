@@ -1,7 +1,6 @@
 import {
   Club,
   CreateShopDto,
-  DeliveryArea,
   Menu,
   Product,
   ProductCategory,
@@ -14,23 +13,19 @@ import {
   Sms,
   SmsAccount,
   User,
-  Plugin,
   ShopPlugins,
   Theme,
   OrderMessage,
   SmsTemplate,
   OrderMessageEvent,
-  HomePage,
   NewSmsDto,
 } from '@menno/types';
-import { OldTypes } from '@menno/old-types';
 import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Not, Repository } from 'typeorm';
 import { SmsService } from '../sms/sms.service';
 import { UsersService } from '../users/users.service';
-import fetch from 'node-fetch';
 import { FilesService } from '../files/files.service';
 import { ClubsService } from '../clubs/clubs.service';
 import { MenusService } from '../menus/menu.service';
@@ -67,11 +62,10 @@ export class ShopsService {
   ) {}
 
   async sendShopLink(shopId: string, mobilePhone: string): Promise<Sms> {
-    const shop = await this.shopsRepository
-      .findOne({
-        where: { id: shopId },
-        relations: ['smsAccount'],
-      })
+    const shop = await this.shopsRepository.findOne({
+      where: { id: shopId },
+      relations: ['smsAccount'],
+    });
     if (shop) {
       const tokens: string[] = [];
       tokens[0] = Shop.appLink(shop, process.env.APP_ORIGIN);
@@ -203,110 +197,6 @@ export class ShopsService {
     }
 
     return savedShopInfo;
-  }
-
-  async createNewShopFromPrev(code: string) {
-    const isExist = await this.shopsRepository.findOneBy({ code });
-    if (isExist) throw new HttpException('shop existed', HttpStatus.CONFLICT);
-
-    const res = await this.http
-      .get<{
-        shop: OldTypes.Shop;
-        menu: OldTypes.Menu;
-        appConfig: OldTypes.AppConfig;
-        users: OldTypes.ShopUser[];
-        printViews: OldTypes.ShopPrintView[];
-        deliveryAreas: OldTypes.DeliveryArea[];
-        plugins: OldTypes.ShopPlugin[];
-        smsAccount: OldTypes.SmsAccount;
-      }>(`http://65.21.237.12:3002/shops/complete-data/xmje/${code}`)
-      .toPromise();
-    const { shop, menu, appConfig, users, printViews, deliveryAreas, plugins, smsAccount } = res.data;
-    const validPlugins = plugins.filter((x) => new Date(x.expiredAt).valueOf() > Date.now());
-    if (validPlugins.length === 0) {
-      validPlugins.push({
-        expiredAt: new Date(new Date().setDate(new Date().getDate() + 7)),
-        plugin: Plugin.Menu,
-      } as any);
-    }
-    const renewAt = new Date(validPlugins[0].expiredAt);
-    renewAt.setDate(renewAt.getDate() - 365);
-
-    const region = shop.region
-      ? await this.regionsRepository.findOneBy({ title: shop.region.title })
-      : undefined;
-
-    const dto = {
-      id: shop.id,
-      title: shop.title,
-      description: shop.details?.description,
-      address: shop.location?.address,
-      latitude: shop.location?.latitude,
-      longitude: shop.location?.longitude,
-      code: shop.code,
-      createdAt: shop.createdAt,
-      instagram: shop.details?.instagram,
-      details: {
-        openingHours: shop.details?.openingHours,
-        poses: shop.details?.poses,
-        tables: shop.details?.tables,
-      },
-      smsAccount,
-      username: shop.username.toLowerCase().replace('.', '-').replace('_', '-'),
-      prevServerUsername: shop.username,
-      prevServerCode: shop.code,
-      region: region ? { id: region.id } : shop.region,
-      phones: shop.phones,
-      plugins: {
-        plugins: validPlugins.map((x) => x.plugin),
-        expiredAt: validPlugins[0].expiredAt,
-        renewAt,
-      },
-      deliveryAreas,
-      users,
-    };
-
-    const newShop: Shop = await this.shopsRepository.save(dto);
-
-    if (shop.logo) {
-      const savedImage: any = await this.filesService.uploadFromUrl(
-        `http://65.21.237.12:3001/files/${shop.logo}`,
-        'logo',
-        shop.code,
-      );
-      await this.shopsRepository.update(newShop.id, {
-        logo: savedImage.key,
-      });
-    }
-
-    const newMenu = await this.menusRepository.save({
-      id: menu.id,
-      title: shop.title,
-    });
-    this.menusService.syncMenu(menu.id, code);
-    await this.shopsRepository.update(newShop.id, { menu: { id: newMenu.id } });
-
-    const newAppConfig = await this.appConfigsRepository.save({
-      disableOrdering: appConfig.viewMode,
-      dings: appConfig.ding,
-      ding: appConfig.ding?.length ? true : false,
-      homePage: HomePage.Menu,
-      disableOrderingOnClose: appConfig.disableOrderingOutsideTime,
-    });
-    this.shopsRepository.update(newShop.id, { appConfig: { id: newAppConfig.id } });
-
-    if (printViews) {
-      printViews.forEach((pv) => {
-        pv.printer.shop = { id: newShop.id } as any;
-      });
-      this.printViewsRepository.save(printViews);
-    }
-
-    if (newShop.plugins?.plugins.indexOf(Plugin.Club) > -1) {
-      this.clubsService.syncClub(code).catch((er) => {});
-    }
-
-    return newShop;
   }
 
   async optimizeImages(code: string) {

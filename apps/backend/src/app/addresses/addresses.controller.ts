@@ -7,7 +7,6 @@ import { AuthPayload } from '../core/types/auth-payload';
 import { Roles } from '../auth/roles.decorators';
 import { AuthService } from '../auth/auth.service';
 import { HttpService } from '@nestjs/axios';
-import { OldTypes } from '@menno/old-types';
 
 @Controller('addresses')
 export class AddressesController {

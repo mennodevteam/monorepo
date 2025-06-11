@@ -15,8 +15,6 @@ import { PersianNumberService } from '@menno/utils';
 
 import * as Kavenegar from 'kavenegar';
 import { HttpService } from '@nestjs/axios';
-import { OldTypes } from '@menno/old-types';
-import * as Sentry from '@sentry/node';
 
 let kavenegarApi;
 

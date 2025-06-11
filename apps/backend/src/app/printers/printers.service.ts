@@ -1,4 +1,3 @@
-import { OldTypes } from '@menno/old-types';
 import {
   Order,
   PrintAction,

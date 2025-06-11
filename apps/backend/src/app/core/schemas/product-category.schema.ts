@@ -1,4 +1,4 @@
-import { OrderType, ProductCategory, Status } from '@menno/types';
+import { OrderType, ProductCategory, Status, MenuViewType } from '@menno/types';
 import { EntitySchema } from 'typeorm';
 
 export const ProductCategorySchema = new EntitySchema<ProductCategory>({

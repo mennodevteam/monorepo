@@ -27,7 +27,6 @@ import {
 import * as moment from 'jalali-moment';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { SmsService } from '../sms/sms.service';
-import { OldTypes } from '@menno/old-types';
 import { HttpService } from '@nestjs/axios';
 import { RedisService } from '../core/redis.service';
 import { PersianNumberService } from '@menno/utils';
@@ -353,63 +352,5 @@ export class ClubsService {
         }
       }
     }
-  }
-
-  async syncClub(code: string) {
-    const shop = await this.shopsRepo.findOne({ where: { code }, relations: ['club'] });
-    if (!shop) return;
-    const res = await this.http
-      .get<{
-        club: OldTypes.Club;
-        members: [OldTypes.Member[], number];
-      }>(`http://65.21.237.12:3002/shops/club-data/xmje/${code}`)
-      .toPromise();
-
-    const { members, club } = res.data;
-    let shopClub = shop.club;
-    if (!shopClub) {
-      shopClub = await this.clubsRepo.save({
-        id: club.id,
-        createdAt: club.createdAt,
-        title: shop.title,
-      });
-
-      await this.shopsRepo.update(shop.id, {
-        club: { id: club.id },
-      });
-      this.redis.updateShop(shop.id);
-    }
-
-    const currentMembers = shop.club
-      ? await this.membersRepo.find({ where: { club: { id: shop.club.id } }, relations: ['user'] })
-      : [];
-
-    const newMembers = members[0].filter(
-      (nm) => !currentMembers.find((om) => om.user.mobilePhone === nm.user.mobilePhone),
-    );
-
-    const users = await this.usersRepo.find({
-      where: { mobilePhone: In(members[0].map((x) => x.user.mobilePhone)) },
-    });
-
-    for (const m of newMembers) {
-      try {
-        const existUser = users.find((x) => x.mobilePhone === m.user.mobilePhone);
-        const user = existUser ? { id: existUser.id } : m.user;
-        await this.membersRepo.save({
-          club: { id: club.id },
-          description: m.description,
-          extraInfo: m.extraInfo,
-          gem: m.gem,
-          joinedAt: m.joinedAt,
-          id: m.id,
-          publicKey: m.publicKey,
-          star: m.star,
-          user,
-          wallet: { id: m.wallet?.id, charge: m.wallet?.charge },
-        } as Member);
-      } catch (error) {}
-    }
-    return { club, members: newMembers.length };
   }
 }
