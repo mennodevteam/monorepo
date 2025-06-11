@@ -57,6 +57,11 @@ export const ProductCategorySchema = new EntitySchema<ProductCategory>({
       deleteDate: true,
       nullable: true,
     },
+    menuViewType: {
+      type: 'enum',
+      enum: MenuViewType,
+      nullable: true,
+    },
   },
   relations: {
     products: {

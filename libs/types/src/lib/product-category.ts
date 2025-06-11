@@ -3,6 +3,7 @@ import { Menu } from './menu';
 import { Product } from './product';
 import { OrderType } from './order-type.enum';
 import { MenuCost } from './menu-cost';
+import { MenuViewType } from './app-config';
 
 export class ProductCategory {
   id: number;
@@ -20,6 +21,7 @@ export class ProductCategory {
   updatedAt?: Date;
   createdAt?: Date;
   deletedAt?: Date;
+  menuViewType?: MenuViewType;
   
   static sort(cats: ProductCategory[]) {
     cats.sort((a, b) => {

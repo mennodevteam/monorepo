@@ -37,6 +37,17 @@
       </mat-label>
       <textarea rows="3" matInput formControlName="description"></textarea>
     </mat-form-field>
+    <mat-form-field>
+      <mat-label>
+        {{ 'categoryDialog.menuViewType' | translate }}
+      </mat-label>
+      <mat-select formControlName="menuViewType">
+        <mat-option [value]="null">{{ 'app.default' | translate }}</mat-option>
+        <mat-option [value]="MenuViewType.Grid">{{ 'menuViewType.Grid' | translate }}</mat-option>
+        <mat-option [value]="MenuViewType.Card">{{ 'menuViewType.Card' | translate }}</mat-option>
+        <mat-option [value]="MenuViewType.Compact">{{ 'menuViewType.Compact' | translate }}</mat-option>
+      </mat-select>
+    </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-button type="button" matDialogClose>

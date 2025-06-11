@@ -31,7 +31,8 @@
     "free": "رایگان",
     "deleted": "با موفقیت حذف شد",
     "confirmDelete": "تایید حذف",
-    "deleteConfirmMessage": "آیا از حذف {{value}} اطمینان دارید؟"
+    "deleteConfirmMessage": "آیا از حذف {{value}} اطمینان دارید؟",
+    "default": "پیش‌فرض"
   },
   "home": {
     "title": "به منّو خوش آمدید",
@@ -349,7 +350,8 @@
     "newTitle": "افزودن دسته‌بندی جدید",
     "icon": "آیکون دسته‌بندی",
     "iconHint": "جستجو آیکو‌ن‌ها در سایت",
-    "iconPlaceholder": "مثلا: mug-hot..."
+    "iconPlaceholder": "مثلا: mug-hot...",
+    "menuViewType": "نحوه نمایش"
   },
   "shop": {
     "baseSection": "اطلاعات پایه",
@@ -492,5 +494,10 @@
   "notifications": {
     "newOrder": "سفارش جدید",
     "newMessage": "پیام جدید"
+  },
+  "menuViewType": {
+    "Grid": "گرید",
+    "Card": "کارت",
+    "Compact": "فشرده"
   }
 }

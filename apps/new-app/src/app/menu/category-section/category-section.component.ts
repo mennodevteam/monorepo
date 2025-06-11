@@ -20,6 +20,6 @@ export class CategorySectionComponent {
   constructor(private shopService: ShopService){}
 
   get viewType() {
-    return this.shopService.shop.appConfig?.menuViewType || MenuViewType.Grid;
+    return this.category.menuViewType ?? this.shopService.shop.appConfig?.menuViewType ?? MenuViewType.Grid;
   }
 }
