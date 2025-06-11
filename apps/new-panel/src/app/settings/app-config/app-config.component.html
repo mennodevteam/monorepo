@@ -103,6 +103,9 @@
             <mat-radio-button [value]="MenuViewType.Compact">{{
               'appConfig.menuViewTypeCompact' | translate
             }}</mat-radio-button>
+            <mat-radio-button [value]="MenuViewType.Carousel">{{
+              'appConfig.menuViewTypeCarousel' | translate
+            }}</mat-radio-button>
           </mat-radio-group>
         </div>
         <div class="image-section" fxFlex="none">
@@ -112,6 +115,9 @@
             }
             @case (MenuViewType.Compact) {
               <img src="images/screenshots/compact.jpg" />
+            }
+            @case (MenuViewType.Carousel) {
+              <img src="images/screenshots/menu.jpg" />
             }
             @default {
               <img src="images/screenshots/menu.jpg" />
