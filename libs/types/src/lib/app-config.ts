@@ -13,6 +13,7 @@ export enum MenuViewType {
   Card,
   Grid,
   Compact,
+  Carousel,
 }
 
 export enum HomePage {

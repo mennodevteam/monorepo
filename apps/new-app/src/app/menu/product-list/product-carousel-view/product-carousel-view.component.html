@@ -1,0 +1,7 @@
+<div class="product-carousel" fxLayout="row" fxLayoutGap="8px" style="overflow-x: auto;">
+  @for (product of products ?? []; track product.id) {
+    <div class="carousel-item">
+      <app-product-carousel-item [product]="product" />
+    </div>
+  }
+</div>

@@ -1,0 +1,20 @@
+<div
+  routerLink="product/{{ product.id }}"
+  class="item"
+  [imageLoader]="product.images?.[0]"
+  [imageFile]="Product.mainImageFile(product)"
+  [imageSize]="'sm'"
+>
+  <div class="item__content" fxLayout="column">
+    <span class="item__content__title">{{ product.title }}</span>
+    <span class="item__content__subtitle">
+      @if (Product.hasDiscount(product, product.variants?.[0])) {
+        <span class="line-price error-text">{{
+          Product.realPrice(product, product.variants?.[0]) | number
+        }}</span
+        >&nbsp;
+      }
+      <span>{{ Product.totalPrice(product, product.variants?.[0]) | menuCurrency }}</span>
+    </span>
+  </div>
+</div>

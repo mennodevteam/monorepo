@@ -399,6 +399,7 @@
     "menuViewTypeCompact": "به صورت فشرده",
     "menuViewTypeCard": "به صورت کارتی",
     "menuViewTypeGrid": "به صورت گرید",
+    "menuViewTypeCarousel": "کاروسل عمودی",
     "openApp": "مشاهده سایت"
   },
   "addMemberDialog": {
@@ -498,6 +499,7 @@
   "menuViewType": {
     "Grid": "گرید",
     "Card": "کارت",
-    "Compact": "فشرده"
+    "Compact": "فشرده",
+    "Carousel": "کاروسل عمودی"
   }
 }

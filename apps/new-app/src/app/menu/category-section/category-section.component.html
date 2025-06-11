@@ -16,6 +16,9 @@
     @case (MenuViewType.Compact) {
       <app-product-list-view [category]="category" />
     }
+    @case (MenuViewType.Carousel) {
+      <app-product-carousel-view [category]="category" />
+    }
     @default {
       <app-product-grid-view [category]="category" />
     }
