@@ -200,27 +200,24 @@ export class ClubsService {
     });
   }
 
-  async filterMembersV2(dto: FilterMemberV2Dto): Promise<FilterMemberV2ResponseDto[]> {
+  async filterMembersV2(dto: FilterMemberV2Dto, shop: Shop): Promise<FilterMemberV2ResponseDto[]> {
+    const menuId = shop?.menu?.id;
+    const clubId = shop?.club?.id;
     // Get all members for the club
     const members = await this.membersRepo.find({
-      where: { club: { id: dto.clubId } },
-      relations: ['user', 'club'],
+      where: { club: { id: clubId } },
+      relations: ['user'],
     });
     if (!members.length) return [];
-    const userIds = members.map(m => m.user.id);
-    const memberMap = new Map(members.map(m => [m.user.id, m]));
-
-    // Get the shop's menu for this club
-    const shop = await this.shopsRepo.findOne({ where: { club: { id: dto.clubId } }, relations: ['menu'] });
-    const menuId = shop?.menu?.id;
+    const userIds = members.map((m) => m.user.id);
 
     // Get all orders for these users in this club
     let orders = await this.ordersRepo.find({
       where: {
         customer: { id: In(userIds) },
-        shop: { club: { id: dto.clubId } },
+        shop: { id: shop.id },
       },
-      relations: ['customer', 'shop', 'shop.club'],
+      relations: ['customer', 'shop'],
     });
 
     // Apply order date filters
@@ -248,7 +245,7 @@ export class ClubsService {
         }
       }
       // Only keep members with orders in filtered users
-      orders = orders.filter(o => ordersByUser[o.customer?.id]);
+      orders = orders.filter((o) => ordersByUser[o.customer?.id]);
     }
 
     // Group orders by userId
@@ -263,7 +260,7 @@ export class ClubsService {
     // Filter by joinedAt
     let filteredMembers = members;
     if (dto.joinedAtFromDate || dto.joinedAtToDate) {
-      filteredMembers = filteredMembers.filter(m => {
+      filteredMembers = filteredMembers.filter((m) => {
         if (dto.joinedAtFromDate && m.joinedAt < dto.joinedAtFromDate) return false;
         if (dto.joinedAtToDate && m.joinedAt > dto.joinedAtToDate) return false;
         return true;
@@ -278,15 +275,18 @@ export class ClubsService {
         .select(['stat.userId as userId', 'MAX(stat.createdAt) as lastVisitDate'])
         .where('stat.menuId = :menuId', { menuId })
         .andWhere('stat.action = :action', { action: StatAction.LoadMenu })
-        .andWhere('stat.userId IN (:...userIds)', { userIds: filteredMembers.map(m => m.user.id) })
+        .andWhere('stat.userId IN (:...userIds)', { userIds: filteredMembers.map((m) => m.user.id) })
         .groupBy('stat.userId')
         .getRawMany();
-      lastVisitMap = Object.fromEntries(menuStats.map(s => [s.userId, s.lastVisitDate ? new Date(s.lastVisitDate) : null]));
+
+      lastVisitMap = Object.fromEntries(
+        menuStats.map((s) => [s.userid, s.lastvisitdate ? new Date(s.lastvisitdate) : null]),
+      );
     }
 
     // Filter by lastVisitDate
     if (dto.lastVisitFromDate || dto.lastVisitToDate) {
-      filteredMembers = filteredMembers.filter(m => {
+      filteredMembers = filteredMembers.filter((m) => {
         const lastVisit = lastVisitMap[m.user.id];
         if (dto.lastVisitFromDate && (!lastVisit || lastVisit < dto.lastVisitFromDate)) return false;
         if (dto.lastVisitToDate && (!lastVisit || lastVisit > dto.lastVisitToDate)) return false;
@@ -295,7 +295,7 @@ export class ClubsService {
     }
 
     // Build response
-    let response = filteredMembers.map(member => {
+    let response = filteredMembers.map((member) => {
       const userOrders = ordersByUser[member.user.id] || [];
       const sortedOrders = userOrders.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
       return {

@@ -64,8 +64,12 @@ export class MembersController {
 
   @Post('filter-v2')
   @Roles(UserRole.Panel)
-  async filterMembersV2(@Body() dto: FilterMemberV2Dto): Promise<FilterMemberV2ResponseDto[]> {
-    return this.clubService.filterMembersV2(dto);
+  async filterMembersV2(
+    @Body() dto: FilterMemberV2Dto,
+    @LoginUser() user: AuthPayload,
+  ): Promise<FilterMemberV2ResponseDto[]> {
+    const shop = await this.auth.getPanelUserShop(user, ['club', 'menu']);
+    return this.clubService.filterMembersV2(dto, shop);
   }
 
   @Post()
