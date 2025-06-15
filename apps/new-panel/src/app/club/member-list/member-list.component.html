@@ -1,10 +1,12 @@
-<div *ngIf="loading">Loading...</div>
-<div *ngIf="error">Error: {{ error | json }}</div>
-<div *ngIf="!loading && !error">
-  <div *ngIf="members.length; else noMembers">
-    <pre>{{ members | json }}</pre>
-  </div>
-  <ng-template #noMembers>
-    <p>No members found.</p>
-  </ng-template>
-</div>
+<mat-toolbar class="content-toolbar">
+  <h1 fxFlex>
+    {{ 'members.title' | translate }}
+  </h1>
+</mat-toolbar>
+<main p-md w-lg fxLayout="column" fxLayoutGap="24px">
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <app-members-table [data]="query.data()" />
+    </mat-card-content>
+  </mat-card>
+</main>

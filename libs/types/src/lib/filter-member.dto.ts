@@ -1,3 +1,5 @@
+import { Member } from "./member";
+
 export class FilterMemberDto {
   clubId?: string;
   fromDate?: Date;
@@ -17,7 +19,6 @@ export class FilterMemberDto {
 }
 
 export class FilterMemberV2Dto {
-  clubId: string;
   firstOrderFromDate?: Date;
   firstOrderToDate?: Date;
   lastOrderFromDate?: Date;
@@ -33,7 +34,7 @@ export class FilterMemberV2Dto {
 }
 
 export class FilterMemberV2ResponseDto {
-  member: any; // Should be Member, but use any for now to avoid import issues
+  member: Member; // Should be Member, but use any for now to avoid import issues
   joinedAt: Date;
   firstOrderTime: Date | null;
   lastOrderTime: Date | null;

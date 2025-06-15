@@ -1,38 +1,33 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ShopService } from '../../shop/shop.service';
+import { lastValueFrom } from 'rxjs';
+import { FilterMemberV2Dto, FilterMemberV2ResponseDto } from '@menno/types';
+import { injectQuery } from '@tanstack/angular-query-experimental';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { SHARED } from '../../shared';
+import { MatCardModule } from '@angular/material/card';
+import { MembersTableComponent } from './members-table/members-table.component';
 
 @Component({
   selector: 'app-member-list',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, MatToolbarModule, SHARED, MatCardModule, MembersTableComponent],
   templateUrl: './member-list.component.html',
   styleUrl: './member-list.component.scss',
 })
-export class MemberListComponent implements OnInit {
-  members: any[] = [];
-  loading = false;
-  error: any = null;
-  private readonly shopsService = inject(ShopService);
+export class MemberListComponent {
+  private readonly http = inject(HttpClient);
+  filterDto = signal<FilterMemberV2Dto>({
+    sortBy: 'joinedAt',
+    sortType: 'DESC',
+    take: 25,
+  });
 
-  constructor(private http: HttpClient) {}
-
-  ngOnInit(): void {
-    this.loading = true;
-    // TODO: Replace with a real clubId or get from route/query
-    const clubId = this.shopsService.data()?.club?.id;
-    this.http.post<any[]>('/members/filter-v2', { clubId }).subscribe({
-      next: (res) => {
-        this.members = res;
-        console.log('Members:', res);
-        this.loading = false;
-      },
-      error: (err) => {
-        this.error = err;
-        this.loading = false;
-        console.error('Error loading members:', err);
-      },
-    });
-  }
+  public query = injectQuery(() => ({
+    queryKey: ['memberList', this.filterDto()],
+    queryFn: () =>
+      lastValueFrom(this.http.post<FilterMemberV2ResponseDto[]>('/members/filter-v2', this.filterDto())),
+  }));
 }
