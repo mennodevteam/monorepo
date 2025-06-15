@@ -27,6 +27,7 @@ export class MenusController {
     if (shop) {
       const redisKey = this.redis.key(RedisKey.PanelMenu, shop.id);
       const data = await this.redis.client.get(redisKey);
+      console.log(data)
       if (data) {
         return JSON.parse(data);
       }

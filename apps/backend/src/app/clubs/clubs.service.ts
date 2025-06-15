@@ -9,6 +9,11 @@ import {
   Shop,
   Status,
   User,
+  FilterMemberV2Dto,
+  FilterMemberV2ResponseDto,
+  MenuStat,
+  StatAction,
+  Menu,
 } from '@menno/types';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -43,6 +48,8 @@ export class ClubsService {
     @InjectRepository(User) private usersRepo: Repository<User>,
     @InjectRepository(DiscountCoupon) private discountCouponsRepo: Repository<DiscountCoupon>,
     private redis: RedisService,
+    @InjectRepository(MenuStat) private menuStatsRepo: Repository<MenuStat>,
+    @InjectRepository(Menu) private menusRepo: Repository<Menu>,
   ) {}
 
   async saveMember(member: Member): Promise<Member> {
@@ -191,6 +198,164 @@ export class ClubsService {
       take: filter.take,
       skip: filter.skip,
     });
+  }
+
+  async filterMembersV2(dto: FilterMemberV2Dto): Promise<FilterMemberV2ResponseDto[]> {
+    // Get all members for the club
+    const members = await this.membersRepo.find({
+      where: { club: { id: dto.clubId } },
+      relations: ['user', 'club'],
+    });
+    if (!members.length) return [];
+    const userIds = members.map(m => m.user.id);
+    const memberMap = new Map(members.map(m => [m.user.id, m]));
+
+    // Get the shop's menu for this club
+    const shop = await this.shopsRepo.findOne({ where: { club: { id: dto.clubId } }, relations: ['menu'] });
+    const menuId = shop?.menu?.id;
+
+    // Get all orders for these users in this club
+    let orders = await this.ordersRepo.find({
+      where: {
+        customer: { id: In(userIds) },
+        shop: { club: { id: dto.clubId } },
+      },
+      relations: ['customer', 'shop', 'shop.club'],
+    });
+
+    // Apply order date filters
+    if (dto.firstOrderFromDate || dto.firstOrderToDate || dto.lastOrderFromDate || dto.lastOrderToDate) {
+      // Group orders by user
+      const ordersByUser: Record<string, Order[]> = {};
+      for (const order of orders) {
+        const userId = order.customer?.id;
+        if (!userId) continue;
+        if (!ordersByUser[userId]) ordersByUser[userId] = [];
+        ordersByUser[userId].push(order);
+      }
+      // Filter users by first/last order date
+      for (const userId of Object.keys(ordersByUser)) {
+        const userOrders = ordersByUser[userId].sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+        const firstOrder = userOrders[0];
+        const lastOrder = userOrders[userOrders.length - 1];
+        if (
+          (dto.firstOrderFromDate && (!firstOrder || firstOrder.createdAt < dto.firstOrderFromDate)) ||
+          (dto.firstOrderToDate && (!firstOrder || firstOrder.createdAt > dto.firstOrderToDate)) ||
+          (dto.lastOrderFromDate && (!lastOrder || lastOrder.createdAt < dto.lastOrderFromDate)) ||
+          (dto.lastOrderToDate && (!lastOrder || lastOrder.createdAt > dto.lastOrderToDate))
+        ) {
+          delete ordersByUser[userId];
+        }
+      }
+      // Only keep members with orders in filtered users
+      orders = orders.filter(o => ordersByUser[o.customer?.id]);
+    }
+
+    // Group orders by userId
+    const ordersByUser: Record<string, Order[]> = {};
+    for (const order of orders) {
+      const userId = order.customer?.id;
+      if (!userId) continue;
+      if (!ordersByUser[userId]) ordersByUser[userId] = [];
+      ordersByUser[userId].push(order);
+    }
+
+    // Filter by joinedAt
+    let filteredMembers = members;
+    if (dto.joinedAtFromDate || dto.joinedAtToDate) {
+      filteredMembers = filteredMembers.filter(m => {
+        if (dto.joinedAtFromDate && m.joinedAt < dto.joinedAtFromDate) return false;
+        if (dto.joinedAtToDate && m.joinedAt > dto.joinedAtToDate) return false;
+        return true;
+      });
+    }
+
+    // Get last visit date for each user (MenuStat)
+    let lastVisitMap: Record<string, Date | null> = {};
+    if (menuId) {
+      const menuStats = await this.menuStatsRepo
+        .createQueryBuilder('stat')
+        .select(['stat.userId as userId', 'MAX(stat.createdAt) as lastVisitDate'])
+        .where('stat.menuId = :menuId', { menuId })
+        .andWhere('stat.action = :action', { action: StatAction.LoadMenu })
+        .andWhere('stat.userId IN (:...userIds)', { userIds: filteredMembers.map(m => m.user.id) })
+        .groupBy('stat.userId')
+        .getRawMany();
+      lastVisitMap = Object.fromEntries(menuStats.map(s => [s.userId, s.lastVisitDate ? new Date(s.lastVisitDate) : null]));
+    }
+
+    // Filter by lastVisitDate
+    if (dto.lastVisitFromDate || dto.lastVisitToDate) {
+      filteredMembers = filteredMembers.filter(m => {
+        const lastVisit = lastVisitMap[m.user.id];
+        if (dto.lastVisitFromDate && (!lastVisit || lastVisit < dto.lastVisitFromDate)) return false;
+        if (dto.lastVisitToDate && (!lastVisit || lastVisit > dto.lastVisitToDate)) return false;
+        return true;
+      });
+    }
+
+    // Build response
+    let response = filteredMembers.map(member => {
+      const userOrders = ordersByUser[member.user.id] || [];
+      const sortedOrders = userOrders.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+      return {
+        member,
+        joinedAt: member.joinedAt,
+        firstOrderTime: sortedOrders[0]?.createdAt || null,
+        lastOrderTime: sortedOrders.length ? sortedOrders[sortedOrders.length - 1].createdAt : null,
+        totalOrderCount: userOrders.length,
+        totalOrderSum: userOrders.reduce((sum, o) => sum + (o.totalPrice || 0), 0),
+        lastVisitDate: lastVisitMap[member.user.id] || null,
+      };
+    });
+
+    // Sorting
+    if (dto.sortBy) {
+      response = response.sort((a, b) => {
+        let aValue, bValue;
+        switch (dto.sortBy) {
+          case 'firstOrder':
+            aValue = a.firstOrderTime || 0;
+            bValue = b.firstOrderTime || 0;
+            break;
+          case 'lastOrder':
+            aValue = a.lastOrderTime || 0;
+            bValue = b.lastOrderTime || 0;
+            break;
+          case 'joinedAt':
+            aValue = a.joinedAt || 0;
+            bValue = b.joinedAt || 0;
+            break;
+          case 'lastVisit':
+            aValue = a.lastVisitDate || 0;
+            bValue = b.lastVisitDate || 0;
+            break;
+          case 'totalOrderCount':
+            aValue = a.totalOrderCount;
+            bValue = b.totalOrderCount;
+            break;
+          case 'totalOrderSum':
+            aValue = a.totalOrderSum;
+            bValue = b.totalOrderSum;
+            break;
+          default:
+            aValue = 0;
+            bValue = 0;
+        }
+        if (aValue < bValue) return dto.sortType === 'ASC' ? -1 : 1;
+        if (aValue > bValue) return dto.sortType === 'ASC' ? 1 : -1;
+        return 0;
+      });
+    }
+
+    // Pagination
+    if (dto.skip !== undefined && dto.take !== undefined) {
+      response = response.slice(dto.skip, dto.skip + dto.take);
+    } else if (dto.take !== undefined) {
+      response = response.slice(0, dto.take);
+    }
+
+    return response;
   }
 
   async filterDiscountCoupons(dto: FilterDiscountCouponsDto): Promise<DiscountCoupon[]> {

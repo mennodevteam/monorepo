@@ -15,3 +15,29 @@ export class FilterMemberDto {
   userId?: string;
   publicKey?: string;
 }
+
+export class FilterMemberV2Dto {
+  clubId: string;
+  firstOrderFromDate?: Date;
+  firstOrderToDate?: Date;
+  lastOrderFromDate?: Date;
+  lastOrderToDate?: Date;
+  joinedAtFromDate?: Date;
+  joinedAtToDate?: Date;
+  lastVisitFromDate?: Date;
+  lastVisitToDate?: Date;
+  sortBy?: 'firstOrder' | 'lastOrder' | 'joinedAt' | 'lastVisit' | 'totalOrderCount' | 'totalOrderSum';
+  sortType?: 'ASC' | 'DESC';
+  skip?: number;
+  take?: number;
+}
+
+export class FilterMemberV2ResponseDto {
+  member: any; // Should be Member, but use any for now to avoid import issues
+  joinedAt: Date;
+  firstOrderTime: Date | null;
+  lastOrderTime: Date | null;
+  totalOrderCount: number;
+  totalOrderSum: number;
+  lastVisitDate: Date | null;
+}

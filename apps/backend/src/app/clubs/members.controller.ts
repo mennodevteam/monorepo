@@ -1,4 +1,10 @@
-import { FilterMemberDto, Member, UserRole } from '@menno/types';
+import {
+  FilterMemberDto,
+  FilterMemberV2ResponseDto,
+  FilterMemberV2Dto,
+  Member,
+  UserRole,
+} from '@menno/types';
 import { Delete } from '@nestjs/common';
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,7 +20,7 @@ export class MembersController {
   constructor(
     private auth: AuthService,
     private clubService: ClubsService,
-    @InjectRepository(Member) private membersRepo: Repository<Member>
+    @InjectRepository(Member) private membersRepo: Repository<Member>,
   ) {}
 
   @Get('anniversary/:month/:date')
@@ -54,6 +60,12 @@ export class MembersController {
       filter.clubId = club.id;
       return this.clubService.filterMembers(filter);
     }
+  }
+
+  @Post('filter-v2')
+  @Roles(UserRole.Panel)
+  async filterMembersV2(@Body() dto: FilterMemberV2Dto): Promise<FilterMemberV2ResponseDto[]> {
+    return this.clubService.filterMembersV2(dto);
   }
 
   @Post()

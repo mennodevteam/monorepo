@@ -10,6 +10,7 @@ import { reportRoutes } from './reports/reports.routes';
 import { ShellComponent } from './shell/shell.component';
 import { menuDataActivator } from './core/guards/menu.guard';
 import { HomeComponent } from './home/home.component';
+import { clubRoutes } from './club/club.routes';
 
 export const appRoutes: Route[] = [
   {
@@ -30,6 +31,7 @@ export const appRoutes: Route[] = [
           { path: 'menu', children: menuRoutes },
           { path: 'orders', children: orderRoutes },
           { path: 'settings', children: settingsRoutes },
+          { path: 'club', children: clubRoutes },
           { path: '', redirectTo: 'home', pathMatch: 'full' },
         ],
       },
