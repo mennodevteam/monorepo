@@ -501,5 +501,15 @@
     "Card": "کارت",
     "Compact": "فشرده",
     "Carousel": "کاروسل"
+  },
+  "membersTable": {
+    "fullName": "نام",
+    "mobilePhone": "موبایل",
+    "joinedAt": "تاریخ عضویت",
+    "firstOrderTime": "اولین سفارش",
+    "lastOrderTime": "آخرین سفارش",
+    "totalOrderCount": "تعداد سفارش",
+    "totalOrderSum": "جمع سفارش",
+    "lastVisitDate": "آخرین بازدید"
   }
 }
