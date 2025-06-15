@@ -503,7 +503,8 @@
     "Carousel": "کاروسل"
   },
   "members": {
-    "title": "مشتریان"
+    "title": "مشتریان",
+    "downloadCsv": "دانلود CSV"
   },
   "membersTable": {
     "fullName": "نام",

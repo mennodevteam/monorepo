@@ -1,7 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ShopService } from '../../shop/shop.service';
 import { lastValueFrom } from 'rxjs';
 import { FilterMemberV2Dto, FilterMemberV2ResponseDto } from '@menno/types';
 import { injectQuery } from '@tanstack/angular-query-experimental';
@@ -44,5 +43,49 @@ export class MemberListComponent {
       take: event.pageSize,
       skip: event.pageIndex * event.pageSize,
     }));
+  }
+
+  async downloadCsv() {
+    // Fetch all data (no pagination)
+    const filter = { ...this.filterDto(), skip: 0, take: 1000000 };
+    const response = await lastValueFrom(
+      this.http.post<{ data: any[]; totalCount: number }>('/members/filter-v2', filter),
+    );
+    const rows = response.data;
+    if (!rows.length) return;
+    // Prepare CSV header and rows
+    const header = [
+      'نام',
+      'موبایل',
+      'تاریخ عضویت',
+      'اولین خرید',
+      'آخرین خرید',
+      'تعداد خرید',
+      'جمع خرید',
+      'آخرین بازدید',
+    ];
+    const csvRows = rows.map((row) => [
+      row.member?.user?.firstName + ' ' + row.member?.user?.lastName,
+      row.member?.user?.mobilePhone,
+      row.joinedAt ? new Date(row.joinedAt).toDateString() : '',
+      row.firstOrderTime ? new Date(row.firstOrderTime).toDateString() : '',
+      row.lastOrderTime ? new Date(row.lastOrderTime).toDateString() : '',
+      row.totalOrderCount,
+      row.totalOrderSum,
+      row.lastVisitDate ? new Date(row.lastVisitDate).toDateString() : '',
+    ]);
+    // CSV string with BOM for UTF-8
+    const csvContent =
+      '\uFEFF' + [header, ...csvRows].map((e) => e.map((x) => '"' + (x ?? '') + '"').join(',')).join('\n');
+    // Native download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'members.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
   }
 }

@@ -2,6 +2,10 @@
   <h1 fxFlex>
     {{ 'members.title' | translate }}
   </h1>
+  <span fxFlex></span>
+  <button mat-flat-button (click)="downloadCsv()">
+    {{ 'members.downloadCsv' | translate }}
+  </button>
 </mat-toolbar>
 <main p-md w-lg fxLayout="column" fxLayoutGap="24px">
   <mat-card appearance="outlined">
