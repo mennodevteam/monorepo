@@ -502,6 +502,9 @@
     "Compact": "فشرده",
     "Carousel": "کاروسل"
   },
+  "members": {
+    "title": "مشتریان"
+  },
   "membersTable": {
     "fullName": "نام",
     "mobilePhone": "موبایل",

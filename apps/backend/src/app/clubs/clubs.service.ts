@@ -200,7 +200,7 @@ export class ClubsService {
     });
   }
 
-  async filterMembersV2(dto: FilterMemberV2Dto, shop: Shop): Promise<FilterMemberV2ResponseDto[]> {
+  async filterMembersV2(dto: FilterMemberV2Dto, shop: Shop): Promise<{ data: FilterMemberV2ResponseDto[]; totalCount: number }> {
     const menuId = shop?.menu?.id;
     const clubId = shop?.club?.id;
     // Get all members for the club
@@ -208,7 +208,7 @@ export class ClubsService {
       where: { club: { id: clubId } },
       relations: ['user'],
     });
-    if (!members.length) return [];
+    if (!members.length) return { data: [], totalCount: 0 };
     const userIds = members.map((m) => m.user.id);
 
     // Get all orders for these users in this club
@@ -348,6 +348,8 @@ export class ClubsService {
       });
     }
 
+    const totalCount = response.length;
+
     // Pagination
     if (dto.skip !== undefined && dto.take !== undefined) {
       response = response.slice(dto.skip, dto.skip + dto.take);
@@ -355,7 +357,7 @@ export class ClubsService {
       response = response.slice(0, dto.take);
     }
 
-    return response;
+    return { data: response, totalCount };
   }
 
   async filterDiscountCoupons(dto: FilterDiscountCouponsDto): Promise<DiscountCoupon[]> {

@@ -16,15 +16,16 @@ import { SHARED } from '../../../shared';
 export class MembersTableComponent {
   User = User;
   data = input<FilterMemberV2ResponseDto[] | undefined>();
+  startIndex = input<number>(0);
 
   displayedColumns = [
     'index',
     'fullName',
     'mobilePhone',
     'joinedAt',
+    'lastVisitDate',
     'firstOrderTime',
     'lastOrderTime',
-    'lastVisitDate',
     'totalOrderCount',
     'totalOrderSum',
   ];
