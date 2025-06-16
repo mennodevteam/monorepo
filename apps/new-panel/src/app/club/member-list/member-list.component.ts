@@ -9,11 +9,12 @@ import { SHARED } from '../../shared';
 import { MatCardModule } from '@angular/material/card';
 import { MembersTableComponent } from './members-table/members-table.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 @Component({
   selector: 'app-member-list',
   standalone: true,
-  imports: [CommonModule, MatToolbarModule, SHARED, MatCardModule, MembersTableComponent, MatPaginatorModule],
+  imports: [CommonModule, MatToolbarModule, SHARED, MatCardModule, MembersTableComponent, MatPaginatorModule, MatSortModule],
   templateUrl: './member-list.component.html',
   styleUrl: './member-list.component.scss',
 })
@@ -87,5 +88,14 @@ export class MemberListComponent {
     a.click();
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
+  }
+
+  onSortChange(event: { sortBy: string; sortType: 'ASC' | 'DESC' }) {
+    this.filterDto.update((dto) => ({
+      ...dto,
+      sortBy: event.sortBy as FilterMemberV2Dto['sortBy'],
+      sortType: event.sortType,
+      skip: 0, // reset to first page on sort
+    }));
   }
 }

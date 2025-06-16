@@ -10,7 +10,13 @@
 <main p-md w-lg fxLayout="column" fxLayoutGap="24px">
   <mat-card appearance="outlined">
     <mat-card-content>
-      <app-members-table [data]="query.data()?.data" [startIndex]="filterDto().skip ?? 0" />
+      <app-members-table
+        [data]="query.data()?.data"
+        [startIndex]="filterDto().skip ?? 0"
+        (sortChange)="onSortChange($event)"
+        [sortBy]="filterDto().sortBy"
+        [sortType]="filterDto().sortType"
+      />
       <mat-paginator
         [length]="query.data()?.totalCount || 0"
         [pageSize]="filterDto().take"
