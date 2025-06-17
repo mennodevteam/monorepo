@@ -8,6 +8,15 @@
   </button>
 </mat-toolbar>
 <main p-md w-lg fxLayout="column" fxLayoutGap="24px">
+  <mat-toolbar>
+    <button mat-stroked-button (click)="openFilterDialog()">
+      {{ 'members.filterTitle' | translate }}
+    </button>
+    <span fxFlex></span>
+    @if (query.data()) {
+      <small>{{ 'app.number' | translate: { value: query.data()?.totalCount | number } }}</small>
+    }
+  </mat-toolbar>
   <mat-card appearance="outlined">
     <mat-card-content>
       <app-members-table

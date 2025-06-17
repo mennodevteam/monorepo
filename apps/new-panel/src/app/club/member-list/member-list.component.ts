@@ -10,11 +10,23 @@ import { MatCardModule } from '@angular/material/card';
 import { MembersTableComponent } from './members-table/members-table.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MemberFilterDialogComponent } from './member-filter-dialog/member-filter-dialog.component';
 
 @Component({
   selector: 'app-member-list',
   standalone: true,
-  imports: [CommonModule, MatToolbarModule, SHARED, MatCardModule, MembersTableComponent, MatPaginatorModule, MatSortModule],
+  imports: [
+    CommonModule,
+    MatToolbarModule,
+    SHARED,
+    MatCardModule,
+    MembersTableComponent,
+    MatPaginatorModule,
+    MatSortModule,
+    MatDialogModule,
+  ],
   templateUrl: './member-list.component.html',
   styleUrl: './member-list.component.scss',
 })
@@ -26,6 +38,8 @@ export class MemberListComponent {
     take: 25,
     skip: 0,
   });
+
+  private dialog = inject(MatDialog);
 
   public query = injectQuery(() => ({
     queryKey: ['memberList', this.filterDto()],
@@ -97,5 +111,21 @@ export class MemberListComponent {
       sortType: event.sortType,
       skip: 0, // reset to first page on sort
     }));
+  }
+
+  openFilterDialog() {
+    const dialogRef = this.dialog.open(MemberFilterDialogComponent, {
+      width: '400px',
+      data: this.filterDto(),
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.filterDto.update((dto) => ({
+          ...dto,
+          ...result,
+          skip: 0, // reset to first page on filter
+        }));
+      }
+    });
   }
 }

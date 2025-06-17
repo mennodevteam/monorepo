@@ -25,11 +25,11 @@ export class MenusController {
   async getPanelMenu(@LoginUser() user: AuthPayload): Promise<Menu> {
     let shop = await this.auth.getPanelUserShop(user);
     if (shop) {
-      const redisKey = this.redis.key(RedisKey.PanelMenu, shop.id);
-      const data = await this.redis.client.get(redisKey);
-      if (data) {
-        return JSON.parse(data);
-      }
+      // const redisKey = this.redis.key(RedisKey.PanelMenu, shop.id);
+      // const data = await this.redis.client.get(redisKey);
+      // if (data) {
+      //   return JSON.parse(data);
+      // }
       shop = await this.shopsRepo.findOne({
         where: { id: shop.id },
         relations: [

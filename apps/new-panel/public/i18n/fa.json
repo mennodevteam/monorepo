@@ -504,7 +504,14 @@
   },
   "members": {
     "title": "مشتریان",
-    "downloadCsv": "دانلود CSV"
+    "downloadCsv": "دانلود CSV",
+    "filterTitle": "فیلتر مشتریان",
+    "firstOrderDateRange": "بازه اولین سفارش",
+    "lastOrderDateRange": "بازه آخرین سفارش",
+    "joinedAtDateRange": "بازه تاریخ عضویت",
+    "lastVisitDateRange": "بازه آخرین بازدید",
+    "startDate": "تاریخ شروع",
+    "endDate": "تاریخ پایان"
   },
   "membersTable": {
     "fullName": "نام",

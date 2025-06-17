@@ -200,7 +200,10 @@ export class ClubsService {
     });
   }
 
-  async filterMembersV2(dto: FilterMemberV2Dto, shop: Shop): Promise<{ data: FilterMemberV2ResponseDto[]; totalCount: number }> {
+  async filterMembersV2(
+    dto: FilterMemberV2Dto,
+    shop: Shop,
+  ): Promise<{ data: FilterMemberV2ResponseDto[]; totalCount: number }> {
     const menuId = shop?.menu?.id;
     const clubId = shop?.club?.id;
     // Get all members for the club
@@ -208,11 +211,12 @@ export class ClubsService {
       where: { club: { id: clubId } },
       relations: ['user'],
     });
+    let filteredMembers = members;
     if (!members.length) return { data: [], totalCount: 0 };
     const userIds = members.map((m) => m.user.id);
 
     // Get all orders for these users in this club
-    let orders = await this.ordersRepo.find({
+    const orders = await this.ordersRepo.find({
       where: {
         customer: { id: In(userIds) },
         shop: { id: shop.id },
@@ -220,35 +224,6 @@ export class ClubsService {
       relations: ['customer', 'shop'],
     });
 
-    // Apply order date filters
-    if (dto.firstOrderFromDate || dto.firstOrderToDate || dto.lastOrderFromDate || dto.lastOrderToDate) {
-      // Group orders by user
-      const ordersByUser: Record<string, Order[]> = {};
-      for (const order of orders) {
-        const userId = order.customer?.id;
-        if (!userId) continue;
-        if (!ordersByUser[userId]) ordersByUser[userId] = [];
-        ordersByUser[userId].push(order);
-      }
-      // Filter users by first/last order date
-      for (const userId of Object.keys(ordersByUser)) {
-        const userOrders = ordersByUser[userId].sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
-        const firstOrder = userOrders[0];
-        const lastOrder = userOrders[userOrders.length - 1];
-        if (
-          (dto.firstOrderFromDate && (!firstOrder || firstOrder.createdAt < dto.firstOrderFromDate)) ||
-          (dto.firstOrderToDate && (!firstOrder || firstOrder.createdAt > dto.firstOrderToDate)) ||
-          (dto.lastOrderFromDate && (!lastOrder || lastOrder.createdAt < dto.lastOrderFromDate)) ||
-          (dto.lastOrderToDate && (!lastOrder || lastOrder.createdAt > dto.lastOrderToDate))
-        ) {
-          delete ordersByUser[userId];
-        }
-      }
-      // Only keep members with orders in filtered users
-      orders = orders.filter((o) => ordersByUser[o.customer?.id]);
-    }
-
-    // Group orders by userId
     const ordersByUser: Record<string, Order[]> = {};
     for (const order of orders) {
       const userId = order.customer?.id;
@@ -257,12 +232,43 @@ export class ClubsService {
       ordersByUser[userId].push(order);
     }
 
+    // Apply order date filters
+    if (dto.firstOrderFromDate || dto.firstOrderToDate || dto.lastOrderFromDate || dto.lastOrderToDate) {
+      // Group orders by user
+
+      // Filter users by first/last order date
+      for (const userId of Object.keys(ordersByUser)) {
+        ordersByUser[userId] = ordersByUser[userId].sort(
+          (a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
+        );
+        const userOrders = ordersByUser[userId];
+        const firstOrder = userOrders[0];
+        const lastOrder = userOrders[userOrders.length - 1];
+        if (
+          (dto.firstOrderFromDate &&
+            (!firstOrder ||
+              new Date(firstOrder.createdAt).valueOf() < new Date(dto.firstOrderFromDate).valueOf())) ||
+          (dto.firstOrderToDate &&
+            (!firstOrder ||
+              new Date(firstOrder.createdAt).valueOf() > new Date(dto.firstOrderToDate).valueOf())) ||
+          (dto.lastOrderFromDate &&
+            (!lastOrder ||
+              new Date(lastOrder.createdAt).valueOf() < new Date(dto.lastOrderFromDate).valueOf())) ||
+          (dto.lastOrderToDate &&
+            (!lastOrder || new Date(lastOrder.createdAt).valueOf() > new Date(dto.lastOrderToDate).valueOf()))
+        ) {
+          filteredMembers = filteredMembers.filter((m) => m.user.id !== userId);
+        }
+      }
+    }
     // Filter by joinedAt
-    let filteredMembers = members;
     if (dto.joinedAtFromDate || dto.joinedAtToDate) {
+      console.log(dto);
       filteredMembers = filteredMembers.filter((m) => {
-        if (dto.joinedAtFromDate && m.joinedAt < dto.joinedAtFromDate) return false;
-        if (dto.joinedAtToDate && m.joinedAt > dto.joinedAtToDate) return false;
+        if (dto.joinedAtFromDate && new Date(m.joinedAt).valueOf() < new Date(dto.joinedAtFromDate).valueOf())
+          return false;
+        if (dto.joinedAtToDate && new Date(m.joinedAt).valueOf() > new Date(dto.joinedAtToDate).valueOf())
+          return false;
         return true;
       });
     }
@@ -288,8 +294,16 @@ export class ClubsService {
     if (dto.lastVisitFromDate || dto.lastVisitToDate) {
       filteredMembers = filteredMembers.filter((m) => {
         const lastVisit = lastVisitMap[m.user.id];
-        if (dto.lastVisitFromDate && (!lastVisit || lastVisit < dto.lastVisitFromDate)) return false;
-        if (dto.lastVisitToDate && (!lastVisit || lastVisit > dto.lastVisitToDate)) return false;
+        if (
+          dto.lastVisitFromDate &&
+          (!lastVisit || lastVisit.valueOf() < new Date(dto.lastVisitFromDate).valueOf())
+        )
+          return false;
+        if (
+          dto.lastVisitToDate &&
+          (!lastVisit || lastVisit.valueOf() > new Date(dto.lastVisitToDate).valueOf())
+        )
+          return false;
         return true;
       });
     }
