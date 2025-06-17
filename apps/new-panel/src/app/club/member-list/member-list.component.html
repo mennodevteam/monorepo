@@ -9,12 +9,56 @@
 </mat-toolbar>
 <main p-md w-lg fxLayout="column" fxLayoutGap="24px">
   <mat-toolbar>
-    <button mat-stroked-button (click)="openFilterDialog()">
-      {{ 'members.filterTitle' | translate }}
-    </button>
-    <span fxFlex></span>
-    @if (query.data()) {
-      <small>{{ 'app.number' | translate: { value: query.data()?.totalCount | number } }}</small>
+    <mat-toolbar-row>
+      <button mat-stroked-button (click)="openFilterDialog()">
+        {{ 'members.filterTitle' | translate }}
+      </button>
+      <span fxFlex></span>
+      @if (query.data()) {
+        <small>{{ 'app.number' | translate: { value: query.data()?.totalCount | number } }}</small>
+      }
+    </mat-toolbar-row>
+    @if (hasActiveFilters()) {
+      <mat-toolbar-row>
+        <mat-chip-set>
+          @if (filterDto().joinedAtFromDate || filterDto().joinedAtToDate) {
+            <mat-chip (click)="removeFilter('joinedAt')">
+              {{ 'members.joinedAtDateRange' | translate }}:
+              <span *ngIf="filterDto().joinedAtFromDate">{{ filterDto().joinedAtFromDate | pdate }}</span>
+              <span *ngIf="filterDto().joinedAtFromDate && filterDto().joinedAtToDate"> - </span>
+              <span *ngIf="filterDto().joinedAtToDate">{{ filterDto().joinedAtToDate | pdate }}</span>
+              <i class="fa-solid fa-xmark-circle"></i>
+            </mat-chip>
+          }
+          @if (filterDto().lastVisitFromDate || filterDto().lastVisitToDate) {
+            <mat-chip (click)="removeFilter('lastVisit')">
+              {{ 'members.lastVisitDateRange' | translate }}:
+              <span *ngIf="filterDto().lastVisitFromDate">{{ filterDto().lastVisitFromDate | pdate }}</span>
+              <span *ngIf="filterDto().lastVisitFromDate && filterDto().lastVisitToDate"> - </span>
+              <span *ngIf="filterDto().lastVisitToDate">{{ filterDto().lastVisitToDate | pdate }}</span>
+              <i class="fa-solid fa-xmark-circle"></i>
+            </mat-chip>
+          }
+          @if (filterDto().firstOrderFromDate || filterDto().firstOrderToDate) {
+            <mat-chip (click)="removeFilter('firstOrder')">
+              {{ 'members.firstOrderDateRange' | translate }}:
+              <span *ngIf="filterDto().firstOrderFromDate">{{ filterDto().firstOrderFromDate | pdate }}</span>
+              <span *ngIf="filterDto().firstOrderFromDate && filterDto().firstOrderToDate"> - </span>
+              <span *ngIf="filterDto().firstOrderToDate">{{ filterDto().firstOrderToDate | pdate }}</span>
+              <i class="fa-solid fa-xmark-circle"></i>
+            </mat-chip>
+          }
+          @if (filterDto().lastOrderFromDate || filterDto().lastOrderToDate) {
+            <mat-chip (click)="removeFilter('lastOrder')">
+              {{ 'members.lastOrderDateRange' | translate }}:
+              <span *ngIf="filterDto().lastOrderFromDate">{{ filterDto().lastOrderFromDate | pdate }}</span>
+              <span *ngIf="filterDto().lastOrderFromDate && filterDto().lastOrderToDate"> - </span>
+              <span *ngIf="filterDto().lastOrderToDate">{{ filterDto().lastOrderToDate | pdate }}</span>
+              <i class="fa-solid fa-xmark-circle"></i>
+            </mat-chip>
+          }
+        </mat-chip-set>
+      </mat-toolbar-row>
     }
   </mat-toolbar>
   <mat-card appearance="outlined">

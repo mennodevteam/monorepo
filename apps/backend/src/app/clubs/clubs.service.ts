@@ -263,7 +263,6 @@ export class ClubsService {
     }
     // Filter by joinedAt
     if (dto.joinedAtFromDate || dto.joinedAtToDate) {
-      console.log(dto);
       filteredMembers = filteredMembers.filter((m) => {
         if (dto.joinedAtFromDate && new Date(m.joinedAt).valueOf() < new Date(dto.joinedAtFromDate).valueOf())
           return false;
@@ -272,6 +271,8 @@ export class ClubsService {
         return true;
       });
     }
+
+    if (filteredMembers.length === 0) return { data: [], totalCount: 0 };
 
     // Get last visit date for each user (MenuStat)
     let lastVisitMap: Record<string, Date | null> = {};

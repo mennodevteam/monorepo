@@ -46,11 +46,23 @@ export class MemberFilterDialogComponent {
   }
 
   onApply() {
-    this.dialogRef.close(this.filterForm.value);
-  }
-
-  onClear() {
-    this.filterForm.reset();
-    this.dialogRef.close(this.filterForm.value);
+    const value = { ...this.filterForm.value };
+    const startKeys = ['firstOrderFromDate', 'lastOrderFromDate', 'joinedAtFromDate', 'lastVisitFromDate'];
+    const endKeys = ['firstOrderToDate', 'lastOrderToDate', 'joinedAtToDate', 'lastVisitToDate'];
+    startKeys.forEach((key) => {
+      if (value[key]) {
+        const d = new Date(value[key]);
+        d.setHours(0, 0, 0, 0);
+        value[key] = d;
+      }
+    });
+    endKeys.forEach((key) => {
+      if (value[key]) {
+        const d = new Date(value[key]);
+        d.setHours(23, 59, 59, 999);
+        value[key] = d;
+      }
+    });
+    this.dialogRef.close(value);
   }
 }

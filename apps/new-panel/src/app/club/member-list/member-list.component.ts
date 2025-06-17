@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
@@ -13,6 +13,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MemberFilterDialogComponent } from './member-filter-dialog/member-filter-dialog.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-member-list',
@@ -26,6 +27,7 @@ import { MemberFilterDialogComponent } from './member-filter-dialog/member-filte
     MatPaginatorModule,
     MatSortModule,
     MatDialogModule,
+    MatChipsModule,
   ],
   templateUrl: './member-list.component.html',
   styleUrl: './member-list.component.scss',
@@ -125,6 +127,37 @@ export class MemberListComponent {
           ...result,
           skip: 0, // reset to first page on filter
         }));
+      }
+    });
+  }
+
+  hasActiveFilters = computed(() => {
+    const f = this.filterDto();
+    return !!(
+      f.joinedAtFromDate ||
+      f.joinedAtToDate ||
+      f.lastVisitFromDate ||
+      f.lastVisitToDate ||
+      f.firstOrderFromDate ||
+      f.firstOrderToDate ||
+      f.lastOrderFromDate ||
+      f.lastOrderToDate
+    );
+  });
+
+  removeFilter(type: 'joinedAt' | 'lastVisit' | 'firstOrder' | 'lastOrder') {
+    this.filterDto.update((dto) => {
+      switch (type) {
+        case 'joinedAt':
+          return { ...dto, joinedAtFromDate: undefined, joinedAtToDate: undefined, skip: 0 };
+        case 'lastVisit':
+          return { ...dto, lastVisitFromDate: undefined, lastVisitToDate: undefined, skip: 0 };
+        case 'firstOrder':
+          return { ...dto, firstOrderFromDate: undefined, firstOrderToDate: undefined, skip: 0 };
+        case 'lastOrder':
+          return { ...dto, lastOrderFromDate: undefined, lastOrderToDate: undefined, skip: 0 };
+        default:
+          return dto;
       }
     });
   }

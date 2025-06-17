@@ -72,6 +72,6 @@
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
+  <button mat-button matDialogClose>{{ 'app.cancel' | translate }}</button>
   <button mat-flat-button (click)="onApply()">{{ 'app.ok' | translate }}</button>
-  <button mat-button (click)="onClear()">{{ 'app.cancel' | translate }}</button>
 </mat-dialog-actions>
