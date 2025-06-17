@@ -56,52 +56,102 @@
     [fixedTopGap]="64"
   >
     <mat-nav-list>
-      <a mat-list-item routerLinkActive="active-link" routerLink="/home">
+      <a
+        mat-list-item
+        routerLinkActive="active-link"
+        routerLink="/home"
+        (click)="isSmallScreen() && isDrawerClose.set(true)"
+      >
         <i matListItemIcon class="fa-duotone fa-house"></i>
         <span matListItemTitle>{{ 'nav.home' | translate }}</span>
       </a>
       <mat-divider />
-      <a mat-list-item routerLinkActive="active-link" routerLink="/orders">
+      <a
+        mat-list-item
+        routerLinkActive="active-link"
+        routerLink="/orders"
+        (click)="isSmallScreen() && isDrawerClose.set(true)"
+      >
         <i matListItemIcon class="fa-duotone fa-solid fa-receipt"></i>
         <span matListItemTitle>{{ 'nav.orderList' | translate }}</span>
       </a>
       <mat-divider />
-      <a mat-list-item routerLinkActive="active-link" routerLink="/menu/categories">
+      <a
+        mat-list-item
+        routerLinkActive="active-link"
+        routerLink="/menu/categories"
+        (click)="isSmallScreen() && isDrawerClose.set(true)"
+      >
         <i matListItemIcon class="fa-duotone fa-folder-tree flip"></i>
         <span matListItemTitle>{{
           'nav.categories' | translate: { value: shop.businessCategoryMenuTitle() }
         }}</span>
       </a>
-      <a mat-list-item routerLinkActive="active-link" routerLink="/menu/list">
+      <a
+        mat-list-item
+        routerLinkActive="active-link"
+        routerLink="/menu/list"
+        (click)="isSmallScreen() && isDrawerClose.set(true)"
+      >
         <i matListItemIcon class="fa-duotone fa-list flip"></i>
         <span matListItemTitle>{{
           'nav.products' | translate: { value: shop.businessCategoryMenuTitle() }
         }}</span>
       </a>
-      <a mat-list-item routerLinkActive="active-link" routerLink="/menu/costs">
+      <a
+        mat-list-item
+        routerLinkActive="active-link"
+        routerLink="/menu/costs"
+        (click)="isSmallScreen() && isDrawerClose.set(true)"
+      >
         <i matListItemIcon class="fa-duotone fa-badge-dollar"></i>
         <span matListItemTitle>{{ 'nav.pricing' | translate }}</span>
       </a>
       <mat-divider />
-      <a mat-list-item routerLinkActive="active-link" routerLink="/club/members">
+      <a
+        mat-list-item
+        routerLinkActive="active-link"
+        routerLink="/club/members"
+        (click)="isSmallScreen() && isDrawerClose.set(true)"
+      >
         <i matListItemIcon class="fa-duotone fa-user-group-crown"></i>
         <span matListItemTitle>{{ 'nav.clubMembers' | translate }}</span>
       </a>
       <mat-divider />
-      <a mat-list-item routerLinkActive="active-link" routerLink="/reports/dashboard">
+      <a
+        mat-list-item
+        routerLinkActive="active-link"
+        routerLink="/reports/dashboard"
+        (click)="isSmallScreen() && isDrawerClose.set(true)"
+      >
         <i matListItemIcon class="fa-duotone fa-chart-simple"></i>
         <span matListItemTitle>{{ 'nav.dashboard' | translate }}</span>
       </a>
-      <a mat-list-item routerLinkActive="active-link" routerLink="/reports/analytics">
+      <a
+        mat-list-item
+        routerLinkActive="active-link"
+        routerLink="/reports/analytics"
+        (click)="isSmallScreen() && isDrawerClose.set(true)"
+      >
         <i matListItemIcon class="fa-duotone fa-chart-mixed"></i>
         <span matListItemTitle>{{ 'nav.analytics' | translate }}</span>
       </a>
       <mat-divider />
-      <a mat-list-item routerLinkActive="active-link" routerLink="/club/coupons">
+      <a
+        mat-list-item
+        routerLinkActive="active-link"
+        routerLink="/club/coupons"
+        (click)="isSmallScreen() && isDrawerClose.set(true)"
+      >
         <i matListItemIcon class="fa-duotone fa-tags"></i>
         <span matListItemTitle>{{ 'nav.discountCoupons' | translate }}</span>
       </a>
-      <a mat-list-item routerLinkActive="active-link" routerLink="/reports/analytics">
+      <a
+        mat-list-item
+        routerLinkActive="active-link"
+        routerLink="/reports/analytics"
+        (click)="isSmallScreen() && isDrawerClose.set(true)"
+      >
         <i matListItemIcon class="fa-duotone fa-bullseye-arrow"></i>
         <span matListItemTitle>{{ 'nav.missions' | translate }}</span>
       </a>
@@ -113,47 +163,92 @@
         </span>
       </a>
       @if (!collapse()['settings']) {
-        <a mat-list-item routerLinkActive="active-link" routerLink="settings/shop">
+        <a
+          mat-list-item
+          routerLinkActive="active-link"
+          routerLink="settings/shop"
+          (click)="isSmallScreen() && isDrawerClose.set(true)"
+        >
           <i matListItemIcon class="fa-duotone fa-store"></i>
           <span matListItemTitle>{{ 'settings.shop' | translate }}</span>
         </a>
-        <a mat-list-item routerLinkActive="active-link" routerLink="settings/app-config">
+        <a
+          mat-list-item
+          routerLinkActive="active-link"
+          routerLink="settings/app-config"
+          (click)="isSmallScreen() && isDrawerClose.set(true)"
+        >
           <i matListItemIcon class="fa-duotone fa-palette"></i>
           <span matListItemTitle>{{ 'settings.appConfig' | translate }}</span>
         </a>
-        <a mat-list-item routerLinkActive="active-link" routerLink="settings/order-config">
+        <a
+          mat-list-item
+          routerLinkActive="active-link"
+          routerLink="settings/order-config"
+          (click)="isSmallScreen() && isDrawerClose.set(true)"
+        >
           <i matListItemIcon class="fa-duotone fa-receipt"></i>
           <span matListItemTitle>{{ 'settings.orderConfig' | translate }}</span>
         </a>
-        <a mat-list-item routerLinkActive="active-link" routerLink="settings/sms">
+        <a
+          mat-list-item
+          routerLinkActive="active-link"
+          routerLink="settings/sms"
+          (click)="isSmallScreen() && isDrawerClose.set(true)"
+        >
           <i matListItemIcon class="fa-duotone fa-message-smile"></i>
           <span matListItemTitle>{{ 'orderMessagesSetting.title' | translate }}</span>
         </a>
-        <a mat-list-item routerLinkActive="active-link" routerLink="settings/printers">
+        <a
+          mat-list-item
+          routerLinkActive="active-link"
+          routerLink="settings/printers"
+          (click)="isSmallScreen() && isDrawerClose.set(true)"
+        >
           <i matListItemIcon class="fa-duotone fa-print"></i>
           <span matListItemTitle>{{ 'settings.printers' | translate }}</span>
         </a>
-        <a mat-list-item routerLinkActive="active-link" routerLink="settings/delivery-areas">
+        <a
+          mat-list-item
+          routerLinkActive="active-link"
+          routerLink="settings/delivery-areas"
+          (click)="isSmallScreen() && isDrawerClose.set(true)"
+        >
           <i matListItemIcon class="fa-duotone fa-map-location-dot"></i>
           <span matListItemTitle>{{ 'settings.deliveryAreas' | translate }}</span>
         </a>
-        <a mat-list-item routerLinkActive="active-link" routerLink="settings/users">
+        <a
+          mat-list-item
+          routerLinkActive="active-link"
+          routerLink="settings/users"
+          (click)="isSmallScreen() && isDrawerClose.set(true)"
+        >
           <i matListItemIcon class="fa-duotone fa-users"></i>
           <span matListItemTitle>{{ 'settings.users' | translate }}</span>
         </a>
-        <a mat-list-item routerLinkActive="active-link" routerLink="settings/qr">
+        <a
+          mat-list-item
+          routerLinkActive="active-link"
+          routerLink="settings/qr"
+          (click)="isSmallScreen() && isDrawerClose.set(true)"
+        >
           <i matListItemIcon class="fa-duotone fa-qrcode"></i>
           <span matListItemTitle>{{ 'settings.qr' | translate }}</span>
         </a>
-        <a mat-list-item routerLinkActive="active-link">
+        <a mat-list-item routerLinkActive="active-link" (click)="isSmallScreen() && isDrawerClose.set(true)">
           <i matListItemIcon class="fa-duotone fa-key"></i>
           <span matListItemTitle>{{ 'settings.changePassword' | translate }}</span>
         </a>
-        <a mat-list-item routerLinkActive="active-link">
+        <a mat-list-item routerLinkActive="active-link" (click)="isSmallScreen() && isDrawerClose.set(true)">
           <i matListItemIcon class="fa-duotone fa-credit-card"></i>
           <span matListItemTitle>{{ 'settings.poses' | translate }}</span>
         </a>
-        <a mat-list-item routerLinkActive="active-link" routerLink="settings/third-parties">
+        <a
+          mat-list-item
+          routerLinkActive="active-link"
+          routerLink="settings/third-parties"
+          (click)="isSmallScreen() && isDrawerClose.set(true)"
+        >
           <i matListItemIcon class="fa-duotone fa-puzzle-piece"></i>
           <span matListItemTitle>{{ 'settings.thirdParties' | translate }}</span>
         </a>

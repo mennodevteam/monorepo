@@ -79,4 +79,5 @@ mat-sidenav-content {
 mat-sidenav-container,
 mat-sidenav-content {
   overflow: initial;
+  height: calc(100vh - 64px);
 }
