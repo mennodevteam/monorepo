@@ -9,13 +9,11 @@
         <table mat-table [dataSource]="categoryItem.items">
           <!-- Product Title Column -->
           <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef style="width: 230px">{{ 'bom.products' | translate }}</th>
+            <th mat-header-cell *matHeaderCellDef style="width: 260px">{{ 'bom.products' | translate }}</th>
             <td mat-cell *matCellDef="let item">
+              {{ item.product?.title }}
               @if (item.variant) {
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {{ item.variant.title }}
-              } @else {
-                <b>{{ item.product?.title }}</b>
+                - {{ item.variant.title }}
               }
             </td>
           </ng-container>
@@ -25,12 +23,12 @@
             <th mat-header-cell *matHeaderCellDef>{{ 'materials.title' | translate }}</th>
             <td mat-cell *matCellDef="let item">
               <mat-chip-set>
-                <mat-chip [removable]="true" (removed)="addBom(item.product, item.variant)">
+                <mat-chip (click)="addBom(item.product, item.variant)">
                   <i class="fa-regular fa-plus"></i>
                   {{ 'materials.add' | translate }}
                 </mat-chip>
                 @for (bom of item.boms; track bom.id) {
-                  <mat-chip [removable]="true" [matMenuTriggerFor]="menu">
+                  <mat-chip [matMenuTriggerFor]="menu">
                     {{ bom.material.name }}
                     <span eng> ({{ bom.quantity | number }}{{ bom.material.unit | translate }}) </span>
                   </mat-chip>
@@ -46,6 +44,40 @@
                   </mat-menu>
                 }
               </mat-chip-set>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="cost">
+            <th mat-header-cell *matHeaderCellDef style="width: 140px">{{ 'bom.cost' | translate }}</th>
+            <td mat-cell *matCellDef="let item">
+              @if (item.cost !== null) {
+                {{ item.cost | number | menuCurrency }}
+              } @else {
+                <i class="fa-regular fa-question"></i>
+              }
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef style="width: 140px">{{ 'bom.price' | translate }}</th>
+            <td mat-cell *matCellDef="let item">
+              {{ (item.variant || item.product).price | number | menuCurrency }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="profit">
+            <th mat-header-cell *matHeaderCellDef style="width: 200px">{{ 'bom.profit' | translate }}</th>
+            <td mat-cell *matCellDef="let item" eng ltr>
+              @if (item.cost !== null) {
+                @let price = (item.variant || item.product).price;
+                @let percentage = ((price - item.cost) / price) * 100;
+                <span [class.error-text]="percentage < 0" [class.success-text]="percentage > 50">
+                  {{ price - item.cost | number }}
+                  <span eng ltr> ({{ percentage | number: '1.0-0' }}%) </span>
+                </span>
+              } @else {
+                <i class="fa-regular fa-question"></i>
+              }
             </td>
           </ng-container>
 

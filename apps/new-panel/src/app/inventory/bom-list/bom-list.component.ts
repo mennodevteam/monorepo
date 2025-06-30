@@ -20,7 +20,7 @@ import { MatMenuModule } from '@angular/material/menu';
 
 interface CategoryItem {
   category: ProductCategory;
-  items: { product?: Product; variant?: ProductVariant; boms: BillOfMaterial[] }[];
+  items: { product?: Product; variant?: ProductVariant; boms: BillOfMaterial[]; cost?: number | null }[];
 }
 
 @Component({
@@ -44,13 +44,15 @@ interface CategoryItem {
   styleUrl: './bom-list.component.scss',
 })
 export class BomListComponent {
-  displayedColumns: string[] = ['title', 'materials'];
+  displayedColumns: string[] = ['title', 'materials', 'cost', 'price', 'profit'];
   menuService = inject(MenuService);
   materialsService = inject(MaterialsService);
   dialogService = inject(DialogService);
   translate = inject(TranslateService);
 
-  materials = computed<Material[]>(() => this.materialsService.materialsQuery.data() || []);
+  materials = computed<Material[]>(
+    () => this.materialsService.materialsQuery.data()?.sort((a, b) => a.name.localeCompare(b.name)) || [],
+  );
 
   boms = computed<BillOfMaterial[]>(() => {
     const booms: BillOfMaterial[] = [];
@@ -66,23 +68,41 @@ export class BomListComponent {
     const result: CategoryItem[] = [];
     const categories = this.menuService.data()?.categories || [];
     for (const category of categories) {
-      const items: { product?: Product; variant?: ProductVariant; boms: BillOfMaterial[] }[] = [];
+      const items: {
+        product?: Product;
+        variant?: ProductVariant;
+        boms: BillOfMaterial[];
+        cost?: number | null;
+      }[] = [];
       for (const product of category.products || []) {
-        items.push({
-          product,
-          boms: this.boms().filter((bom) => bom.product?.id === product.id && !!bom.variant),
-        });
-        for (const variant of product.variants || []) {
+        if (!product.variants?.length) {
+          const productBoms = this.boms().filter((bom) => bom.product?.id === product.id);
           items.push({
-            variant,
-            boms: this.boms().filter((bom) => bom.variant?.id === variant.id),
+            product,
+            boms: productBoms.filter((bom) => !!bom.variant),
+            cost: product.variants ? null : this.calculateCost(productBoms),
           });
+        } else {
+          for (const variant of product.variants || []) {
+            const variantBoms = this.boms().filter((bom) => bom.variant?.id === variant.id);
+            items.push({
+              product,
+              variant,
+              boms: variantBoms,
+              cost: this.calculateCost(variantBoms),
+            });
+          }
         }
       }
       result.push({ category, items });
     }
     return result;
   });
+
+  calculateCost(boms: BillOfMaterial[]): number | null {
+    if (boms.length === 0 || boms.some((bom) => bom.material.averageCost == null)) return null;
+    return boms.reduce((acc, bom) => acc + bom.quantity * (bom.material.averageCost || 0), 0);
+  }
 
   addBom(product: Product, variant?: ProductVariant): void {
     const fields: PromptFields = {

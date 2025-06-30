@@ -28,6 +28,7 @@ export class MaterialsController {
     return this.materialRepository.find({
       where: { shop: { id: shop.id } },
       relations: ['boms', 'boms.product', 'boms.variant'],
+      order: { createdAt: 'DESC' },
     });
   }
 

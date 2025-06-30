@@ -10,6 +10,7 @@ export const MaterialSchema = new EntitySchema<Material>({
     stock: { type: Number },
     unit: { type: 'enum', enum: MaterialUnit },
     averageCost: { type: Number, nullable: true },
+    createdAt: { type: 'timestamp', createDate: true },
   },
   relations: {
     shop: {

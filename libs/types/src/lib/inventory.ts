@@ -24,6 +24,7 @@ export class Material {
   averageCost?: number;
   boms: BillOfMaterial[];
   shop: Shop;
+  createdAt: Date;
 }
 
 export class InventoryTransaction {

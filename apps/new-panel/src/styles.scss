@@ -123,6 +123,10 @@ i.middle {
   color: theme.$success-color;
 }
 
+.error-text {
+  color: var(--mat-sys-error);
+}
+
 .success,
 .status_1 {
   @include successContainer();
