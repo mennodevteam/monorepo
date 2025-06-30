@@ -3,6 +3,12 @@
   <button mat-flat-button color="primary" (click)="openMaterialDialog()">{{ 'app.add' | translate }}</button>
 </mat-toolbar>
 <main p-md>
+  <mat-toolbar>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'app.search' | translate }}</mat-label>
+      <input matInput [(ngModel)]="searchQuery" type="search" />
+    </mat-form-field>
+  </mat-toolbar>
   @if (materials().length > 0) {
     <mat-card appearance="outlined">
       <mat-card-content>
@@ -61,6 +67,8 @@
         </table>
       </mat-card-content>
     </mat-card>
+  } @else if (isLoading()) {
+    <app-data-loading />
   } @else {
     <app-empty-state
       icon="flask-vial"

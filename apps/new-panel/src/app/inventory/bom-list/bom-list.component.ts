@@ -17,6 +17,7 @@ import { PromptFields } from '../../shared/dialogs/prompt-dialog/prompt-dialog.c
 import { DialogService } from '../../core/services/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatInputModule } from '@angular/material/input';
 
 interface CategoryItem {
   category: ProductCategory;
@@ -39,6 +40,7 @@ interface CategoryItem {
     MatToolbarModule,
     MatCardModule,
     MatMenuModule,
+    MatInputModule,
   ],
   templateUrl: './bom-list.component.html',
   styleUrl: './bom-list.component.scss',
@@ -53,6 +55,8 @@ export class BomListComponent {
   materials = computed<Material[]>(
     () => this.materialsService.materialsQuery.data()?.sort((a, b) => a.name.localeCompare(b.name)) || [],
   );
+
+  searchQuery = signal('');
 
   boms = computed<BillOfMaterial[]>(() => {
     const booms: BillOfMaterial[] = [];
@@ -74,7 +78,11 @@ export class BomListComponent {
         boms: BillOfMaterial[];
         cost?: number | null;
       }[] = [];
-      for (const product of category.products || []) {
+      const products =
+        category.products?.filter((product) =>
+          product.title.toLowerCase().includes(this.searchQuery().toLowerCase()),
+        ) || [];
+      for (const product of products) {
         if (!product.variants?.length) {
           const productBoms = this.boms().filter((bom) => bom.product?.id === product.id);
           items.push({
@@ -83,7 +91,11 @@ export class BomListComponent {
             cost: product.variants ? null : this.calculateCost(productBoms),
           });
         } else {
-          for (const variant of product.variants || []) {
+          const variants =
+            product.variants?.filter((variant) =>
+              variant.title.toLowerCase().includes(this.searchQuery().toLowerCase()),
+            ) || [];
+          for (const variant of variants) {
             const variantBoms = this.boms().filter((bom) => bom.variant?.id === variant.id);
             items.push({
               product,
@@ -94,7 +106,7 @@ export class BomListComponent {
           }
         }
       }
-      result.push({ category, items });
+      if (items.length) result.push({ category, items });
     }
     return result;
   });

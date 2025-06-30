@@ -1,5 +1,5 @@
-import { Component, computed, inject } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, computed, inject, signal } from '@angular/core';
+import { FormControl, FormsModule } from '@angular/forms';
 import { InventoryTransactionType, Material, MaterialUnit } from '@menno/types';
 import { MaterialsService } from '../materials.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -11,21 +11,39 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { DialogService } from '../../core/services/dialog.service';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-  imports: [CommonModule, SHARED, MatTableModule, MatButtonModule, MatCardModule, MatToolbarModule],
+  imports: [
+    CommonModule,
+    SHARED,
+    MatTableModule,
+    MatButtonModule,
+    MatCardModule,
+    MatToolbarModule,
+    FormsModule,
+    MatInputModule,
+    MatFormFieldModule,
+  ],
   selector: 'app-materials-list',
   templateUrl: './materials-list.component.html',
   styleUrls: ['./materials-list.component.scss'],
 })
 export class MaterialsListComponent {
   displayedColumns = ['name', 'stock', 'averageCost', 'actions'];
+  searchQuery = signal('');
 
   private dialog = inject(DialogService);
   private materialsService = inject(MaterialsService);
   private translate = inject(TranslateService);
 
-  materials = computed(() => this.materialsService.materialsQuery.data() ?? []);
+  materials = computed(
+    () =>
+      this.materialsService.materialsQuery
+        .data()
+        ?.filter((material) => material.name.toLowerCase().includes(this.searchQuery().toLowerCase())) ?? [],
+  );
 
   isLoading = computed(() => this.materialsService.materialsQuery.isLoading());
   isError = computed(() => this.materialsService.materialsQuery.isError());
@@ -121,22 +139,24 @@ export class MaterialsListComponent {
 
   openPurchaseDialog(material: Material) {
     this.dialog
-      .prompt(this.translate.instant('materials.purchase'), {
-        quantity: {
-          label: this.translate.instant('materials.quantity'),
-          type: 'number',
-          ltr: true,
-          eng: true,
-          control: new FormControl(0),
-          hint: this.translate.instant('materials.units.' + material.unit),
-        },
-        unitPrice: {
-          label: this.translate.instant('materials.unitPrice'),
-          type: 'number',
-          ltr: true,
-          eng: true,
-          control: new FormControl(material.averageCost),
-        },
+      .prompt(
+        this.translate.instant('materials.purchase'),
+        {
+          quantity: {
+            label: this.translate.instant('materials.quantity'),
+            type: 'number',
+            ltr: true,
+            eng: true,
+            control: new FormControl(0),
+            hint: this.translate.instant('materials.units.' + material.unit),
+          },
+          unitPrice: {
+            label: this.translate.instant('materials.unitPrice'),
+            type: 'number',
+            ltr: true,
+            eng: true,
+            control: new FormControl(material.averageCost),
+          },
         },
         {
           description: this.translate.instant('materials.averageCostHint'),

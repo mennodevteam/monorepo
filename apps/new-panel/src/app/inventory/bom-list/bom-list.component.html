@@ -2,6 +2,12 @@
   <h1 fxFlex>{{ 'nav.bom' | translate }}</h1>
 </mat-toolbar>
 <main p-md fxLayout="column" fxLayoutGap="16px">
+  <mat-toolbar>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'app.search' | translate }}</mat-label>
+      <input matInput [(ngModel)]="searchQuery" type="search" />
+    </mat-form-field>
+  </mat-toolbar>
   @for (categoryItem of categoryItems(); track categoryItem.category.id) {
     <h2>{{ categoryItem.category.title }}</h2>
     <mat-card appearance="outlined">
