@@ -1,0 +1,53 @@
+<mat-toolbar class="content-toolbar" fxLayoutGap="8px">
+  <h1 fxFlex>{{ 'nav.materials' | translate }}</h1>
+  <button mat-flat-button color="primary" (click)="openMaterialDialog()">{{ 'app.add' | translate }}</button>
+</mat-toolbar>
+<main p-md>
+  @if (materials().length > 0) {
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <table mat-table [dataSource]="materials()">
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>{{ 'app.title' | translate }}</th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+          </ng-container>
+
+          <!-- Stock Column -->
+          <ng-container matColumnDef="stock">
+            <th mat-header-cell *matHeaderCellDef>{{ 'materials.stock' | translate }}</th>
+            <td mat-cell *matCellDef="let element">
+              <span>
+                {{ element.stock | number }}
+              </span>
+              <span>{{ 'materials.units.' + element.unit | translate }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element" style="text-align: end">
+              <button mat-icon-button (click)="openEditDialog(element)">
+                <i class="fa-regular fa-pen-to-square"></i>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteMaterial(element)">
+                <i class="fa-regular fa-trash-can"></i>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <app-empty-state
+      icon="flask-vial"
+      [text]="'materials.empty' | translate"
+      [action]="{ label: 'materials.add' | translate, icon: 'plus' }"
+      (actionClick)="openMaterialDialog()"
+    />
+  }
+</main>

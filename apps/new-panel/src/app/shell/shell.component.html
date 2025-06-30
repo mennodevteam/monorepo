@@ -111,6 +111,16 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
+        routerLink="/materials"
+        (click)="isSmallScreen() && isDrawerClose.set(true)"
+      >
+        <i matListItemIcon class="fa-duotone fa-flask-vial"></i>
+        <span matListItemTitle>{{ 'nav.materials' | translate }}</span>
+      </a>
+      <mat-divider />
+      <a
+        mat-list-item
+        routerLinkActive="active-link"
         routerLink="/club/members"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
