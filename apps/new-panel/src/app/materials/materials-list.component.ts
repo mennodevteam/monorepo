@@ -1,6 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Material, MaterialUnit } from '@menno/types';
+import { InventoryTransactionType, Material, MaterialUnit } from '@menno/types';
 import { MaterialsService } from './materials.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PromptFields } from '../shared/dialogs/prompt-dialog/prompt-dialog.component';
@@ -19,7 +19,7 @@ import { DialogService } from '../core/services/dialog.service';
   styleUrls: ['./materials-list.component.scss'],
 })
 export class MaterialsListComponent {
-  displayedColumns = ['name', 'stock', 'actions'];
+  displayedColumns = ['name', 'stock', 'averageCost', 'actions'];
 
   private dialog = inject(DialogService);
   private materialsService = inject(MaterialsService);
@@ -59,12 +59,20 @@ export class MaterialsListComponent {
         eng: true,
         control: new FormControl(material?.stock ?? 0),
       },
+      averageCost: {
+        label: this.translate.instant('materials.averageCost'),
+        type: 'number',
+        ltr: true,
+        eng: true,
+        control: new FormControl(material?.averageCost),
+      },
     };
 
     this.dialog
       .prompt(isEdit ? this.translate.instant('app.edit') : this.translate.instant('app.add'), fields)
       .then((result) => {
         if (result) {
+          if (!result.averageCost && result.averageCost !== 0) result.averageCost = null;
           if (isEdit) result.id = material!.id;
           this.materialsService.saveMaterialMutation.mutate(result);
         }
@@ -84,6 +92,63 @@ export class MaterialsListComponent {
       .then((result) => {
         if (result) {
           this.materialsService.deleteMaterialMutation.mutate(material.id);
+        }
+      });
+  }
+
+  openAdjustmentDialog(material: Material) {
+    this.dialog
+      .prompt(this.translate.instant('materials.adjustment'), {
+        stock: {
+          label: this.translate.instant('materials.stock'),
+          type: 'number',
+          ltr: true,
+          eng: true,
+          control: new FormControl(material.stock),
+          hint: this.translate.instant('materials.units.' + material.unit),
+        },
+      })
+      .then((result) => {
+        if (result) {
+          this.materialsService.transactionMutation.mutate({
+            material: { id: material.id } as Material,
+            type: InventoryTransactionType.Adjustment,
+            ...result,
+          });
+        }
+      });
+  }
+
+  openPurchaseDialog(material: Material) {
+    this.dialog
+      .prompt(this.translate.instant('materials.purchase'), {
+        quantity: {
+          label: this.translate.instant('materials.quantity'),
+          type: 'number',
+          ltr: true,
+          eng: true,
+          control: new FormControl(0),
+          hint: this.translate.instant('materials.units.' + material.unit),
+        },
+        unitPrice: {
+          label: this.translate.instant('materials.unitPrice'),
+          type: 'number',
+          ltr: true,
+          eng: true,
+          control: new FormControl(material.averageCost),
+        },
+        },
+        {
+          description: this.translate.instant('materials.averageCostHint'),
+        },
+      )
+      .then((result) => {
+        if (result) {
+          this.materialsService.transactionMutation.mutate({
+            material: { id: material.id } as Material,
+            type: InventoryTransactionType.Purchase,
+            ...result,
+          });
         }
       });
   }

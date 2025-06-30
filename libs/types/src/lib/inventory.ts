@@ -32,7 +32,7 @@ export class InventoryTransaction {
   type: InventoryTransactionType;
   quantity: number;
   unitPrice?: number;
-  date: Date;
+  createdAt: Date;
   note?: string;
   shop: Shop;
 }

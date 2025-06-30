@@ -5,7 +5,7 @@ import { BillOfMaterial } from '@menno/types';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 
-@Controller('boms')
+@Controller('materials/boms')
 export class BomsController {
   constructor(
     @InjectRepository(BillOfMaterial)

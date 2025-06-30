@@ -21,7 +21,6 @@ export const MaterialSchema = new EntitySchema<Material>({
       type: 'one-to-many',
       target: 'BillOfMaterial',
       inverseSide: 'material',
-      cascade: ['insert', 'update', 'soft-remove'],
     },
   },
 });

@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Material } from '@menno/types';
+import { InventoryTransaction, Material } from '@menno/types';
 import { injectMutation, injectQuery, injectQueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 
@@ -23,6 +23,12 @@ export class MaterialsService {
 
   public deleteMaterialMutation = injectMutation(() => ({
     mutationFn: (id: string) => lastValueFrom(this.http.delete<void>(`${this.baseUrl}/${id}`)),
+    onSuccess: () => this.queryClient.invalidateQueries({ queryKey: ['materials'] }),
+  }));
+
+  public transactionMutation = injectMutation(() => ({
+    mutationFn: (data: Partial<InventoryTransaction>) =>
+      lastValueFrom(this.http.post<void>(`${this.baseUrl}/transactions`, data)),
     onSuccess: () => this.queryClient.invalidateQueries({ queryKey: ['materials'] }),
   }));
 }

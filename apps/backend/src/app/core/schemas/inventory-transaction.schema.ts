@@ -9,13 +9,14 @@ export const InventoryTransactionSchema = new EntitySchema<InventoryTransaction>
     type: { type: 'enum', enum: InventoryTransactionType },
     quantity: { type: Number },
     unitPrice: { type: Number, nullable: true },
-    date: { type: Date },
     note: { type: String, nullable: true },
+    createdAt: { type: 'timestamptz', createDate: true },
   },
   relations: {
     material: {
       type: 'many-to-one',
       target: 'Material',
+      onDelete: 'CASCADE',
     },
     shop: {
       type: 'many-to-one',
