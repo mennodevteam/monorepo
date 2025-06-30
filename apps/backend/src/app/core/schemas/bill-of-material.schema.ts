@@ -6,7 +6,7 @@ export const BillOfMaterialSchema = new EntitySchema<BillOfMaterial>({
   target: BillOfMaterial,
   columns: {
     id: { type: 'uuid', primary: true, generated: 'uuid' },
-    quantity: { type: Number },
+    quantity: { type: 'real', default: 1 },
   },
   relations: {
     material: {

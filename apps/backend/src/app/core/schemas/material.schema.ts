@@ -15,7 +15,6 @@ export const MaterialSchema = new EntitySchema<Material>({
     shop: {
       type: 'many-to-one',
       target: 'Shop',
-      inverseSide: 'materials',
     },
     boms: {
       type: 'one-to-many',

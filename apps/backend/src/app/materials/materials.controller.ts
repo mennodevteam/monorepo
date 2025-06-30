@@ -25,7 +25,10 @@ export class MaterialsController {
   @Get()
   async findAll(@LoginUser() user: AuthPayload) {
     const shop = await this.auth.getPanelUserShop(user);
-    return this.materialRepository.find({ where: { shop: { id: shop.id } } });
+    return this.materialRepository.find({
+      where: { shop: { id: shop.id } },
+      relations: ['boms', 'boms.product', 'boms.variant'],
+    });
   }
 
   @Delete(':id')

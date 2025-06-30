@@ -111,11 +111,20 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
-        routerLink="/materials"
+        routerLink="/inventory/materials"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
         <i matListItemIcon class="fa-duotone fa-flask-vial"></i>
         <span matListItemTitle>{{ 'nav.materials' | translate }}</span>
+      </a>
+      <a
+        mat-list-item
+        routerLinkActive="active-link"
+        routerLink="/inventory/bom"
+        (click)="isSmallScreen() && isDrawerClose.set(true)"
+      >
+        <i matListItemIcon class="fa-duotone fa-flask-gear"></i>
+        <span matListItemTitle>{{ 'nav.bom' | translate }}</span>
       </a>
       <mat-divider />
       <a

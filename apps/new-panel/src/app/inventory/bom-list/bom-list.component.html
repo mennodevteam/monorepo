@@ -1,0 +1,58 @@
+<mat-toolbar class="content-toolbar">
+  <h1 fxFlex>{{ 'nav.bom' | translate }}</h1>
+</mat-toolbar>
+<main p-md fxLayout="column" fxLayoutGap="16px">
+  @for (categoryItem of categoryItems(); track categoryItem.category.id) {
+    <h2>{{ categoryItem.category.title }}</h2>
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <table mat-table [dataSource]="categoryItem.items">
+          <!-- Product Title Column -->
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef style="width: 230px">{{ 'bom.products' | translate }}</th>
+            <td mat-cell *matCellDef="let item">
+              @if (item.variant) {
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                {{ item.variant.title }}
+              } @else {
+                <b>{{ item.product?.title }}</b>
+              }
+            </td>
+          </ng-container>
+
+          <!-- Materials Column (for product itself) -->
+          <ng-container matColumnDef="materials">
+            <th mat-header-cell *matHeaderCellDef>{{ 'materials.title' | translate }}</th>
+            <td mat-cell *matCellDef="let item">
+              <mat-chip-set>
+                <mat-chip [removable]="true" (removed)="addBom(item.product, item.variant)">
+                  <i class="fa-regular fa-plus"></i>
+                  {{ 'materials.add' | translate }}
+                </mat-chip>
+                @for (bom of item.boms; track bom.id) {
+                  <mat-chip [removable]="true" [matMenuTriggerFor]="menu">
+                    {{ bom.material.name }}
+                    <span eng> ({{ bom.quantity | number }}{{ bom.material.unit | translate }}) </span>
+                  </mat-chip>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="editBom(bom)">
+                      <i class="fa-regular fa-pen-to-square"></i>
+                      {{ 'app.edit' | translate }}
+                    </button>
+                    <button mat-menu-item (click)="removeBom(bom)">
+                      <i class="fa-regular fa-trash-can"></i>
+                      {{ 'app.remove' | translate }}
+                    </button>
+                  </mat-menu>
+                }
+              </mat-chip-set>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  }
+</main>

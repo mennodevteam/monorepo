@@ -1,16 +1,16 @@
 import { Component, computed, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { InventoryTransactionType, Material, MaterialUnit } from '@menno/types';
-import { MaterialsService } from './materials.service';
+import { MaterialsService } from '../materials.service';
 import { TranslateService } from '@ngx-translate/core';
-import { PromptFields } from '../shared/dialogs/prompt-dialog/prompt-dialog.component';
-import { SHARED } from '../shared';
+import { PromptFields } from '../../shared/dialogs/prompt-dialog/prompt-dialog.component';
+import { SHARED } from '../../shared';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { DialogService } from '../core/services/dialog.service';
+import { DialogService } from '../../core/services/dialog.service';
 
 @Component({
   imports: [CommonModule, SHARED, MatTableModule, MatButtonModule, MatCardModule, MatToolbarModule],
