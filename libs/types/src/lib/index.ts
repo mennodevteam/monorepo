@@ -81,3 +81,4 @@ export * from './wallet';
 export * from './web-push-notification.dto';
 export * from './web-push-subscription';
 export * from './windows-local-notification';
+export * from './inventory';

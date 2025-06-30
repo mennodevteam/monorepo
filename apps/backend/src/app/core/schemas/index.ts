@@ -43,3 +43,6 @@ export * from './wallet-log.schema';
 export * from './wallet.schema';
 export * from './web-push-subscription.schema';
 export * from './windows-local-notification.schema';
+export * from './inventory-transaction.schema';
+export * from './material.schema';
+export * from './bill-of-material.schema';

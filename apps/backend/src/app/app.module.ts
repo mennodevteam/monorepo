@@ -33,6 +33,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { BasalamModule } from './basalam/basalam.module';
 import { ChatModule } from './chat/chat.module';
 import { PanelNotificationsModule } from './panel-notifications/panel-notifications.module';
+import { MaterialsModule } from './materials/materials.module';
 
 @Module({
   imports: [
@@ -89,6 +90,7 @@ import { PanelNotificationsModule } from './panel-notifications/panel-notificati
     WindowsLocalNotificationModule,
     BasalamModule,
     PanelNotificationsModule,
+    MaterialsModule,
   ],
   controllers: [AppController, AppRedirectController],
   providers: [

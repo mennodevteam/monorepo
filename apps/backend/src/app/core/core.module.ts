@@ -46,6 +46,9 @@ import {
   WebPushSubscriptionSchema,
   WindowsLocalNotificationSchema,
   BasalamProductSchema,
+  BillOfMaterialSchema,
+  MaterialSchema,
+  InventoryTransactionSchema,
 } from './schemas';
 import { RedisService } from './redis.service';
 import { HttpModule } from '@nestjs/axios';
@@ -101,6 +104,9 @@ import { ChatSchema } from './schemas/chat.schema';
       WalletSchema,
       WebPushSubscriptionSchema,
       WindowsLocalNotificationSchema,
+      InventoryTransactionSchema,
+      MaterialSchema,
+      BillOfMaterialSchema,
     ]),
   ],
   providers: [RedisService],
