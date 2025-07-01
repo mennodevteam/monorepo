@@ -1,7 +1,13 @@
 import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CostUpdateStrategy, InventoryTransaction, InventoryTransactionType, Material } from '@menno/types';
+import {
+  CostUpdateStrategy,
+  InventoryTransaction,
+  InventoryTransactionType,
+  Material,
+  MaterialUnit,
+} from '@menno/types';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 import { AuthService } from '../auth/auth.service';
@@ -60,5 +66,19 @@ export class MaterialsController {
     }
 
     return transaction;
+  }
+
+  @Post('upload')
+  async uploadMaterials(@Body() materials: Array<Partial<Material>>, @LoginUser() user: AuthPayload) {
+    const shop = await this.auth.getPanelUserShop(user);
+
+    // Save all materials in the array (create new or update existing based on ID)
+    const materialsToSave = materials.map((material) => ({
+      ...material,
+      stock: material.stock || 0,
+      shop,
+    }));
+
+    return this.materialRepository.save(materialsToSave);
   }
 }

@@ -1,5 +1,20 @@
 <mat-toolbar class="content-toolbar" fxLayoutGap="8px">
   <h1 fxFlex>{{ 'nav.materials' | translate }}</h1>
+  <button mat-stroked-button (click)="downloadSampleCsv()">
+    <i class="fa-solid fa-download"></i>
+    {{ 'materials.downloadSample' | translate }}
+  </button>
+  <input
+    type="file"
+    accept=".csv"
+    style="display: none"
+    #fileInput
+    (change)="onFileSelected($event)"
+  />
+  <button mat-stroked-button (click)="fileInput.click()" [disabled]="materialsService.uploadMaterialsMutation.isPending()">
+    <i class="fa-solid fa-upload"></i>
+    {{ materialsService.uploadMaterialsMutation.isPending() ? 'app.uploading' : 'materials.uploadCsv' | translate }}
+  </button>
   <button mat-flat-button color="primary" (click)="openMaterialDialog()">{{ 'app.add' | translate }}</button>
 </mat-toolbar>
 <main p-md>

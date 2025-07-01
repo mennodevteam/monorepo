@@ -8,6 +8,7 @@ import { apiInterceptorProvider, provideJalaliDatePickerProvider } from './core/
 import { paginatorIntlProvider } from './core/providers/mat-paginator-intl.provider';
 import { provideTranslation } from './core/providers/translate-module.provider';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -28,6 +29,7 @@ export const appConfig: ApplicationConfig = {
     provideJalaliDatePickerProvider(),
     provideTranslation(),
     paginatorIntlProvider(),
-    provideCharts(withDefaultRegisterables())
+    provideCharts(withDefaultRegisterables()),
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
   ],
 };

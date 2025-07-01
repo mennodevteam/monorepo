@@ -13,6 +13,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { DialogService } from '../../core/services/dialog.service';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   imports: [
@@ -35,8 +36,9 @@ export class MaterialsListComponent {
   searchQuery = signal('');
 
   private dialog = inject(DialogService);
-  private materialsService = inject(MaterialsService);
+  public materialsService = inject(MaterialsService);
   private translate = inject(TranslateService);
+  private snack = inject(MatSnackBar);
 
   materials = computed(
     () =>
@@ -184,5 +186,150 @@ export class MaterialsListComponent {
           });
         }
       });
+  }
+
+  onFileSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      if (file.type !== 'text/csv' && !file.name.endsWith('.csv')) {
+        this.snack.open(this.translate.instant('materials.csvFormatError'));
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const csv = e.target?.result as string;
+        const materials = this.parseCsv(csv);
+
+        if (materials.length === 0) {
+          this.snack.open(this.translate.instant('materials.noValidMaterials'));
+          return;
+        }
+
+        // Check for duplicates and fill IDs for existing materials
+        this.processMaterialsForUpload(materials).then((processedMaterials) => {
+          if (processedMaterials.length === 0) {
+            this.snack.open(this.translate.instant('materials.noValidMaterials'));
+            return;
+          }
+
+          // Show preview before importing
+          const previewText = processedMaterials
+            .map((m: Partial<Material>, i: number) => {
+              const status = m.id
+                ? this.translate.instant('materials.updateExisting')
+                : this.translate.instant('materials.newMaterial');
+              return `${i + 1}. ${m.name} - ${this.translate.instant('materials.stock')}: ${m.stock || 0} ${m.unit || 'count'} - ${this.translate.instant('materials.cost')}: ${m.cost || 'N/A'} (${status})`;
+            })
+            .join('\n');
+
+          this.dialog
+            .alert(
+              this.translate.instant('materials.previewMaterials'),
+              `${this.translate.instant('app.count')}: ${processedMaterials.length} ${this.translate.instant('materials.title')}\n\n${previewText}\n\n${this.translate.instant('materials.confirmImport')}`,
+            )
+            .then((accept) => {
+              if (accept) {
+                this.materialsService.uploadMaterialsMutation.mutate(processedMaterials, {
+                  onSuccess: (result) => {
+                    this.snack.open(this.translate.instant('materials.importSuccess'));
+                  },
+                  onError: (error) => {
+                    this.snack.open(this.translate.instant('materials.importError'));
+                  },
+                });
+              }
+            });
+        });
+      };
+      reader.readAsText(file);
+    }
+  }
+
+  private parseCsv(csv: string): Partial<Material>[] {
+    const lines = csv.split('\n').filter((line) => line.trim());
+    if (lines.length < 2) return [];
+
+    const headers = lines[0].split(',').map((h) => h.trim().toLowerCase());
+    const materials: Partial<Material>[] = [];
+
+    // Validate required headers
+    const requiredHeaders = ['title', 'name'];
+    const hasRequiredHeader = requiredHeaders.some((header) => headers.includes(header));
+    if (!hasRequiredHeader) {
+      this.snack.open(this.translate.instant('materials.csvFormatError'));
+      return [];
+    }
+
+    for (let i = 1; i < lines.length; i++) {
+      const values = lines[i].split(',').map((v) => v.trim());
+      if (values.length < headers.length) continue;
+
+      const material: Partial<Material> = {};
+
+      headers.forEach((header, index) => {
+        const value = values[index];
+
+        switch (header) {
+          case 'title':
+          case 'name':
+            material.name = value;
+            break;
+          case 'cost': {
+            const costValue = parseFloat(value);
+            material.cost = isNaN(costValue) ? undefined : costValue;
+            break;
+          }
+          case 'stock': {
+            const stockValue = parseFloat(value);
+            material.stock = isNaN(stockValue) ? 0 : stockValue;
+            break;
+          }
+          case 'unit':
+            material.unit = value as MaterialUnit;
+            break;
+        }
+      });
+
+      if (material.name && material.name.trim()) {
+        materials.push(material);
+      }
+    }
+
+    return materials;
+  }
+
+  private async processMaterialsForUpload(materials: Partial<Material>[]): Promise<Partial<Material>[]> {
+    const existingMaterials = this.materials();
+    const processedMaterials: Partial<Material>[] = [];
+
+    for (const material of materials) {
+      if (!material.name) continue;
+
+      // Check if material with same name already exists
+      const existingMaterial = existingMaterials.find(
+        (m) => m.name.toLowerCase() === material.name!.toLowerCase(),
+      );
+
+      if (existingMaterial) {
+        // Fill the ID for existing material (this will update it instead of creating new)
+        processedMaterials.push({
+          ...material,
+          id: existingMaterial.id,
+        });
+      } else {
+        // New material
+        processedMaterials.push(material);
+      }
+    }
+
+    return processedMaterials;
+  }
+
+  downloadSampleCsv() {
+    const link = document.createElement('a');
+    link.href = '/materials-sample.csv';
+    link.download = 'materials-sample.csv';
+    link.click();
   }
 }
