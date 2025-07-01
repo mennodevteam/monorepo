@@ -33,6 +33,7 @@ export class InventoryTransaction {
   type: InventoryTransactionType;
   quantity: number;
   unitPrice?: number;
+  avgCostCalculation?: boolean;
   createdAt: Date;
   note?: string;
   shop: Shop;

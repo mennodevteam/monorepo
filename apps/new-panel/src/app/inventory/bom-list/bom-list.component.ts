@@ -78,25 +78,27 @@ export class BomListComponent {
         boms: BillOfMaterial[];
         cost?: number | null;
       }[] = [];
-      const products =
-        category.products?.filter((product) =>
-          product.title.toLowerCase().includes(this.searchQuery().toLowerCase()),
-        ) || [];
-      for (const product of products) {
+      for (const product of category.products || []) {
         if (!product.variants?.length) {
           const productBoms = this.boms().filter((bom) => bom.product?.id === product.id);
+          if (this.searchQuery() && !product.title.toLowerCase().includes(this.searchQuery().toLowerCase()))
+            continue;
+
           items.push({
             product,
             boms: productBoms.filter((bom) => !!bom.variant),
             cost: product.variants ? null : this.calculateCost(productBoms),
           });
         } else {
-          const variants =
-            product.variants?.filter((variant) =>
-              variant.title.toLowerCase().includes(this.searchQuery().toLowerCase()),
-            ) || [];
+          const variants = product.variants || [];
           for (const variant of variants) {
             const variantBoms = this.boms().filter((bom) => bom.variant?.id === variant.id);
+            if (
+              this.searchQuery() &&
+              !variant.title.toLowerCase().includes(this.searchQuery().toLowerCase()) &&
+              !product.title.toLowerCase().includes(this.searchQuery().toLowerCase())
+            )
+              continue;
             items.push({
               product,
               variant,
