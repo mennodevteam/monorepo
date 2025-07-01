@@ -589,6 +589,8 @@
     "total": "قیمت نهایی",
     "materialCost": "مواد اولیه",
     "profit": "سود",
-    "editPrice": "ویرایش قیمت {{value}}"
+    "editPrice": "ویرایش قیمت {{value}}",
+    "profitPercentage": "درصد سود",
+    "category": "دسته‌بندی"
   }
 }

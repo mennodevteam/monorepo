@@ -21,20 +21,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
 import { ShopService } from '../shop/shop.service';
 
-interface CategoryItem {
-  category: ProductCategory;
-  items: {
-    product: Product;
-    variant?: ProductVariant;
-    boms: BillOfMaterial[];
-    costs: MenuCost[];
-    discounts: MenuCost[];
-    total: number;
-    materialCost: number;
-    profit: number;
-  }[];
-}
-
 interface PricingItem {
   category: ProductCategory;
   product: Product;
@@ -79,6 +65,7 @@ export class PricingComponent {
     'total',
     'materialCost',
     'profit',
+    'profitPercentage',
   ];
   menuService = inject(MenuService);
   materialsService = inject(MaterialsService);

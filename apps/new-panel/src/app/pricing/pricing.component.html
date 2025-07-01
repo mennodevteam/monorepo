@@ -7,7 +7,7 @@
       <mat-label>{{ 'app.search' | translate }}</mat-label>
       <input matInput [(ngModel)]="searchQuery" type="search" />
     </mat-form-field>
-    
+
     <mat-form-field appearance="outline">
       <mat-label>{{ 'pricing.category' | translate }}</mat-label>
       <mat-select [(ngModel)]="selectedCategory">
@@ -18,13 +18,13 @@
       </mat-select>
     </mat-form-field>
   </mat-toolbar>
-  
+
   <mat-card appearance="outlined">
     <mat-card-content>
       <table mat-table [dataSource]="pricingItems()">
         <!-- Category Column -->
         <ng-container matColumnDef="category">
-          <th mat-header-cell *matHeaderCellDef style="width: 150px">
+          <th mat-header-cell *matHeaderCellDef>
             {{ 'pricing.category' | translate }}
           </th>
           <td mat-cell *matCellDef="let item">
@@ -34,7 +34,7 @@
 
         <!-- Product Title Column -->
         <ng-container matColumnDef="title">
-          <th mat-header-cell *matHeaderCellDef style="width: 260px">
+          <th mat-header-cell *matHeaderCellDef>
             {{ 'pricing.products' | translate }}
           </th>
           <td mat-cell *matCellDef="let item">
@@ -46,7 +46,7 @@
         </ng-container>
 
         <ng-container matColumnDef="basePrice">
-          <th mat-header-cell *matHeaderCellDef style="width: 140px">
+          <th mat-header-cell *matHeaderCellDef>
             {{ 'pricing.basePrice' | translate }}
           </th>
           <td mat-cell *matCellDef="let item">
@@ -82,21 +82,29 @@
           <td mat-cell *matCellDef="let item">
             <mat-chip-set>
               @for (discount of item.discounts; track discount.id) {
-                <mat-chip> {{ discount.title }}: </mat-chip>
+                <mat-chip>
+                  {{ discount.title }}:
+                  @if (discount.percentageCost) {
+                    {{ discount.percentageCost * -1 }}%
+                  }
+                  @if (discount.fixedCost) {
+                    {{ discount.fixedCost * -1 | number | menuCurrency }}
+                  }
+                </mat-chip>
               }
             </mat-chip-set>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="total">
-          <th mat-header-cell *matHeaderCellDef style="width: 120px">{{ 'pricing.total' | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef>{{ 'pricing.total' | translate }}</th>
           <td mat-cell *matCellDef="let item" eng>
             {{ item.total | number }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="materialCost">
-          <th mat-header-cell *matHeaderCellDef style="width: 120px">
+          <th mat-header-cell *matHeaderCellDef>
             {{ 'pricing.materialCost' | translate }}
           </th>
           <td mat-cell *matCellDef="let item" eng>
@@ -109,14 +117,28 @@
         </ng-container>
 
         <ng-container matColumnDef="profit">
-          <th mat-header-cell *matHeaderCellDef style="width: 200px">{{ 'pricing.profit' | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef>{{ 'pricing.profit' | translate }}</th>
           <td mat-cell *matCellDef="let item" eng ltr>
             @if (item.materialCost) {
               @let price = item.total;
               @let percentage = ((price - item.materialCost) / price) * 100;
               <span [class.error-text]="percentage < 0" [class.success-text]="percentage > 50">
                 {{ price - item.materialCost | number }}
-                <span eng ltr> ({{ percentage | number: '1.0-0' }}%) </span>
+              </span>
+            } @else {
+              <i class="fa-regular fa-question"></i>
+            }
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="profitPercentage">
+          <th mat-header-cell *matHeaderCellDef>{{ 'pricing.profitPercentage' | translate }}</th>
+          <td mat-cell *matCellDef="let item" eng ltr>
+            @if (item.materialCost) {
+              @let price = item.total;
+              @let percentage = ((price - item.materialCost) / price) * 100;
+              <span [class.error-text]="percentage < 0" [class.success-text]="percentage > 50">
+                {{ percentage | number: '1.0-0' }}%
               </span>
             } @else {
               <i class="fa-regular fa-question"></i>
