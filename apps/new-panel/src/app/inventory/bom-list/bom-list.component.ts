@@ -18,6 +18,7 @@ import { DialogService } from '../../core/services/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
+import { ShopService } from '../../shop/shop.service';
 
 interface CategoryItem {
   category: ProductCategory;
@@ -46,11 +47,12 @@ interface CategoryItem {
   styleUrl: './bom-list.component.scss',
 })
 export class BomListComponent {
-  displayedColumns: string[] = ['title', 'materials', 'cost', 'price', 'profit'];
+  displayedColumns: string[] = ['title', 'materials'];
   menuService = inject(MenuService);
   materialsService = inject(MaterialsService);
   dialogService = inject(DialogService);
   translate = inject(TranslateService);
+  public shopService = inject(ShopService);
 
   materials = computed<Material[]>(() => this.materialsService.materialsQuery.data() || []);
 

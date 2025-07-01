@@ -98,15 +98,6 @@
           'nav.products' | translate: { value: shop.businessCategoryMenuTitle() }
         }}</span>
       </a>
-      <a
-        mat-list-item
-        routerLinkActive="active-link"
-        routerLink="/menu/costs"
-        (click)="isSmallScreen() && isDrawerClose.set(true)"
-      >
-        <i matListItemIcon class="fa-duotone fa-badge-dollar"></i>
-        <span matListItemTitle>{{ 'nav.costs' | translate }}</span>
-      </a>
       <mat-divider />
       <a
         mat-list-item
@@ -124,17 +115,28 @@
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
         <i matListItemIcon class="fa-duotone fa-flask-vial"></i>
-        <span matListItemTitle>{{ 'nav.bom' | translate }}</span>
+        <span matListItemTitle>{{ 'nav.bom' | translate: { value: shop.businessCategoryMenuTitle() } }}</span>
       </a>
       <mat-divider />
       <a
         mat-list-item
         routerLinkActive="active-link"
-        routerLink="/club/members"
+        routerLink="/menu/costs"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <i matListItemIcon class="fa-duotone fa-user-group-crown"></i>
-        <span matListItemTitle>{{ 'nav.clubMembers' | translate }}</span>
+        <i matListItemIcon class="fa-duotone fa-badge-dollar"></i>
+        <span matListItemTitle>{{ 'nav.costs' | translate }}</span>
+      </a>
+      <a
+        mat-list-item
+        routerLinkActive="active-link"
+        routerLink="/pricing"
+        (click)="isSmallScreen() && isDrawerClose.set(true)"
+      >
+        <i matListItemIcon class="fa-duotone fa-calculator"></i>
+        <span matListItemTitle>{{
+          'nav.pricing' | translate: { value: shop.businessCategoryMenuTitle() }
+        }}</span>
       </a>
       <mat-divider />
       <a
@@ -156,6 +158,15 @@
         <span matListItemTitle>{{ 'nav.analytics' | translate }}</span>
       </a>
       <mat-divider />
+      <a
+        mat-list-item
+        routerLinkActive="active-link"
+        routerLink="/club/members"
+        (click)="isSmallScreen() && isDrawerClose.set(true)"
+      >
+        <i matListItemIcon class="fa-duotone fa-user-group-crown"></i>
+        <span matListItemTitle>{{ 'nav.clubMembers' | translate }}</span>
+      </a>
       <a
         mat-list-item
         routerLinkActive="active-link"

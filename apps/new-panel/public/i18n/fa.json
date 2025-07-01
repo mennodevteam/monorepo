@@ -84,7 +84,7 @@
     "products": "مدیریت {{value}}",
     "categories": "دسته‌بندی‌ {{value}}",
     "costs": "هزینه‌های اضافی و تخفیف",
-    "pricing": "قیمت‌گذاری",
+    "pricing": "قیمت‌گذاری {{value}}",
     "orderSection": "سفارشات",
     "newOrder": "ثبت سفارش جدید",
     "orderList": "سفارشات",
@@ -97,7 +97,7 @@
     "dashboard": "داشبورد عملکرد فروش",
     "analytics": "آنالیتیکس",
     "materials": "انبار مواد اولیه",
-    "bom": "مواد اولیه محصولات"
+    "bom": "مواد اولیه {{value}}"
   },
   "login": {
     "title": "ورود به پنل مدیریت منوی دیجیتال"
@@ -553,5 +553,15 @@
     "cost": "هزینه تولید",
     "price": "قیمت فروش",
     "profit": "سود"
+  },
+  "pricing": {
+    "products": "محصولات",
+    "basePrice": "قیمت اصلی",
+    "costs": "هزینه‌ها",
+    "discounts": "تخفیفات",
+    "total": "قیمت نهایی",
+    "materialCost": "مواد اولیه",
+    "profit": "سود",
+    "editPrice": "ویرایش قیمت {{value}}"
   }
 }

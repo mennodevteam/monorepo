@@ -12,6 +12,7 @@ import { menuDataActivator } from './core/guards/menu.guard';
 import { HomeComponent } from './home/home.component';
 import { clubRoutes } from './club/club.routes';
 import { materialsRoutes } from './inventory/materials.routes';
+import { PricingComponent } from './pricing/pricing.component';
 
 export const appRoutes: Route[] = [
   {
@@ -31,6 +32,7 @@ export const appRoutes: Route[] = [
           { path: 'reports', children: reportRoutes },
           { path: 'menu', children: menuRoutes },
           { path: 'orders', children: orderRoutes },
+          { path: 'pricing', component: PricingComponent },
           { path: 'settings', children: settingsRoutes },
           { path: 'club', children: clubRoutes },
           { path: 'inventory', children: materialsRoutes },

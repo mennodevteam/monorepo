@@ -1,5 +1,5 @@
 <mat-toolbar class="content-toolbar">
-  <h1 fxFlex>{{ 'nav.bom' | translate }}</h1>
+  <h1 fxFlex>{{ 'nav.bom' | translate : { value: shopService.businessCategoryMenuTitle() } }}</h1>
 </mat-toolbar>
 <main p-md fxLayout="column" fxLayoutGap="16px">
   <mat-toolbar>
