@@ -104,16 +104,29 @@ export class MaterialsListComponent {
   }
 
   deleteMaterial(material: Material) {
-    this.dialog
-      .alert(
-        this.translate.instant('app.delete'),
-        this.translate.instant('app.deleteConfirmMessage', { value: material.name }),
-      )
-      .then((result) => {
-        if (result) {
-          this.materialsService.deleteMaterialMutation.mutate(material.id);
-        }
-      });
+    // Check if material has related BOMs (products)
+    const relatedProducts =
+      material.boms
+        ?.map((bom) => {
+          if (bom.variant) {
+            return `${bom.product?.title || ''} - ${bom.variant.title || ''}`;
+          }
+          return bom.product?.title;
+        })
+        .filter(Boolean) || [];
+
+    let alertMessage = this.translate.instant('app.deleteConfirmMessage', { value: material.name });
+
+    if (relatedProducts.length > 0) {
+      const relatedProductsText = relatedProducts.join('\n• ');
+      alertMessage += `\n\n${this.translate.instant('materials.relatedProductsWarning')}\n• ${relatedProductsText}`;
+    }
+
+    this.dialog.alert(this.translate.instant('app.delete'), alertMessage).then((result) => {
+      if (result) {
+        this.materialsService.deleteMaterialMutation.mutate(material.id);
+      }
+    });
   }
 
   openAdjustmentDialog(material: Material) {
