@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
 import { FormControl, FormsModule, Validators } from '@angular/forms';
 import { MaterialsService } from '../inventory/materials.service';
 import { Product, ProductVariant, Material, BillOfMaterial, ProductCategory, MenuCost } from '@menno/types';
@@ -34,6 +35,18 @@ interface CategoryItem {
   }[];
 }
 
+interface PricingItem {
+  category: ProductCategory;
+  product: Product;
+  variant?: ProductVariant;
+  boms: BillOfMaterial[];
+  costs: MenuCost[];
+  discounts: MenuCost[];
+  total: number;
+  materialCost: number;
+  profit: number;
+}
+
 @Component({
   selector: 'app-bom-list',
   standalone: true,
@@ -45,6 +58,7 @@ interface CategoryItem {
     MatButtonModule,
     MatFormFieldModule,
     MatAutocompleteModule,
+    MatSelectModule,
     FormsModule,
     SHARED,
     MatToolbarModule,
@@ -57,6 +71,7 @@ interface CategoryItem {
 })
 export class PricingComponent {
   displayedColumns: string[] = [
+    'category',
     'title',
     'basePrice',
     'costs',
@@ -74,6 +89,11 @@ export class PricingComponent {
   materials = computed<Material[]>(() => this.materialsService.materialsQuery.data() || []);
 
   searchQuery = signal('');
+  selectedCategory = signal<ProductCategory | null>(null);
+
+  categories = computed<ProductCategory[]>(() => {
+    return this.menuService.data()?.categories || [];
+  });
 
   boms = computed<BillOfMaterial[]>(() => {
     const booms: BillOfMaterial[] = [];
@@ -85,28 +105,27 @@ export class PricingComponent {
     return booms;
   });
 
-  categoryItems = computed<CategoryItem[]>(() => {
-    const result: CategoryItem[] = [];
+  pricingItems = computed<PricingItem[]>(() => {
+    const result: PricingItem[] = [];
     const categories = this.menuService.data()?.categories || [];
+    const selectedCategory = this.selectedCategory();
+    
     for (const category of categories) {
-      const items: {
-        product: Product;
-        variant?: ProductVariant;
-        boms: BillOfMaterial[];
-        costs: MenuCost[];
-        discounts: MenuCost[];
-        total: number;
-        materialCost: number;
-        profit: number;
-      }[] = [];
+      // Skip if category filter is applied and doesn't match
+      if (selectedCategory && category.id !== selectedCategory.id) {
+        continue;
+      }
+      
       const products =
         category.products?.filter((product) =>
           product.title.toLowerCase().includes(this.searchQuery().toLowerCase()),
         ) || [];
+        
       for (const product of products) {
         if (!product.variants?.length) {
           const productBoms = this.boms().filter((bom) => bom.product?.id === product.id);
-          items.push({
+          result.push({
+            category,
             product,
             boms: productBoms.filter((bom) => !!bom.variant),
             materialCost: product.variants ? 0 : this.calculateCost(productBoms),
@@ -122,7 +141,8 @@ export class PricingComponent {
             ) || [];
           for (const variant of variants) {
             const variantBoms = this.boms().filter((bom) => bom.variant?.id === variant.id);
-            items.push({
+            result.push({
+              category,
               product,
               variant,
               boms: variantBoms,
@@ -135,7 +155,6 @@ export class PricingComponent {
           }
         }
       }
-      if (items.length) result.push({ category, items });
     }
     return result;
   });
