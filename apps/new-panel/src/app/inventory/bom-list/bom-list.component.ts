@@ -52,9 +52,7 @@ export class BomListComponent {
   dialogService = inject(DialogService);
   translate = inject(TranslateService);
 
-  materials = computed<Material[]>(
-    () => this.materialsService.materialsQuery.data()?.sort((a, b) => a.name.localeCompare(b.name)) || [],
-  );
+  materials = computed<Material[]>(() => this.materialsService.materialsQuery.data() || []);
 
   searchQuery = signal('');
 

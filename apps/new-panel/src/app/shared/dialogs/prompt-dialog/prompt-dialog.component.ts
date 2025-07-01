@@ -56,7 +56,7 @@ export class PromptDialogComponent {
     for (const key in this.fields) {
       const field = this.fields[key];
       if (field.control.invalid) return;
-      if (field.control.value)
+      if (field.control.value != undefined)
         dto[key] = field.type === 'date' ? new Date(field.control.value.valueOf()) : field.control.value;
     }
     this.dialogRef.close(dto);

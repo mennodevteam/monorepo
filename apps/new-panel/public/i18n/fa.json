@@ -83,7 +83,8 @@
     "home": "خانه",
     "products": "مدیریت {{value}}",
     "categories": "دسته‌بندی‌ {{value}}",
-    "pricing": "قیمت‌گذاری و تخفیف",
+    "costs": "هزینه‌های اضافی و تخفیف",
+    "pricing": "قیمت‌گذاری",
     "orderSection": "سفارشات",
     "newOrder": "ثبت سفارش جدید",
     "orderList": "سفارشات",
@@ -95,7 +96,7 @@
     "reports": "گزارشات",
     "dashboard": "داشبورد عملکرد فروش",
     "analytics": "آنالیتیکس",
-    "materials": "مواد اولیه",
+    "materials": "انبار مواد اولیه",
     "bom": "مواد اولیه محصولات"
   },
   "login": {
