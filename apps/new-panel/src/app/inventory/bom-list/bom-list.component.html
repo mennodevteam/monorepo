@@ -1,5 +1,5 @@
 <mat-toolbar class="content-toolbar">
-  <h1 fxFlex>{{ 'nav.bom' | translate : { value: shopService.businessCategoryMenuTitle() } }}</h1>
+  <h1 fxFlex>{{ 'nav.bom' | translate: { value: shopService.businessCategoryMenuTitle() } }}</h1>
 </mat-toolbar>
 <main p-md fxLayout="column" fxLayoutGap="16px">
   <mat-toolbar>
@@ -36,7 +36,8 @@
                 @for (bom of item.boms; track bom.id) {
                   <mat-chip [matMenuTriggerFor]="menu">
                     {{ bom.material.name }}
-                    <span eng> ({{ bom.quantity | number }}{{ bom.material.unit | translate }}) </span>
+                    (<span eng>{{ bom.quantity | number }}</span
+                    >{{ 'materials.units.' + bom.material.unit | translate }})
                   </mat-chip>
                   <mat-menu #menu="matMenu">
                     <button mat-menu-item (click)="editBom(bom)">
