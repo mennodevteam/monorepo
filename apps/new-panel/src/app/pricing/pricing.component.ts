@@ -20,6 +20,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
 import { ShopService } from '../shop/shop.service';
+import { MatSortModule, Sort } from '@angular/material/sort';
 
 interface PricingItem {
   category: ProductCategory;
@@ -31,6 +32,7 @@ interface PricingItem {
   total: number;
   materialCost: number;
   profit: number;
+  profitPercentage: number;
 }
 
 @Component({
@@ -51,6 +53,7 @@ interface PricingItem {
     MatCardModule,
     MatMenuModule,
     MatInputModule,
+    MatSortModule,
   ],
   templateUrl: './pricing.component.html',
   styleUrl: './pricing.component.scss',
@@ -72,6 +75,7 @@ export class PricingComponent {
   dialogService = inject(DialogService);
   translate = inject(TranslateService);
   public shopService = inject(ShopService);
+  public sort = signal<Sort | null>(null);
 
   materials = computed<Material[]>(() => this.materialsService.materialsQuery.data() || []);
 
@@ -96,52 +100,103 @@ export class PricingComponent {
     const result: PricingItem[] = [];
     const categories = this.menuService.data()?.categories || [];
     const selectedCategory = this.selectedCategory();
-    
+
     for (const category of categories) {
       // Skip if category filter is applied and doesn't match
       if (selectedCategory && category.id !== selectedCategory.id) {
         continue;
       }
-      
-      const products =
-        category.products?.filter((product) =>
-          product.title.toLowerCase().includes(this.searchQuery().toLowerCase()),
-        ) || [];
-        
+
+      const products = category.products || [];
+
       for (const product of products) {
         if (!product.variants?.length) {
+          if (this.searchQuery() && !product.title.toLowerCase().includes(this.searchQuery().toLowerCase()))
+            continue;
+
           const productBoms = this.boms().filter((bom) => bom.product?.id === product.id);
+          const materialCost = product.variants ? 0 : this.calculateCost(productBoms);
           result.push({
             category,
             product,
             boms: productBoms.filter((bom) => !!bom.variant),
-            materialCost: product.variants ? 0 : this.calculateCost(productBoms),
+            materialCost,
             costs: product.costs?.filter((cost) => (cost.fixedCost || cost.percentageCost) > 0) || [],
             discounts: product.costs?.filter((cost) => (cost.fixedCost || cost.percentageCost) < 0) || [],
             total: Product.totalPrice(product),
-            profit: product.price - this.calculateCost(productBoms),
+            profit: materialCost ? product.price - materialCost : 0,
+            profitPercentage:
+              product.price && materialCost ? ((product.price - materialCost) / product.price) * 100 : 0,
           });
         } else {
-          const variants =
-            product.variants?.filter((variant) =>
-              variant.title.toLowerCase().includes(this.searchQuery().toLowerCase()),
-            ) || [];
+          const variants = product.variants || [];
           for (const variant of variants) {
+            if (
+              this.searchQuery() &&
+              !variant.title.toLowerCase().includes(this.searchQuery().toLowerCase()) &&
+              !product.title.toLowerCase().includes(this.searchQuery().toLowerCase())
+            )
+              continue;
+
             const variantBoms = this.boms().filter((bom) => bom.variant?.id === variant.id);
+            const materialCost = this.calculateCost(variantBoms);
             result.push({
               category,
               product,
               variant,
               boms: variantBoms,
-              materialCost: this.calculateCost(variantBoms),
+              materialCost,
               costs: product.costs?.filter((cost) => (cost.fixedCost || cost.percentageCost) > 0) || [],
               discounts: product.costs?.filter((cost) => (cost.fixedCost || cost.percentageCost) < 0) || [],
               total: Product.totalPrice(product, variant),
-              profit: variant.price - this.calculateCost(variantBoms),
+              profit: materialCost ? variant.price - materialCost : 0,
+              profitPercentage:
+                variant.price && materialCost ? ((variant.price - materialCost) / variant.price) * 100 : 0,
             });
           }
         }
       }
+    }
+
+    const sort = this.sort();
+    if (sort) {
+      result.sort((a, b) => {
+        let comparison = 0;
+        switch (sort.active) {
+          case 'title': {
+            comparison = a.product.title.localeCompare(b.product.title);
+            break;
+          }
+          case 'basePrice': {
+            const aPrice = a.variant ? a.variant.price : a.product.price;
+            const bPrice = b.variant ? b.variant.price : b.product.price;
+            comparison = aPrice - bPrice;
+            break;
+          }
+          case 'total': {
+            comparison = a.total - b.total;
+            break;
+          }
+          case 'materialCost': {
+            comparison = (a.materialCost || 0) - (b.materialCost || 0);
+            break;
+          }
+          case 'profit': {
+            comparison = (a.profit || 0) - (b.profit || 0);
+            break;
+          }
+          case 'profitPercentage': {
+            comparison = (a.profitPercentage || 0) - (b.profitPercentage || 0);
+            break;
+          }
+          default: {
+            comparison = a.product.title.localeCompare(b.product.title);
+            break;
+          }
+        }
+
+        return sort.direction === 'desc' ? -comparison : comparison;
+      });
     }
     return result;
   });
@@ -198,5 +253,9 @@ export class PricingComponent {
         this.menuService.saveProductMutation.mutate({ id: product.id, variants });
       }
     });
+  }
+
+  onMatSortChange(sort: Sort) {
+    this.sort.set(sort);
   }
 }

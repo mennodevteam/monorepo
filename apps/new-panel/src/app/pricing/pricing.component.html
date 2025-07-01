@@ -21,7 +21,7 @@
 
   <mat-card appearance="outlined">
     <mat-card-content>
-      <table mat-table [dataSource]="pricingItems()">
+      <table mat-table [dataSource]="pricingItems()" matSort (matSortChange)="onMatSortChange($event)">
         <!-- Category Column -->
         <ng-container matColumnDef="category">
           <th mat-header-cell *matHeaderCellDef>
@@ -46,7 +46,7 @@
         </ng-container>
 
         <ng-container matColumnDef="basePrice">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
             {{ 'pricing.basePrice' | translate }}
           </th>
           <td mat-cell *matCellDef="let item">
@@ -97,19 +97,19 @@
         </ng-container>
 
         <ng-container matColumnDef="total">
-          <th mat-header-cell *matHeaderCellDef>{{ 'pricing.total' | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'pricing.total' | translate }}</th>
           <td mat-cell *matCellDef="let item" eng>
-            {{ item.total | number }}
+            {{ item.total | number : '1.0-0' }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="materialCost">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
             {{ 'pricing.materialCost' | translate }}
           </th>
           <td mat-cell *matCellDef="let item" eng>
             @if (item.materialCost) {
-              {{ item.materialCost | number }}
+              {{ item.materialCost | number : '1.0-0' }}
             } @else {
               <i class="fa-regular fa-question"></i>
             }
@@ -117,13 +117,13 @@
         </ng-container>
 
         <ng-container matColumnDef="profit">
-          <th mat-header-cell *matHeaderCellDef>{{ 'pricing.profit' | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'pricing.profit' | translate }}</th>
           <td mat-cell *matCellDef="let item" eng ltr>
             @if (item.materialCost) {
               @let price = item.total;
-              @let percentage = ((price - item.materialCost) / price) * 100;
+              @let percentage = item.profitPercentage;
               <span [class.error-text]="percentage < 0" [class.success-text]="percentage > 50">
-                {{ price - item.materialCost | number }}
+                {{ price - item.materialCost | number : '1.0-0' }}
               </span>
             } @else {
               <i class="fa-regular fa-question"></i>
@@ -132,11 +132,10 @@
         </ng-container>
 
         <ng-container matColumnDef="profitPercentage">
-          <th mat-header-cell *matHeaderCellDef>{{ 'pricing.profitPercentage' | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'pricing.profitPercentage' | translate }}</th>
           <td mat-cell *matCellDef="let item" eng ltr>
             @if (item.materialCost) {
-              @let price = item.total;
-              @let percentage = ((price - item.materialCost) / price) * 100;
+              @let percentage = item.profitPercentage;
               <span [class.error-text]="percentage < 0" [class.success-text]="percentage > 50">
                 {{ percentage | number: '1.0-0' }}%
               </span>
