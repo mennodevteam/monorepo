@@ -69,6 +69,18 @@
       <mat-datepicker-toggle matSuffix [for]="lastOrderPicker"></mat-datepicker-toggle>
       <mat-date-range-picker #lastOrderPicker></mat-date-range-picker>
     </mat-form-field>
+
+    <mat-label>
+      {{ 'members.starRange' | translate }}: {{ filterForm.value.fromStar }} - {{ filterForm.value.toStar }}
+    </mat-label>
+    <div fxLayout="row" fxLayoutAlign="space-between center" eng dir="ltr">
+      0
+      <mat-slider [min]="0" [max]="5" [step]="1" showTickMarks fxFlex>
+        <input matSliderStartThumb formControlName="fromStar" />
+        <input matSliderEndThumb formControlName="toStar" />
+      </mat-slider>
+      5
+    </div>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>

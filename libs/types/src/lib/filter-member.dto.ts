@@ -27,7 +27,9 @@ export class FilterMemberV2Dto {
   joinedAtToDate?: Date;
   lastVisitFromDate?: Date;
   lastVisitToDate?: Date;
-  sortBy?: 'firstOrder' | 'lastOrder' | 'joinedAt' | 'lastVisit' | 'totalOrderCount' | 'totalOrderSum';
+  fromStar?: number;
+  toStar?: number;
+  sortBy?: 'firstOrder' | 'lastOrder' | 'joinedAt' | 'lastVisit' | 'totalOrderCount' | 'totalOrderSum' | 'star';
   sortType?: 'ASC' | 'DESC';
   skip?: number;
   take?: number;

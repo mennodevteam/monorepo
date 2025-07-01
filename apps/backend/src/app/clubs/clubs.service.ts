@@ -272,6 +272,14 @@ export class ClubsService {
       });
     }
 
+    if (dto.fromStar != undefined || dto.toStar != undefined) {
+      filteredMembers = filteredMembers.filter((m) => {
+        if (dto.fromStar != undefined && m.star < dto.fromStar) return false;
+        if (dto.toStar != undefined && m.star > dto.toStar) return false;
+        return true;
+      });
+    }
+
     if (filteredMembers.length === 0) return { data: [], totalCount: 0 };
 
     // Get last visit date for each user (MenuStat)
@@ -352,6 +360,10 @@ export class ClubsService {
           case 'totalOrderSum':
             aValue = a.totalOrderSum;
             bValue = b.totalOrderSum;
+            break;
+          case 'star':
+            aValue = a.member.star;
+            bValue = b.member.star;
             break;
           default:
             aValue = 0;

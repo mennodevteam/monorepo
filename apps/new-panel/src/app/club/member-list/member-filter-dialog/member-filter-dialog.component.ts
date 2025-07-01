@@ -9,6 +9,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SHARED } from '../../../shared';
+import { MatSliderModule } from '@angular/material/slider';
 
 @Component({
   selector: 'app-member-filter-dialog',
@@ -22,6 +23,7 @@ import { SHARED } from '../../../shared';
     MatDatepickerModule,
     MatDialogModule,
     SHARED,
+    MatSliderModule,
   ],
   templateUrl: './member-filter-dialog.component.html',
 })
@@ -42,6 +44,8 @@ export class MemberFilterDialogComponent {
       joinedAtToDate: [data?.joinedAtToDate || null],
       lastVisitFromDate: [data?.lastVisitFromDate || null],
       lastVisitToDate: [data?.lastVisitToDate || null],
+      fromStar: [data?.fromStar || 0],
+      toStar: [data?.toStar || 5],
     });
   }
 

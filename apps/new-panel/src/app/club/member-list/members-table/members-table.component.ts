@@ -35,6 +35,7 @@ export class MembersTableComponent {
     'lastOrderTime',
     'totalOrderCount',
     'totalOrderSum',
+    'star',
   ];
 
   // constructor() {

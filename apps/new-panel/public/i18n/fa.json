@@ -515,7 +515,8 @@
     "joinedAtDateRange": "بازه تاریخ عضویت",
     "lastVisitDateRange": "بازه آخرین بازدید",
     "startDate": "تاریخ شروع",
-    "endDate": "تاریخ پایان"
+    "endDate": "تاریخ پایان",
+    "starRange": "بازه ستاره"
   },
   "membersTable": {
     "fullName": "نام",
@@ -525,7 +526,8 @@
     "lastOrderTime": "آخرین سفارش",
     "totalOrderCount": "تعداد سفارش",
     "totalOrderSum": "جمع سفارش",
-    "lastVisitDate": "آخرین بازدید"
+    "lastVisitDate": "آخرین بازدید",
+    "star": "ستاره"
   },
   "materials": {
     "title": "مواد اولیه",
