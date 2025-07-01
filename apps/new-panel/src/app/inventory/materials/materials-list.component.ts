@@ -1,6 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { FormControl, FormsModule } from '@angular/forms';
-import { InventoryTransactionType, Material, MaterialUnit } from '@menno/types';
+import { FormControl, FormsModule, Validators } from '@angular/forms';
+import { CostUpdateStrategy, InventoryTransactionType, Material, MaterialUnit } from '@menno/types';
 import { MaterialsService } from '../materials.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PromptFields } from '../../shared/dialogs/prompt-dialog/prompt-dialog.component';
@@ -31,7 +31,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   styleUrls: ['./materials-list.component.scss'],
 })
 export class MaterialsListComponent {
-  displayedColumns = ['name', 'stock', 'averageCost', 'actions'];
+  displayedColumns = ['name', 'stock', 'cost', 'actions'];
   searchQuery = signal('');
 
   private dialog = inject(DialogService);
@@ -77,12 +77,12 @@ export class MaterialsListComponent {
         eng: true,
         control: new FormControl(material?.stock ?? 0),
       },
-      averageCost: {
-        label: this.translate.instant('materials.averageCost'),
+      cost: {
+        label: this.translate.instant('materials.cost'),
         type: 'number',
         ltr: true,
         eng: true,
-        control: new FormControl(material?.averageCost),
+        control: new FormControl(material?.cost),
       },
     };
 
@@ -139,29 +139,42 @@ export class MaterialsListComponent {
 
   openPurchaseDialog(material: Material) {
     this.dialog
-      .prompt(
-        this.translate.instant('materials.purchase'),
-        {
-          quantity: {
-            label: this.translate.instant('materials.quantity'),
-            type: 'number',
-            ltr: true,
-            eng: true,
-            control: new FormControl(0),
-            hint: this.translate.instant('materials.units.' + material.unit),
-          },
-          unitPrice: {
-            label: this.translate.instant('materials.unitPrice'),
-            type: 'number',
-            ltr: true,
-            eng: true,
-            control: new FormControl(material.averageCost),
-          },
+      .prompt(this.translate.instant('materials.purchase'), {
+        quantity: {
+          label: this.translate.instant('materials.quantity'),
+          type: 'number',
+          ltr: true,
+          eng: true,
+          control: new FormControl(1, [Validators.required, Validators.min(0)]),
+          hint: this.translate.instant('materials.units.' + material.unit),
         },
-        {
-          description: this.translate.instant('materials.averageCostHint'),
+        unitPrice: {
+          label: this.translate.instant('materials.unitPrice'),
+          type: 'number',
+          ltr: true,
+          eng: true,
+          control: new FormControl(material.cost),
         },
-      )
+        costUpdateStrategy: {
+          label: this.translate.instant('materials.costUpdateStrategy.title'),
+          type: 'select',
+          options: [
+            {
+              text: this.translate.instant('materials.costUpdateStrategy.' + CostUpdateStrategy.Average),
+              value: CostUpdateStrategy.Average,
+            },
+            {
+              text: this.translate.instant('materials.costUpdateStrategy.' + CostUpdateStrategy.Last),
+              value: CostUpdateStrategy.Last,
+            },
+            {
+              text: this.translate.instant('materials.costUpdateStrategy.' + CostUpdateStrategy.Current),
+              value: CostUpdateStrategy.Current,
+            },
+          ],
+          control: new FormControl(CostUpdateStrategy.Last),
+        },
+      })
       .then((result) => {
         if (result) {
           this.materialsService.transactionMutation.mutate({

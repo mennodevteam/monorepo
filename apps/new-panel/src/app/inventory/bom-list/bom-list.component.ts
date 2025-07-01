@@ -114,8 +114,8 @@ export class BomListComponent {
   });
 
   calculateCost(boms: BillOfMaterial[]): number | null {
-    if (boms.length === 0 || boms.some((bom) => bom.material.averageCost == null)) return null;
-    return boms.reduce((acc, bom) => acc + bom.quantity * (bom.material.averageCost || 0), 0);
+    if (boms.length === 0 || boms.some((bom) => bom.material.cost == null)) return null;
+    return boms.reduce((acc, bom) => acc + bom.quantity * (bom.material.cost || 0), 0);
   }
 
   addBom(product: Product, variant?: ProductVariant): void {

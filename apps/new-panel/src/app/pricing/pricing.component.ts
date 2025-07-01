@@ -141,8 +141,8 @@ export class PricingComponent {
   });
 
   calculateCost(boms: BillOfMaterial[]): number {
-    if (boms.length === 0 || boms.some((bom) => bom.material.averageCost == null)) return 0;
-    return boms.reduce((acc, bom) => acc + bom.quantity * (bom.material.averageCost || 0), 0);
+    if (boms.length === 0 || boms.some((bom) => bom.material.cost == null)) return 0;
+    return boms.reduce((acc, bom) => acc + bom.quantity * (bom.material.cost || 0), 0);
   }
 
   editPrice(item: { product: Product; variant?: ProductVariant }): void {

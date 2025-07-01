@@ -16,12 +16,18 @@ export enum MaterialUnit {
   Ml = 'ml',
 }
 
+export enum CostUpdateStrategy {
+  Average = 'average',
+  Last = 'last',
+  Current = 'current',
+}
+
 export class Material {
   id: string;
   name: string;
   stock: number;
   unit: MaterialUnit;
-  averageCost?: number;
+  cost?: number;
   boms: BillOfMaterial[];
   shop: Shop;
   createdAt: Date;
@@ -33,7 +39,7 @@ export class InventoryTransaction {
   type: InventoryTransactionType;
   quantity: number;
   unitPrice?: number;
-  avgCostCalculation?: boolean;
+  costUpdateStrategy?: CostUpdateStrategy;
   createdAt: Date;
   note?: string;
   shop: Shop;

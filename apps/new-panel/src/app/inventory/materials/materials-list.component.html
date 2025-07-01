@@ -32,11 +32,11 @@
 
           <!-- Average Cost Column -->
 
-          <ng-container matColumnDef="averageCost">
-            <th mat-header-cell *matHeaderCellDef>{{ 'materials.averageCost' | translate }}</th>
+          <ng-container matColumnDef="cost">
+            <th mat-header-cell *matHeaderCellDef>{{ 'materials.cost' | translate }}</th>
             <td mat-cell *matCellDef="let element">
-              @if (element.averageCost) {
-                {{ element.averageCost | number | menuCurrency }}
+              @if (element.cost) {
+                {{ element.cost | number | menuCurrency }}
               }
             </td>
           </ng-container>

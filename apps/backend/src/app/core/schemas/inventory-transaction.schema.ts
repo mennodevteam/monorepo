@@ -1,5 +1,5 @@
 import { EntitySchema } from 'typeorm';
-import { InventoryTransaction, InventoryTransactionType } from '@menno/types';
+import { CostUpdateStrategy, InventoryTransaction, InventoryTransactionType } from '@menno/types';
 
 export const InventoryTransactionSchema = new EntitySchema<InventoryTransaction>({
   name: 'InventoryTransaction',
@@ -9,6 +9,7 @@ export const InventoryTransactionSchema = new EntitySchema<InventoryTransaction>
     type: { type: 'enum', enum: InventoryTransactionType },
     quantity: { type: Number },
     unitPrice: { type: Number, nullable: true },
+    costUpdateStrategy: { type: 'enum', enum: CostUpdateStrategy, default: CostUpdateStrategy.Last },
     note: { type: String, nullable: true },
     createdAt: { type: 'timestamptz', createDate: true },
   },

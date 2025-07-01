@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { InventoryTransaction, InventoryTransactionType, Material } from '@menno/types';
+import { CostUpdateStrategy, InventoryTransaction, InventoryTransactionType, Material } from '@menno/types';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 import { AuthService } from '../auth/auth.service';
@@ -47,8 +47,13 @@ export class MaterialsController {
     } else if (data.type === InventoryTransactionType.Purchase) {
       await this.materialRepository.update(data.material.id, {
         stock: () => `stock + ${data.quantity}`,
-        averageCost: () =>
-          `CASE WHEN averageCost IS NULL THEN ${data.unitPrice} ELSE ((stock * averageCost + ${data.quantity} * ${data.unitPrice}) / (stock + ${data.quantity})) END`,
+        cost: () => {
+          if (data.unitPrice && data.costUpdateStrategy === CostUpdateStrategy.Last)
+            return data.unitPrice.toString();
+          if (data.unitPrice && data.costUpdateStrategy === CostUpdateStrategy.Average)
+            return `CASE WHEN cost IS NULL THEN ${data.unitPrice} ELSE ((stock * cost + ${data.quantity} * ${data.unitPrice}) / (stock + ${data.quantity})) END`;
+          return 'cost';
+        },
       });
     } else if (data.type === InventoryTransactionType.Adjustment) {
       await this.materialRepository.update(data.material.id, { stock: data.quantity });
