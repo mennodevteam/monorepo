@@ -1,0 +1,28 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>
+      <i class="fa-solid fa-calendar-heart fa-xl"></i>
+      <span spacer-sm></span>
+      {{ 'home.plan.title' | translate }}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="form-theme">
+    <div fxLayout="column" fxLayoutAlign="center center">
+      <span class="big-days">{{ remainingDays() | number: '1.0-0' }}</span>
+      {{ 'home.plan.remainDays' | translate }}
+    </div>
+    @if (remainingDays() < 8) {
+      <br />
+      <mat-card class="error" appearance="outlined">
+        <mat-card-content>{{ 'home.plan.expireWarning' | translate }}</mat-card-content>
+      </mat-card>
+      <br />
+    }
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-actions>
+    <button mat-button color="primary" (click)="buyPlan()">
+      {{ 'home.plan.buy' | translate }}
+    </button>
+  </mat-card-actions>
+</mat-card> 

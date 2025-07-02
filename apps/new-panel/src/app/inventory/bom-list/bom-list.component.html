@@ -28,29 +28,57 @@
           <ng-container matColumnDef="materials">
             <th mat-header-cell *matHeaderCellDef>{{ 'materials.title' | translate }}</th>
             <td mat-cell *matCellDef="let item">
-              <mat-chip-set>
-                <mat-chip (click)="addBom(item.product, item.variant)">
-                  <i class="fa-regular fa-plus"></i>
-                  {{ 'materials.add' | translate }}
-                </mat-chip>
-                @for (bom of item.boms; track bom.id) {
-                  <mat-chip [matMenuTriggerFor]="menu">
-                    {{ bom.material.name }}
-                    (<span eng>{{ bom.quantity | number }}</span
-                    >{{ 'materials.units.' + bom.material.unit | translate }})
-                  </mat-chip>
-                  <mat-menu #menu="matMenu">
-                    <button mat-menu-item (click)="editBom(bom)">
-                      <i class="fa-regular fa-pen-to-square"></i>
-                      {{ 'app.edit' | translate }}
-                    </button>
-                    <button mat-menu-item (click)="removeBom(bom)">
-                      <i class="fa-regular fa-trash-can"></i>
-                      {{ 'app.remove' | translate }}
-                    </button>
-                  </mat-menu>
+              <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-chip-set>
+                  @for (bom of item.boms; track bom.id) {
+                    <mat-chip [matMenuTriggerFor]="menu">
+                      {{ bom.material.name }}
+                      (<span eng>{{ bom.quantity | number }}</span
+                      >{{ 'materials.units.' + bom.material.unit | translate }})
+                    </mat-chip>
+                    <mat-menu #menu="matMenu">
+                      <button mat-menu-item (click)="editBom(bom)">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                        {{ 'app.edit' | translate }}
+                      </button>
+                      <button mat-menu-item (click)="removeBom(bom)">
+                        <i class="fa-regular fa-trash-can"></i>
+                        {{ 'app.remove' | translate }}
+                      </button>
+                    </mat-menu>
+                  }
+                </mat-chip-set>
+                @if (editableItem() === item) {
+                  <form>
+                    <input
+                      type="text"
+                      class="search-material-input"
+                      [(ngModel)]="searchMaterialInput"
+                      [matAutocomplete]="auto"
+                      [ngModelOptions]="{ standalone: true }"
+                      (keyup.esc)="editableItem.set(null)"
+                    />
+                    <mat-autocomplete
+                      #auto="matAutocomplete"
+                      autoActiveFirstOption
+                      (optionSelected)="selectMaterial($event.option.value)"
+                    >
+                      @for (material of filteredMaterials(); track material.id) {
+                        <mat-option [value]="material">
+                          {{ material.name }}
+                        </mat-option>
+                      }
+                    </mat-autocomplete>
+                  </form>
+                  <button mat-icon-button (click)="editableItem.set(null)">
+                    <i class="fa-regular fa-xmark"></i>
+                  </button>
+                } @else {
+                  <button mat-icon-button (click)="setEditableItem(item)">
+                    <i class="fa-regular fa-plus"></i>
+                  </button>
                 }
-              </mat-chip-set>
+              </div>
             </td>
           </ng-container>
 
@@ -68,7 +96,7 @@
           <ng-container matColumnDef="price">
             <th mat-header-cell *matHeaderCellDef style="width: 140px">{{ 'bom.price' | translate }}</th>
             <td mat-cell *matCellDef="let item">
-              {{ (item.variant || item.product).price | number : '1.0-0' | menuCurrency }}
+              {{ (item.variant || item.product).price | number: '1.0-0' | menuCurrency }}
             </td>
           </ng-container>
 

@@ -1,0 +1,15 @@
+.total-amount {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .label {
+    font-weight: 500;
+  }
+
+  .amount {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1976d2;
+  }
+}

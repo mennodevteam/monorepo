@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
@@ -22,7 +22,7 @@ import { ShopService } from '../../shop/shop.service';
 
 interface CategoryItem {
   category: ProductCategory;
-  items: { product?: Product; variant?: ProductVariant; boms: BillOfMaterial[]; cost?: number | null }[];
+  items: { product: Product; variant?: ProductVariant; boms: BillOfMaterial[]; cost?: number | null }[];
 }
 
 @Component({
@@ -42,6 +42,7 @@ interface CategoryItem {
     MatCardModule,
     MatMenuModule,
     MatInputModule,
+    MatAutocompleteModule,
   ],
   templateUrl: './bom-list.component.html',
   styleUrl: './bom-list.component.scss',
@@ -57,6 +58,20 @@ export class BomListComponent {
   materials = computed<Material[]>(() => this.materialsService.materialsQuery.data() || []);
 
   searchQuery = signal('');
+  searchMaterialInput = signal<string>('');
+  filteredMaterials = computed(() => {
+    const editableItem = this.editableItem();
+    if (editableItem) {
+      const materials = this.materials().filter(
+        (material) =>
+          !editableItem.boms.some((bom) => bom.material.id === material.id) &&
+          material.name.toLowerCase().includes(this.searchMaterialInput().toLowerCase()),
+      );
+      return materials;
+    }
+    return [];
+  });
+  editableItem = signal<CategoryItem['items'][number] | null>(null);
 
   boms = computed<BillOfMaterial[]>(() => {
     const booms: BillOfMaterial[] = [];
@@ -73,7 +88,7 @@ export class BomListComponent {
     const categories = this.menuService.data()?.categories || [];
     for (const category of categories) {
       const items: {
-        product?: Product;
+        product: Product;
         variant?: ProductVariant;
         boms: BillOfMaterial[];
         cost?: number | null;
@@ -118,7 +133,7 @@ export class BomListComponent {
     return boms.reduce((acc, bom) => acc + bom.quantity * (bom.material.cost || 0), 0);
   }
 
-  addBom(product: Product, variant?: ProductVariant): void {
+  addBom(product: Product, variant?: ProductVariant, material?: Material) {
     const fields: PromptFields = {
       material: {
         label: this.translate.instant('materials.title'),
@@ -137,14 +152,21 @@ export class BomListComponent {
         control: new FormControl(1, [Validators.required, Validators.min(0)]),
       },
     };
-    this.dialogService.prompt(this.translate.instant('materials.add'), fields).then((result) => {
-      this.materialsService.saveBomMutation.mutate({
-        product: product ? ({ id: product.id } as Product) : undefined,
-        variant: variant ? ({ id: variant.id } as ProductVariant) : undefined,
-        material: result.material,
-        quantity: result.quantity,
+
+    if (material) {
+      delete fields['material'];
+    }
+    this.dialogService
+      .prompt(material ? material.name : this.translate.instant('materials.add'), fields)
+      .then((result) => {
+        if (!result) return;
+        this.materialsService.saveBomMutation.mutate({
+          product: product ? ({ id: product.id } as Product) : undefined,
+          variant: variant ? ({ id: variant.id } as ProductVariant) : undefined,
+          material: material ?? result.material,
+          quantity: result.quantity,
+        });
       });
-    });
   }
 
   editBom(bom: BillOfMaterial): void {
@@ -159,6 +181,7 @@ export class BomListComponent {
       },
     };
     this.dialogService.prompt(this.translate.instant(bom.material.name), fields).then((result) => {
+      if (!result) return;
       this.materialsService.saveBomMutation.mutate({
         id: bom.id,
         quantity: result.quantity,
@@ -168,5 +191,22 @@ export class BomListComponent {
 
   removeBom(bom: BillOfMaterial): void {
     this.materialsService.deleteBomMutation.mutate(bom.id);
+  }
+
+  setEditableItem(item: CategoryItem['items'][number]): void {
+    this.searchMaterialInput.set('');
+    this.editableItem.set(item);
+    setTimeout(() => {
+      document.querySelector<HTMLInputElement>('.search-material-input')?.focus();
+    }, 300);
+  }
+
+  selectMaterial(material: Material): void {
+    const item = this.editableItem();
+    if (item) {
+      this.editableItem.set(null);
+      this.searchMaterialInput.set('');
+      this.addBom(item.product, item.variant, material);
+    }
   }
 }

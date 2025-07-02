@@ -142,6 +142,37 @@ export class PaymentsController {
   }
 
   @Roles(UserRole.Panel)
+  @Get('buyDays/:amount')
+  async buyDays(@LoginUser() user: AuthPayload, @Req() req: Request, @Param('amount') amount: string) {
+    const shop: Shop = await this.auth.getPanelUserShop(user, ['plugins']);
+    const defaultGateway = await this.defaultGateway;
+    const userData = await this.auth.getUserData(user);
+
+    const expiredAt = new Date(shop.plugins.expiredAt);
+    expiredAt.setDate(expiredAt.getDate() + Number(amount));
+    expiredAt.setHours(23, 59, 59);
+
+    const price = Number(amount) * 60000;
+
+    return this.getRedirectLink(
+      defaultGateway.id,
+      Number(price),
+      {
+        buyDays: {
+          days: Number(amount),
+          expiredAt,
+          shopId: shop.id,
+          pluginId: shop.plugins.id,
+        },
+      },
+      `خرید ماژول روزانه مجموعه ${shop.title}`,
+      userData,
+      shop.id,
+      req.headers.origin,
+    );
+  }
+
+  @Roles(UserRole.Panel)
   @Get('chargeSmsAccount/:amount')
   async chargeSmsAccount(
     @LoginUser() user: AuthPayload,
@@ -302,6 +333,14 @@ export class PaymentsController {
           renewAt: new Date(),
         });
         this.redis.updateShop(payment.details.extendPlugin.shopId);
+        const redirectUrl = `${payment.appReturnUrl}`;
+        return res.redirect(redirectUrl);
+      } else if (payment.details.buyDays) {
+        await this.shopPluginsRepo.update(payment.details.buyDays.pluginId, {
+          plugins: [Plugin.Menu, Plugin.Ordering, Plugin.Club],
+          expiredAt: new Date(payment.details.buyDays.expiredAt),
+        });
+        this.redis.updateShop(payment.details.buyDays.shopId);
         const redirectUrl = `${payment.appReturnUrl}`;
         return res.redirect(redirectUrl);
       }

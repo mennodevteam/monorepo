@@ -16,7 +16,7 @@ export class MaterialsService {
   public materialsQuery = injectQuery(() => ({
     queryKey: ['materials'],
     queryFn: () => lastValueFrom(this.http.get<Material[]>(this.baseUrl)),
-    select: (data) => data?.sort((a, b) => a.name.localeCompare(b.name)),
+    select: (data: Material[]) => data?.sort((a: Material, b: Material) => a.name.localeCompare(b.name)),
   }));
 
   public saveMaterialMutation = injectMutation(() => ({
