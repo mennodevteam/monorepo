@@ -47,7 +47,7 @@ interface CategoryItem {
   styleUrl: './bom-list.component.scss',
 })
 export class BomListComponent {
-  displayedColumns: string[] = ['title', 'materials'];
+  displayedColumns: string[] = ['title', 'materials', 'cost'];
   menuService = inject(MenuService);
   materialsService = inject(MaterialsService);
   dialogService = inject(DialogService);
@@ -114,7 +114,7 @@ export class BomListComponent {
   });
 
   calculateCost(boms: BillOfMaterial[]): number | null {
-    if (boms.length === 0 || boms.some((bom) => bom.material.cost == null)) return null;
+    if (boms.length === 0 || boms.some((bom) => !bom.material.cost)) return null;
     return boms.reduce((acc, bom) => acc + bom.quantity * (bom.material.cost || 0), 0);
   }
 

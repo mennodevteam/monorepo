@@ -68,7 +68,7 @@
           <ng-container matColumnDef="price">
             <th mat-header-cell *matHeaderCellDef style="width: 140px">{{ 'bom.price' | translate }}</th>
             <td mat-cell *matCellDef="let item">
-              {{ (item.variant || item.product).price | number | menuCurrency }}
+              {{ (item.variant || item.product).price | number : '1.0-0' | menuCurrency }}
             </td>
           </ng-container>
 
