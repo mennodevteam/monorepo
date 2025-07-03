@@ -64,7 +64,7 @@
                       (optionSelected)="selectMaterial($event.option.value)"
                     >
                       @for (material of filteredMaterials(); track material.id) {
-                        <mat-option [value]="material">
+                        <mat-option [value]="material.id">
                           {{ material.name }}
                         </mat-option>
                       }

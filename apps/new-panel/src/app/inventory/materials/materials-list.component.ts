@@ -132,7 +132,7 @@ export class MaterialsListComponent {
   openAdjustmentDialog(material: Material) {
     this.dialog
       .prompt(this.translate.instant('materials.adjustment'), {
-        stock: {
+        quantity: {
           label: this.translate.instant('materials.stock'),
           type: 'number',
           ltr: true,

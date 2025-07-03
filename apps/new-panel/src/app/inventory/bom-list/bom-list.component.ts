@@ -85,6 +85,7 @@ export class BomListComponent {
 
   categoryItems = computed<CategoryItem[]>(() => {
     const result: CategoryItem[] = [];
+    const boms = this.boms();
     const categories = this.menuService.data()?.categories || [];
     for (const category of categories) {
       const items: {
@@ -95,19 +96,19 @@ export class BomListComponent {
       }[] = [];
       for (const product of category.products || []) {
         if (!product.variants?.length) {
-          const productBoms = this.boms().filter((bom) => bom.product?.id === product.id);
+          const productBoms = boms.filter((bom) => bom.product?.id === product.id);
           if (this.searchQuery() && !product.title.toLowerCase().includes(this.searchQuery().toLowerCase()))
             continue;
 
           items.push({
             product,
-            boms: productBoms.filter((bom) => !!bom.variant),
-            cost: product.variants ? null : this.calculateCost(productBoms),
+            boms: productBoms.filter((bom) => !bom.variant),
+            cost: product.variants?.length ? null : this.calculateCost(productBoms),
           });
         } else {
           const variants = product.variants || [];
           for (const variant of variants) {
-            const variantBoms = this.boms().filter((bom) => bom.variant?.id === variant.id);
+            const variantBoms = boms.filter((bom) => bom.variant?.id === variant.id);
             if (
               this.searchQuery() &&
               !variant.title.toLowerCase().includes(this.searchQuery().toLowerCase()) &&
@@ -160,12 +161,13 @@ export class BomListComponent {
       .prompt(material ? material.name : this.translate.instant('materials.add'), fields)
       .then((result) => {
         if (!result) return;
-        this.materialsService.saveBomMutation.mutate({
+        const bomDto = {
           product: product ? ({ id: product.id } as Product) : undefined,
           variant: variant ? ({ id: variant.id } as ProductVariant) : undefined,
           material: material ?? result.material,
           quantity: result.quantity,
-        });
+        } as BillOfMaterial;
+        this.materialsService.saveBomMutation.mutate(bomDto);
       });
   }
 
@@ -201,12 +203,16 @@ export class BomListComponent {
     }, 300);
   }
 
-  selectMaterial(material: Material): void {
+  selectMaterial(materialId: string): void {
     const item = this.editableItem();
     if (item) {
       this.editableItem.set(null);
       this.searchMaterialInput.set('');
-      this.addBom(item.product, item.variant, material);
+      this.addBom(
+        item.product,
+        item.variant,
+        this.materials().find((material) => material.id === materialId),
+      );
     }
   }
 }

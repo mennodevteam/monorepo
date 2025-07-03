@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpStatusCode } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { User } from '@menno/types';
@@ -21,10 +21,17 @@ export class AuthService {
   }
 
   async revalidateUserInfo() {
-    const user = await lastValueFrom(this.client.get<User>(`/auth/info`));
-    if (user) this.userInfo = user;
-    this.userSignal.set(user);
-    this.userLoadedResolver();
+    try {
+      if (!this.getToken()) return;
+      const user = await lastValueFrom(this.client.get<User>(`/auth/info`));
+      if (user) this.userInfo = user;
+      this.userSignal.set(user);
+      this.userLoadedResolver();
+    } catch (error: any) {
+      if (error.status === HttpStatusCode.NotFound || error.status === HttpStatusCode.Forbidden) {
+        this.logout();
+      }
+    }
   }
 
   async login(username: string, password: string) {

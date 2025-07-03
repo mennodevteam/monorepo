@@ -4,27 +4,29 @@
     <i class="fa-solid fa-download"></i>
     {{ 'materials.downloadSample' | translate }}
   </button>
-  <input
-    type="file"
-    accept=".csv"
-    style="display: none"
-    #fileInput
-    (change)="onFileSelected($event)"
-  />
-  <button mat-stroked-button (click)="fileInput.click()" [disabled]="materialsService.uploadMaterialsMutation.isPending()">
+  <input type="file" accept=".csv" style="display: none" #fileInput (change)="onFileSelected($event)" />
+  <button
+    mat-stroked-button
+    (click)="fileInput.click()"
+    [disabled]="materialsService.uploadMaterialsMutation.isPending()"
+  >
     <i class="fa-solid fa-upload"></i>
-    {{ materialsService.uploadMaterialsMutation.isPending() ? 'app.uploading' : 'materials.uploadCsv' | translate }}
+    {{
+      materialsService.uploadMaterialsMutation.isPending()
+        ? 'app.uploading'
+        : ('materials.uploadCsv' | translate)
+    }}
   </button>
   <button mat-flat-button color="primary" (click)="openMaterialDialog()">{{ 'app.add' | translate }}</button>
 </mat-toolbar>
 <main p-md>
-  <mat-toolbar>
-    <mat-form-field appearance="outline">
-      <mat-label>{{ 'app.search' | translate }}</mat-label>
-      <input matInput [(ngModel)]="searchQuery" type="search" />
-    </mat-form-field>
-  </mat-toolbar>
   @if (materials().length > 0) {
+    <mat-toolbar>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'app.search' | translate }}</mat-label>
+        <input matInput [(ngModel)]="searchQuery" type="search" />
+      </mat-form-field>
+    </mat-toolbar>
     <mat-card appearance="outlined">
       <mat-card-content>
         <table mat-table [dataSource]="materials()">
@@ -61,16 +63,16 @@
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element">
               <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
-                <button mat-stroked-button (click)="openPurchaseDialog(element)">
+                <button mat-stroked-button [disabled]="!element.id" (click)="openPurchaseDialog(element)">
                   {{ 'materials.purchase' | translate }}
                 </button>
-                <button mat-stroked-button (click)="openAdjustmentDialog(element)">
+                <button mat-stroked-button [disabled]="!element.id" (click)="openAdjustmentDialog(element)">
                   {{ 'materials.adjustment' | translate }}
                 </button>
-                <button mat-icon-button (click)="openEditDialog(element)">
+                <button mat-icon-button [disabled]="!element.id" (click)="openEditDialog(element)">
                   <i class="fa-regular fa-pen-to-square"></i>
                 </button>
-                <button mat-icon-button color="warn" (click)="deleteMaterial(element)">
+                <button mat-icon-button color="warn" [disabled]="!element.id" (click)="deleteMaterial(element)">
                   <i class="fa-regular fa-trash-can"></i>
                 </button>
               </div>
