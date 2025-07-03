@@ -84,7 +84,7 @@ export class AppConfigComponent implements FormComponent {
       const hasCoversEdited = this.form.controls.shop.dirty;
       const { shop, ...appConfig } = this.form.getRawValue();
       this.form.markAsPristine();
-      if (shop.coverImage.file) {
+      if (shop.coverImage?.file) {
         const snackRef = this.snack.open(this.t.instant('app.uploading'), '', { duration: 5000 });
         const savedFile = await this.fileService.upload(shop.coverImage.file, 'coverImage');
         if (savedFile) {
@@ -93,7 +93,7 @@ export class AppConfigComponent implements FormComponent {
         }
         snackRef.dismiss();
       }
-      if (shop.verticalCoverImage.file) {
+      if (shop.verticalCoverImage?.file) {
         const snackRef = this.snack.open(this.t.instant('app.uploading'), '', { duration: 5000 });
         const savedFile = await this.fileService.upload(shop.verticalCoverImage.file, 'verticalCoverImage');
         if (savedFile) {

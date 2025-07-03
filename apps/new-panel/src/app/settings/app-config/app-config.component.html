@@ -1,23 +1,20 @@
+<mat-toolbar class="content-toolbar" fxLayoutGap="8px">
+  <h1 fxFlex>{{ 'settings.appConfig' | translate }}</h1>
+  <button mat-stroked-button (click)="openApp()">
+    {{ 'appConfig.openApp' | translate }}
+  </button>
+  <button mat-flat-button (click)="save()" [disabled]="!form.dirty">
+    {{ 'app.save' | translate }}
+  </button>
+</mat-toolbar>
+
 <form [formGroup]="form">
-  <main p-md w-md>
-    <mat-toolbar fxLayoutGap="8px">
-      <h1>{{ 'settings.appConfig' | translate }}</h1>
-      <span fxFlex></span>
-      <button mat-stroked-button (click)="openApp()">
-        {{ 'appConfig.openApp' | translate }}
-      </button>
-      <button mat-flat-button (click)="save()" [disabled]="!form.dirty">
-        {{ 'app.save' | translate }}
-      </button>
-    </mat-toolbar>
-    <mat-divider />
-    <br />
-    <div fxLayout="column">
-      <b>
-        {{ 'appConfig.homeSection' | translate }}
-      </b>
-      <div fxLayout="row" fxLayout.sm="column">
-        <div fxFlex>
+  <main p-md w-md fxLayout="column" fxLayoutGap="16px">
+    <!-- Home Section -->
+    <mat-card appearance="outlined">
+      <mat-card-content fxLayout="row">
+        <div fxFlex fxLayout="column">
+          <h3>{{ 'appConfig.homeSection' | translate }}</h3>
           <p>
             {{ 'appConfig.homeDescription' | translate }}
           </p>
@@ -56,15 +53,14 @@
             }
           }
         </div>
-      </div>
+      </mat-card-content>
+    </mat-card>
 
-      <br />
-      <b>
-        {{ 'appConfig.themeSection' | translate }}
-      </b>
-
-      <div fxLayout="row" fxLayout.sm="column">
-        <div fxFlex>
+    <!-- Theme Section -->
+    <mat-card appearance="outlined">
+      <mat-card-content fxLayout="row">
+        <div fxFlex fxLayout="column">
+          <h3>{{ 'appConfig.themeSection' | translate }}</h3>
           <p>
             {{ 'appConfig.themeSectionDescription' | translate }}
           </p>
@@ -86,13 +82,14 @@
             <img src="images/screenshots/menu.jpg" />
           }
         </div>
-      </div>
+      </mat-card-content>
+    </mat-card>
 
-      <br />
-      <b> {{ 'appConfig.menuSection' | translate }} {{ shopService.businessCategoryMenuTitle() }} </b>
-
-      <div fxLayout="row" fxLayout.sm="column">
-        <div fxFlex>
+    <!-- Menu Section -->
+    <mat-card appearance="outlined">
+      <mat-card-content fxLayout="row">
+        <div fxFlex fxLayout="column">
+          <h3>{{ 'appConfig.menuSection' | translate }} {{ shopService.businessCategoryMenuTitle() }}</h3>
           <mat-radio-group formControlName="menuViewType" fxLayout="column">
             <mat-radio-button [value]="MenuViewType.Grid">{{
               'appConfig.menuViewTypeGrid' | translate
@@ -108,6 +105,7 @@
             }}</mat-radio-button>
           </mat-radio-group>
         </div>
+
         <div class="image-section" fxFlex="none">
           @switch (form.value.menuViewType) {
             @case (MenuViewType.Card) {
@@ -124,15 +122,14 @@
             }
           }
         </div>
-      </div>
-      <br />
+      </mat-card-content>
+    </mat-card>
 
-      <b>
-        {{ 'appConfig.horizontalCover' | translate }}
-      </b>
-
-      <div fxLayout="row" fxLayout.sm="column">
+    <!-- Horizontal Cover Section -->
+    <mat-card appearance="outlined">
+      <mat-card-content fxLayout="row">
         <div fxFlex>
+          <h3>{{ 'appConfig.horizontalCover' | translate }}</h3>
           <p>
             {{ 'appConfig.horizontalCoverDescription' | translate }}
           </p>
@@ -151,7 +148,7 @@
         <div class="image-section" fxFlex="none">
           <img src="images/screenshots/welcome.jpg" />
         </div>
-      </div>
-    </div>
+      </mat-card-content>
+    </mat-card>
   </main>
 </form>
