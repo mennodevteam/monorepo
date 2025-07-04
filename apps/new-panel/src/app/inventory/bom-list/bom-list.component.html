@@ -48,7 +48,7 @@
                     </mat-menu>
                   }
                 </mat-chip-set>
-                @if (editableItem() === item) {
+                @if (editableItem()?.product?.id === item.product?.id && editableItem()?.variant?.id === item.variant?.id) {
                   <form>
                     <input
                       type="text"

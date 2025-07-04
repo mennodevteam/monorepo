@@ -20,7 +20,8 @@
   <button mat-flat-button color="primary" (click)="openMaterialDialog()">{{ 'app.add' | translate }}</button>
 </mat-toolbar>
 <main p-md>
-  @if (materials().length > 0) {
+  @let queryData = materialsService.materialsQuery.data();
+  @if (queryData && queryData.length > 0) {
     <mat-toolbar>
       <mat-form-field appearance="outline">
         <mat-label>{{ 'app.search' | translate }}</mat-label>
@@ -72,7 +73,12 @@
                 <button mat-icon-button [disabled]="!element.id" (click)="openEditDialog(element)">
                   <i class="fa-regular fa-pen-to-square"></i>
                 </button>
-                <button mat-icon-button color="warn" [disabled]="!element.id" (click)="deleteMaterial(element)">
+                <button
+                  mat-icon-button
+                  color="warn"
+                  [disabled]="!element.id"
+                  (click)="deleteMaterial(element)"
+                >
                   <i class="fa-regular fa-trash-can"></i>
                 </button>
               </div>

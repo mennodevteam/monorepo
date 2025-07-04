@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, viewChild } from '@angular/core';
+import { Component, computed, effect, inject, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
@@ -130,7 +130,7 @@ export class BomListComponent {
   });
 
   calculateCost(boms: BillOfMaterial[]): number | null {
-    if (boms.length === 0 || boms.some((bom) => !bom.material.cost)) return null;
+    if (boms.length === 0) return null;
     return boms.reduce((acc, bom) => acc + bom.quantity * (bom.material.cost || 0), 0);
   }
 
