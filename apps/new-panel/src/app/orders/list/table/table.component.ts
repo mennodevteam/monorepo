@@ -20,6 +20,7 @@ export class TableComponent {
   private readonly shopService = inject(ShopService);
   orders = input<Order[]>();
   stateChange = output<{ order: Order; state: OrderState }>();
+  delete = output<Order>();
   displayedColumns = this.shopService.isRestaurantOrCoffeeShop() ? RESTAURANT_COLS : COLS;
   User = User;
   OrderType = OrderType;

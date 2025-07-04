@@ -552,7 +552,7 @@ export class OrdersService {
         state: OrderState.Canceled,
         details: order.details,
       });
-      await this.ordersRepo.softDelete(orderId);
+      await this.ordersRepo.softRemove(order);
       for (const item of order.items) {
         await this.orderItemsRepo.softRemove({ id: item.id });
       }

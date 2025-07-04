@@ -75,7 +75,7 @@
       <button mat-icon-button routerLink="/orders/edit/{{ order.id }}" stopPropagation>
         <i class="fa-regular fa-edit"></i>
       </button>
-      <button mat-icon-button>
+      <button mat-icon-button (click)="delete.emit(order)" stopPropagation>
         <i class="fa-regular fa-trash-alt"></i>
       </button>
     </td>

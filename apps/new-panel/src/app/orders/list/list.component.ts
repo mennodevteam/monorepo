@@ -19,6 +19,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { SearchMemberAutocompleteComponent } from '../../shared/components/search-member-autocomplete/search-member-autocomplete.component';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { CardComponent } from './card/card.component';
+import { DialogService } from '../../core/services/dialog.service';
+import { TranslateService } from '@ngx-translate/core';
 
 const DEFAULT_STATES = [
   OrderState.Pending,
@@ -55,7 +57,9 @@ export class OrderListComponent {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private ordersService = inject(OrdersService);
+  private dialog = inject(DialogService);
   private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly t = inject(TranslateService);
   DEFAULT_STATES = DEFAULT_STATES;
   private queryParams = this.route.snapshot.queryParams;
   currentPage = signal(Number(this.queryParams['page'] || 0));
@@ -115,6 +119,14 @@ export class OrderListComponent {
       state,
       customer: order.customer,
       queryKey: ['orders', this.filterDto()],
+    });
+  }
+
+  delete(order: Order) {
+    this.dialog.alert(this.t.instant('app.delete'), this.t.instant('app.deleteConfirm')).then((result) => {
+      if (result) {
+        this.ordersService.deleteMutation.mutate(order.id);
+      }
     });
   }
 }

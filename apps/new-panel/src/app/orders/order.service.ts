@@ -115,6 +115,22 @@ export class OrdersService {
     },
     onSuccess: () => {
       this.snack.open(this.t.instant('app.savedSuccessfully'), '', { duration: 2000 });
+      this.queryClient.invalidateQueries({ queryKey: ['orders'] });
+      this.queryClient.invalidateQueries({ queryKey: ['orderDetails'] });
+      this.queryClient.invalidateQueries({ queryKey: ['materials'] });
+    },
+    onError: () => {
+      this.snack.open(this.t.instant('errors.changeError'), '', { duration: 2000 });
+    },
+  }));
+
+  deleteMutation = injectMutation(() => ({
+    mutationFn: (id: string) => lastValueFrom(this.http.delete<Order>(`/orders/${id}`)),
+    onSuccess: () => {
+      this.snack.open(this.t.instant('app.deletedSuccessfully'), '', { duration: 2000 });
+      this.queryClient.invalidateQueries({ queryKey: ['orders'] });
+      this.queryClient.invalidateQueries({ queryKey: ['orderDetails'] });
+      this.queryClient.invalidateQueries({ queryKey: ['materials'] });
     },
     onError: () => {
       this.snack.open(this.t.instant('errors.changeError'), '', { duration: 2000 });

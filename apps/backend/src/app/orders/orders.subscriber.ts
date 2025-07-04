@@ -1,4 +1,7 @@
 import {
+  InventoryTransaction,
+  BillOfMaterial,
+  Material,
   Member,
   NewSmsDto,
   Order,
@@ -12,6 +15,8 @@ import {
   Status,
   User,
   WindowsLocalNotification,
+  InventoryTransactionType,
+  CostUpdateStrategy,
 } from '@menno/types';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
@@ -20,6 +25,7 @@ import {
   EventSubscriber,
   InsertEvent,
   Repository,
+  SoftRemoveEvent,
   UpdateEvent,
 } from 'typeorm';
 import { WebPushNotificationsService } from '../web-push-notifications/web-push-notifications.service';
@@ -48,6 +54,12 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     private shopsRepo: Repository<Shop>,
     @InjectRepository(WindowsLocalNotification)
     private windowsLocalNotificationRepo: Repository<WindowsLocalNotification>,
+    @InjectRepository(Material)
+    private materialRepository: Repository<Material>,
+    @InjectRepository(InventoryTransaction)
+    private inventoryTransactionRepository: Repository<InventoryTransaction>,
+    @InjectRepository(BillOfMaterial)
+    private billOfMaterialRepository: Repository<BillOfMaterial>,
     private webPush: WebPushNotificationsService,
     private printersService: PrintersService,
     private smsService: SmsService,
@@ -108,16 +120,16 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     }
     if (customer?.mobilePhone && shop.smsAccount && shop.smsAccount.charge > 0) {
       this.orderMessagesRepo
-      .find({
-        where: {
-          shop: { id: shop.id },
-          event: OrderMessageEvent.OnAdd,
-          smsTemplate: { isVerified: true },
-          status: Status.Active,
-        },
-        relations: ['smsTemplate'],
-      })
-      .then((messages) => {
+        .find({
+          where: {
+            shop: { id: shop.id },
+            event: OrderMessageEvent.OnAdd,
+            smsTemplate: { isVerified: true },
+            status: Status.Active,
+          },
+          relations: ['smsTemplate'],
+        })
+        .then((messages) => {
           if (messages.length) {
             const message = OrderMessage.find(messages, order, OrderMessageEvent.OnAdd);
             if (message) {
@@ -150,6 +162,10 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     try {
       this.appConfigSmsNewOrder(order, shop);
     } catch (error) {}
+
+    try {
+      this.materialConsumption(order, false);
+    } catch (error) {}
   }
 
   async afterUpdate(event: UpdateEvent<Order>): Promise<any> {
@@ -163,6 +179,50 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
 
       this.autoPrint(order as Order, order.shop, false);
     } catch (error) {}
+  }
+
+  async afterSoftRemove(event: SoftRemoveEvent<Order>): Promise<any> {
+    const order = await this.ordersRepo.findOne({
+      where: { id: event.entity.id },
+      relations: ['items', 'items.product', 'items.productVariant'],
+    });
+    this.materialConsumption(order, true);
+  }
+
+  private async materialConsumption(order: Order, isRestore?: boolean) {
+    const items = order.items.filter((x) => !x.isAbstract);
+    const boms = await this.billOfMaterialRepository.find({
+      where: items.map((x) => ({ product: { id: x.product.id }, variant: { id: x.productVariant.id } })),
+      relations: ['material', 'product', 'variant'],
+    });
+
+    const usedMaterials: { material: Material; quantity: number }[] = [];
+    for (const item of items) {
+      const itemBoms = boms.filter(
+        (x) => x.product.id === item.product.id && x.variant?.id == item.productVariant?.id,
+      );
+      for (const bom of itemBoms) {
+        const existingMaterial = usedMaterials.find((x) => x.material.id === bom.material.id);
+        if (existingMaterial) {
+          existingMaterial.quantity += bom.quantity * item.quantity;
+        } else {
+          usedMaterials.push({ material: bom.material, quantity: bom.quantity * item.quantity });
+        }
+      }
+    }
+
+    for (const material of usedMaterials) {
+      if (material.material.stock > 0 || isRestore) {
+        await this.materialRepository.update(material.material.id, {
+          stock: () => `stock ${isRestore ? '+' : '-'} ${material.quantity}`,
+        });
+        await this.inventoryTransactionRepository.save({
+          material: { id: material.material.id },
+          quantity: isRestore ? -material.quantity : material.quantity,
+          type: InventoryTransactionType.Consumption,
+        });
+      }
+    }
   }
 
   private async appConfigSmsNewOrder(order: Order, shop: Shop) {

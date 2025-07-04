@@ -7,7 +7,7 @@ export const MaterialSchema = new EntitySchema<Material>({
   columns: {
     id: { type: 'uuid', primary: true, generated: 'uuid' },
     name: { type: String },
-    stock: { type: Number },
+    stock: { type: 'real', default: 0 },
     unit: { type: 'enum', enum: MaterialUnit },
     cost: { type: Number, nullable: true },
     createdAt: { type: 'timestamp', createDate: true },

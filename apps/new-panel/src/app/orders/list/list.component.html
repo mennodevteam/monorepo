@@ -48,6 +48,7 @@
         <app-order-table
           [orders]="query.data()?.[0] || []"
           (stateChange)="stateChange($event.order, $event.state)"
+          (delete)="delete($event)"
         />
       }
       @if (!query.data()) {
