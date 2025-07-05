@@ -8,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormControl, FormsModule, Validators } from '@angular/forms';
 import { MaterialsService } from '../materials.service';
-import { Product, ProductVariant, Material, BillOfMaterial, ProductCategory } from '@menno/types';
+import { Product, ProductVariant, Material, BillOfMaterial, ProductCategory, Status } from '@menno/types';
 import { MenuService } from '../../menu/menu.service';
 import { SHARED } from '../../shared';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -19,6 +19,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
 import { ShopService } from '../../shop/shop.service';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
 
 interface CategoryItem {
   category: ProductCategory;
@@ -43,6 +45,8 @@ interface CategoryItem {
     MatMenuModule,
     MatInputModule,
     MatAutocompleteModule,
+    MatCheckboxModule,
+    MatSelectModule,
   ],
   templateUrl: './bom-list.component.html',
   styleUrl: './bom-list.component.scss',
@@ -59,6 +63,9 @@ export class BomListComponent {
 
   searchQuery = signal('');
   searchMaterialInput = signal<string>('');
+  showInactiveItems = signal(false);
+  selectedCategory = signal<number | null>(null);
+
   filteredMaterials = computed(() => {
     const editableItem = this.editableItem();
     if (editableItem) {
@@ -86,8 +93,11 @@ export class BomListComponent {
   categoryItems = computed<CategoryItem[]>(() => {
     const result: CategoryItem[] = [];
     const boms = this.boms();
+    const showInactiveItems = this.showInactiveItems();
+    const selectedCategory = this.selectedCategory();
     const categories = this.menuService.data()?.categories || [];
     for (const category of categories) {
+      if (selectedCategory && selectedCategory !== category.id) continue;
       const items: {
         product: Product;
         variant?: ProductVariant;
@@ -96,6 +106,7 @@ export class BomListComponent {
       }[] = [];
       for (const product of category.products || []) {
         if (!product.variants?.length) {
+          if (!showInactiveItems && product.status === Status.Inactive) continue;
           const productBoms = boms.filter((bom) => bom.product?.id === product.id);
           if (this.searchQuery() && !product.title.toLowerCase().includes(this.searchQuery().toLowerCase()))
             continue;
@@ -108,6 +119,7 @@ export class BomListComponent {
         } else {
           const variants = product.variants || [];
           for (const variant of variants) {
+            if (!showInactiveItems && variant.status === Status.Inactive) continue;
             const variantBoms = boms.filter((bom) => bom.variant?.id === variant.id);
             if (
               this.searchQuery() &&
@@ -130,7 +142,7 @@ export class BomListComponent {
   });
 
   calculateCost(boms: BillOfMaterial[]): number | null {
-    if (boms.length === 0) return null;
+    if (boms.length === 0 || boms.some((bom) => !bom.material.cost)) return null;
     return boms.reduce((acc, bom) => acc + bom.quantity * (bom.material.cost || 0), 0);
   }
 

@@ -2,11 +2,25 @@
   <h1 fxFlex>{{ 'nav.bom' | translate: { value: shopService.businessCategoryMenuTitle() } }}</h1>
 </mat-toolbar>
 <main p-md fxLayout="column" fxLayoutGap="16px">
-  <mat-toolbar>
-    <mat-form-field appearance="outline">
+  <mat-toolbar fxLayoutGap="24px">
+    <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
       <mat-label>{{ 'app.search' | translate }}</mat-label>
       <input matInput [(ngModel)]="searchQuery" type="search" />
     </mat-form-field>
+
+    <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+      <mat-label>{{ 'bom.category' | translate }}</mat-label>
+      <mat-select [(ngModel)]="selectedCategory">
+        <mat-option value="all">{{ 'app.all' | translate }}</mat-option>
+        @for (category of menuService.data()?.categories; track category.id) {
+          <mat-option [value]="category.id">{{ category.title }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-checkbox [(ngModel)]="showInactiveItems">
+      {{ 'bom.showInactiveItems' | translate }}
+    </mat-checkbox>
   </mat-toolbar>
   @for (categoryItem of categoryItems(); track categoryItem.category.id) {
     <h2>{{ categoryItem.category.title }}</h2>
@@ -48,7 +62,10 @@
                     </mat-menu>
                   }
                 </mat-chip-set>
-                @if (editableItem()?.product?.id === item.product?.id && editableItem()?.variant?.id === item.variant?.id) {
+                @if (
+                  editableItem()?.product?.id === item.product?.id &&
+                  editableItem()?.variant?.id === item.variant?.id
+                ) {
                   <form>
                     <input
                       type="text"

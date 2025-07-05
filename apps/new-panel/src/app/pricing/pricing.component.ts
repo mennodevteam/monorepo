@@ -9,7 +9,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { FormControl, FormsModule, Validators } from '@angular/forms';
 import { MaterialsService } from '../inventory/materials.service';
-import { Product, ProductVariant, Material, BillOfMaterial, ProductCategory, MenuCost } from '@menno/types';
+import { Product, ProductVariant, Material, BillOfMaterial, ProductCategory, MenuCost, Status } from '@menno/types';
 import { MenuService } from '../menu/menu.service';
 import { SHARED } from '../shared';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -21,6 +21,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
 import { ShopService } from '../shop/shop.service';
 import { MatSortModule, Sort } from '@angular/material/sort';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 interface PricingItem {
   category: ProductCategory;
@@ -54,6 +55,7 @@ interface PricingItem {
     MatMenuModule,
     MatInputModule,
     MatSortModule,
+    MatCheckboxModule,
   ],
   templateUrl: './pricing.component.html',
   styleUrl: './pricing.component.scss',
@@ -81,6 +83,7 @@ export class PricingComponent {
 
   searchQuery = signal('');
   selectedCategory = signal<ProductCategory | null>(null);
+  showInactiveItems = signal(false);
 
   categories = computed<ProductCategory[]>(() => {
     return this.menuService.data()?.categories || [];
@@ -100,7 +103,7 @@ export class PricingComponent {
     const result: PricingItem[] = [];
     const categories = this.menuService.data()?.categories || [];
     const selectedCategory = this.selectedCategory();
-
+    const showInactiveItems = this.showInactiveItems();
     for (const category of categories) {
       // Skip if category filter is applied and doesn't match
       if (selectedCategory && category.id !== selectedCategory.id) {
@@ -111,6 +114,7 @@ export class PricingComponent {
 
       for (const product of products) {
         if (!product.variants?.length) {
+          if (!showInactiveItems && product.status === Status.Inactive) continue;
           if (this.searchQuery() && !product.title.toLowerCase().includes(this.searchQuery().toLowerCase()))
             continue;
 
@@ -131,6 +135,7 @@ export class PricingComponent {
         } else {
           const variants = product.variants || [];
           for (const variant of variants) {
+            if (!showInactiveItems && variant.status === Status.Inactive) continue;
             if (
               this.searchQuery() &&
               !variant.title.toLowerCase().includes(this.searchQuery().toLowerCase()) &&

@@ -3,12 +3,12 @@
 </mat-toolbar>
 <main p-md fxLayout="column" fxLayoutGap="16px">
   <mat-toolbar fxLayout="row" fxLayoutGap="16px">
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
       <mat-label>{{ 'app.search' | translate }}</mat-label>
       <input matInput [(ngModel)]="searchQuery" type="search" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
       <mat-label>{{ 'pricing.category' | translate }}</mat-label>
       <mat-select [(ngModel)]="selectedCategory">
         <mat-option [value]="null">{{ 'app.all' | translate }}</mat-option>
@@ -17,6 +17,10 @@
         }
       </mat-select>
     </mat-form-field>
+
+    <mat-checkbox [(ngModel)]="showInactiveItems">
+      {{ 'bom.showInactiveItems' | translate }}
+    </mat-checkbox>
   </mat-toolbar>
 
   <mat-card appearance="outlined">
