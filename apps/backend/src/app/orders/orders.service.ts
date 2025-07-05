@@ -25,6 +25,8 @@ import {
   ProductVariant,
   WalletLogType,
   Wallet,
+  Material,
+  BillOfMaterial,
 } from '@menno/types';
 import { groupBy, groupBySum } from '@menno/utils';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -62,6 +64,8 @@ export class OrdersService {
     private discountCouponsRepo: Repository<DiscountCoupon>,
     @InjectRepository(OrderMessage)
     private orderMessagesRepo: Repository<OrderMessage>,
+    @InjectRepository(Material)
+    private materialsRepo: Repository<Material>,
     private smsService: SmsService,
     private walletsService: WalletsService,
   ) {}
@@ -103,10 +107,38 @@ export class OrdersService {
     const menu = shop.menu;
     Menu.setRefsAndSort(menu, dto.type, true, true, undefined, dto.isManual ? true : false);
     order.items = [...OrderDto.productItems(dto, menu), ...OrderDto.abstractItems(dto, menu)];
+    const materials = await this.materialsRepo.find({
+      where: {
+        shop: { id: order.shop.id },
+      },
+      relations: ['boms', 'boms.product', 'boms.variant'],
+    });
 
+    const boms: BillOfMaterial[] = [];
+    for (const material of materials) {
+      if (material.boms) {
+        for (const bom of material.boms) {
+          bom.material = material;
+          boms.push(bom);
+        }
+      }
+    }
+    order.materialCost = boms.length > 0 ? 0 : undefined;
     for (const item of order.items) {
       if (item.product) item.product = { id: item.product.id } as Product;
       if (item.productVariant) item.productVariant = { id: item.productVariant.id } as ProductVariant;
+      if (item.product && boms.length > 0) {
+        const itemBoms = boms.filter(
+          (bom) => bom.product?.id === item.product.id && bom.variant?.id === item.productVariant?.id,
+        );
+        const bomPrice = BillOfMaterial.calculateCost(itemBoms);
+        if (bomPrice != null) {
+          item.materialCost = bomPrice;
+          if (order.materialCost !== undefined) order.materialCost += item.quantity * bomPrice;
+        } else {
+          order.materialCost = undefined;
+        }
+      }
     }
 
     if (dto.useWallet) {

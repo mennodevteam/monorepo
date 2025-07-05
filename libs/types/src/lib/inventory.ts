@@ -51,4 +51,9 @@ export class BillOfMaterial {
   product?: Product;
   variant?: ProductVariant;
   quantity: number;
+
+  static calculateCost(boms: BillOfMaterial[]): number | null {
+    if (boms.length === 0 || boms.some((bom) => !bom.material.cost)) return null;
+    return boms.reduce((acc, bom) => acc + bom.quantity * (bom.material.cost || 0), 0);
+  }
 }

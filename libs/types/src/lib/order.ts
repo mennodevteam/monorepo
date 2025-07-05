@@ -46,6 +46,7 @@ export class Order {
   payment?: Payment;
   details: OrderDetails;
   useWallet?: number;
+  materialCost?: number;
   _groupOffer?: Order[];
   _changingState?: boolean;
   _settlementing?: boolean;

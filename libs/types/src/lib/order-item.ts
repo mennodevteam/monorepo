@@ -9,6 +9,7 @@ export class OrderItem {
   productVariant?: ProductVariant;
   title?: string;
   price: number;
+  materialCost?: number;
   realPrice?: number;
   isAbstract: boolean;
   quantity: number;

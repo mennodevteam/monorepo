@@ -29,6 +29,10 @@ export const OrderItemSchema = new EntitySchema<OrderItem>({
     price: {
       type: 'real',
     },
+    materialCost: {
+      type: 'real',
+      nullable: true,
+    },
     realPrice: {
       type: 'real',
       nullable: true,

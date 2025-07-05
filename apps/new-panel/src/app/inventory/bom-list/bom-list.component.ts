@@ -114,7 +114,7 @@ export class BomListComponent {
           items.push({
             product,
             boms: productBoms.filter((bom) => !bom.variant),
-            cost: product.variants?.length ? null : this.calculateCost(productBoms),
+            cost: product.variants?.length ? null : BillOfMaterial.calculateCost(productBoms),
           });
         } else {
           const variants = product.variants || [];
@@ -131,7 +131,7 @@ export class BomListComponent {
               product,
               variant,
               boms: variantBoms,
-              cost: this.calculateCost(variantBoms),
+              cost: BillOfMaterial.calculateCost(variantBoms),
             });
           }
         }
@@ -140,11 +140,6 @@ export class BomListComponent {
     }
     return result;
   });
-
-  calculateCost(boms: BillOfMaterial[]): number | null {
-    if (boms.length === 0 || boms.some((bom) => !bom.material.cost)) return null;
-    return boms.reduce((acc, bom) => acc + bom.quantity * (bom.material.cost || 0), 0);
-  }
 
   addBom(product: Product, variant?: ProductVariant, material?: Material) {
     const fields: PromptFields = {
