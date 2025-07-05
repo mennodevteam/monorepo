@@ -41,7 +41,7 @@ export class PaymentComponent {
   vpnQuery = injectQuery(() => ({
     queryKey: ['vpn'],
     queryFn: () => lastValueFrom(this.http.get<{ country_code: string }>('https://api.ipbase.com/v1/json/')),
-    select: (data) => data.country_code !== 'IR',
+    select: (data: { country_code: string }) => data.country_code !== 'IR',
   }));
 
   constructor(
@@ -69,8 +69,8 @@ export class PaymentComponent {
   async submit() {
     const order = await this.cart.complete();
     if (order) {
-      (order.shop = this.shopService.shop),
-        this.router.navigate(['/orders', order.id], { replaceUrl: true, state: { order } });
+      ((order.shop = this.shopService.shop),
+        this.router.navigate(['/orders', order.id], { replaceUrl: true, state: { order } }));
     }
   }
 }

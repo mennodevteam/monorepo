@@ -46,7 +46,7 @@ export class ChatComponent {
     queryKey: ['chat', 'order', this.id],
     queryFn: () => lastValueFrom(this.http.get<Chat[]>(`chat/order/${this.id}`)),
     refetchInterval: 20000,
-    select: (data) => data.reverse(),
+    select: (data: Chat[]) => data.reverse(),
   }));
 
   orderQuery = injectQuery(() => ({
