@@ -1,10 +1,10 @@
 import { MenuCost } from './menu-cost';
-import { OrderItem } from './order-item';
 import { OrderType } from './order-type.enum';
 import { Product } from './product';
 import { ProductCategory } from './product-category';
 import { ProductVariant } from './product-variant';
 import { Status } from './status.enum';
+import { ProductPack } from './product-pack';
 
 export class Menu {
   id: string;
@@ -12,6 +12,7 @@ export class Menu {
   currency?: string;
   costs: MenuCost[];
   categories?: ProductCategory[];
+  packs?: ProductPack[];
 
   static setRefsAndSort(
     menu: Menu,

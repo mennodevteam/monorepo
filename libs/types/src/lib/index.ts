@@ -51,6 +51,7 @@ export * from './print-action';
 export * from './print-order.dto';
 export * from './print-type.enum';
 export * from './product-category';
+export * from './product-pack';
 export * from './product-variant';
 export * from './product';
 export * from './quantity-log-dto';
