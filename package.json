@@ -65,7 +65,7 @@
     "leaflet-draw": "^1.0.4",
     "leaflet-geosearch": "^3.7.0",
     "md5": "^2.3.0",
-    "ng-otp-input": "^1.9.3",
+    "ng-otp-input": "^2.0.8",
     "ng2-charts": "^8.0.0",
     "ngx-image-cropper": "^6.3.0",
     "passport": "^0.6.0",
