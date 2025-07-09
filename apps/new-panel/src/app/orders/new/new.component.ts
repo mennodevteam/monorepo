@@ -18,6 +18,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ConfigModalComponent, OrderConfigData } from './config-modal/config-modal.component';
 
 @Component({
   selector: 'app-new',
@@ -27,6 +30,7 @@ import { HttpClient } from '@angular/common/http';
     SHARED,
     MatToolbarModule,
     MatCardModule,
+    MatTooltipModule,
     NewOrderItemsComponent,
     AddressListComponent,
     CustomerComponent,
@@ -41,6 +45,7 @@ export class NewOrderComponent implements FormComponent {
   readonly shop = inject(ShopService);
   readonly http = inject(HttpClient);
   readonly dialog = inject(DialogService);
+  readonly matDialog = inject(MatDialog);
   readonly service = inject(NewOrdersService);
   readonly location = inject(PlatformLocation);
   readonly route = inject(ActivatedRoute);
@@ -113,6 +118,27 @@ export class NewOrderComponent implements FormComponent {
           this.service.dirty.set(true);
         }
       });
+  }
+
+  openConfigModal() {
+    const configData: OrderConfigData = {
+      orderDateTime: this.service.orderDateTime(),
+      useCurrentDateTime: this.service.useCurrentDateTime(),
+      excludeFromReport: this.service.excludeFromReport(),
+      extraCost: this.service.extraCost(),
+    };
+
+    const dialogRef = this.matDialog.open(ConfigModalComponent, {
+      data: configData,
+      width: '500px',
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result: OrderConfigData) => {
+      if (result) {
+        this.service.updateConfig(result);
+      }
+    });
   }
 
   async save() {

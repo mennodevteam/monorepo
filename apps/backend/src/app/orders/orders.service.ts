@@ -444,7 +444,6 @@ export class OrdersService {
       const itemBoms = boms.filter(
         (x) => x.product.id === item.product.id && x.variant?.id == item.productVariant?.id,
       );
-      console.log(itemBoms, newProductItems, boms, OrderDto.productItems(dto, order.shop.menu));
       if (itemBoms.length > 0) {
         for (const bom of itemBoms) {
           const quantity = bom.quantity * item.quantity;
@@ -697,7 +696,9 @@ export class OrdersService {
                 dto.sentAt = new Date();
                 dto.sentAt.setMinutes(dto.sentAt.getMinutes() + message.delayInMinutes);
               }
-              this.smsService.sendTemplate(dto).catch((err) => {});
+              this.smsService.sendTemplate(dto).catch((err) => {
+                console.error('Failed to send SMS template:', err);
+              });
             }
           }
         });

@@ -9,6 +9,9 @@
       {{ 'newOrder.newTitle' | translate }}
     }
   </h3>
+  <button mat-icon-button (click)="openConfigModal()" matTooltip="{{ 'newOrder.config.title' | translate }}">
+    <i class="fa-regular fa-cog"></i>
+  </button>
   <button mat-flat-button tabindex="-1" (click)="save()" [disabled]="!service.dirty() || saving()">
     {{ 'app.save' | translate }}
   </button>

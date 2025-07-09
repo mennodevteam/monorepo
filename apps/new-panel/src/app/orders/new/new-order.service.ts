@@ -36,6 +36,12 @@ export class NewOrdersService {
   discountCoupon = signal<DiscountCoupon | undefined>(undefined);
   type = signal<OrderType | undefined>(this.shop.data()?.appConfig?.orderingTypes[0]);
 
+  // Order configuration
+  orderDateTime = signal<Date>(new Date());
+  useCurrentDateTime = signal<boolean>(true);
+  excludeFromReport = signal<boolean>(false);
+  extraCost = signal<number>(0);
+
   constructor() {
     effect(() => {
       const order = this.order();
@@ -55,6 +61,12 @@ export class NewOrdersService {
         if (manualCost) this.manualCost.set(manualCost.price);
         const manualDiscount = order.items.find((x) => x.title === MANUAL_DISCOUNT_TITLE && x.isAbstract);
         if (manualDiscount) this.manualDiscount.set(-manualDiscount.price);
+        if (order.extraCosts) this.extraCost.set(order.extraCosts);
+        if (order.excludeFromReports) this.excludeFromReport.set(order.excludeFromReports);
+        if (order.createdAt) {
+          this.orderDateTime.set(order.createdAt);
+          this.useCurrentDateTime.set(true);
+        }
       }
     });
   }
@@ -68,10 +80,13 @@ export class NewOrdersService {
         address: this.customer() && this.type() === OrderType.Delivery ? this.address() : null,
         manualCost: this.manualCost(),
         manualDiscount: this.manualDiscount(),
+        extraCosts: this.extraCost(),
+        excludeFromReports: this.excludeFromReport(),
         isManual: this.order()?.isManual ?? true,
         type: this.type(),
         state: !this.order() ? OrderState.Pending : undefined,
         seenAt: !this.order() ? new Date() : undefined,
+        date: this.useCurrentDateTime() ? undefined : this.orderDateTime(),
       }) as OrderDto,
   );
 
@@ -151,6 +166,25 @@ export class NewOrdersService {
     this.manualDiscount.set(0);
     this.discountCoupon.set(undefined);
     this.order.set(undefined);
+
+    // Reset configuration
+    this.orderDateTime.set(new Date());
+    this.useCurrentDateTime.set(true);
+    this.excludeFromReport.set(false);
+    this.extraCost.set(0);
+  }
+
+  updateConfig(config: {
+    orderDateTime: Date;
+    useCurrentDateTime: boolean;
+    excludeFromReport: boolean;
+    extraCost: number;
+  }) {
+    this.orderDateTime.set(config.orderDateTime);
+    this.useCurrentDateTime.set(config.useCurrentDateTime);
+    this.excludeFromReport.set(config.excludeFromReport);
+    this.extraCost.set(config.extraCost);
+    this.dirty.set(true);
   }
 
   async save(print = false) {

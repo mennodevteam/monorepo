@@ -263,7 +263,18 @@
     "searchItemLabel": "اضافه کردن آیتم",
     "manualDiscount": "تخفیف دستی",
     "manualCost": "هزینه مازاد",
-    "addressTitle": "انتخاب آدرس"
+    "addressTitle": "انتخاب آدرس",
+    "config": {
+      "title": "تنظیمات سفارش‌",
+      "orderDateTime": "تاریخ و زمان سفارش",
+      "useCurrentDateTime": "استفاده از زمان جاری",
+      "orderDate": "تاریخ سفارش",
+      "orderTimeHour": "ساعت سفارش",
+      "excludeFromReport": "از گزارشات حذف شود (عدم شمارش در سفارشات)",
+      "extraCost": "هزینه مازاد",
+      "extraCostDescription": "هزینه مازاد تاثیری روی قیمت نهایی سفارش ندارد فقط در محاسبه سود سفارش دخیل است و از آن کسر می‌شود",
+      "reportSettings": "تنظیمات گزارشات"
+    }
   },
   "settings": {
     "pageTitle": "تنظیمات",

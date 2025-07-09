@@ -1,0 +1,45 @@
+.config-modal {
+  min-width: 400px;
+  max-width: 500px;
+
+  .form-content {
+    padding: 16px 0;
+  }
+
+  .form-section {
+    margin-bottom: 24px;
+
+    h3 {
+      margin: 0 0 12px 0;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    mat-checkbox {
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    mat-form-field {
+      margin-top: 8px;
+    }
+
+    .date-time-inputs {
+      display: flex;
+      gap: 16px;
+      margin-top: 8px;
+
+      .date-field {
+        flex: 2;
+      }
+
+      .time-field {
+        flex: 1;
+      }
+    }
+  }
+
+  .full-width {
+    width: 100%;
+  }
+}
