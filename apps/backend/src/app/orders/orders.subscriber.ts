@@ -192,7 +192,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
   private async materialConsumption(order: Order, isRestore?: boolean) {
     const items = order.items.filter((x) => !x.isAbstract);
     const boms = await this.billOfMaterialRepository.find({
-      where: items.map((x) => ({ product: { id: x.product.id }, variant: { id: x.productVariant.id } })),
+      where: items.map((x) => ({ product: { id: x.product.id }, variant: { id: x.productVariant?.id } })),
       relations: ['material', 'product', 'variant'],
     });
 

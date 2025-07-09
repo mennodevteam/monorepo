@@ -27,6 +27,8 @@ import {
   Wallet,
   Material,
   BillOfMaterial,
+  InventoryTransactionType,
+  InventoryTransaction,
 } from '@menno/types';
 import { groupBy, groupBySum } from '@menno/utils';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -66,6 +68,10 @@ export class OrdersService {
     private orderMessagesRepo: Repository<OrderMessage>,
     @InjectRepository(Material)
     private materialsRepo: Repository<Material>,
+    @InjectRepository(BillOfMaterial)
+    private billOfMaterialRepository: Repository<BillOfMaterial>,
+    @InjectRepository(InventoryTransaction)
+    private inventoryTransactionRepository: Repository<InventoryTransaction>,
     private smsService: SmsService,
     private walletsService: WalletsService,
   ) {}
@@ -387,14 +393,43 @@ export class OrdersService {
       change: number;
     }[] = [];
 
+    const items = [
+      ...order.items.filter((x) => !x.isAbstract),
+      ...editedOrder.items.filter((x) => !x.isAbstract),
+    ];
+    const boms = await this.billOfMaterialRepository.find({
+      where: items.map((x) => ({ product: { id: x.product.id }, variant: { id: x.productVariant?.id } })),
+      relations: ['material', 'product', 'variant'],
+    });
+
+    const usedMaterials: { material: Material; quantity: number }[] = [];
     for (const item of order.items) {
+      const itemBoms = boms.filter(
+        (x) => x.product.id === item.product.id && x.variant?.id == item.productVariant?.id,
+      );
       if (item.isAbstract || !item.product) continue;
       const dtoItem = dto.productItems.find(
         (x) => x.productId == item.product.id && x.productVariantId == item.productVariant?.id,
       );
-      if (!dtoItem) changes.push({ title: item.title, change: -1 * item.quantity });
-      else if (dtoItem.quantity != item.quantity)
+      if (!dtoItem) {
+        changes.push({ title: item.title, change: -1 * item.quantity });
+      } else if (dtoItem.quantity != item.quantity) {
         changes.push({ title: item.title, change: dtoItem.quantity - item.quantity });
+      }
+
+      if (itemBoms.length > 0 && (!dtoItem || dtoItem.quantity != item.quantity)) {
+        for (const bom of itemBoms) {
+          const quantity = !dtoItem
+            ? -1 * bom.quantity * item.quantity
+            : bom.quantity * (dtoItem.quantity - item.quantity);
+          const existingMaterial = usedMaterials.find((x) => x.material.id === bom.material.id);
+          if (existingMaterial) {
+            existingMaterial.quantity += quantity;
+          } else {
+            usedMaterials.push({ material: bom.material, quantity });
+          }
+        }
+      }
     }
 
     const newProductItems = editedOrder.items.filter(
@@ -406,8 +441,36 @@ export class OrdersService {
     );
     for (const item of newProductItems) {
       changes.push({ title: item.title, change: item.quantity });
+      const itemBoms = boms.filter(
+        (x) => x.product.id === item.product.id && x.variant?.id == item.productVariant?.id,
+      );
+      console.log(itemBoms, newProductItems, boms, OrderDto.productItems(dto, order.shop.menu));
+      if (itemBoms.length > 0) {
+        for (const bom of itemBoms) {
+          const quantity = bom.quantity * item.quantity;
+          const existingMaterial = usedMaterials.find((x) => x.material.id === bom.material.id);
+          if (existingMaterial) {
+            existingMaterial.quantity += quantity;
+          } else {
+            usedMaterials.push({ material: bom.material, quantity });
+          }
+        }
+      }
     }
     if (changes.length) editedOrder.details.itemChanges.push(changes);
+
+    for (const material of usedMaterials) {
+      if (material.material.stock > 0) {
+        await this.materialsRepo.update(material.material.id, {
+          stock: () => `stock - ${material.quantity}`,
+        });
+        await this.inventoryTransactionRepository.save({
+          material: { id: material.material.id },
+          quantity: material.quantity,
+          type: InventoryTransactionType.Consumption,
+        });
+      }
+    }
 
     this.checkAfterUpdateOrderMessage(dto.id, OrderMessageEvent.OnEdit);
 
