@@ -23,6 +23,9 @@ export type ProductItem = {
 };
 export class OrderDto {
   id?: string;
+  date?: Date;
+  excludeFromReports?: boolean;
+  extraCosts?: number;
   shopId: string;
   customerId?: string;
   creatorId?: string;

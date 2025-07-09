@@ -37,6 +37,7 @@ export class DashboardController {
     const defaultFilter: FindOptionsWhere<Order> = {
       shop: { id: shop.id },
       state: Not(OrderState.Canceled),
+      excludeFromReports: false,
     };
     return {
       today: {
@@ -157,6 +158,7 @@ export class DashboardController {
       .innerJoin('item.product', 'product')
       .where('item.productId IS NOT NULL')
       .andWhere('order.shop = :shopId', { shopId: shop.id })
+      .andWhere('order.excludeFromReports = :excludeFromReports', { excludeFromReports: false })
       .andWhere('order.deletedAt IS NULL')
       .andWhere('order.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
       .andWhere('order.mergeToId IS NULL')
@@ -257,6 +259,7 @@ export class DashboardController {
       .addSelect('SUM(order.totalPrice)', 'sum')
       .where('order.deletedAt IS NULL')
       .andWhere('order.mergeToId IS NULL')
+      .andWhere('order.excludeFromReports = :excludeFromReports', { excludeFromReports: false })
       .andWhere('order.shop = :shopId', { shopId: shop.id })
       .andWhere('order.createdAt >= :from', { from: `${from} 04:00:00` })
       .andWhere('order.createdAt <= :to', { to: `${to} 23:59:59` })

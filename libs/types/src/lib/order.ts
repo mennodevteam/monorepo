@@ -47,6 +47,8 @@ export class Order {
   details: OrderDetails;
   useWallet?: number;
   materialCost?: number;
+  excludeFromReports?: boolean;
+  extraCosts?: number;
   _groupOffer?: Order[];
   _changingState?: boolean;
   _settlementing?: boolean;

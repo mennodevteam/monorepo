@@ -85,6 +85,7 @@ export class OrdersService {
 
     order.shop = <Shop>{ id: dto.shopId };
     order.customer = dto.customerId ? ({ id: dto.customerId } as User) : null;
+    if (dto.date) order.createdAt = dto.date;
 
     if (dto.creatorId) order.creator = { id: dto.creatorId } as User;
     if (dto.waiterId) order.waiter = { id: dto.waiterId } as User;
@@ -94,6 +95,8 @@ export class OrdersService {
     if (dto.note) order.note = dto.note;
     if (dto.address) order.address = dto.address;
     if (dto.payment) order.payment = dto.payment;
+    if (dto.extraCosts != undefined) order.extraCosts = dto.extraCosts;
+    if (dto.excludeFromReports != undefined) order.excludeFromReports = dto.excludeFromReports;
     if (dto.paymentType != undefined) order.paymentType = dto.paymentType;
     if (dto.state != undefined) order.state = dto.state;
     if (dto.type != undefined) order.type = dto.type;
@@ -364,18 +367,15 @@ export class OrdersService {
     if (order.shop.id !== dto.shopId) {
       throw new HttpException('this order is for another shop', HttpStatus.FORBIDDEN);
     }
-    if (order.paymentType) throw new HttpException('not allowed for payed orders', HttpStatus.NOT_ACCEPTABLE);
 
-    if (order.customer && !!order.paymentType) {
-      delete dto.customerId;
-    }
-
-    if (order.waiter) {
-      delete dto.waiterId;
-    }
+    if (order.customer && dto.customerId == order.customer.id) delete dto.customerId;
+    if (order.waiter && dto.waiterId == order.waiter.id) delete dto.waiterId;
 
     const editedOrder = await this.dtoToOrder(dto);
     editedOrder.id = dto.id;
+    if (dto.excludeFromReports != undefined) editedOrder.excludeFromReports = dto.excludeFromReports;
+    if (dto.extraCosts != undefined) editedOrder.extraCosts = dto.extraCosts;
+    if (dto.date != undefined) editedOrder.createdAt = dto.date;
 
     // set prev details
     editedOrder.details = { ...(order.details || {}), ...(editedOrder.details || {}) };

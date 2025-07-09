@@ -48,6 +48,14 @@ export const OrderSchema = new EntitySchema<Order>({
       type: 'real',
       nullable: true,
     },
+    extraCosts: {
+      type: 'real',
+      default: 0,
+    },
+    excludeFromReports: {
+      type: Boolean,
+      default: false,
+    },
     useWallet: {
       type: 'real',
       nullable: true,
