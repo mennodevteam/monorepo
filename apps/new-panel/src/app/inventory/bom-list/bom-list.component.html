@@ -11,7 +11,7 @@
     <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
       <mat-label>{{ 'bom.category' | translate }}</mat-label>
       <mat-select [(ngModel)]="selectedCategory">
-        <mat-option value="all">{{ 'app.all' | translate }}</mat-option>
+        <mat-option [value]="null">{{ 'app.all' | translate }}</mat-option>
         @for (category of menuService.data()?.categories; track category.id) {
           <mat-option [value]="category.id">{{ category.title }}</mat-option>
         }
@@ -45,10 +45,13 @@
               <div fxLayout="row" fxLayoutAlign="start center">
                 <mat-chip-set>
                   @for (bom of item.boms; track bom.id) {
-                    <mat-chip [matMenuTriggerFor]="menu">
+                    <mat-chip [matMenuTriggerFor]="menu" [matTooltip]="bom.material.cost ? null : 'bom.costNotSet' | translate">
                       {{ bom.material.name }}
                       (<span eng>{{ bom.quantity | number }}</span
                       >{{ 'materials.units.' + bom.material.unit | translate }})
+                      @if (!bom.material.cost) {
+                        <i class="fa-solid fa-square-exclamation fa-xs red"></i>
+                      }
                     </mat-chip>
                     <mat-menu #menu="matMenu">
                       <button mat-menu-item (click)="editBom(bom)">

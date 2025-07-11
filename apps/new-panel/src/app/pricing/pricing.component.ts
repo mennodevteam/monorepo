@@ -119,7 +119,7 @@ export class PricingComponent {
             continue;
 
           const productBoms = this.boms().filter((bom) => bom.product?.id === product.id);
-          const materialCost = product.variants ? 0 : BillOfMaterial.calculateCost(productBoms);
+          const materialCost = product.variants?.length ? 0 : BillOfMaterial.calculateCost(productBoms);
           result.push({
             category,
             product,

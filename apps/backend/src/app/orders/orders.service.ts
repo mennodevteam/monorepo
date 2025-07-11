@@ -398,16 +398,20 @@ export class OrdersService {
       ...editedOrder.items.filter((x) => !x.isAbstract),
     ];
     const boms = await this.billOfMaterialRepository.find({
-      where: items.map((x) => ({ product: { id: x.product.id }, variant: { id: x.productVariant?.id } })),
+      where: items.map((x) => ({
+        product: { id: x.product.id },
+        variant: { id: x.productVariant?.id },
+        material: Not(IsNull()),
+      })),
       relations: ['material', 'product', 'variant'],
     });
 
     const usedMaterials: { material: Material; quantity: number }[] = [];
     for (const item of order.items) {
+      if (item.isAbstract || !item.product) continue;
       const itemBoms = boms.filter(
         (x) => x.product.id === item.product.id && x.variant?.id == item.productVariant?.id,
       );
-      if (item.isAbstract || !item.product) continue;
       const dtoItem = dto.productItems.find(
         (x) => x.productId == item.product.id && x.productVariantId == item.productVariant?.id,
       );

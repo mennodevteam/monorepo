@@ -267,10 +267,10 @@
     "config": {
       "title": "تنظیمات سفارش‌",
       "orderDateTime": "تاریخ و زمان سفارش",
-      "useCurrentDateTime": "استفاده از زمان جاری",
+      "useCurrentDateTime": "استفاده از زمان فعلی",
       "orderDate": "تاریخ سفارش",
       "orderTimeHour": "ساعت سفارش",
-      "excludeFromReport": "از گزارشات حذف شود (عدم شمارش در سفارشات)",
+      "excludeFromReport": "از گزارشات حذف شود (عدم شمارش در داشبورد عملکرد فروش)",
       "extraCost": "هزینه مازاد",
       "extraCostDescription": "هزینه مازاد تاثیری روی قیمت نهایی سفارش ندارد فقط در محاسبه سود سفارش دخیل است و از آن کسر می‌شود",
       "reportSettings": "تنظیمات گزارشات"
@@ -604,7 +604,8 @@
     "price": "قیمت فروش",
     "profit": "سود",
     "showInactiveItems": "نمایش محصولات غیر فعال",
-    "category": "دسته‌بندی"
+    "category": "دسته‌بندی",
+    "costNotSet": "قیمت مواد اولیه تنظیم نشده است"
   },
   "pricing": {
     "products": "محصولات",

@@ -21,6 +21,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ShopService } from '../../shop/shop.service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 interface CategoryItem {
   category: ProductCategory;
@@ -47,6 +48,7 @@ interface CategoryItem {
     MatAutocompleteModule,
     MatCheckboxModule,
     MatSelectModule,
+    MatTooltipModule,
   ],
   templateUrl: './bom-list.component.html',
   styleUrl: './bom-list.component.scss',

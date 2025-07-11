@@ -24,6 +24,8 @@ import {
   EntitySubscriberInterface,
   EventSubscriber,
   InsertEvent,
+  IsNull,
+  Not,
   Repository,
   SoftRemoveEvent,
   UpdateEvent,
@@ -192,7 +194,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
   private async materialConsumption(order: Order, isRestore?: boolean) {
     const items = order.items.filter((x) => !x.isAbstract);
     const boms = await this.billOfMaterialRepository.find({
-      where: items.map((x) => ({ product: { id: x.product.id }, variant: { id: x.productVariant?.id } })),
+      where: items.map((x) => ({ product: { id: x.product.id }, variant: { id: x.productVariant?.id }, material: Not(IsNull()) })),
       relations: ['material', 'product', 'variant'],
     });
 
@@ -202,7 +204,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
         (x) => x.product.id === item.product.id && x.variant?.id == item.productVariant?.id,
       );
       for (const bom of itemBoms) {
-        const existingMaterial = usedMaterials.find((x) => x.material.id === bom.material.id);
+        const existingMaterial = usedMaterials.find((x) => x.material.id === bom.material?.id);
         if (existingMaterial) {
           existingMaterial.quantity += bom.quantity * item.quantity;
         } else {
