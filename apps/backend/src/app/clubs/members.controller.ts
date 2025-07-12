@@ -4,6 +4,7 @@ import {
   FilterMemberV2Dto,
   Member,
   UserRole,
+  User,
 } from '@menno/types';
 import { Delete } from '@nestjs/common';
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
@@ -14,6 +15,7 @@ import { Roles } from '../auth/roles.decorators';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 import { ClubsService } from './clubs.service';
+import { SmsService } from '../sms/sms.service';
 
 @Controller('members')
 export class MembersController {
@@ -21,6 +23,7 @@ export class MembersController {
     private auth: AuthService,
     private clubService: ClubsService,
     @InjectRepository(Member) private membersRepo: Repository<Member>,
+    private smsService: SmsService,
   ) {}
 
   @Get('anniversary/:month/:date')
@@ -70,6 +73,21 @@ export class MembersController {
   ): Promise<{ data: FilterMemberV2ResponseDto[]; totalCount: number }> {
     const shop = await this.auth.getPanelUserShop(user, ['club', 'menu']);
     return this.clubService.filterMembersV2(dto, shop);
+  }
+
+  @Post('filter-v2/sms')
+  @Roles(UserRole.Panel)
+  async filterMembersV2Sms(
+    @Body() dto: { filter: FilterMemberV2Dto; message: string },
+    @LoginUser() user: AuthPayload,
+  ) {
+    const shop = await this.auth.getPanelUserShop(user, ['club', 'menu', 'smsAccount']);
+    const members = await this.clubService.filterMembersV2(dto.filter, shop);
+    this.smsService.send({
+      receptors: members.data.map((x) => x.member.user.mobilePhone),
+      messages: members.data.map((x) => dto.message.replace('@@@', User.fullName(x.member.user))),
+      accountId: shop.smsAccount.id,
+    });
   }
 
   @Post()
