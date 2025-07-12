@@ -1,9 +1,7 @@
 <form (ngSubmit)="submit()" #form="ngForm">
   <h4 matDialogTitle>{{ title }}</h4>
   <mat-dialog-content fxLayout="column" fxLayoutGap="16px">
-    @if (description) {
-      <p>{{ description }}</p>
-    }
+    <p>{{ description }}</p>
 
     @for (key of keys; track $index) {
       <mat-form-field appearance="outline">

@@ -374,9 +374,6 @@ export class OrdersService {
       throw new HttpException('this order is for another shop', HttpStatus.FORBIDDEN);
     }
 
-    if (order.customer && dto.customerId == order.customer.id) delete dto.customerId;
-    if (order.waiter && dto.waiterId == order.waiter.id) delete dto.waiterId;
-
     const editedOrder = await this.dtoToOrder(dto);
     editedOrder.id = dto.id;
     if (dto.excludeFromReports != undefined) editedOrder.excludeFromReports = dto.excludeFromReports;

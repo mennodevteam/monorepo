@@ -37,6 +37,19 @@
     </td>
   </ng-container>
 
+  <ng-container matColumnDef="materialCost">
+    <th mat-header-cell *matHeaderCellDef>{{ 'order.materialCost' | translate }}</th>
+    <td mat-cell *matCellDef="let item">
+      @if (!item.isAbstract) {
+        @if (item.materialCost) {
+          {{ item.materialCost | number | menuCurrency }}
+        } @else {
+          <i class="fa-solid fa-question"></i>
+        }
+      }
+    </td>
+  </ng-container>
+
   <ng-container matColumnDef="total">
     <th mat-header-cell *matHeaderCellDef>{{ 'app.sum' | translate }}</th>
     <td mat-cell *matCellDef="let item">

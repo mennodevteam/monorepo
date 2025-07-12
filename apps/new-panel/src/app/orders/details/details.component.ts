@@ -12,6 +12,7 @@ import { OrderItemTableComponent } from './table/table.component';
 import { OrderStateChipComponent } from '../state-chip/state-chip.component';
 import { OrdersService } from '../order.service';
 import { OrderChatComponent } from './chat/order-chat.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-order-details',
@@ -24,6 +25,7 @@ import { OrderChatComponent } from './chat/order-chat.component';
     OrderItemTableComponent,
     OrderStateChipComponent,
     OrderChatComponent,
+    MatTooltipModule,
   ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss',
@@ -44,6 +46,13 @@ export class OrderDetailsComponent {
   }));
   order = computed<Order | undefined>(() => {
     return this.query.data() || this.router.getCurrentNavigation()?.extras?.state?.['order'];
+  });
+  orderTotalCost = computed(() => {
+    const order = this.order();
+    if (order && order.materialCost) {
+      return order.materialCost + (order.extraCosts || 0);
+    }
+    return 0;
   });
 
   constructor() {

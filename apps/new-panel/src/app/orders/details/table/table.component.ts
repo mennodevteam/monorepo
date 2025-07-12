@@ -5,8 +5,6 @@ import { MatTableModule } from '@angular/material/table';
 import { SHARED } from '../../../shared';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
-const COLS = ['index', 'title', 'quantity', 'price', 'total'];
-
 @Component({
   selector: 'app-order-item-table',
   standalone: true,
