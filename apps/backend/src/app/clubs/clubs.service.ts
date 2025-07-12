@@ -261,6 +261,26 @@ export class ClubsService {
         }
       }
     }
+
+    if (dto.minOrderCount != undefined || dto.maxOrderCount != undefined) {
+      filteredMembers = filteredMembers.filter((m) => {
+        let userOrders = ordersByUser[m.user.id] || [];
+        if (dto.orderFromDate) {
+          userOrders = userOrders.filter(
+            (o) => new Date(o.createdAt).valueOf() >= new Date(dto.orderFromDate).valueOf(),
+          );
+        }
+        if (dto.orderToDate) {
+          userOrders = userOrders.filter(
+            (o) => new Date(o.createdAt).valueOf() <= new Date(dto.orderToDate).valueOf(),
+          );
+        }
+        if (dto.minOrderCount != undefined && userOrders.length < dto.minOrderCount) return false;
+        if (dto.maxOrderCount != undefined && userOrders.length > dto.maxOrderCount) return false;
+        return true;
+      });
+    }
+
     // Filter by joinedAt
     if (dto.joinedAtFromDate || dto.joinedAtToDate) {
       filteredMembers = filteredMembers.filter((m) => {
