@@ -21,7 +21,7 @@ export class SmsAccountCardComponent {
   readonly dialog = inject(DialogService);
   readonly translate = inject(TranslateService);
   readonly payService = inject(PayService);
-  avgSmsCharge = 3 * 44;
+  avgSmsCharge = 3 * 150;
 
   async chargeSmsAccount() {
     const dto = await this.dialog.prompt(

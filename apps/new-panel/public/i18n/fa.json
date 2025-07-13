@@ -256,9 +256,16 @@
       "messageLabel": "متن پیام"
     },
     "sentSuccessfully": "پیامک با موفقیت ارسال شد",
+    "sending": "در حال ارسال...",
     "newDialog": {
+      "groupTitle": "ارسال پیام",
       "title": "ارسال پیام به {{value}}",
-      "textLabel": "امتن پیام"
+      "textLabel": "امتن پیام",
+      "description": "در متن پیام از @@@ استفاده کنید تا هنگام ارسال پیام به مشتری با نام مشتری جایگزین شود."
+    },
+    "groupConfirmDialog": {
+      "title": "تایید ارسال پیام",
+      "description": "آیا از ارسال پیام به {{value}} مشتری اطمینان دارید؟"
     }
   },
   "newOrder": {
@@ -542,13 +549,18 @@
     "title": "مشتریان",
     "downloadCsv": "دانلود CSV",
     "filterTitle": "فیلتر مشتریان",
+    "sendSmsToFilter": "ارسال پیامک به {{value}} مشتری",
     "firstOrderDateRange": "بازه اولین سفارش",
     "lastOrderDateRange": "بازه آخرین سفارش",
     "joinedAtDateRange": "بازه تاریخ عضویت",
     "lastVisitDateRange": "بازه آخرین بازدید",
     "startDate": "تاریخ شروع",
     "endDate": "تاریخ پایان",
-    "starRange": "بازه ستاره"
+    "starRange": "بازه ستاره",
+    "orderCountBasedFilter": "فیلتر بر اساس تعداد سفارشات در بازه زمانی",
+    "minOrderCount": "حداقل تعداد سفارشات",
+    "maxOrderCount": "حداکثر تعداد سفارشات",
+    "orderDateRange": "بازه تاریخ سفارشات"
   },
   "membersTable": {
     "fullName": "نام",

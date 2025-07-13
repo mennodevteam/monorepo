@@ -46,13 +46,17 @@ export class MemberFilterDialogComponent {
       lastVisitToDate: [data?.lastVisitToDate || null],
       fromStar: [data?.fromStar || 0],
       toStar: [data?.toStar || 5],
+      minOrderCount: [data?.minOrderCount || null],
+      maxOrderCount: [data?.maxOrderCount || null],
+      orderFromDate: [data?.orderFromDate || null],
+      orderToDate: [data?.orderToDate || null],
     });
   }
 
   onApply() {
     const value = { ...this.filterForm.value };
-    const startKeys = ['firstOrderFromDate', 'lastOrderFromDate', 'joinedAtFromDate', 'lastVisitFromDate'];
-    const endKeys = ['firstOrderToDate', 'lastOrderToDate', 'joinedAtToDate', 'lastVisitToDate'];
+    const startKeys = ['firstOrderFromDate', 'lastOrderFromDate', 'joinedAtFromDate', 'lastVisitFromDate', 'orderFromDate'];
+    const endKeys = ['firstOrderToDate', 'lastOrderToDate', 'joinedAtToDate', 'lastVisitToDate', 'orderToDate'];
     startKeys.forEach((key) => {
       if (value[key]) {
         const d = new Date(value[key]);
@@ -67,6 +71,12 @@ export class MemberFilterDialogComponent {
         value[key] = d;
       }
     });
+
+    
+    if (value.minOrderCount) value.minOrderCount = Number(value.minOrderCount);
+    if (value.maxOrderCount) value.maxOrderCount = Number(value.maxOrderCount);
+    if (value.orderFromDate && value.minOrderCount == undefined) value.minOrderCount = 1;
+    
     this.dialogRef.close(value);
   }
 }

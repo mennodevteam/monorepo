@@ -2,8 +2,8 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
-import { FilterMemberV2Dto, FilterMemberV2ResponseDto } from '@menno/types';
-import { injectQuery } from '@tanstack/angular-query-experimental';
+import { Chat, FilterMemberV2Dto, FilterMemberV2ResponseDto } from '@menno/types';
+import { injectMutation, injectQuery } from '@tanstack/angular-query-experimental';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { SHARED } from '../../shared';
 import { MatCardModule } from '@angular/material/card';
@@ -14,6 +14,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MemberFilterDialogComponent } from './member-filter-dialog/member-filter-dialog.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { SmsService } from '../../core/services/sms.service';
+import { DialogService } from '../../core/services/dialog.service';
+import { TranslateService } from '@ngx-translate/core';
+import { FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-member-list',
@@ -42,6 +47,10 @@ export class MemberListComponent {
   });
 
   private dialog = inject(MatDialog);
+  private dialogService = inject(DialogService);
+  private smsService = inject(SmsService);
+  private t = inject(TranslateService);
+  private snack = inject(MatSnackBar);
 
   public query = injectQuery(() => ({
     queryKey: ['memberList', this.filterDto()],
@@ -52,6 +61,17 @@ export class MemberListComponent {
           this.filterDto(),
         ),
       ),
+  }));
+
+  sendMessageMutation = injectMutation(() => ({
+    mutationFn: (dto: { filter: FilterMemberV2Dto; message: string }) =>
+      lastValueFrom(this.http.post<void>(`/members/filter-v2/sms`, dto)),
+    onMutate: () => {
+      this.snack.open(this.t.instant('sms.sending'), '', { duration: 4000 });
+    },
+    onSuccess: (response) => {
+      this.snack.open(this.t.instant('sms.sentSuccessfully'), '', { duration: 2000 });
+    },
   }));
 
   onPageChange(event: { pageIndex: number; pageSize: number }) {
@@ -141,11 +161,15 @@ export class MemberListComponent {
       f.firstOrderFromDate ||
       f.firstOrderToDate ||
       f.lastOrderFromDate ||
-      f.lastOrderToDate
+      f.lastOrderToDate ||
+      f.minOrderCount ||
+      f.maxOrderCount ||
+      f.orderFromDate ||
+      f.orderToDate
     );
   });
 
-  removeFilter(type: 'joinedAt' | 'lastVisit' | 'firstOrder' | 'lastOrder') {
+  removeFilter(type: 'joinedAt' | 'lastVisit' | 'firstOrder' | 'lastOrder' | 'orderCount') {
     this.filterDto.update((dto) => {
       switch (type) {
         case 'joinedAt':
@@ -156,9 +180,48 @@ export class MemberListComponent {
           return { ...dto, firstOrderFromDate: undefined, firstOrderToDate: undefined, skip: 0 };
         case 'lastOrder':
           return { ...dto, lastOrderFromDate: undefined, lastOrderToDate: undefined, skip: 0 };
+        case 'orderCount':
+          return {
+            ...dto,
+            minOrderCount: undefined,
+            maxOrderCount: undefined,
+            orderFromDate: undefined,
+            orderToDate: undefined,
+            skip: 0,
+          };
         default:
           return dto;
       }
     });
+  }
+
+  sendMessage() {
+    this.dialogService
+      .prompt(
+        this.t.instant('sms.newDialog.groupTitle'),
+        {
+          text: {
+            label: this.t.instant('sms.newDialog.textLabel'),
+            control: new FormControl('', Validators.required),
+            type: 'textarea',
+            rows: 4,
+          },
+        },
+        {
+          description: this.t.instant('sms.newDialog.description'),
+        },
+      )
+      .then(async (dto) => {
+        if (dto?.text) {
+          if (
+            await this.dialogService.alert(
+              this.t.instant('sms.groupConfirmDialog.title'),
+              this.t.instant('sms.groupConfirmDialog.description', { value: this.query.data()?.totalCount }),
+            )
+          ) {
+            this.sendMessageMutation.mutate({ filter: this.filterDto(), message: dto.text });
+          }
+        }
+      });
   }
 }

@@ -1,7 +1,8 @@
 <h2 mat-dialog-title>{{ 'members.filterTitle' | translate }}</h2>
 <mat-dialog-content>
+  <br />
   <form [formGroup]="filterForm" style="display: flex; flex-direction: column; gap: 16px">
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="outline">
       <mat-label>{{ 'members.joinedAtDateRange' | translate }}</mat-label>
       <mat-date-range-input [formGroup]="filterForm" [rangePicker]="joinedAtPicker">
         <input
@@ -18,7 +19,7 @@
       <mat-datepicker-toggle matSuffix [for]="joinedAtPicker"></mat-datepicker-toggle>
       <mat-date-range-picker #joinedAtPicker></mat-date-range-picker>
     </mat-form-field>
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="outline">
       <mat-label>{{ 'members.lastVisitDateRange' | translate }}</mat-label>
       <mat-date-range-input [formGroup]="filterForm" [rangePicker]="lastVisitPicker">
         <input
@@ -35,7 +36,7 @@
       <mat-datepicker-toggle matSuffix [for]="lastVisitPicker"></mat-datepicker-toggle>
       <mat-date-range-picker #lastVisitPicker></mat-date-range-picker>
     </mat-form-field>
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="outline">
       <mat-label>{{ 'members.firstOrderDateRange' | translate }}</mat-label>
       <mat-date-range-input [formGroup]="filterForm" [rangePicker]="firstOrderPicker">
         <input
@@ -52,7 +53,7 @@
       <mat-datepicker-toggle matSuffix [for]="firstOrderPicker"></mat-datepicker-toggle>
       <mat-date-range-picker #firstOrderPicker></mat-date-range-picker>
     </mat-form-field>
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="outline">
       <mat-label>{{ 'members.lastOrderDateRange' | translate }}</mat-label>
       <mat-date-range-input [formGroup]="filterForm" [rangePicker]="lastOrderPicker">
         <input
@@ -81,6 +82,32 @@
       </mat-slider>
       5
     </div>
+
+    <mat-divider />
+    <p>{{ 'members.orderCountBasedFilter' | translate }}</p>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'members.minOrderCount' | translate }}</mat-label>
+      <input matInput formControlName="minOrderCount" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'members.maxOrderCount' | translate }}</mat-label>
+      <input matInput formControlName="maxOrderCount" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'members.orderDateRange' | translate }}</mat-label>
+      <mat-date-range-input [formGroup]="filterForm" [rangePicker]="orderPicker">
+        <input
+          matStartDate
+          formControlName="orderFromDate"
+          placeholder="{{ 'members.startDate' | translate }}"
+        />
+        <input matEndDate formControlName="orderToDate" placeholder="{{ 'members.endDate' | translate }}" />
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="orderPicker"></mat-datepicker-toggle>
+      <mat-date-range-picker #orderPicker></mat-date-range-picker>
+    </mat-form-field>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>

@@ -23,6 +23,10 @@ export class FilterMemberV2Dto {
   firstOrderToDate?: Date;
   lastOrderFromDate?: Date;
   lastOrderToDate?: Date;
+  orderFromDate?: Date;
+  orderToDate?: Date;
+  minOrderCount?: number;
+  maxOrderCount?: number;
   joinedAtFromDate?: Date;
   joinedAtToDate?: Date;
   lastVisitFromDate?: Date;

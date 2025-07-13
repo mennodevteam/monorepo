@@ -9,13 +9,17 @@
 </mat-toolbar>
 <main p-md w-lg fxLayout="column" fxLayoutGap="24px">
   <mat-toolbar>
-    <mat-toolbar-row>
+    <mat-toolbar-row fxLayout="row" fxLayoutGap="8px">
       <button mat-stroked-button (click)="openFilterDialog()">
         {{ 'members.filterTitle' | translate }}
       </button>
       <span fxFlex></span>
       @if (query.data()) {
         <small>{{ 'app.number' | translate: { value: query.data()?.totalCount | number } }}</small>
+        <button mat-button (click)="sendMessage()">
+          <i class="fa-regular fa-message"></i>
+          {{ 'members.sendSmsToFilter' | translate: { value: query.data()?.totalCount | number } }}
+        </button>
       }
     </mat-toolbar-row>
     @if (hasActiveFilters()) {
@@ -54,6 +58,13 @@
               <span *ngIf="filterDto().lastOrderFromDate">{{ filterDto().lastOrderFromDate | pdate }}</span>
               <span *ngIf="filterDto().lastOrderFromDate && filterDto().lastOrderToDate"> - </span>
               <span *ngIf="filterDto().lastOrderToDate">{{ filterDto().lastOrderToDate | pdate }}</span>
+              <i class="fa-solid fa-xmark-circle"></i>
+            </mat-chip>
+          }
+          @if (filterDto().minOrderCount || filterDto().maxOrderCount || filterDto().orderFromDate || filterDto().orderToDate) {
+            <mat-chip (click)="removeFilter('orderCount')">
+              {{ 'members.orderCountBasedFilter' | translate }}:
+              {{ filterDto().orderFromDate | pdate }} - {{ filterDto().orderToDate | pdate }}
               <i class="fa-solid fa-xmark-circle"></i>
             </mat-chip>
           }
