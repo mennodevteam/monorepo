@@ -1,7 +1,7 @@
 import { Component, input, Output, EventEmitter, ViewChild, Input, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
-import { FilterMemberV2ResponseDto, User } from '@menno/types';
+import { FilterMemberV2ResponseDto, Member, User } from '@menno/types';
 import { DataLoadingComponent } from '../../../shared/components/data-loading/data-loading.component';
 import { PdatePipe } from '../../../shared/pipes/pdate.pipe';
 import { SHARED } from '../../../shared';
@@ -21,6 +21,7 @@ export class MembersTableComponent {
 
   @ViewChild(MatSort) sort!: MatSort;
   @Output() sortChange = new EventEmitter<{ sortBy: string; sortType: 'ASC' | 'DESC' }>();
+  @Output() starClick = new EventEmitter<Member>();
 
   sortBy = input<string | undefined>('joinedAt');
   sortType = input<'ASC' | 'DESC' | undefined>('DESC');
@@ -62,5 +63,9 @@ export class MembersTableComponent {
       sortBy: sort.active,
       sortType: sort.direction.toUpperCase() as 'ASC' | 'DESC',
     });
+  }
+
+  onStarClick(member: Member) {
+    this.starClick.emit(member);
   }
 }

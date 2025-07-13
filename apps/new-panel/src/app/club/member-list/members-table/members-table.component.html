@@ -72,13 +72,15 @@
       {{ 'membersTable.star' | translate }}
     </th>
     <td mat-cell *matCellDef="let row">
-      <div fxLayout="row" fxLayoutAlign="center center" ltr>
-        <i [class.fa-solid]="row.member.star >= 1" class="fa-regular fa-star"></i>
-        <i [class.fa-solid]="row.member.star >= 2" class="fa-regular fa-star"></i>
-        <i [class.fa-solid]="row.member.star >= 3" class="fa-regular fa-star"></i>
-        <i [class.fa-solid]="row.member.star >= 4" class="fa-regular fa-star"></i>
-        <i [class.fa-solid]="row.member.star >= 5" class="fa-regular fa-star"></i>
-      </div>
+      <button mat-button (click)="onStarClick(row.member)">
+        <div fxLayout="row" fxLayoutAlign="center center" ltr>
+          <i [class.fa-solid]="row.member.star >= 1" class="fa-regular fa-star"></i>
+          <i [class.fa-solid]="row.member.star >= 2" class="fa-regular fa-star"></i>
+          <i [class.fa-solid]="row.member.star >= 3" class="fa-regular fa-star"></i>
+          <i [class.fa-solid]="row.member.star >= 4" class="fa-regular fa-star"></i>
+          <i [class.fa-solid]="row.member.star >= 5" class="fa-regular fa-star"></i>
+        </div>
+      </button>
     </td>
   </ng-container>
 

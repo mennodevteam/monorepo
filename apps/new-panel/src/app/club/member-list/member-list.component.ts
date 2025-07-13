@@ -2,7 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
-import { Chat, FilterMemberV2Dto, FilterMemberV2ResponseDto } from '@menno/types';
+import { Chat, FilterMemberV2Dto, FilterMemberV2ResponseDto, Member } from '@menno/types';
 import { injectMutation, injectQuery } from '@tanstack/angular-query-experimental';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { SHARED } from '../../shared';
@@ -19,6 +19,7 @@ import { DialogService } from '../../core/services/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ClubService } from '../../core/services/club.service';
 
 @Component({
   selector: 'app-member-list',
@@ -49,6 +50,7 @@ export class MemberListComponent {
   private dialog = inject(MatDialog);
   private dialogService = inject(DialogService);
   private smsService = inject(SmsService);
+  private clubService = inject(ClubService);
   private t = inject(TranslateService);
   private snack = inject(MatSnackBar);
 
@@ -221,6 +223,25 @@ export class MemberListComponent {
           ) {
             this.sendMessageMutation.mutate({ filter: this.filterDto(), message: dto.text });
           }
+        }
+      });
+  }
+
+  setStar(member: Member) {
+    this.dialogService
+      .prompt(this.t.instant('members.setStarDialog.title'), {
+        star: {
+          label: this.t.instant('members.setStarDialog.starLabel'),
+          control: new FormControl(member.star, Validators.required),
+          type: 'number',
+        },
+      })
+      .then(async (dto) => {
+        if (dto && dto.star >= 0 && dto.star <= 5) {
+          this.clubService.saveMemberMutation.mutate({
+            id: member.id,
+            star: dto.star,
+          } as Member);
         }
       });
   }

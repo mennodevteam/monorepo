@@ -4,7 +4,7 @@ import { ShopService } from '../../shop/shop.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from './dialog.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { injectMutation } from '@tanstack/angular-query-experimental';
+import { injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
 import { Address, FilterMemberDto, GenderType, Member, User } from '@menno/types';
 import { lastValueFrom } from 'rxjs';
 import { PromptFields } from '../../shared/dialogs/prompt-dialog/prompt-dialog.component';
@@ -20,7 +20,8 @@ export class ClubService {
   private readonly translate = inject(TranslateService);
   private readonly dialog = inject(DialogService);
   private readonly snack = inject(MatSnackBar);
-
+  private readonly queryClient = inject(QueryClient);
+  
   saveMemberMutation = injectMutation(() => ({
     mutationFn: (member: Member) => lastValueFrom(this.http.post<Member>(`/members`, member)),
     onMutate: () => {
@@ -28,6 +29,7 @@ export class ClubService {
     },
     onSuccess: () => {
       this.snack.open(this.translate.instant('app.savedSuccessfully'), '', { duration: 2000 });
+      this.queryClient.invalidateQueries({ queryKey: ['memberList'] });
     },
     onError: () => {
       this.snack.open(this.translate.instant('errors.changeError'), '', { duration: 2000 });

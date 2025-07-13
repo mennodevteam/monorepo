@@ -80,6 +80,7 @@
         (sortChange)="onSortChange($event)"
         [sortBy]="filterDto().sortBy"
         [sortType]="filterDto().sortType"
+        (starClick)="setStar($event)"
       />
       <mat-paginator
         [length]="query.data()?.totalCount || 0"

@@ -560,7 +560,11 @@
     "orderCountBasedFilter": "فیلتر بر اساس تعداد سفارشات در بازه زمانی",
     "minOrderCount": "حداقل تعداد سفارشات",
     "maxOrderCount": "حداکثر تعداد سفارشات",
-    "orderDateRange": "بازه تاریخ سفارشات"
+    "orderDateRange": "بازه تاریخ سفارشات",
+    "setStarDialog": {
+      "title": "تنظیم ستاره",
+      "starLabel": "ستاره"
+    }
   },
   "membersTable": {
     "fullName": "نام",
