@@ -16,7 +16,6 @@ import {
   User,
   WindowsLocalNotification,
   InventoryTransactionType,
-  CostUpdateStrategy,
 } from '@menno/types';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
@@ -35,7 +34,6 @@ import { SmsService } from '../sms/sms.service';
 import { PrintersService } from '../printers/printers.service';
 import * as Sentry from '@sentry/node';
 import { RedisKey, RedisService } from '../core/redis.service';
-import { Guid } from 'guid-typescript';
 import { PersianNumberService } from '@menno/utils';
 
 @EventSubscriber()
@@ -120,7 +118,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
         },
       });
     }
-    if (customer?.mobilePhone && shop.smsAccount && shop.smsAccount.charge > 0) {
+    if (customer?.mobilePhone && shop.smsAccount && shop.smsAccount.charge > 0 && !order.createdAt) {
       this.orderMessagesRepo
         .find({
           where: {
