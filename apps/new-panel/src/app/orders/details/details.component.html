@@ -19,7 +19,12 @@
     <div fxFlex.gt-sm>
       <mat-card appearance="outlined">
         <mat-card-content>
-          <app-order-item-table [order]="order()" />
+          @if (!isSmallScreen()) {
+            <mat-checkbox [(ngModel)]="showCost">
+              {{ 'order.showCost' | translate }}
+            </mat-checkbox>
+          }
+          <app-order-item-table [order]="order()" [showCost]="showCost()" />
         </mat-card-content>
         <mat-divider />
         <mat-card-actions>

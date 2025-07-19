@@ -13,6 +13,9 @@ import { OrderStateChipComponent } from '../state-chip/state-chip.component';
 import { OrdersService } from '../order.service';
 import { OrderChatComponent } from './chat/order-chat.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-order-details',
@@ -26,6 +29,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     OrderStateChipComponent,
     OrderChatComponent,
     MatTooltipModule,
+    MatCheckboxModule,
+    FormsModule,
   ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss',
@@ -39,6 +44,9 @@ export class OrderDetailsComponent {
   User = User;
   OrderType = OrderType;
   orderId = signal(this.route.snapshot.params['id']);
+  isSmallScreen = signal(false);
+  showCost = signal(false);
+  private readonly breakpointObserver = inject(BreakpointObserver);
   query = injectQuery(() => ({
     queryKey: ['orderDetails', this.orderId()],
     queryFn: () => lastValueFrom(this.http.get<Order>(`/orders/panel/${this.orderId()}`)),
@@ -56,6 +64,9 @@ export class OrderDetailsComponent {
   });
 
   constructor() {
+    this.breakpointObserver.observe([Breakpoints.XSmall]).subscribe((result) => {
+      this.isSmallScreen.set(result.matches);
+    });    
     effect(() => {
       this.route.paramMap.subscribe((params) => {
         this.orderId.set(params.get('id'));
@@ -76,4 +87,5 @@ export class OrderDetailsComponent {
         state,
       });
   }
+
 }

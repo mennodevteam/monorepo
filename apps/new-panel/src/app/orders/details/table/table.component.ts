@@ -14,8 +14,10 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 })
 export class OrderItemTableComponent {
   order = input<Order>();
+  showCost = input<boolean>(false);
   displayedColumns = computed(() => {
-    return this.isSmallScreen() ? ['title', 'quantity', 'price'] : ['index', 'title', 'quantity', 'price', 'total']
+    if (this.isSmallScreen()) return ['title', 'quantity', 'price'];
+    return this.showCost() ? ['index', 'title', 'quantity', 'price', 'materialCost', 'total'] : ['index', 'title', 'quantity', 'price', 'total'];
   });
   items = computed(() => {
     return this.order()?.items || [];

@@ -185,6 +185,7 @@
     "OTHER": "سایر"
   },
   "order": {
+    "showCost": "نمایش هزینه مواد اولیه",
     "customer": "مشتری",
     "typeTitle": "نوع سفارش",
     "totalProfit": "کل سود سفارش",

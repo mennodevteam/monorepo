@@ -28,7 +28,6 @@ const DEFAULT_STATES = [
   OrderState.Ready,
   OrderState.Shipping,
   OrderState.Completed,
-  OrderState.Canceled,
 ];
 
 @Component({

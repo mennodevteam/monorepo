@@ -134,6 +134,11 @@ export class OrdersController {
       },
       withDeleted: true,
       relations,
+      order: {
+        items: {
+          isAbstract: 'ASC',
+        },
+      },
     });
 
     if (!order?.seenAt) {
