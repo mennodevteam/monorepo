@@ -1,0 +1,24 @@
+<div class="shops-container" w-lg p-md>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>store</mat-icon>
+        Shops Management
+      </mat-card-title>
+      <mat-card-subtitle>
+        List of all registered shops in the system
+      </mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <app-shops-table [data]="shopsQuery.data() ?? []"></app-shops-table>
+    </mat-card-content>
+    
+    <mat-card-actions align="end">
+      <button mat-raised-button color="primary">
+        <i class="far fa-plus"></i>
+        Add New Shop
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div> 
