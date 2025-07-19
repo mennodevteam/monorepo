@@ -1,0 +1,10 @@
+@if (auth.userSignal()) {
+  <mat-toolbar fxLayout="row">
+    <h1 fxFlex>MENNO ADMIN</h1>
+    <button mat-button>
+      <i class="fas fa-shop"></i>
+      shops
+    </button>
+  </mat-toolbar>
+}
+<router-outlet></router-outlet>

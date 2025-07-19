@@ -1,0 +1,16 @@
+.container {
+  padding-top: 96px !important;
+  gap: 16px;
+}
+
+i.icon {
+  color: var(--mat-sys-outline);
+  font-size: 188px;
+}
+
+p {
+  color: var(--mat-sys-outline);
+  text-align: center;
+  font-size: var(--mat-sys-body-small);
+  margin: 0;
+}

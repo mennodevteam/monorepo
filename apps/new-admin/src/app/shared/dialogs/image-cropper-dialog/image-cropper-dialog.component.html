@@ -1,0 +1,34 @@
+<mat-dialog-content>
+  @if (!imageChangedEvent) {
+    <app-data-loading />
+  } @else {
+    <div>
+      <image-cropper
+        style="max-height: 60vh"
+        [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="
+          data && data.maintainAspectRatio !== undefined ? data?.maintainAspectRatio : true
+        "
+        [aspectRatio]="data?.aspectRatio || 1"
+        [resizeToWidth]="data?.resizeToWidth"
+        [roundCropper]="data?.roundCropper"
+        [imageQuality]="data?.imageQuality || 90"
+        [format]="data?.format || 'jpeg'"
+        [roundCropper]="data?.roundCropper"
+        (imageCropped)="imageCropped($event)"
+      ></image-cropper>
+    </div>
+  }
+</mat-dialog-content>
+<mat-dialog-actions>
+  <input
+    #fileInput
+    type="file"
+    (change)="fileChangeEvent($event)"
+    accept="image/x-png,image/gif,image/jpeg,image/heic"
+  />
+  <button mat-button mat-dialog-close>{{ 'app.cancel' | translate }}</button>
+  <button mat-flat-button [disabled]="!result" [mat-dialog-close]="result">
+    {{ 'app.save' | translate }}
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,20 @@
+<h4 matDialogTitle>{{ data.title }}</h4>
+<mat-dialog-content>
+  <p>
+    {{ 'sortDialog.description' | translate }}
+  </p>
+  <mat-chip-set cdkDropList cdkDropListOrientation="mixed" (cdkDropListDropped)="drop($event)">
+    @for (item of data.items; track item.id) {
+      <mat-chip cdkDrag>
+        <span eng> {{ $index + 1 }}. </span>
+        {{ item.text }}
+      </mat-chip>
+    }
+  </mat-chip-set>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>{{ 'app.cancel' | translate }}</button>
+  <button mat-flat-button [mat-dialog-close]="data.items">
+    {{ 'app.save' | translate }}
+  </button>
+</mat-dialog-actions>

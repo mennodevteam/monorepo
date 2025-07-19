@@ -108,6 +108,20 @@ export class AuthService {
     return token;
   }
 
+  loginAdminV2(user: User, expireTokenIn = '90d') {
+    const payload: Partial<User> = {
+      id: user.id,
+      role: UserRole.Admin,
+    };
+
+    const token = this.jwtService.sign(payload, {
+      secret: process.env.JWT_ACCESS_SECRET,
+      expiresIn: expireTokenIn,
+    });
+
+    return token;
+  }
+
   async loginApp(user: User) {
     return this.login(user, UserRole.App, '90d');
   }

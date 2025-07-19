@@ -1,0 +1,26 @@
+<form
+  p-md
+  w-xs
+  fxLayout="column"
+  fxLayoutAlign="center stretch"
+  center-align
+  [formGroup]="loginForm"
+  (ngSubmit)="submit()"
+  fxLayoutAlign="center default"
+  [class.loading]="isLoading()"
+>
+  <h1>Menno | Admin Panel</h1>
+  <mat-form-field>
+    <mat-label>username</mat-label>
+    <input matInput formControlName="username" eng ltr [disabled]="isLoading()" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>password</mat-label>
+    <input matInput formControlName="password" eng ltr type="password" [disabled]="isLoading()" />
+  </mat-form-field>
+
+  <button mat-flat-button [disabled]="isLoading() || loginForm.invalid">
+    <span *ngIf="!isLoading()">Login</span>
+    <mat-spinner *ngIf="isLoading()" diameter="24"></mat-spinner>
+  </button>
+</form>
