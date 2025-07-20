@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { COMMON } from '../../common';
 import { ShopService } from '../../core';
@@ -10,7 +10,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 @Component({
   selector: 'app-info',
   standalone: true,
-  imports: [CommonModule, MatToolbarModule, COMMON, MatCardModule, MatListModule, MatTooltipModule],
+  imports: [MatToolbarModule, COMMON, MatCardModule, MatListModule, MatTooltipModule],
   templateUrl: './info.component.html',
   styleUrl: './info.component.scss',
 })

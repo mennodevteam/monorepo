@@ -8,30 +8,34 @@
   (ngSubmit)="submit()"
   fxLayoutAlign="center default"
   [class.loading]="isLoading()"
->
+  >
   <img id="logo" src="icons/logo.svg" alt="menno logo" />
   <h1>
     {{ 'menno' | translate }}
     <br>
-    {{ 'login.title' | translate }}
-  </h1>
-  <mat-form-field>
-    <mat-label>نام کاربری</mat-label>
-    <input matInput formControlName="username" eng ltr [disabled]="isLoading()" />
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>رمز عبور</mat-label>
-    <input matInput formControlName="password" eng ltr type="password" [disabled]="isLoading()" />
-  </mat-form-field>
+      {{ 'login.title' | translate }}
+    </h1>
+    <mat-form-field>
+      <mat-label>نام کاربری</mat-label>
+      <input matInput formControlName="username" eng ltr [disabled]="isLoading()" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>رمز عبور</mat-label>
+      <input matInput formControlName="password" eng ltr type="password" [disabled]="isLoading()" />
+    </mat-form-field>
 
-  <button mat-flat-button [disabled]="isLoading() || loginForm.invalid">
-    <span *ngIf="!isLoading()">ورود</span>
-    <mat-spinner *ngIf="isLoading()" diameter="24"></mat-spinner>
-  </button>
-  
-  <div style="margin-top: 1rem; text-align: center;">
-    <a routerLink="/auth/register" style="color: white; text-decoration: none; font-size: 0.9rem;">
-      ثبت‌نام در منّو
-    </a>
-  </div>
-</form>
+    <button mat-flat-button [disabled]="isLoading() || loginForm.invalid">
+      @if (!isLoading()) {
+        <span>ورود</span>
+      }
+      @if (isLoading()) {
+        <mat-spinner diameter="24"></mat-spinner>
+      }
+    </button>
+
+    <div style="margin-top: 1rem; text-align: center;">
+      <a routerLink="/auth/register" style="color: white; text-decoration: none; font-size: 0.9rem;">
+        ثبت‌نام در منّو
+      </a>
+    </div>
+  </form>

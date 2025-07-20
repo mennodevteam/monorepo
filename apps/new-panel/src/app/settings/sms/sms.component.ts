@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { SHARED } from '../../shared';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
@@ -17,7 +17,7 @@ import { SmsService } from '../../core/services/sms.service';
 @Component({
   selector: 'app-sms',
   standalone: true,
-  imports: [CommonModule, SHARED, MatToolbarModule, MatCardModule, OrderMessagesTableComponent],
+  imports: [SHARED, MatToolbarModule, MatCardModule, OrderMessagesTableComponent],
   templateUrl: './sms.component.html',
   styleUrl: './sms.component.scss',
 })

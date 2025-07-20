@@ -7,7 +7,7 @@
   class="background-background"
   fxLayout="column"
   fxLayoutGap="16px"
->
+  >
   @if (!query.data()) {
     <mat-spinner [diameter]="24" />
   } @else if (!query.data()?.length) {
@@ -20,14 +20,15 @@
   @for (chat of query.data(); track chat.id) {
     <mat-card [class.receive]="chat.type === ChatType.Receive">
       <mat-card-header>
-        <img
-          *ngIf="chat.type === ChatType.Receive"
-          mat-card-avatar
-          [imageLoader]="chat.shop.logo"
-          [imageFile]="chat.shop.logoImage"
-          alt="{{ chat.shop.title }}"
-          [imageSize]="'sm'"
-        />
+        @if (chat.type === ChatType.Receive) {
+          <img
+            mat-card-avatar
+            [imageLoader]="chat.shop.logo"
+            [imageFile]="chat.shop.logoImage"
+            alt="{{ chat.shop.title }}"
+            [imageSize]="'sm'"
+            />
+        }
         <mat-card-title>
           @if (chat.type === ChatType.Receive) {
             {{ chat.shop.title }}
@@ -68,7 +69,7 @@
     class="tertiary-button"
     (click)="sendMutation.mutate()"
     [disabled]="sendMutation.status() === 'pending' || !text()"
-  >
+    >
     <i class="fa-solid fa-paper-plane-top fa-flip-horizontal"></i>
   </button>
 </mat-toolbar>

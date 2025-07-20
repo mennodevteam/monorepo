@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { COMMON } from '../../common';
 import { TopAppBarComponent } from '../../common/components/top-app-bar/top-app-bar.component';
 import { ShopService, ThemeService } from '../../core';
@@ -17,7 +17,7 @@ const DEFAULT_LOCATION: [number, number] = [51.389, 35.6892];
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [CommonModule, COMMON, TopAppBarComponent, MatToolbarModule],
+  imports: [COMMON, TopAppBarComponent, MatToolbarModule],
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss',
 })

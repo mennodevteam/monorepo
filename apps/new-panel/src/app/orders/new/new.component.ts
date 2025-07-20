@@ -1,5 +1,5 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
-import { CommonModule, PlatformLocation } from '@angular/common';
+import { PlatformLocation } from '@angular/common';
 import { NewOrdersService } from './new-order.service';
 import { SHARED } from '../../shared';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -26,7 +26,6 @@ import { ConfigModalComponent, OrderConfigData } from './config-modal/config-mod
   selector: 'app-new',
   standalone: true,
   imports: [
-    CommonModule,
     SHARED,
     MatToolbarModule,
     MatCardModule,
@@ -34,8 +33,8 @@ import { ConfigModalComponent, OrderConfigData } from './config-modal/config-mod
     NewOrderItemsComponent,
     AddressListComponent,
     CustomerComponent,
-    OrderTypeComponent,
-  ],
+    OrderTypeComponent
+],
   providers: [NewOrdersService],
   templateUrl: './new.component.html',
   styleUrl: './new.component.scss',

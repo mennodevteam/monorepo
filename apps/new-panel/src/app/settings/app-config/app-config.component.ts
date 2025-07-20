@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { HomePage, MenuViewType, OrderType, Shop, ThemeMode } from '@menno/types';
 import { ShopService } from '../../shop/shop.service';
 import { environment } from '../../../environments/environment';
-import { CommonModule } from '@angular/common';
+
 import { SHARED } from '../../shared';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -18,7 +18,7 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-config',
   templateUrl: './app-config.component.html',
   styleUrls: ['./app-config.component.scss'],
-  imports: [CommonModule, SHARED, MatCardModule, MatToolbarModule, ReactiveFormsModule, MatRadioModule],
+  imports: [SHARED, MatCardModule, MatToolbarModule, ReactiveFormsModule, MatRadioModule],
 })
 export class AppConfigComponent implements FormComponent {
   public readonly shopService = inject(ShopService);

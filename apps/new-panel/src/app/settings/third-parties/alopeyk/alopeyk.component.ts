@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,14 +17,13 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'hami',
   imports: [
-    CommonModule,
     SHARED,
     MatToolbarModule,
     MatCardModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    MatListModule,
-  ],
+    MatListModule
+],
   templateUrl: './alopeyk.component.html',
   styleUrls: ['./alopeyk.component.scss'],
 })

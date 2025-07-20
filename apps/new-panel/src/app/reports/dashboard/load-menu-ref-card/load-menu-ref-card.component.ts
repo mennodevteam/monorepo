@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { SHARED } from '../../../shared';
 import { MatCardModule } from '@angular/material/card';
 import { HttpClient } from '@angular/common/http';
@@ -15,7 +15,7 @@ Chart.defaults.font.family = 'IRANSans';
 @Component({
   selector: 'app-load-menu-ref-card',
   standalone: true,
-  imports: [CommonModule, SHARED, MatCardModule, BaseChartDirective, MatMenuModule],
+  imports: [SHARED, MatCardModule, BaseChartDirective, MatMenuModule],
   templateUrl: './load-menu-ref-card.component.html',
   styleUrl: './load-menu-ref-card.component.scss',
 })

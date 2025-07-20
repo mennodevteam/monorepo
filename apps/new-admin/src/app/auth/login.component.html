@@ -8,7 +8,7 @@
   (ngSubmit)="submit()"
   fxLayoutAlign="center default"
   [class.loading]="isLoading()"
->
+  >
   <h1>Menno | Admin Panel</h1>
   <mat-form-field>
     <mat-label>username</mat-label>
@@ -20,7 +20,11 @@
   </mat-form-field>
 
   <button mat-flat-button [disabled]="isLoading() || loginForm.invalid">
-    <span *ngIf="!isLoading()">Login</span>
-    <mat-spinner *ngIf="isLoading()" diameter="24"></mat-spinner>
+    @if (!isLoading()) {
+      <span>Login</span>
+    }
+    @if (isLoading()) {
+      <mat-spinner diameter="24"></mat-spinner>
+    }
   </button>
 </form>

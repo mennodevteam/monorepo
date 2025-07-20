@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { SHARED } from '../../../shared';
 import { MatCardModule } from '@angular/material/card';
 import { HttpClient } from '@angular/common/http';
@@ -14,7 +14,7 @@ Chart.defaults.font.family = 'IRANSans';
 @Component({
   selector: 'app-menu-stat-card',
   standalone: true,
-  imports: [CommonModule, SHARED, MatCardModule, BaseChartDirective],
+  imports: [SHARED, MatCardModule, BaseChartDirective],
   templateUrl: './menu-stat-card.component.html',
   styleUrl: './menu-stat-card.component.scss',
 })

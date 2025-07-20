@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MenuViewType, ProductCategory } from '@menno/types';
 import { COMMON } from '../../common';
 import { ProductListViewComponent } from '../product-list/product-list-view/product-list-view.component';
@@ -12,13 +12,12 @@ import { ProductCarouselViewComponent } from '../product-list/product-carousel-v
   selector: 'app-category-section',
   standalone: true,
   imports: [
-    CommonModule,
     COMMON,
     ProductListViewComponent,
     ProductGridViewComponent,
     ProductCardViewComponent,
-    ProductCarouselViewComponent,
-  ],
+    ProductCarouselViewComponent
+],
   templateUrl: './category-section.component.html',
   styleUrl: './category-section.component.scss',
 })

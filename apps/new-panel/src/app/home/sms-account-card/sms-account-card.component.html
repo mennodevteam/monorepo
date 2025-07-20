@@ -8,18 +8,20 @@
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <mat-list *ngIf="shopService.data()?.smsAccount">
-      <mat-list-item>
-        <span matListItemLine>{{ 'home.smsAccountCharge' | translate }}</span>
-        <span matListItemMeta [ngClass]="{ red: charge <= 100000 }">{{ charge | number: '1.0-0' | menuCurrency }}</span>
-      </mat-list-item>
-      <mat-list-item>
-        <span matListItemLine>{{ 'home.smsCount' | translate }}</span>
-        <span matListItemMeta>
-          {{ 'app.number' | translate: { value: (charge / avgSmsCharge | number: '1.0-0') } }}
-        </span>
-      </mat-list-item>
-    </mat-list>
+    @if (shopService.data()?.smsAccount) {
+      <mat-list>
+        <mat-list-item>
+          <span matListItemLine>{{ 'home.smsAccountCharge' | translate }}</span>
+          <span matListItemMeta [ngClass]="{ red: charge <= 100000 }">{{ charge | number: '1.0-0' | menuCurrency }}</span>
+        </mat-list-item>
+        <mat-list-item>
+          <span matListItemLine>{{ 'home.smsCount' | translate }}</span>
+          <span matListItemMeta>
+            {{ 'app.number' | translate: { value: (charge / avgSmsCharge | number: '1.0-0') } }}
+          </span>
+        </mat-list-item>
+      </mat-list>
+    }
   </mat-card-content>
   <mat-divider></mat-divider>
   <mat-card-actions>

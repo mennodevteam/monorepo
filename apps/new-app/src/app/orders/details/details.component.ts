@@ -1,5 +1,5 @@
 import { Component, computed, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { COMMON } from '../../common';
 import { TopAppBarComponent } from '../../common/components';
 import { MatListModule } from '@angular/material/list';
@@ -17,14 +17,13 @@ import { Chat, ChatType } from '@menno/types';
   selector: 'app-details',
   standalone: true,
   imports: [
-    CommonModule,
     COMMON,
     TopAppBarComponent,
     MatListModule,
     AlertBannerComponent,
     MatProgressSpinnerModule,
-    MatBadgeModule,
-  ],
+    MatBadgeModule
+],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss',
 })

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PaymentGateway, PaymentGatewayType } from '@menno/types';
-import { CommonModule } from '@angular/common';
+
 import { SHARED } from '../../../shared';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
@@ -13,14 +13,13 @@ import { PayService } from '../../../core/services/pay.service';
 @Component({
   selector: 'zibal',
   imports: [
-    CommonModule,
     SHARED,
     MatToolbarModule,
     MatCardModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    MatListModule,
-  ],
+    MatListModule
+],
   templateUrl: './zibal.component.html',
   styleUrls: ['./zibal.component.scss'],
 })

@@ -1,5 +1,5 @@
 import { Component, effect, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatCardModule } from '@angular/material/card';
 import { SHARED } from '../../../shared';
 import { MatListModule } from '@angular/material/list';
@@ -17,7 +17,7 @@ import { ClubService } from '../../../core/services/club.service';
 @Component({
   selector: 'app-address-list',
   standalone: true,
-  imports: [CommonModule, MatCardModule, SHARED, MatListModule, MatRadioModule, FormsModule],
+  imports: [MatCardModule, SHARED, MatListModule, MatRadioModule, FormsModule],
   templateUrl: './address-list.component.html',
   styleUrl: './address-list.component.scss',
 })

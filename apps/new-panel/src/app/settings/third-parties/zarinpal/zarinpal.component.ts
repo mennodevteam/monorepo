@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PaymentGateway, PaymentGatewayType } from '@menno/types';
 import { PayService } from '../../../core/services/pay.service';
-import { CommonModule } from '@angular/common';
+
 import { SHARED } from '../../../shared';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
@@ -13,14 +13,13 @@ import { MatListModule } from '@angular/material/list';
 @Component({
   selector: 'zarinpal',
   imports: [
-    CommonModule,
     SHARED,
     MatToolbarModule,
     MatCardModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    MatListModule,
-  ],
+    MatListModule
+],
   templateUrl: './zarinpal.component.html',
   styleUrls: ['./zarinpal.component.scss'],
 })

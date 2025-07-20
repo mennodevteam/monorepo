@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { SHARED } from '../../../shared';
 import { MatCardModule } from '@angular/material/card';
 import { HttpClient } from '@angular/common/http';
@@ -15,7 +15,7 @@ Chart.defaults.font.family = 'IRANSans';
 @Component({
   selector: 'app-top-products-card',
   standalone: true,
-  imports: [CommonModule, SHARED, MatCardModule, BaseChartDirective, MatMenuModule],
+  imports: [SHARED, MatCardModule, BaseChartDirective, MatMenuModule],
   templateUrl: './top-products-card.component.html',
   styleUrl: './top-products-card.component.scss',
 })

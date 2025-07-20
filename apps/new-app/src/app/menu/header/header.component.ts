@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { OrderType, Shop } from '@menno/types';
 import { COMMON } from '../../common';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -10,7 +10,7 @@ import { MenuService, ShopService } from '../../core';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, COMMON, MatToolbarModule, MatBottomSheetModule, AlertBannerComponent],
+  imports: [COMMON, MatToolbarModule, MatBottomSheetModule, AlertBannerComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })

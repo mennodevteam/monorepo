@@ -22,41 +22,47 @@
   {{ 'order.state.' + state() | translate }}
 </mat-chip>
 <mat-menu #menu="matMenu">
-  <button
-    mat-menu-item
-    (click)="stateChange.emit(OrderState.Processing)"
-    *ngIf="state() !== OrderState.Processing"
-  >
-    <i class="fa-regular fa-box-open middle"></i>
-    {{ 'order.state.' + OrderState.Processing | translate }}
-  </button>
-  <button mat-menu-item (click)="stateChange.emit(OrderState.Ready)" *ngIf="state() !== OrderState.Ready">
-    <i class="fa-regular fa-box-check middle"></i>
-    {{ 'order.state.' + OrderState.Ready | translate }}
-  </button>
-  <button
-    mat-menu-item
-    (click)="stateChange.emit(OrderState.Shipping)"
-    *ngIf="state() !== OrderState.Shipping"
-  >
-    <i class="fa-regular fa-truck-fast middle"></i>
-    {{ 'order.state.' + OrderState.Shipping | translate }}
-  </button>
-  <button
-    mat-menu-item
-    (click)="stateChange.emit(OrderState.Completed)"
-    *ngIf="state() !== OrderState.Completed"
-  >
-    <i class="fa-regular fa-check-circle middle"></i>
-    {{ 'order.state.' + OrderState.Completed | translate }}
-  </button>
+  @if (state() !== OrderState.Processing) {
+    <button
+      mat-menu-item
+      (click)="stateChange.emit(OrderState.Processing)"
+      >
+      <i class="fa-regular fa-box-open middle"></i>
+      {{ 'order.state.' + OrderState.Processing | translate }}
+    </button>
+  }
+  @if (state() !== OrderState.Ready) {
+    <button mat-menu-item (click)="stateChange.emit(OrderState.Ready)">
+      <i class="fa-regular fa-box-check middle"></i>
+      {{ 'order.state.' + OrderState.Ready | translate }}
+    </button>
+  }
+  @if (state() !== OrderState.Shipping) {
+    <button
+      mat-menu-item
+      (click)="stateChange.emit(OrderState.Shipping)"
+      >
+      <i class="fa-regular fa-truck-fast middle"></i>
+      {{ 'order.state.' + OrderState.Shipping | translate }}
+    </button>
+  }
+  @if (state() !== OrderState.Completed) {
+    <button
+      mat-menu-item
+      (click)="stateChange.emit(OrderState.Completed)"
+      >
+      <i class="fa-regular fa-check-circle middle"></i>
+      {{ 'order.state.' + OrderState.Completed | translate }}
+    </button>
+  }
   <mat-divider />
-  <button
-    mat-menu-item
-    (click)="stateChange.emit(OrderState.Canceled)"
-    *ngIf="state() !== OrderState.Canceled"
-  >
-    <i class="fa-regular fa-xmark-circle middle"></i>
-    {{ 'order.state.' + OrderState.Canceled | translate }}
-  </button>
+  @if (state() !== OrderState.Canceled) {
+    <button
+      mat-menu-item
+      (click)="stateChange.emit(OrderState.Canceled)"
+      >
+      <i class="fa-regular fa-xmark-circle middle"></i>
+      {{ 'order.state.' + OrderState.Canceled | translate }}
+    </button>
+  }
 </mat-menu>

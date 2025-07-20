@@ -1,5 +1,5 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { SHARED } from '../../shared';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { injectQuery } from '@tanstack/angular-query-experimental';
@@ -34,7 +34,6 @@ const DEFAULT_STATES = [
   selector: 'app-list',
   standalone: true,
   imports: [
-    CommonModule,
     SHARED,
     MatToolbarModule,
     TableComponent,
@@ -46,8 +45,8 @@ const DEFAULT_STATES = [
     FormsModule,
     MatChipsModule,
     SearchMemberAutocompleteComponent,
-    CardComponent,
-  ],
+    CardComponent
+],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
 })

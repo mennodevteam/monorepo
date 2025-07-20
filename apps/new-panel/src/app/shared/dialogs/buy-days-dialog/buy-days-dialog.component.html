@@ -13,16 +13,22 @@
         min="1"
         step="1"
         placeholder="{{ 'home.plan.daysPlaceholder' | translate }}"
-      />
-      <mat-error *ngIf="form.get('days')?.hasError('required')">
-        {{ 'home.plan.daysRequired' | translate }}
-      </mat-error>
-      <mat-error *ngIf="form.get('days')?.hasError('min')">
-        {{ 'home.plan.daysMin' | translate }}
-      </mat-error>
-      <mat-error *ngIf="form.get('days')?.hasError('max')">
-        {{ 'home.plan.daysMax' | translate }}
-      </mat-error>
+        />
+      @if (form.get('days')?.hasError('required')) {
+        <mat-error>
+          {{ 'home.plan.daysRequired' | translate }}
+        </mat-error>
+      }
+      @if (form.get('days')?.hasError('min')) {
+        <mat-error>
+          {{ 'home.plan.daysMin' | translate }}
+        </mat-error>
+      }
+      @if (form.get('days')?.hasError('max')) {
+        <mat-error>
+          {{ 'home.plan.daysMax' | translate }}
+        </mat-error>
+      }
     </mat-form-field>
     <br />
     <div class="total-amount">

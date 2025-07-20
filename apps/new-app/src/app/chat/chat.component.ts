@@ -1,5 +1,5 @@
 import { Component, effect, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { TopAppBarComponent } from '../common/components/top-app-bar/top-app-bar.component';
 import { COMMON } from '../common';
 import { MatCardModule } from '@angular/material/card';
@@ -17,14 +17,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   selector: 'app-chat',
   standalone: true,
   imports: [
-    CommonModule,
     TopAppBarComponent,
     COMMON,
     MatCardModule,
     MatToolbarModule,
     FormsModule,
-    MatProgressSpinnerModule,
-  ],
+    MatProgressSpinnerModule
+],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
 })

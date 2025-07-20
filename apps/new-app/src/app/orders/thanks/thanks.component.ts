@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { COMMON } from '../../common';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { CartService } from '../../core';
 @Component({
   selector: 'app-thanks',
   standalone: true,
-  imports: [CommonModule, COMMON, MatProgressBar],
+  imports: [COMMON, MatProgressBar],
   templateUrl: './thanks.component.html',
   styleUrl: './thanks.component.scss',
 })

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, computed, OnDestroy, signal, ViewChild } from '@angular/core';
-import { CommonModule, PlatformLocation } from '@angular/common';
+import { PlatformLocation } from '@angular/common';
 import { COMMON } from '../../common';
 import { TopAppBarComponent } from '../../common/components';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -18,15 +18,14 @@ import { HttpClient } from '@angular/common/http';
   selector: 'app-address-edit',
   standalone: true,
   imports: [
-    CommonModule,
     COMMON,
     TopAppBarComponent,
     MatToolbarModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    ReactiveFormsModule,
-  ],
+    ReactiveFormsModule
+],
   templateUrl: './address-edit.component.html',
   styleUrl: './address-edit.component.scss',
 })

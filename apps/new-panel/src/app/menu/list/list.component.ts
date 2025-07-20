@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { SHARED } from '../../shared';
 import { MenuService } from '../menu.service';
 import { MatListModule } from '@angular/material/list';
@@ -25,7 +25,6 @@ import { ShopService } from '../../shop/shop.service';
   selector: 'app-menu-list',
   standalone: true,
   imports: [
-    CommonModule,
     SHARED,
     MatListModule,
     MatCardModule,
@@ -37,8 +36,8 @@ import { ShopService } from '../../shop/shop.service';
     MatChipsModule,
     MatTabsModule,
     MatIconModule,
-    EmptyStateComponent,
-  ],
+    EmptyStateComponent
+],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
 })

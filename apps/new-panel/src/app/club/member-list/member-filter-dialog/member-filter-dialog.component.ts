@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common';
+
 import { ReactiveFormsModule } from '@angular/forms';
 import { SHARED } from '../../../shared';
 import { MatSliderModule } from '@angular/material/slider';
@@ -15,7 +15,6 @@ import { MatSliderModule } from '@angular/material/slider';
   selector: 'app-member-filter-dialog',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -23,8 +22,8 @@ import { MatSliderModule } from '@angular/material/slider';
     MatDatepickerModule,
     MatDialogModule,
     SHARED,
-    MatSliderModule,
-  ],
+    MatSliderModule
+],
   templateUrl: './member-filter-dialog.component.html',
 })
 export class MemberFilterDialogComponent {

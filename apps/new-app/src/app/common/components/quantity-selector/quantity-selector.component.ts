@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, WritableSignal, effect, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { COMMON } from '../..';
 import { Product, ProductVariant } from '@menno/types';
 import { CartService } from '../../../core/services/cart.service';
@@ -7,7 +7,7 @@ import { CartService } from '../../../core/services/cart.service';
 @Component({
   selector: 'app-quantity-selector',
   standalone: true,
-  imports: [CommonModule, COMMON],
+  imports: [COMMON],
   templateUrl: './quantity-selector.component.html',
   styleUrl: './quantity-selector.component.scss',
 })

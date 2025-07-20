@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatCardModule } from '@angular/material/card';
 import { SearchMemberAutocompleteComponent } from '../../../shared/components/search-member-autocomplete/search-member-autocomplete.component';
 import { Member, User } from '@menno/types';
@@ -10,7 +10,7 @@ import { ClubService } from '../../../core/services/club.service';
 @Component({
   selector: 'app-customer',
   standalone: true,
-  imports: [CommonModule, MatCardModule, SearchMemberAutocompleteComponent, SHARED],
+  imports: [MatCardModule, SearchMemberAutocompleteComponent, SHARED],
   templateUrl: './customer.component.html',
   styleUrl: './customer.component.scss',
 })

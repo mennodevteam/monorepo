@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule, PlatformLocation } from '@angular/common';
+import { PlatformLocation } from '@angular/common';
 import { TopAppBarComponent } from '../common/components/top-app-bar/top-app-bar.component';
 import { ProductItemsComponent } from './product-items/product-items.component';
 import { CartService } from '../core/services/cart.service';
@@ -15,15 +15,14 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   selector: 'app-cart',
   standalone: true,
   imports: [
-    CommonModule,
     TopAppBarComponent,
     ProductItemsComponent,
     COMMON,
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    MatToolbarModule,
-  ],
+    MatToolbarModule
+],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
 })

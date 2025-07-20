@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { SHARED } from '../..';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -16,15 +16,14 @@ import { MatSelectModule } from '@angular/material/select';
   selector: 'app-address-form-dialog',
   standalone: true,
   imports: [
-    CommonModule,
     SHARED,
     MatDialogModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     RegionAutocompleteComponent,
-    MatSelectModule,
-  ],
+    MatSelectModule
+],
   templateUrl: './address-form-dialog.component.html',
   styleUrl: './address-form-dialog.component.scss',
 })

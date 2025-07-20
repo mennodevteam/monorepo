@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,14 +11,13 @@ import { SHARED } from '../..';
   selector: 'app-buy-days-dialog',
   standalone: true,
   imports: [
-    CommonModule,
     SHARED,
     MatDialogModule,
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    ReactiveFormsModule,
-  ],
+    ReactiveFormsModule
+],
   templateUrl: './buy-days-dialog.component.html',
   styleUrl: './buy-days-dialog.component.scss',
 })

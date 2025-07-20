@@ -1,5 +1,5 @@
 import { Component, effect, untracked } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { AddressesService, CartService, MenuService } from '../../core';
 import { COMMON } from '../../common';
 import { Address, OrderType } from '@menno/types';
@@ -9,7 +9,7 @@ import { MatListModule } from '@angular/material/list';
 @Component({
   selector: 'app-address-list',
   standalone: true,
-  imports: [CommonModule, COMMON, FormsModule, MatListModule],
+  imports: [COMMON, FormsModule, MatListModule],
   templateUrl: './address-list.component.html',
   styleUrl: './address-list.component.scss',
 })

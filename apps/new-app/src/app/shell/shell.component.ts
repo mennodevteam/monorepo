@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ChildrenOutletContexts, RouterModule } from '@angular/router';
 import { ClubService } from '../core/services/club.service';
 import { AddressesService, PwaService, SeoService, ShopService, routeAnimations } from '../core';
@@ -8,7 +8,7 @@ import { CampaignService } from '../core/services/campaign.service';
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
   templateUrl: './shell.component.html',
   styleUrl: './shell.component.scss',
   animations: [routeAnimations]

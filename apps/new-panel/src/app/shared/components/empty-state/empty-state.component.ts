@@ -1,5 +1,5 @@
 import { Component, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { SHARED_MODULES } from '../../modules';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -11,7 +11,7 @@ export interface EmptyStateAction {
 @Component({
   selector: 'app-empty-state',
   standalone: true,
-  imports: [CommonModule, SHARED_MODULES, MatButtonModule],
+  imports: [SHARED_MODULES, MatButtonModule],
   templateUrl: './empty-state.component.html',
   styleUrl: './empty-state.component.scss',
 })

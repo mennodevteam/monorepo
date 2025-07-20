@@ -1,5 +1,5 @@
 import { Component, inject, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { SHARED } from '../../../shared';
 import { MatCardModule } from '@angular/material/card';
 import { Product, ProductCategory, Status } from '@menno/types';
@@ -15,13 +15,12 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-menu-category',
   standalone: true,
   imports: [
-    CommonModule,
     SHARED,
     MatCardModule,
     MatToolbarModule,
     ProductTableComponent,
-    MenuStatusChipComponent,
-  ],
+    MenuStatusChipComponent
+],
   templateUrl: './category.component.html',
   styleUrl: './category.component.scss',
 })

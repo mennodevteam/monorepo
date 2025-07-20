@@ -1,5 +1,5 @@
 import { Component, Input, signal } from '@angular/core';
-import { CommonModule, PlatformLocation } from '@angular/common';
+import { PlatformLocation } from '@angular/common';
 import { COMMON } from '../../common';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -10,7 +10,7 @@ import { AuthService } from '../../core';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, COMMON, MatFormField, MatInputModule, TopAppBarComponent, ReactiveFormsModule],
+  imports: [COMMON, MatFormField, MatInputModule, TopAppBarComponent, ReactiveFormsModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })

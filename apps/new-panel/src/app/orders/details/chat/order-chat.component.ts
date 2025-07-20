@@ -1,5 +1,5 @@
 import { Component, effect, inject, input, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { SHARED } from '../../../shared';
 import { MatCardModule } from '@angular/material/card';
 import { FormControl, FormsModule, Validators } from '@angular/forms';
@@ -14,7 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-order-chat',
   standalone: true,
-  imports: [CommonModule, SHARED, MatCardModule, FormsModule],
+  imports: [SHARED, MatCardModule, FormsModule],
   templateUrl: './order-chat.component.html',
   styleUrl: './order-chat.component.scss',
 })

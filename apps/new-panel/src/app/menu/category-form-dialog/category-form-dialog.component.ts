@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { SHARED } from '../../shared';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -14,7 +14,7 @@ import { MenuViewType } from '@menno/types';
 @Component({
   selector: 'app-category-form-dialog',
   standalone: true,
-  imports: [CommonModule, SHARED, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatDialogModule, MatSelectModule, MatOptionModule],
+  imports: [SHARED, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatDialogModule, MatSelectModule, MatOptionModule],
   templateUrl: './category-form-dialog.component.html',
   styleUrl: './category-form-dialog.component.scss',
 })

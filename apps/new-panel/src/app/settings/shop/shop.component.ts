@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { SHARED } from '../../shared';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
@@ -20,7 +20,6 @@ import { HttpClient } from '@angular/common/http';
   selector: 'app-shop',
   standalone: true,
   imports: [
-    CommonModule,
     SHARED,
     MatToolbarModule,
     MatCardModule,
@@ -29,8 +28,8 @@ import { HttpClient } from '@angular/common/http';
     ReactiveFormsModule,
     MatSelectModule,
     MatChipsModule,
-    FormsModule,
-  ],
+    FormsModule
+],
   templateUrl: './shop.component.html',
   styleUrl: './shop.component.scss',
 })

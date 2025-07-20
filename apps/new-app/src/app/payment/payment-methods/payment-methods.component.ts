@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { COMMON } from '../../common';
 import { MatListModule } from '@angular/material/list';
 import { CartService } from '../../core/services/cart.service';
@@ -10,7 +10,7 @@ import { ClubService } from '../../core/services/club.service';
 @Component({
   selector: 'app-payment-methods',
   standalone: true,
-  imports: [CommonModule, COMMON, MatListModule, FormsModule],
+  imports: [COMMON, MatListModule, FormsModule],
   templateUrl: './payment-methods.component.html',
   styleUrl: './payment-methods.component.scss',
 })

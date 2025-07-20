@@ -1,5 +1,5 @@
 import { Component, computed, effect, output, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -12,13 +12,12 @@ import { REGIONS } from '../../../core/constants';
   selector: 'app-region-autocomplete',
   standalone: true,
   imports: [
-    CommonModule,
     MatFormFieldModule,
     MatAutocompleteModule,
     MatInputModule,
     SHARED,
-    ReactiveFormsModule,
-  ],
+    ReactiveFormsModule
+],
   templateUrl: './region-autocomplete.component.html',
   styleUrl: './region-autocomplete.component.scss',
 })

@@ -1,5 +1,5 @@
 import { Component, computed, ElementRef, inject, viewChild, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { COMMON } from '../../common';
 import { Product } from '@menno/types';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,13 +16,12 @@ import { CampaignService } from '../../core/services/campaign.service';
   selector: 'app-product-details',
   standalone: true,
   imports: [
-    CommonModule,
     COMMON,
     MatToolbarModule,
     MatListModule,
     QuantitySelectorComponent,
-    ImageCarouselComponent,
-  ],
+    ImageCarouselComponent
+],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.scss',
   animations: [flyInOutFromDown()],

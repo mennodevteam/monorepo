@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, Inject, OnInit, Optional, ViewChi
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { base64ToFile, ImageCroppedEvent, ImageCropperModule } from 'ngx-image-cropper';
 import heic2any from 'heic2any';
-import { CommonModule } from '@angular/common';
+
 import { SHARED } from '../..';
 
 @Component({
@@ -10,7 +10,7 @@ import { SHARED } from '../..';
   standalone: true,
   templateUrl: './image-cropper-dialog.component.html',
   styleUrls: ['./image-cropper-dialog.component.scss'],
-  imports: [CommonModule, SHARED, ImageCropperModule, MatDialogModule],
+  imports: [SHARED, ImageCropperModule, MatDialogModule],
 })
 export class ImageCropperDialogComponent implements AfterViewInit {
   imageChangedEvent: any = '';

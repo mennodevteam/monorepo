@@ -28,36 +28,60 @@
           @if (filterDto().joinedAtFromDate || filterDto().joinedAtToDate) {
             <mat-chip (click)="removeFilter('joinedAt')">
               {{ 'members.joinedAtDateRange' | translate }}:
-              <span *ngIf="filterDto().joinedAtFromDate">{{ filterDto().joinedAtFromDate | pdate }}</span>
-              <span *ngIf="filterDto().joinedAtFromDate && filterDto().joinedAtToDate"> - </span>
-              <span *ngIf="filterDto().joinedAtToDate">{{ filterDto().joinedAtToDate | pdate }}</span>
+              @if (filterDto().joinedAtFromDate) {
+                <span>{{ filterDto().joinedAtFromDate | pdate }}</span>
+              }
+              @if (filterDto().joinedAtFromDate && filterDto().joinedAtToDate) {
+                <span> - </span>
+              }
+              @if (filterDto().joinedAtToDate) {
+                <span>{{ filterDto().joinedAtToDate | pdate }}</span>
+              }
               <i class="fa-solid fa-xmark-circle"></i>
             </mat-chip>
           }
           @if (filterDto().lastVisitFromDate || filterDto().lastVisitToDate) {
             <mat-chip (click)="removeFilter('lastVisit')">
               {{ 'members.lastVisitDateRange' | translate }}:
-              <span *ngIf="filterDto().lastVisitFromDate">{{ filterDto().lastVisitFromDate | pdate }}</span>
-              <span *ngIf="filterDto().lastVisitFromDate && filterDto().lastVisitToDate"> - </span>
-              <span *ngIf="filterDto().lastVisitToDate">{{ filterDto().lastVisitToDate | pdate }}</span>
+              @if (filterDto().lastVisitFromDate) {
+                <span>{{ filterDto().lastVisitFromDate | pdate }}</span>
+              }
+              @if (filterDto().lastVisitFromDate && filterDto().lastVisitToDate) {
+                <span> - </span>
+              }
+              @if (filterDto().lastVisitToDate) {
+                <span>{{ filterDto().lastVisitToDate | pdate }}</span>
+              }
               <i class="fa-solid fa-xmark-circle"></i>
             </mat-chip>
           }
           @if (filterDto().firstOrderFromDate || filterDto().firstOrderToDate) {
             <mat-chip (click)="removeFilter('firstOrder')">
               {{ 'members.firstOrderDateRange' | translate }}:
-              <span *ngIf="filterDto().firstOrderFromDate">{{ filterDto().firstOrderFromDate | pdate }}</span>
-              <span *ngIf="filterDto().firstOrderFromDate && filterDto().firstOrderToDate"> - </span>
-              <span *ngIf="filterDto().firstOrderToDate">{{ filterDto().firstOrderToDate | pdate }}</span>
+              @if (filterDto().firstOrderFromDate) {
+                <span>{{ filterDto().firstOrderFromDate | pdate }}</span>
+              }
+              @if (filterDto().firstOrderFromDate && filterDto().firstOrderToDate) {
+                <span> - </span>
+              }
+              @if (filterDto().firstOrderToDate) {
+                <span>{{ filterDto().firstOrderToDate | pdate }}</span>
+              }
               <i class="fa-solid fa-xmark-circle"></i>
             </mat-chip>
           }
           @if (filterDto().lastOrderFromDate || filterDto().lastOrderToDate) {
             <mat-chip (click)="removeFilter('lastOrder')">
               {{ 'members.lastOrderDateRange' | translate }}:
-              <span *ngIf="filterDto().lastOrderFromDate">{{ filterDto().lastOrderFromDate | pdate }}</span>
-              <span *ngIf="filterDto().lastOrderFromDate && filterDto().lastOrderToDate"> - </span>
-              <span *ngIf="filterDto().lastOrderToDate">{{ filterDto().lastOrderToDate | pdate }}</span>
+              @if (filterDto().lastOrderFromDate) {
+                <span>{{ filterDto().lastOrderFromDate | pdate }}</span>
+              }
+              @if (filterDto().lastOrderFromDate && filterDto().lastOrderToDate) {
+                <span> - </span>
+              }
+              @if (filterDto().lastOrderToDate) {
+                <span>{{ filterDto().lastOrderToDate | pdate }}</span>
+              }
               <i class="fa-solid fa-xmark-circle"></i>
             </mat-chip>
           }
@@ -81,7 +105,7 @@
         [sortBy]="filterDto().sortBy"
         [sortType]="filterDto().sortType"
         (starClick)="setStar($event)"
-      />
+        />
       <mat-paginator
         [length]="query.data()?.totalCount || 0"
         [pageSize]="filterDto().take"

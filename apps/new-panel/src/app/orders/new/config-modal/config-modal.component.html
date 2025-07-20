@@ -12,25 +12,30 @@
             {{ 'newOrder.config.useCurrentDateTime' | translate }}
           </mat-checkbox>
 
-          <div class="date-time-inputs" *ngIf="!configForm.get('useCurrentDateTime')?.value">
-            <mat-form-field appearance="outline" class="date-field">
-              <mat-label>{{ 'newOrder.config.orderDate' | translate }}</mat-label>
-              <input matInput [matDatepicker]="picker" formControlName="orderDate" />
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-              <mat-error *ngIf="configForm.get('orderDate')?.hasError('required')">
-                {{ 'app.validation.required' | translate }}
-              </mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="time-field">
-              <mat-label>{{ 'newOrder.config.orderTime' | translate }}</mat-label>
-              <input matInput type="number" formControlName="orderTimeHour" />
-              <mat-error *ngIf="configForm.get('orderTimeHour')?.hasError('required')">
-                {{ 'app.validation.required' | translate }}
-              </mat-error>
-            </mat-form-field>
-          </div>
+          @if (!configForm.get('useCurrentDateTime')?.value) {
+            <div class="date-time-inputs">
+              <mat-form-field appearance="outline" class="date-field">
+                <mat-label>{{ 'newOrder.config.orderDate' | translate }}</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="orderDate" />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                @if (configForm.get('orderDate')?.hasError('required')) {
+                  <mat-error>
+                    {{ 'app.validation.required' | translate }}
+                  </mat-error>
+                }
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="time-field">
+                <mat-label>{{ 'newOrder.config.orderTime' | translate }}</mat-label>
+                <input matInput type="number" formControlName="orderTimeHour" />
+                @if (configForm.get('orderTimeHour')?.hasError('required')) {
+                  <mat-error>
+                    {{ 'app.validation.required' | translate }}
+                  </mat-error>
+                }
+              </mat-form-field>
+            </div>
+          }
         </div>
 
         <!-- Report Settings Section -->
@@ -50,12 +55,16 @@
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>{{ 'newOrder.config.extraCost' | translate }}</mat-label>
             <input matInput type="number" formControlName="extraCost" min="0" step="10000" />
-            <mat-error *ngIf="configForm.get('extraCost')?.hasError('required')">
-              {{ 'app.validation.required' | translate }}
-            </mat-error>
-            <mat-error *ngIf="configForm.get('extraCost')?.hasError('min')">
-              {{ 'app.validation.min' | translate: { min: 0 } }}
-            </mat-error>
+            @if (configForm.get('extraCost')?.hasError('required')) {
+              <mat-error>
+                {{ 'app.validation.required' | translate }}
+              </mat-error>
+            }
+            @if (configForm.get('extraCost')?.hasError('min')) {
+              <mat-error>
+                {{ 'app.validation.min' | translate: { min: 0 } }}
+              </mat-error>
+            }
             <mat-hint>{{ configForm.get('extraCost')?.value | number | menuCurrency }}</mat-hint>
           </mat-form-field>
 

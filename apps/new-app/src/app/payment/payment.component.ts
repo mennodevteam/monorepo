@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { CommonModule, PlatformLocation } from '@angular/common';
+import { PlatformLocation } from '@angular/common';
 import { COMMON } from '../common';
 import { InvoiceComponent } from './invoice/invoice.component';
 import { PaymentMethodsComponent } from './payment-methods/payment-methods.component';
@@ -21,7 +21,6 @@ import { HttpClient } from '@angular/common/http';
   selector: 'app-payment',
   standalone: true,
   imports: [
-    CommonModule,
     COMMON,
     InvoiceComponent,
     PaymentMethodsComponent,
@@ -29,8 +28,8 @@ import { HttpClient } from '@angular/common/http';
     MatListModule,
     FormsModule,
     AddressListComponent,
-    AlertBannerComponent,
-  ],
+    AlertBannerComponent
+],
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.scss',
 })

@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatBottomSheetModule, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { COMMON } from '../..';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,13 +15,12 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-discount-coupon-modal',
   standalone: true,
   imports: [
-    CommonModule,
     MatBottomSheetModule,
     COMMON,
     MatFormFieldModule,
     MatInputModule,
-    ReactiveFormsModule,
-  ],
+    ReactiveFormsModule
+],
   templateUrl: './discount-coupon-modal.component.html',
   styleUrl: './discount-coupon-modal.component.scss',
 })

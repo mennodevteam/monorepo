@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,14 +15,13 @@ import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'sizpay',
   imports: [
-    CommonModule,
     SHARED,
     MatToolbarModule,
     MatCardModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    MatListModule,
-  ],
+    MatListModule
+],
   templateUrl: './sizpay.component.html',
   styleUrls: ['./sizpay.component.scss'],
 })

@@ -1,5 +1,5 @@
 import { Component, effect, inject, output, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -16,13 +16,12 @@ import { ClubService } from '../../../core/services/club.service';
   selector: 'app-search-member-autocomplete',
   standalone: true,
   imports: [
-    CommonModule,
     MatFormFieldModule,
     MatAutocompleteModule,
     MatInputModule,
     SHARED,
-    ReactiveFormsModule,
-  ],
+    ReactiveFormsModule
+],
   templateUrl: './search-member-autocomplete.component.html',
   styleUrl: './search-member-autocomplete.component.scss',
 })

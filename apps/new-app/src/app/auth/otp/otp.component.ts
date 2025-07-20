@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy, ViewChild, effect, signal } from '@angular/core';
-import { CommonModule, PlatformLocation } from '@angular/common';
+import { PlatformLocation } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core';
 import { COMMON } from '../../common';
@@ -16,7 +16,6 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-otp',
   standalone: true,
   imports: [
-    CommonModule,
     COMMON,
     MatInputModule,
     MatFormFieldModule,
@@ -24,8 +23,8 @@ import { TranslateService } from '@ngx-translate/core';
     TopAppBarComponent,
     ReactiveFormsModule,
     NgOtpInputModule,
-    MatSnackBarModule,
-  ],
+    MatSnackBarModule
+],
   templateUrl: './otp.component.html',
   styleUrl: './otp.component.scss',
 })

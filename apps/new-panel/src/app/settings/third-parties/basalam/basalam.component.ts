@@ -1,5 +1,5 @@
 import { Component, computed, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { SHARED } from '../../../shared';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
@@ -11,7 +11,7 @@ import { BasalamProductsTableComponent } from "./products/basalam-products-table
 @Component({
   selector: 'app-basalam',
   standalone: true,
-  imports: [CommonModule, SHARED, MatCardModule, MatListModule, MatToolbarModule, BasalamProductsTableComponent],
+  imports: [SHARED, MatCardModule, MatListModule, MatToolbarModule, BasalamProductsTableComponent],
   templateUrl: './basalam.component.html',
   styleUrl: './basalam.component.scss',
 })

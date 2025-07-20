@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { lastValueFrom, skip } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -12,7 +12,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-order-list',
   standalone: true,
-  imports: [CommonModule, TopAppBarComponent, MatListModule, COMMON, MatProgressSpinnerModule],
+  imports: [TopAppBarComponent, MatListModule, COMMON, MatProgressSpinnerModule],
   templateUrl: './order-list.component.html',
   styleUrl: './order-list.component.scss',
 })

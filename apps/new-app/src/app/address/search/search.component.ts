@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { CommonModule, PlatformLocation } from '@angular/common';
+import { PlatformLocation } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { COMMON } from '../../common';
 import { TopAppBarComponent } from '../../common/components';
@@ -26,7 +26,7 @@ type SearchResult = {
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [CommonModule, COMMON, MatToolbarModule, TopAppBarComponent, ReactiveFormsModule, MatListModule],
+  imports: [COMMON, MatToolbarModule, TopAppBarComponent, ReactiveFormsModule, MatListModule],
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss',
 })

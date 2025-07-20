@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -26,7 +26,6 @@ export type PromptField = {
   selector: 'app-prompt-dialog',
   standalone: true,
   imports: [
-    CommonModule,
     SHARED,
     MatDialogModule,
     MatFormFieldModule,
@@ -34,8 +33,8 @@ export type PromptField = {
     ReactiveFormsModule,
     MatSelectModule,
     MatDatepickerModule,
-    FormsModule,
-  ],
+    FormsModule
+],
   templateUrl: './prompt-dialog.component.html',
   styleUrl: './prompt-dialog.component.scss',
 })

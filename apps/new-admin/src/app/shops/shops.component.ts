@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,12 +12,11 @@ import { HttpClient } from '@angular/common/http';
   selector: 'app-shops',
   standalone: true,
   imports: [
-    CommonModule,
     MatCardModule,
     MatButtonModule,
     MatIconModule,
     ShopsTableComponent
-  ],
+],
   templateUrl: './shops.component.html',
   styleUrls: ['./shops.component.scss']
 })

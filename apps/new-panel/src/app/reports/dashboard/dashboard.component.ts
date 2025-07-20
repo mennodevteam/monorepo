@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { SHARED } from '../../shared';
 import { OrderTotalComponent } from "./order-total/order-total.component";
 import { MenuStatCardComponent } from "./menu-stat-card/menu-stat-card.component";
@@ -9,7 +9,7 @@ import { TopProductsCardComponent } from './top-products-card/top-products-card.
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, SHARED, OrderTotalComponent, MenuStatCardComponent, LoadMenuRefCardComponent, TopProductsCardComponent],
+  imports: [SHARED, OrderTotalComponent, MenuStatCardComponent, LoadMenuRefCardComponent, TopProductsCardComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })

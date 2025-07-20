@@ -24,9 +24,11 @@
             <mat-form-field>
               <mat-label> {{ 'shop.businessCategory' | translate }} </mat-label>
               <mat-select matInput formControlName="businessCategory">
-                <mat-option *ngFor="let cat of categories" [value]="cat">
-                  {{ cat | businessCategory }}
-                </mat-option>
+                @for (cat of categories; track cat) {
+                  <mat-option [value]="cat">
+                    {{ cat | businessCategory }}
+                  </mat-option>
+                }
               </mat-select>
             </mat-form-field>
             <mat-form-field>
@@ -45,17 +47,21 @@
             <mat-form-field>
               <mat-label> {{ 'shop.regionState' | translate }} </mat-label>
               <mat-select [(ngModel)]="selectedState" [ngModelOptions]="{ standalone: true }">
-                <mat-option *ngFor="let state of states" [value]="state">
-                  {{ state.title }}
-                </mat-option>
+                @for (state of states; track state) {
+                  <mat-option [value]="state">
+                    {{ state.title }}
+                  </mat-option>
+                }
               </mat-select>
             </mat-form-field>
             <mat-form-field>
               <mat-label> {{ 'shop.region' | translate }} </mat-label>
               <mat-select formControlName="region">
-                <mat-option *ngFor="let region of selectedState()?.regions" [value]="region">
-                  {{ region.title }}
-                </mat-option>
+                @for (region of selectedState()?.regions; track region) {
+                  <mat-option [value]="region">
+                    {{ region.title }}
+                  </mat-option>
+                }
               </mat-select>
             </mat-form-field>
 
@@ -100,22 +106,23 @@
             <mat-form-field>
               <mat-label>{{ 'shop.phonesLabel' | translate }}</mat-label>
               <mat-chip-grid #chipGrid>
-                <mat-chip-row
-                  *ngFor="let phone of form.controls['phones'].value"
-                  (removed)="removePhone(phone)"
-                >
-                  {{ phone }}
-                  <button matChipRemove>
-                    <i class="fa-regular fa-close"></i>
-                  </button>
-                </mat-chip-row>
+                @for (phone of form.controls['phones'].value; track phone) {
+                  <mat-chip-row
+                    (removed)="removePhone(phone)"
+                    >
+                    {{ phone }}
+                    <button matChipRemove>
+                      <i class="fa-regular fa-close"></i>
+                    </button>
+                  </mat-chip-row>
+                }
                 <input
                   placeholder="{{ 'shop.phonesPlaceholder' | translate }}"
                   [matChipInputFor]="chipGrid"
                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                   [matChipInputAddOnBlur]="true"
                   (matChipInputTokenEnd)="addPhone($event)"
-                />
+                  />
               </mat-chip-grid>
               <mat-hint>{{ 'shop.phonesHint' | translate }}</mat-hint>
             </mat-form-field>

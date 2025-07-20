@@ -1,5 +1,5 @@
 import { Component, effect, inject, signal } from '@angular/core';
-import { CommonModule, PlatformLocation } from '@angular/common';
+import { PlatformLocation } from '@angular/common';
 import { SHARED } from '../../shared';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -30,7 +30,6 @@ import { FormComponent } from '../../core/guards/dirty-form-deactivator.guard';
   selector: 'app-cost-edit',
   standalone: true,
   imports: [
-    CommonModule,
     SHARED,
     MatToolbarModule,
     MatButtonModule,
@@ -41,8 +40,8 @@ import { FormComponent } from '../../core/guards/dirty-form-deactivator.guard';
     MatCardModule,
     FormsModule,
     MatSelectModule,
-    MatRadioModule,
-  ],
+    MatRadioModule
+],
   templateUrl: './cost-edit.component.html',
   styleUrl: './cost-edit.component.scss',
 })

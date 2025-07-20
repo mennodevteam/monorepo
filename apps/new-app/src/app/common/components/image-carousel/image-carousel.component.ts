@@ -1,12 +1,12 @@
 import { Component, effect, ElementRef, input, signal, viewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Image } from '@menno/types';
 import { COMMON } from '../..';
 
 @Component({
   selector: 'app-image-carousel',
   standalone: true,
-  imports: [CommonModule, COMMON],
+  imports: [COMMON],
   templateUrl: './image-carousel.component.html',
   styleUrl: './image-carousel.component.scss',
 })

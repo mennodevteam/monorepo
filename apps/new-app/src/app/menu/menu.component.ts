@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, ViewChild, effect, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { TopAppBarComponent } from '../common/components';
 import { MenuService, ShopService, flyInOutFromDown } from '../core';
 import { HeaderComponent } from './header/header.component';
@@ -16,7 +16,6 @@ import { HomePage } from '@menno/types';
   selector: 'app-menu',
   standalone: true,
   imports: [
-    CommonModule,
     TopAppBarComponent,
     HeaderComponent,
     COMMON,
@@ -24,8 +23,8 @@ import { HomePage } from '@menno/types';
     CategorySectionComponent,
     MatToolbarModule,
     ReactiveFormsModule,
-    FooterComponent,
-  ],
+    FooterComponent
+],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
   animations: [flyInOutFromDown()],
