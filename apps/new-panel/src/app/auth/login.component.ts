@@ -12,7 +12,7 @@ import {
 } from '@angular/forms';
 import { AuthService } from './auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +24,7 @@ import { Router } from '@angular/router';
     MatInputModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
+    RouterModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',

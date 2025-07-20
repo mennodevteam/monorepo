@@ -9,6 +9,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Req,
   Request,
 } from '@nestjs/common';
@@ -88,7 +89,7 @@ export class ShopsController {
         const description = shop.description;
         const seo = shop.seo;
         const scripts = shop.scripts;
-        return { logo, title, description, seo, scripts, fav};
+        return { logo, title, description, seo, scripts, fav };
       }
     } catch (error) {}
     return;
@@ -157,6 +158,12 @@ export class ShopsController {
 
       return shops;
     }
+  }
+
+  @Public()
+  @Get('sampleMenu')
+  async getSampleMenu(@Query('category') category: string) {
+    return this.shopsService.getSampleMenu(category);
   }
 
   @Put()

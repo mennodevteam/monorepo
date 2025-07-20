@@ -19,6 +19,7 @@ import {
   SmsTemplate,
   OrderMessageEvent,
   NewSmsDto,
+  ThemeMode,
 } from '@menno/types';
 import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -29,6 +30,9 @@ import { UsersService } from '../users/users.service';
 import { FilesService } from '../files/files.service';
 import { ClubsService } from '../clubs/clubs.service';
 import { MenusService } from '../menus/menu.service';
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+import { generateObject, generateText } from 'ai';
+import z from 'zod';
 
 @Injectable()
 export class ShopsService {
@@ -146,7 +150,7 @@ export class ShopsService {
     shop.club.title = dto.title;
 
     shop.appConfig = {
-      theme: await this.themesRepository.findOneBy({ key: 'yellow' }),
+      themeMode: ThemeMode.Dark,
     } as AppConfig;
 
     shop.users = [new ShopUser()];
@@ -250,5 +254,40 @@ export class ShopsService {
         }
       }
     }
+  }
+
+  async getSampleMenu(category: string) {
+    const res = await generateObject({
+      model: createOpenAICompatible({
+        baseURL: process.env.AI_BASE_URL,
+        name: 'example',
+        apiKey: process.env.AI_API_KEY,
+      }).chatModel('google/gemini-2.0-flash-001'),
+      schema: z.object({
+        categories: z.array(
+          z.object({
+            title: z.string(),
+            products: z.array(z.object({ title: z.string(), description: z.string(), price: z.number() })),
+          }),
+        ),
+      }),
+      messages: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: 'منو رو کامل از روی عکس بساز ا',
+            },
+            {
+              type: 'image',
+              image: new URL('https://ashpazkhaneha.com/touraj/restaurant/tehrannorth/cafe-restaurant-amante-velenjak-tehran-tahdig-khoreshti08.jpg'),
+            },
+          ],
+        },
+      ],
+    });
+
+    return res.object;
   }
 }
