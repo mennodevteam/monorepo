@@ -6,6 +6,7 @@ export class CreateShopDto {
   lastName: string;
   title: string;
   businessCategory: BusinessCategory;
+  customBusinessCategory?: string;
   username: string;
   loginUsername: string;
   loginPassword: string;

@@ -1,0 +1,69 @@
+<form
+  p-md
+  w-xs
+  fxLayout="column"
+  fxLayoutAlign="center stretch"
+  center-align
+  [formGroup]="registerForm"
+  (ngSubmit)="submit()"
+  fxLayoutAlign="center default"
+  [class.loading]="isLoading()"
+  fxLayoutGap="16px"
+>
+  <h1>
+    {{ 'register.title' | translate }}
+  </h1>
+
+  <div fxLayout="column">
+    <mat-form-field>
+      <mat-label>{{ 'register.shopTitle' | translate }}</mat-label>
+      <input matInput formControlName="title" [disabled]="isLoading()" />
+    </mat-form-field>
+  
+    <mat-form-field>
+      <mat-label>{{ 'register.shopCategory' | translate }}</mat-label>
+      <mat-select formControlName="businessCategory" [disabled]="isLoading()">
+        @for (category of businessCategories; track category) {
+          <mat-option [value]="category">
+            {{ 'shopBusinessCategory.' + category | translate }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  
+    @if (registerForm.get('businessCategory')?.value === BusinessCategory.Other) {
+      <mat-form-field>
+        <mat-label>{{ 'register.customBusinessCategory' | translate }}</mat-label>
+        <input
+          matInput
+          formControlName="customBusinessCategory"
+          placeholder="{{ 'register.customBusinessCategoryHint' | translate }}"
+          [disabled]="isLoading()"
+        />
+      </mat-form-field>
+    }
+  
+    <mat-form-field>
+      <mat-label>{{ 'register.loginUsername' | translate }}</mat-label>
+      <input matInput formControlName="loginUsername" [disabled]="isLoading()" class="lowercase" ltr eng />
+    </mat-form-field>
+  
+    <mat-form-field>
+      <mat-label>{{ 'register.loginPassword' | translate }}</mat-label>
+      <input matInput formControlName="loginPassword" [disabled]="isLoading()" ltr eng />
+    </mat-form-field>
+  </div>
+
+  <button mat-flat-button [disabled]="isLoading() || registerForm.invalid">
+    @if (!isLoading()) {
+      <span>{{ 'register.submit' | translate }}</span>
+    }
+    @if (isLoading()) {
+      <mat-spinner diameter="24"></mat-spinner>
+    }
+  </button>
+
+  <a mat-button routerLink="/auth/login">
+    {{ 'register.loginLink' | translate }}
+  </a>
+</form>

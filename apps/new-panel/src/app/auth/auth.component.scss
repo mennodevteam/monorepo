@@ -1,0 +1,30 @@
+.container {
+  height: 100vh;
+
+  @media screen and (max-width: 960px) {
+    height: auto;
+  }
+}
+
+.container-card {
+  width: 960px;
+  overflow: hidden;
+
+  mat-card-content {
+    padding: 0 !important;
+  }
+
+  @media screen and (max-width: 960px) {
+    height: 100vh;
+    width: 100%;
+    border-radius: 0;
+  }
+}
+
+.logo-container {
+  background-color: #ffb300;
+}
+
+.text-container {
+  padding: 16px;
+}

@@ -63,6 +63,7 @@ export class Shop {
   address: string;
   instagram: string;
   businessCategory?: BusinessCategory;
+  customBusinessCategory?: string;
   phones: string[];
   images: string[];
   deliveryAreas?: DeliveryArea[];

@@ -91,11 +91,14 @@ export class ShopsService {
   }
 
   async create(dto: CreateShopDto) {
-    if (!Shop.isUsernameValid(dto.loginUsername))
-      throw new HttpException({ loginUsername: 'the loginUsername is invalid' }, HttpStatus.NOT_ACCEPTABLE);
-    let existUser = await this.usersService.findOneByUsername(dto.loginUsername);
-    if (existUser)
-      throw new HttpException({ loginUsername: 'Duplicated Shop loginUsername' }, HttpStatus.CONFLICT);
+    let existUser: User;
+    if (dto.loginUsername) {
+      if (!Shop.isUsernameValid(dto.loginUsername))
+        throw new HttpException({ loginUsername: 'the loginUsername is invalid' }, HttpStatus.NOT_ACCEPTABLE);
+      existUser = await this.usersService.findOneByUsername(dto.loginUsername);
+      if (existUser)
+        throw new HttpException({ loginUsername: 'Duplicated Shop loginUsername' }, HttpStatus.CONFLICT);
+    }
 
     if (dto.mobilePhone) {
       existUser = await this.usersService.findOneByMobilePhone(dto.mobilePhone);
@@ -127,10 +130,11 @@ export class ShopsService {
     }
 
     const shop = new Shop();
-    shop.username = dto.username.toLowerCase();
+    if (dto.username) shop.username = dto.username.toLowerCase();
     shop.title = dto.title;
     shop.code = code.toString();
     shop.businessCategory = dto.businessCategory;
+    if (dto.customBusinessCategory) shop.customBusinessCategory = dto.customBusinessCategory;
 
     if (dto.regionId) shop.region = <Region>{ id: dto.regionId };
     else if (dto.regionTitle) {
@@ -281,7 +285,9 @@ export class ShopsService {
             },
             {
               type: 'image',
-              image: new URL('https://ashpazkhaneha.com/touraj/restaurant/tehrannorth/cafe-restaurant-amante-velenjak-tehran-tahdig-khoreshti08.jpg'),
+              image: new URL(
+                'https://ashpazkhaneha.com/touraj/restaurant/tehrannorth/cafe-restaurant-amante-velenjak-tehran-tahdig-khoreshti08.jpg',
+              ),
             },
           ],
         },

@@ -23,6 +23,10 @@ export const ShopSchema = new EntitySchema<Shop>({
       enum: BusinessCategory,
       nullable: true,
     },
+    customBusinessCategory: {
+      type: String,
+      nullable: true,
+    },
     code: {
       type: String,
       nullable: true,

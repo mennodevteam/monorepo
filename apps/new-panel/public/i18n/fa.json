@@ -117,19 +117,23 @@
     "bom": "مواد اولیه {{value}}"
   },
   "login": {
-    "title": "ورود به پنل مدیریت منوی دیجیتال"
+    "title": "ورود به پنل"
   },
   "register": {
     "title": "ثبت‌نام در منّو",
     "shopTitle": "عنوان مجموعه",
-    "shopCategory": "دسته‌بندی مجموعه",
-    "managerFirstName": "نام مدیر",
-    "managerLastName": "نام‌خانوادگی مدیر",
-    "managerPhone": "شماره تلفن مدیر",
-    "submit": "ارسال کد تایید",
+    "shopCategory": "نوع مجموعه",
+    "customBusinessCategory": "نوع مجموعه را وارد کنید",
+    "customBusinessCategoryHint": "مثلا: لوازم آرایشی و بهداشتی",
+    "loginUsername": "نام کاربری",
+    "loginPassword": "رمز عبور",
+    "submit": "ثبت نام",
     "sendingOtp": "در حال ارسال کد تایید...",
     "otpSent": "کد تایید با موفقیت ارسال شد",
-    "error": "خطا در ارسال کد تایید"
+    "error": "خطا در ارسال کد تایید",
+    "loginUsernameMinLength": "حداقل 3 کاراکتر",
+    "loginUsernamePattern": "فقط حروف و اعداد مجاز هستند",
+    "loginLink": "قبلاً ثبت‌نام کرده‌اید؟ ورود"
   },
   "menu": {
     "title": "مدیریت محصولات",

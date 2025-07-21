@@ -1,4 +1,4 @@
-import { CreateShopDto, Plugin, Shop, ShopUserRole, Sms, UserRole } from '@menno/types';
+import { CreateShopDto, Plugin, Shop, ShopUserRole, Sms, User, UserRole } from '@menno/types';
 import {
   Body,
   Controller,
@@ -30,7 +30,9 @@ export class ShopsController {
     private shopsService: ShopsService,
     @InjectRepository(Shop)
     private shopsRepo: Repository<Shop>,
-    private redis: RedisService,
+    private redis: RedisService,  
+    @InjectRepository(User)
+    private usersRepo: Repository<User>,
   ) {}
 
   @Public()
@@ -192,6 +194,12 @@ export class ShopsController {
       dto.expiredAt.setDate(dto.expiredAt.getDate() + 3);
       return this.shopsService.create(dto);
     } else throw new HttpException({ otp: 'token invalid' }, HttpStatus.FORBIDDEN);
+  }
+
+  @Public()
+  @Post('register/v2')
+  async registerV2(@Body() dto: CreateShopDto): Promise<Shop> {
+    return this.shopsService.create(dto);
   }
 
   @Get('sendLink/:mobile')
