@@ -15,14 +15,15 @@
   </h1>
 
   <div fxLayout="column">
+    <h4>{{ 'register.baseInfo' | translate }}</h4>
     <mat-form-field>
       <mat-label>{{ 'register.shopTitle' | translate }}</mat-label>
-      <input matInput formControlName="title" [disabled]="isLoading()" />
+      <input matInput formControlName="title" />
     </mat-form-field>
-  
+
     <mat-form-field>
       <mat-label>{{ 'register.shopCategory' | translate }}</mat-label>
-      <mat-select formControlName="businessCategory" [disabled]="isLoading()">
+      <mat-select formControlName="businessCategory">
         @for (category of businessCategories; track category) {
           <mat-option [value]="category">
             {{ 'shopBusinessCategory.' + category | translate }}
@@ -30,7 +31,7 @@
         }
       </mat-select>
     </mat-form-field>
-  
+
     @if (registerForm.get('businessCategory')?.value === BusinessCategory.Other) {
       <mat-form-field>
         <mat-label>{{ 'register.customBusinessCategory' | translate }}</mat-label>
@@ -38,19 +39,47 @@
           matInput
           formControlName="customBusinessCategory"
           placeholder="{{ 'register.customBusinessCategoryHint' | translate }}"
-          [disabled]="isLoading()"
         />
       </mat-form-field>
     }
-  
+
+    <mat-form-field>
+      <mat-label> {{ 'shop.regionState' | translate }} </mat-label>
+      <mat-select [(ngModel)]="selectedState" [ngModelOptions]="{ standalone: true }" required>
+        @for (state of states; track state) {
+          <mat-option [value]="state">
+            {{ state.title }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label> {{ 'shop.region' | translate }} </mat-label>
+      <mat-select formControlName="regionId">
+        @for (region of selectedState()?.regions; track region) {
+          <mat-option [value]="region.id">
+            {{ region.title }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+
+    <h4>{{ 'register.loginInfo' | translate }}</h4>
+
     <mat-form-field>
       <mat-label>{{ 'register.loginUsername' | translate }}</mat-label>
-      <input matInput formControlName="loginUsername" [disabled]="isLoading()" class="lowercase" ltr eng />
+      <input matInput formControlName="loginUsername" class="lowercase" ltr eng />
     </mat-form-field>
-  
+
     <mat-form-field>
       <mat-label>{{ 'register.loginPassword' | translate }}</mat-label>
-      <input matInput formControlName="loginPassword" [disabled]="isLoading()" ltr eng />
+      <input matInput formControlName="loginPassword" ltr eng />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>{{ 'register.mobilePhone' | translate }}</mat-label>
+      <input matInput formControlName="mobilePhone" ltr eng />
     </mat-form-field>
   </div>
 

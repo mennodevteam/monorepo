@@ -5,5 +5,9 @@
 }
 
 .lowercase {
-  text-transform: lowercase;
+  text-transform: lowercase !important;
+}
+
+h4 {
+  text-align: start;
 }

@@ -96,6 +96,34 @@
     "confirmTitle": "خروج از حساب",
     "confirmMessage": "آیا از خروج از حساب کاربری اطمینان دارید؟"
   },
+  "welcome": {
+    "phone": {
+      "title": "به منّو خوش آمدید",
+      "description": "برای فعال شدن حساب کاربری خود، لطفا شماره موبایل خود را وارد کنید تا کد تایید برای شما ارسال شود",
+      "phoneNumber": "شماره موبایل",
+      "phoneRequired": "شماره موبایل الزامی است",
+      "phoneInvalid": "شماره موبایل معتبر نیست",
+      "sendCode": "ارسال کد تایید",
+      "verificationCodeSent": "کد تایید با موفقیت ارسال شد",
+      "errorSendingCode": "خطا در ارسال کد تایید",
+      "phoneAlreadyExists": "شماره موبایل قبلا برای مجموعه دیگری ثبت شده است، لطفا از شماره موبایل دیگری استفاده کنید."
+    },
+    "otp": {
+      "title": "کد تایید",
+      "description": "کد تایید ارسال شده به شماره {{phone}} را وارد کنید",
+      "verificationCode": "کد تایید",
+      "codeRequired": "کد تایید الزامی است",
+      "codeInvalid": "کد تایید معتبر نیست",
+      "verify": "تایید",
+      "verificationSuccess": "شماره موبایل با موفقیت تایید شد",
+      "verificationFailed": "کد تایید اشتباه است",
+      "resendIn": "ارسال مجدد تا {{seconds}} ثانیه دیگر",
+      "resendCode": "ارسال مجدد کد",
+      "codeResent": "کد تایید مجددا ارسال شد",
+      "errorResending": "خطا در ارسال مجدد کد",
+      "backToPhone": "بازگشت به تغییر شماره موبایل"
+    }
+  },
   "nav": {
     "home": "خانه",
     "products": "مدیریت {{value}}",
@@ -125,15 +153,25 @@
     "shopCategory": "نوع مجموعه",
     "customBusinessCategory": "نوع مجموعه را وارد کنید",
     "customBusinessCategoryHint": "مثلا: لوازم آرایشی و بهداشتی",
-    "loginUsername": "نام کاربری",
-    "loginPassword": "رمز عبور",
+    "loginUsername": "نام کاربری انتخابی",
+    "loginPassword": "رمز عبور انتخابی",
     "submit": "ثبت نام",
     "sendingOtp": "در حال ارسال کد تایید...",
     "otpSent": "کد تایید با موفقیت ارسال شد",
     "error": "خطا در ارسال کد تایید",
     "loginUsernameMinLength": "حداقل 3 کاراکتر",
     "loginUsernamePattern": "فقط حروف و اعداد مجاز هستند",
-    "loginLink": "قبلاً ثبت‌نام کرده‌اید؟ ورود"
+    "loginLink": "قبلاً ثبت‌نام کرده‌اید؟ ورود",
+    "mobilePhone": "شماره موبایل",
+    "otpTitle": "تایید شماره موبایل",
+    "otpLabel": "کد",
+    "otpDescription": "کد تایید ارسال شده به شماره {{phone}} را وارد کنید",
+    "phoneAlreadyExists": "شماره موبایل قبلا برای مجموعه دیگری ثبت شده است، لطفا از شماره موبایل دیگری استفاده کنید.",
+    "otpInvalid": "کد تایید اشتباه است",
+    "duplicateUsername": "نام کاربری قبلا برای مجموعه دیگری ثبت شده است، لطفا از نام کاربری دیگری استفاده کنید.",
+    "notAcceptableUsername": "نام کاربری معتبر نیست. فقط از ترکیب حروف انگلیسی و اعداد استفاده کنید",
+    "baseInfo": "اطلاعات پایه",
+    "loginInfo": "اطلاعات ورود"
   },
   "menu": {
     "title": "مدیریت محصولات",

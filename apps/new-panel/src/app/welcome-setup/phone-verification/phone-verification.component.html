@@ -1,0 +1,121 @@
+<div fxLayout="row" fxLayout.lt-md="column-reverse" fxLayoutGap.lt-md="24px">
+  <div fxLayout="column" fxFlex>
+    <!-- Phone Step -->
+    <h1>{{ shop.data()?.title }}, {{ 'welcome.phone.title' | translate }}</h1>
+
+    <form
+      fxLayout="column"
+      fxLayoutGap="24px"
+      [formGroup]="phoneForm"
+      (ngSubmit)="submitPhone()"
+      class="phone-form"
+    >
+      <p class="description">{{ 'welcome.phone.description' | translate }}</p>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'welcome.phone.phoneNumber' | translate }}</mat-label>
+        <input
+          matInput
+          formControlName="phone"
+          type="tel"
+          placeholder="09123456789"
+          [disabled]="isLoading() || currentStep() === VerificationStep.OTP"
+          maxlength="11"
+          eng
+          ltr
+        />
+        <mat-error *ngIf="phoneForm.controls.phone.hasError('required')">
+          {{ 'welcome.phone.phoneRequired' | translate }}
+        </mat-error>
+        <mat-error *ngIf="phoneForm.controls.phone.hasError('pattern')">
+          {{ 'welcome.phone.phoneInvalid' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      @if (currentStep() === VerificationStep.PHONE) {
+        <button
+          mat-flat-button
+          type="submit"
+          [disabled]="phoneForm.invalid || isLoading()"
+          class="submit-button"
+        >
+          @if (!isLoading()) {
+            {{ 'welcome.phone.sendCode' | translate }}
+          }
+          @if (isLoading()) {
+            <mat-spinner diameter="20"></mat-spinner>
+          }
+        </button>
+      }
+    </form>
+
+    <!-- OTP Step -->
+    @if (currentStep() === VerificationStep.OTP) {
+      <p class="description">
+        {{ 'welcome.otp.description' | translate: { phone: phone } }}
+      </p>
+
+      <form
+        fxLayout="column"
+        fxLayoutGap="24px"
+        [formGroup]="otpForm"
+        (ngSubmit)="verifyOtp()"
+        class="otp-form"
+      >
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'welcome.otp.verificationCode' | translate }}</mat-label>
+          <input
+            matInput
+            formControlName="otp"
+            type="text"
+            [disabled]="isLoading()"
+            maxlength="4"
+            class="otp-input"
+            autocomplete="one-time-code"
+            eng
+            ltr
+          />
+          <mat-error *ngIf="otpForm.controls.otp.hasError('required')">
+            {{ 'welcome.otp.codeRequired' | translate }}
+          </mat-error>
+          <mat-error *ngIf="otpForm.controls.otp.hasError('pattern')">
+            {{ 'welcome.otp.codeInvalid' | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <button
+          mat-flat-button
+          type="submit"
+          [disabled]="otpForm.invalid || isLoading()"
+          class="verify-button"
+        >
+          @if (!isLoading()) {
+            {{ 'welcome.otp.verify' | translate }}
+          }
+          @if (isLoading()) {
+            <mat-spinner diameter="20"></mat-spinner>
+          }
+        </button>
+      </form>
+
+      <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px" class="resend-section">
+        @if (!canResend()) {
+          <p class="countdown">
+            {{ 'welcome.otp.resendIn' | translate: { seconds: countdown() } }}
+          </p>
+        }
+        @if (canResend()) {
+          <button mat-button (click)="resendCode()" [disabled]="isLoading()" class="resend-button">
+            {{ 'welcome.otp.resendCode' | translate }}
+          </button>
+        }
+      </div>
+
+      <button mat-button (click)="goBackToPhone()" [disabled]="isLoading()" class="back-button">
+        {{ 'welcome.otp.backToPhone' | translate }}
+      </button>
+    }
+  </div>
+  <div fxLayout="column" fxLayoutAlign="center center" fxFlex fxFlex.lt-md="100">
+    <i class="fas fa-mobile-signal phone-icon"></i>
+  </div>
+</div>

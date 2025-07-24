@@ -13,6 +13,7 @@ import { HomeComponent } from './home/home.component';
 import { clubRoutes } from './club/club.routes';
 import { materialsRoutes } from './inventory/materials.routes';
 import { PricingComponent } from './pricing/pricing.component';
+import { WelcomeSetupComponent } from './welcome-setup/welcome-setup.component';
 
 export const appRoutes: Route[] = [
   {
@@ -38,6 +39,11 @@ export const appRoutes: Route[] = [
           { path: 'inventory', children: materialsRoutes },
           { path: '', redirectTo: 'home', pathMatch: 'full' },
         ],
+      },
+      {
+        path: 'welcome',
+        component: WelcomeSetupComponent,
+        canActivate: [authGuard, shopDataActivator, menuDataActivator],
       },
     ],
   },

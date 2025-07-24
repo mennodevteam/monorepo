@@ -1,7 +1,7 @@
 <div class="container" fxLayout="column" fxLayoutAlign="center center">
   <mat-card appearance="outlined" class="container-card">
-    <mat-card-content fxLayout="row">
-      <div fxFlex="50" fxLayout="column" class="text-container">
+    <mat-card-content fxLayout="row" fxLayout.lt-md="column-reverse">
+      <div fxFlex="50" fxFlex.lt-md="100" fxLayout="column" class="text-container">
         <router-outlet></router-outlet>
       </div>
       <div fxFlex="50" class="logo-container" fxLayout="column" fxLayoutAlign="center center">

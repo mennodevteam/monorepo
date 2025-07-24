@@ -19109,17 +19109,17 @@
       },
       {
         "source": "new-panel",
+        "target": "npm:@angular/router",
+        "type": "static"
+      },
+      {
+        "source": "new-panel",
         "target": "npm:@angular/core",
         "type": "static"
       },
       {
         "source": "new-panel",
         "target": "npm:@angular/material",
-        "type": "static"
-      },
-      {
-        "source": "new-panel",
-        "target": "npm:@angular/router",
         "type": "static"
       },
       {
@@ -43037,5 +43037,5 @@
   },
   "version": "6.0",
   "errors": [],
-  "computedAt": 1753117888958
+  "computedAt": 1753351946901
 }

@@ -30,7 +30,7 @@ export class ShopsController {
     private shopsService: ShopsService,
     @InjectRepository(Shop)
     private shopsRepo: Repository<Shop>,
-    private redis: RedisService,  
+    private redis: RedisService,
     @InjectRepository(User)
     private usersRepo: Repository<User>,
   ) {}
@@ -199,7 +199,13 @@ export class ShopsController {
   @Public()
   @Post('register/v2')
   async registerV2(@Body() dto: CreateShopDto): Promise<Shop> {
-    return this.shopsService.create(dto);
+    if (this.auth.checkToken(dto.mobilePhone, dto.otp)) {
+      dto.plugins = [Plugin.Menu, Plugin.Ordering, Plugin.Club];
+      dto.expiredAt = new Date();
+      dto.pluginDescription = 'نسخه آزمایشی رایگان';
+      dto.expiredAt.setDate(dto.expiredAt.getDate() + 3);
+      return this.shopsService.create(dto);
+    } else throw new HttpException({ otp: 'token invalid' }, HttpStatus.FORBIDDEN);
   }
 
   @Get('sendLink/:mobile')
@@ -235,5 +241,11 @@ export class ShopsController {
     });
     this.redis.updateMenu(shop.id);
     this.redis.updateShop(shop.id);
+  }
+
+  @Public()
+  @Get('verifyPhone/:phone')
+  async verifyPhone(@Param('phone') phone: string) {
+    return this.shopsService.verifyPhone(phone);
   }
 }

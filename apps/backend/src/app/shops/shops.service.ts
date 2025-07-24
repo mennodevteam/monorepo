@@ -33,6 +33,7 @@ import { MenusService } from '../menus/menu.service';
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
 import { generateObject, generateText } from 'ai';
 import z from 'zod';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class ShopsService {
@@ -63,6 +64,7 @@ export class ShopsService {
     private filesService: FilesService,
     private clubsService: ClubsService,
     private menusService: MenusService,
+    private authService: AuthService,
   ) {}
 
   async sendShopLink(shopId: string, mobilePhone: string): Promise<Sms> {
@@ -81,6 +83,13 @@ export class ShopsService {
         tokens,
       );
     }
+  }
+
+  async verifyPhone(phone: string) {
+    const existUser = await this.usersService.findOneByMobilePhone(phone);
+    if (existUser && existUser?.username)
+      throw new HttpException('phone already exists', HttpStatus.CONFLICT);
+    await this.authService.sendToken(phone);
   }
 
   async save(shop: Shop): Promise<Shop> {

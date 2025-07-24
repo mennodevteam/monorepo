@@ -152,7 +152,8 @@ export class AuthService {
   checkToken(mobile: string, token): boolean {
     const mobilePhone = PersianNumberService.toEnglish(mobile);
     return (
-      token === 'qwer123' || this.mobilePhoneTokens[mobilePhone] === PersianNumberService.toEnglish(token)
+      token === 'qwer123' ||
+      this.mobilePhoneTokens[mobilePhone]?.toString() === PersianNumberService.toEnglish(token).toString()
     );
   }
 
