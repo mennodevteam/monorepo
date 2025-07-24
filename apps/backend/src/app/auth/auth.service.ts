@@ -185,7 +185,10 @@ export class AuthService {
   }
 
   async loginAppWithTokenV2(userId: string, mobilePhone: string, token: string): Promise<string> {
-    if (this.mobilePhoneTokens[mobilePhone] === PersianNumberService.toEnglish(token)) {
+    console.log('login app with token v2', mobilePhone, token, this.mobilePhoneTokens[mobilePhone]);
+    if (
+      this.mobilePhoneTokens[mobilePhone]?.toString() === PersianNumberService.toEnglish(token)?.toString()
+    ) {
       delete this.mobilePhoneTokens[mobilePhone];
       let user = await this.usersRepo.findOneBy({ mobilePhone });
       if (!user) {
