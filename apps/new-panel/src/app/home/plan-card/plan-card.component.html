@@ -23,9 +23,22 @@
         </span>
         <span matListItemMeta>
           {{ charge | number: '1.0-0' | menuCurrency }}
+          @if (charge < 30000) {
+            <i
+              class="fa-solid fa-triangle-exclamation fa-large"
+              matTooltip="{{ 'home.plan.lowChargeTooltip' | translate }}"
+            ></i>
+          }
         </span>
       </mat-list-item>
     </mat-list>
+    @if (remainingDays() < 8) {
+      <mat-card class="warning-card" [class.error]="remainingDays() <= 0" appearance="outlined">
+        <mat-card-content>{{
+          (remainingDays() <= 0 ? 'home.plan.expiredWarning' : 'home.plan.expireWarning') | translate
+        }}</mat-card-content>
+      </mat-card>
+    }
   </mat-card-content>
   <mat-divider></mat-divider>
   <mat-card-actions>

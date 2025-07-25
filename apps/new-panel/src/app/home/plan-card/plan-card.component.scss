@@ -7,3 +7,13 @@
 .fa-circle-info {
   cursor: pointer;
 }
+
+.warning-card {
+  background-color: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+  margin-bottom: 16px !important;
+}
+
+.fa-triangle-exclamation {
+  color: var(--mat-sys-error);
+}

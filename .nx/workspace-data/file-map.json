@@ -16,76 +16,44 @@
   "fileMap": {
     "nonProjectFiles": [
       {
-        "file": "tools/tsconfig.tools.json",
-        "hash": "16088922570277978783"
-      },
-      {
-        "file": ".cursor/mcp.json",
-        "hash": "9112524214007568582"
-      },
-      {
-        "file": "nx.json",
-        "hash": "6848236468451372348"
-      },
-      {
-        "file": ".prettierignore",
-        "hash": "3356760868306086659"
-      },
-      {
-        "file": "tsconfig.base.json",
-        "hash": "14582150423264317726"
-      },
-      {
-        "file": "_theme-colors.scss",
-        "hash": "3075729969290742246"
-      },
-      {
-        "file": "jest.preset.js",
-        "hash": "2772139696069860212"
-      },
-      {
         "file": "jest.config.ts",
         "hash": "2950215254536237782"
-      },
-      {
-        "file": ".cursor/rules/custom.mdc",
-        "hash": "13159635239905023951"
-      },
-      {
-        "file": ".vscode/extensions.json",
-        "hash": "4637156562308165301"
-      },
-      {
-        "file": "libs/.gitkeep",
-        "hash": "3244421341483603138"
       },
       {
         "file": "README.md",
         "hash": "4719027433256433897"
       },
       {
-        "file": ".eslintrc.json",
-        "hash": "3967545737497877974"
-      },
-      {
-        "file": "tools/generators/.gitkeep",
-        "hash": "3244421341483603138"
-      },
-      {
-        "file": ".gitignore",
-        "hash": "12989128249502635799"
-      },
-      {
         "file": "package.json",
         "hash": "3557180952801191249"
       },
       {
-        "file": ".prettierrc",
-        "hash": "17172557053760942885"
+        "file": "nx.json",
+        "hash": "6848236468451372348"
+      },
+      {
+        "file": ".cursor/rules/custom.mdc",
+        "hash": "13159635239905023951"
+      },
+      {
+        "file": "Dockerfile",
+        "hash": "2219767751146870491"
+      },
+      {
+        "file": ".cursor/mcp.json",
+        "hash": "9112524214007568582"
+      },
+      {
+        "file": ".dockerignore",
+        "hash": "3374940570328528446"
       },
       {
         "file": "migrations.json",
         "hash": "9592843747199573044"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "3356760868306086659"
       },
       {
         "file": ".vscode/settings.json",
@@ -96,16 +64,48 @@
         "hash": "5443105041930014821"
       },
       {
-        "file": "Dockerfile",
-        "hash": "2219767751146870491"
+        "file": "tsconfig.base.json",
+        "hash": "14582150423264317726"
       },
       {
         "file": "yarn.lock",
         "hash": "8960031611709812711"
       },
       {
-        "file": ".dockerignore",
-        "hash": "3374940570328528446"
+        "file": "tools/tsconfig.tools.json",
+        "hash": "16088922570277978783"
+      },
+      {
+        "file": ".eslintrc.json",
+        "hash": "3967545737497877974"
+      },
+      {
+        "file": "_theme-colors.scss",
+        "hash": "3075729969290742246"
+      },
+      {
+        "file": "tools/generators/.gitkeep",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "12989128249502635799"
+      },
+      {
+        "file": ".vscode/extensions.json",
+        "hash": "4637156562308165301"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "17172557053760942885"
+      },
+      {
+        "file": "libs/.gitkeep",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "jest.preset.js",
+        "hash": "2772139696069860212"
       }
     ],
     "projectFileMap": {
@@ -4480,7 +4480,7 @@
         },
         {
           "file": "apps/new-panel/public/i18n/fa.json",
-          "hash": "13120226889431778706"
+          "hash": "5706969177572286219"
         },
         {
           "file": "apps/new-panel/public/icons/alopeyk-typo.svg",
@@ -4916,15 +4916,15 @@
         },
         {
           "file": "apps/new-panel/src/app/home/plan-card/plan-card.component.html",
-          "hash": "10300039916027211992"
+          "hash": "8186132829478060748"
         },
         {
           "file": "apps/new-panel/src/app/home/plan-card/plan-card.component.scss",
-          "hash": "4467959692812057007"
+          "hash": "319646272374977730"
         },
         {
           "file": "apps/new-panel/src/app/home/plan-card/plan-card.component.ts",
-          "hash": "12485679867577206704",
+          "hash": "7666738479185279544",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/common",
@@ -6006,7 +6006,7 @@
         },
         {
           "file": "apps/new-panel/src/app/shared/dialogs/buy-days-dialog/buy-days-dialog.component.html",
-          "hash": "12096794529456942762"
+          "hash": "18399899689790340323"
         },
         {
           "file": "apps/new-panel/src/app/shared/dialogs/buy-days-dialog/buy-days-dialog.component.scss",

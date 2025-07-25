@@ -10,11 +10,12 @@ import { MatListModule } from '@angular/material/list';
 import { DialogService } from '../../core/services/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
 import { FormControl, Validators } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-plan-card',
   standalone: true,
-  imports: [CommonModule, SHARED, MatCardModule, MatListModule],
+  imports: [CommonModule, SHARED, MatCardModule, MatListModule, MatTooltipModule],
   templateUrl: './plan-card.component.html',
   styleUrl: './plan-card.component.scss',
 })
