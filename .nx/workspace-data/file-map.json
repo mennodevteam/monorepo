@@ -16,96 +16,96 @@
   "fileMap": {
     "nonProjectFiles": [
       {
+        "file": "tools/tsconfig.tools.json",
+        "hash": "16088922570277978783"
+      },
+      {
         "file": ".cursor/mcp.json",
         "hash": "9112524214007568582"
-      },
-      {
-        "file": "tools/generators/.gitkeep",
-        "hash": "3244421341483603138"
-      },
-      {
-        "file": "libs/.gitkeep",
-        "hash": "3244421341483603138"
-      },
-      {
-        "file": "yarn.lock",
-        "hash": "8960031611709812711"
-      },
-      {
-        "file": "jest.config.ts",
-        "hash": "2950215254536237782"
-      },
-      {
-        "file": "_theme-colors.scss",
-        "hash": "3075729969290742246"
-      },
-      {
-        "file": "migrations.json",
-        "hash": "9592843747199573044"
       },
       {
         "file": "nx.json",
         "hash": "6848236468451372348"
       },
       {
-        "file": "README.md",
-        "hash": "4719027433256433897"
+        "file": ".prettierignore",
+        "hash": "3356760868306086659"
       },
       {
-        "file": ".vscode/settings.json",
-        "hash": "7443783824372806042"
+        "file": "tsconfig.base.json",
+        "hash": "14582150423264317726"
+      },
+      {
+        "file": "_theme-colors.scss",
+        "hash": "3075729969290742246"
       },
       {
         "file": "jest.preset.js",
         "hash": "2772139696069860212"
       },
       {
-        "file": ".dockerignore",
-        "hash": "3374940570328528446"
-      },
-      {
-        "file": ".eslintrc.json",
-        "hash": "3967545737497877974"
+        "file": "jest.config.ts",
+        "hash": "2950215254536237782"
       },
       {
         "file": ".cursor/rules/custom.mdc",
         "hash": "13159635239905023951"
       },
       {
+        "file": ".vscode/extensions.json",
+        "hash": "4637156562308165301"
+      },
+      {
+        "file": "libs/.gitkeep",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "README.md",
+        "hash": "4719027433256433897"
+      },
+      {
+        "file": ".eslintrc.json",
+        "hash": "3967545737497877974"
+      },
+      {
+        "file": "tools/generators/.gitkeep",
+        "hash": "3244421341483603138"
+      },
+      {
         "file": ".gitignore",
         "hash": "12989128249502635799"
-      },
-      {
-        "file": "tools/tsconfig.tools.json",
-        "hash": "16088922570277978783"
-      },
-      {
-        "file": ".prettierrc",
-        "hash": "17172557053760942885"
-      },
-      {
-        "file": ".prettierignore",
-        "hash": "3356760868306086659"
-      },
-      {
-        "file": "Dockerfile",
-        "hash": "2219767751146870491"
       },
       {
         "file": "package.json",
         "hash": "3557180952801191249"
       },
       {
+        "file": ".prettierrc",
+        "hash": "17172557053760942885"
+      },
+      {
+        "file": "migrations.json",
+        "hash": "9592843747199573044"
+      },
+      {
+        "file": ".vscode/settings.json",
+        "hash": "7443783824372806042"
+      },
+      {
         "file": ".editorconfig",
         "hash": "5443105041930014821"
       },
       {
-        "file": ".vscode/extensions.json",
-        "hash": "4637156562308165301"
+        "file": "Dockerfile",
+        "hash": "2219767751146870491"
       },
       {
-        "file": "tsconfig.base.json",
-        "hash": "14582150423264317726"
+        "file": "yarn.lock",
+        "hash": "8960031611709812711"
+      },
+      {
+        "file": ".dockerignore",
+        "hash": "3374940570328528446"
       }
     ],
     "projectFileMap": {
@@ -4480,7 +4480,7 @@
         },
         {
           "file": "apps/new-panel/public/i18n/fa.json",
-          "hash": "9801680610962673296"
+          "hash": "13120226889431778706"
         },
         {
           "file": "apps/new-panel/public/icons/alopeyk-typo.svg",
@@ -4896,7 +4896,7 @@
         },
         {
           "file": "apps/new-panel/src/app/home/home.component.html",
-          "hash": "16578483488600418177"
+          "hash": "5600731632200007945"
         },
         {
           "file": "apps/new-panel/src/app/home/home.component.scss",
@@ -4908,7 +4908,7 @@
         },
         {
           "file": "apps/new-panel/src/app/home/home.component.ts",
-          "hash": "11141291564584635944",
+          "hash": "6081901714434217815",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/material"
@@ -4916,15 +4916,22 @@
         },
         {
           "file": "apps/new-panel/src/app/home/plan-card/plan-card.component.html",
-          "hash": "8585988576310796792"
+          "hash": "10300039916027211992"
         },
         {
           "file": "apps/new-panel/src/app/home/plan-card/plan-card.component.scss",
-          "hash": "16836513347591284687"
+          "hash": "4467959692812057007"
         },
         {
           "file": "apps/new-panel/src/app/home/plan-card/plan-card.component.ts",
-          "hash": "11323826892994710436"
+          "hash": "12485679867577206704",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/material",
+            "npm:@ngx-translate/core",
+            "npm:@angular/forms"
+          ]
         },
         {
           "file": "apps/new-panel/src/app/home/shop-info-card/shop-info-card.component.html",
@@ -9302,7 +9309,7 @@
         },
         {
           "file": "apps/backend/src/app/orders/orders.subscriber.ts",
-          "hash": "3754091674299204003",
+          "hash": "14481810375212655614",
           "deps": [
             "types",
             "npm:@nestjs/typeorm",

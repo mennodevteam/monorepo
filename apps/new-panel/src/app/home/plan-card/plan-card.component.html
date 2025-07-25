@@ -1,3 +1,5 @@
+@let charge = shopService.data()?.smsAccount?.charge || 0;
+
 <mat-card appearance="outlined">
   <mat-card-header>
     <mat-card-title>
@@ -7,22 +9,31 @@
     </mat-card-title>
   </mat-card-header>
   <mat-card-content class="form-theme">
-    <div fxLayout="column" fxLayoutAlign="center center">
-      <span class="big-days">{{ remainingDays() | number: '1.0-0' }}</span>
-      {{ 'home.plan.remainDays' | translate }}
-    </div>
-    @if (remainingDays() < 8) {
-      <br />
-      <mat-card class="error" appearance="outlined">
-        <mat-card-content>{{ 'home.plan.expireWarning' | translate }}</mat-card-content>
-      </mat-card>
-      <br />
-    }
+    <mat-list>
+      <mat-list-item>
+        <span matListItemLine>{{ 'home.plan.yourPlan' | translate }}</span>
+        <span matListItemMeta>
+          {{ 'home.plan.remainDays' | translate: { value: remainingDays() | number: '1.0-0' } }}
+        </span>
+      </mat-list-item>
+      <mat-list-item>
+        <span matListItemLine>
+          {{ 'home.plan.charge' | translate }}
+          <i class="fa-regular fa-circle-info" (click)="walletHelp()"></i>
+        </span>
+        <span matListItemMeta>
+          {{ charge | number: '1.0-0' | menuCurrency }}
+        </span>
+      </mat-list-item>
+    </mat-list>
   </mat-card-content>
   <mat-divider></mat-divider>
   <mat-card-actions>
-    <button mat-button color="primary" (click)="buyPlan()">
+    <button mat-button (click)="buyPlan()">
       {{ 'home.plan.buy' | translate }}
     </button>
+    <button mat-button (click)="chargeSmsAccount()">
+      {{ 'home.plan.charge' | translate }}
+    </button>
   </mat-card-actions>
-</mat-card> 
+</mat-card>

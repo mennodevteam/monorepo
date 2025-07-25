@@ -182,17 +182,23 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
   }
 
   async afterSoftRemove(event: SoftRemoveEvent<Order>): Promise<any> {
-    const order = await this.ordersRepo.findOne({
-      where: { id: event.entity.id },
-      relations: ['items', 'items.product', 'items.productVariant'],
-    });
-    this.materialConsumption(order, true);
+    if (event.entity?.id) {
+      const order = await this.ordersRepo.findOne({
+        where: { id: event.entity.id },
+        relations: ['items', 'items.product', 'items.productVariant'],
+      });
+      this.materialConsumption(order, true);
+    }
   }
 
   private async materialConsumption(order: Order, isRestore?: boolean) {
     const items = order.items.filter((x) => !x.isAbstract);
     const boms = await this.billOfMaterialRepository.find({
-      where: items.map((x) => ({ product: { id: x.product.id }, variant: { id: x.productVariant?.id }, material: Not(IsNull()) })),
+      where: items.map((x) => ({
+        product: { id: x.product.id },
+        variant: { id: x.productVariant?.id },
+        material: Not(IsNull()),
+      })),
       relations: ['material', 'product', 'variant'],
     });
 
