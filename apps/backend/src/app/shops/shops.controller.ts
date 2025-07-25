@@ -142,6 +142,7 @@ export class ShopsController {
         'smsAccount',
         'plugins',
         'thirdParties',
+        'aiChatbot',
       ]);
       this.shopsRepo.update(shop.id, { connectionAt: new Date() });
       return shop;

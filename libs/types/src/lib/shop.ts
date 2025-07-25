@@ -11,6 +11,7 @@ import { ShopUser } from './shop-user';
 import { SmsAccount } from './sms-account';
 import { Status } from './status.enum';
 import { ThirdParty } from './third-party';
+import { AiChatbot } from './ai-chatbot';
 
 export enum BusinessCategory {
   Cafe = 'CAFE',
@@ -83,6 +84,7 @@ export class Shop {
   shopGroup?: ShopGroup;
   seo?: any;
   scripts?: WebScript[];
+  aiChatbot?: AiChatbot;
   options: any;
   plugins?: ShopPlugins;
   thirdParties?: ThirdParty[];

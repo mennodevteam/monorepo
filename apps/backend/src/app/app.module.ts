@@ -34,6 +34,7 @@ import { BasalamModule } from './basalam/basalam.module';
 import { ChatModule } from './chat/chat.module';
 import { PanelNotificationsModule } from './panel-notifications/panel-notifications.module';
 import { MaterialsModule } from './materials/materials.module';
+import { AiChatbotModule } from './ai-chatbot/ai-chatbot.module';
 
 @Module({
   imports: [
@@ -91,6 +92,7 @@ import { MaterialsModule } from './materials/materials.module';
     BasalamModule,
     PanelNotificationsModule,
     MaterialsModule,
+    AiChatbotModule,
   ],
   controllers: [AppController, AppRedirectController],
   providers: [

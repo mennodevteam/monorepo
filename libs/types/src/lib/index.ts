@@ -1,4 +1,5 @@
 export * from './address';
+export * from './ai-chatbot';
 export * from './app-config';
 export * from './basalam-products';
 export * from './change-password.dto';

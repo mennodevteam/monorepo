@@ -15964,3 +15964,803 @@ Time for 'build typescript dependencies' 4.191292002797127
 [NX v21.3.0 Daemon Server] - 2025-07-25T16:30:08.717Z - Established a connection. Number of open connections: 5
 [NX v21.3.0 Daemon Server] - 2025-07-25T16:30:10.491Z - [WATCHER]: Processing file changes in outputs
 [NX v21.3.0 Daemon Server] - 2025-07-25T16:30:10.589Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:24.840Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:24.910Z - [WATCHER]: libs/types/src/lib/ai-chatbot.ts was created or restored
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:25.031Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:25.032Z - [REQUEST]: libs/types/src/lib/ai-chatbot.ts
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:25.032Z - [REQUEST]: 
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:25.086Z - Time taken for 'hash changed files from watcher' 19.756249994039536ms
+Time for 'nx/core/project-json:createNodes' 50.55491699278355
+Time for 'nx/core/package-json:createNodes' 53.25787499547005
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 212.99087499082088
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:25.424Z - Time taken for 'build-project-configs' 299.95337499678135ms
+Time for 'build typescript dependencies' 12.237332999706268
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:25.625Z - Wrote project graph cache to /Users/mahdi.ketabdar/Developer/menno/monorepo/.nx/workspace-data/project-graph.json
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:25.625Z - [SYNC]: collect registered sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:25.626Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:25.626Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:25.627Z - [REQUEST]: Responding to the client. File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:25.627Z - Done responding to the client File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:25.627Z - Handled FILE-WATCH-CHANGED. Handling time: 0. Response time: 0.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:25.627Z - Time taken for 'total execution time for createProjectGraph()' 190.38654200732708ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:26.762Z - Established a connection. Number of open connections: 6
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:26.773Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:26.779Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:26.780Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:26.785Z - Time taken for 'total for creating and serializing project graph' 7.465957999229431ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:26.785Z - Closed a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:26.792Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:26.792Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 14. Response time: 12.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:26.832Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:26.833Z - Done responding to the client handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:26.833Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 2. Response time: 1.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:26.839Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:27.735Z - Closed a connection. Number of open connections: 3
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:27.738Z - Established a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:27.739Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:27.739Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:27.741Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:27.742Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:27.742Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:27.746Z - Time taken for 'total for creating and serializing project graph' 0.6636250019073486ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:27.759Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:27.759Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 17.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:27.778Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:27.780Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:27.782Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:27.785Z - Time taken for 'total for creating and serializing project graph' 1.9280000030994415ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:27.792Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:27.792Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 4. Response time: 10.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:45:27.801Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:21.321Z - [WATCHER]: apps/backend/src/app/core/schemas/ai-chatbot.schema.ts was created or restored
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:21.321Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:21.427Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:21.427Z - [REQUEST]: apps/backend/src/app/core/schemas/ai-chatbot.schema.ts
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:21.427Z - [REQUEST]: 
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:21.435Z - Time taken for 'hash changed files from watcher' 5.024375006556511ms
+Time for 'nx/core/project-json:createNodes' 18.24787499010563
+Time for 'nx/core/package-json:createNodes' 22.905040994286537
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 92.80916599929333
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:21.607Z - Time taken for 'build-project-configs' 131.41062499582767ms
+Time for 'build typescript dependencies' 6.95058399438858
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:21.701Z - Wrote project graph cache to /Users/mahdi.ketabdar/Developer/menno/monorepo/.nx/workspace-data/project-graph.json
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:21.702Z - [SYNC]: collect registered sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:21.702Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:21.702Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:21.702Z - [REQUEST]: Responding to the client. File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:21.702Z - Done responding to the client File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:21.702Z - Handled FILE-WATCH-CHANGED. Handling time: 0. Response time: 0.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:21.702Z - Time taken for 'total execution time for createProjectGraph()' 98.67404200136662ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:22.743Z - Established a connection. Number of open connections: 6
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:22.744Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:22.745Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:22.745Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:22.747Z - Time taken for 'total for creating and serializing project graph' 0.3164159953594208ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:22.747Z - Closed a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:22.754Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:22.754Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 9.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:22.779Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:22.780Z - Done responding to the client handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:22.780Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 4. Response time: 1.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:22.786Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:23.122Z - Closed a connection. Number of open connections: 3
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:23.123Z - Established a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:23.125Z - Closed a connection. Number of open connections: 3
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:23.125Z - Established a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:23.128Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:23.128Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:23.128Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:23.131Z - Time taken for 'total for creating and serializing project graph' 0.1425829976797104ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:23.132Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:23.132Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 4.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:23.135Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:23.135Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:23.135Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:23.136Z - Time taken for 'total for creating and serializing project graph' 0.07654200494289398ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:23.137Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:23.137Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 2.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:49:23.144Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:48.811Z - [WATCHER]: 0 file(s) created or restored, 4 file(s) modified, 0 file(s) deleted
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:48.817Z - [REQUEST]: Responding to the client. File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:48.817Z - Done responding to the client File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:48.817Z - Handled FILE-WATCH-CHANGED. Handling time: 0. Response time: 0.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:48.817Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:48.817Z - Time taken for 'changed-projects' 0.9416670054197311ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:48.924Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:48.924Z - [REQUEST]: libs/types/src/lib/shop.ts,libs/types/src/lib/index.ts,libs/types/src/lib/ai-chatbot.ts,apps/backend/src/app/core/schemas/ai-chatbot.schema.ts
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:48.924Z - [REQUEST]: 
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:48.931Z - Time taken for 'hash changed files from watcher' 5.065083995461464ms
+Time for 'nx/core/package-json:createNodes' 13.200292006134987
+Time for 'nx/core/project-json:createNodes' 16.901208996772766
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 28.065540999174118
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:48.994Z - Time taken for 'build-project-configs' 44.06012499332428ms
+Time for 'build typescript dependencies' 16.794375002384186
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:49.062Z - Wrote project graph cache to /Users/mahdi.ketabdar/Developer/menno/monorepo/.nx/workspace-data/project-graph.json
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:49.062Z - [SYNC]: collect registered sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:49.062Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:49.062Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:49.062Z - Time taken for 'total execution time for createProjectGraph()' 57.03100000321865ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:49.825Z - Established a connection. Number of open connections: 6
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:49.827Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:49.827Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:49.827Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:49.831Z - Time taken for 'total for creating and serializing project graph' 0.3889999985694885ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:49.832Z - Closed a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:49.833Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:49.833Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 6.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:49.840Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:49.841Z - Done responding to the client handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:49.841Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 3. Response time: 1.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:49.850Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:50.648Z - Closed a connection. Number of open connections: 3
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:50.651Z - Established a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:50.651Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:50.651Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:50.652Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:50.652Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:50.652Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:50.654Z - Time taken for 'total for creating and serializing project graph' 0.2447500079870224ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:50.655Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:50.655Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 3.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:50.663Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:50.663Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:50.664Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:50.667Z - Time taken for 'total for creating and serializing project graph' 0.3721249997615814ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:50.668Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:50.668Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 4.
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:50.673Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:51.391Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:53.295Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:53.366Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:55.752Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:56.074Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:56.202Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:56.253Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T16:50:56.444Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:00.437Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:00.442Z - [WATCHER]: 0 file(s) created or restored, 4 file(s) modified, 0 file(s) deleted
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:00.444Z - [REQUEST]: Responding to the client. File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:00.444Z - Done responding to the client File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:00.444Z - Handled FILE-WATCH-CHANGED. Handling time: 0. Response time: 0.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:00.444Z - Time taken for 'changed-projects' 0.7825829982757568ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:00.555Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:00.555Z - [REQUEST]: libs/types/src/lib/ai-chatbot.ts,apps/backend/src/app/core/core.module.ts,apps/backend/src/app/core/schemas/ai-chatbot.schema.ts,apps/backend/src/app/core/schemas/index.ts
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:00.555Z - [REQUEST]: 
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:00.570Z - Time taken for 'hash changed files from watcher' 10.97545799612999ms
+Time for 'nx/core/package-json:createNodes' 24.71491700410843
+Time for 'nx/core/project-json:createNodes' 20.87287499010563
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 69.62150000035763
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:00.689Z - Time taken for 'build-project-configs' 103.98229099810123ms
+Time for 'build typescript dependencies' 12.915749996900558
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:00.761Z - Wrote project graph cache to /Users/mahdi.ketabdar/Developer/menno/monorepo/.nx/workspace-data/project-graph.json
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:00.761Z - [SYNC]: collect registered sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:00.762Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:00.762Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:00.762Z - Time taken for 'total execution time for createProjectGraph()' 71.25041599571705ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:01.477Z - Established a connection. Number of open connections: 6
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:01.480Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:01.480Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:01.480Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:01.484Z - Time taken for 'total for creating and serializing project graph' 0.6203339993953705ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:01.484Z - Closed a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:01.491Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:01.492Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 12.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:01.520Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:01.521Z - Done responding to the client handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:01.521Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 3. Response time: 1.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:01.531Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:02.194Z - Closed a connection. Number of open connections: 3
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:02.195Z - Established a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:02.196Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:02.196Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:02.199Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:02.199Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:02.200Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:02.205Z - Time taken for 'total for creating and serializing project graph' 0.9609579890966415ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:02.209Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:02.209Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 2. Response time: 9.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:02.219Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:02.219Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:02.219Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:02.223Z - Time taken for 'total for creating and serializing project graph' 0.37429100275039673ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:02.225Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:02.225Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 6.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:02.228Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:02.588Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:04.602Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:05.879Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:05.935Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:06.303Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:31:06.362Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:01.494Z - [WATCHER]: apps/backend/src/app/core/schemas/shop.schema.ts was modified
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:01.496Z - [REQUEST]: Responding to the client. File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:01.497Z - Done responding to the client File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:01.497Z - Handled FILE-WATCH-CHANGED. Handling time: 0. Response time: 1.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:01.497Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:01.497Z - Time taken for 'changed-projects' 0.8687500059604645ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:01.603Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:01.603Z - [REQUEST]: apps/backend/src/app/core/schemas/shop.schema.ts
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:01.603Z - [REQUEST]: 
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:01.614Z - Time taken for 'hash changed files from watcher' 7.0477080047130585ms
+Time for 'nx/core/package-json:createNodes' 25.508000001311302
+Time for 'nx/core/project-json:createNodes' 19.11675000190735
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 47.11729100346565
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:01.736Z - Time taken for 'build-project-configs' 104.64937500655651ms
+Time for 'build typescript dependencies' 12.575957998633385
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:01.825Z - Wrote project graph cache to /Users/mahdi.ketabdar/Developer/menno/monorepo/.nx/workspace-data/project-graph.json
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:01.825Z - [SYNC]: collect registered sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:01.825Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:01.825Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:01.825Z - Time taken for 'total execution time for createProjectGraph()' 90.63737499713898ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:02.591Z - Established a connection. Number of open connections: 6
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:02.592Z - Closed a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:02.603Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:02.603Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:02.604Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:02.606Z - Time taken for 'total for creating and serializing project graph' 0.3951669931411743ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:02.653Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:02.653Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 49.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:02.764Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:02.768Z - Done responding to the client handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:02.768Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 2. Response time: 4.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:02.797Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:04.148Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:04.228Z - Closed a connection. Number of open connections: 3
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:04.232Z - Established a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:04.233Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:04.233Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:04.237Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:04.238Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:04.238Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:04.241Z - Time taken for 'total for creating and serializing project graph' 1.4314579963684082ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:04.246Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:04.246Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 2. Response time: 8.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:04.276Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:04.276Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:04.276Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:04.278Z - Time taken for 'total for creating and serializing project graph' 0.2012919932603836ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:04.278Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:04.278Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 2.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:04.292Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:09.740Z - [WATCHER]: apps/backend/src/app/shops/shops.controller.ts was modified
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:09.747Z - [REQUEST]: Responding to the client. File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:09.748Z - Done responding to the client File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:09.748Z - Handled FILE-WATCH-CHANGED. Handling time: 0. Response time: 1.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:09.750Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:09.750Z - Time taken for 'changed-projects' 3.1901250034570694ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:09.938Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:09.938Z - [REQUEST]: apps/backend/src/app/shops/shops.controller.ts
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:09.939Z - [REQUEST]: 
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:09.944Z - Time taken for 'hash changed files from watcher' 79.05975000560284ms
+Time for 'nx/core/project-json:createNodes' 4.3897919952869415
+Time for 'nx/core/package-json:createNodes' 4.9305419921875
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 75.31829199194908
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.053Z - Time taken for 'build-project-configs' 95.28312499821186ms
+Time for 'build typescript dependencies' 8.390500009059906
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.100Z - Wrote project graph cache to /Users/mahdi.ketabdar/Developer/menno/monorepo/.nx/workspace-data/project-graph.json
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.100Z - [SYNC]: collect registered sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.100Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.100Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.100Z - Time taken for 'total execution time for createProjectGraph()' 46.09224998950958ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.438Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.772Z - Established a connection. Number of open connections: 6
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.772Z - Closed a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.774Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.774Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.774Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.778Z - Time taken for 'total for creating and serializing project graph' 0.5672920048236847ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.780Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.780Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 6.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.789Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.790Z - Done responding to the client handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.790Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 3. Response time: 1.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.794Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.971Z - Closed a connection. Number of open connections: 3
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.973Z - Established a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.974Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.974Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.974Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.974Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.974Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.976Z - Time taken for 'total for creating and serializing project graph' 0.10891701281070709ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.977Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.977Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 3.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.980Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.980Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.980Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.982Z - Time taken for 'total for creating and serializing project graph' 0.08224999904632568ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.983Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.983Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 3.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:34:10.986Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:14.791Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:14.798Z - [WATCHER]: apps/backend/src/app/core/redis.service.ts was modified
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:14.804Z - [REQUEST]: Responding to the client. File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:14.805Z - Done responding to the client File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:14.805Z - Handled FILE-WATCH-CHANGED. Handling time: 0. Response time: 1.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:14.805Z - Time taken for 'changed-projects' 1.8456660062074661ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:14.905Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:14.905Z - [REQUEST]: apps/backend/src/app/core/redis.service.ts
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:14.905Z - [REQUEST]: 
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:14.918Z - Time taken for 'hash changed files from watcher' 4.399707987904549ms
+Time for 'nx/core/package-json:createNodes' 5.155333995819092
+Time for 'nx/core/project-json:createNodes' 4.811792001128197
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 8.570792004466057
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:14.944Z - Time taken for 'build-project-configs' 19.095042005181313ms
+Time for 'build typescript dependencies' 8.227708011865616
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:14.983Z - Wrote project graph cache to /Users/mahdi.ketabdar/Developer/menno/monorepo/.nx/workspace-data/project-graph.json
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:14.983Z - [SYNC]: collect registered sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:14.984Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:14.984Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:14.984Z - Time taken for 'total execution time for createProjectGraph()' 34.559916004538536ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:15.584Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:15.874Z - Established a connection. Number of open connections: 6
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:15.875Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:15.875Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:15.875Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:15.877Z - Time taken for 'total for creating and serializing project graph' 0.30525000393390656ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:15.877Z - Closed a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:15.880Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:15.880Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 5.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:15.905Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:15.905Z - Done responding to the client handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:15.905Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 2. Response time: 0.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:15.910Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:16.957Z - Closed a connection. Number of open connections: 3
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:16.961Z - Established a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:16.962Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:16.962Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:16.962Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:16.962Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:16.962Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:16.964Z - Time taken for 'total for creating and serializing project graph' 0.11537499725818634ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:16.965Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:16.965Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 3.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:16.967Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:16.968Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:16.968Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:16.970Z - Time taken for 'total for creating and serializing project graph' 0.08024999499320984ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:16.971Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:16.971Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 3.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:37:16.973Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:04.302Z - [WATCHER]: apps/backend/src/app/ai-chatbot/ai-chatbot.controller.ts was created or restored
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:04.304Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:04.408Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:04.408Z - [REQUEST]: apps/backend/src/app/ai-chatbot/ai-chatbot.controller.ts
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:04.408Z - [REQUEST]: 
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:04.418Z - Time taken for 'hash changed files from watcher' 3.3460830003023148ms
+Time for 'nx/core/package-json:createNodes' 3.790582999587059
+Time for 'nx/core/project-json:createNodes' 5.150499999523163
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 10.679499998688698
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:04.455Z - Time taken for 'build-project-configs' 29.283333003520966ms
+Time for 'build typescript dependencies' 4.358250007033348
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:04.513Z - Wrote project graph cache to /Users/mahdi.ketabdar/Developer/menno/monorepo/.nx/workspace-data/project-graph.json
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:04.513Z - [SYNC]: collect registered sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:04.514Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:04.514Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:04.518Z - [REQUEST]: Responding to the client. File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:04.518Z - Done responding to the client File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:04.518Z - Handled FILE-WATCH-CHANGED. Handling time: 0. Response time: 0.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:04.518Z - Time taken for 'total execution time for createProjectGraph()' 46.92366699874401ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.526Z - Established a connection. Number of open connections: 6
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.527Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.528Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.528Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.532Z - Time taken for 'total for creating and serializing project graph' 0.3457919955253601ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.533Z - Closed a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.534Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.535Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 7.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.543Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.543Z - Done responding to the client handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.543Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 3. Response time: 0.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.549Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.930Z - Closed a connection. Number of open connections: 3
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.937Z - Established a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.937Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.937Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.937Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.938Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.938Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.941Z - Time taken for 'total for creating and serializing project graph' 0.5494170039892197ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.951Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.951Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 13.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.961Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.962Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.962Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.969Z - Time taken for 'total for creating and serializing project graph' 0.5409159958362579ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.970Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.970Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 8.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:05.973Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:06.742Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:06.744Z - [WATCHER]: apps/backend/src/app/ai-chatbot/ai-chatbot.controller.ts was modified
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:06.758Z - [REQUEST]: Responding to the client. File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:06.758Z - Done responding to the client File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:06.759Z - Handled FILE-WATCH-CHANGED. Handling time: 0. Response time: 2.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:06.759Z - Time taken for 'changed-projects' 10.440750002861023ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:06.858Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:06.858Z - [REQUEST]: apps/backend/src/app/ai-chatbot/ai-chatbot.controller.ts
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:06.858Z - [REQUEST]: 
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:06.869Z - Time taken for 'hash changed files from watcher' 6.719791993498802ms
+Time for 'nx/core/project-json:createNodes' 2.26800000667572
+Time for 'nx/core/package-json:createNodes' 11.017874985933304
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 14.727458998560905
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:06.950Z - Time taken for 'build-project-configs' 43.69258299469948ms
+Time for 'build typescript dependencies' 96.30741700530052
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:07.139Z - Wrote project graph cache to /Users/mahdi.ketabdar/Developer/menno/monorepo/.nx/workspace-data/project-graph.json
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:07.140Z - [SYNC]: collect registered sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:07.140Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:07.140Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:07.140Z - Time taken for 'total execution time for createProjectGraph()' 208.8098330050707ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:07.896Z - Established a connection. Number of open connections: 6
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:07.901Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:07.902Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:07.902Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:07.960Z - Time taken for 'total for creating and serializing project graph' 1.0983330011367798ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:07.960Z - Closed a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.004Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.004Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 2. Response time: 102.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.043Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.067Z - Done responding to the client handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.067Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 12. Response time: 24.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.071Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.181Z - Closed a connection. Number of open connections: 3
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.182Z - Established a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.182Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.182Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.183Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.183Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.183Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.185Z - Time taken for 'total for creating and serializing project graph' 0.22862499952316284ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.187Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.187Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 4.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.194Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.194Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.194Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.197Z - Time taken for 'total for creating and serializing project graph' 0.15291599929332733ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.218Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.218Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 24.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:08.221Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:12.722Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:12.725Z - [WATCHER]: apps/backend/src/app/ai-chatbot/ai-chatbot.controller.ts was modified
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:12.728Z - [REQUEST]: Responding to the client. File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:12.729Z - Done responding to the client File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:12.729Z - Handled FILE-WATCH-CHANGED. Handling time: 0. Response time: 1.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:12.729Z - Time taken for 'changed-projects' 2.0823329985141754ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:12.827Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:12.828Z - [REQUEST]: apps/backend/src/app/ai-chatbot/ai-chatbot.controller.ts
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:12.828Z - [REQUEST]: 
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:12.830Z - Time taken for 'hash changed files from watcher' 1.6302080005407333ms
+Time for 'nx/core/package-json:createNodes' 5.216958001255989
+Time for 'nx/core/project-json:createNodes' 29.264708995819092
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 39.308209002017975
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:12.892Z - Time taken for 'build-project-configs' 52.02383400499821ms
+Time for 'build typescript dependencies' 2.046750009059906
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:12.929Z - Wrote project graph cache to /Users/mahdi.ketabdar/Developer/menno/monorepo/.nx/workspace-data/project-graph.json
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:12.929Z - [SYNC]: collect registered sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:12.929Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:12.929Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:12.929Z - Time taken for 'total execution time for createProjectGraph()' 37.17125000059605ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:13.818Z - Established a connection. Number of open connections: 6
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:13.830Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:13.831Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:13.831Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:13.879Z - Time taken for 'total for creating and serializing project graph' 1.056207999587059ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:13.880Z - Closed a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:13.934Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:13.934Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 103.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:13.949Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:13.970Z - Done responding to the client handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:13.970Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 6. Response time: 21.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:13.977Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:15.130Z - Closed a connection. Number of open connections: 3
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:15.134Z - Established a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:15.135Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:15.135Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:15.136Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:15.137Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:15.137Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:15.143Z - Time taken for 'total for creating and serializing project graph' 0.7078749984502792ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:15.146Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:15.146Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 9.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:15.159Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:15.159Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:15.160Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:15.163Z - Time taken for 'total for creating and serializing project graph' 1.8325829952955246ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:15.169Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:15.169Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 2. Response time: 9.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:15.173Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:18.510Z - [WATCHER]: apps/backend/src/app/ai-chatbot/ai-chatbot.module.ts was created or restored
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:18.511Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:18.613Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:18.613Z - [REQUEST]: apps/backend/src/app/ai-chatbot/ai-chatbot.module.ts
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:18.613Z - [REQUEST]: 
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:18.616Z - Time taken for 'hash changed files from watcher' 1.7474579960107803ms
+Time for 'nx/core/project-json:createNodes' 1.7577919960021973
+Time for 'nx/core/package-json:createNodes' 2.273125007748604
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 7.831583008170128
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:18.647Z - Time taken for 'build-project-configs' 22.190415993332863ms
+Time for 'build typescript dependencies' 2.073625013232231
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:18.679Z - Wrote project graph cache to /Users/mahdi.ketabdar/Developer/menno/monorepo/.nx/workspace-data/project-graph.json
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:18.679Z - [SYNC]: collect registered sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:18.680Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:18.680Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:18.680Z - [REQUEST]: Responding to the client. File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:18.680Z - Done responding to the client File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:18.680Z - Handled FILE-WATCH-CHANGED. Handling time: 0. Response time: 0.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:18.680Z - Time taken for 'total execution time for createProjectGraph()' 29.15437500178814ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:19.688Z - Established a connection. Number of open connections: 6
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:19.701Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:19.701Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:19.701Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:19.705Z - Time taken for 'total for creating and serializing project graph' 0.42295800149440765ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:19.705Z - Closed a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:19.708Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:19.708Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 7.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:19.718Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:19.720Z - Done responding to the client handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:19.720Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 3. Response time: 2.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:19.725Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.215Z - Closed a connection. Number of open connections: 3
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.216Z - Established a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.217Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.217Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.220Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.220Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.220Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.225Z - Time taken for 'total for creating and serializing project graph' 0.7447919994592667ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.230Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.230Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 10.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.233Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.233Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.233Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.235Z - Time taken for 'total for creating and serializing project graph' 0.13958299160003662ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.243Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.243Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 10.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.246Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.868Z - [WATCHER]: apps/backend/src/app/ai-chatbot/ai-chatbot.module.ts was modified
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.871Z - [REQUEST]: Responding to the client. File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.871Z - Done responding to the client File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.871Z - Handled FILE-WATCH-CHANGED. Handling time: 0. Response time: 0.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.871Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.871Z - Time taken for 'changed-projects' 0.9278330057859421ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.973Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.973Z - [REQUEST]: apps/backend/src/app/ai-chatbot/ai-chatbot.module.ts
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.973Z - [REQUEST]: 
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:20.980Z - Time taken for 'hash changed files from watcher' 4.126249998807907ms
+Time for 'nx/core/project-json:createNodes' 1.094999998807907
+Time for 'nx/core/package-json:createNodes' 15.083374992012978
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 20.17195799946785
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.058Z - Time taken for 'build-project-configs' 55.58404099941254ms
+Time for 'build typescript dependencies' 8.26258298754692
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.118Z - Wrote project graph cache to /Users/mahdi.ketabdar/Developer/menno/monorepo/.nx/workspace-data/project-graph.json
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.118Z - [SYNC]: collect registered sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.119Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.119Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.119Z - Time taken for 'total execution time for createProjectGraph()' 56.05508400499821ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.877Z - Established a connection. Number of open connections: 6
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.879Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.879Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.879Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.881Z - Time taken for 'total for creating and serializing project graph' 0.3094169944524765ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.881Z - Closed a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.883Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.883Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 4.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.891Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.894Z - Done responding to the client handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.894Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 3. Response time: 3.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.897Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.963Z - Closed a connection. Number of open connections: 3
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.964Z - Established a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.964Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.964Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.964Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.964Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.964Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.966Z - Time taken for 'total for creating and serializing project graph' 0.10774999856948853ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.968Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.968Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 4.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.971Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.972Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.972Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.973Z - Time taken for 'total for creating and serializing project graph' 0.35158300399780273ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.976Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.976Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 4.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:21.979Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:30.889Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:30.894Z - [WATCHER]: apps/backend/src/app/ai-chatbot/ai-chatbot.module.ts was modified
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:30.896Z - [REQUEST]: Responding to the client. File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:30.896Z - Done responding to the client File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:30.896Z - Handled FILE-WATCH-CHANGED. Handling time: 0. Response time: 0.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:30.896Z - Time taken for 'changed-projects' 1.5087909996509552ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:30.996Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:30.996Z - [REQUEST]: apps/backend/src/app/ai-chatbot/ai-chatbot.module.ts
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:30.996Z - [REQUEST]: 
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:30.998Z - Time taken for 'hash changed files from watcher' 1.743708997964859ms
+Time for 'nx/core/package-json:createNodes' 2.355583995580673
+Time for 'nx/core/project-json:createNodes' 2.5419999957084656
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 6.885083004832268
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:31.027Z - Time taken for 'build-project-configs' 14.85062500834465ms
+Time for 'build typescript dependencies' 5.228209003806114
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:31.066Z - Wrote project graph cache to /Users/mahdi.ketabdar/Developer/menno/monorepo/.nx/workspace-data/project-graph.json
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:31.066Z - [SYNC]: collect registered sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:31.066Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:31.066Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:31.066Z - Time taken for 'total execution time for createProjectGraph()' 41.49558299779892ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:31.908Z - Established a connection. Number of open connections: 6
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:31.910Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:31.911Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:31.911Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:31.916Z - Time taken for 'total for creating and serializing project graph' 0.6128329932689667ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:31.917Z - Closed a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:31.921Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:31.921Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 10.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:31.928Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:31.928Z - Done responding to the client handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:31.928Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 3. Response time: 0.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:31.931Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:32.133Z - Closed a connection. Number of open connections: 3
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:32.133Z - Established a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:32.133Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:32.133Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:32.133Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:32.133Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:32.133Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:32.135Z - Time taken for 'total for creating and serializing project graph' 0.09466598927974701ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:32.136Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:32.136Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 3.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:32.139Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:32.139Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:32.139Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:32.141Z - Time taken for 'total for creating and serializing project graph' 0.19349999725818634ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:32.146Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:32.146Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 7.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:32.148Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:37.831Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:37.835Z - [WATCHER]: apps/backend/src/app/app.module.ts was modified
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:37.839Z - [REQUEST]: Responding to the client. File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:37.839Z - Done responding to the client File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:37.839Z - Handled FILE-WATCH-CHANGED. Handling time: 0. Response time: 0.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:37.840Z - Time taken for 'changed-projects' 1.977292001247406ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:37.938Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:37.938Z - [REQUEST]: apps/backend/src/app/app.module.ts
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:37.938Z - [REQUEST]: 
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:37.941Z - Time taken for 'hash changed files from watcher' 1.7886250019073486ms
+Time for 'nx/core/package-json:createNodes' 1.972666010260582
+Time for 'nx/core/project-json:createNodes' 3.465834006667137
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 9.823042005300522
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:37.976Z - Time taken for 'build-project-configs' 23.066458001732826ms
+Time for 'build typescript dependencies' 2.953000009059906
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:38.002Z - Wrote project graph cache to /Users/mahdi.ketabdar/Developer/menno/monorepo/.nx/workspace-data/project-graph.json
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:38.002Z - [SYNC]: collect registered sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:38.002Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:38.002Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:38.002Z - Time taken for 'total execution time for createProjectGraph()' 25.87899999320507ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:38.305Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:38.849Z - Established a connection. Number of open connections: 6
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:38.850Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:38.851Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:38.851Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:38.853Z - Time taken for 'total for creating and serializing project graph' 0.3019159883260727ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:38.853Z - Closed a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:38.855Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:38.855Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 4.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:38.875Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:38.885Z - Done responding to the client handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:38.885Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 10. Response time: 10.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:38.889Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:39.830Z - Closed a connection. Number of open connections: 3
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:39.845Z - Established a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:39.845Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:39.845Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:39.853Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:39.853Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:39.853Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:39.855Z - Time taken for 'total for creating and serializing project graph' 0.4849590063095093ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:39.876Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:39.876Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 23.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:39.882Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:39.882Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:39.883Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:39.886Z - Time taken for 'total for creating and serializing project graph' 0.4645000100135803ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:39.889Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:39.889Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 6.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:39.896Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:42.550Z - [WATCHER]: apps/backend/src/app/app.module.ts was modified
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:42.552Z - [REQUEST]: Responding to the client. File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:42.552Z - Done responding to the client File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:42.552Z - Handled FILE-WATCH-CHANGED. Handling time: 0. Response time: 0.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:42.552Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:42.553Z - Time taken for 'changed-projects' 0.8300420045852661ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:42.663Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:42.663Z - [REQUEST]: apps/backend/src/app/app.module.ts
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:42.663Z - [REQUEST]: 
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:42.675Z - Time taken for 'hash changed files from watcher' 10.225584000349045ms
+Time for 'nx/core/project-json:createNodes' 3.0203749984502792
+Time for 'nx/core/package-json:createNodes' 8.524582996964455
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 19.134792000055313
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:42.723Z - Time taken for 'build-project-configs' 29.262959003448486ms
+Time for 'build typescript dependencies' 14.144999995827675
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:42.864Z - Wrote project graph cache to /Users/mahdi.ketabdar/Developer/menno/monorepo/.nx/workspace-data/project-graph.json
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:42.864Z - [SYNC]: collect registered sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:42.865Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:42.865Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:42.865Z - Time taken for 'total execution time for createProjectGraph()' 130.85220800340176ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.183Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.561Z - Established a connection. Number of open connections: 6
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.562Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.563Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.563Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.565Z - Time taken for 'total for creating and serializing project graph' 0.2535420060157776ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.565Z - Closed a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.566Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.566Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 3.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.574Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.574Z - Done responding to the client handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.574Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 4. Response time: 0.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.578Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.675Z - Closed a connection. Number of open connections: 3
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.676Z - Established a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.676Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.676Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.676Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.676Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.676Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.678Z - Time taken for 'total for creating and serializing project graph' 0.09587500989437103ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.681Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.681Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 5.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.686Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.686Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.686Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.688Z - Time taken for 'total for creating and serializing project graph' 0.1440420001745224ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.689Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.689Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 3.
+[NX v21.3.0 Daemon Server] - 2025-07-25T17:40:43.691Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:15.927Z - [WATCHER]: apps/backend/src/app/ai-chatbot/ai-chatbot.controller.ts was modified
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:15.954Z - [REQUEST]: Responding to the client. File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:15.954Z - Done responding to the client File watch changed
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:15.954Z - Handled FILE-WATCH-CHANGED. Handling time: 0. Response time: 0.
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:15.955Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:15.956Z - Time taken for 'changed-projects' 6.313291996717453ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:16.038Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:16.038Z - [REQUEST]: apps/backend/src/app/ai-chatbot/ai-chatbot.controller.ts
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:16.038Z - [REQUEST]: 
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:16.058Z - Time taken for 'hash changed files from watcher' 5.3920419961214066ms
+Time for 'nx/core/project-json:createNodes' 41.40166701376438
+Time for 'nx/core/package-json:createNodes' 37.4382079988718
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 82.88770800828934
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:16.265Z - Time taken for 'build-project-configs' 192.22858299314976ms
+Time for 'build typescript dependencies' 27.928124994039536
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:16.382Z - Wrote project graph cache to /Users/mahdi.ketabdar/Developer/menno/monorepo/.nx/workspace-data/project-graph.json
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:16.382Z - [SYNC]: collect registered sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:16.382Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:16.382Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:16.382Z - Time taken for 'total execution time for createProjectGraph()' 107.52733299136162ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:16.973Z - Established a connection. Number of open connections: 6
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:16.974Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:16.974Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:16.974Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:16.978Z - Time taken for 'total for creating and serializing project graph' 0.30991700291633606ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:16.978Z - Closed a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:16.998Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:16.998Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 24.
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.018Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.022Z - Done responding to the client handleContextFileData
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.022Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 3. Response time: 4.
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.042Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.129Z - [WATCHER]: Processing file changes in outputs
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.516Z - Closed a connection. Number of open connections: 3
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.525Z - Established a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.525Z - Established a connection. Number of open connections: 5
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.525Z - Closed a connection. Number of open connections: 4
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.526Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.526Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.526Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.529Z - Time taken for 'total for creating and serializing project graph' 0.27320799231529236ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.530Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.530Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 4.
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.535Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.535Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.535Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.539Z - Time taken for 'total for creating and serializing project graph' 0.1563750058412552ms
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.540Z - Done responding to the client project-graph
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.540Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 5.
+[NX v21.3.0 Daemon Server] - 2025-07-25T18:06:17.548Z - Established a connection. Number of open connections: 5

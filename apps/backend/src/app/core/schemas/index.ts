@@ -1,4 +1,5 @@
 export * from './address.schema';
+export * from './ai-chatbot.schema';
 export * from './app-config.schema';
 export * from './basalam-product.schema';
 export * from './club.schema';

@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   AppConfigSchema,
   AddressSchema,
+  AiChatbotSchema,
   ClubSchema,
   DingSchema,
   DiscountCouponSchema,
@@ -60,6 +61,7 @@ import { ChatSchema } from './schemas/chat.schema';
     TypeOrmModule.forFeature([
       AppConfigSchema,
       AddressSchema,
+      AiChatbotSchema,
       BasalamProductSchema,
       ClubSchema,
       DingSchema,

@@ -199,5 +199,11 @@ export const ShopSchema = new EntitySchema<Shop>({
       joinColumn: true,
       cascade: ['insert'],
     },
+    aiChatbot: {
+      type: 'many-to-one',
+      target: 'AiChatbot',
+      cascade: ['insert'],
+      nullable: true,
+    },
   },
 });

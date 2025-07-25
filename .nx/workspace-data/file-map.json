@@ -16,28 +16,68 @@
   "fileMap": {
     "nonProjectFiles": [
       {
-        "file": "jest.config.ts",
-        "hash": "2950215254536237782"
+        "file": ".prettierignore",
+        "hash": "3356760868306086659"
+      },
+      {
+        "file": "tools/tsconfig.tools.json",
+        "hash": "16088922570277978783"
       },
       {
         "file": "README.md",
         "hash": "4719027433256433897"
       },
       {
-        "file": "package.json",
-        "hash": "3557180952801191249"
+        "file": ".eslintrc.json",
+        "hash": "3967545737497877974"
       },
       {
-        "file": "nx.json",
-        "hash": "6848236468451372348"
+        "file": ".prettierrc",
+        "hash": "17172557053760942885"
+      },
+      {
+        "file": "Dockerfile",
+        "hash": "2219767751146870491"
+      },
+      {
+        "file": "migrations.json",
+        "hash": "9592843747199573044"
+      },
+      {
+        "file": "jest.preset.js",
+        "hash": "2772139696069860212"
+      },
+      {
+        "file": "_theme-colors.scss",
+        "hash": "3075729969290742246"
       },
       {
         "file": ".cursor/rules/custom.mdc",
         "hash": "13159635239905023951"
       },
       {
-        "file": "Dockerfile",
-        "hash": "2219767751146870491"
+        "file": "tsconfig.base.json",
+        "hash": "14582150423264317726"
+      },
+      {
+        "file": ".vscode/extensions.json",
+        "hash": "4637156562308165301"
+      },
+      {
+        "file": "yarn.lock",
+        "hash": "8960031611709812711"
+      },
+      {
+        "file": ".editorconfig",
+        "hash": "5443105041930014821"
+      },
+      {
+        "file": "package.json",
+        "hash": "3557180952801191249"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "12989128249502635799"
       },
       {
         "file": ".cursor/mcp.json",
@@ -48,64 +88,24 @@
         "hash": "3374940570328528446"
       },
       {
-        "file": "migrations.json",
-        "hash": "9592843747199573044"
-      },
-      {
-        "file": ".prettierignore",
-        "hash": "3356760868306086659"
-      },
-      {
-        "file": ".vscode/settings.json",
-        "hash": "7443783824372806042"
-      },
-      {
-        "file": ".editorconfig",
-        "hash": "5443105041930014821"
-      },
-      {
-        "file": "tsconfig.base.json",
-        "hash": "14582150423264317726"
-      },
-      {
-        "file": "yarn.lock",
-        "hash": "8960031611709812711"
-      },
-      {
-        "file": "tools/tsconfig.tools.json",
-        "hash": "16088922570277978783"
-      },
-      {
-        "file": ".eslintrc.json",
-        "hash": "3967545737497877974"
-      },
-      {
-        "file": "_theme-colors.scss",
-        "hash": "3075729969290742246"
+        "file": "libs/.gitkeep",
+        "hash": "3244421341483603138"
       },
       {
         "file": "tools/generators/.gitkeep",
         "hash": "3244421341483603138"
       },
       {
-        "file": ".gitignore",
-        "hash": "12989128249502635799"
+        "file": "jest.config.ts",
+        "hash": "2950215254536237782"
       },
       {
-        "file": ".vscode/extensions.json",
-        "hash": "4637156562308165301"
+        "file": "nx.json",
+        "hash": "6848236468451372348"
       },
       {
-        "file": ".prettierrc",
-        "hash": "17172557053760942885"
-      },
-      {
-        "file": "libs/.gitkeep",
-        "hash": "3244421341483603138"
-      },
-      {
-        "file": "jest.preset.js",
-        "hash": "2772139696069860212"
+        "file": ".vscode/settings.json",
+        "hash": "7443783824372806042"
       }
     ],
     "projectFileMap": {
@@ -7094,6 +7094,10 @@
           "hash": "10113024409333923347"
         },
         {
+          "file": "libs/types/src/lib/ai-chatbot.ts",
+          "hash": "6781681985431551410"
+        },
+        {
           "file": "libs/types/src/lib/app-config.ts",
           "hash": "15514381429998395710"
         },
@@ -7187,7 +7191,7 @@
         },
         {
           "file": "libs/types/src/lib/index.ts",
-          "hash": "6216092967872444001"
+          "hash": "12533520052101647606"
         },
         {
           "file": "libs/types/src/lib/inventory.ts",
@@ -7367,7 +7371,7 @@
         },
         {
           "file": "libs/types/src/lib/shop.ts",
-          "hash": "2319911961060975005"
+          "hash": "1448969152634195694"
         },
         {
           "file": "libs/types/src/lib/sms-account.ts",
@@ -8197,6 +8201,23 @@
           ]
         },
         {
+          "file": "apps/backend/src/app/ai-chatbot/ai-chatbot.controller.ts",
+          "hash": "608372225310303060",
+          "deps": [
+            "types",
+            "npm:@nestjs/common",
+            "npm:@nestjs/typeorm",
+            "npm:typeorm"
+          ]
+        },
+        {
+          "file": "apps/backend/src/app/ai-chatbot/ai-chatbot.module.ts",
+          "hash": "12722067819078263759",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
           "file": "apps/backend/src/app/app-configs/app-configs.controller.ts",
           "hash": "9262698538103801837",
           "deps": [
@@ -8235,7 +8256,7 @@
         },
         {
           "file": "apps/backend/src/app/app.module.ts",
-          "hash": "11282863325194918559",
+          "hash": "10209757679680528199",
           "deps": [
             "npm:@nestjs/common",
             "npm:@nestjs/typeorm",
@@ -8573,7 +8594,7 @@
         },
         {
           "file": "apps/backend/src/app/core/core.module.ts",
-          "hash": "8768807229878456571",
+          "hash": "10351274456708763213",
           "deps": [
             "npm:@nestjs/common",
             "npm:@nestjs/typeorm",
@@ -8598,7 +8619,7 @@
         },
         {
           "file": "apps/backend/src/app/core/redis.service.ts",
-          "hash": "10426667602452758993",
+          "hash": "268846158655983495",
           "deps": [
             "types",
             "npm:@nestjs/axios",
@@ -8611,6 +8632,14 @@
         {
           "file": "apps/backend/src/app/core/schemas/address.schema.ts",
           "hash": "6970668340335207514",
+          "deps": [
+            "types",
+            "npm:typeorm"
+          ]
+        },
+        {
+          "file": "apps/backend/src/app/core/schemas/ai-chatbot.schema.ts",
+          "hash": "5036325249500009444",
           "deps": [
             "types",
             "npm:typeorm"
@@ -8690,7 +8719,7 @@
         },
         {
           "file": "apps/backend/src/app/core/schemas/index.ts",
-          "hash": "7403238686221449048"
+          "hash": "5849209255108972270"
         },
         {
           "file": "apps/backend/src/app/core/schemas/inventory-transaction.schema.ts",
@@ -8910,7 +8939,7 @@
         },
         {
           "file": "apps/backend/src/app/core/schemas/shop.schema.ts",
-          "hash": "8881365253136095351",
+          "hash": "6746507684461953749",
           "deps": [
             "types",
             "npm:typeorm"
@@ -9486,7 +9515,7 @@
         },
         {
           "file": "apps/backend/src/app/shops/shops.controller.ts",
-          "hash": "17915135536050184879",
+          "hash": "5385291343874459450",
           "deps": [
             "types",
             "npm:@nestjs/common",
