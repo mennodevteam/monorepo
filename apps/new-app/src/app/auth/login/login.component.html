@@ -1,24 +1,24 @@
 <app-top-app-bar [sticky]="true" />
-<form fxLayout="column" fxLayoutGap="16" p-md (ngSubmit)="sendToken(phoneInput.value, $event)">
-  <br />
-  <br />
+<form fxLayout="column" fxLayoutGap="16" p-md (ngSubmit)="sendToken($event)">
   <h1>{{ 'login.phoneTitle' | translate }}</h1>
   <p>{{ 'login.phoneDescription' | translate }}</p>
   <mat-form-field>
     <input
-      #phoneInput
       [autoFocus]
+      [formControl]="phoneControl"
       matInput
-      type="tel"
+      type="number"
       placeholder="{{ 'login.phonePlaceholder' | translate }}"
       [readonly]="loading()"
-      minlength="11"
-      maxlength="11"
+      minlength="9"
+      maxlength="9"
       class="mono"
     />
+    <span matTextSuffix class="ltr mono">09</span>
+    <mat-error>{{ 'login.phoneError' | translate }}</mat-error>
   </mat-form-field>
 
-  <button id="action" type="submit" [disabled]="loading()" mat-flat-button class="large">
+  <button type="submit" [disabled]="loading()" mat-flat-button class="large">
     {{ 'login.phoneAction' | translate }}
     @if (loading()) {
       ...

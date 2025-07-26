@@ -1,7 +1,5 @@
 <app-top-app-bar [sticky]="true" />
 <form fxLayout="column" fxLayoutGap="16" p-md>
-  <br />
-  <br />
   <h1>{{ 'login.otpTitle' | translate }}</h1>
   <p>{{ 'login.otpDescription' | translate }}</p>
 
@@ -10,7 +8,7 @@
     {{ phone }}
   </a>
 
-  <input webOtp (newOtp)="otpInput.value = $event" style="display: none" />
+  <input webOtp (newOtp)="onOtp($event)" style="display: none" />
 
   <mat-form-field>
     <input
@@ -28,7 +26,6 @@
     <label class="timer outline-text">{{ 'login.remainingTime' | translate: { value: time() } }}</label>
 
     <button
-      id="action"
       type="submit"
       [disabled]="loading()"
       mat-flat-button
@@ -44,7 +41,6 @@
     <label class="timer error-text">{{ 'login.tokenExpired' | translate }}</label>
 
     <button
-      id="action"
       type="submit"
       [disabled]="loading()"
       mat-flat-button

@@ -5,7 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TopAppBarComponent } from '../../common/components';
 import { AuthService } from '../../core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PersianNumberService } from '@menno/utils';
@@ -19,13 +19,18 @@ import { PersianNumberService } from '@menno/utils';
     MatInputModule,
     MatFormFieldModule,
     FormsModule,
-    MatProgressSpinnerModule
-],
+    ReactiveFormsModule,
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   loading = signal(false);
+  phoneControl = new FormControl<string | number | undefined>(undefined, [
+    Validators.required,
+    Validators.max(999999999),
+  ]);
 
   constructor(
     private auth: AuthService,
@@ -33,15 +38,16 @@ export class LoginComponent {
     private route: ActivatedRoute,
   ) {}
 
-  async sendToken(phone: string, ev: SubmitEvent) {
-    if (phone.length !== 11) return;
-    phone = PersianNumberService.toEnglish(phone);
+  async sendToken(ev?: SubmitEvent) {
+    const value = this.phoneControl.value;
+    if (!value || value.toString().length !== 9) return;
+    const phone = `09${PersianNumberService.toEnglish(value.toString())}`;
     this.loading.set(true);
-    await this.auth.sendToken(`${phone}`).toPromise();
+    await this.auth.sendToken(phone).toPromise();
     this.router.navigate(['/login/otp'], {
-      state: { phone: `${phone}` },
+      state: { phone },
       queryParams: this.route.snapshot.queryParams,
     });
-    ev.preventDefault();
+    ev?.preventDefault();
   }
 }

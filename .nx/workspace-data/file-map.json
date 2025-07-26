@@ -16,28 +16,80 @@
   "fileMap": {
     "nonProjectFiles": [
       {
-        "file": ".cursor/rules/best-practices.mdc",
-        "hash": "15496163676660353759"
+        "file": "Dockerfile",
+        "hash": "2219767751146870491"
       },
       {
-        "file": ".vscode/settings.json",
-        "hash": "7443783824372806042"
+        "file": ".gitignore",
+        "hash": "12989128249502635799"
       },
       {
-        "file": ".prettierrc",
-        "hash": "17172557053760942885"
+        "file": "migrations.json",
+        "hash": "9592843747199573044"
       },
       {
-        "file": "tools/generators/.gitkeep",
-        "hash": "3244421341483603138"
+        "file": ".cursor/mcp.json",
+        "hash": "9112524214007568582"
+      },
+      {
+        "file": ".eslintrc.json",
+        "hash": "3967545737497877974"
+      },
+      {
+        "file": ".dockerignore",
+        "hash": "3374940570328528446"
       },
       {
         "file": ".cursor/rules/custom.mdc",
         "hash": "13159635239905023951"
       },
       {
+        "file": ".prettierignore",
+        "hash": "3356760868306086659"
+      },
+      {
+        "file": "_theme-colors.scss",
+        "hash": "3075729969290742246"
+      },
+      {
+        "file": "README.md",
+        "hash": "4719027433256433897"
+      },
+      {
+        "file": "jest.config.ts",
+        "hash": "2950215254536237782"
+      },
+      {
+        "file": ".vscode/settings.json",
+        "hash": "7443783824372806042"
+      },
+      {
+        "file": "package.json",
+        "hash": "3557180952801191249"
+      },
+      {
         "file": ".editorconfig",
         "hash": "5443105041930014821"
+      },
+      {
+        "file": ".cursor/rules/best-practices.mdc",
+        "hash": "15496163676660353759"
+      },
+      {
+        "file": "libs/.gitkeep",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "jest.preset.js",
+        "hash": "2772139696069860212"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "17172557053760942885"
+      },
+      {
+        "file": ".vscode/extensions.json",
+        "hash": "4637156562308165301"
       },
       {
         "file": "yarn.lock",
@@ -48,68 +100,16 @@
         "hash": "16088922570277978783"
       },
       {
-        "file": ".vscode/extensions.json",
-        "hash": "4637156562308165301"
-      },
-      {
-        "file": ".eslintrc.json",
-        "hash": "3967545737497877974"
-      },
-      {
-        "file": "tsconfig.base.json",
-        "hash": "14582150423264317726"
-      },
-      {
-        "file": ".gitignore",
-        "hash": "12989128249502635799"
-      },
-      {
-        "file": ".cursor/mcp.json",
-        "hash": "9112524214007568582"
-      },
-      {
-        "file": "jest.config.ts",
-        "hash": "2950215254536237782"
-      },
-      {
-        "file": "migrations.json",
-        "hash": "9592843747199573044"
-      },
-      {
-        "file": "jest.preset.js",
-        "hash": "2772139696069860212"
-      },
-      {
-        "file": ".dockerignore",
-        "hash": "3374940570328528446"
-      },
-      {
-        "file": "package.json",
-        "hash": "3557180952801191249"
-      },
-      {
-        "file": "libs/.gitkeep",
+        "file": "tools/generators/.gitkeep",
         "hash": "3244421341483603138"
-      },
-      {
-        "file": "Dockerfile",
-        "hash": "2219767751146870491"
-      },
-      {
-        "file": "README.md",
-        "hash": "4719027433256433897"
-      },
-      {
-        "file": "_theme-colors.scss",
-        "hash": "3075729969290742246"
       },
       {
         "file": "nx.json",
         "hash": "6848236468451372348"
       },
       {
-        "file": ".prettierignore",
-        "hash": "3356760868306086659"
+        "file": "tsconfig.base.json",
+        "hash": "14582150423264317726"
       }
     ],
     "projectFileMap": {
@@ -3154,7 +3154,7 @@
         },
         {
           "file": "apps/new-app/public/i18n/fa.json",
-          "hash": "9285522278485258273"
+          "hash": "4399014144117909608"
         },
         {
           "file": "apps/new-app/public/images/default.png",
@@ -3339,7 +3339,7 @@
         },
         {
           "file": "apps/new-app/src/app/auth/login/login.component.html",
-          "hash": "2705683023857034753"
+          "hash": "4373231736458919607"
         },
         {
           "file": "apps/new-app/src/app/auth/login/login.component.scss",
@@ -3351,7 +3351,7 @@
         },
         {
           "file": "apps/new-app/src/app/auth/login/login.component.ts",
-          "hash": "14279841682098445945",
+          "hash": "9245633891719347661",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/material",
@@ -3362,7 +3362,7 @@
         },
         {
           "file": "apps/new-app/src/app/auth/otp/otp.component.html",
-          "hash": "9637972985607964774"
+          "hash": "8447467980270111937"
         },
         {
           "file": "apps/new-app/src/app/auth/otp/otp.component.scss",
@@ -3374,7 +3374,7 @@
         },
         {
           "file": "apps/new-app/src/app/auth/otp/otp.component.ts",
-          "hash": "8357131545555831336",
+          "hash": "18164535069388308715",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/common",

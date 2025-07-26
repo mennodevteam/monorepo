@@ -5,7 +5,7 @@ import { AuthService } from '../../core';
 import { COMMON } from '../../common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TopAppBarComponent } from '../../common/components';
 import { PersianNumberService } from '@menno/utils';
 import { NgOtpInputComponent, NgOtpInputModule } from 'ng-otp-input';
@@ -34,7 +34,11 @@ export class OtpComponent implements OnDestroy {
   loading = signal(false);
   error = signal(false);
   interval?: any;
-  otpFormControl = new FormControl();
+  otpFormControl = new FormControl<string | number | undefined>(undefined, [
+    Validators.required,
+    Validators.minLength(4),
+    Validators.maxLength(4),
+  ]);
   prevValue: string;
   @ViewChild(NgOtpInputComponent) inputComponent: NgOtpInputComponent;
 
@@ -59,36 +63,38 @@ export class OtpComponent implements OnDestroy {
     this.otpFormControl.valueChanges.subscribe((value) => {
       const stringValue = value?.toString() || '';
       this.error.set(false);
-      if (stringValue.length === 4 && this.prevValue?.length === 3) this.setToken(stringValue);
-      this.prevValue = stringValue;
+      if (stringValue.length === 4) this.setToken();
     });
   }
 
   async setToken(ev?: Event) {
     const returnPath = this.route.snapshot.queryParams?.['returnPath'];
     this.loading.set(true);
-    const token = PersianNumberService.toEnglish(this.otpFormControl.value);
-    try {
-      const user = await this.auth.loginWithToken(this.phone, token);
-      if (user?.firstName) {
-        window.history.go(-2);
-        setTimeout(() => {
-          if (returnPath) {
-            this.router.navigate([returnPath]);
-          }
-        }, 100);
-      } else {
-        window.history.go(-2);
-        setTimeout(() => {
-          this.router.navigate(['/login/register'], {
-            queryParams: this.route.snapshot.queryParams,
-          });
-        }, 100);
+    const value = this.otpFormControl.value;
+    if (value) {
+      const token = PersianNumberService.toEnglish(value.toString());
+      try {
+        const user = await this.auth.loginWithToken(this.phone, token);
+        if (user?.firstName) {
+          window.history.go(-2);
+          setTimeout(() => {
+            if (returnPath) {
+              this.router.navigate([returnPath]);
+            }
+          }, 100);
+        } else {
+          window.history.go(-2);
+          setTimeout(() => {
+            this.router.navigate(['/login/register'], {
+              queryParams: this.route.snapshot.queryParams,
+            });
+          }, 100);
+        }
+      } catch (error) {
+        this.error.set(true);
+        this.snack.open(this.translate.instant('login.otpError'), '', { duration: 2000 });
+        this.loading.set(false);
       }
-    } catch (error) {
-      this.error.set(true);
-      this.snack.open(this.translate.instant('login.otpError'), '', { duration: 2000 });
-      this.loading.set(false);
     }
     ev?.preventDefault?.();
   }
@@ -113,6 +119,10 @@ export class OtpComponent implements OnDestroy {
       this.loading.set(false);
       this.resetTimer();
     }
+  }
+
+  onOtp(otp: string) {
+    this.otpFormControl.setValue(otp);
   }
 
   ngOnDestroy(): void {
