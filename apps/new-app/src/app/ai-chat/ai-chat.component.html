@@ -1,0 +1,69 @@
+<app-top-app-bar [hideMenu]="true" [sticky]="true" title="{{ 'chat.title' | translate }}" />
+<main
+  p-md
+  max-center
+  fxLayout="column"
+  fxLayoutGap="16px"
+  class="background-background"
+  fxLayout="column"
+  fxLayoutGap="16px"
+>
+  @if (id && !query.data()) {
+    <mat-spinner [diameter]="24" />
+  }
+  @for (message of messages(); track message.id) {
+    <mat-card [class.receive]="message.isFromUser">
+      <mat-card-header>
+        @if (message.isFromUser) {
+          <img
+            mat-card-avatar
+            [imageLoader]="shopService.shop.logo"
+            [imageFile]="shopService.shop.logoImage"
+            alt="{{ shopService.shop.title }}"
+            [imageSize]="'sm'"
+          />
+        }
+        <mat-card-title>
+          @if (!message.isFromUser) {
+            {{ shopService.shop.title }}
+          } @else {
+            {{ User.fullName(auth.user()!) }}
+          }
+        </mat-card-title>
+        <mat-card-subtitle class="outline-text">
+          {{ message.createdAt | pdate: true }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        @if (!message.isFromUser) {
+          <br />
+        }
+        <p [appLinkify]="message.message">
+          {{ message.message }}
+        </p>
+
+        @if (!message.isFromUser) {
+          <i class="fa-solid fa-eye fa-sm outline-text"></i>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+</main>
+
+<mat-toolbar id="actionbar" fxLayout="row" fxLayoutGap="16px">
+  <textarea
+    [(ngModel)]="text"
+    fxFlex
+    class="surface-variant-background"
+    [ngModelOptions]="{ standalone: true }"
+    [disabled]="sendMutation.status() === 'pending'"
+  ></textarea>
+  <button
+    mat-icon-button
+    class="tertiary-button"
+    (click)="sendMutation.mutate()"
+    [disabled]="sendMutation.status() === 'pending' || !text()"
+  >
+    <i class="fa-solid fa-paper-plane-top fa-flip-horizontal"></i>
+  </button>
+</mat-toolbar>

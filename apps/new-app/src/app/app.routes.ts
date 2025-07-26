@@ -53,6 +53,11 @@ export const appRoutes: Route[] = [
         data: { animation: 'chat' },
       },
       {
+        path: 'ai',
+        loadChildren: () => import('./ai-chat/ai-chat.routes').then((m) => m.aiChatRoutes),
+        data: { animation: 'aiChat' },
+      },
+      {
         path: '',
         canActivate: [
           async () => {

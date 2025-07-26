@@ -16,100 +16,100 @@
   "fileMap": {
     "nonProjectFiles": [
       {
-        "file": "_theme-colors.scss",
-        "hash": "3075729969290742246"
-      },
-      {
-        "file": "tsconfig.base.json",
-        "hash": "14582150423264317726"
-      },
-      {
-        "file": ".editorconfig",
-        "hash": "5443105041930014821"
-      },
-      {
-        "file": "package.json",
-        "hash": "3557180952801191249"
-      },
-      {
-        "file": ".prettierignore",
-        "hash": "3356760868306086659"
-      },
-      {
-        "file": "migrations.json",
-        "hash": "9592843747199573044"
-      },
-      {
         "file": ".prettierrc",
         "hash": "17172557053760942885"
-      },
-      {
-        "file": ".gitignore",
-        "hash": "12989128249502635799"
-      },
-      {
-        "file": "nx.json",
-        "hash": "6848236468451372348"
-      },
-      {
-        "file": ".eslintrc.json",
-        "hash": "3967545737497877974"
-      },
-      {
-        "file": "tools/tsconfig.tools.json",
-        "hash": "16088922570277978783"
-      },
-      {
-        "file": ".cursor/rules/custom.mdc",
-        "hash": "13159635239905023951"
-      },
-      {
-        "file": "jest.preset.js",
-        "hash": "2772139696069860212"
-      },
-      {
-        "file": "yarn.lock",
-        "hash": "8960031611709812711"
-      },
-      {
-        "file": "Dockerfile",
-        "hash": "2219767751146870491"
-      },
-      {
-        "file": ".dockerignore",
-        "hash": "3374940570328528446"
-      },
-      {
-        "file": ".vscode/settings.json",
-        "hash": "7443783824372806042"
-      },
-      {
-        "file": ".cursor/rules/best-practices.mdc",
-        "hash": "15496163676660353759"
       },
       {
         "file": "README.md",
         "hash": "4719027433256433897"
       },
       {
-        "file": "tools/generators/.gitkeep",
-        "hash": "3244421341483603138"
+        "file": "yarn.lock",
+        "hash": "8960031611709812711"
       },
       {
         "file": "jest.config.ts",
         "hash": "2950215254536237782"
       },
       {
+        "file": ".gitignore",
+        "hash": "12989128249502635799"
+      },
+      {
+        "file": ".vscode/extensions.json",
+        "hash": "4637156562308165301"
+      },
+      {
+        "file": "tools/generators/.gitkeep",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "14582150423264317726"
+      },
+      {
+        "file": ".dockerignore",
+        "hash": "3374940570328528446"
+      },
+      {
+        "file": "jest.preset.js",
+        "hash": "2772139696069860212"
+      },
+      {
+        "file": ".cursor/rules/best-practices.mdc",
+        "hash": "15496163676660353759"
+      },
+      {
         "file": "libs/.gitkeep",
         "hash": "3244421341483603138"
+      },
+      {
+        "file": ".eslintrc.json",
+        "hash": "3967545737497877974"
+      },
+      {
+        "file": ".vscode/settings.json",
+        "hash": "7443783824372806042"
+      },
+      {
+        "file": "Dockerfile",
+        "hash": "2219767751146870491"
+      },
+      {
+        "file": ".editorconfig",
+        "hash": "5443105041930014821"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "3356760868306086659"
+      },
+      {
+        "file": "package.json",
+        "hash": "3557180952801191249"
+      },
+      {
+        "file": ".cursor/rules/custom.mdc",
+        "hash": "13159635239905023951"
+      },
+      {
+        "file": "tools/tsconfig.tools.json",
+        "hash": "16088922570277978783"
       },
       {
         "file": ".cursor/mcp.json",
         "hash": "9112524214007568582"
       },
       {
-        "file": ".vscode/extensions.json",
-        "hash": "4637156562308165301"
+        "file": "_theme-colors.scss",
+        "hash": "3075729969290742246"
+      },
+      {
+        "file": "nx.json",
+        "hash": "6848236468451372348"
+      },
+      {
+        "file": "migrations.json",
+        "hash": "9592843747199573044"
       }
     ],
     "projectFileMap": {
@@ -210,7 +210,7 @@
         },
         {
           "file": "libs/types/src/lib/ai-chatbot.ts",
-          "hash": "6781681985431551410"
+          "hash": "3747044203163168232"
         },
         {
           "file": "libs/types/src/lib/app-config.ts",
@@ -1317,19 +1317,33 @@
         },
         {
           "file": "apps/backend/src/app/ai-chatbot/ai-chatbot.controller.ts",
-          "hash": "2334688092778223199",
+          "hash": "13260361148117635119",
           "deps": [
             "types",
             "npm:@nestjs/common",
             "npm:@nestjs/typeorm",
-            "npm:typeorm"
+            "npm:typeorm",
+            "npm:@ai-sdk/openai-compatible",
+            "npm:ai"
           ]
         },
         {
           "file": "apps/backend/src/app/ai-chatbot/ai-chatbot.module.ts",
-          "hash": "12722067819078263759",
+          "hash": "281821544379607491",
           "deps": [
             "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/backend/src/app/ai-chatbot/ai-chatbot.service.ts",
+          "hash": "3291829603875150360",
+          "deps": [
+            "types",
+            "npm:@nestjs/common",
+            "npm:@nestjs/typeorm",
+            "npm:typeorm",
+            "npm:@ai-sdk/openai-compatible",
+            "npm:ai"
           ]
         },
         {
@@ -1709,7 +1723,7 @@
         },
         {
           "file": "apps/backend/src/app/core/core.module.ts",
-          "hash": "10351274456708763213",
+          "hash": "13885783230106160916",
           "deps": [
             "npm:@nestjs/common",
             "npm:@nestjs/typeorm",
@@ -1747,6 +1761,22 @@
         {
           "file": "apps/backend/src/app/core/schemas/address.schema.ts",
           "hash": "6970668340335207514",
+          "deps": [
+            "types",
+            "npm:typeorm"
+          ]
+        },
+        {
+          "file": "apps/backend/src/app/core/schemas/ai-chat-message.schema.ts",
+          "hash": "17396196976282666587",
+          "deps": [
+            "types",
+            "npm:typeorm"
+          ]
+        },
+        {
+          "file": "apps/backend/src/app/core/schemas/ai-chat.schema.ts",
+          "hash": "7906972398499859594",
           "deps": [
             "types",
             "npm:typeorm"
@@ -1834,7 +1864,7 @@
         },
         {
           "file": "apps/backend/src/app/core/schemas/index.ts",
-          "hash": "5849209255108972270"
+          "hash": "9495140015482191822"
         },
         {
           "file": "apps/backend/src/app/core/schemas/inventory-transaction.schema.ts",
@@ -3243,6 +3273,35 @@
           ]
         },
         {
+          "file": "apps/new-app/src/app/ai-chat/ai-chat.component.html",
+          "hash": "18123555840213532899"
+        },
+        {
+          "file": "apps/new-app/src/app/ai-chat/ai-chat.component.scss",
+          "hash": "4610968656109961683"
+        },
+        {
+          "file": "apps/new-app/src/app/ai-chat/ai-chat.component.ts",
+          "hash": "5674567083422174178",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/material",
+            "npm:@angular/forms",
+            "npm:@tanstack/angular-query-experimental",
+            "npm:rxjs",
+            "npm:@angular/common",
+            "types",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/new-app/src/app/ai-chat/ai-chat.routes.ts",
+          "hash": "7089102011490268554",
+          "deps": [
+            "npm:@angular/router"
+          ]
+        },
+        {
           "file": "apps/new-app/src/app/app.component.html",
           "hash": "16498897523005705592"
         },
@@ -3267,8 +3326,10 @@
         },
         {
           "file": "apps/new-app/src/app/app.routes.ts",
-          "hash": "17975971119745992090",
+          "hash": "818815973351407978",
           "deps": [
+            "npm:@angular/router",
+            "npm:@angular/core",
             "types"
           ]
         },
@@ -3389,6 +3450,42 @@
             "npm:@angular/core",
             "npm:@angular/material",
             "types"
+          ]
+        },
+        {
+          "file": "apps/new-app/src/app/chat copy/chat.component.html",
+          "hash": "2005543570725458072"
+        },
+        {
+          "file": "apps/new-app/src/app/chat copy/chat.component.scss",
+          "hash": "4610968656109961683"
+        },
+        {
+          "file": "apps/new-app/src/app/chat copy/chat.component.spec.ts",
+          "hash": "10676012759679406926",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "apps/new-app/src/app/chat copy/chat.component.ts",
+          "hash": "14531705774114972507",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/material",
+            "npm:@angular/forms",
+            "npm:@tanstack/angular-query-experimental",
+            "npm:rxjs",
+            "npm:@angular/common",
+            "types",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/new-app/src/app/chat copy/chat.routes.ts",
+          "hash": "8760807652686320290",
+          "deps": [
+            "npm:@angular/router"
           ]
         },
         {
@@ -4347,7 +4444,7 @@
         },
         {
           "file": "apps/new-app/src/environments/environment.ts",
-          "hash": "3558731147631456218"
+          "hash": "11525041718754209577"
         },
         {
           "file": "apps/new-app/src/index.html",
