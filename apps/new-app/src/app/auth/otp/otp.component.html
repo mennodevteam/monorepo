@@ -10,20 +10,19 @@
     {{ phone }}
   </a>
 
-  <input webOtp (newOtp)="otpInputs.setValue($event)" style="display: none" />
+  <input webOtp (newOtp)="otpInput.value = $event" style="display: none" />
 
-  <ng-otp-input
-    #otpInputs
-    [formCtrl]="otpFormControl"
-    [config]="{
-      length: 4,
-      allowNumbersOnly: true,
-      containerStyles: { display: 'flex', justifyContent: 'center', direction: 'ltr' },
-      containerClass: 'mono',
-      inputStyles: { outline: 'none', border: 'none', padding: '8px' },
-      inputClass: 'surface-variant-background on-background-text',
-    }"
-  ></ng-otp-input>
+  <mat-form-field>
+    <input
+      #otpInput
+      [autoFocus]
+      [formControl]="otpFormControl"
+      matInput
+      type="number"
+      [readonly]="loading()"
+      class="mono"
+    />
+  </mat-form-field>
 
   @if (time()) {
     <label class="timer outline-text">{{ 'login.remainingTime' | translate: { value: time() } }}</label>

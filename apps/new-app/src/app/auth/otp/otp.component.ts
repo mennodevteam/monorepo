@@ -23,8 +23,8 @@ import { TranslateService } from '@ngx-translate/core';
     TopAppBarComponent,
     ReactiveFormsModule,
     NgOtpInputModule,
-    MatSnackBarModule
-],
+    MatSnackBarModule,
+  ],
   templateUrl: './otp.component.html',
   styleUrl: './otp.component.scss',
 })
@@ -57,9 +57,10 @@ export class OtpComponent implements OnDestroy {
     this.resetTimer();
 
     this.otpFormControl.valueChanges.subscribe((value) => {
+      const stringValue = value?.toString() || '';
       this.error.set(false);
-      if (value.length === 4 && this.prevValue?.length !== 4) this.setToken(value);
-      this.prevValue = value;
+      if (stringValue.length === 4 && this.prevValue?.length === 3) this.setToken(stringValue);
+      this.prevValue = stringValue;
     });
   }
 
