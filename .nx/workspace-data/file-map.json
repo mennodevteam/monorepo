@@ -16,44 +16,60 @@
   "fileMap": {
     "nonProjectFiles": [
       {
-        "file": "Dockerfile",
-        "hash": "2219767751146870491"
-      },
-      {
-        "file": ".gitignore",
-        "hash": "12989128249502635799"
-      },
-      {
-        "file": "migrations.json",
-        "hash": "9592843747199573044"
-      },
-      {
-        "file": ".cursor/mcp.json",
-        "hash": "9112524214007568582"
-      },
-      {
-        "file": ".eslintrc.json",
-        "hash": "3967545737497877974"
-      },
-      {
-        "file": ".dockerignore",
-        "hash": "3374940570328528446"
-      },
-      {
-        "file": ".cursor/rules/custom.mdc",
-        "hash": "13159635239905023951"
-      },
-      {
         "file": ".prettierignore",
         "hash": "3356760868306086659"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "17172557053760942885"
+      },
+      {
+        "file": "tools/tsconfig.tools.json",
+        "hash": "16088922570277978783"
+      },
+      {
+        "file": "README.md",
+        "hash": "4719027433256433897"
+      },
+      {
+        "file": ".cursor/rules/best-practices.mdc",
+        "hash": "15496163676660353759"
+      },
+      {
+        "file": ".editorconfig",
+        "hash": "5443105041930014821"
       },
       {
         "file": "_theme-colors.scss",
         "hash": "3075729969290742246"
       },
       {
-        "file": "README.md",
-        "hash": "4719027433256433897"
+        "file": "tools/generators/.gitkeep",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "yarn.lock",
+        "hash": "8960031611709812711"
+      },
+      {
+        "file": ".cursor/mcp.json",
+        "hash": "9112524214007568582"
+      },
+      {
+        "file": "libs/.gitkeep",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "migrations.json",
+        "hash": "9592843747199573044"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "12989128249502635799"
+      },
+      {
+        "file": ".dockerignore",
+        "hash": "3374940570328528446"
       },
       {
         "file": "jest.config.ts",
@@ -64,52 +80,36 @@
         "hash": "7443783824372806042"
       },
       {
+        "file": "nx.json",
+        "hash": "6848236468451372348"
+      },
+      {
+        "file": ".eslintrc.json",
+        "hash": "3967545737497877974"
+      },
+      {
+        "file": "Dockerfile",
+        "hash": "2219767751146870491"
+      },
+      {
         "file": "package.json",
         "hash": "3557180952801191249"
-      },
-      {
-        "file": ".editorconfig",
-        "hash": "5443105041930014821"
-      },
-      {
-        "file": ".cursor/rules/best-practices.mdc",
-        "hash": "15496163676660353759"
-      },
-      {
-        "file": "libs/.gitkeep",
-        "hash": "3244421341483603138"
-      },
-      {
-        "file": "jest.preset.js",
-        "hash": "2772139696069860212"
-      },
-      {
-        "file": ".prettierrc",
-        "hash": "17172557053760942885"
       },
       {
         "file": ".vscode/extensions.json",
         "hash": "4637156562308165301"
       },
       {
-        "file": "yarn.lock",
-        "hash": "8960031611709812711"
-      },
-      {
-        "file": "tools/tsconfig.tools.json",
-        "hash": "16088922570277978783"
-      },
-      {
-        "file": "tools/generators/.gitkeep",
-        "hash": "3244421341483603138"
-      },
-      {
-        "file": "nx.json",
-        "hash": "6848236468451372348"
-      },
-      {
         "file": "tsconfig.base.json",
         "hash": "14582150423264317726"
+      },
+      {
+        "file": "jest.preset.js",
+        "hash": "2772139696069860212"
+      },
+      {
+        "file": ".cursor/rules/custom.mdc",
+        "hash": "13159635239905023951"
       }
     ],
     "projectFileMap": {
@@ -4448,7 +4448,7 @@
         },
         {
           "file": "apps/new-app/src/index.html",
-          "hash": "14164923424063420048"
+          "hash": "14902854063445086319"
         },
         {
           "file": "apps/new-app/src/liara.json",

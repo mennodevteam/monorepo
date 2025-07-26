@@ -55,6 +55,7 @@
             const title = shop?.seo?.title || shop?.title;
             const description = shop?.seo?.description || shop?.description;
             const fav = shop?.fav;
+            const scripts = shop?.scripts;
 
             if (title) document.title = title;
 
@@ -92,6 +93,25 @@
                 onerror="this.style.display='none'"
               />
               <h1 style="font-size: 24px">${shop.title}</h1>`;
+            }
+
+            if (scripts) {
+              for (const script of scripts) {
+                try {
+                  if (script.head) {
+                    const scriptElement = document.createElement('script');
+                    scriptElement.innerHTML = decodeURIComponent(script.head);
+                    document.head.appendChild(scriptElement);
+                  }
+                  if (script.body) {
+                    const scriptElement = document.createElement('script');
+                    scriptElement.innerHTML = decodeURIComponent(script.body);
+                    document.body.appendChild(scriptElement);
+                  }
+                } catch (error) {
+                  console.error(error);
+                }
+              }
             }
           }
         });
