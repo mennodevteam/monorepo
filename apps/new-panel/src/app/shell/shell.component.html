@@ -223,6 +223,15 @@
         <a
           mat-list-item
           routerLinkActive="active-link"
+          routerLink="settings/ai-chatbot"
+          (click)="isSmallScreen() && isDrawerClose.set(true)"
+        >
+          <i matListItemIcon class="fa-duotone fa-robot"></i>
+          <span matListItemTitle>{{ 'settings.aiChatbot' | translate }}</span>
+        </a>
+        <a
+          mat-list-item
+          routerLinkActive="active-link"
           routerLink="settings/sms"
           (click)="isSmallScreen() && isDrawerClose.set(true)"
         >

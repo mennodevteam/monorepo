@@ -1,0 +1,72 @@
+<mat-toolbar class="content-toolbar" fxLayoutGap="8px">
+  <h1 fxFlex>{{ 'settings.aiChatbot' | translate }}</h1>
+  <button mat-flat-button (click)="save()" [disabled]="!form.dirty || saveMutation.isPending()">
+    {{ 'app.save' | translate }}
+  </button>
+</mat-toolbar>
+
+<form [formGroup]="form">
+  <main p-md w-md fxLayout="column" fxLayoutGap="16px">
+    <!-- Status Section -->
+    <mat-card appearance="outlined">
+      <mat-card-content fxLayout="column">
+        <h3>{{ 'aiChatbot.statusSection' | translate }}</h3>
+        <p>{{ 'aiChatbot.statusDescription' | translate }}</p>
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'aiChatbot.status' | translate }}</mat-label>
+          <mat-select formControlName="status">
+            <mat-option [value]="Status.Active">
+              {{ 'aiChatbot.statusActive' | translate }}
+            </mat-option>
+            <mat-option [value]="Status.Inactive">
+              {{ 'aiChatbot.statusInactive' | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Configuration Section -->
+    <mat-card appearance="outlined">
+      <mat-card-content fxLayout="column" fxLayoutGap="16px">
+        <h3>{{ 'aiChatbot.configSection' | translate }}</h3>
+        <p>{{ 'aiChatbot.configDescription' | translate }}</p>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'aiChatbot.introMessage' | translate }}</mat-label>
+          <textarea
+            matInput
+            rows="4"
+            formControlName="introMessage"
+            placeholder="{{ 'aiChatbot.introMessagePlaceholder' | translate }}"
+          >
+          </textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'aiChatbot.style' | translate }}</mat-label>
+          <textarea
+            matInput
+            rows="3"
+            formControlName="style"
+            placeholder="{{ 'aiChatbot.stylePlaceholder' | translate }}"
+          >
+          </textarea>
+          <mat-hint>{{ 'aiChatbot.styleHint' | translate }}</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'aiChatbot.extraInfo' | translate }}</mat-label>
+          <textarea
+            matInput
+            rows="3"
+            formControlName="extraInfo"
+            placeholder="{{ 'aiChatbot.extraInfoPlaceholder' | translate }}"
+          >
+          </textarea>
+          <mat-hint>{{ 'aiChatbot.extraInfoHint' | translate }}</mat-hint>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+  </main>
+</form>

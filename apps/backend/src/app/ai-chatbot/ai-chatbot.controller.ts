@@ -1,5 +1,5 @@
 import { AiChatbot, Shop, UserRole } from '@menno/types';
-import { Body, Controller, Put } from '@nestjs/common';
+import { Body, Controller, Get, Put } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Roles } from '../auth/roles.decorators';
@@ -16,6 +16,14 @@ export class AiChatbotController {
     private shopRepo: Repository<Shop>,
     private auth: AuthService,
   ) {}
+
+  @Get()
+  @Roles(UserRole.Panel)
+  async getAiChatbot(@LoginUser() user: AuthPayload): Promise<AiChatbot | null> {
+    // Get the shop associated with the panel user
+    const shop = await this.auth.getPanelUserShop(user, ['aiChatbot']);
+    return shop.aiChatbot || null;
+  }
 
   @Put()
   @Roles(UserRole.Panel)
