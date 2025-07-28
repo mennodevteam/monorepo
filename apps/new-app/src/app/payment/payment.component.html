@@ -21,7 +21,7 @@
 }
 
 <mat-toolbar fxLayout="row" fxLayoutAlign="center" id="actionbar" class="background-background" p-md>
-  <a mat-flat-button fxFlex (click)="submit()" class="large" [disabled]="cart.saving()" max-center>
+  <a mat-flat-button fxFlex (click)="submit()" class="large" [disabled]="cart.saving()" max-center id="checkout-button">
     {{ 'order.add' | translate }} ({{ total() | menuCurrency }})
     @if (cart.saving()) {
       ...

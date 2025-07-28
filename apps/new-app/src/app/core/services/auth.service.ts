@@ -27,7 +27,7 @@ export class AuthService {
       const user = this.user();
       try {
         if (user && window.clarity) {
-          window.clarity('set', 'userId', user.id);
+          window.clarity('identify', user.id, undefined, undefined, User.fullName(user) || undefined);
           if (user.mobilePhone) window.clarity('set', 'phone', user.mobilePhone);
         }
       } catch (error) {}

@@ -10,11 +10,11 @@
       type="number"
       placeholder="{{ 'login.phonePlaceholder' | translate }}"
       [readonly]="loading()"
-      minlength="9"
-      maxlength="9"
+      minlength="10"
+      maxlength="10"
       class="mono"
     />
-    <span matTextSuffix class="ltr mono">09</span>
+    <span matTextSuffix class="ltr mono">0</span>
     <mat-error>{{ 'login.phoneError' | translate }}</mat-error>
   </mat-form-field>
 

@@ -29,7 +29,7 @@ export class LoginComponent {
   loading = signal(false);
   phoneControl = new FormControl<string | number | undefined>(undefined, [
     Validators.required,
-    Validators.max(999999999),
+    Validators.max(9999999999),
   ]);
 
   constructor(
@@ -40,8 +40,8 @@ export class LoginComponent {
 
   async sendToken(ev?: SubmitEvent) {
     const value = this.phoneControl.value;
-    if (!value || value.toString().length !== 9) return;
-    const phone = `09${PersianNumberService.toEnglish(value.toString())}`;
+    if (!value || value.toString().length !== 10) return;
+    const phone = `0${PersianNumberService.toEnglish(value.toString())}`;
     this.loading.set(true);
     await this.auth.sendToken(phone).toPromise();
     this.router.navigate(['/login/otp'], {

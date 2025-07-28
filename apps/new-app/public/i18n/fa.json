@@ -130,7 +130,7 @@
   "login": {
     "phoneTitle": "عضویت/ ثبت‌نام",
     "phoneDescription": "شماره موبایل خود را وارد کنید",
-    "phonePlaceholder": "12123456789",
+    "phonePlaceholder": "9121234567",
     "phoneError": "شماره موبایل معتبر نیست",
     "phoneAction": "ارسال کد تایید",
     "otpTitle": "تایید شماره موبایل",

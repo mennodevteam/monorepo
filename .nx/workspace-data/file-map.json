@@ -16,100 +16,100 @@
   "fileMap": {
     "nonProjectFiles": [
       {
-        "file": "nx.json",
-        "hash": "6848236468451372348"
-      },
-      {
-        "file": "migrations.json",
-        "hash": "9592843747199573044"
-      },
-      {
-        "file": "tsconfig.base.json",
-        "hash": "14582150423264317726"
-      },
-      {
-        "file": "tools/generators/.gitkeep",
-        "hash": "3244421341483603138"
-      },
-      {
-        "file": ".dockerignore",
-        "hash": "3374940570328528446"
-      },
-      {
-        "file": "yarn.lock",
-        "hash": "8960031611709812711"
-      },
-      {
-        "file": ".prettierignore",
-        "hash": "3356760868306086659"
-      },
-      {
-        "file": "package.json",
-        "hash": "3557180952801191249"
-      },
-      {
-        "file": ".cursor/mcp.json",
-        "hash": "9112524214007568582"
-      },
-      {
-        "file": ".prettierrc",
-        "hash": "17172557053760942885"
-      },
-      {
-        "file": "jest.config.ts",
-        "hash": "2950215254536237782"
-      },
-      {
-        "file": "libs/.gitkeep",
-        "hash": "3244421341483603138"
-      },
-      {
-        "file": "_theme-colors.scss",
-        "hash": "3075729969290742246"
-      },
-      {
-        "file": "tools/tsconfig.tools.json",
-        "hash": "16088922570277978783"
-      },
-      {
-        "file": ".cursor/rules/best-practices.mdc",
-        "hash": "15496163676660353759"
-      },
-      {
-        "file": "jest.preset.js",
-        "hash": "2772139696069860212"
-      },
-      {
-        "file": ".editorconfig",
-        "hash": "5443105041930014821"
-      },
-      {
-        "file": ".vscode/settings.json",
-        "hash": "7443783824372806042"
-      },
-      {
-        "file": ".eslintrc.json",
-        "hash": "3967545737497877974"
+        "file": ".cursor/rules/custom.mdc",
+        "hash": "13159635239905023951"
       },
       {
         "file": "Dockerfile",
         "hash": "2219767751146870491"
       },
       {
-        "file": ".gitignore",
-        "hash": "12989128249502635799"
+        "file": "tools/tsconfig.tools.json",
+        "hash": "16088922570277978783"
       },
       {
-        "file": ".vscode/extensions.json",
-        "hash": "4637156562308165301"
+        "file": "yarn.lock",
+        "hash": "8960031611709812711"
+      },
+      {
+        "file": "jest.preset.js",
+        "hash": "2772139696069860212"
+      },
+      {
+        "file": "libs/.gitkeep",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": ".editorconfig",
+        "hash": "5443105041930014821"
+      },
+      {
+        "file": "nx.json",
+        "hash": "6848236468451372348"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "14582150423264317726"
+      },
+      {
+        "file": ".eslintrc.json",
+        "hash": "3967545737497877974"
+      },
+      {
+        "file": "tools/generators/.gitkeep",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "migrations.json",
+        "hash": "9592843747199573044"
+      },
+      {
+        "file": "jest.config.ts",
+        "hash": "2950215254536237782"
+      },
+      {
+        "file": ".vscode/settings.json",
+        "hash": "7443783824372806042"
       },
       {
         "file": "README.md",
         "hash": "4719027433256433897"
       },
       {
-        "file": ".cursor/rules/custom.mdc",
-        "hash": "13159635239905023951"
+        "file": "package.json",
+        "hash": "3557180952801191249"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "3356760868306086659"
+      },
+      {
+        "file": ".cursor/rules/best-practices.mdc",
+        "hash": "15496163676660353759"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "12989128249502635799"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "17172557053760942885"
+      },
+      {
+        "file": ".dockerignore",
+        "hash": "3374940570328528446"
+      },
+      {
+        "file": ".vscode/extensions.json",
+        "hash": "4637156562308165301"
+      },
+      {
+        "file": ".cursor/mcp.json",
+        "hash": "9112524214007568582"
+      },
+      {
+        "file": "_theme-colors.scss",
+        "hash": "3075729969290742246"
       }
     ],
     "projectFileMap": {
@@ -3154,7 +3154,7 @@
         },
         {
           "file": "apps/new-app/public/i18n/fa.json",
-          "hash": "4399014144117909608"
+          "hash": "12164247004752993052"
         },
         {
           "file": "apps/new-app/public/images/default.png",
@@ -3339,7 +3339,7 @@
         },
         {
           "file": "apps/new-app/src/app/auth/login/login.component.html",
-          "hash": "4373231736458919607"
+          "hash": "7169345107927397086"
         },
         {
           "file": "apps/new-app/src/app/auth/login/login.component.scss",
@@ -3351,7 +3351,7 @@
         },
         {
           "file": "apps/new-app/src/app/auth/login/login.component.ts",
-          "hash": "9245633891719347661",
+          "hash": "18210644900518163583",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/material",
@@ -3362,7 +3362,7 @@
         },
         {
           "file": "apps/new-app/src/app/auth/otp/otp.component.html",
-          "hash": "8447467980270111937"
+          "hash": "4829106910441002122"
         },
         {
           "file": "apps/new-app/src/app/auth/otp/otp.component.scss",
@@ -3388,7 +3388,7 @@
         },
         {
           "file": "apps/new-app/src/app/auth/register/register.component.html",
-          "hash": "16680154571071539561"
+          "hash": "2124590146884113648"
         },
         {
           "file": "apps/new-app/src/app/auth/register/register.component.scss",
@@ -3869,7 +3869,7 @@
         },
         {
           "file": "apps/new-app/src/app/core/services/auth.service.ts",
-          "hash": "12040546838732382052",
+          "hash": "16823831243223362405",
           "deps": [
             "npm:@angular/common",
             "npm:@angular/core",
@@ -4329,7 +4329,7 @@
         },
         {
           "file": "apps/new-app/src/app/payment/payment.component.html",
-          "hash": "4490329019033407800"
+          "hash": "4562169818635044543"
         },
         {
           "file": "apps/new-app/src/app/payment/payment.component.scss",
