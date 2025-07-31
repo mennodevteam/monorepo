@@ -4,6 +4,7 @@ export enum ThirdPartyApp {
   Hami = 'hami',
   Alopeyk = 'alopeyk',
   Basalam = 'basalam',
+  Clarity = 'clarity',
 }
 
 export class ThirdParty {

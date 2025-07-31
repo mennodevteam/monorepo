@@ -1,4 +1,4 @@
-import { Plugin, Shop, Status } from '@menno/types';
+import { Plugin, Shop, Status, ThirdPartyApp } from '@menno/types';
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -97,6 +97,7 @@ export class RedisService {
           'plugins',
           'club',
           'aiChatbot',
+          'thirdParties',
         ],
       });
 
@@ -107,6 +108,10 @@ export class RedisService {
       //     headers: { 'X-Purge-Method': 'PURGE' },
       //   })
       //   .subscribe();
+
+      if (shop?.thirdParties) {
+        shop.thirdParties = shop.thirdParties.filter((x) => x.app === ThirdPartyApp.Clarity);
+      }
 
       if (!(shop.plugins?.plugins?.indexOf(Plugin.Ordering) >= 0)) shop.appConfig.disableOrdering = true;
       const redisKey = this.key(RedisKey.Shop, shop.id);

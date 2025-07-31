@@ -13,6 +13,7 @@ import { Address, DeliveryArea, Region, State, ThemeMode } from '@menno/types';
 import { AddressesService, CartService, REGIONS, ShopService, ThemeService } from '../../core';
 import nmp_mapboxgl from '@neshan-maps-platform/mapbox-gl';
 import { HttpClient } from '@angular/common/http';
+import { AnalyticsService } from '../../core/services/analytics.service';
 
 @Component({
   selector: 'app-address-edit',
@@ -53,6 +54,7 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
     private addressesService: AddressesService,
     private theme: ThemeService,
     private http: HttpClient,
+    private analytics: AnalyticsService,
   ) {
     this.address = this.router.getCurrentNavigation()?.extras?.state?.['address'];
     if (!this.coordinate && this.address) this.location.back();
@@ -168,7 +170,13 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
     if (!this.addressForm.valid) return;
     this.saving.set(true);
     const address = await this.addressesService.save(this.dto);
-    if (address) this.cart.address.set(address);
+    if (address) {
+      this.cart.address.set(address);
+      // Track address addition/editing
+      this.analytics.trackEvent(this.address ? 'address_updated' : 'address_added', {
+        region: address.region?.title
+      });
+    }
     window.history.go(-2);
   }
 

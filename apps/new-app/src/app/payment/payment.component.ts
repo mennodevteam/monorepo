@@ -16,6 +16,7 @@ import { AlertBannerComponent } from '../common/components/alert-banner/alert-ba
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { AnalyticsService } from '../core/services/analytics.service';
 
 @Component({
   selector: 'app-payment',
@@ -51,6 +52,7 @@ export class PaymentComponent {
     private shopService: ShopService,
     public addressesService: AddressesService,
     public menu: MenuService,
+    private analytics: AnalyticsService,
   ) {
     if (this.cart.length() === 0) {
       this.location.back();
@@ -66,8 +68,23 @@ export class PaymentComponent {
   });
 
   async submit() {
+    // Track order placement attempt
+    this.analytics.trackEvent('place_order_attempted', {
+      itemCount: this.cart.length(),
+      totalAmount: this.total(),
+      paymentType: this.cart.paymentType()
+    });
+    
     const order = await this.cart.complete();
     if (order) {
+      // Track successful order placement
+      this.analytics.trackEvent('order_placed_successfully', {
+        orderId: order.id,
+        itemCount: this.cart.length(),
+        totalAmount: this.total(),
+        paymentType: this.cart.paymentType()
+      });
+      
       ((order.shop = this.shopService.shop),
         this.router.navigate(['/orders', order.id], { replaceUrl: true, state: { order } }));
     }

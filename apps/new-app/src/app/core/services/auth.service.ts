@@ -1,17 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { effect, Injectable, signal } from '@angular/core';
-import { BehaviorSubject, of } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '@menno/types';
 import * as md5 from 'md5';
 import { Guid } from 'guid-typescript';
-
-// Extend Window interface to include clarity
-declare global {
-  interface Window {
-    clarity?: any;
-  }
-}
 
 @Injectable({
   providedIn: 'root',
@@ -22,16 +15,6 @@ export class AuthService {
 
   constructor(private http: HttpClient) {
     this.init();
-
-    effect(() => {
-      const user = this.user();
-      try {
-        if (user && window.clarity) {
-          window.clarity('identify', user.id, undefined, undefined, User.fullName(user) || undefined);
-          if (user.mobilePhone) window.clarity('set', 'phone', user.mobilePhone);
-        }
-      } catch (error) {}
-    });
   }
 
   async init() {

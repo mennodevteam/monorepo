@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { AnalyticsService } from '../core/services/analytics.service';
 
 @Component({
   selector: 'app-cart',
@@ -21,8 +22,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    MatToolbarModule
-],
+    MatToolbarModule,
+  ],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
 })
@@ -33,6 +34,7 @@ export class CartComponent {
     private location: PlatformLocation,
     private router: Router,
     private auth: AuthService,
+    private analytics: AnalyticsService,
   ) {
     this.noteControl = new FormControl(this.cart.note());
     this.noteControl.valueChanges.subscribe((value) => {
@@ -41,12 +43,33 @@ export class CartComponent {
     if (this.cart.length() === 0) {
       this.location.back();
     }
+
+    // Track cart view
+    this.analytics.trackEvent('view_cart', {
+      itemCount: this.cart.length(),
+      totalAmount: this.cart.total(),
+    });
   }
 
   submit() {
+    // Track checkout attempt
+    this.analytics.trackEvent('proceed_to_checkout', {
+      itemCount: this.cart.length(),
+      totalAmount: this.cart.total(),
+    });
+
     if (this.auth.isGuestUser && this.cart.isLoginRequired) {
+      // Track login requirement
+      this.analytics.trackEvent('login_required', {
+        returnPath: '/payment',
+      });
       this.router.navigate(['/login'], { queryParams: { returnPath: '/payment' } });
     } else {
+      // Track checkout start
+      this.analytics.trackEvent('checkout_started', {
+        itemCount: this.cart.length(),
+        totalAmount: this.cart.total(),
+      });
       this.router.navigateByUrl('/payment');
     }
   }

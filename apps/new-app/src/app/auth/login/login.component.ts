@@ -9,6 +9,7 @@ import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PersianNumberService } from '@menno/utils';
+import { AnalyticsService } from '../../core/services/analytics.service';
 
 @Component({
   selector: 'app-login',
@@ -36,6 +37,7 @@ export class LoginComponent {
     private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute,
+    private analytics: AnalyticsService,
   ) {}
 
   async sendToken(ev?: SubmitEvent) {
@@ -43,6 +45,13 @@ export class LoginComponent {
     if (!value || value.toString().length !== 10) return;
     const phone = `0${PersianNumberService.toEnglish(value.toString())}`;
     this.loading.set(true);
+    
+    // Track login attempt
+    this.analytics.trackEvent('login_attempted', {
+      phone: phone,
+      returnPath: this.route.snapshot.queryParams['returnPath']
+    });
+    
     await this.auth.sendToken(phone).toPromise();
     this.router.navigate(['/login/otp'], {
       state: { phone },

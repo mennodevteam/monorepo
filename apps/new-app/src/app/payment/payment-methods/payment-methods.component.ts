@@ -6,6 +6,7 @@ import { CartService } from '../../core/services/cart.service';
 import { FormsModule } from '@angular/forms';
 import { OrderPaymentType } from '@menno/types';
 import { ClubService } from '../../core/services/club.service';
+import { AnalyticsService } from '../../core/services/analytics.service';
 
 @Component({
   selector: 'app-payment-methods',
@@ -22,6 +23,7 @@ export class PaymentMethodsComponent {
   constructor(
     public cart: CartService,
     public club: ClubService,
+    private analytics: AnalyticsService,
   ) {
     if (this.cart.paymentType() != undefined) this.type = [this.cart.paymentType()!];
     else {
@@ -33,10 +35,21 @@ export class PaymentMethodsComponent {
 
   typeSelectionChange(ev: OrderPaymentType[]) {
     this.cart.paymentType.set(ev[0]);
+    // Track payment method selection
+    this.analytics.trackEvent('payment_method_selected', {
+      paymentMethod: ev[0],
+      paymentType: ev[0]
+    });
   }
 
   useWalletSelectedChange(ev: boolean) {
     this.cart.useWallet.set(ev);
+    // Track wallet usage
+    if (ev) {
+      this.analytics.trackEvent('wallet_used', {
+        walletBalance: this.club.wallet?.charge || 0
+      });
+    }
   }
 
   get isOnlinePaymentAvailable() {

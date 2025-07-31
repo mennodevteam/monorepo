@@ -11,6 +11,7 @@ import { PersianNumberService } from '@menno/utils';
 import { NgOtpInputComponent, NgOtpInputModule } from 'ng-otp-input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
+import { AnalyticsService } from '../../core/services/analytics.service';
 
 @Component({
   selector: 'app-otp',
@@ -49,6 +50,7 @@ export class OtpComponent implements OnDestroy {
     private router: Router,
     private snack: MatSnackBar,
     private translate: TranslateService,
+    private analytics: AnalyticsService,
   ) {
     const phone = this.router.getCurrentNavigation()?.extras?.state?.['phone'];
 
@@ -76,6 +78,10 @@ export class OtpComponent implements OnDestroy {
       try {
         const user = await this.auth.loginWithToken(this.phone, token);
         if (user?.firstName) {
+          // Track successful login
+          this.analytics.trackEvent('login_successful', {
+            returnPath: returnPath
+          });
           window.history.go(-2);
           setTimeout(() => {
             if (returnPath) {
@@ -83,6 +89,10 @@ export class OtpComponent implements OnDestroy {
             }
           }, 100);
         } else {
+          // Track registration required
+          this.analytics.trackEvent('registration_required', {
+            returnPath: returnPath
+          });
           window.history.go(-2);
           setTimeout(() => {
             this.router.navigate(['/login/register'], {
@@ -91,6 +101,10 @@ export class OtpComponent implements OnDestroy {
           }, 100);
         }
       } catch (error) {
+        // Track login failure
+        this.analytics.trackEvent('login_failed', {
+          error: 'invalid_otp'
+        });
         this.error.set(true);
         this.snack.open(this.translate.instant('login.otpError'), '', { duration: 2000 });
         this.loading.set(false);

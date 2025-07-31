@@ -5,6 +5,7 @@ import { COMMON } from '../../common';
 import { Address, OrderType } from '@menno/types';
 import { FormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
+import { AnalyticsService } from '../../core/services/analytics.service';
 
 @Component({
   selector: 'app-address-list',
@@ -21,6 +22,7 @@ export class AddressListComponent {
     public menu: MenuService,
     public addressesService: AddressesService,
     public cart: CartService,
+    private analytics: AnalyticsService,
   ) {
     effect(() => {
       this.setAddresses();
@@ -36,7 +38,14 @@ export class AddressListComponent {
     });
     this.addresses = addresses?.slice(0, 2) || [];
     untracked(() => {
-      if (this.cart.address()) this.address = [this.cart.address()!];
-    })
+      if (this.cart.address()) {
+        this.address = [this.cart.address()!];
+        // Track address selection
+        this.analytics.trackEvent('address_selected', {
+          addressId: this.cart.address()?.id,
+          region: this.cart.address()?.region,
+        });
+      }
+    });
   }
 }

@@ -23,6 +23,7 @@ import { ClubService } from './club.service';
 import { PersianNumberService } from '@menno/utils';
 import { CampaignService } from './campaign.service';
 import { InitialParamsService } from './initial-params.service';
+import { AnalyticsService } from './analytics.service';
 
 const LOCAL_CART_QUANTITY_KEY = 'cartQuantity';
 
@@ -106,6 +107,7 @@ export class CartService {
     private addressesService: AddressesService,
     private club: ClubService,
     private initialParamsService: InitialParamsService,
+    private analytics: AnalyticsService,
   ) {
     const table = this.initialParamsService.getValue('table');
     if (table) {
@@ -184,7 +186,7 @@ export class CartService {
   plus(product: Product, variant?: ProductVariant) {
     const signalItem = this.getSignalItem(product.id, variant?.id);
     const item = signalItem ? this.getItem(signalItem) : undefined;
-
+    
     if (!OrderDto.isStockValidForAddOne(product, variant, item)) {
       this.snack.open(
         this.translate.instant('cart.stockLimit', { value: variant?.stock || product.stock }),
@@ -219,6 +221,13 @@ export class CartService {
 
       this.menuService.sendAddToCardStat(product.id);
     }
+
+    this.analytics.trackEvent('add_to_cart', { 
+      productId: product.id, 
+      variantId: variant?.id,
+      productName: product.title,
+      quantity: 1
+    });
   }
 
   minus(product: Product, variant?: ProductVariant) {
@@ -230,6 +239,8 @@ export class CartService {
         this.remove(product, variant);
       }
     }
+
+    this.analytics.trackEvent('remove_from_cart', { productId: product.id, variantId: variant?.id });
   }
 
   remove(product: Product, variant?: ProductVariant) {
@@ -241,6 +252,8 @@ export class CartService {
         return [...items];
       });
     }
+
+    this.analytics.trackEvent('remove_from_cart', { productId: product.id, variantId: variant?.id });
   }
 
   getSignalItem(productId: string, variantId?: number) {

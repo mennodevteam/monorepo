@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { DiscountCoupon } from '@menno/types';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
+import { AnalyticsService } from '../../../core/services/analytics.service';
 
 @Component({
   selector: 'app-discount-coupon-modal',
@@ -34,6 +35,7 @@ export class DiscountCouponModalComponent {
     private _bottomSheetRef: MatBottomSheetRef<any>,
     private snack: MatSnackBar,
     private translate: TranslateService,
+    private analytics: AnalyticsService,
   ) {
     this.form = new FormGroup({
       code: new FormControl('', Validators.required),
@@ -51,8 +53,18 @@ export class DiscountCouponModalComponent {
           .toPromise();
         if (coupon) {
           this.cart.coupon.set(coupon);
+          // Track successful discount code application
+          this.analytics.trackEvent('discount_code_applied', {
+            discountCode: this.form.get('code')?.value,
+            discountAmount: coupon.fixedDiscount || coupon.percentageDiscount,
+            discountType: coupon.fixedDiscount ? 'fixed' : 'percentage'
+          });
           this._bottomSheetRef.dismiss();
         } else {
+          // Track failed discount code attempt
+          this.analytics.trackEvent('discount_code_failed', {
+            discountCode: this.form.get('code')?.value
+          });
           this.snack.open(this.translate.instant('discountCouponModal.wrongCodeAlert'), '', { duration: 2000 })
         }
       } finally {
