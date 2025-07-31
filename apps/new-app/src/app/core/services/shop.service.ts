@@ -47,11 +47,6 @@ export class ShopService {
         );
       }
 
-      try {
-        (window as any).clarity('identify', shop.username, this.auth.user()?.username, undefined, shop.title);
-      } catch (error) {
-        // unhandled
-      }
       this.shop = shop;
       this._loading.complete();
     }
