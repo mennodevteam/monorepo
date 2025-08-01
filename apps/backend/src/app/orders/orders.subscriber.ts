@@ -118,7 +118,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
         },
       });
     }
-    if (customer?.mobilePhone && shop.smsAccount && shop.smsAccount.charge > 0 && !order.createdAt) {
+    if (customer?.mobilePhone && shop.smsAccount && shop.smsAccount.charge > 0) {
       this.orderMessagesRepo
         .find({
           where: {
