@@ -84,7 +84,7 @@ export class OrdersController {
   }
 
   @Roles(UserRole.Panel)
-  @Put('itemsMaterialCost/:orderId/:itemId/:materialCost')
+  @Get('itemsMaterialCost/:orderId/:itemId/:materialCost')
   async updateOrderItemMaterialCost(
     @Param('orderId') orderId: string,
     @Param('itemId') itemId: string,
@@ -104,7 +104,7 @@ export class OrdersController {
   }
 
   @Roles(UserRole.Panel)
-  @Put('extraCosts/:orderId/:extraCosts')
+  @Get('extraCosts/:orderId/:extraCosts')
   async updateOrderExtraCosts(@Param('orderId') orderId: string, @Param('extraCosts') extraCosts: string) {
     const order = await this.ordersRepo.findOne({ where: { id: orderId } });
     order.extraCosts = Number(extraCosts);
