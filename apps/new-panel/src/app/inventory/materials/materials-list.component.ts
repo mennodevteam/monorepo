@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSortModule, Sort } from '@angular/material/sort';
 
 @Component({
   imports: [
@@ -28,6 +29,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatInputModule,
     MatFormFieldModule,
     MatTooltipModule,
+    MatSortModule,
   ],
   selector: 'app-materials-list',
   templateUrl: './materials-list.component.html',
@@ -36,18 +38,48 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 export class MaterialsListComponent {
   displayedColumns = ['name', 'stock', 'cost', 'avgItemCount', 'actions'];
   searchQuery = signal('');
+  public sort = signal<Sort | null>(null);
 
   private dialog = inject(DialogService);
   public materialsService = inject(MaterialsService);
   private translate = inject(TranslateService);
   private snack = inject(MatSnackBar);
 
-  materials = computed(
-    () =>
-      this.materialsService.materialsQuery
-        .data()
-        ?.filter((material) => material.name.toLowerCase().includes(this.searchQuery().toLowerCase())) ?? [],
-  );
+  materials = computed(() => {
+    let materials = this.materialsService.materialsQuery
+      .data()
+      ?.filter((material) => material.name.toLowerCase().includes(this.searchQuery().toLowerCase())) ?? [];
+
+    const sort = this.sort();
+    if (sort) {
+      materials.sort((a, b) => {
+        let comparison = 0;
+        switch (sort.active) {
+          case 'name': {
+            comparison = a.name.localeCompare(b.name);
+            break;
+          }
+          case 'stock': {
+            comparison = (a.stock || 0) - (b.stock || 0);
+            break;
+          }
+          case 'avgItemCount': {
+            const aCount = this.estimateItemCount(a) ?? 9999;
+            const bCount = this.estimateItemCount(b) ?? 9999;
+            comparison = aCount - bCount;
+            break;
+          }
+          default: {
+            comparison = a.name.localeCompare(b.name);
+            break;
+          }
+        }
+
+        return sort.direction === 'desc' ? -comparison : comparison;
+      });
+    }
+    return materials;
+  });
 
   isLoading = computed(() => this.materialsService.materialsQuery.isLoading());
   isError = computed(() => this.materialsService.materialsQuery.isError());
@@ -356,5 +388,9 @@ export class MaterialsListComponent {
     link.href = '/materials-sample.csv';
     link.download = 'materials-sample.csv';
     link.click();
+  }
+
+  onMatSortChange(sort: Sort) {
+    this.sort.set(sort);
   }
 }
