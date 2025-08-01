@@ -16,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSortModule, Sort } from '@angular/material/sort';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   imports: [
@@ -30,14 +31,16 @@ import { MatSortModule, Sort } from '@angular/material/sort';
     MatFormFieldModule,
     MatTooltipModule,
     MatSortModule,
+    MatSelectModule,
   ],
   selector: 'app-materials-list',
   templateUrl: './materials-list.component.html',
   styleUrls: ['./materials-list.component.scss'],
 })
 export class MaterialsListComponent {
-  displayedColumns = ['name', 'stock', 'cost', 'avgItemCount', 'actions'];
+  displayedColumns = ['name', 'cost', 'stock', 'avgItemCount', 'actions'];
   searchQuery = signal('');
+  unitFilter = signal<MaterialUnit | ''>('');
   public sort = signal<Sort | null>(null);
 
   private dialog = inject(DialogService);
@@ -48,7 +51,11 @@ export class MaterialsListComponent {
   materials = computed(() => {
     let materials = this.materialsService.materialsQuery
       .data()
-      ?.filter((material) => material.name.toLowerCase().includes(this.searchQuery().toLowerCase())) ?? [];
+      ?.filter((material) => {
+        const matchesSearch = material.name.toLowerCase().includes(this.searchQuery().toLowerCase());
+        const matchesUnit = !this.unitFilter() || material.unit === this.unitFilter();
+        return matchesSearch && matchesUnit;
+      }) ?? [];
 
     const sort = this.sort();
     if (sort) {
@@ -392,5 +399,16 @@ export class MaterialsListComponent {
 
   onMatSortChange(sort: Sort) {
     this.sort.set(sort);
+  }
+
+  get unitOptions() {
+    return [
+      { text: this.translate.instant('app.all'), value: '' },
+      { text: this.translate.instant('app.count'), value: MaterialUnit.Count },
+      { text: this.translate.instant('materials.units.' + MaterialUnit.Gram), value: MaterialUnit.Gram },
+      { text: this.translate.instant('materials.units.' + MaterialUnit.Kg), value: MaterialUnit.Kg },
+      { text: this.translate.instant('materials.units.' + MaterialUnit.Liter), value: MaterialUnit.Liter },
+      { text: this.translate.instant('materials.units.' + MaterialUnit.Ml), value: MaterialUnit.Ml },
+    ];
   }
 }

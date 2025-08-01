@@ -22,10 +22,18 @@
 <main p-md>
   @let queryData = materialsService.materialsQuery.data();
   @if (queryData && queryData.length > 0) {
-    <mat-toolbar>
+    <mat-toolbar fxLayoutGap="8px">
       <mat-form-field appearance="outline">
         <mat-label>{{ 'app.search' | translate }}</mat-label>
         <input matInput [(ngModel)]="searchQuery" type="search" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'materials.unit' | translate }}</mat-label>
+        <mat-select [(ngModel)]="unitFilter">
+          @for (option of unitOptions; track option.value) {
+            <mat-option [value]="option.value">{{ option.text }}</mat-option>
+          }
+        </mat-select>
       </mat-form-field>
     </mat-toolbar>
     <mat-card appearance="outlined">
