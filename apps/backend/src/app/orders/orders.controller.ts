@@ -5,6 +5,7 @@ import {
   OrderDto,
   OrderMessageEvent,
   OrderReportDto,
+  OrderItem,
   User,
   UserRole,
 } from '@menno/types';
@@ -38,6 +39,8 @@ export class OrdersController {
     private ordersService: OrdersService,
     private auth: AuthService,
     private sms: SmsService,
+    @InjectRepository(OrderItem)
+    private orderItemsRepo: Repository<OrderItem>,
   ) {}
 
   @Post()
@@ -77,7 +80,34 @@ export class OrdersController {
     const shop = await this.auth.getPanelUserShop(user);
     dto.shopId = shop.id;
     dto.withDeleted = true;
-    return this.ordersService.filter(dto, ['customer','address.region', 'address.deliveryArea']);
+    return this.ordersService.filter(dto, ['customer', 'address.region', 'address.deliveryArea']);
+  }
+
+  @Roles(UserRole.Panel)
+  @Put('itemsMaterialCost/:orderId/:itemId/:materialCost')
+  async updateOrderItemMaterialCost(
+    @Param('orderId') orderId: string,
+    @Param('itemId') itemId: string,
+    @Param('materialCost') materialCost: string,
+  ) {
+    const order = await this.ordersRepo.findOne({ where: { id: orderId }, relations: ['items'] });
+    const item = order.items.find((x) => x.id === itemId);
+    if (!item) throw new HttpException('item not found', HttpStatus.NOT_FOUND);
+    item.materialCost = Number(materialCost);
+    await this.orderItemsRepo.update(itemId, { materialCost: item.materialCost });
+    if (order.items.find((x) => !x.materialCost)) return order;
+    order.materialCost = order.items.reduce((acc, x) => acc + x.materialCost, 0);
+    await this.ordersRepo.update(orderId, { materialCost: order.materialCost });
+    return order;
+  }
+
+  @Roles(UserRole.Panel)
+  @Put('extraCosts/:orderId/:extraCosts')
+  async updateOrderExtraCosts(@Param('orderId') orderId: string, @Param('extraCosts') extraCosts: string) {
+    const order = await this.ordersRepo.findOne({ where: { id: orderId } });
+    order.extraCosts = Number(extraCosts);
+    await this.ordersRepo.update(orderId, { extraCosts: order.extraCosts });
+    return order;
   }
 
   @Roles(UserRole.Panel)
