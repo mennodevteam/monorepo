@@ -22,7 +22,8 @@ export class MembersTableComponent {
   @ViewChild(MatSort) sort!: MatSort;
   @Output() sortChange = new EventEmitter<{ sortBy: string; sortType: 'ASC' | 'DESC' }>();
   @Output() starClick = new EventEmitter<Member>();
-
+  @Output() walletClick = new EventEmitter<Member>();
+  
   sortBy = input<string | undefined>('joinedAt');
   sortType = input<'ASC' | 'DESC' | undefined>('DESC');
 
@@ -37,6 +38,7 @@ export class MembersTableComponent {
     'totalOrderCount',
     'totalOrderSum',
     'star',
+    'wallet',
   ];
 
   // constructor() {
@@ -67,5 +69,9 @@ export class MembersTableComponent {
 
   onStarClick(member: Member) {
     this.starClick.emit(member);
+  }
+
+  onWalletClick(member: Member) {
+    this.walletClick.emit(member);
   }
 }

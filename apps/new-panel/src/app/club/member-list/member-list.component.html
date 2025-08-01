@@ -105,6 +105,7 @@
         [sortBy]="filterDto().sortBy"
         [sortType]="filterDto().sortType"
         (starClick)="setStar($event)"
+        (walletClick)="chargeWallet($event)"
         />
       <mat-paginator
         [length]="query.data()?.totalCount || 0"

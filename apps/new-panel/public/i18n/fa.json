@@ -652,6 +652,10 @@
     "setStarDialog": {
       "title": "تنظیم ستاره",
       "starLabel": "ستاره"
+    },
+    "chargeWalletDialog": {
+      "title": "شارژ کیف پول",
+      "amountLabel": "مبلغ شارژ"
     }
   },
   "membersTable": {
@@ -663,7 +667,8 @@
     "totalOrderCount": "تعداد سفارش",
     "totalOrderSum": "جمع سفارش",
     "lastVisitDate": "آخرین بازدید",
-    "star": "ستاره"
+    "star": "ستاره",
+    "wallet": "کیف پول"
   },
   "materials": {
     "title": "مواد اولیه",

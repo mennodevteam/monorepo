@@ -20,7 +20,7 @@ export class WalletsService {
       relations: ['member.user', 'member.club'],
     });
     const shop = await this.shopsRepo.findOne({ where: { id: shopId }, relations: ['smsAccount'] });
-    wallet.charge += dto.amount;
+    wallet.charge += Number(dto.amount);
     await this.walletLogsRepo.save(dto);
     if (wallet.member.user) {
       const textContent = this.getMessageText(dto, shop, wallet);
@@ -50,7 +50,7 @@ export class WalletsService {
         break;
     }
 
-    text += `\n\nبرای مشاهده منو و ثبت سفارش از لینک زیر استفاده کنید\n${Shop.appLink(
+    text += `\n\nبرای مشاهده سایت و ثبت سفارش از لینک زیر استفاده کنید\n${Shop.appLink(
       shop,
       process.env.APP_ORIGIN
     )}`;

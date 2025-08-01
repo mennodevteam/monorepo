@@ -33,7 +33,7 @@ export class FilterMemberV2Dto {
   lastVisitToDate?: Date;
   fromStar?: number;
   toStar?: number;
-  sortBy?: 'firstOrder' | 'lastOrder' | 'joinedAt' | 'lastVisit' | 'totalOrderCount' | 'totalOrderSum' | 'star';
+  sortBy?: 'firstOrder' | 'lastOrder' | 'joinedAt' | 'lastVisit' | 'totalOrderCount' | 'totalOrderSum' | 'star' | 'wallet';
   sortType?: 'ASC' | 'DESC';
   skip?: number;
   take?: number;

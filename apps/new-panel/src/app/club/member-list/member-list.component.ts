@@ -76,6 +76,18 @@ export class MemberListComponent {
     },
   }));
 
+  walletChargeMutation = injectMutation(() => ({
+    mutationFn: (dto: { memberId: string; amount: number }) =>
+      lastValueFrom(this.http.post<void>(`/wallets/charge`, dto)),
+    onMutate: () => {
+      this.snack.open(this.t.instant('app.saving'), '', { duration: 4000 });
+    },
+    onSuccess: (response) => {
+      this.snack.open(this.t.instant('app.savedSuccessfully'), '', { duration: 2000 });
+      this.query.refetch();
+    },
+  }));
+
   onPageChange(event: { pageIndex: number; pageSize: number }) {
     this.filterDto.update((dto) => ({
       ...dto,
@@ -242,6 +254,24 @@ export class MemberListComponent {
             id: member.id,
             star: dto.star,
           } as Member);
+        }
+      });
+  }
+
+  chargeWallet(member: Member) {
+    this.dialogService
+      .prompt(this.t.instant('members.chargeWalletDialog.title'), {
+        amount: {
+          label: this.t.instant('members.chargeWalletDialog.amountLabel'),
+          control: new FormControl(0, Validators.required),
+          type: 'number',
+          eng: true,
+          ltr: true,
+        },
+      })
+      .then(async (dto) => {
+        if (dto) {
+          this.walletChargeMutation.mutate({ memberId: member.id, amount: dto.amount });
         }
       });
   }

@@ -209,7 +209,7 @@ export class ClubsService {
     // Get all members for the club
     const members = await this.membersRepo.find({
       where: { club: { id: clubId } },
-      relations: ['user'],
+      relations: ['user', 'wallet'],
     });
     let filteredMembers = members;
     if (!members.length) return { data: [], totalCount: 0 };
@@ -384,6 +384,10 @@ export class ClubsService {
           case 'star':
             aValue = a.member.star;
             bValue = b.member.star;
+            break;
+          case 'wallet':
+            aValue = a.member.wallet?.charge || 0;
+            bValue = b.member.wallet?.charge || 0;
             break;
           default:
             aValue = 0;
