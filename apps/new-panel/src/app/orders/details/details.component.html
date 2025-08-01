@@ -19,11 +19,6 @@
     <div fxFlex.gt-sm>
       <mat-card appearance="outlined">
         <mat-card-content>
-          @if (!isSmallScreen()) {
-            <mat-checkbox [(ngModel)]="showCost">
-              {{ 'order.showCost' | translate }}
-            </mat-checkbox>
-          }
           <app-order-item-table [order]="order()" [showCost]="showCost()" />
         </mat-card-content>
         <mat-divider />
@@ -34,26 +29,6 @@
             {{ order()?.totalPrice | number | menuCurrency }}
           </b>
         </mat-card-actions>
-        @if (orderTotalCost()) {
-          <mat-card-actions fxLayout="row" fxLayoutGap="8px">
-            <small class="success-text">
-              <i class="fa-solid fa-arrow-trend-up"></i>
-              {{ 'order.totalProfit' | translate }}:
-              {{ (order()?.totalPrice || 0) - orderTotalCost() | number | menuCurrency }}
-              ({{
-                ((order()?.totalPrice || 0) - orderTotalCost()) / (order()?.totalPrice || 0)
-                  | percent: '1.0-0'
-              }})
-            </small>
-            @let extraCosts = order()?.extraCosts;
-            @if (extraCosts) {
-              <i
-                class="fa-solid fa-square-e"
-                matTooltip="{{ 'order.extraCosts' | translate }}: {{ extraCosts | number | menuCurrency }}"
-              ></i>
-            }
-          </mat-card-actions>
-        }
       </mat-card>
     </div>
     <div fxFlex.gt-sm="400px" fxLayout="column" fxLayoutGap="24px">
@@ -123,6 +98,8 @@
           }
         </mat-card-content>
       </mat-card>
+
+      <app-cost-summary [order]="order()!" (showCostChange)="onShowCostChange($event)" />
 
       <app-order-chat [order]="order()!" />
     </div>

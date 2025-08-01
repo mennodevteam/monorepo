@@ -1,0 +1,66 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>
+      <i class="fa-solid fa-calculator middle"></i>
+      {{ 'order.costSummary' | translate }}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item>
+        <span matListItemTitle> {{ 'app.total' | translate }}: </span>
+        <span matListItemMeta>
+          {{ order()?.totalPrice | number | menuCurrency }}
+        </span>
+      </mat-list-item>
+      <mat-list-item>
+        <span matListItemTitle> {{ 'order.totalMaterialCost' | translate }}: </span>
+        <span matListItemMeta>
+          @if (order()?.materialCost) {
+            {{ order()?.materialCost | number | menuCurrency }}
+          } @else {
+            <button mat-icon-button (click)="unknownMaterialCost()">
+              <i class="fa-regular fa-question fa-xs"></i>
+            </button>
+            {{ 'app.unknown' | translate }}
+          }
+        </span>
+      </mat-list-item>
+      <mat-list-item>
+        <span matListItemTitle> {{ 'order.extraCosts' | translate }}: </span>
+        <span matListItemMeta>
+          <button mat-icon-button (click)="addExtraCost()">
+            <i class="fa-regular fa-edit fa-xs"></i>
+          </button>
+          <span>
+            {{ order()?.extraCosts || 0 | number | menuCurrency }}
+          </span>
+        </span>
+      </mat-list-item>
+    </mat-list>
+    @if (!isSmallScreen()) {
+      <mat-checkbox [ngModel]="showCost()" (ngModelChange)="onShowCostChange($event)">
+        {{ 'order.showCost' | translate }}
+      </mat-checkbox>
+    }
+  </mat-card-content>
+  <mat-divider />
+  <mat-card-actions fxLayout="row" fxLayoutGap="8px">
+    <i class="fa-solid fa-arrow-trend-up"></i>
+    {{ 'order.totalProfit' | translate }}:
+    <span fxFlex></span>
+    @if (order()?.materialCost) {
+      <small class="success-text">
+        {{ (order()?.totalPrice || 0) - orderTotalCost() | number | menuCurrency }}
+        ({{
+          ((order()?.totalPrice || 0) - orderTotalCost()) / (order()?.totalPrice || 0) | percent: '1.0-0'
+        }})
+      </small>
+    } @else {
+      <button mat-button (click)="unknownMaterialCost()">
+        <i class="fa-regular fa-question fa-xs"></i>
+        {{ 'app.unknown' | translate }}
+      </button>
+    }
+  </mat-card-actions>
+</mat-card>

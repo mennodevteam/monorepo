@@ -63,8 +63,8 @@ export class OrdersService {
       this.queryClient.cancelQueries({ queryKey: detailsQueryKey });
       const previousDetailsData = this.queryClient.getQueryData<Order>(detailsQueryKey);
       this.queryClient.setQueryData(detailsQueryKey, (oldData: Order) => {
-          const old = structuredClone(oldData);
-          if (old) {
+        const old = structuredClone(oldData);
+        if (old) {
           old.state = dto.state;
           return { ...old };
         }
@@ -105,6 +105,42 @@ export class OrdersService {
       this.snack.open(this.t.instant('errors.changeError'), '', { duration: 2000 });
       if (dto.queryKey) this.queryClient.setQueryData(dto.queryKey, context?.previousListData);
       this.queryClient.setQueryData(['orderDetails', dto.id], context?.previousDetailsData);
+    },
+  }));
+
+  setOrderItemMaterialCostMutation = injectMutation(() => ({
+    mutationFn: (dto: { orderId: string; itemId: string; materialCost: number }) =>
+      lastValueFrom(
+        this.http.get<Order>(`/orders/itemsMaterialCost/${dto.orderId}/${dto.itemId}/${dto.materialCost}`),
+      ),
+    onMutate: (dto) => {
+      this.snack.open(this.t.instant('app.saving'), '', { duration: 4000 });
+    },
+    onSuccess: async (data, dto) => {
+      this.queryClient.invalidateQueries({ queryKey: ['orderDetails', dto.orderId] });
+      this.queryClient.invalidateQueries({ queryKey: ['orders'] });
+      this.snack.open(this.t.instant('app.savedSuccessfully'), '', { duration: 2000 });
+    },
+    onError: (err, dto, context) => {
+      this.snack.open(this.t.instant('errors.changeError'), '', { duration: 2000 });
+    },
+  }));
+
+  setExtraCostsMutation = injectMutation(() => ({
+    mutationFn: (dto: { orderId: string; extraCosts: number }) =>
+      lastValueFrom(
+        this.http.get<Order>(`/orders/extraCosts/${dto.orderId}/${dto.extraCosts}`),
+      ),
+    onMutate: (dto) => {
+      this.snack.open(this.t.instant('app.saving'), '', { duration: 4000 });
+    },
+    onSuccess: async (data, dto) => {
+      this.queryClient.invalidateQueries({ queryKey: ['orderDetails', dto.orderId] });
+      this.queryClient.invalidateQueries({ queryKey: ['orders'] });
+      this.snack.open(this.t.instant('app.savedSuccessfully'), '', { duration: 2000 });
+    },
+    onError: (err, dto, context) => {
+      this.snack.open(this.t.instant('errors.changeError'), '', { duration: 2000 });
     },
   }));
 

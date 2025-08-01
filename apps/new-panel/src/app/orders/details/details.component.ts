@@ -16,6 +16,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { FormsModule } from '@angular/forms';
+import { CostSummaryComponent } from './cost-summary/cost-summary.component';
 
 @Component({
   selector: 'app-order-details',
@@ -31,6 +32,7 @@ import { FormsModule } from '@angular/forms';
     MatTooltipModule,
     MatCheckboxModule,
     FormsModule,
+    CostSummaryComponent,
   ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss',
@@ -54,13 +56,6 @@ export class OrderDetailsComponent {
   }));
   order = computed<Order | undefined>(() => {
     return this.query.data() || this.router.getCurrentNavigation()?.extras?.state?.['order'];
-  });
-  orderTotalCost = computed(() => {
-    const order = this.order();
-    if (order && order.materialCost) {
-      return order.materialCost + (order.extraCosts || 0);
-    }
-    return 0;
   });
 
   constructor() {
@@ -86,6 +81,10 @@ export class OrderDetailsComponent {
         id,
         state,
       });
+  }
+
+  onShowCostChange(value: boolean) {
+    this.showCost.set(value);
   }
 
 }

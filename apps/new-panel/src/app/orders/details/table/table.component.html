@@ -44,7 +44,10 @@
         @if (item.materialCost) {
           {{ item.materialCost | number : '1.0-0' | menuCurrency }}
         } @else {
-          <i class="fa-solid fa-question"></i>
+          <button mat-button (click)="setMaterialCost(item.id)">
+            <i class="fa-solid fa-question"></i>
+            {{ 'app.unknown' | translate }}
+          </button>
         }
       }
     </td>
