@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, HostListener, inject, signal } from '@angular/core';
 
 import { SHARED } from '../../shared';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -21,6 +21,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { CardComponent } from './card/card.component';
 import { DialogService } from '../../core/services/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
+
+const SCROLL_STORAGE_KEY = 'orderList_scrollPosition';
 
 const DEFAULT_STATES = [
   OrderState.Pending,
@@ -45,8 +47,8 @@ const DEFAULT_STATES = [
     FormsModule,
     MatChipsModule,
     SearchMemberAutocompleteComponent,
-    CardComponent
-],
+    CardComponent,
+  ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
 })
@@ -77,6 +79,7 @@ export class OrderListComponent {
   query = injectQuery(() => ({
     queryKey: ['orders', this.filterDto()],
     queryFn: () => lastValueFrom(this.http.post<[Order[], number]>('/orders/filter/v2', this.filterDto())),
+    staleTime: 30 * 60 * 1000,
   }));
 
   pageSize = computed(() => {
@@ -86,9 +89,18 @@ export class OrderListComponent {
   isMobile = signal(false);
 
   constructor() {
-    this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small]).subscribe(result => {
+    this.breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small]).subscribe((result) => {
       this.isMobile.set(result.matches);
     });
+
+    // Restore scroll position
+    const scrollPosition = sessionStorage.getItem(SCROLL_STORAGE_KEY);
+    if (scrollPosition) {
+      setTimeout(() => {
+        window.scrollTo(0, Number(scrollPosition));
+      }, 100);
+    }
+
     effect(() => {
       this.router.navigate([], {
         replaceUrl: true,
@@ -109,6 +121,7 @@ export class OrderListComponent {
     } else if (pageSize) {
       this.currentSize.set(pageSize);
     }
+    sessionStorage.removeItem(SCROLL_STORAGE_KEY);
   }
 
   stateChange(order: Order, state: OrderState) {
@@ -126,5 +139,10 @@ export class OrderListComponent {
         this.ordersService.deleteMutation.mutate(order.id);
       }
     });
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    sessionStorage.setItem(SCROLL_STORAGE_KEY, window.scrollY.toString());
   }
 }
