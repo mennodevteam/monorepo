@@ -95,8 +95,10 @@ export class OrdersController {
     if (!item) throw new HttpException('item not found', HttpStatus.NOT_FOUND);
     item.materialCost = Number(materialCost);
     await this.orderItemsRepo.update(itemId, { materialCost: item.materialCost });
-    if (order.items.find((x) => !x.materialCost)) return order;
-    order.materialCost = order.items.reduce((acc, x) => acc + x.materialCost, 0);
+    if (order.items.find((x) => !x.isAbstract && !x.materialCost)) return order;
+    order.materialCost = order.items
+      .filter((x) => x.materialCost)
+      .reduce((acc, x) => acc + x.materialCost * x.quantity, 0);
     await this.ordersRepo.update(orderId, { materialCost: order.materialCost });
     return order;
   }
