@@ -47,14 +47,54 @@
   </ng-container>
 
   <ng-container matColumnDef="price">
-    <th mat-header-cell *matHeaderCellDef>{{ 'app.price' | translate }}</th>
+    <th mat-header-cell *matHeaderCellDef>{{ 'order.price' | translate }}</th>
     <td mat-cell *matCellDef="let order" style="width: 180px">
-      <b [class.success-text]="order.paymentType">
+      <b>
         {{ order.totalPrice | number | menuCurrency }}
         @if (order.paymentType) {
-          <i class="fa-solid fa-check"></i>
+          <i class="fa-solid fa-check success-text"></i>
         }
       </b>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="materialCost">
+    <th mat-header-cell *matHeaderCellDef>{{ 'order.materialCost' | translate }}</th>
+    <td mat-cell *matCellDef="let order" style="width: 180px">
+      @if (order.materialCost) {
+        {{ order.materialCost | number : '1.0-0' | menuCurrency }}
+      } @else {
+        <button mat-button (click)="setExtraCosts(order.id)" stopPropagation>
+          <i class="fa-solid fa-question"></i>
+          {{ 'app.unknown' | translate }}
+        </button>
+      }
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="extraCosts">
+    <th mat-header-cell *matHeaderCellDef>{{ 'order.extraCosts' | translate }}</th>
+    <td mat-cell *matCellDef="let order" style="width: 180px">
+      <button mat-button (click)="setExtraCosts(order.id)" stopPropagation>
+        {{ order.extraCosts || 0 | number : '1.0-0' | menuCurrency }}
+      </button>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="profit">
+    <th mat-header-cell *matHeaderCellDef>{{ 'order.totalProfit' | translate }}</th>
+    <td mat-cell *matCellDef="let order" style="width: 180px">
+      @if (order.materialCost) {
+        <span class="success-text">
+          <i class="fa-solid fa-arrow-trend-up"></i>
+          {{ order.totalPrice - (order.extraCosts || 0) - order.materialCost | number : '1.0-0' | menuCurrency }}
+        </span>
+      } @else {
+        <button mat-button (click)="extraCostHint()" stopPropagation>
+          <i class="fa-solid fa-question"></i>
+          {{ 'app.unknown' | translate }}
+        </button>
+      }
     </td>
   </ng-container>
 
