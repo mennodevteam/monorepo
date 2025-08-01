@@ -1,6 +1,11 @@
-<button mat-icon-button (click)="openColSettings()" id="col-settings">
-  <i class="fa-solid fa-gear"></i>
-</button>
+<div class="table-actions">
+  <button mat-icon-button (click)="exportToCSV()" [disabled]="!orders()?.length">
+    <i class="fa-solid fa-file-csv"></i>
+  </button>
+  <button mat-icon-button (click)="openColSettings()">
+    <i class="fa-solid fa-gear"></i>
+  </button>
+</div>
 <table mat-table [dataSource]="orders() || []">
   <ng-container matColumnDef="customer">
     <th mat-header-cell *matHeaderCellDef>{{ 'order.customer' | translate }}</th>

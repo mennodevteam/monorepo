@@ -2,10 +2,12 @@
   position: relative;
 }
 
-#col-settings {
+.table-actions {
   position: absolute;
   top: 24px;
   left: 16px;
+  display: flex;
+  z-index: 10;
 }
 
 tr.selectable-row:hover {

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Order, OrderState, OrderType, User } from '@menno/types';
 import { SHARED } from '../../../shared';
 import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { OrderStateChipComponent } from '../../state-chip/state-chip.component';
 import { Router } from '@angular/router';
 import { ShopService } from '../../../shop/shop.service';
@@ -34,7 +35,7 @@ const STORAGE_TABLE_COLS_KEY = 'ordersTableCols';
 @Component({
   selector: 'app-order-table',
   standalone: true,
-  imports: [CommonModule, SHARED, MatTableModule, OrderStateChipComponent],
+  imports: [CommonModule, SHARED, MatTableModule, MatTooltipModule, OrderStateChipComponent],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })
@@ -152,5 +153,113 @@ export class TableComponent {
           localStorage.setItem(STORAGE_TABLE_COLS_KEY, JSON.stringify(data));
         }
       });
+  }
+
+  exportToCSV() {
+    const orders = this.orders();
+    if (!orders || orders.length === 0) {
+      this.dialogService.alert(
+        this.translate.instant('app.warning'),
+        this.translate.instant('order.noOrdersToExport'),
+        {
+          config: {
+            data: {
+              hideCancel: true,
+            },
+          },
+        }
+      );
+      return;
+    }
+
+    // Define column headers based on visible columns
+    const headers = this.visibleCols
+      .filter(col => col !== 'actions') // Exclude actions column from CSV
+      .map(col => {
+        switch (col) {
+          case 'createdAt': return this.translate.instant('app.date');
+          case 'customer': return this.translate.instant('order.customer');
+          case 'type': return this.translate.instant('app.type');
+          case 'price': return this.translate.instant('order.price');
+          case 'state': return this.translate.instant('app.status');
+          case 'materialCost': return this.translate.instant('order.materialCost');
+          case 'extraCosts': return this.translate.instant('order.extraCosts');
+          case 'profit': return this.translate.instant('order.totalProfit');
+          default: return col;
+        }
+      });
+
+    // Convert orders to CSV rows
+    const csvRows = orders.map(order => {
+      const row: string[] = [];
+      
+      this.visibleCols.forEach(col => {
+        if (col === 'actions') return; // Skip actions column
+        
+        let value = '';
+        switch (col) {
+          case 'createdAt':
+            value = new Date(order.createdAt).toLocaleString('fa-IR');
+            break;
+          case 'customer':
+            value = order.customer ? User.fullName(order.customer) : '';
+            break;
+          case 'type':
+            value = this.translate.instant('order.type.' + order.type);
+            if (order.address?.region) {
+              value += ` - ${order.address.region.title}`;
+            } else if (order.address?.deliveryArea) {
+              value += ` - ${order.address.deliveryArea.title}`;
+            }
+            break;
+          case 'price':
+            value = order.totalPrice?.toString() || '0';
+            break;
+          case 'state':
+            value = this.translate.instant('order.state.' + order.state);
+            break;
+          case 'materialCost':
+            value = order.materialCost?.toString() || '';
+            break;
+          case 'extraCosts':
+            value = (order.extraCosts || 0).toString();
+            break;
+          case 'profit':
+            if (order.materialCost) {
+              value = (order.totalPrice - (order.extraCosts || 0) - order.materialCost).toString();
+            } else {
+              value = '';
+            }
+            break;
+          default:
+            value = '';
+        }
+        
+        // Escape CSV values (wrap in quotes if contains comma, quote, or newline)
+        if (value.includes(',') || value.includes('"') || value.includes('\n')) {
+          value = `"${value.replace(/"/g, '""')}"`;
+        }
+        
+        row.push(value);
+      });
+      
+      return row.join(',');
+    });
+
+    // Combine headers and rows
+    const csvContent = [headers.join(','), ...csvRows].join('\n');
+    
+    // Create and download the file
+    const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', `orders_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 }
