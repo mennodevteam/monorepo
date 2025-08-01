@@ -1,3 +1,6 @@
+<button mat-icon-button (click)="openColSettings()" id="col-settings">
+  <i class="fa-solid fa-gear"></i>
+</button>
 <table mat-table [dataSource]="orders() || []">
   <ng-container matColumnDef="customer">
     <th mat-header-cell *matHeaderCellDef>{{ 'order.customer' | translate }}</th>
@@ -62,7 +65,7 @@
     <th mat-header-cell *matHeaderCellDef>{{ 'order.materialCost' | translate }}</th>
     <td mat-cell *matCellDef="let order" style="width: 180px">
       @if (order.materialCost) {
-        {{ order.materialCost | number : '1.0-0' | menuCurrency }}
+        {{ order.materialCost | number: '1.0-0' | menuCurrency }}
       } @else {
         <button mat-button (click)="setExtraCosts(order.id)" stopPropagation>
           <i class="fa-solid fa-question"></i>
@@ -76,7 +79,7 @@
     <th mat-header-cell *matHeaderCellDef>{{ 'order.extraCosts' | translate }}</th>
     <td mat-cell *matCellDef="let order" style="width: 180px">
       <button mat-button (click)="setExtraCosts(order.id)" stopPropagation>
-        {{ order.extraCosts || 0 | number : '1.0-0' | menuCurrency }}
+        {{ order.extraCosts || 0 | number: '1.0-0' | menuCurrency }}
       </button>
     </td>
   </ng-container>
@@ -87,7 +90,9 @@
       @if (order.materialCost) {
         <span class="success-text">
           <i class="fa-solid fa-arrow-trend-up"></i>
-          {{ order.totalPrice - (order.extraCosts || 0) - order.materialCost | number : '1.0-0' | menuCurrency }}
+          {{
+            order.totalPrice - (order.extraCosts || 0) - order.materialCost | number: '1.0-0' | menuCurrency
+          }}
         </span>
       } @else {
         <button mat-button (click)="extraCostHint()" stopPropagation>
@@ -121,10 +126,10 @@
     </td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-header-row *matHeaderRowDef="visibleCols"></tr>
   <tr
     mat-row
-    *matRowDef="let row; columns: displayedColumns"
+    *matRowDef="let row; columns: visibleCols"
     class="selectable-row"
     (click)="navigateToOrder(row)"
     [class.new]="!row.seenAt"

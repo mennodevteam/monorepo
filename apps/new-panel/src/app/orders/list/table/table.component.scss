@@ -1,3 +1,13 @@
+::host {
+  position: relative;
+}
+
+#col-settings {
+  position: absolute;
+  top: 24px;
+  left: 16px;
+}
+
 tr.selectable-row:hover {
   background-color: rgba(0, 0, 0, 0.02);
 }

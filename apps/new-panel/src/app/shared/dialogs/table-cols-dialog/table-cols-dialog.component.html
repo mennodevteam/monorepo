@@ -1,0 +1,26 @@
+<h3 mat-dialog-title>{{ 'tableColsDialog.title' | translate }}</h3>
+<mat-dialog-content>
+  <p>{{ 'tableColsDialog.description' | translate }}</p>
+  <mat-list cdkDropList (cdkDropListDropped)="drop($event)">
+    @for (item of data; track $index) {
+      <mat-list-item cdkDrag>
+        <i matListItemIcon class="fa-solid fa-grip-vertical"></i>
+        <span matListItemTitle>
+          {{ item.text }}
+        </span>
+        <button mat-icon-button matListItemMeta (click)="item.visible = !item.visible">
+          @if (item.visible) {
+            <i class="fa-solid fa-eye"></i>
+          } @else {
+            <i class="fa-solid fa-eye-slash"></i>
+          }
+        </button>
+      </mat-list-item>
+    }
+  </mat-list>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>{{ 'app.cancel' | translate }}</button>
+  <button mat-button [mat-dialog-close]="[]">{{ 'tableColsDialog.reset' | translate }}</button>
+  <button mat-flat-button [mat-dialog-close]="data">{{ 'app.ok' | translate }}</button>
+</mat-dialog-actions>
