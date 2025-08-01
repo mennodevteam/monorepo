@@ -24,6 +24,7 @@ export class Mission {
   orderSum: number;
   rewardType: MissionRewardType;
   rewardValue: number;
+  percentageRewardValue: number;
   rewardDetails?: DiscountCoupon | null;
   durationInDays?: number;
   startedAt: Date;

@@ -34,7 +34,7 @@ export class MissionsService {
     @InjectRepository(Club) private clubsRepo: Repository<Club>,
     @InjectRepository(Member) private membersRepo: Repository<Member>,
     @InjectRepository(User) private usersRepo: Repository<User>,
-    @InjectRepository(DiscountCoupon) private discountCouponsRepo: Repository<DiscountCoupon>
+    @InjectRepository(DiscountCoupon) private discountCouponsRepo: Repository<DiscountCoupon>,
   ) {}
 
   async checkFormMission(order: Order) {
@@ -60,7 +60,7 @@ export class MissionsService {
         for (const mission of missions) {
           if (mission.conditionPeriod === MissionConditionPeriod.PerPurchase) {
             if (order.paymentType !== OrderPaymentType.NotPayed && order.totalPrice >= mission.orderSum)
-              await this.completeMission(mission, member, order.shop);
+              await this.completeMission(mission, member, order.shop, order.totalPrice);
           } else {
             let startDate: Date;
             const nowMoment = moment(new Date()).locale('fa');
@@ -101,7 +101,7 @@ export class MissionsService {
               }, 0);
 
               if (sum >= mission.orderSum && orders.length >= mission.orderCount)
-                await this.completeMission(mission, member, order.shop);
+                await this.completeMission(mission, member, order.shop, sum);
             }
           }
         }
@@ -120,12 +120,14 @@ export class MissionsService {
     });
   }
 
-  private async completeMission(mission: Mission, member: Member, shop: Shop) {
+  private async completeMission(mission: Mission, member: Member, shop: Shop, totalPrice = 0) {
     if (mission.rewardType === MissionRewardType.WalletCharge && mission.rewardValue) {
+      let amount = mission.rewardValue;
+      if (mission.percentageRewardValue) amount += (totalPrice * mission.percentageRewardValue) / 100;
       const wallet = await this.walletService.getMemberWallet(member.id);
       await this.walletService.updateWalletAmount(
-        { amount: mission.rewardValue, type: WalletLogType.ManualCharge, wallet } as WalletLog,
-        shop.id
+        { amount, type: WalletLogType.ManualCharge, wallet } as WalletLog,
+        shop.id,
       );
     } else if (mission.rewardType === MissionRewardType.DiscountCoupon && mission.rewardDetails) {
       const coupon = mission.rewardDetails;

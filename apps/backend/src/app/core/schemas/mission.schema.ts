@@ -43,6 +43,10 @@ export const MissionSchema = new EntitySchema<Mission>({
       type: Number,
       default: 0,
     },
+    percentageRewardValue: {
+      type: Number,
+      default: 0,
+    },
     durationInDays: {
       type: Number,
       nullable: true,
