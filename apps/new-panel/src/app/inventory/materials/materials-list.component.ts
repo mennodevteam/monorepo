@@ -14,6 +14,7 @@ import { DialogService } from '../../core/services/dialog.service';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   imports: [
@@ -26,13 +27,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     FormsModule,
     MatInputModule,
     MatFormFieldModule,
+    MatTooltipModule,
   ],
   selector: 'app-materials-list',
   templateUrl: './materials-list.component.html',
   styleUrls: ['./materials-list.component.scss'],
 })
 export class MaterialsListComponent {
-  displayedColumns = ['name', 'stock', 'cost', 'actions'];
+  displayedColumns = ['name', 'stock', 'cost', 'avgItemCount', 'actions'];
   searchQuery = signal('');
 
   private dialog = inject(DialogService);
@@ -97,6 +99,16 @@ export class MaterialsListComponent {
           this.materialsService.saveMaterialMutation.mutate(result);
         }
       });
+  }
+
+  estimateItemCount(material: Material) {
+    if (!material.boms || material.boms.length === 0) {
+      return null;
+    }
+    if (material.stock === 0) return 0;
+    const sum = material.boms.reduce((sum, bom) => sum + (bom.quantity || 0), 0);
+    const avg = sum / material.boms.length;
+    return Math.floor(material.stock / avg);
   }
 
   openEditDialog(material: Material) {

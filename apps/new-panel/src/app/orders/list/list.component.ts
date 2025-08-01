@@ -98,7 +98,7 @@ export class OrderListComponent {
     if (scrollPosition) {
       setTimeout(() => {
         window.scrollTo(0, Number(scrollPosition));
-      }, 100);
+      }, 20);
     }
 
     effect(() => {

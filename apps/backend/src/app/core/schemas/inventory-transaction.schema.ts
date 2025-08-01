@@ -7,7 +7,7 @@ export const InventoryTransactionSchema = new EntitySchema<InventoryTransaction>
   columns: {
     id: { type: 'uuid', primary: true, generated: 'uuid' },
     type: { type: 'enum', enum: InventoryTransactionType },
-    quantity: { type: Number },
+    quantity: { type: 'real' },
     unitPrice: { type: Number, nullable: true },
     costUpdateStrategy: { type: 'enum', enum: CostUpdateStrategy, default: CostUpdateStrategy.Last },
     note: { type: String, nullable: true },
