@@ -115,6 +115,7 @@ export class AuthController {
     );
   }
 
+  @Public()
   @Get('login/app/:userId/:mobile/:token')
   async loginAppWithToken(@Param() params) {
     return this.auth.loginAppWithToken(
