@@ -71,9 +71,9 @@ export class OtpComponent implements OnDestroy {
 
   async setToken(ev?: Event) {
     const returnPath = this.route.snapshot.queryParams?.['returnPath'];
-    this.loading.set(true);
     const value = this.otpFormControl.value;
     if (value) {
+      this.loading.set(true);
       const token = PersianNumberService.toEnglish(value.toString());
       try {
         const user = await this.auth.loginWithToken(this.phone, token);
@@ -114,7 +114,6 @@ export class OtpComponent implements OnDestroy {
           this.snack.open(error.message, '', { duration: 6000 });
           throw new Error(error.message);
         }
-        this.snack.open(error.message, '', { duration: 6000 });
       }
     }
     ev?.preventDefault?.();
