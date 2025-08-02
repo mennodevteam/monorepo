@@ -105,6 +105,7 @@ export class AuthController {
     throw new HttpException('no user found', HttpStatus.NOT_FOUND);
   }
 
+  @Public()
   @Get('login/app/v2/:userId/:mobile/:token')
   async loginAppWithTokenV2(@Param() params) {
     return this.auth.loginAppWithTokenV2(
