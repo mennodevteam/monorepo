@@ -17,6 +17,7 @@ import { lastValueFrom } from 'rxjs';
 import { ShopService } from '../../shop/shop.service';
 import { DialogService } from '../../core/services/dialog.service';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
+import { DataLoadingComponent } from '../../shared/components/data-loading/data-loading.component';
 
 @Component({
   selector: 'app-mission-list',
@@ -30,7 +31,8 @@ import { EmptyStateComponent } from '../../shared/components/empty-state/empty-s
     MatSlideToggleModule,
     MatIconModule,
     TranslateModule,
-    EmptyStateComponent
+    EmptyStateComponent,
+    DataLoadingComponent
   ],
   templateUrl: './mission-list.component.html',
   styleUrl: './mission-list.component.scss',

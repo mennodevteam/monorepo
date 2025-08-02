@@ -9,7 +9,9 @@
   }
 </mat-toolbar>
 <main p-md w-md>
-  @if (!isEmpty) {
+  @if (query.isLoading()) {
+    <app-data-loading />
+  } @else if (!isEmpty) {
     <mat-card appearance="outlined">
       <mat-card-content>
         <table mat-table [dataSource]="data()">

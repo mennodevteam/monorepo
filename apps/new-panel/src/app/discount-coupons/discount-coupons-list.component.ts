@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { EmptyStateComponent } from '../shared/components/empty-state/empty-state.component';
+import { DataLoadingComponent } from '../shared/components/data-loading/data-loading.component';
 import { Router } from '@angular/router';
 import { DiscountCoupon, Status } from '@menno/types';
 import { ClubService } from '../core/services/club.service';
@@ -28,6 +29,7 @@ import { computed } from '@angular/core';
     MatTableModule,
     MatSlideToggleModule,
     EmptyStateComponent,
+    DataLoadingComponent,
   ],
   templateUrl: './discount-coupons-list.component.html',
   styleUrl: './discount-coupons-list.component.scss',
@@ -42,7 +44,7 @@ export class DiscountCouponsListComponent {
   readonly Status = Status;
   readonly displayedColumns = ['index', 'title', 'discount', 'status', 'actions'];
 
-  private query = injectQuery(() => ({
+  query = injectQuery(() => ({
     queryKey: ['discountCoupons'],
     queryFn: () => lastValueFrom(this.http.get<DiscountCoupon[]>('/discountCoupons')),
   }));
