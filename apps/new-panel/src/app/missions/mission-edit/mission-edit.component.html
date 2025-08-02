@@ -1,0 +1,179 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <mat-toolbar class="content-toolbar" fxLayout="row" fxLayoutGap="8px">
+    <button mat-icon-button goBack type="button">
+      <i class="fa-regular fa-arrow-right"></i>
+    </button>
+    <h2 fxFlex>
+      @if (mission()) {
+        {{ 'mission.editTitle' | translate: { value: mission()?.title } }}
+      } @else {
+        {{ 'mission.newTitle' | translate }}
+      }
+    </h2>
+    <button mat-button goBack type="button">
+      {{ 'app.cancel' | translate }}
+    </button>
+    <button mat-flat-button [disabled]="!form.dirty" type="submit">
+      {{ 'app.save' | translate }}
+    </button>
+  </mat-toolbar>
+  <main p-md w-md fxLayout="column" fxLayout.gt-md="row" fxLayoutGap="24px">
+    <div fxLayout="column" fxLayoutGap="24px" fxFlex>
+      <mat-card appearance="outlined">
+        <mat-card-content fxLayout="column" fxLayoutGap="24px">
+          <h3>{{ 'mission.basicInfo' | translate }}</h3>
+          <p class="mat-caption">{{ 'mission.basicInfoDescription' | translate }}</p>
+
+          <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+            <mat-label>{{ 'app.title' | translate }}</mat-label>
+            <input matInput formControlName="title" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+            <mat-label>{{ 'app.description' | translate }}</mat-label>
+            <textarea matInput formControlName="description" rows="3"></textarea>
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card appearance="outlined">
+        <mat-card-content fxLayout="column" fxLayoutGap="24px">
+          <h3>{{ 'app.dateRange' | translate }}</h3>
+          <p class="mat-caption">{{ 'mission.dateRangeDescription' | translate }}</p>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'app.dateRange' | translate }}</mat-label>
+            <mat-date-range-input [rangePicker]="dateRangePicker">
+              <input
+                matStartDate
+                formControlName="startedAt"
+                placeholder="{{ 'app.startDate' | translate }}"
+              />
+              <input matEndDate formControlName="expiredAt" placeholder="{{ 'app.endDate' | translate }}" />
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]="dateRangePicker"></mat-datepicker-toggle>
+            <mat-date-range-picker #dateRangePicker></mat-date-range-picker>
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div fxLayout="column" fxLayoutGap="24px" fxFlex>
+      <mat-card appearance="outlined">
+        <mat-card-content fxLayout="column" fxLayoutGap="24px">
+          <h3>{{ 'mission.conditionTitle' | translate }}</h3>
+          <p class="mat-caption">{{ 'mission.conditionDescription' | translate }}</p>
+          <mat-button-toggle-group formControlName="conditionPeriod">
+            @for (type of MissionConditionPeriodValues; track type) {
+              <mat-button-toggle [value]="type" fxFlex>
+                {{ 'mission.conditionPeriod.' + type | translate }}
+              </mat-button-toggle>
+            }
+          </mat-button-toggle-group>
+
+          @if (!isPerPurchase) {
+            <p class="mat-caption">{{ 'mission.conditionPeriodDescription' | translate }}</p>
+          }
+
+          <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start start">
+            @if (!isPerPurchase) {
+              <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
+                <mat-label>{{ 'mission.orderCount' | translate }}</mat-label>
+                <input matInput type="number" formControlName="orderCount" />
+              </mat-form-field>
+            }
+            <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
+              <mat-label>{{ 'mission.orderSum' | translate }}</mat-label>
+              <input matInput type="number" formControlName="orderSum" />
+              <mat-hint>{{ form.value.orderSum | number | menuCurrency }}</mat-hint>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card appearance="outlined">
+        <mat-card-content fxLayout="column" fxLayoutGap="24px">
+          <h3>{{ 'mission.rewardTitle' | translate }}</h3>
+          <p class="mat-caption">{{ 'mission.rewardDescription' | translate }}</p>
+
+          <mat-button-toggle-group formControlName="rewardType">
+            @for (type of MissionRewardTypeValues; track type) {
+              <mat-button-toggle [value]="type" fxFlex>
+                {{ 'mission.rewardType.' + type | translate }}
+              </mat-button-toggle>
+            }
+          </mat-button-toggle-group>
+
+          @if (isWalletChargeReward) {
+            <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start start">
+              <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
+                <mat-label>{{ 'mission.rewardValue' | translate }}</mat-label>
+                <input matInput type="number" formControlName="rewardValue" />
+                <mat-hint>{{ form.value.rewardValue | number | menuCurrency }}</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
+                <mat-label>{{ 'mission.percentageRewardValue' | translate }}</mat-label>
+                <input matInput type="number" formControlName="percentageRewardValue" />
+              </mat-form-field>
+            </div>
+          }
+
+          @if (!isWalletChargeReward) {
+            <div formGroupName="discountCoupon" fxLayout="column" fxLayoutGap="16px">
+              <mat-radio-group formControlName="type" fxLayout="column" fxLayoutGap="8px">
+                <mat-radio-button value="percentage">{{
+                  'discountCouponEdit.percentageCoupon' | translate
+                }}</mat-radio-button>
+                <mat-radio-button value="fixed">{{
+                  'discountCouponEdit.fixedCoupon' | translate
+                }}</mat-radio-button>
+              </mat-radio-group>
+
+              <div fxLayout="row" fxLayoutGap="16px">
+                @if (!isPercentageDiscount) {
+                  <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
+                    <mat-label>{{ 'discountCouponEdit.fixedDiscount' | translate }}</mat-label>
+                    <input matInput type="number" formControlName="fixedDiscount" />
+                    <mat-hint>{{
+                      form.value.discountCoupon?.fixedDiscount | number | menuCurrency
+                    }}</mat-hint>
+                  </mat-form-field>
+                }
+                @if (isPercentageDiscount) {
+                  <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
+                    <mat-label>{{ 'discountCouponEdit.percentageDiscount' | translate }}</mat-label>
+                    <input matInput type="number" formControlName="percentageDiscount" />
+                  </mat-form-field>
+                }
+              </div>
+
+              <div fxLayout="row" fxLayoutGap="16px">
+                <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
+                  <mat-label>{{ 'discountCouponEdit.minPrice' | translate }}</mat-label>
+                  <input matInput type="number" formControlName="minPrice" />
+                  <mat-hint>{{ form.value.discountCoupon?.minPrice | number | menuCurrency }}</mat-hint>
+                </mat-form-field>
+                <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
+                  <mat-label>{{ 'discountCouponEdit.maxDiscount' | translate }}</mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    formControlName="maxDiscount"
+                    [readonly]="!isPercentageDiscount"
+                  />
+                  <mat-hint>{{ form.value.discountCoupon?.maxDiscount | number | menuCurrency }}</mat-hint>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+              <mat-label>{{ 'mission.durationInDays' | translate }}</mat-label>
+              <input matInput type="number" formControlName="durationInDays" />
+            </mat-form-field>
+          }
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </main>
+</form>

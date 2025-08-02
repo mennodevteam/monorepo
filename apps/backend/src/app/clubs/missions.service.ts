@@ -59,7 +59,7 @@ export class MissionsService {
         member.user = order.customer;
         for (const mission of missions) {
           if (mission.conditionPeriod === MissionConditionPeriod.PerPurchase) {
-            if (order.paymentType !== OrderPaymentType.NotPayed && order.totalPrice >= mission.orderSum)
+            if ((order.paymentType !== OrderPaymentType.NotPayed || order.isManual) && order.totalPrice >= mission.orderSum)
               await this.completeMission(mission, member, order.shop, order.totalPrice);
           } else {
             let startDate: Date;
@@ -125,10 +125,11 @@ export class MissionsService {
       let amount = mission.rewardValue;
       if (mission.percentageRewardValue) amount += (totalPrice * mission.percentageRewardValue) / 100;
       const wallet = await this.walletService.getMemberWallet(member.id);
-      await this.walletService.updateWalletAmount(
-        { amount, type: WalletLogType.ManualCharge, wallet } as WalletLog,
-        shop.id,
-      );
+      this.walletService.updateWalletAmount({
+        amount,
+        type: WalletLogType.ManualCharge,
+        wallet,
+      } as WalletLog, shop.id);
     } else if (mission.rewardType === MissionRewardType.DiscountCoupon && mission.rewardDetails) {
       const coupon = mission.rewardDetails;
       coupon.user = member.user;
@@ -141,17 +142,19 @@ export class MissionsService {
       coupon.title = mission.title;
       await this.discountCouponsRepo.save(coupon);
       if (shop.smsAccount) {
-        this.smsService.send({
-          receptors: [member.user.mobilePhone],
-          accountId: shop.smsAccount.id,
-          messages: [
-            `${shop.title}\n${member.user.firstName} عزیز\nبا استفاده از کد تخفیف ${
-              coupon.code
-            } در سفارشات بعدی خود، از ${coupon.percentageDiscount || coupon.fixedDiscount} ${
-              coupon.percentageDiscount ? 'درصد' : 'تومان'
-            } تخفیف آن استفاده کنید.\nمهلت استفاده تا ${mission.durationInDays} روز دیگر.`,
-          ],
-        });
+        setTimeout(() => {
+          this.smsService.send({
+            receptors: [member.user.mobilePhone],
+            accountId: shop.smsAccount.id,
+            messages: [
+              `${shop.title}\n${member.user.firstName} عزیز\nبا استفاده از کد تخفیف ${
+                coupon.code
+              } در سفارشات بعدی خود، از ${coupon.percentageDiscount || coupon.fixedDiscount} ${
+                coupon.percentageDiscount ? 'درصد' : 'تومان'
+              } تخفیف آن استفاده کنید.\nمهلت استفاده تا ${mission.durationInDays} روز دیگر.`,
+            ],
+          });
+        }, 20000);
       }
     }
     await this.missionCompletesRepo.save({ member, mission } as MissionComplete);

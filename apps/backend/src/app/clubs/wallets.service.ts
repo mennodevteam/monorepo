@@ -24,11 +24,13 @@ export class WalletsService {
     await this.walletLogsRepo.save(dto);
     if (wallet.member.user) {
       const textContent = this.getMessageText(dto, shop, wallet);
-      this.sms.send({
-        messages: [textContent],
-        receptors: [wallet.member.user.mobilePhone],
-        accountId: shop.smsAccount.id,
-      });
+      setTimeout(() => {
+        this.sms.send({
+          messages: [textContent],
+          receptors: [wallet.member.user.mobilePhone],
+          accountId: shop.smsAccount.id,
+        });
+      }, 20000);
     }
 
     this.walletsRepo.update(wallet.id, { charge: wallet.charge });

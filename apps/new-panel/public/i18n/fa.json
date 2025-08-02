@@ -44,7 +44,13 @@
     "notSet": "تنظیم نشده",
     "unknown": "نامشخص",
     "actions": "عملیات",
-    "deleteConfirm": "در صورت اطمینان از حذف لطفا تایید کنید."
+    "deleteConfirm": "در صورت اطمینان از حذف لطفا تایید کنید.",
+    "fromDate": "از تاریخ",
+    "toDate": "تا تاریخ",
+    "fromTo": "از {{from}} تا {{to}}",
+    "dateRange": "بازه زمانی",
+    "deletedSuccessfully": "با موفقیت حذف شد",
+    "confirmDeleteMessage": "آیا از حذف {{value}} اطمینان دارید؟"
   },
   "home": {
     "title": "به منّو خوش آمدید",
@@ -755,5 +761,44 @@
     "title": "ستون‌های جدول",
     "description": "ستون‌های جدول را مشخص کنید",
     "reset": "ریست کردن"
+  },
+  "mission": {
+    "add": "افزودن سناریو",
+    "newTitle": "افزودن سناریو جدید",
+    "editTitle": "ویرایش {{value}}",
+    "basicInfo": "اطلاعات پایه",
+    "basicInfoDescription": "اطلاعات اصلی سناریو فروش را وارد کنید",
+    "dateRangeDescription": "بازه زمانی فعال بودن سناریو را مشخص کنید",
+    "conditionTitle": "شرایط سناریو",
+    "conditionDescription": "شرایط لازم برای تکمیل سناریو را تعریف کنید",
+    "conditionPeriodLabel": "دوره شرط",
+    "conditionPeriodDescription": "شرط بر اساس تعداد سفارشات در دوره زمانی مشخص شده بررسی می‌شود",
+    "conditionPeriod": {
+      "PER_PURCHASE": "هر خرید",
+      "WEEKLY": "هفتگی",
+      "MONTHLY": "ماهانه",
+      "YEARLY": "سالانه"
+    },
+    "orderCount": "تعداد سفارش",
+    "orderSum": "مجموع سفارشات",
+    "rewardTitle": "پاداش",
+    "rewardDescription": "پاداش دریافتی پس از تکمیل سناریو را مشخص کنید",
+    "rewardTypeLabel": "نوع پاداش",
+    "rewardType": {
+      "DISCOUNT_COUPON": "کد تخفیف",
+      "WALLET_CHARGE": "شارژ کیف پول (کش‌بک)"
+    },
+    "rewardValue": "مقدار ثابت",
+    "percentageRewardValue": "درصدی از خرید مشتری",
+    "durationInDays": "مدت اعتبار (روز)",
+    "emptyState": "هیچ سناریو فروشی تعریف نشده است. سناریوهای فروش به مشتریان کمک می‌کند تا با خرید بیشتر پاداش دریافت کنند."
+  },
+  "discountCouponEdit": {
+    "percentageCoupon": "تخفیف درصدی",
+    "fixedCoupon": "تخفیف مبلغ ثابت",
+    "percentageDiscount": "درصد تخفیف",
+    "fixedDiscount": "مبلغ تخفیف",
+    "minPrice": "حداقل مبلغ سفارش",
+    "maxDiscount": "حداکثر تخفیف"
   }
 }

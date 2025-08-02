@@ -1,0 +1,75 @@
+@let isEmpty = query.data()?.length === 0;
+<mat-toolbar class="content-toolbar" fxLayoutGap="8px">
+  <h1 fxFlex>{{ 'nav.missions' | translate }}</h1>
+  @if (!isEmpty) {
+    <button mat-flat-button (click)="addMission()">
+      <i class="fa-regular fa-plus"></i>
+      {{ 'mission.add' | translate }}
+    </button>
+  }
+</mat-toolbar>
+<main p-md>
+  @if (!isEmpty) {
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <table mat-table [dataSource]="query.data() || []">
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef>{{ 'app.title' | translate }}</th>
+            <td mat-cell *matCellDef="let mission">
+              {{ mission.title }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>{{ 'app.status' | translate }}</th>
+            <td mat-cell *matCellDef="let mission">
+              <mat-slide-toggle
+                [checked]="mission.status === Status.Active"
+                (change)="changeStatus(mission, $event.checked)"
+              />
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>{{ 'app.dateRange' | translate }}</th>
+            <td mat-cell *matCellDef="let mission">
+              {{
+                'app.fromTo'
+                  | translate
+                    : {
+                        from: (mission.startedAt | pdate),
+                        to: (mission.expiredAt | pdate),
+                      }
+              }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let mission" style="width: 128px">
+              <button mat-icon-button routerLink="edit" [queryParams]="{ id: mission.id }">
+                <i class="fa-regular fa-edit fa-xs"></i>
+              </button>
+              <button mat-icon-button (click)="deleteMission(mission)">
+                <i class="fa-regular fa-trash-alt fa-xs"></i>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <app-empty-state
+      icon="bullseye-arrow"
+      [text]="'mission.emptyState' | translate"
+      [action]="{
+        label: 'mission.add' | translate,
+        icon: 'plus',
+      }"
+      (actionClick)="addMission()"
+    />
+  }
+</main>

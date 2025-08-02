@@ -14,6 +14,7 @@ import { clubRoutes } from './club/club.routes';
 import { materialsRoutes } from './inventory/materials.routes';
 import { PricingComponent } from './pricing/pricing.component';
 import { WelcomeSetupComponent } from './welcome-setup/welcome-setup.component';
+import { missionsRoutes } from './missions/missions.routes';
 
 export const appRoutes: Route[] = [
   {
@@ -37,6 +38,7 @@ export const appRoutes: Route[] = [
           { path: 'settings', children: settingsRoutes },
           { path: 'club', children: clubRoutes },
           { path: 'inventory', children: materialsRoutes },
+          { path: 'missions', children: missionsRoutes },
           { path: '', redirectTo: 'home', pathMatch: 'full' },
         ],
       },

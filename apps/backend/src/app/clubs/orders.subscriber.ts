@@ -28,7 +28,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
   async afterInsert(event: InsertEvent<Order>) {
     try {
       const order = event.entity;
-      if (order.paymentType) this.missionsService.checkFormMission(order);
+      if (order.paymentType || order.isManual) this.missionsService.checkFormMission(order);
     } catch (error) {
       // unhandled
     }
@@ -40,7 +40,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
         ...(await this.ordersRepo.findOne({ where: { id: event.entity.id }, relations: ['shop', 'customer'] })),
         ...event.entity,
       };
-      if (event.entity.paymentType) this.missionsService.checkFormMission(order);
+      if (event.entity.paymentType || order.isManual) this.missionsService.checkFormMission(order);
     } catch (error) {
       // unhandled
     }

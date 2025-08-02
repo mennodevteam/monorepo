@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from './dialog.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
-import { Address, FilterMemberDto, GenderType, Member, User } from '@menno/types';
+import { Address, FilterMemberDto, GenderType, Member, User, Mission, Status } from '@menno/types';
 import { lastValueFrom } from 'rxjs';
 import { PromptFields } from '../../shared/dialogs/prompt-dialog/prompt-dialog.component';
 import { FormControl, Validators } from '@angular/forms';
@@ -123,4 +123,30 @@ export class ClubService {
     }
     return;
   }
+
+  // Mission-related methods
+  saveMissionMutation = injectMutation(() => ({
+    mutationFn: (mission: Mission) => lastValueFrom(this.http.post<Mission>(`/missions`, mission)),
+    onMutate: () => {
+      this.snack.open(this.translate.instant('app.saving'), '', { duration: 4000 });
+    },
+    onSuccess: () => {
+      this.snack.open(this.translate.instant('app.savedSuccessfully'), '', { duration: 2000 });
+      this.queryClient.invalidateQueries({ queryKey: ['missionList'] });
+    },
+    onError: () => {
+      this.snack.open(this.translate.instant('errors.changeError'), '', { duration: 2000 });
+    },
+  }));
+
+  deleteMissionMutation = injectMutation(() => ({
+    mutationFn: (id: number) => lastValueFrom(this.http.delete(`/missions/${id}`)),
+    onSuccess: () => {
+      this.snack.open(this.translate.instant('app.deletedSuccessfully'), '', { duration: 2000 });
+      this.queryClient.invalidateQueries({ queryKey: ['missionList'] });
+    },
+    onError: () => {
+      this.snack.open(this.translate.instant('errors.deleteError'), '', { duration: 2000 });
+    },
+  }));
 }
