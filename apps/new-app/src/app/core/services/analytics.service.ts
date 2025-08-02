@@ -19,7 +19,6 @@ export class AnalyticsService {
     effect(() => {
       const user = this.auth.user();
       if (this.clarityProjectId && user) {
-        clarity.identify(user.id);
         clarity.identify(user.id, user.id, undefined, user.mobilePhone);
       }
     });

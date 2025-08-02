@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from './dialog.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
-import { Address, FilterMemberDto, GenderType, Member, User, Mission, Status } from '@menno/types';
+import { Address, FilterMemberDto, GenderType, Member, User, Mission, Status, DiscountCoupon } from '@menno/types';
 import { lastValueFrom } from 'rxjs';
 import { PromptFields } from '../../shared/dialogs/prompt-dialog/prompt-dialog.component';
 import { FormControl, Validators } from '@angular/forms';
@@ -144,6 +144,32 @@ export class ClubService {
     onSuccess: () => {
       this.snack.open(this.translate.instant('app.deletedSuccessfully'), '', { duration: 2000 });
       this.queryClient.invalidateQueries({ queryKey: ['missionList'] });
+    },
+    onError: () => {
+      this.snack.open(this.translate.instant('errors.deleteError'), '', { duration: 2000 });
+    },
+  }));
+
+  // Discount Coupon mutations
+  saveDiscountCouponMutation = injectMutation(() => ({
+    mutationFn: (dto: Partial<DiscountCoupon>) => lastValueFrom(this.http.post<DiscountCoupon>(`/discountCoupons`, dto)),
+    onMutate: () => {
+      this.snack.open(this.translate.instant('app.saving'), '', { duration: 4000 });
+    },
+    onSuccess: () => {
+      this.snack.open(this.translate.instant('app.savedSuccessfully'), '', { duration: 2000 });
+      this.queryClient.invalidateQueries({ queryKey: ['discountCoupons'] });
+    },
+    onError: () => {
+      this.snack.open(this.translate.instant('errors.changeError'), '', { duration: 2000 });
+    },
+  }));
+
+  deleteDiscountCouponMutation = injectMutation(() => ({
+    mutationFn: (id: string) => lastValueFrom(this.http.delete(`/discountCoupons/${id}`)),
+    onSuccess: () => {
+      this.snack.open(this.translate.instant('app.deletedSuccessfully'), '', { duration: 2000 });
+      this.queryClient.invalidateQueries({ queryKey: ['discountCoupons'] });
     },
     onError: () => {
       this.snack.open(this.translate.instant('errors.deleteError'), '', { duration: 2000 });

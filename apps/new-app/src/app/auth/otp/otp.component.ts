@@ -100,14 +100,21 @@ export class OtpComponent implements OnDestroy {
             });
           }, 100);
         }
-      } catch (error) {
+      } catch (error: any) {
+        console.log(error.status)
         // Track login failure
         this.analytics.trackEvent('login_failed', {
           error: 'invalid_otp'
         });
         this.error.set(true);
-        this.snack.open(this.translate.instant('login.otpError'), '', { duration: 2000 });
         this.loading.set(false);
+        if (error.status === 403) {
+          this.snack.open(this.translate.instant('login.otpError'), '', { duration: 2000 });
+        } else {
+          this.snack.open(error.message, '', { duration: 6000 });
+          throw new Error(error.message);
+        }
+        this.snack.open(error.message, '', { duration: 6000 });
       }
     }
     ev?.preventDefault?.();

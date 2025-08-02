@@ -50,7 +50,8 @@
     "fromTo": "از {{from}} تا {{to}}",
     "dateRange": "بازه زمانی",
     "deletedSuccessfully": "با موفقیت حذف شد",
-    "confirmDeleteMessage": "آیا از حذف {{value}} اطمینان دارید؟"
+    "confirmDeleteMessage": "آیا از حذف {{value}} اطمینان دارید؟",
+    "required": "الزامی است"
   },
   "home": {
     "title": "به منّو خوش آمدید",
@@ -800,5 +801,41 @@
     "fixedDiscount": "مبلغ تخفیف",
     "minPrice": "حداقل مبلغ سفارش",
     "maxDiscount": "حداکثر تخفیف"
+  },
+  "discountCoupons": {
+    "add": "افزودن کد تخفیف",
+    "newTitle": "افزودن کد تخفیف جدید",
+    "editTitle": "ویرایش {{value}}",
+    "basicInfo": "اطلاعات پایه",
+    "discountDetails": "جزئیات تخفیف",
+    "discount": "تخفیف",
+    "percentageDiscount": "{{value}} درصد",
+    "star": "ستاره",
+    "starAll": "همه اعضا",
+    "starMembers": "اعضای بدون ستاره",
+    "starMembers1": "اعضای 1 ستاره",
+    "starMembers2": "اعضای 2 ستاره",
+    "starMembers3": "اعضای 3 ستاره",
+    "starMembers4": "اعضای 4 ستاره",
+    "starMembers5": "اعضای 5 ستاره",
+    "tag": "برچسب",
+    "allTags": "همه برچسب‌ها",
+    "userCodeFalse": "بدون کد (برای همه)",
+    "userCodeTrue": "با کد خاص",
+    "code": "کد تخفیف",
+    "type": "نوع تخفیف",
+    "percentageCoupon": "تخفیف درصدی",
+    "fixedCoupon": "تخفیف مبلغ ثابت",
+    "percentageDiscount": "درصد تخفیف",
+    "fixedDiscount": "مبلغ تخفیف",
+    "minPrice": "حداقل مبلغ سفارش",
+    "maxDiscount": "حداکثر تخفیف",
+    "usage": "محدودیت استفاده",
+    "maxUsePerUser": "حداکثر استفاده هر کاربر",
+    "maxUsePerUserDescription": "تعداد دفعاتی که هر کاربر می‌تواند از این کد تخفیف استفاده کند",
+    "maxUse": "حداکثر استفاده کل",
+    "maxUseDescription": "تعداد کل دفعاتی که این کد تخفیف قابل استفاده است",
+    "maxUseEmptyHint": "خالی = بدون محدودیت",
+    "emptyState": "هیچ کد تخفیفی تعریف نشده است. کدهای تخفیف به مشتریان کمک می‌کند تا با خرید بیشتر تخفیف دریافت کنند."
   }
 }

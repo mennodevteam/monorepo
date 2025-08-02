@@ -15,6 +15,7 @@ import { materialsRoutes } from './inventory/materials.routes';
 import { PricingComponent } from './pricing/pricing.component';
 import { WelcomeSetupComponent } from './welcome-setup/welcome-setup.component';
 import { missionsRoutes } from './missions/missions.routes';
+import { discountCouponsRoutes } from './discount-coupons/discount-coupons.routes';
 
 export const appRoutes: Route[] = [
   {
@@ -39,6 +40,7 @@ export const appRoutes: Route[] = [
           { path: 'club', children: clubRoutes },
           { path: 'inventory', children: materialsRoutes },
           { path: 'missions', children: missionsRoutes },
+          { path: 'coupons', children: discountCouponsRoutes },
           { path: '', redirectTo: 'home', pathMatch: 'full' },
         ],
       },
