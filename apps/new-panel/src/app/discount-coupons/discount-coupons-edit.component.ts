@@ -37,9 +37,7 @@ import { FormComponent } from '../core/guards/dirty-form-deactivator.guard';
     MatInputModule,
     MatCardModule,
     MatSelectModule,
-    MatRadioModule,
     MatDatepickerModule,
-    MatNativeDateModule,
     ReactiveFormsModule,
   ],
   templateUrl: './discount-coupons-edit.component.html',
@@ -107,11 +105,9 @@ export class DiscountCouponsEditComponent implements FormComponent {
       title: new FormControl(coupon?.title || '', Validators.required),
       star: new FormControl(coupon?.star ?? -1),
       tag: new FormControl(coupon?.tag || null),
-      useCode: new FormControl(coupon?.code ? true : false),
       code: new FormControl(coupon?.code || ''),
       startedAt: new FormControl(coupon?.startedAt || new Date(), Validators.required),
       expiredAt: new FormControl(coupon?.expiredAt || next10days, Validators.required),
-      status: new FormControl(coupon?.status || Status.Active),
       type: new FormControl(coupon?.fixedDiscount ? 'fixed' : 'percentage'),
       fixedDiscount: new FormControl(coupon?.fixedDiscount || 0),
       percentageDiscount: new FormControl(coupon?.percentageDiscount || 0, [
@@ -130,7 +126,6 @@ export class DiscountCouponsEditComponent implements FormComponent {
 
   private updateValidators() {
     const type = this.form.get('type')?.value;
-    const useCode = this.form.get('useCode')?.value;
 
     if (type === 'percentage') {
       this.form.get('percentageDiscount')?.setValidators([Validators.required, Validators.min(0), Validators.max(100)]);
@@ -138,12 +133,6 @@ export class DiscountCouponsEditComponent implements FormComponent {
     } else {
       this.form.get('fixedDiscount')?.setValidators([Validators.required, Validators.min(0)]);
       this.form.get('percentageDiscount')?.setValidators([]);
-    }
-
-    if (useCode) {
-      this.form.get('code')?.setValidators([Validators.required]);
-    } else {
-      this.form.get('code')?.setValidators([]);
     }
 
     this.form.get('percentageDiscount')?.updateValueAndValidity();
@@ -175,7 +164,7 @@ export class DiscountCouponsEditComponent implements FormComponent {
       title: formValue.title,
       star: formValue.star === -1 ? null : formValue.star,
       tag: formValue.tag,
-      code: formValue.useCode ? formValue.code : null,
+      code: formValue.code,
       startedAt: formValue.startedAt,
       expiredAt: formValue.expiredAt,
       status: formValue.status,

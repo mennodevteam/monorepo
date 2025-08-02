@@ -1,5 +1,8 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
-  <mat-toolbar class="content-toolbar" fxLayoutGap="8px">
+  <mat-toolbar class="content-toolbar" fxLayout="row" fxLayoutGap="8px">
+    <button mat-icon-button goBack>
+      <i class="fa-regular fa-arrow-right"></i>
+    </button>
     <h1 fxFlex>
       @if (coupon()) {
         {{ 'discountCoupons.editTitle' | translate: { value: coupon()?.title } }}
@@ -10,7 +13,12 @@
     <button mat-button type="button" routerLink="../">
       {{ 'app.cancel' | translate }}
     </button>
-    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || saveMutation.isPending()">
+    <button
+      mat-flat-button
+      color="primary"
+      type="submit"
+      [disabled]="form.invalid || saveMutation.isPending()"
+    >
       {{ 'app.save' | translate }}
       @if (saveMutation.isPending()) {
         <i class="fa-solid fa-spinner fa-spin"></i>
@@ -18,179 +26,155 @@
     </button>
   </mat-toolbar>
 
-  <main p-md>
-    <div class="form-layout">
-      <div class="form-content">
-        <!-- Basic Information -->
-        <mat-card appearance="outlined">
-          <mat-card-header>
-            <mat-card-title>{{ 'discountCoupons.basicInfo' | translate }}</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <mat-form-field appearance="outline">
-              <mat-label>{{ 'app.title' | translate }}</mat-label>
-              <input matInput formControlName="title" required />
-              @if (form.get('title')?.invalid && form.get('title')?.touched) {
-                <mat-error>{{ 'app.title' | translate }} {{ 'app.required' | translate }}</mat-error>
-              }
+  <main p-md w-md fxLayout="column" fxLayout.gt-md="row" fxLayoutGap="24px">
+    <div fxLayout="column" fxLayoutGap="24px" fxFlex>
+      <!-- Basic Information -->
+      <mat-card appearance="outlined">
+        <mat-card-content fxLayout="column" fxLayoutGap="24px">
+          <h3>{{ 'discountCoupons.basicInfo' | translate }}</h3>
+          <p class="mat-caption">{{ 'discountCoupons.basicInfoDescription' | translate }}</p>
+
+          <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+            <mat-label>{{ 'app.title' | translate }}</mat-label>
+            <input matInput formControlName="title" required />
+            @if (form.get('title')?.invalid && form.get('title')?.touched) {
+              <mat-error>{{ 'app.title' | translate }} {{ 'app.required' | translate }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+            <mat-label>{{ 'discountCoupons.star' | translate }}</mat-label>
+            <mat-select formControlName="star">
+              <mat-option [value]="-1">{{ 'discountCoupons.starAll' | translate }}</mat-option>
+              <mat-option [value]="0">{{ 'discountCoupons.starMembers' | translate }}</mat-option>
+              <mat-option [value]="1">{{ 'discountCoupons.starMembers1' | translate }}</mat-option>
+              <mat-option [value]="2">{{ 'discountCoupons.starMembers2' | translate }}</mat-option>
+              <mat-option [value]="3">{{ 'discountCoupons.starMembers3' | translate }}</mat-option>
+              <mat-option [value]="4">{{ 'discountCoupons.starMembers4' | translate }}</mat-option>
+              <mat-option [value]="5">{{ 'discountCoupons.starMembers5' | translate }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+            <mat-label>{{ 'discountCoupons.code' | translate }}</mat-label>
+            <input matInput formControlName="code" required eng ltr />
+            <mat-hint>{{ 'discountCoupons.codeHint' | translate }}</mat-hint>
+            @if (form.get('code')?.invalid && form.get('code')?.touched) {
+              <mat-error>{{ 'discountCoupons.code' | translate }} {{ 'app.required' | translate }}</mat-error>
+            }
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Discount Details -->
+      <mat-card appearance="outlined">
+        <mat-card-content fxLayout="column" fxLayoutGap="24px">
+          <h3>{{ 'discountCoupons.discountDetails' | translate }}</h3>
+          <p class="mat-caption">{{ 'discountCoupons.discountDetailsDescription' | translate }}</p>
+
+          <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start start">
+            <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
+              <mat-label>{{ 'discountCoupons.type' | translate }}</mat-label>
+              <mat-select formControlName="type" (selectionChange)="typeChanged()" required>
+                <mat-option value="percentage">{{
+                  'discountCoupons.percentageCoupon' | translate
+                }}</mat-option>
+                <mat-option value="fixed">{{ 'discountCoupons.fixedCoupon' | translate }}</mat-option>
+              </mat-select>
             </mat-form-field>
 
-            <div class="form-row">
-              <mat-form-field appearance="outline">
-                <mat-label>{{ 'discountCoupons.star' | translate }}</mat-label>
-                <mat-select formControlName="star">
-                  <mat-option [value]="-1">{{ 'discountCoupons.starAll' | translate }}</mat-option>
-                  <mat-option [value]="0">{{ 'discountCoupons.starMembers' | translate }}</mat-option>
-                  <mat-option [value]="1">{{ 'discountCoupons.starMembers1' | translate }}</mat-option>
-                  <mat-option [value]="2">{{ 'discountCoupons.starMembers2' | translate }}</mat-option>
-                  <mat-option [value]="3">{{ 'discountCoupons.starMembers3' | translate }}</mat-option>
-                  <mat-option [value]="4">{{ 'discountCoupons.starMembers4' | translate }}</mat-option>
-                  <mat-option [value]="5">{{ 'discountCoupons.starMembers5' | translate }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-
-            <mat-radio-group formControlName="useCode" (change)="useCodeChanged()">
-              <mat-radio-button [value]="false">{{ 'discountCoupons.userCodeFalse' | translate }}</mat-radio-button>
-              <mat-radio-button [value]="true">{{ 'discountCoupons.userCodeTrue' | translate }}</mat-radio-button>
-            </mat-radio-group>
-
-            @if (form.get('useCode')?.value) {
-              <mat-form-field appearance="outline">
-                <mat-label>{{ 'discountCoupons.code' | translate }}</mat-label>
-                <input matInput formControlName="code" required />
-                @if (form.get('code')?.invalid && form.get('code')?.touched) {
-                  <mat-error>{{ 'discountCoupons.code' | translate }} {{ 'app.required' | translate }}</mat-error>
+            @if (form.get('type')?.value === 'fixed') {
+              <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
+                <mat-label>{{ 'discountCoupons.fixedDiscountLabel' | translate }}</mat-label>
+                <input matInput formControlName="fixedDiscount" type="number" />
+                <mat-hint>{{ form.get('fixedDiscount')?.value | menuCurrency }}</mat-hint>
+                @if (form.get('fixedDiscount')?.invalid && form.get('fixedDiscount')?.touched) {
+                  <mat-error
+                    >{{ 'discountCoupons.fixedDiscount' | translate }}
+                    {{ 'app.required' | translate }}</mat-error
+                  >
                 }
               </mat-form-field>
             }
-          </mat-card-content>
-        </mat-card>
 
-        <!-- Discount Details -->
-        <mat-card appearance="outlined">
-          <mat-card-header>
-            <mat-card-title>{{ 'discountCoupons.discountDetails' | translate }}</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <div class="form-row">
-              <mat-form-field appearance="outline">
-                <mat-label>{{ 'discountCoupons.type' | translate }}</mat-label>
-                <mat-select formControlName="type" (selectionChange)="typeChanged()" required>
-                  <mat-option value="percentage">{{ 'discountCoupons.percentageCoupon' | translate }}</mat-option>
-                  <mat-option value="fixed">{{ 'discountCoupons.fixedCoupon' | translate }}</mat-option>
-                </mat-select>
+            @if (form.get('type')?.value === 'percentage') {
+              <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
+                <mat-label>{{ 'discountCoupons.percentageDiscountLabel' | translate }}</mat-label>
+                <input matInput formControlName="percentageDiscount" type="number" />
+                <mat-hint>%</mat-hint>
+                @if (form.get('percentageDiscount')?.invalid && form.get('percentageDiscount')?.touched) {
+                  <mat-error
+                    >{{ 'discountCoupons.percentageDiscount' | translate }}
+                    {{ 'app.required' | translate }}</mat-error
+                  >
+                }
               </mat-form-field>
+            }
+          </div>
 
-              @if (form.get('type')?.value === 'fixed') {
-                <mat-form-field appearance="outline">
-                  <mat-label>{{ 'discountCoupons.fixedDiscount' | translate }}</mat-label>
-                  <input matInput formControlName="fixedDiscount" type="number" />
-                  <mat-hint>{{ form.get('fixedDiscount')?.value | menuCurrency }}</mat-hint>
-                  @if (form.get('fixedDiscount')?.invalid && form.get('fixedDiscount')?.touched) {
-                    <mat-error>{{ 'discountCoupons.fixedDiscount' | translate }} {{ 'app.required' | translate }}</mat-error>
-                  }
-                </mat-form-field>
-              }
+          <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start start">
+            <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
+              <mat-label>{{ 'discountCoupons.minPrice' | translate }}</mat-label>
+              <input matInput formControlName="minPrice" type="number" />
+              <mat-hint>{{ form.get('minPrice')?.value | menuCurrency }}</mat-hint>
+            </mat-form-field>
 
-              @if (form.get('type')?.value === 'percentage') {
-                <mat-form-field appearance="outline">
-                  <mat-label>{{ 'discountCoupons.percentageDiscount' | translate }}</mat-label>
-                  <input matInput formControlName="percentageDiscount" type="number" />
-                  <mat-hint>%</mat-hint>
-                  @if (form.get('percentageDiscount')?.invalid && form.get('percentageDiscount')?.touched) {
-                    <mat-error>{{ 'discountCoupons.percentageDiscount' | translate }} {{ 'app.required' | translate }}</mat-error>
-                  }
-                </mat-form-field>
-              }
-            </div>
-
-            <div class="form-row">
-              <mat-form-field appearance="outline">
-                <mat-label>{{ 'discountCoupons.minPrice' | translate }}</mat-label>
-                <input matInput formControlName="minPrice" type="number" />
-                <mat-hint>{{ form.get('minPrice')?.value | menuCurrency }}</mat-hint>
+            @if (form.get('type')?.value === 'percentage') {
+              <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
+                <mat-label>{{ 'discountCoupons.maxDiscount' | translate }}</mat-label>
+                <input matInput formControlName="maxDiscount" type="number" />
+                <mat-hint>{{ form.get('maxDiscount')?.value | menuCurrency }}</mat-hint>
               </mat-form-field>
+            }
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
 
-              @if (form.get('type')?.value === 'percentage') {
-                <mat-form-field appearance="outline">
-                  <mat-label>{{ 'discountCoupons.maxDiscount' | translate }}</mat-label>
-                  <input matInput formControlName="maxDiscount" type="number" />
-                  <mat-hint>{{ form.get('maxDiscount')?.value | menuCurrency }}</mat-hint>
-                </mat-form-field>
-              }
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
+    <div fxLayout="column" fxLayoutGap="24px" fxFlex>
+      <!-- Date Range -->
+      <mat-card appearance="outlined">
+        <mat-card-content fxLayout="column" fxLayoutGap="24px">
+          <h3>{{ 'app.dateRange' | translate }}</h3>
+          <p class="mat-caption">{{ 'discountCoupons.dateRangeDescription' | translate }}</p>
 
-      <div class="form-sidebar">
-        <!-- Date Range -->
-        <mat-card appearance="outlined">
-          <mat-card-header>
-            <mat-card-title>{{ 'app.dateRange' | translate }}</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <mat-form-field appearance="outline">
-              <mat-label>{{ 'app.fromDate' | translate }}</mat-label>
-              <input matInput [matDatepicker]="startPicker" formControlName="startedAt" required />
-              <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-              <mat-datepicker #startPicker></mat-datepicker>
-              @if (form.get('startedAt')?.invalid && form.get('startedAt')?.touched) {
-                <mat-error>{{ 'app.fromDate' | translate }} {{ 'app.required' | translate }}</mat-error>
-              }
-            </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'app.dateRange' | translate }}</mat-label>
+            <mat-date-range-input [rangePicker]="dateRangePicker">
+              <input
+                matStartDate
+                formControlName="startedAt"
+                placeholder="{{ 'app.startDate' | translate }}"
+              />
+              <input matEndDate formControlName="expiredAt" placeholder="{{ 'app.endDate' | translate }}" />
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]="dateRangePicker"></mat-datepicker-toggle>
+            <mat-date-range-picker #dateRangePicker></mat-date-range-picker>
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
 
-            <mat-form-field appearance="outline">
-              <mat-label>{{ 'app.toDate' | translate }}</mat-label>
-              <input matInput [matDatepicker]="endPicker" formControlName="expiredAt" required />
-              <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-              <mat-datepicker #endPicker></mat-datepicker>
-              @if (form.get('expiredAt')?.invalid && form.get('expiredAt')?.touched) {
-                <mat-error>{{ 'app.toDate' | translate }} {{ 'app.required' | translate }}</mat-error>
-              }
-            </mat-form-field>
-          </mat-card-content>
-        </mat-card>
+      <!-- Usage Limits -->
+      <mat-card appearance="outlined">
+        <mat-card-content fxLayout="column" fxLayoutGap="24px">
+          <h3>{{ 'discountCoupons.usage' | translate }}</h3>
+          <p class="mat-caption">{{ 'discountCoupons.usageDescription' | translate }}</p>
 
-        <!-- Status -->
-        <mat-card appearance="outlined">
-          <mat-card-header>
-            <mat-card-title>{{ 'app.status' | translate }}</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <mat-form-field appearance="outline">
-              <mat-label>{{ 'app.status' | translate }}</mat-label>
-              <mat-select formControlName="status">
-                <mat-option [value]="Status.Active">{{ 'app.active' | translate }}</mat-option>
-                <mat-option [value]="Status.Inactive">{{ 'app.inactive' | translate }}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </mat-card-content>
-        </mat-card>
+          <p class="mat-caption">{{ 'discountCoupons.maxUsePerUserDescription' | translate }}</p>
+          <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+            <mat-label>{{ 'discountCoupons.maxUsePerUser' | translate }}</mat-label>
+            <input matInput formControlName="maxUsePerUser" type="number" />
+            <mat-hint>{{ 'discountCoupons.maxUseEmptyHint' | translate }}</mat-hint>
+          </mat-form-field>
 
-        <!-- Usage Limits -->
-        <mat-card appearance="outlined">
-          <mat-card-header>
-            <mat-card-title>{{ 'discountCoupons.usage' | translate }}</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p>{{ 'discountCoupons.maxUsePerUserDescription' | translate }}</p>
-            <mat-form-field appearance="outline">
-              <mat-label>{{ 'discountCoupons.maxUsePerUser' | translate }}</mat-label>
-              <input matInput formControlName="maxUsePerUser" type="number" />
-              <mat-hint>{{ 'discountCoupons.maxUseEmptyHint' | translate }}</mat-hint>
-            </mat-form-field>
-
-            <p>{{ 'discountCoupons.maxUseDescription' | translate }}</p>
-            <mat-form-field appearance="outline">
-              <mat-label>{{ 'discountCoupons.maxUse' | translate }}</mat-label>
-              <input matInput formControlName="maxUse" type="number" />
-              <mat-hint>{{ 'discountCoupons.maxUseEmptyHint' | translate }}</mat-hint>
-            </mat-form-field>
-          </mat-card-content>
-        </mat-card>
-      </div>
+          <p class="mat-caption">{{ 'discountCoupons.maxUseDescription' | translate }}</p>
+          <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+            <mat-label>{{ 'discountCoupons.maxUse' | translate }}</mat-label>
+            <input matInput formControlName="maxUse" type="number" />
+            <mat-hint>{{ 'discountCoupons.maxUseEmptyHint' | translate }}</mat-hint>
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
     </div>
   </main>
-</form> 
+</form>

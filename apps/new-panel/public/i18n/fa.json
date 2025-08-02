@@ -794,14 +794,7 @@
     "durationInDays": "مدت اعتبار (روز)",
     "emptyState": "هیچ سناریو فروشی تعریف نشده است. سناریوهای فروش به مشتریان کمک می‌کند تا با خرید بیشتر پاداش دریافت کنند."
   },
-  "discountCouponEdit": {
-    "percentageCoupon": "تخفیف درصدی",
-    "fixedCoupon": "تخفیف مبلغ ثابت",
-    "percentageDiscount": "درصد تخفیف",
-    "fixedDiscount": "مبلغ تخفیف",
-    "minPrice": "حداقل مبلغ سفارش",
-    "maxDiscount": "حداکثر تخفیف"
-  },
+
   "discountCoupons": {
     "add": "افزودن کد تخفیف",
     "newTitle": "افزودن کد تخفیف جدید",
@@ -810,7 +803,7 @@
     "discountDetails": "جزئیات تخفیف",
     "discount": "تخفیف",
     "percentageDiscount": "{{value}} درصد",
-    "star": "ستاره",
+    "star": "دسترسی به کد تخفیف",
     "starAll": "همه اعضا",
     "starMembers": "اعضای بدون ستاره",
     "starMembers1": "اعضای 1 ستاره",
@@ -823,19 +816,24 @@
     "userCodeFalse": "بدون کد (برای همه)",
     "userCodeTrue": "با کد خاص",
     "code": "کد تخفیف",
+    "codeHint": "به حروف کوچک و بزرگ حساس نیست",
     "type": "نوع تخفیف",
     "percentageCoupon": "تخفیف درصدی",
     "fixedCoupon": "تخفیف مبلغ ثابت",
-    "percentageDiscount": "درصد تخفیف",
-    "fixedDiscount": "مبلغ تخفیف",
+    "percentageDiscountLabel": "درصد تخفیف",
+    "fixedDiscountLabel": "مبلغ تخفیف",
     "minPrice": "حداقل مبلغ سفارش",
     "maxDiscount": "حداکثر تخفیف",
     "usage": "محدودیت استفاده",
     "maxUsePerUser": "حداکثر استفاده هر کاربر",
-    "maxUsePerUserDescription": "تعداد دفعاتی که هر کاربر می‌تواند از این کد تخفیف استفاده کند",
     "maxUse": "حداکثر استفاده کل",
-    "maxUseDescription": "تعداد کل دفعاتی که این کد تخفیف قابل استفاده است",
-    "maxUseEmptyHint": "خالی = بدون محدودیت",
-    "emptyState": "هیچ کد تخفیفی تعریف نشده است. کدهای تخفیف به مشتریان کمک می‌کند تا با خرید بیشتر تخفیف دریافت کنند."
+    "emptyState": "هیچ کد تخفیفی تعریف نشده است. کدهای تخفیف به مشتریان کمک می‌کند تا با خرید بیشتر تخفیف دریافت کنند.",
+    "basicInfoDescription": "اطلاعات اصلی کد تخفیف را وارد کنید",
+    "discountDetailsDescription": "جزئیات تخفیف را مشخص کنید",
+    "usageDescription": "محدودیت استفاده کد تخفیف را مشخص کنید",
+    "maxUsePerUserDescription": "تعداد دفعاتی که هر کاربر می‌تواند از این کد تخفیف استفاده کند",
+    "maxUseDescription": "تعداد کل دفعاتی که این کد تخفیق قابل استفاده است",
+    "maxUseEmptyHint": "خالی یا 0 = بدون محدودیت",
+    "dateRangeDescription": "بازه زمانی فعال بودن کد تخفیف را مشخص کنید"
   }
 }
