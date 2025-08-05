@@ -24,6 +24,10 @@ export const DeliveryAreaSchema = new EntitySchema<DeliveryArea>({
     price: {
       type: 'real',
     },
+    percentagePrice: {
+      type: 'real',
+      default: 0,
+    },
     minOrderPrice: {
       type: 'real',
       default: 0,

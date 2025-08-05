@@ -12,6 +12,7 @@ export class ProductCategory {
   faIcon?: string;
   status: Status;
   orderTypes: OrderType[];
+  isAbstract: boolean;
   products?: Product[];
   position?: number;
   star?: number;

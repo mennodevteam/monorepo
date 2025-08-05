@@ -140,10 +140,14 @@ export class OrderDto {
     if (dto.address && dto.address.deliveryArea) {
       const area = dto.address.deliveryArea;
       if (!area.minPriceForFree || area.minPriceForFree > OrderDto.sum(dto, menu)) {
+        let price = area.price;
+        if (area.percentagePrice) {
+          price += (sum * area.percentagePrice) / 100;
+        }
         abstractItems.push(<OrderItem>{
           isAbstract: true,
           quantity: 1,
-          price: Math.floor(area.price / FLOOR) * FLOOR,
+          price: Math.floor(price / FLOOR) * FLOOR,
           title: DELIVERY_COST_TITLE,
         });
       }

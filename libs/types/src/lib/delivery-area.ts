@@ -5,6 +5,7 @@ export class DeliveryArea {
   id: string;
   title: string;
   price: number;
+  percentagePrice?: number;
   minOrderPrice?: number;
   minPriceForFree?: number;
   isPost: boolean;
