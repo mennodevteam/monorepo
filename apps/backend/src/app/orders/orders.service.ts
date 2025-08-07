@@ -84,6 +84,7 @@ export class OrdersService {
         'menu.categories.products.variants',
         'menu.costs.includeProductCategory',
         'menu.costs.includeProduct',
+        'club',
       ],
     });
 
@@ -150,9 +151,11 @@ export class OrdersService {
       }
     }
 
-    if (dto.useWallet) {
+    order.totalPrice = OrderDto.total(dto, menu);
+
+    if (dto.useWallet && order.customer && shop.club) {
       const member: Member = await this.membersRepo.findOne({
-        where: { user: { id: order.customer.id }, club: { id: order.shop.club.id } },
+        where: { user: { id: order.customer.id }, club: { id: shop.club.id } },
         relations: ['wallet'],
       });
       if (member?.wallet?.charge) {
@@ -160,7 +163,6 @@ export class OrdersService {
       }
     }
 
-    order.totalPrice = OrderDto.total(dto, menu);
     return order;
   }
 
@@ -190,8 +192,12 @@ export class OrdersService {
     } else order.qNumber = 1;
 
     if (order.useWallet) {
+      const shop = await this.shopsRepo.findOne({
+        where: { id: order.shop.id },
+        relations: ['club'],
+      });
       const member: Member = await this.membersRepo.findOne({
-        where: { user: { id: order.customer.id }, club: { id: order.shop.club.id } },
+        where: { user: { id: order.customer.id }, club: { id: shop.club.id } },
         relations: ['wallet'],
       });
       if (member?.wallet?.charge >= order.useWallet) {

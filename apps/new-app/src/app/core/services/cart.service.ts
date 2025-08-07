@@ -394,7 +394,7 @@ export class CartService {
         this.clear(true);
         return order;
       }
-    } catch (error) {
+    } finally {
       this.saving.set(false);
     }
     return null;

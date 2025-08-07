@@ -41,17 +41,16 @@ export class MenuService {
           },
           {
             name: 'description',
-            weight: 0.2,
+            weight: 0.5,
           },
           {
             name: 'variants.title',
-            weight: 0.6,
+            weight: 0.5,
           },
         ],
         threshold: 0.2,
       });
       const result = fuse.search(this.searchText());
-      console.log(result);
       return [
         {
           title: this.translate.instant('menu.searchResults'),

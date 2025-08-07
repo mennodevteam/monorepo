@@ -95,7 +95,8 @@
     "discountCouponOrderTypeWarning": "این کد تخفیف برای نوع سفارش دیگری است",
     "stockLimit": "موجودی آیتم انتخاب شده {{value}} عدد بیشتر نیست",
     "basketLimit": "در هر سفارش، امکان انتخاب بیش از {{value}} عدد از این آیتم وجود ندارد.",
-    "sendTo": "ارسال به"
+    "sendTo": "ارسال به",
+    "redirectingToPayment": "در حال انتقال به درگاه پرداخت..."
   },
   "menu": {
     "add": "افزودن",

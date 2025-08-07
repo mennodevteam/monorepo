@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Order, OrderDto } from '@menno/types';
 import { PayService } from './pay.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +12,8 @@ export class OrdersService {
   constructor(
     private http: HttpClient,
     private payService: PayService,
+    private snack: MatSnackBar,
+    private translate: TranslateService,
   ) {}
 
   async save(dto: OrderDto) {
@@ -38,7 +42,10 @@ export class OrdersService {
 
     if (link === '0') {
       return this.save(dto);
-    } else if (link) await this.payService.redirect(link);
+    } else if (link) {
+      this.snack.open(this.translate.instant('cart.redirectingToPayment'), '', { duration: 4000 });
+      await this.payService.redirect(link);
+    }
     return;
   }
 

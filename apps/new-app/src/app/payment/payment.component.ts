@@ -29,8 +29,8 @@ import { AnalyticsService } from '../core/services/analytics.service';
     MatListModule,
     FormsModule,
     AddressListComponent,
-    AlertBannerComponent
-],
+    AlertBannerComponent,
+  ],
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.scss',
 })
@@ -72,9 +72,9 @@ export class PaymentComponent {
     this.analytics.trackEvent('place_order_attempted', {
       itemCount: this.cart.length(),
       totalAmount: this.total(),
-      paymentType: this.cart.paymentType()
+      paymentType: this.cart.paymentType(),
     });
-    
+
     const order = await this.cart.complete();
     if (order) {
       // Track successful order placement
@@ -82,11 +82,11 @@ export class PaymentComponent {
         orderId: order.id,
         itemCount: this.cart.length(),
         totalAmount: this.total(),
-        paymentType: this.cart.paymentType()
+        paymentType: this.cart.paymentType(),
       });
-      
+
       ((order.shop = this.shopService.shop),
-        this.router.navigate(['/orders', order.id], { replaceUrl: true, state: { order } }));
+        this.router.navigate(['/orders/thanks', order.id], { replaceUrl: true, state: { order } }));
     }
   }
 }
