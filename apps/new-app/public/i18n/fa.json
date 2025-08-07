@@ -101,6 +101,7 @@
     "add": "افزودن",
     "searchPlaceholder": "جستجوی در {{value}}...",
     "otherProducts": "سایر {{value}}",
+    "searchResults": "نتایج جستجو",
     "category": {
       "DEFAULT": "منو",
       "CAFE": "منو",

@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, WritableSignal, computed, effect, signal } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { BusinessCategory, Menu, OrderType, Product } from '@menno/types';
+import { BusinessCategory, Menu, OrderType, Product, ProductCategory } from '@menno/types';
 import { ShopService } from './shop.service';
 import { BehaviorSubject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { CampaignService } from './campaign.service';
+import Fuse from 'fuse.js';
 
 @Injectable({
   providedIn: 'root',
@@ -30,19 +31,35 @@ export class MenuService {
   });
 
   searchCategories = computed(() => {
-    const menu: Menu = JSON.parse(JSON.stringify(this.baseMenu() || {}));
     if (this.searchText()) {
-      menu.categories = Menu.search(menu, this.searchText());
+      const products = Menu.getProductList(this.menu());
+      const fuse = new Fuse(products, {
+        keys: [
+          {
+            name: 'title',
+            weight: 1,
+          },
+          {
+            name: 'description',
+            weight: 0.2,
+          },
+          {
+            name: 'variants.title',
+            weight: 0.6,
+          },
+        ],
+        threshold: 0.2,
+      });
+      const result = fuse.search(this.searchText());
+      console.log(result);
+      return [
+        {
+          title: this.translate.instant('menu.searchResults'),
+          products: result.map((x) => x.item),
+        } as ProductCategory,
+      ];
     }
-    Menu.setRefsAndSort(
-      menu,
-      this.type() == null ? undefined : this.type(),
-      undefined,
-      undefined,
-      this.star(),
-      false,
-    );
-    return menu.categories || [];
+    return [];
   });
 
   categories = computed(() => {
