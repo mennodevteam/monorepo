@@ -30,7 +30,7 @@
         {{ 'payment.useWallet' | translate }}
       </span>
       <span matListItemLine f-sm>
-        {{ 'payment.walletBallance' | translate: { value: (club.wallet.charge | menuCurrency) } }}
+        {{ 'payment.walletBallance' | translate: { value: (club.wallet.charge | menuCurrency : true) } }}
       </span>
     </mat-list-option>
   </mat-selection-list>
