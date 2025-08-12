@@ -1,0 +1,56 @@
+@if (loading()) {
+  <app-data-loading />
+}
+
+@if (!loading() && isEmpty()) {
+  <div class="empty-state">
+    <app-empty-state
+      [text]="'deliveryArea.emptyState.title' | translate"
+      [icon]="'fa-solid fa-map-marker-alt'"
+    >
+    </app-empty-state>
+    <div class="empty-state-actions">
+      <button mat-raised-button color="primary" (click)="onAddNewArea()">
+        <i class="fa-solid fa-plus"></i>
+        {{ 'deliveryArea.emptyState.addFirst' | translate }}
+      </button>
+    </div>
+  </div>
+}
+
+@if (!loading() && !isEmpty()) {
+  <mat-list>
+    @for (area of deliveryAreas(); track area.id) {
+      <mat-list-item>
+        <div class="list-item-content">
+          <div class="area-info">
+            <span class="area-title">{{ area.title }}</span>
+            @if (area.label) {
+              <span class="area-label">{{ area.label }}</span>
+            }
+            <span class="area-price">{{ area.price | menuCurrency }}</span>
+          </div>
+          <div class="area-status">
+            <mat-chip [color]="area.status === Status.Active ? 'accent' : 'warn'" class="status-chip">
+              {{ (area.status === Status.Active ? 'app.active' : 'app.inactive') | translate }}
+            </mat-chip>
+          </div>
+        </div>
+        <button mat-icon-button matListItemMeta [matMenuTriggerFor]="actionMenu" [disabled]="loading()">
+          <i class="fa-solid fa-ellipsis-vertical"></i>
+        </button>
+        <mat-menu #actionMenu="matMenu">
+          <button mat-menu-item (click)="onEditArea(area)">
+            <i class="far fa-pencil-alt mat-icon"></i>
+            {{ 'app.edit' | translate }}
+          </button>
+          <button mat-menu-item (click)="onDeleteArea(area)">
+            <i class="far fa-trash-alt mat-icon"></i>
+            {{ 'app.remove' | translate }}
+          </button>
+        </mat-menu>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    }
+  </mat-list>
+} 

@@ -1,0 +1,86 @@
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  gap: 24px;
+  padding: 24px;
+}
+
+.empty-state-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.list-item-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 0;
+}
+
+.area-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.area-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+}
+
+.area-label {
+  font-size: 12px;
+  color: #666;
+}
+
+.area-price {
+  font-weight: 500;
+  font-size: 13px;
+  color: #1976d2;
+}
+
+.area-status {
+  margin-right: 8px;
+}
+
+.status-chip {
+  font-size: 11px;
+  height: 20px;
+  
+  &.mat-mdc-chip.mat-mdc-chip-accent {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  &.mat-mdc-chip.mat-mdc-chip-warn {
+    background-color: #f44336;
+    color: white;
+  }
+}
+
+mat-list-item {
+  padding: 8px 16px;
+  
+  &:hover {
+    background-color: #f5f5f5;
+  }
+}
+
+@media (max-width: 768px) {
+  .list-item-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .area-status {
+    margin-right: 0;
+    align-self: flex-end;
+  }
+} 

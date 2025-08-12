@@ -1,0 +1,29 @@
+<mat-toolbar class="page-toolbar">
+  <button mat-icon-button goBack>
+    <i class="fa-regular fa-arrow-right"></i>
+  </button>
+  <h1 flex>{{ 'deliveryArea.pageTitle' | translate }}</h1>
+</mat-toolbar>
+
+<mat-drawer-container class="drawer-container">
+  <mat-drawer mode="side" opened disableClose class="drawer">
+    <app-delivery-area-list
+      [deliveryAreas]="deliveryAreasData"
+      [loading]="isLoading"
+      [isEmpty]="isEmpty"
+      (editArea)="onEditArea($event)"
+      (deleteArea)="onDeleteArea($event)"
+      (addNewArea)="onAddNewArea()"
+    />
+  </mat-drawer>
+
+  <mat-drawer-content class="drawer-content">
+    <app-delivery-area-map
+      [deliveryAreas]="deliveryAreasData"
+      [isEmpty]="isEmpty"
+      (polygonCreated)="onPolygonCreated($event)"
+      (polygonEdited)="onPolygonEdited($event)"
+      (polygonDeleted)="onPolygonDeleted($event)"
+    />
+  </mat-drawer-content>
+</mat-drawer-container>

@@ -57,7 +57,7 @@
     </span>
     @if (
       cart.address()?.deliveryArea?.minOrderPrice &&
-      cart.address()!.deliveryArea!.minOrderPrice! > cart.realSum()
+      cart.address()!.deliveryArea!.minOrderPrice! > cart.total()
     ) {
       <span matListItemLine class="error-text">
         <i class="fa-solid fa-triangle-exclamation fa-xs"></i>

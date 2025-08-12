@@ -1,0 +1,12 @@
+<div
+  class="map-container"
+  leaflet
+  [leafletOptions]="options"
+  leafletDraw
+  [leafletDrawOptions]="drawOptions"
+  (leafletDrawCreated)="onDrawCreated($event)"
+  (leafletDrawEdited)="onDrawEdited($event)"
+  (leafletDrawDeleteStart)="onDrawDeleted($event)"
+>
+  <div [leafletLayer]="drawItems"></div>
+</div>

@@ -835,5 +835,45 @@
     "maxUseDescription": "تعداد کل دفعاتی که این کد تخفیق قابل استفاده است",
     "maxUseEmptyHint": "خالی یا 0 = بدون محدودیت",
     "dateRangeDescription": "بازه زمانی فعال بودن کد تخفیف را مشخص کنید"
+  },
+  "deliveryArea": {
+    "pageTitle": "محدوده ارسال پیک",
+    "drawPolygonErrorTooltip": "امکان درج نقطه در این مکان وجود ندارد",
+    "drawPolygonTooltipCont": "نقطه دیگری از لبه منطقه را روی نقشه کلیک کنید",
+    "drawPolygonTooltipStart": "یکی از لبه های منطقه خود را روی نقشه کلیک کنید",
+    "drawPolygonTooltipEnd": "برای تکمیل روی نقطه اول کلیک کنید",
+    "removeTooltip": "برای حذف کافیست یک منطقه را از روی نقشه انتخاب کنید",
+    "undo": "حدف آخرین نقطه درج شده",
+    "removeDialogTitle": "حذف محدوده سرویس دهی",
+    "removeDialogDescription": "درصورت اطمینان از حذف {{value}}، تایید کنید.",
+    "clearAll": "حدف همه",
+    "add": "ایجاد منطقه جدید",
+    "emptyState": {
+      "title": "هیچ محدوده ارسالی تعریف نشده است",
+      "description": "برای شروع، اولین محدوده ارسال خود را ایجاد کنید",
+      "addFirst": "افزودن محدوده اول"
+    },
+    "mapPlaceholder": {
+      "title": "نقشه محدوده ارسال"
+    },
+    "shopNotSetDialog": {
+      "title": "موقعیت مکانی مجموعه",
+      "description": "موقعیت مکانی مجموعه مشخص نشده است و برای استفاده از این بخش نیاز به موقعیت مکانی مجموعه روی نقشه داریم.",
+      "okText": "ثبت موقعیت",
+      "cancelText": "بعدا ثبت میکنم"
+    }
+  },
+  "deliveryAreaDialog": {
+    "editTitle": "ویرایش محدوده",
+    "newTitle": "درج محدوده جدید",
+    "label": "برچسب (به کاربر نمایش داده ‌می‌شود)",
+    "labelPlaceholder": "مثلا: پس‌ کرایه یا به عهده مشتری",
+    "isPostLabel": "نوع ارسال",
+    "isPostFalse": "ارسال با پیک",
+    "isPostTrue": "ارسال با پست",
+    "minOrderPrice": "حداقل سفارش جهت ارسال",
+    "minOrderPriceHint": "درصورت کمتر بودن از مبلغ مشخص شده، امکان ثبت سفارش وجود ندارد",
+    "minPriceForFree": "حداقل سفارش ارسال رایگان",
+    "minPriceForFreeHint": "درصورت بیشتر بودن از مبلغ مشخص شده هزینه پیک رایگان است"
   }
 }

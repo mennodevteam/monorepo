@@ -6,6 +6,7 @@ import { ShopComponent } from './shop/shop.component';
 import { dirtyFormDeactivator } from '../core/guards/dirty-form-deactivator.guard';
 import { AppConfigComponent } from './app-config/app-config.component';
 import { AiChatbotComponent } from './ai-chatbot/ai-chatbot.component';
+import { DeliveryAreaComponent } from './delivery-area/delivery-area.component';
 
 export const settingsRoutes: Route[] = [
   {
@@ -17,6 +18,7 @@ export const settingsRoutes: Route[] = [
       { path: 'shop', component: ShopComponent, canDeactivate: [dirtyFormDeactivator] },
       { path: 'app-config', component: AppConfigComponent, canDeactivate: [dirtyFormDeactivator] },
       { path: 'ai-chatbot', component: AiChatbotComponent, canDeactivate: [dirtyFormDeactivator] },
+      { path: 'delivery-area', component: DeliveryAreaComponent },
       { path: '', redirectTo: 'shop', pathMatch: 'full' },
     ],
   },
