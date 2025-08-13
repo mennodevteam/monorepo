@@ -87,6 +87,10 @@ export const AppConfigSchema = new EntitySchema<AppConfig>({
       type: Number,
       default: 2,
     },
+    welcomeMessage: {
+      type: 'simple-json',
+      nullable: true,
+    },
   },
   relations: {
     theme: {

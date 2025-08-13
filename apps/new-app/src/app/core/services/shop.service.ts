@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { BusinessCategory, OrderType, Plugin, Shop } from '@menno/types';
 import { environment } from '../../../environments/environment';
 import { AuthService } from './auth.service';
 import { ThemeService } from './theme.service';
 import { BehaviorSubject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { WelcomeMessageDialogComponent } from '../../common/components/welcome-message-dialog/welcome-message-dialog.component';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +21,7 @@ export class ShopService {
     private auth: AuthService,
     private themeService: ThemeService,
     private translate: TranslateService,
+    private dialog: MatDialog,
   ) {
     this.load();
   }
@@ -44,6 +47,17 @@ export class ShopService {
         this.themeService.setThemeFromColor(
           shop.appConfig.themeHex || shop.appConfig.theme.primaryColor,
           shop.appConfig.themeMode,
+        );
+      }
+
+      if (shop.appConfig?.welcomeMessage) {
+        setTimeout(
+          () => {
+            this.dialog.open(WelcomeMessageDialogComponent, {
+              panelClass: 'visible-overflow',
+            });
+          },
+          (shop.appConfig.welcomeMessage.delayInSeconds || 0) * 1000,
         );
       }
 

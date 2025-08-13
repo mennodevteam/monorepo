@@ -39,5 +39,10 @@ export class AppConfig {
   menuViewType: MenuViewType;
   ding: boolean;
   dings: string[];
+  welcomeMessage?: {
+    title: string;
+    description: string;
+    delayInSeconds?: number;
+  };
   menuCols: number;
 }

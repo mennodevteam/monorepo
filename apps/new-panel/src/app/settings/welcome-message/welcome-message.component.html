@@ -1,0 +1,60 @@
+<mat-toolbar class="content-toolbar" fxLayoutGap="8px">
+  <h1 fxFlex>{{ 'settings.welcomeMessage' | translate }}</h1>
+  <button mat-flat-button (click)="save()" [disabled]="!form.dirty || saveMutation.isPending()">
+    {{ 'app.save' | translate }}
+  </button>
+</mat-toolbar>
+
+<form [formGroup]="form">
+  <main p-md w-md fxLayout="column" fxLayoutGap="16px">
+    <!-- Welcome Message Section -->
+    <mat-card appearance="outlined">
+      <mat-card-content fxLayout="column" fxLayoutGap="16px">
+        <h3>{{ 'welcomeMessage.titleSection' | translate }}</h3>
+        <p>{{ 'welcomeMessage.titleDescription' | translate }}</p>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'welcomeMessage.title' | translate }}</mat-label>
+          <input
+            matInput
+            formControlName="title"
+            placeholder="{{ 'welcomeMessage.titlePlaceholder' | translate }}"
+          />
+          <mat-error *ngIf="form.get('title')?.hasError('required')">
+            {{ 'app.required' | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'welcomeMessage.description' | translate }}</mat-label>
+          <textarea
+            matInput
+            rows="4"
+            formControlName="description"
+            placeholder="{{ 'welcomeMessage.descriptionPlaceholder' | translate }}"
+          >
+          </textarea>
+          <mat-error *ngIf="form.get('description')?.hasError('required')">
+            {{ 'app.required' | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'welcomeMessage.delay' | translate }}</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="delayInSeconds"
+            placeholder="{{ 'welcomeMessage.delayPlaceholder' | translate }}"
+            eng
+            ltr
+          />
+          <mat-hint>{{ 'welcomeMessage.delayHint' | translate }}</mat-hint>
+          <mat-error *ngIf="form.get('delayInSeconds')?.hasError('min')">
+            {{ 'app.minValue' | translate: { value: 0 } }}
+          </mat-error>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+  </main>
+</form>

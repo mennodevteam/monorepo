@@ -136,3 +136,7 @@ mat-selection-list {
   text-align: center !important;
   align-self: center !important;
 }
+
+.visible-overflow.mat-mdc-dialog-panel .mat-mdc-dialog-surface {
+  overflow: visible !important;
+}

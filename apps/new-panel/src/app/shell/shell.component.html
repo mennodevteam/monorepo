@@ -232,6 +232,15 @@
         <a
           mat-list-item
           routerLinkActive="active-link"
+          routerLink="/settings/welcome-message"
+          (click)="isSmallScreen() && isDrawerClose.set(true)"
+        >
+          <i matListItemIcon class="fa-duotone fa-comment-dots"></i>
+          <span matListItemTitle>{{ 'settings.welcomeMessage' | translate }}</span>
+        </a>
+        <a
+          mat-list-item
+          routerLinkActive="active-link"
           routerLink="/settings/sms"
           (click)="isSmallScreen() && isDrawerClose.set(true)"
         >
