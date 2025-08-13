@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormComponent } from '../../core/guards/dirty-form-deactivator.guard';
 import { ShopService } from '../../shop/shop.service';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-welcome-message',
@@ -25,6 +26,7 @@ import { ShopService } from '../../shop/shop.service';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatCheckboxModule,
   ],
   standalone: true,
 })
@@ -36,13 +38,40 @@ export class WelcomeMessageComponent implements FormComponent {
   private readonly shop = inject(ShopService);
 
   form = new FormGroup({
-    title: new FormControl<string>(this.shop.data()?.appConfig?.welcomeMessage?.title || '', [Validators.required]),
-    description: new FormControl<string>(this.shop.data()?.appConfig?.welcomeMessage?.description || '', [Validators.required]),
-    delayInSeconds: new FormControl<number>(this.shop.data()?.appConfig?.welcomeMessage?.delayInSeconds || 0, [Validators.min(0)]),
+    enabled: new FormControl<boolean>(this.shop.data()?.appConfig?.welcomeMessage?.enabled ?? true),
+    title: new FormControl<string>(this.shop.data()?.appConfig?.welcomeMessage?.title || '', [
+      Validators.required,
+    ]),
+    description: new FormControl<string>(this.shop.data()?.appConfig?.welcomeMessage?.description || '', [
+      Validators.required,
+    ]),
+    delayInSeconds: new FormControl<number>(
+      this.shop.data()?.appConfig?.welcomeMessage?.delayInSeconds || 0,
+      [Validators.min(0)],
+    ),
   });
 
+  constructor() {
+    if (!this.shop.data()?.appConfig?.welcomeMessage?.enabled) {
+      this.form.get('title')?.disable();
+      this.form.get('description')?.disable();
+      this.form.get('delayInSeconds')?.disable();
+    }
+    this.form.get('enabled')?.valueChanges.subscribe((value) => {
+      if (!value) {
+        this.form.get('title')?.disable();
+        this.form.get('description')?.disable();
+        this.form.get('delayInSeconds')?.disable();
+      } else {
+        this.form.get('title')?.enable();
+        this.form.get('description')?.enable();
+        this.form.get('delayInSeconds')?.enable();
+      }
+    });
+  }
+
   saveMutation = injectMutation(() => ({
-    mutationFn: (data: { welcomeMessage: { title: string; description: string; delayInSeconds?: number } }) => 
+    mutationFn: (data: { welcomeMessage: { title: string; description: string; delayInSeconds?: number } }) =>
       lastValueFrom(this.http.post('/appConfigs', { welcomeMessage: data.welcomeMessage })),
     onSuccess: () => {
       this.snack.open(this.t.instant('app.savedSuccessfully'), '', { panelClass: 'success' });

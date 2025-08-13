@@ -50,7 +50,7 @@ export class ShopService {
         );
       }
 
-      if (shop.appConfig?.welcomeMessage) {
+      if (shop.appConfig?.welcomeMessage?.enabled) {
         setTimeout(
           () => {
             this.dialog.open(WelcomeMessageDialogComponent, {

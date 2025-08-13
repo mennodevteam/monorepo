@@ -40,6 +40,7 @@ export class AppConfig {
   ding: boolean;
   dings: string[];
   welcomeMessage?: {
+    enabled?: boolean;
     title: string;
     description: string;
     delayInSeconds?: number;

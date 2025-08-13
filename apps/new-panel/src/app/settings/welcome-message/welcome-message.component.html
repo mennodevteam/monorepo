@@ -13,12 +13,17 @@
         <h3>{{ 'welcomeMessage.titleSection' | translate }}</h3>
         <p>{{ 'welcomeMessage.titleDescription' | translate }}</p>
 
+        <mat-checkbox formControlName="enabled">
+          {{ 'welcomeMessage.enabled' | translate }}
+        </mat-checkbox>
+
         <mat-form-field appearance="outline">
           <mat-label>{{ 'welcomeMessage.title' | translate }}</mat-label>
           <input
             matInput
             formControlName="title"
             placeholder="{{ 'welcomeMessage.titlePlaceholder' | translate }}"
+            [disabled]="!form.get('enabled')?.value"
           />
           <mat-error *ngIf="form.get('title')?.hasError('required')">
             {{ 'app.required' | translate }}
@@ -32,6 +37,7 @@
             rows="4"
             formControlName="description"
             placeholder="{{ 'welcomeMessage.descriptionPlaceholder' | translate }}"
+            [disabled]="!form.get('enabled')?.value"
           >
           </textarea>
           <mat-error *ngIf="form.get('description')?.hasError('required')">
@@ -46,6 +52,7 @@
             type="number"
             formControlName="delayInSeconds"
             placeholder="{{ 'welcomeMessage.delayPlaceholder' | translate }}"
+            [disabled]="!form.get('enabled')?.value"
             eng
             ltr
           />

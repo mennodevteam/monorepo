@@ -401,6 +401,7 @@
   "welcomeMessage": {
     "titleSection": "پیام خوشامدگویی",
     "titleDescription": "پیام خوشامدگویی که در ابتدای ورود مشتریان به سایت نمایش داده می‌شود",
+    "enabled": "فعال",
     "title": "عنوان",
     "titlePlaceholder": "عنوان پیام خوشامدگویی...",
     "description": "توضیحات",
