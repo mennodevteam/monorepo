@@ -657,6 +657,8 @@
   },
   "members": {
     "title": "مشتریان",
+    "selectedMembers": "{{value}} مشتری انتخاب شده",
+    "deselectAll": "لغو انتخاب",
     "downloadCsv": "دانلود CSV",
     "filterTitle": "فیلتر مشتریان",
     "sendSmsToFilter": "ارسال پیامک به {{value}} مشتری",

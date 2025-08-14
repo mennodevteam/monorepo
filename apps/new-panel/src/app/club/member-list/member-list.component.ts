@@ -2,7 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
-import { Chat, FilterMemberV2Dto, FilterMemberV2ResponseDto, Member } from '@menno/types';
+import { Chat, FilterMemberV2Dto, FilterMemberV2ResponseDto, Member, NewSmsDto } from '@menno/types';
 import { injectMutation, injectQuery } from '@tanstack/angular-query-experimental';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { SHARED } from '../../shared';
@@ -53,6 +53,8 @@ export class MemberListComponent {
   private clubService = inject(ClubService);
   private t = inject(TranslateService);
   private snack = inject(MatSnackBar);
+  selectedMembers = signal<Member[]>([]);
+  selectedMembersIds = computed(() => this.selectedMembers().map((m) => m.id));
 
   public query = injectQuery(() => ({
     queryKey: ['memberList', this.filterDto()],
@@ -66,8 +68,17 @@ export class MemberListComponent {
   }));
 
   sendMessageMutation = injectMutation(() => ({
-    mutationFn: (dto: { filter: FilterMemberV2Dto; message: string }) =>
-      lastValueFrom(this.http.post<void>(`/members/filter-v2/sms`, dto)),
+    mutationFn: (dto: { filter?: FilterMemberV2Dto; message: string; receptors?: string[] }) => {
+      if (dto.receptors?.length) {
+        return lastValueFrom(
+          this.http.post<void>(`/sms/send`, {
+            receptors: dto.receptors,
+            messages: dto.receptors.map((id) => dto.message),
+          } as Partial<NewSmsDto>),
+        );
+      }
+      return lastValueFrom(this.http.post<void>(`/members/filter-v2/sms`, dto));
+    },
     onMutate: () => {
       this.snack.open(this.t.instant('sms.sending'), '', { duration: 4000 });
     },
@@ -209,7 +220,10 @@ export class MemberListComponent {
     });
   }
 
-  sendMessage() {
+  sendMessage(member?: Member) {
+    const receptors = member
+      ? [member.user.mobilePhone]
+      : this.selectedMembers().map((m) => m.user.mobilePhone);
     this.dialogService
       .prompt(
         this.t.instant('sms.newDialog.groupTitle'),
@@ -230,10 +244,16 @@ export class MemberListComponent {
           if (
             await this.dialogService.alert(
               this.t.instant('sms.groupConfirmDialog.title'),
-              this.t.instant('sms.groupConfirmDialog.description', { value: this.query.data()?.totalCount }),
+              this.t.instant('sms.groupConfirmDialog.description', {
+                value: receptors?.length || this.query.data()?.totalCount,
+              }),
             )
           ) {
-            this.sendMessageMutation.mutate({ filter: this.filterDto(), message: dto.text });
+            this.sendMessageMutation.mutate({
+              filter: receptors.length ? undefined : this.filterDto(),
+              message: dto.text,
+              receptors,
+            });
           }
         }
       });
@@ -274,5 +294,21 @@ export class MemberListComponent {
           this.walletChargeMutation.mutate({ memberId: member.id, amount: dto.amount });
         }
       });
+  }
+
+  onSelectMember(member: Member, checked: boolean) {
+    if (checked) {
+      this.selectedMembers.update((members) => [...members, member]);
+    } else {
+      this.selectedMembers.update((members) => members.filter((m) => m.id !== member.id));
+    }
+  }
+
+  onSelectAll(checked: boolean) {
+    if (checked) {
+      this.selectedMembers.update((members) => this.query.data()?.data?.map((m) => m.member) ?? []);
+    } else {
+      this.selectedMembers.set([]);
+    }
   }
 }

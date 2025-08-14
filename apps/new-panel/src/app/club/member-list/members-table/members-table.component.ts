@@ -1,4 +1,13 @@
-import { Component, input, Output, EventEmitter, ViewChild, Input, effect } from '@angular/core';
+import {
+  Component,
+  input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  Input,
+  effect,
+  viewChildren,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { FilterMemberV2ResponseDto, Member, User } from '@menno/types';
@@ -6,28 +15,42 @@ import { DataLoadingComponent } from '../../../shared/components/data-loading/da
 import { PdatePipe } from '../../../shared/pipes/pdate.pipe';
 import { SHARED } from '../../../shared';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
+import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-members-table',
   standalone: true,
-  imports: [CommonModule, MatTableModule, DataLoadingComponent, PdatePipe, SHARED, MatSortModule],
+  imports: [
+    CommonModule,
+    MatTableModule,
+    DataLoadingComponent,
+    PdatePipe,
+    SHARED,
+    MatSortModule,
+    MatCheckboxModule,
+  ],
   templateUrl: './members-table.component.html',
   styleUrl: './members-table.component.scss',
 })
 export class MembersTableComponent {
   User = User;
   data = input<FilterMemberV2ResponseDto[] | undefined>();
+  selectedMembers = input<string[]>([]);
   startIndex = input<number>(0);
 
   @ViewChild(MatSort) sort!: MatSort;
   @Output() sortChange = new EventEmitter<{ sortBy: string; sortType: 'ASC' | 'DESC' }>();
   @Output() starClick = new EventEmitter<Member>();
   @Output() walletClick = new EventEmitter<Member>();
-  
+  @Output() selectMember = new EventEmitter<{ member: Member; checked: boolean }>();
+  @Output() selectAll = new EventEmitter<boolean>();
+  checkboxElements = viewChildren(MatCheckbox);
+
   sortBy = input<string | undefined>('joinedAt');
   sortType = input<'ASC' | 'DESC' | undefined>('DESC');
 
   displayedColumns = [
+    'select',
     'index',
     'fullName',
     'mobilePhone',

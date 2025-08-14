@@ -1,4 +1,5 @@
 @let members = data();
+@let selectedMembersLength = selectedMembers().length;
 
 <table
   mat-table
@@ -8,6 +9,22 @@
   [matSortDirection]="sortType() === 'ASC' ? 'asc' : 'desc'"
   (matSortChange)="onMatSortChange($event)"
 >
+  <ng-container matColumnDef="select">
+    <th mat-header-cell *matHeaderCellDef style="width: 64px">
+      <mat-checkbox
+        [checked]="selectedMembers().length === members?.length"
+        (change)="selectAll.emit($event.checked)"
+        [indeterminate]="selectedMembersLength > 0 && members && selectedMembersLength < members.length"
+      />
+    </th>
+    <td mat-cell *matCellDef="let row">
+      <mat-checkbox
+        [checked]="selectedMembers().includes(row.member.id)"
+        (change)="selectMember.emit({ member: row.member, checked: $event.checked })"
+      />
+    </td>
+  </ng-container>
+
   <ng-container matColumnDef="index">
     <th mat-header-cell *matHeaderCellDef>#</th>
     <td mat-cell *matCellDef="let row; let i = index">
