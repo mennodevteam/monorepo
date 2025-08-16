@@ -5,10 +5,24 @@
   </button>
 </mat-toolbar>
 <main p-md>
-  <div fxLayout="row">
+  <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start center">
     <app-search-member-autocomplete (userSelect)="customerFilter.set($event?.user?.id)" />
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'app.dateRange' | translate }}</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate [(ngModel)]="fromDate" placeholder="{{ 'app.fromDate' | translate }}" />
+        <input matEndDate [(ngModel)]="toDate" placeholder="{{ 'app.toDate' | translate }}" />
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    @if (fromDate() || toDate()) {
+      <button mat-icon-button (click)="fromDate.set(undefined); toDate.set(undefined)" id="clear-filter">
+        <i class="fa-regular fa-circle-xmark"></i>
+      </button>
+    }
   </div>
-  <mat-toolbar style="overflow-x: auto;">
+  <mat-toolbar style="overflow-x: auto">
     <mat-chip-listbox [(ngModel)]="statesFilter" multiple>
       <div fxLayout="row">
         @if (statesFilter().length < DEFAULT_STATES.length) {

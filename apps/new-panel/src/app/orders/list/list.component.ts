@@ -21,6 +21,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { CardComponent } from './card/card.component';
 import { DialogService } from '../../core/services/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 const SCROLL_STORAGE_KEY = 'orderList_scrollPosition';
 
@@ -48,6 +49,7 @@ const DEFAULT_STATES = [
     MatChipsModule,
     SearchMemberAutocompleteComponent,
     CardComponent,
+    MatDatepickerModule,
   ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
@@ -68,13 +70,31 @@ export class OrderListComponent {
   statesFilter = signal<OrderState[]>(
     this.queryParams['states']?.split(',')?.map((x: string) => Number(x)) || DEFAULT_STATES,
   );
+  fromDate = signal<Date | undefined>(
+    this.queryParams['fromDate'] ? new Date(this.queryParams['fromDate']) : undefined,
+  );
+  toDate = signal<Date | undefined>(
+    this.queryParams['toDate'] ? new Date(this.queryParams['toDate']) : undefined,
+  );
   customerFilter = signal<string | undefined>(this.queryParams['customer']);
+  dateFilter = computed(() => {
+    const fromDate = (this.fromDate() as any)?._d || this.fromDate();
+    if (fromDate) {
+      fromDate.setHours(0, 0, 0, 0);
+    }
+    const toDate = (this.toDate() as any)?._d || this.toDate();
+    if (toDate) {
+      toDate.setHours(23, 59, 59, 999);
+    }
+    return { fromDate, toDate };
+  });
   filterDto = computed<FilterOrderDto>(() => ({
     take: this.currentSize(),
     skip: this.currentPage() * this.currentSize(),
     states: this.statesFilter(),
     customerId: this.customerFilter() || undefined,
     withCount: true,
+    ...this.dateFilter(),
   }));
   query = injectQuery(() => ({
     queryKey: ['orders', this.filterDto()],
@@ -109,6 +129,8 @@ export class OrderListComponent {
           size: this.currentSize(),
           customer: this.customerFilter(),
           states: this.statesFilter()?.join(','),
+          fromDate: this.fromDate()?.toISOString(),
+          toDate: this.toDate()?.toISOString(),
         },
       });
     });
