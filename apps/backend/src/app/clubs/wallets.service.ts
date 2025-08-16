@@ -43,7 +43,7 @@ export class WalletsService {
       case WalletLogType.ManualCharge:
         text += `کیف پول شما به مبلغ ${PersianNumberService.withCommas(
           dto.amount
-        )} تومان شارژ شد و می‌توانید در سفارشات بعدی از آن استفاده کنید.\nموچودی کیف پول: ${PersianNumberService.withCommas(wallet.charge)} تومان`;
+        )} تومان شارژ شد و می‌توانید در سفارشات بعدی از آن استفاده کنید.\nموجودی کیف پول: ${PersianNumberService.withCommas(wallet.charge)} تومان`;
         break;
       case WalletLogType.PayOrder:
         text += `بابت ثبت سفارش مبلغ ${PersianNumberService.withCommas(
