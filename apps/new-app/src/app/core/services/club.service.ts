@@ -21,7 +21,8 @@ export class ClubService {
     private campaign: CampaignService,
   ) {
     effect(() => {
-      if (this.auth.user()) {
+      const user = this.auth.user();
+      if (user?.id) {
         this.getMember().then((member) => {
           if (member) this.member.set(member);
           else this.join();

@@ -212,6 +212,34 @@ export class ClubsService {
       relations: ['user', 'wallet'],
     });
     let filteredMembers = members;
+
+    // Filter by joinedAt
+    if (dto.joinedAtFromDate || dto.joinedAtToDate) {
+      filteredMembers = filteredMembers.filter((m) => {
+        if (dto.joinedAtFromDate && new Date(m.joinedAt).valueOf() < new Date(dto.joinedAtFromDate).valueOf())
+          return false;
+        if (dto.joinedAtToDate && new Date(m.joinedAt).valueOf() > new Date(dto.joinedAtToDate).valueOf())
+          return false;
+        return true;
+      });
+    }
+
+    if (dto.fromStar != undefined || dto.toStar != undefined) {
+      filteredMembers = filteredMembers.filter((m) => {
+        if (dto.fromStar != undefined && m.star < dto.fromStar) return false;
+        if (dto.toStar != undefined && m.star > dto.toStar) return false;
+        return true;
+      });
+    }
+
+    if (dto.query) {
+      filteredMembers = filteredMembers.filter((m) => {
+        return (
+          m.user && (User.fullName(m.user)?.includes(dto.query) || m.user.mobilePhone?.includes(dto.query))
+        );
+      });
+    }
+
     if (!members.length) return { data: [], totalCount: 0 };
     const userIds = members.map((m) => m.user.id);
 
@@ -277,25 +305,6 @@ export class ClubsService {
         }
         if (dto.minOrderCount != undefined && userOrders.length < dto.minOrderCount) return false;
         if (dto.maxOrderCount != undefined && userOrders.length > dto.maxOrderCount) return false;
-        return true;
-      });
-    }
-
-    // Filter by joinedAt
-    if (dto.joinedAtFromDate || dto.joinedAtToDate) {
-      filteredMembers = filteredMembers.filter((m) => {
-        if (dto.joinedAtFromDate && new Date(m.joinedAt).valueOf() < new Date(dto.joinedAtFromDate).valueOf())
-          return false;
-        if (dto.joinedAtToDate && new Date(m.joinedAt).valueOf() > new Date(dto.joinedAtToDate).valueOf())
-          return false;
-        return true;
-      });
-    }
-
-    if (dto.fromStar != undefined || dto.toStar != undefined) {
-      filteredMembers = filteredMembers.filter((m) => {
-        if (dto.fromStar != undefined && m.star < dto.fromStar) return false;
-        if (dto.toStar != undefined && m.star > dto.toStar) return false;
         return true;
       });
     }

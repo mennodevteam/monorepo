@@ -19,6 +19,7 @@ export class FilterMemberDto {
 }
 
 export class FilterMemberV2Dto {
+  query?: string;
   firstOrderFromDate?: Date;
   firstOrderToDate?: Date;
   lastOrderFromDate?: Date;
