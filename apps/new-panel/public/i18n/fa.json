@@ -11,6 +11,7 @@
     "cancel": "انصراف",
     "upload": "آپلود",
     "count": "تعداد",
+    "cost": "هزینه",
     "number": "{{value}} عدد",
     "fee": "فی",
     "total": "جمع‌کل",
@@ -53,7 +54,8 @@
     "confirmDeleteMessage": "آیا از حذف {{value}} اطمینان دارید؟",
     "required": "الزامی است",
     "minValue": "حداقل مقدار {{value}} است",
-    "errorOccurred": "خطایی رخ داد"
+    "errorOccurred": "خطایی رخ داد",
+    "loadMore": "نمایش بیشتر"
   },
   "home": {
     "title": "به منّو خوش آمدید",
@@ -160,7 +162,8 @@
     "dashboard": "داشبورد عملکرد فروش",
     "analytics": "آنالیتیکس",
     "materials": "انبار مواد اولیه",
-    "bom": "مواد اولیه {{value}}"
+    "bom": "مواد اولیه {{value}}",
+    "sms": "گزارش پیامک‌های ارسالی"
   },
   "login": {
     "title": "ورود به پنل"
@@ -895,5 +898,18 @@
     "minOrderPriceHint": "درصورت کمتر بودن از مبلغ مشخص شده، امکان ثبت سفارش وجود ندارد",
     "minPriceForFree": "حداقل سفارش ارسال رایگان",
     "minPriceForFreeHint": "درصورت بیشتر بودن از مبلغ مشخص شده هزینه پیک رایگان است"
+  },
+  "smsList": {
+    "pageTitle": "گزارش پیام‌های ارسالی",
+    "sentSuccess": "پیام با موفقیت ارسال شد",
+    "viewDetails": "مشاهده جزئیات",
+    "message": "پیام",
+    "receptors": "گیرندگان",
+    "status": {
+      "failed": "ناموفق",
+      "inQueue": "در صف",
+      "sent": "موفق",
+      "scheduled": "زمانبندی"
+    }
   }
 }

@@ -1,0 +1,21 @@
+.status-icon {
+  &.failed {
+    color: #f44336;
+  }
+  
+  &.in-queue {
+    color: #ff9800;
+  }
+  
+  &.sent {
+    color: #4caf50;
+  }
+  
+  &.scheduled {
+    color: #2196f3;
+  }
+}
+
+tr.selectable-row:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}

@@ -16,6 +16,7 @@ import { PricingComponent } from './pricing/pricing.component';
 import { WelcomeSetupComponent } from './welcome-setup/welcome-setup.component';
 import { missionsRoutes } from './missions/missions.routes';
 import { discountCouponsRoutes } from './discount-coupons/discount-coupons.routes';
+import { smsRoutes } from './sms-group/sms.routes';
 
 export const appRoutes: Route[] = [
   {
@@ -41,6 +42,7 @@ export const appRoutes: Route[] = [
           { path: 'inventory', children: materialsRoutes },
           { path: 'missions', children: missionsRoutes },
           { path: 'coupons', children: discountCouponsRoutes },
+          { path: 'sms', children: smsRoutes },
           { path: '', redirectTo: 'home', pathMatch: 'full' },
         ],
       },

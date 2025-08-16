@@ -1,0 +1,108 @@
+<mat-toolbar class="content-toolbar">
+  <h1 fxFlex>
+    {{ 'smsList.pageTitle' | translate }}
+  </h1>
+</mat-toolbar>
+
+<main p-md fxLayout="column" fxLayoutGap="24px">
+  <mat-card appearance="outlined">
+    <mat-card-content fxLayout="column" fxLayoutGap="24px">
+      @if (smsGroups?.length) {
+        <table mat-table [dataSource]="smsGroups" class="sms-table">
+          <!-- Message Column -->
+          <ng-container matColumnDef="message">
+            <th mat-header-cell *matHeaderCellDef>
+              {{ 'smsList.message' | translate }}
+            </th>
+            <td mat-cell *matCellDef="let group">{{ group.message }}</td>
+          </ng-container>
+
+          <!-- Created At Column -->
+          <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef>
+              {{ 'app.date' | translate }}
+            </th>
+            <td mat-cell *matCellDef="let group" width="230px">{{ group.createdAt | pdate : true }}</td>
+          </ng-container>
+
+          <!-- Cost Column -->
+          <ng-container matColumnDef="cost">
+            <th mat-header-cell *matHeaderCellDef>
+              {{ 'app.cost' | translate }}
+            </th>
+            <td mat-cell *matCellDef="let group" width="160px">
+              {{ group.cost | number: '1.0-0' | menuCurrency }}
+            </td>
+          </ng-container>
+
+          <!-- Receptors Column -->
+          <ng-container matColumnDef="receptors">
+            <th mat-header-cell *matHeaderCellDef>
+              {{ 'smsList.receptors' | translate }}
+            </th>
+            <td mat-cell *matCellDef="let group" width="120px">
+              {{
+                group.receptors?.length === 1
+                  ? group.receptors[0]
+                  : ('app.number' | translate: { value: group.count })
+              }}
+            </td>
+          </ng-container>
+
+          <!-- Failed Column -->
+          <ng-container matColumnDef="failed">
+            <th mat-header-cell *matHeaderCellDef matTooltip="{{ 'smsList.status.failed' | translate }}">
+              <i class="fas fa-times-circle status-icon failed"></i>
+            </th>
+            <td mat-cell *matCellDef="let group" width="64px" eng>{{ group.statusCount[0] | number }}</td>
+          </ng-container>
+
+          <!-- In Queue Column -->
+          <ng-container matColumnDef="inQueue">
+            <th mat-header-cell *matHeaderCellDef matTooltip="{{ 'smsList.status.inQueue' | translate }}">
+              <i class="fas fa-clock status-icon in-queue"></i>
+            </th>
+            <td mat-cell *matCellDef="let group" width="64px" eng>{{ group.statusCount[1] | number }}</td>
+          </ng-container>
+
+          <!-- Sent Column -->
+          <ng-container matColumnDef="sent">
+            <th mat-header-cell *matHeaderCellDef matTooltip="{{ 'smsList.status.sent' | translate }}">
+              <i class="fas fa-check-circle status-icon sent"></i>
+            </th>
+            <td mat-cell *matCellDef="let group" width="64px" eng>{{ group.statusCount[2] | number }}</td>
+          </ng-container>
+
+          <!-- Scheduled Column -->
+          <ng-container matColumnDef="scheduled">
+            <th mat-header-cell *matHeaderCellDef matTooltip="{{ 'smsList.status.scheduled' | translate }}">
+              <i class="fas fa-calendar-alt status-icon scheduled"></i>
+            </th>
+            <td mat-cell *matCellDef="let group" width="64px" eng>{{ group.statusCount[3] | number }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            mat-row
+            class="selectable-row"
+            [routerLink]="['./', row.id]"
+            *matRowDef="let row; columns: displayedColumns"
+          ></tr>
+        </table>
+      }
+      @if (query.isFetchingNextPage() || !query.data()) {
+        <app-data-loading />
+      } @else if (query.hasNextPage()) {
+        <button
+          mat-button
+          color="primary"
+          class="center-align load-more-button"
+          (click)="loadMore()"
+          [disabled]="query.isFetchingNextPage()"
+        >
+          {{ 'app.loadMore' | translate }}
+        </button>
+      }
+    </mat-card-content>
+  </mat-card>
+</main>

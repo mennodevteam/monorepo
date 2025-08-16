@@ -142,25 +142,6 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
-        routerLink="/reports/dashboard"
-        (click)="isSmallScreen() && isDrawerClose.set(true)"
-      >
-        <i matListItemIcon class="fa-duotone fa-chart-simple"></i>
-        <span matListItemTitle>{{ 'nav.dashboard' | translate }}</span>
-      </a>
-      <a
-        mat-list-item
-        routerLinkActive="active-link"
-        routerLink="/reports/analytics"
-        (click)="isSmallScreen() && isDrawerClose.set(true)"
-      >
-        <i matListItemIcon class="fa-duotone fa-chart-mixed"></i>
-        <span matListItemTitle>{{ 'nav.analytics' | translate }}</span>
-      </a>
-      <mat-divider />
-      <a
-        mat-list-item
-        routerLinkActive="active-link"
         routerLink="/club/members"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
@@ -184,6 +165,34 @@
       >
         <i matListItemIcon class="fa-duotone fa-bullseye-arrow"></i>
         <span matListItemTitle>{{ 'nav.missions' | translate }}</span>
+      </a>
+      <mat-divider />
+      <a
+        mat-list-item
+        routerLinkActive="active-link"
+        routerLink="/reports/dashboard"
+        (click)="isSmallScreen() && isDrawerClose.set(true)"
+      >
+        <i matListItemIcon class="fa-duotone fa-chart-simple"></i>
+        <span matListItemTitle>{{ 'nav.dashboard' | translate }}</span>
+      </a>
+      <a
+        mat-list-item
+        routerLinkActive="active-link"
+        routerLink="/reports/analytics"
+        (click)="isSmallScreen() && isDrawerClose.set(true)"
+      >
+        <i matListItemIcon class="fa-duotone fa-chart-mixed"></i>
+        <span matListItemTitle>{{ 'nav.analytics' | translate }}</span>
+      </a>
+      <a
+        mat-list-item
+        routerLinkActive="active-link"
+        routerLink="/sms"
+        (click)="isSmallScreen() && isDrawerClose.set(true)"
+      >
+        <i matListItemIcon class="fa-duotone fa-message-smile"></i>
+        <span matListItemTitle>{{ 'nav.sms' | translate }}</span>
       </a>
       <mat-divider />
       <a mat-list-item routerLinkActive="active-link" (click)="toggleSection('settings')">

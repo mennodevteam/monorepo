@@ -1,0 +1,21 @@
+
+.status-icon {
+  margin-right: 0.5rem;
+  vertical-align: middle;
+  
+  &.failed {
+    color: #f44336;
+  }
+  
+  &.in-queue {
+    color: #ff9800;
+  }
+  
+  &.sent {
+    color: #4caf50;
+  }
+  
+  &.scheduled {
+    color: #2196f3;
+  }
+}
