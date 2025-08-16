@@ -179,6 +179,7 @@ export class MemberListComponent {
   hasActiveFilters = computed(() => {
     const f = this.filterDto();
     return !!(
+      f.query ||
       f.joinedAtFromDate ||
       f.joinedAtToDate ||
       f.lastVisitFromDate ||
@@ -194,7 +195,7 @@ export class MemberListComponent {
     );
   });
 
-  removeFilter(type: 'joinedAt' | 'lastVisit' | 'firstOrder' | 'lastOrder' | 'orderCount') {
+  removeFilter(type: 'joinedAt' | 'lastVisit' | 'firstOrder' | 'lastOrder' | 'orderCount' | 'query' | 'star') {
     this.filterDto.update((dto) => {
       switch (type) {
         case 'joinedAt':
@@ -214,6 +215,10 @@ export class MemberListComponent {
             orderToDate: undefined,
             skip: 0,
           };
+        case 'query':
+          return { ...dto, query: undefined, skip: 0 };
+        case 'star':
+          return { ...dto, fromStar: undefined, toStar: undefined, skip: 0 };
         default:
           return dto;
       }

@@ -39,6 +39,12 @@
     @if (hasActiveFilters()) {
       <mat-toolbar-row>
         <mat-chip-set>
+          @if (filterDto().query) {
+            <mat-chip (click)="removeFilter('query')">
+              {{ 'members.query' | translate }}: {{ filterDto().query }}
+              <i class="fa-solid fa-xmark-circle"></i>
+            </mat-chip>
+          }
           @if (filterDto().joinedAtFromDate || filterDto().joinedAtToDate) {
             <mat-chip (click)="removeFilter('joinedAt')">
               {{ 'members.joinedAtDateRange' | translate }}:
@@ -108,6 +114,13 @@
             <mat-chip (click)="removeFilter('orderCount')">
               {{ 'members.orderCountBasedFilter' | translate }}: {{ filterDto().orderFromDate | pdate }} -
               {{ filterDto().orderToDate | pdate }}
+              <i class="fa-solid fa-xmark-circle"></i>
+            </mat-chip>
+          }
+          @let toStar = filterDto().toStar;
+          @if (filterDto().fromStar || (toStar && toStar < 5)) {
+            <mat-chip (click)="removeFilter('star')">
+              {{ 'members.starRange' | translate }}: {{ filterDto().fromStar }} - {{ toStar }}
               <i class="fa-solid fa-xmark-circle"></i>
             </mat-chip>
           }

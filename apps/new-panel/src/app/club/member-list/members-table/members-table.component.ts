@@ -16,6 +16,7 @@ import { PdatePipe } from '../../../shared/pipes/pdate.pipe';
 import { SHARED } from '../../../shared';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-members-table',
@@ -28,6 +29,7 @@ import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
     SHARED,
     MatSortModule,
     MatCheckboxModule,
+    MatTooltipModule,
   ],
   templateUrl: './members-table.component.html',
   styleUrl: './members-table.component.scss',

@@ -3,6 +3,10 @@
   <br />
   <form [formGroup]="filterForm" style="display: flex; flex-direction: column; gap: 16px">
     <mat-form-field appearance="outline">
+      <mat-label>{{ 'members.queryLabel' | translate }}</mat-label>
+      <input matInput placeholder="{{ 'members.queryPlaceholder' | translate }}" formControlName="query" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>{{ 'members.joinedAtDateRange' | translate }}</mat-label>
       <mat-date-range-input [formGroup]="filterForm" [rangePicker]="joinedAtPicker">
         <input

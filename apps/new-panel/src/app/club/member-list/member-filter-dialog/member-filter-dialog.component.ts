@@ -35,6 +35,7 @@ export class MemberFilterDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.filterForm = this.fb.group({
+      query: [data?.query || null],
       firstOrderFromDate: [data?.firstOrderFromDate || null],
       firstOrderToDate: [data?.firstOrderToDate || null],
       lastOrderFromDate: [data?.lastOrderFromDate || null],

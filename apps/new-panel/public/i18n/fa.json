@@ -673,6 +673,9 @@
     "minOrderCount": "حداقل تعداد سفارشات",
     "maxOrderCount": "حداکثر تعداد سفارشات",
     "orderDateRange": "بازه تاریخ سفارشات",
+    "query": "جستجو",
+    "queryPlaceholder": "جستجوی نام یا موبایل...",
+    "queryLabel": "جستجوی نام یا موبایل",
     "setStarDialog": {
       "title": "تنظیم ستاره",
       "starLabel": "ستاره"

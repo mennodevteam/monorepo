@@ -50,21 +50,33 @@
     <th mat-header-cell *matHeaderCellDef mat-sort-header="joinedAt">
       {{ 'membersTable.joinedAt' | translate }}
     </th>
-    <td mat-cell *matCellDef="let row">{{ row.joinedAt | pdate }}</td>
+    <td mat-cell *matCellDef="let row">
+      <span matTooltip="{{ row.joinedAt | pdate: true }}" matTooltipPosition="above">{{
+        row.joinedAt | pdate
+      }}</span>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="firstOrderTime">
     <th mat-header-cell *matHeaderCellDef mat-sort-header="firstOrder">
       {{ 'membersTable.firstOrderTime' | translate }}
     </th>
-    <td mat-cell *matCellDef="let row">{{ row.firstOrderTime | pdate }}</td>
+    <td mat-cell *matCellDef="let row">
+      <span matTooltip="{{ row.firstOrderTime | pdate: true }}" matTooltipPosition="above">{{
+        row.firstOrderTime | pdate
+      }}</span>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="lastOrderTime">
     <th mat-header-cell *matHeaderCellDef mat-sort-header="lastOrder">
       {{ 'membersTable.lastOrderTime' | translate }}
     </th>
-    <td mat-cell *matCellDef="let row">{{ row.lastOrderTime | pdate }}</td>
+    <td mat-cell *matCellDef="let row">
+      <span matTooltip="{{ row.lastOrderTime | pdate: true }}" matTooltipPosition="above">{{
+        row.lastOrderTime | pdate
+      }}</span>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="totalOrderCount">
@@ -89,7 +101,11 @@
     <th mat-header-cell *matHeaderCellDef mat-sort-header="lastVisit">
       {{ 'membersTable.lastVisitDate' | translate }}
     </th>
-    <td mat-cell *matCellDef="let row">{{ row.lastVisitDate | pdate }}</td>
+    <td mat-cell *matCellDef="let row">
+      <span matTooltip="{{ row.lastVisitDate | pdate: true }}" matTooltipPosition="above">{{
+        row.lastVisitDate | pdate
+      }}</span>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="wallet">
