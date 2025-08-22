@@ -27,7 +27,7 @@ export class MenuStatService {
       }
 
       await this.http
-        .post('/api/menuStats', { action, menuId: this.menu.menu().id, ...params } as MenuStatDto, {
+        .post('menuStats', { action, menuId: this.menu.menu().id, ...params } as MenuStatDto, {
           params: queryParams,
         })
         .toPromise();
