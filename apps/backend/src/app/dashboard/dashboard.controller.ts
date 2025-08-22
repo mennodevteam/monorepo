@@ -287,4 +287,109 @@ export class DashboardController {
 
     return response;
   }
+
+  @Roles(UserRole.Panel)
+  @Get('userStat/:from/:to')
+  async userStat(@LoginUser() user: AuthPayload, @Param('from') from: string, @Param('to') to: string) {
+    const shop = await this.auth.getPanelUserShop(user, ['menu']);
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
+
+    // Query 1: Get total count of unique users between the specified dates
+    const totalUniqueUsers = await this.menuStatsRepo
+      .createQueryBuilder('stat')
+      .select('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'uniqueUserCount')
+      .where('stat.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
+      .andWhere('stat.action = :action', { action: StatAction.LoadMenu })
+      .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
+      .getRawOne();
+
+    // Query 2: Get retention count (users who visited before the date range and also visited during the date range)
+    const retentionCount = await this.menuStatsRepo
+      .createQueryBuilder('stat')
+      .select('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'retentionCount')
+      .where('stat.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
+      .andWhere('stat.action = :action', { action: StatAction.LoadMenu })
+      .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
+      .andWhere(
+        'stat.user IN (SELECT DISTINCT ms.user FROM menu_stat ms WHERE ms.createdAt < :from AND ms.action = :action AND ms.menuId = :menuId)',
+        {
+          from: fromDate,
+          action: StatAction.LoadMenu,
+          menuId: shop.menu.id,
+        },
+      )
+      .getRawOne();
+
+    return {
+      uniqueUserCount: parseInt(totalUniqueUsers.uniqueUserCount) || 0,
+      retentionCount: parseInt(retentionCount.retentionCount) || 0,
+    };
+  }
+
+  @Roles(UserRole.Panel)
+  @Get('orderFunnel/:from/:to')
+  async orderFunnel(@LoginUser() user: AuthPayload, @Param('from') from: string, @Param('to') to: string) {
+    const shop = await this.auth.getPanelUserShop(user, ['menu']);
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
+
+    // Get unique user counts for each funnel step
+    const loadMenuCount = await this.menuStatsRepo
+      .createQueryBuilder('stat')
+      .select('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'count')
+      .where('stat.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
+      .andWhere('stat.action = :action', { action: StatAction.LoadMenu })
+      .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
+      .getRawOne();
+
+    const addToBasketCount = await this.menuStatsRepo
+      .createQueryBuilder('stat')
+      .select('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'count')
+      .where('stat.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
+      .andWhere('stat.action = :action', { action: StatAction.AddToCart })
+      .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
+      .getRawOne();
+
+    const viewCartCount = await this.menuStatsRepo
+      .createQueryBuilder('stat')
+      .select('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'count')
+      .where('stat.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
+      .andWhere('stat.action = :action', { action: StatAction.ViewCart })
+      .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
+      .getRawOne();
+
+    const viewCheckoutCount = await this.menuStatsRepo
+      .createQueryBuilder('stat')
+      .select('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'count')
+      .where('stat.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
+      .andWhere('stat.action = :action', { action: StatAction.ViewCheckout })
+      .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
+      .getRawOne();
+
+    const selectAddressCount = await this.menuStatsRepo
+      .createQueryBuilder('stat')
+      .select('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'count')
+      .where('stat.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
+      .andWhere('stat.action = :action', { action: StatAction.SelectAddress })
+      .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
+      .getRawOne();
+
+    const addOrderCount = await this.menuStatsRepo
+      .createQueryBuilder('stat')
+      .select('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'count')
+      .where('stat.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
+      .andWhere('stat.action = :action', { action: StatAction.AddOrder })
+      .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
+      .getRawOne();
+
+    return {
+      loadMenu: parseInt(loadMenuCount.count) || 0,
+      addToBasket: parseInt(addToBasketCount.count) || 0,
+      viewCart: parseInt(viewCartCount.count) || 0,
+      viewCheckout: parseInt(viewCheckoutCount.count) || 0,
+      selectAddress: parseInt(selectAddressCount.count) || 0,
+      addOrder: parseInt(addOrderCount.count) || 0,
+    };
+  }
 }
