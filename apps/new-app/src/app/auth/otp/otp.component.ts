@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnDestroy, ViewChild, effect, signal } from '@angular/core';
 import { PlatformLocation } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../core';
+import { AuthService, MenuStatService } from '../../core';
 import { COMMON } from '../../common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,6 +12,7 @@ import { NgOtpInputComponent, NgOtpInputModule } from 'ng-otp-input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { AnalyticsService } from '../../core/services/analytics.service';
+import { StatAction } from '@menno/types';
 
 @Component({
   selector: 'app-otp',
@@ -51,6 +52,7 @@ export class OtpComponent implements OnDestroy {
     private snack: MatSnackBar,
     private translate: TranslateService,
     private analytics: AnalyticsService,
+    private menuStat: MenuStatService,
   ) {
     const phone = this.router.getCurrentNavigation()?.extras?.state?.['phone'];
 
@@ -77,6 +79,7 @@ export class OtpComponent implements OnDestroy {
       const token = PersianNumberService.toEnglish(value.toString());
       try {
         const user = await this.auth.loginWithToken(this.phone, token);
+        this.menuStat.send(StatAction.LoginComplete);
         if (user?.firstName) {
           // Track successful login
           this.analytics.trackEvent('login_successful', {

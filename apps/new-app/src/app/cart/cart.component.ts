@@ -7,10 +7,11 @@ import { COMMON } from '../common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
-import { AuthService } from '../core';
+import { AuthService, MenuStatService } from '../core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AnalyticsService } from '../core/services/analytics.service';
+import { StatAction } from '@menno/types';
 
 @Component({
   selector: 'app-cart',
@@ -35,6 +36,7 @@ export class CartComponent {
     private router: Router,
     private auth: AuthService,
     private analytics: AnalyticsService,
+    private menuStat: MenuStatService,
   ) {
     this.noteControl = new FormControl(this.cart.note());
     this.noteControl.valueChanges.subscribe((value) => {
@@ -42,6 +44,8 @@ export class CartComponent {
     });
     if (this.cart.length() === 0) {
       this.location.back();
+    } else {
+      this.menuStat.send(StatAction.ViewCart, { value: this.cart.total() });
     }
 
     // Track cart view

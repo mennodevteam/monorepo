@@ -1,8 +1,8 @@
 import { Component, effect, untracked } from '@angular/core';
 
-import { AddressesService, CartService, MenuService } from '../../core';
+import { AddressesService, CartService, MenuService, MenuStatService } from '../../core';
 import { COMMON } from '../../common';
-import { Address, OrderType } from '@menno/types';
+import { Address, OrderType, StatAction } from '@menno/types';
 import { FormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
 import { AnalyticsService } from '../../core/services/analytics.service';
@@ -23,6 +23,7 @@ export class AddressListComponent {
     public addressesService: AddressesService,
     public cart: CartService,
     private analytics: AnalyticsService,
+    private menuStat: MenuStatService,
   ) {
     effect(() => {
       this.setAddresses();
@@ -45,6 +46,8 @@ export class AddressListComponent {
           addressId: this.cart.address()?.id,
           region: this.cart.address()?.region,
         });
+
+        this.menuStat.send(StatAction.SelectAddress);
       }
     });
   }

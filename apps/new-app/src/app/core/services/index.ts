@@ -4,6 +4,7 @@ export * from './cart.service';
 export * from './club.service';
 export * from './files.service';
 export * from './menu.service';
+export * from './menu-stat.service';
 export * from './orders.service';
 export * from './pay.service';
 export * from './pwa.service';

@@ -1,27 +1,19 @@
-import { Component, computed, ElementRef, inject, viewChild, ViewChild } from '@angular/core';
+import { Component, computed, ElementRef, inject, viewChild } from '@angular/core';
 
 import { COMMON } from '../../common';
-import { Product } from '@menno/types';
+import { Product, StatAction } from '@menno/types';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MenuService, flyInOutFromDown } from '../../core';
+import { MenuService, MenuStatService, flyInOutFromDown } from '../../core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { QuantitySelectorComponent } from '../../common/components/quantity-selector/quantity-selector.component';
 import { CartService } from '../../core/services/cart.service';
 import { ImageCarouselComponent } from '../../common/components/image-carousel/image-carousel.component';
-import { HttpClient } from '@angular/common/http';
-import { CampaignService } from '../../core/services/campaign.service';
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [
-    COMMON,
-    MatToolbarModule,
-    MatListModule,
-    QuantitySelectorComponent,
-    ImageCarouselComponent
-],
+  imports: [COMMON, MatToolbarModule, MatListModule, QuantitySelectorComponent, ImageCarouselComponent],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.scss',
   animations: [flyInOutFromDown()],
@@ -29,8 +21,7 @@ import { CampaignService } from '../../core/services/campaign.service';
 export class ProductDetailsComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly http = inject(HttpClient);
-  private readonly campaign = inject(CampaignService);
+  private readonly menuStat = inject(MenuStatService);
   Product = Product;
   product: Product;
   variantsListElement = viewChild('variantsList', { read: ElementRef });
@@ -46,13 +37,9 @@ export class ProductDetailsComponent {
     const product = this.menuService.getProductById(id);
     if (product) {
       this.product = product;
-    }
 
-    this.http
-      .get(`menuStats/clickProduct/${this.menuService.menu().id}/${this.product.id}`, {
-        params: this.campaign.params,
-      })
-      .toPromise();
+      this.menuStat.send(StatAction.ClickProduct, { productId: this.product.id });
+    }
   }
 
   submit() {

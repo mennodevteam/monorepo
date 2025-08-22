@@ -10,6 +10,7 @@ import {
   ProductItem,
   ProductVariant,
   Shop,
+  StatAction,
   Status,
 } from '@menno/types';
 import { MenuService } from './menu.service';
@@ -24,6 +25,7 @@ import { PersianNumberService } from '@menno/utils';
 import { CampaignService } from './campaign.service';
 import { InitialParamsService } from './initial-params.service';
 import { AnalyticsService } from './analytics.service';
+import { MenuStatService } from './menu-stat.service';
 
 const LOCAL_CART_QUANTITY_KEY = 'cartQuantity';
 
@@ -108,6 +110,7 @@ export class CartService {
     private club: ClubService,
     private initialParamsService: InitialParamsService,
     private analytics: AnalyticsService,
+    private menuStat: MenuStatService,
   ) {
     const table = this.initialParamsService.getValue('table');
     if (table) {
@@ -219,7 +222,7 @@ export class CartService {
         { productId: product.id, variantId: variant?.id, quantity: signal(1) },
       ]);
 
-      this.menuService.sendAddToCardStat(product.id);
+      this.menuStat.send(StatAction.AddToCart, { productId: product.id });
     }
 
     this.analytics.trackEvent('add_to_cart', { 
@@ -384,13 +387,15 @@ export class CartService {
         this.isPaymentRequired ||
         (this.isPaymentAvailable && this.paymentType() === OrderPaymentType.Online)
       ) {
-        const order = await this.ordersService.payAndAddOrder(this.dto());
+        const order = await this.ordersService.payAndAddOrder(this.dto(), this.total());
         if (order) {
+          this.menuStat.send(StatAction.AddOrder, { value: this.total() });
           this.clear(true);
           return order;
         }
       } else {
         const order = await this.ordersService.save(this.dto());
+        this.menuStat.send(StatAction.AddOrder, { value: this.total() });
         this.clear(true);
         return order;
       }

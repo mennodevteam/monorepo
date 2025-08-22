@@ -4,8 +4,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RedisKey, RedisService } from '../core/redis.service';
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
-import { CoreMessage, generateText } from 'ai';
+import { CoreMessage, generateText, tool } from 'ai';
+import { z } from 'zod';
 
+const MODEL = 'google/gemini-2.0-flash-001';
 @Injectable()
 export class AiChatbotService {
   constructor(
@@ -77,16 +79,25 @@ export class AiChatbotService {
       content: message,
     });
 
-    const { text, usage } = await generateText({
+    const { text, usage, toolCalls, toolResults, steps } = await generateText({
       model: createOpenAICompatible({
         baseURL: process.env.AI_BASE_URL,
         name: 'example',
         apiKey: process.env.AI_API_KEY,
-      }).chatModel('openai/gpt-4o-mini'),
+      }).chatModel(MODEL),
+      tools: {
+        getProductPriceAndInfo: tool({
+          description:
+            'اگر کاربر قیمت محصولات پرسید یا اطلاعاتی بیشتری از محصولات را خواسته باشد از این تابع استفاده کن',
+          parameters: z.object({
+            id: z.string(),
+          }),
+          execute: async ({ id }: { id: string }) => await this.getProductInfo(shopId, id),
+        }),
+      },
       messages,
+      maxSteps: 5,
     });
-
-    console.log('usage', usage);
 
     return text;
   }
@@ -112,34 +123,72 @@ export class AiChatbotService {
     if (!menuRedisData) menuRedisData = await this.redis.updateMenu(shopId);
     const menu: Menu = JSON.parse(menuRedisData);
     Menu.setRefsAndSort(menu, undefined, false, false);
-    const products = Menu.getProductList(menu).map((product) => {
-      let dataString = `* ${product.title}
--دسته بندی: ${product.category.title}
--توضیحات: ${product.description}
-`;
 
+    const products = Menu.getProductList(menu);
+    const info = `اطلاعات مجموعه: ${JSON.stringify(shopRedisData)}
+    محصولات:
+    ${products.map((x, index) => `[${index}]: ${x.title} - ${x.category.title}`).join('\n')}
+    `;
+    return info;
+  }
+
+  private async getProductInfo(shopId: string, id: string) {
+    console.log('getProductInfo', shopId, id);
+    const menu = await this.getMenuInfo(shopId);
+    const products = Menu.getProductList(menu);
+    const product = products[parseInt(id)];
+    if (product) {
+      let result = `
+      ${product.title} (دسته بندی: ${product.category.title})
+      ${product.description}
+      `;
       if (product.variants?.length) {
-        let variantString = `-انواع:`;
-        for (const variant of product.variants) {
-          variantString += `**${variant.title}
--قیمت: ${Product.realPrice(product, variant)}
--قیمت پس از تخفیف: ${Product.totalPrice(product, variant)}
--وضعیت: ${Product.isFinished(product, variant) ? 'تمام شده' : 'موجود'}\n\n`;
-        }
-        dataString += variantString;
+        result += `
+        ${product.variants
+          .map((x) => {
+            let result = `-${x.title} (قیمت: ${Product.realPrice(product, x)})`;
+            if (Product.hasDiscount(product, x)) {
+              result += ` قیمت پس از تخفیف: ${Product.totalPrice(product, x)}`;
+            }
+            if (Product.isFinished(product, x)) {
+              result += ` وضعیت: تمام شده`;
+            }
+            return result;
+          })
+          .join('\n')}
+        `;
       } else {
-        dataString += `-قیمت: ${Product.realPrice(product)}
--قیمت پس از تخفیف: ${Product.totalPrice(product)}
--وضعیت: ${Product.isFinished(product) ? 'تمام شده' : 'موجود'}`;
+        result += `
+        قیمت: ${Product.realPrice(product)}
+        `;
+        if (Product.hasDiscount(product)) {
+          result += `
+          قیمت پس از تخفیف: ${Product.totalPrice(product)}
+          `;
+          if (Product.isFinished(product)) {
+            result += ` وضعیت: تمام شده`;
+          }
+        }
       }
 
-      return dataString;
-    });
+      return result;
+    }
+    return null;
+  }
 
-    return `اطلاعات مجموعه: ${JSON.stringify(shopRedisData)}
+  private async getShopInfo(shopId: string) {
+    const shopRedisKey = this.redis.key(RedisKey.Shop, shopId);
+    let shopRedisData = await this.redis.client.get(shopRedisKey);
+    if (!shopRedisData) shopRedisData = await this.redis.updateShop(shopId);
+    return shopRedisData;
+  }
 
-    منو: ${products}
-    
-    `;
+  private async getMenuInfo(shopId: string) {
+    const menuRedisKey = this.redis.key(RedisKey.PanelMenu, shopId);
+    let menuRedisData = await this.redis.client.get(menuRedisKey);
+    if (!menuRedisData) menuRedisData = await this.redis.updateMenu(shopId);
+    const menu: Menu = JSON.parse(menuRedisData);
+    Menu.setRefsAndSort(menu, undefined, false, false);
+    return menu;
   }
 }

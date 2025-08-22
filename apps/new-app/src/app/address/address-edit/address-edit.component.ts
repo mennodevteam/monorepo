@@ -9,8 +9,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Address, DeliveryArea, Region, State, ThemeMode } from '@menno/types';
-import { AddressesService, CartService, REGIONS, ShopService, ThemeService } from '../../core';
+import { Address, DeliveryArea, Region, StatAction, State, ThemeMode } from '@menno/types';
+import {
+  AddressesService,
+  CartService,
+  MenuStatService,
+  REGIONS,
+  ShopService,
+  ThemeService,
+} from '../../core';
 import nmp_mapboxgl from '@neshan-maps-platform/mapbox-gl';
 import { HttpClient } from '@angular/common/http';
 import { AnalyticsService } from '../../core/services/analytics.service';
@@ -25,8 +32,8 @@ import { AnalyticsService } from '../../core/services/analytics.service';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    ReactiveFormsModule
-],
+    ReactiveFormsModule,
+  ],
   templateUrl: './address-edit.component.html',
   styleUrl: './address-edit.component.scss',
 })
@@ -55,6 +62,7 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
     private theme: ThemeService,
     private http: HttpClient,
     private analytics: AnalyticsService,
+    private menuStat: MenuStatService,
   ) {
     this.address = this.router.getCurrentNavigation()?.extras?.state?.['address'];
     if (!this.coordinate && this.address) this.location.back();
@@ -174,8 +182,10 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
       this.cart.address.set(address);
       // Track address addition/editing
       this.analytics.trackEvent(this.address ? 'address_updated' : 'address_added', {
-        region: address.region?.title
+        region: address.region?.title,
       });
+
+      if (!this.address) this.menuStat.send(StatAction.AddAddress);
     }
     window.history.go(-2);
   }

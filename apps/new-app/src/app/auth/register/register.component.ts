@@ -5,7 +5,8 @@ import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TopAppBarComponent } from '../../common/components';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../core';
+import { AuthService, MenuStatService } from '../../core';
+import { StatAction } from '@menno/types';
 
 @Component({
   selector: 'app-register',
@@ -21,6 +22,7 @@ export class RegisterComponent {
   constructor(
     private auth: AuthService,
     private location: PlatformLocation,
+    private menuStat: MenuStatService,
   ) {
     this.formGroup = new FormGroup({
       firstName: new FormControl(this.auth?.user()?.firstName, Validators.required),
@@ -38,6 +40,7 @@ export class RegisterComponent {
       try {
         this.loading.set(true);
         await this.auth.update(dto);
+        this.menuStat.send(StatAction.RegisterComplete);
       } catch (error) {
         //
       }

@@ -1,4 +1,4 @@
-import { MenuStat, StatAction, UserRole } from '@menno/types';
+import { MenuStat, MenuStatDto, StatAction, UserRole } from '@menno/types';
 import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -12,6 +12,25 @@ export class MenuStatsController {
     @InjectRepository(MenuStat)
     private repo: Repository<MenuStat>,
   ) {}
+
+  @Roles(UserRole.App)
+  @Post('')
+  save(
+    @Body() body: MenuStatDto,
+    @LoginUser() user: AuthPayload,
+    @Query('referrer') referrer?: string,
+    @Query('campaign') campaign?: string,
+  ) {
+    this.repo.save({
+      action: body.action,
+      menu: { id: body.menuId },
+      product: body.productId ? { id: body.productId } : undefined,
+      value: body.value,
+      referrer,
+      campaign,
+      user: { id: user.id },
+    });
+  }
 
   @Roles(UserRole.App)
   @Get('loadMenu/:id')

@@ -7,9 +7,9 @@ import { TopAppBarComponent } from '../common/components/top-app-bar/top-app-bar
 import { CartService } from '../core/services/cart.service';
 import { ClubService } from '../core/services/club.service';
 import { Router } from '@angular/router';
-import { AddressesService, MenuService, ShopService } from '../core';
+import { AddressesService, MenuService, MenuStatService, ShopService } from '../core';
 import { MatListModule } from '@angular/material/list';
-import { Address, OrderType } from '@menno/types';
+import { Address, OrderType, StatAction } from '@menno/types';
 import { FormsModule } from '@angular/forms';
 import { AddressListComponent } from './address-list/address-list.component';
 import { AlertBannerComponent } from '../common/components/alert-banner/alert-banner.component';
@@ -53,9 +53,12 @@ export class PaymentComponent {
     public addressesService: AddressesService,
     public menu: MenuService,
     private analytics: AnalyticsService,
+    private menuStat: MenuStatService,
   ) {
     if (this.cart.length() === 0) {
       this.location.back();
+    } else {
+      this.menuStat.send(StatAction.ViewCheckout, { value: this.cart.total() });
     }
   }
 

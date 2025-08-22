@@ -1,5 +1,6 @@
 import {
   Member,
+  MenuStat,
   Order,
   OrderDto,
   OrderPaymentType,
@@ -9,6 +10,7 @@ import {
   Shop,
   ShopPlugins,
   SmsAccount,
+  StatAction,
   User,
   UserRole,
 } from '@menno/types';
@@ -56,6 +58,8 @@ export class PaymentsController {
     @InjectRepository(Order)
     private ordersRepository: Repository<Order>,
     private redis: RedisService,
+    @InjectRepository(MenuStat)
+    private menuStatRepository: Repository<MenuStat>,
   ) {}
 
   @Roles(UserRole.App)
@@ -289,6 +293,27 @@ export class PaymentsController {
       if (payment.details.newOrder) {
         payment.details.newOrder.payment = { id: payment.id };
         const newOrder = await this.ordersService.addOrder(payment.details.newOrder);
+        if (dto.shopId) {
+          this.shopsRepository
+            .findOne({
+              where: { id: newOrder.shop.id },
+              relations: ['menu'],
+            })
+            .then((shop) => {
+              try {
+                if (shop.menu) {
+                  this.menuStatRepository.save({
+                    action: StatAction.AddOrder,
+                    menu: { id: shop.menu.id },
+                    value: newOrder.totalPrice,
+                    user: { id: payment.userId },
+                  } as MenuStat);
+                }
+              } catch (error) {
+                // do nothing
+              }
+            });
+        }
         const redirectUrl = `${payment.appReturnUrl}/${environment.appOrderCompletePath}/${newOrder.id}`;
         return res.redirect(redirectUrl);
       } else if (payment.details.payOrder) {

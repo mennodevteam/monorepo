@@ -26,6 +26,10 @@ export const MenuStatSchema = new EntitySchema<MenuStat>({
       type: 'timestamptz',
       createDate: true,
     },
+    value: {
+      type: 'float',
+      nullable: true,
+    },
   },
   relations: {
     menu: {

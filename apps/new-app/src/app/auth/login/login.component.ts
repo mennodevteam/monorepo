@@ -4,12 +4,13 @@ import { COMMON } from '../../common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TopAppBarComponent } from '../../common/components';
-import { AuthService } from '../../core';
+import { AuthService, MenuStatService } from '../../core';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PersianNumberService } from '@menno/utils';
 import { AnalyticsService } from '../../core/services/analytics.service';
+import { StatAction } from '@menno/types';
 
 @Component({
   selector: 'app-login',
@@ -38,6 +39,7 @@ export class LoginComponent {
     private router: Router,
     private route: ActivatedRoute,
     private analytics: AnalyticsService,
+    private menuStat: MenuStatService,
   ) {}
 
   async sendToken(ev?: SubmitEvent) {
@@ -57,6 +59,9 @@ export class LoginComponent {
       state: { phone },
       queryParams: this.route.snapshot.queryParams,
     });
+
+    this.menuStat.send(StatAction.LoginSetPhone);
+
     ev?.preventDefault();
   }
 }
