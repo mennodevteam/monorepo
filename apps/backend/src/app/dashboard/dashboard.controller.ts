@@ -312,7 +312,7 @@ export class DashboardController {
       .andWhere('stat.action = :action', { action: StatAction.LoadMenu })
       .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
       .andWhere(
-        'stat.user IN (SELECT DISTINCT ms.userId FROM menu_stat ms WHERE ms.createdAt < :from AND ms.action = :action AND ms.menuId = :menuId)',
+        `stat.user IN (SELECT DISTINCT "ms.userId" FROM menu_stat ms WHERE "ms.createdAt" < :from AND ms.action = :action AND "ms.menuId" = :menuId)`,
         {
           from: fromDate,
           action: StatAction.LoadMenu,
