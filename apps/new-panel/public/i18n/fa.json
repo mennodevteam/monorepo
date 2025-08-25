@@ -616,7 +616,16 @@
     "uniqueUserCount": "تعداد کاربران منحصر به فرد",
     "newUserCount": "تعداد کاربران جدید",
     "retentionUserCount": "تعداد کاربران بازگشتی",
-    "retentionRate": "نرخ بازگشت"
+    "retentionRate": "نرخ بازگشت",
+    "orderFunnelTitle": "فانل سفارشات",
+    "orderConversionRate": "نرخ تبدیل سفارشات",
+    "totalOrders": "کل سفارشات",
+    "loadMenu": "مشاده سایت",
+    "addToBasket": "افزودن به سبد خرید",
+    "viewCart": "مشاهده سبد خرید",
+    "viewCheckout": "مشاهده صفحه پرداخت",
+    "selectAddress": "انتخاب آدرس",
+    "addOrder": "ثبت سفارش"
   },
   "menuCost": {
     "add": "ایجاد",

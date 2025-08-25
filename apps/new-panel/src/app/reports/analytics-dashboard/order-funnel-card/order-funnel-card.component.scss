@@ -1,0 +1,26 @@
+:host {
+  display: block;
+}
+
+mat-card {
+  height: 100%;
+}
+
+mat-card-content {
+  padding-top: 16px;
+}
+
+canvas {
+  margin-top: 16px;
+  width: calc(100% - 32px) !important;
+  height: 230px;
+}
+
+mat-list-item {
+  padding: 8px 0;
+}
+
+[matListItemMeta] {
+  font-weight: 600;
+  color: #1976d2;
+}
