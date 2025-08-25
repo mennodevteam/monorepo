@@ -611,7 +611,12 @@
     "menuStatSubtitle": "تعداد کاربر هایی که سایت را مشاهده کرده‌اند",
     "view": "مشاهده",
     "lastDays": "{{value}} روز اخیر",
-    "joinClub": "عضویت در باشگاه"
+    "joinClub": "عضویت در باشگاه",
+    "userStatTitle": "آمار کاربران",
+    "uniqueUserCount": "تعداد کاربران منحصر به فرد",
+    "newUserCount": "تعداد کاربران جدید",
+    "retentionUserCount": "تعداد کاربران بازگشتی",
+    "retentionRate": "نرخ بازگشت"
   },
   "menuCost": {
     "add": "ایجاد",

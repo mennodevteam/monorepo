@@ -1,0 +1,20 @@
+<mat-toolbar class="content-toolbar" fxLayoutGap="8px">
+  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+    <mat-label>{{ 'app.dateRange' | translate }}</mat-label>
+    <mat-date-range-input [rangePicker]="picker">
+      <input matStartDate [(ngModel)]="fromDate" placeholder="{{ 'app.fromDate' | translate }}" />
+      <input matEndDate [(ngModel)]="toDate" placeholder="{{ 'app.toDate' | translate }}" />
+    </mat-date-range-input>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+</mat-toolbar>
+<main fxLayout="column" fxLayoutGap="16px" p-md>
+  <div fxLayout="row" fxLayoutGap="16px" fxLayout.lt-md="column">
+    <app-user-stat-card fxFlex="300px" [fromDate]="validFromDate()" [toDate]="validToDate()" />
+    <app-menu-stat-card fxFlex [fromDate]="validFromDate()" [toDate]="validToDate()" />
+  </div>
+  <div fxLayout="row" fxLayoutGap="16px" fxLayout.lt-md="column">
+    <app-load-menu-ref-card fxFlex="600px" [fromDate]="validFromDate()" [toDate]="validToDate()" />
+  </div>
+</main>

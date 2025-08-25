@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 
 import { SHARED } from '../../../shared';
 import { MatCardModule } from '@angular/material/card';
@@ -9,27 +9,31 @@ import { BaseChartDirective } from 'ng2-charts';
 import { Chart, ChartConfiguration } from 'chart.js';
 import { ShopService } from '../../../shop/shop.service';
 import { TranslateService } from '@ngx-translate/core';
-import { MatMenuModule } from '@angular/material/menu';
 Chart.defaults.font.family = 'IRANSans';
 
 @Component({
-  selector: 'app-load-menu-ref-card',
+  selector: 'app-menu-stat-card',
   standalone: true,
-  imports: [SHARED, MatCardModule, BaseChartDirective, MatMenuModule],
-  templateUrl: './load-menu-ref-card.component.html',
-  styleUrl: './load-menu-ref-card.component.scss',
+  imports: [SHARED, MatCardModule, BaseChartDirective],
+  templateUrl: './menu-stat-card.component.html',
+  styleUrl: './menu-stat-card.component.scss',
 })
-export class LoadMenuRefCardComponent {
+export class MenuStatCardComponent {
   private readonly http = inject(HttpClient);
   public readonly shopService = inject(ShopService);
   public readonly t = inject(TranslateService);
-  days = signal(30);
+  public readonly fromDate = input.required<Date>();
+  public readonly toDate = input.required<Date>();
 
   public chartOptions: ChartConfiguration['options'] = {
     plugins: {
-      legend: {
-        display: true,
-        position: 'left',
+      legend: { display: true },
+    },
+    scales: {
+      y: {
+        ticks: {
+          stepSize: 1,
+        },
       },
     },
     responsive: true,
@@ -47,28 +51,31 @@ export class LoadMenuRefCardComponent {
         ],
         labels: [],
       } as ChartConfiguration['data'];
+    const formatter = new Intl.DateTimeFormat('fa-IR', {
+      day: 'numeric',
+      month: '2-digit',
+      year: '2-digit',
+    });
     return {
       datasets: [
         {
-          data: data.map((x: any) => x.count),
+          data: data.map((x: any) => x.menuCount),
+          label: this.t.instant('dashboard.view'),
+        },
+        {
+          data: data.map((x: any) => x.memberCount),
+          label: this.t.instant('dashboard.joinClub'),
         },
       ],
-      labels: data.map((x: any) => x.source),
+      labels: data.map((x: any) => formatter.format(new Date(x.date))),
     } as ChartConfiguration['data'];
   });
 
-  now = signal(new Date());
-  from = computed(() => {
-    const date = new Date(this.now());
-    date.setDate(date.getDate() - this.days());
-    return date;
-  });
-
   query = injectQuery(() => ({
-    queryKey: ['loadMenuRefDashboard', this.days()],
+    queryKey: ['menuStatDashboard', this.fromDate(), this.toDate()],
     queryFn: () =>
       lastValueFrom(
-        this.http.get<any>(`/dashboard/loadMenuRef/${this.from().toISOString()}/${this.now().toISOString()}`),
+        this.http.get<any>(`/dashboard/menuStat/${this.fromDate().toISOString()}/${this.toDate().toISOString()}`),
       ),
   }));
 }
