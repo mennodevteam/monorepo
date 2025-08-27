@@ -203,6 +203,8 @@ export class DashboardController {
       .orderBy('day')
       .getRawMany();
 
+    console.log('menuStatResult', menuStatResult);
+
     const memberResult = await this.membersRepo
       .createQueryBuilder('member')
       .select(`DATE_TRUNC('day', member.joinedAt)`, 'day')

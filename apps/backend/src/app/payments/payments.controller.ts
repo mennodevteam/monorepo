@@ -293,13 +293,15 @@ export class PaymentsController {
       if (payment.details.newOrder) {
         payment.details.newOrder.payment = { id: payment.id };
         const newOrder = await this.ordersService.addOrder(payment.details.newOrder);
-        if (dto.shopId) {
+        if (payment.details.newOrder.shopId) {
+          console.log('payment.details.newOrder.shopId', payment.details.newOrder.shopId);
           this.shopsRepository
             .findOne({
-              where: { id: newOrder.shop.id },
+              where: { id: payment.details.newOrder.shopId },
               relations: ['menu'],
             })
             .then((shop) => {
+              console.log('shop', shop);
               try {
                 if (shop.menu) {
                   this.menuStatRepository.save({
