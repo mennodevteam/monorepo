@@ -301,10 +301,10 @@ export class PaymentsController {
               relations: ['menu'],
             })
             .then((shop) => {
-              console.log('shop', shop);
               try {
+                console.log('shop', shop.menu);
                 if (shop.menu) {
-                  this.menuStatRepository.save({
+                  this.menuStatRepository.insert({
                     action: StatAction.AddOrder,
                     menu: { id: shop.menu.id },
                     value: newOrder.totalPrice,
@@ -312,7 +312,7 @@ export class PaymentsController {
                   } as MenuStat);
                 }
               } catch (error) {
-                // do nothing
+                console.log('error', error);
               }
             });
         }

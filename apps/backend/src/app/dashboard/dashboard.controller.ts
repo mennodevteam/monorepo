@@ -191,7 +191,7 @@ export class DashboardController {
     const toDate = new Date(to);
     const menuStatResult = await this.menuStatsRepo
       .createQueryBuilder('stat')
-      .select(`DATE_TRUNC('day', stat.createdAt)`, 'day')
+      .select(`DATE_TRUNC('day', stat.createdAt AT TIME ZONE 'Asia/Tehran')`, 'day')
       .addSelect('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'count')
       .where('stat.createdAt BETWEEN :from AND :to', {
         from: fromDate,
@@ -203,11 +203,10 @@ export class DashboardController {
       .orderBy('day')
       .getRawMany();
 
-    console.log('menuStatResult', menuStatResult);
 
     const memberResult = await this.membersRepo
       .createQueryBuilder('member')
-      .select(`DATE_TRUNC('day', member.joinedAt)`, 'day')
+      .select(`DATE_TRUNC('day', member.joinedAt AT TIME ZONE 'Asia/Tehran')`, 'day')
       .addSelect('CAST(COUNT(member.id) AS INTEGER)', 'count')
       .where('member.joinedAt BETWEEN :from AND :to', {
         from: fromDate,
@@ -221,14 +220,18 @@ export class DashboardController {
     const filled = [];
 
     const current = new Date(from);
+    current.setHours(current.getHours() + 5);
     const end = new Date(to);
 
     while (current <= end) {
-      const dateStr = current.toISOString().slice(0, 10); // YYYY-MM-DD
+      const dateStr = current.toLocaleDateString('en-CA'); // YYYY-MM-DD
+      console.log('dateStr', dateStr);
       filled.push({
         date: dateStr,
-        menuCount: menuStatResult.find((item) => item.day.toISOString().slice(0, 10) === dateStr)?.count || 0,
-        memberCount: memberResult.find((item) => item.day.toISOString().slice(0, 10) === dateStr)?.count || 0,
+        menuCount:
+          menuStatResult.find((item) => item.day.toLocaleDateString('en-CA') === dateStr)?.count || 0,
+        memberCount:
+          memberResult.find((item) => item.day.toLocaleDateString('en-CA') === dateStr)?.count || 0,
       });
       current.setDate(current.getDate() + 1);
     }
