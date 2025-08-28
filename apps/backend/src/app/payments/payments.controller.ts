@@ -294,7 +294,6 @@ export class PaymentsController {
         payment.details.newOrder.payment = { id: payment.id };
         const newOrder = await this.ordersService.addOrder(payment.details.newOrder);
         if (payment.details.newOrder.shopId) {
-          console.log('payment.details.newOrder.shopId', payment.details.newOrder.shopId);
           this.shopsRepository
             .findOne({
               where: { id: payment.details.newOrder.shopId },
@@ -302,7 +301,6 @@ export class PaymentsController {
             })
             .then((shop) => {
               try {
-                console.log('shop', shop.menu);
                 if (shop.menu) {
                   this.menuStatRepository.insert({
                     action: StatAction.AddOrder,
@@ -312,7 +310,7 @@ export class PaymentsController {
                   } as MenuStat);
                 }
               } catch (error) {
-                console.log('error', error);
+                console.log('payment menu stat error', error);
               }
             });
         }

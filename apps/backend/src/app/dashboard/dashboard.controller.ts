@@ -225,7 +225,6 @@ export class DashboardController {
 
     while (current <= end) {
       const dateStr = current.toLocaleDateString('en-CA'); // YYYY-MM-DD
-      console.log('dateStr', dateStr);
       filled.push({
         date: dateStr,
         menuCount:
