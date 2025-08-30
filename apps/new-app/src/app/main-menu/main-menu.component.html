@@ -65,6 +65,16 @@
         <i class="fa-regular fa-chevron-left"></i>
       </div>
     </a>
+    <a mat-list-item class="surface-background" routerLink="/misc/privacy-policy" replaceUrl="true">
+      <span matListItemLine>
+        <i class="fa-regular fa-shield"></i>
+        &nbsp;
+        {{ 'mainMenu.privacyPolicy' | translate }}
+      </span>
+      <div matListItemMeta>
+        <i class="fa-regular fa-chevron-left"></i>
+      </div>
+    </a>
     <a mat-list-item class="surface-background" (click)="menuService.share()">
       <span matListItemLine>
         <i class="fa-regular fa-share-nodes"></i>

@@ -5,3 +5,4 @@ export * from './top-app-bar';
 export * from './quantity-selector';
 export * from './image-carousel';
 export * from './footer';
+export * from '../../miscellaneous';

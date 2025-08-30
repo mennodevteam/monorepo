@@ -1,5 +1,6 @@
 import { RedirectCommand, Route, Router } from '@angular/router';
 import { shopRoutes } from './shop/shop.routes';
+import { miscellaneousRoutes } from './miscellaneous/miscellaneous.routes';
 import { menuResolver, shopResolver, ShopService, translateActivator, userResolver } from './core';
 import { ShellComponent } from './shell/shell.component';
 import { inject } from '@angular/core';
@@ -56,6 +57,10 @@ export const appRoutes: Route[] = [
         path: 'ai',
         loadChildren: () => import('./ai-chat/ai-chat.routes').then((m) => m.aiChatRoutes),
         data: { animation: 'aiChat' },
+      },
+      {
+        path: 'misc',
+        children: miscellaneousRoutes,
       },
       {
         path: '',

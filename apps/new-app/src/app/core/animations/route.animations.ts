@@ -117,8 +117,8 @@ const fadeInOut = [
 ];
 
 export const routeAnimations = trigger('routeAnimations', [
-  transition('mainMenu => *', slideOutToLeft),
-  transition('* => mainMenu', slideInFromLeft),
+  transition('mainMenu => *', slideOutToRight),
+  transition('* => mainMenu', slideInFromRight),
   transition('* <=> thanks', fadeInOut),
   
   transition('* => chat', slideInFromBottom),
