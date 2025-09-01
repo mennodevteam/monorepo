@@ -49,3 +49,4 @@ export * from './windows-local-notification.schema';
 export * from './inventory-transaction.schema';
 export * from './material.schema';
 export * from './bill-of-material.schema';
+export * from './bill-of-product.schema';
