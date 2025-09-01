@@ -1,19 +1,26 @@
 import { EntitySchema } from 'typeorm';
-import { BillOfMaterial } from '@menno/types';
+import { BillOfMaterial, BillOfProduct } from '@menno/types';
 
-export const BillOfMaterialSchema = new EntitySchema<BillOfMaterial>({
-  name: 'BillOfMaterial',
+export const BillOfProductSchema = new EntitySchema<BillOfProduct>({
+  name: 'BillOfProduct',
   target: BillOfMaterial,
   columns: {
     id: { type: 'uuid', primary: true, generated: 'uuid' },
     quantity: { type: 'real', default: 1 },
   },
   relations: {
-    material: {
+    productSource: {
       type: 'many-to-one',
       target: 'Material',
       inverseSide: 'boms',
       onDelete: 'CASCADE',
+    },
+    variantSource: {
+      type: 'many-to-one',
+      target: 'ProductVariant',
+      inverseSide: 'boms',
+      onDelete: 'CASCADE',
+      nullable: true,
     },
     product: {
       type: 'many-to-one',
@@ -32,7 +39,6 @@ export const BillOfMaterialSchema = new EntitySchema<BillOfMaterial>({
     shop: {
       type: 'many-to-one',
       target: 'Shop',
-      nullable: true,
     },
   },
 });
