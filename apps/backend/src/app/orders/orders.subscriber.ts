@@ -189,7 +189,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     if (event.entity?.id) {
       const order = await this.ordersRepo.findOne({
         where: { id: event.entity.id },
-        relations: ['items', 'items.product', 'items.productVariant'],
+        relations: ['items', 'items.product', 'items.productVariant', 'shop'],
       });
       this.materialConsumption(order, true);
     }

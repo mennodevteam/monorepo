@@ -113,12 +113,31 @@ export class BomListComponent {
     const allProducts = this.allProducts();
     const editableItem = this.editableItem();
     if (editableItem) {
-      return allProducts.filter((item) =>
-        // !editableItem.bops.some(
-        //   (bop) => bop.product?.id === item.product?.id && bop.variant?.id === item.variant?.id,
-        // ) &&
-        item.product.title.toLowerCase().includes(this.searchMaterialInput().toLowerCase()),
-      );
+      return allProducts.filter((item) => {
+        const bops = this.materialsService.bopsQuery.data() || [];
+        if (
+          bops.some(
+            (bop) =>
+              bop.product?.id === item.product?.id &&
+              bop.variant?.id === item.variant?.id &&
+              bop.productSource?.id === editableItem.product?.id &&
+              bop.variantSource?.id === editableItem.variant?.id,
+          )
+        )
+          return false;
+
+        if (editableItem.product?.id === item.product?.id && editableItem.variant?.id === item.variant?.id)
+          return false;
+
+        if (
+          editableItem.bops.some(
+            (bop) => bop.productSource?.id === item.product?.id && bop.variantSource?.id === item.variant?.id,
+          )
+        )
+          return false;
+
+        return item.product.title.toLowerCase().includes(this.searchMaterialInput().toLowerCase());
+      });
     }
     return [];
   });
