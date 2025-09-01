@@ -2,144 +2,191 @@
   <h1 fxFlex>{{ 'nav.bom' | translate: { value: shopService.businessCategoryMenuTitle() } }}</h1>
 </mat-toolbar>
 <main p-md fxLayout="column" fxLayoutGap="16px">
-  <mat-toolbar fxLayoutGap="24px">
-    <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
-      <mat-label>{{ 'app.search' | translate }}</mat-label>
-      <input matInput [(ngModel)]="searchQuery" type="search" />
-    </mat-form-field>
+  @if (materialsService.bomsQuery.isLoading() || materialsService.bopsQuery.isLoading()) {
+    <app-data-loading />
+  } @else {
+    <mat-toolbar fxLayoutGap="24px">
+      <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+        <mat-label>{{ 'app.search' | translate }}</mat-label>
+        <input matInput [(ngModel)]="searchQuery" type="search" />
+      </mat-form-field>
 
-    <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
-      <mat-label>{{ 'bom.category' | translate }}</mat-label>
-      <mat-select [(ngModel)]="selectedCategory">
-        <mat-option [value]="null">{{ 'app.all' | translate }}</mat-option>
-        @for (category of menuService.data()?.categories; track category.id) {
-          <mat-option [value]="category.id">{{ category.title }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+        <mat-label>{{ 'bom.category' | translate }}</mat-label>
+        <mat-select [(ngModel)]="selectedCategory">
+          <mat-option [value]="null">{{ 'app.all' | translate }}</mat-option>
+          @for (category of menuService.data()?.categories; track category.id) {
+            <mat-option [value]="category.id">{{ category.title }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
 
-    <mat-checkbox [(ngModel)]="showInactiveItems">
-      {{ 'bom.showInactiveItems' | translate }}
-    </mat-checkbox>
-  </mat-toolbar>
-  @for (categoryItem of categoryItems(); track categoryItem.category.id) {
-    <h2>{{ categoryItem.category.title }}</h2>
-    <mat-card appearance="outlined">
-      <mat-card-content>
-        <table mat-table [dataSource]="categoryItem.items">
-          <!-- Product Title Column -->
-          <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef style="width: 260px">{{ 'bom.products' | translate }}</th>
-            <td mat-cell *matCellDef="let item">
-              {{ item.product?.title }}
-              @if (item.variant) {
-                - {{ item.variant.title }}
-              }
-            </td>
-          </ng-container>
+      <mat-checkbox [(ngModel)]="showInactiveItems">
+        {{ 'bom.showInactiveItems' | translate }}
+      </mat-checkbox>
+    </mat-toolbar>
+    @for (categoryItem of categoryItems(); track categoryItem.category.id) {
+      <h2>{{ categoryItem.category.title }}</h2>
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          <table mat-table [dataSource]="categoryItem.items">
+            <!-- Product Title Column -->
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef style="width: 260px">{{ 'bom.products' | translate }}</th>
+              <td mat-cell *matCellDef="let item">
+                {{ item.product?.title }}
+                @if (item.variant) {
+                  - {{ item.variant.title }}
+                }
+              </td>
+            </ng-container>
 
-          <!-- Materials Column (for product itself) -->
-          <ng-container matColumnDef="materials">
-            <th mat-header-cell *matHeaderCellDef>{{ 'materials.title' | translate }}</th>
-            <td mat-cell *matCellDef="let item">
-              <div fxLayout="row" fxLayoutAlign="start center">
-                <mat-chip-set>
-                  @for (bom of item.boms; track bom.id) {
-                    <mat-chip [matMenuTriggerFor]="menu" [matTooltip]="bom.material.cost ? null : 'bom.costNotSet' | translate">
-                      {{ bom.material.name }}
-                      (<span eng>{{ bom.quantity | number }}</span
-                      >{{ 'materials.units.' + bom.material.unit | translate }})
-                      @if (!bom.material.cost) {
-                        <i class="fa-solid fa-square-exclamation fa-xs red"></i>
-                      }
-                    </mat-chip>
+            <!-- Materials Column (for product itself) -->
+            <ng-container matColumnDef="materials">
+              <th mat-header-cell *matHeaderCellDef>{{ 'materials.title' | translate }}</th>
+              <td mat-cell *matCellDef="let item">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                  <mat-chip-set>
+                    @for (bom of item.boms; track bom.id) {
+                      <mat-chip
+                        [matMenuTriggerFor]="menu"
+                        [matTooltip]="bom.material.cost ? null : ('bom.costNotSet' | translate)"
+                      >
+                        <i class="fas fa-flask fa-xs"></i>
+                        {{ bom.material.name }}
+                        (<span eng>{{ bom.quantity | number }}</span
+                        >{{ 'materials.units.' + bom.material.unit | translate }})
+                        @if (!bom.material.cost) {
+                          <i class="fa-solid fa-square-exclamation fa-xs red"></i>
+                        }
+                      </mat-chip>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="editBom(bom)">
+                          <i class="fa-regular fa-pen-to-square"></i>
+                          {{ 'app.edit' | translate }}
+                        </button>
+                        <button mat-menu-item (click)="removeBom(bom)">
+                          <i class="fa-regular fa-trash-can"></i>
+                          {{ 'app.remove' | translate }}
+                        </button>
+                      </mat-menu>
+                    }
+                    @for (bop of item.bops; track bop.id) {
+                      @let title = (bop.productSource?.title || '') + (bop.variantSource?.title || '');
+                      <mat-chip [matMenuTriggerFor]="menu">
+                        <i class="fas fa-box fa-xs"></i>
+                        {{ title }}
+                        <span eng>({{ bop.quantity | number }})</span>
+                      </mat-chip>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="editBop(bop)">
+                          <i class="fa-regular fa-pen-to-square"></i>
+                          {{ 'app.edit' | translate }}
+                        </button>
+                        <button mat-menu-item (click)="removeBop(bop)">
+                          <i class="fa-regular fa-trash-can"></i>
+                          {{ 'app.remove' | translate }}
+                        </button>
+                      </mat-menu>
+                    }
+                  </mat-chip-set>
+                  @if (
+                    editableItem()?.product?.id === item.product?.id &&
+                    editableItem()?.variant?.id === item.variant?.id
+                  ) {
+                    <form>
+                      <input
+                        type="text"
+                        class="search-material-input"
+                        [(ngModel)]="searchMaterialInput"
+                        [matAutocomplete]="auto"
+                        [ngModelOptions]="{ standalone: true }"
+                        (keyup.esc)="editableItem.set(null)"
+                      />
+                      <mat-autocomplete
+                        #auto="matAutocomplete"
+                        autoActiveFirstOption
+                        (optionSelected)="selectMaterial($event.option.value)"
+                      >
+                        @if (editType() === 'material') {
+                          @for (material of filteredMaterials(); track material.id) {
+                            <mat-option [value]="{ material }">
+                              {{ material.name }}
+                            </mat-option>
+                          }
+                        } @else {
+                          @for (product of filteredProducts(); track $index) {
+                            <mat-option [value]="product">
+                              {{ product.product.title }}
+                              @if (product.variant) {
+                                - {{ product.variant.title }}
+                              }
+                            </mat-option>
+                          }
+                        }
+                      </mat-autocomplete>
+                    </form>
+                    <button mat-icon-button (click)="editableItem.set(null)">
+                      <i class="fa-regular fa-xmark"></i>
+                    </button>
+                  } @else {
+                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                      <i class="fa-regular fa-plus"></i>
+                    </button>
                     <mat-menu #menu="matMenu">
-                      <button mat-menu-item (click)="editBom(bom)">
-                        <i class="fa-regular fa-pen-to-square"></i>
-                        {{ 'app.edit' | translate }}
+                      <button mat-menu-item (click)="setEditableItem(item, 'material')">
+                        <i class="fa-regular fa-plus"></i>
+                        {{ 'bom.material' | translate }}
                       </button>
-                      <button mat-menu-item (click)="removeBom(bom)">
-                        <i class="fa-regular fa-trash-can"></i>
-                        {{ 'app.remove' | translate }}
+                      <button mat-menu-item (click)="setEditableItem(item, 'product')">
+                        <i class="fa-regular fa-plus"></i>
+                        {{ 'bom.product' | translate }}
                       </button>
                     </mat-menu>
                   }
-                </mat-chip-set>
-                @if (
-                  editableItem()?.product?.id === item.product?.id &&
-                  editableItem()?.variant?.id === item.variant?.id
-                ) {
-                  <form>
-                    <input
-                      type="text"
-                      class="search-material-input"
-                      [(ngModel)]="searchMaterialInput"
-                      [matAutocomplete]="auto"
-                      [ngModelOptions]="{ standalone: true }"
-                      (keyup.esc)="editableItem.set(null)"
-                    />
-                    <mat-autocomplete
-                      #auto="matAutocomplete"
-                      autoActiveFirstOption
-                      (optionSelected)="selectMaterial($event.option.value)"
-                    >
-                      @for (material of filteredMaterials(); track material.id) {
-                        <mat-option [value]="material.id">
-                          {{ material.name }}
-                        </mat-option>
-                      }
-                    </mat-autocomplete>
-                  </form>
-                  <button mat-icon-button (click)="editableItem.set(null)">
-                    <i class="fa-regular fa-xmark"></i>
-                  </button>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="cost">
+              <th mat-header-cell *matHeaderCellDef style="width: 140px">{{ 'bom.cost' | translate }}</th>
+              <td mat-cell *matCellDef="let item">
+                @if (item.cost !== null) {
+                  {{ item.cost | number | menuCurrency }}
                 } @else {
-                  <button mat-icon-button (click)="setEditableItem(item)">
-                    <i class="fa-regular fa-plus"></i>
-                  </button>
+                  <i class="fa-regular fa-question"></i>
                 }
-              </div>
-            </td>
-          </ng-container>
+              </td>
+            </ng-container>
 
-          <ng-container matColumnDef="cost">
-            <th mat-header-cell *matHeaderCellDef style="width: 140px">{{ 'bom.cost' | translate }}</th>
-            <td mat-cell *matCellDef="let item">
-              @if (item.cost !== null) {
-                {{ item.cost | number | menuCurrency }}
-              } @else {
-                <i class="fa-regular fa-question"></i>
-              }
-            </td>
-          </ng-container>
+            <ng-container matColumnDef="price">
+              <th mat-header-cell *matHeaderCellDef style="width: 140px">{{ 'bom.price' | translate }}</th>
+              <td mat-cell *matCellDef="let item">
+                {{ (item.variant || item.product).price | number: '1.0-0' | menuCurrency }}
+              </td>
+            </ng-container>
 
-          <ng-container matColumnDef="price">
-            <th mat-header-cell *matHeaderCellDef style="width: 140px">{{ 'bom.price' | translate }}</th>
-            <td mat-cell *matCellDef="let item">
-              {{ (item.variant || item.product).price | number: '1.0-0' | menuCurrency }}
-            </td>
-          </ng-container>
+            <ng-container matColumnDef="profit">
+              <th mat-header-cell *matHeaderCellDef style="width: 200px">{{ 'bom.profit' | translate }}</th>
+              <td mat-cell *matCellDef="let item" eng ltr>
+                @if (item.cost !== null) {
+                  @let price = (item.variant || item.product).price;
+                  @let percentage = ((price - item.cost) / price) * 100;
+                  <span [class.error-text]="percentage < 0" [class.success-text]="percentage > 50">
+                    {{ price - item.cost | number }}
+                    <span eng ltr> ({{ percentage | number: '1.0-0' }}%) </span>
+                  </span>
+                } @else {
+                  <i class="fa-regular fa-question"></i>
+                }
+              </td>
+            </ng-container>
 
-          <ng-container matColumnDef="profit">
-            <th mat-header-cell *matHeaderCellDef style="width: 200px">{{ 'bom.profit' | translate }}</th>
-            <td mat-cell *matCellDef="let item" eng ltr>
-              @if (item.cost !== null) {
-                @let price = (item.variant || item.product).price;
-                @let percentage = ((price - item.cost) / price) * 100;
-                <span [class.error-text]="percentage < 0" [class.success-text]="percentage > 50">
-                  {{ price - item.cost | number }}
-                  <span eng ltr> ({{ percentage | number: '1.0-0' }}%) </span>
-                </span>
-              } @else {
-                <i class="fa-regular fa-question"></i>
-              }
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        </table>
-      </mat-card-content>
-    </mat-card>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    }
   }
 </main>

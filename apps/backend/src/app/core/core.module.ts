@@ -50,6 +50,7 @@ import {
   WindowsLocalNotificationSchema,
   BasalamProductSchema,
   BillOfMaterialSchema,
+  BillOfProductSchema,
   MaterialSchema,
   InventoryTransactionSchema,
 } from './schemas';
@@ -113,6 +114,7 @@ import { ChatSchema } from './schemas/chat.schema';
       InventoryTransactionSchema,
       MaterialSchema,
       BillOfMaterialSchema,
+      BillOfProductSchema,
     ]),
   ],
   providers: [RedisService],

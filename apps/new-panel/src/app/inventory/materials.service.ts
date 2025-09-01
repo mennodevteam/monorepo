@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {
   BillOfMaterial,
+  BillOfProduct,
   CostUpdateStrategy,
   InventoryTransaction,
   InventoryTransactionType,
@@ -23,6 +24,16 @@ export class MaterialsService {
     queryKey: ['materials'],
     queryFn: () => lastValueFrom(this.http.get<Material[]>(this.baseUrl)),
     select: (data: Material[]) => data?.sort((a, b) => a.name.localeCompare(b.name)),
+  }));
+
+  public bomsQuery = injectQuery(() => ({
+    queryKey: ['boms'],
+    queryFn: () => lastValueFrom(this.http.get<BillOfMaterial[]>(`${this.baseUrl}/boms`)),
+  }));
+
+  public bopsQuery = injectQuery(() => ({
+    queryKey: ['bops'],
+    queryFn: () => lastValueFrom(this.http.get<BillOfProduct[]>(`${this.baseUrl}/bops`)),
   }));
 
   public saveMaterialMutation = injectMutation(() => ({
@@ -107,58 +118,42 @@ export class MaterialsService {
     mutationFn: (data: Partial<BillOfMaterial>) =>
       lastValueFrom(this.http.post<void>(`${this.baseUrl}/boms`, data)),
     onMutate: (data) => {
-      this.queryClient.cancelQueries({ queryKey: ['materials'] });
-      const oldData = this.queryClient.getQueryData<Material[]>(['materials']);
-      this.queryClient.setQueryData(['materials'], (old: Material[]) => {
-        return old.map((material) => {
-          if (material.id === data.material?.id) {
-            const newMaterial = { ...material };
-            if (data.id) {
-              newMaterial.boms = material.boms.map((bom) =>
-                bom.id === data.id ? { ...bom, ...(data as BillOfMaterial) } : bom,
-              );
-            } else {
-              newMaterial.boms = [...material.boms, data as BillOfMaterial];
-            }
-            return newMaterial;
-          }
-          return material;
-        });
+      this.queryClient.cancelQueries({ queryKey: ['boms'] });
+      const oldData = this.queryClient.getQueryData<BillOfMaterial[]>(['boms']);
+      this.queryClient.setQueryData(['boms'], (old: BillOfMaterial[]) => {
+        if (data.id) {
+          return old.map((bom) => (bom.id === data.id ? { ...bom, ...(data as BillOfMaterial) } : bom));
+        } else {
+          return [...old, data as BillOfMaterial];
+        }
       });
       return oldData;
     },
     onError: (error, data, context) => {
-      this.queryClient.setQueryData(['materials'], context);
+      this.queryClient.setQueryData(['bops'], context);
       this.snack.open(this.translate.instant('errors.changeError'), '', { duration: 2000 });
     },
     onSuccess: () => {
-      this.queryClient.invalidateQueries({ queryKey: ['materials'] });
+      this.queryClient.invalidateQueries({ queryKey: ['bops'] });
     },
   }));
 
   deleteBomMutation = injectMutation(() => ({
     mutationFn: (id: string) => lastValueFrom(this.http.delete<void>(`${this.baseUrl}/boms/${id}`)),
     onMutate: (id) => {
-      this.queryClient.cancelQueries({ queryKey: ['materials'] });
-      const oldData = this.queryClient.getQueryData<Material[]>(['materials']);
-      this.queryClient.setQueryData(['materials'], (old: Material[]) => {
-        return old.map((material) => {
-          if (material.boms.some((bom) => bom.id === id)) {
-            const newMaterial = { ...material };
-            newMaterial.boms = material.boms.filter((bom) => bom.id !== id);
-            return newMaterial;
-          }
-          return material;
-        });
+      this.queryClient.cancelQueries({ queryKey: ['boms'] });
+      const oldData = this.queryClient.getQueryData<BillOfMaterial[]>(['boms']);
+      this.queryClient.setQueryData(['boms'], (old: BillOfMaterial[]) => {
+        return old.filter((bom) => bom.id !== id);
       });
       return oldData;
     },
     onError: (error, data, context) => {
-      this.queryClient.setQueryData(['materials'], context);
+      this.queryClient.setQueryData(['boms'], context);
       this.snack.open(this.translate.instant('errors.changeError'), '', { duration: 2000 });
     },
     onSuccess: () => {
-      this.queryClient.invalidateQueries({ queryKey: ['materials'] });
+      this.queryClient.invalidateQueries({ queryKey: ['boms'] });
     },
   }));
 
@@ -169,5 +164,48 @@ export class MaterialsService {
       );
     },
     onSuccess: () => this.queryClient.invalidateQueries({ queryKey: ['materials'] }),
+  }));
+
+  saveBopMutation = injectMutation(() => ({
+    mutationFn: (data: Partial<BillOfProduct>) =>
+      lastValueFrom(this.http.post<void>(`${this.baseUrl}/bops`, data)),
+    onMutate: (data) => {
+      this.queryClient.cancelQueries({ queryKey: ['bops'] });
+      const oldData = this.queryClient.getQueryData<BillOfProduct[]>(['bops']);
+      this.queryClient.setQueryData(['bops'], (old: BillOfProduct[]) => {
+        if (data.id) {
+          return old.map((bop) => (bop.id === data.id ? { ...bop, ...(data as BillOfProduct) } : bop));
+        } else {
+          return [...old, data as BillOfProduct];
+        }
+      });
+      return oldData;
+    },
+    onError: (error, data, context) => {
+      this.queryClient.setQueryData(['bops'], context);
+      this.snack.open(this.translate.instant('errors.changeError'), '', { duration: 2000 });
+    },
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: ['bops'] });
+    },
+  }));
+
+  deleteBopMutation = injectMutation(() => ({
+    mutationFn: (id: string) => lastValueFrom(this.http.delete<void>(`${this.baseUrl}/bops/${id}`)),
+    onMutate: (id) => {
+      this.queryClient.cancelQueries({ queryKey: ['bops'] });
+      const oldData = this.queryClient.getQueryData<BillOfProduct[]>(['bops']);
+      this.queryClient.setQueryData(['bops'], (old: BillOfProduct[]) => {
+        return old.filter((bop) => bop.id !== id);
+      });
+      return oldData;
+    },
+    onError: (error, data, context) => {
+      this.queryClient.setQueryData(['bops'], context);
+      this.snack.open(this.translate.instant('errors.changeError'), '', { duration: 2000 });
+    },
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: ['bops'] });
+    },
   }));
 }

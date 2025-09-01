@@ -29,6 +29,7 @@ import {
   BillOfMaterial,
   InventoryTransactionType,
   InventoryTransaction,
+  BillOfProduct,
 } from '@menno/types';
 import { groupBy, groupBySum } from '@menno/utils';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -70,6 +71,8 @@ export class OrdersService {
     private materialsRepo: Repository<Material>,
     @InjectRepository(BillOfMaterial)
     private billOfMaterialRepository: Repository<BillOfMaterial>,
+    @InjectRepository(BillOfProduct)
+    private billOfProductRepository: Repository<BillOfProduct>,
     @InjectRepository(InventoryTransaction)
     private inventoryTransactionRepository: Repository<InventoryTransaction>,
     private smsService: SmsService,
@@ -117,36 +120,30 @@ export class OrdersService {
     const menu = shop.menu;
     Menu.setRefsAndSort(menu, dto.type, true, true, undefined, dto.isManual ? true : false);
     order.items = [...OrderDto.productItems(dto, menu), ...OrderDto.abstractItems(dto, menu)];
-    const materials = await this.materialsRepo.find({
+
+    const allBoms = await this.billOfMaterialRepository.find({
+      where: {
+        material: { shop: { id: order.shop.id } },
+      },
+      relations: ['material', 'product', 'variant'],
+    });
+    const allBops = await this.billOfProductRepository.find({
       where: {
         shop: { id: order.shop.id },
       },
-      relations: ['boms', 'boms.product', 'boms.variant'],
+      relations: ['productSource', 'variantSource', 'product', 'variant'],
     });
 
-    const boms: BillOfMaterial[] = [];
-    for (const material of materials) {
-      if (material.boms) {
-        for (const bom of material.boms) {
-          bom.material = material;
-          boms.push(bom);
-        }
-      }
-    }
-    order.materialCost = boms.length > 0 ? 0 : undefined;
+    order.materialCost = 0;
     for (const item of order.items) {
       if (item.product) item.product = { id: item.product.id } as Product;
       if (item.productVariant) item.productVariant = { id: item.productVariant.id } as ProductVariant;
-      if (item.product && boms.length > 0) {
-        const itemBoms = boms.filter(
-          (bom) => bom.product?.id === item.product.id && bom.variant?.id === item.productVariant?.id,
-        );
-        const bomPrice = BillOfMaterial.calculateCost(itemBoms);
-        if (bomPrice != null) {
-          item.materialCost = bomPrice;
-          if (order.materialCost !== undefined) order.materialCost += item.quantity * bomPrice;
-        } else {
+      if (item.product) {
+        item.materialCost = Product.calculateCost(item.product, item.productVariant, allBoms, allBops);
+        if (item.materialCost === null) {
           order.materialCost = undefined;
+        } else if (order.materialCost !== undefined) {
+          order.materialCost += item.quantity * item.materialCost;
         }
       }
     }
@@ -396,25 +393,23 @@ export class OrdersService {
       change: number;
     }[] = [];
 
-    const items = [
-      ...order.items.filter((x) => !x.isAbstract),
-      ...editedOrder.items.filter((x) => !x.isAbstract),
-    ];
     const boms = await this.billOfMaterialRepository.find({
-      where: items.map((x) => ({
-        product: { id: x.product.id },
-        variant: { id: x.productVariant?.id },
-        material: Not(IsNull()),
-      })),
+      where: {
+        material: { shop: { id: order.shop.id } },
+      },
       relations: ['material', 'product', 'variant'],
+    });
+
+    const bops = await this.billOfProductRepository.find({
+      where: {
+        shop: { id: order.shop.id },
+      },
+      relations: ['productSource', 'variantSource', 'product', 'variant'],
     });
 
     const usedMaterials: { material: Material; quantity: number }[] = [];
     for (const item of order.items) {
       if (item.isAbstract || !item.product) continue;
-      const itemBoms = boms.filter(
-        (x) => x.product.id === item.product.id && x.variant?.id == item.productVariant?.id,
-      );
       const dtoItem = dto.productItems.find(
         (x) => x.productId == item.product.id && x.productVariantId == item.productVariant?.id,
       );
@@ -424,16 +419,17 @@ export class OrdersService {
         changes.push({ title: item.title, change: dtoItem.quantity - item.quantity });
       }
 
-      if (itemBoms.length > 0 && (!dtoItem || dtoItem.quantity != item.quantity)) {
-        for (const bom of itemBoms) {
+      const itemMaterials = Product.getAllMaterials(item.product, item.productVariant, boms, bops);
+      if (itemMaterials.length > 0 && (!dtoItem || dtoItem.quantity != item.quantity)) {
+        for (const material of itemMaterials) {
           const quantity = !dtoItem
-            ? -1 * bom.quantity * item.quantity
-            : bom.quantity * (dtoItem.quantity - item.quantity);
-          const existingMaterial = usedMaterials.find((x) => x.material.id === bom.material.id);
+            ? -1 * material.quantity * item.quantity
+            : material.quantity * (dtoItem.quantity - item.quantity);
+          const existingMaterial = usedMaterials.find((x) => x.material.id === material.material.id);
           if (existingMaterial) {
             existingMaterial.quantity += quantity;
           } else {
-            usedMaterials.push({ material: bom.material, quantity });
+            usedMaterials.push({ material: material.material, quantity });
           }
         }
       }
@@ -448,17 +444,15 @@ export class OrdersService {
     );
     for (const item of newProductItems) {
       changes.push({ title: item.title, change: item.quantity });
-      const itemBoms = boms.filter(
-        (x) => x.product.id === item.product.id && x.variant?.id == item.productVariant?.id,
-      );
-      if (itemBoms.length > 0) {
-        for (const bom of itemBoms) {
-          const quantity = bom.quantity * item.quantity;
-          const existingMaterial = usedMaterials.find((x) => x.material.id === bom.material.id);
+      const itemMaterials = Product.getAllMaterials(item.product, item.productVariant, boms, bops);
+      if (itemMaterials.length > 0) {
+        for (const material of itemMaterials) {
+          const quantity = material.quantity * item.quantity;
+          const existingMaterial = usedMaterials.find((x) => x.material.id === material.material.id);
           if (existingMaterial) {
             existingMaterial.quantity += quantity;
           } else {
-            usedMaterials.push({ material: bom.material, quantity });
+            usedMaterials.push({ material: material.material, quantity });
           }
         }
       }

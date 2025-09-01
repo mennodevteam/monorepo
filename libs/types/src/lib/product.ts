@@ -5,6 +5,7 @@ import { OrderType } from './order-type.enum';
 import { ProductItem } from './order.dto';
 import { ProductVariant } from './product-variant';
 import { Image } from './image';
+import { BillOfMaterial, BillOfProduct, Material } from './inventory';
 
 export class Product {
   id: string;
@@ -107,5 +108,78 @@ export class Product {
   static hasDiscount(product: Product, productVariant?: ProductVariant) {
     if (Product.totalPrice(product, productVariant) < Product.realPrice(product, productVariant)) return true;
     return false;
+  }
+
+  static calculateCost(
+    product: Product,
+    productVariant: ProductVariant | undefined | null,
+    allBoms: BillOfMaterial[],
+    allBops: BillOfProduct[],
+  ) {
+    const bops = allBops.filter(
+      (bop) => bop.product?.id === product.id && bop.variant?.id === productVariant?.id,
+    );
+    const boms = allBoms.filter(
+      (bom) => bom.product?.id === product.id && bom.variant?.id === productVariant?.id,
+    );
+
+    if (bops.length === 0 && boms.length === 0) return null;
+
+    const bomsCost = BillOfMaterial.calculateCost(boms);
+    if (bomsCost === null) return null;
+
+    let bopsCost = 0;
+    for (const bop of bops) {
+      try {
+        const bopCost = Product.calculateCost(bop.productSource, bop.variantSource, allBoms, allBops);
+        if (bopCost === null) return null;
+        bopsCost += bopCost * bop.quantity;
+      } catch (error) {
+        return null;
+      }
+    }
+    return bomsCost + bopsCost;
+  }
+
+  static getAllMaterials(
+    product: Product,
+    productVariant: ProductVariant | undefined | null,
+    allBoms: BillOfMaterial[],
+    allBops: BillOfProduct[],
+  ) {
+    const usedMaterials: { material: Material; quantity: number }[] = [];
+    const boms = allBoms.filter(
+      (bom) => bom.product?.id === product.id && bom.variant?.id === productVariant?.id,
+    );
+
+    for (const bom of boms) {
+      const existingMaterial = usedMaterials.find((x) => x.material.id === bom.material?.id);
+      if (existingMaterial) {
+        existingMaterial.quantity += bom.quantity;
+      } else {
+        usedMaterials.push({ material: bom.material, quantity: bom.quantity });
+      }
+    }
+
+    const bops = allBops.filter(
+      (bop) => bop.product?.id === product.id && bop.variant?.id === productVariant?.id,
+    );
+
+    for (const bop of bops) {
+      try {
+        const bopMaterials = Product.getAllMaterials(bop.productSource, bop.variantSource, allBoms, allBops);
+        for (const material of bopMaterials) {
+          const existingMaterial = usedMaterials.find((x) => x.material.id === material.material.id);
+          if (existingMaterial) {
+            existingMaterial.quantity += material.quantity;
+          } else {
+            usedMaterials.push({ material: material.material, quantity: material.quantity });
+          }
+        }
+      } catch (error) {
+        return [];
+      }
+    }
+    return usedMaterials;
   }
 }

@@ -764,7 +764,9 @@
     "profit": "سود",
     "showInactiveItems": "نمایش محصولات غیر فعال",
     "category": "دسته‌بندی",
-    "costNotSet": "قیمت مواد اولیه تنظیم نشده است"
+    "costNotSet": "قیمت مواد اولیه تنظیم نشده است",
+    "product": "محصول",
+    "material": "ماده اولیه"
   },
   "pricing": {
     "products": "محصولات",

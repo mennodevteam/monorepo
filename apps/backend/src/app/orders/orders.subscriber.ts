@@ -16,6 +16,8 @@ import {
   User,
   WindowsLocalNotification,
   InventoryTransactionType,
+  BillOfProduct,
+  Product,
 } from '@menno/types';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
@@ -60,6 +62,8 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     private inventoryTransactionRepository: Repository<InventoryTransaction>,
     @InjectRepository(BillOfMaterial)
     private billOfMaterialRepository: Repository<BillOfMaterial>,
+    @InjectRepository(BillOfProduct)
+    private billOfProductRepository: Repository<BillOfProduct>,
     private webPush: WebPushNotificationsService,
     private printersService: PrintersService,
     private smsService: SmsService,
@@ -194,25 +198,27 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
   private async materialConsumption(order: Order, isRestore?: boolean) {
     const items = order.items.filter((x) => !x.isAbstract);
     const boms = await this.billOfMaterialRepository.find({
-      where: items.map((x) => ({
-        product: { id: x.product.id },
-        variant: { id: x.productVariant?.id },
-        material: Not(IsNull()),
-      })),
+      where: {
+        material: { shop: { id: order.shop.id } },
+      },
       relations: ['material', 'product', 'variant'],
+    });
+    const bops = await this.billOfProductRepository.find({
+      where: {
+        shop: { id: order.shop.id },
+      },
+      relations: ['productSource', 'variantSource', 'product', 'variant'],
     });
 
     const usedMaterials: { material: Material; quantity: number }[] = [];
     for (const item of items) {
-      const itemBoms = boms.filter(
-        (x) => x.product.id === item.product.id && x.variant?.id == item.productVariant?.id,
-      );
-      for (const bom of itemBoms) {
-        const existingMaterial = usedMaterials.find((x) => x.material.id === bom.material?.id);
+      const materials = Product.getAllMaterials(item.product, item.productVariant, boms, bops);
+      for (const material of materials) {
+        const existingMaterial = usedMaterials.find((x) => x.material.id === material.material.id);
         if (existingMaterial) {
-          existingMaterial.quantity += bom.quantity * item.quantity;
+          existingMaterial.quantity += material.quantity * item.quantity;
         } else {
-          usedMaterials.push({ material: bom.material, quantity: bom.quantity * item.quantity });
+          usedMaterials.push({ material: material.material, quantity: material.quantity * item.quantity });
         }
       }
     }
