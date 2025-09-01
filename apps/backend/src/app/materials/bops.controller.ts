@@ -17,7 +17,6 @@ export class BopsController {
   @Post()
   async create(@Body() data: Partial<BillOfProduct>, @LoginUser() user: AuthPayload) {
     const shop = await this.auth.getPanelUserShop(user);
-    console.log(data);
     return this.bopRepository.save({ ...data, shop: { id: shop.id } });
   }
 

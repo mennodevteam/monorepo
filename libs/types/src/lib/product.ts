@@ -125,7 +125,7 @@ export class Product {
 
     if (bops.length === 0 && boms.length === 0) return null;
 
-    const bomsCost = BillOfMaterial.calculateCost(boms);
+    const bomsCost = boms.length ? BillOfMaterial.calculateCost(boms) : 0;
     if (bomsCost === null) return null;
 
     let bopsCost = 0;

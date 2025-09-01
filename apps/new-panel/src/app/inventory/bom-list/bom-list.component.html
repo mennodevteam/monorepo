@@ -72,7 +72,9 @@
                       </mat-menu>
                     }
                     @for (bop of item.bops; track bop.id) {
-                      @let title = (bop.productSource?.title || '') + (bop.variantSource?.title || '');
+                      @let title =
+                        (bop.productSource?.title || '') +
+                        (bop.variantSource?.title ? ` - ${bop.variantSource.title}` : '');
                       <mat-chip [matMenuTriggerFor]="menu">
                         <i class="fas fa-box fa-xs"></i>
                         {{ title }}
@@ -152,7 +154,7 @@
               <th mat-header-cell *matHeaderCellDef style="width: 140px">{{ 'bom.cost' | translate }}</th>
               <td mat-cell *matCellDef="let item">
                 @if (item.cost !== null) {
-                  {{ item.cost | number | menuCurrency }}
+                  <span eng>{{ item.cost | number: '1.0-0' | menuCurrency }}</span>
                 } @else {
                   <i class="fa-regular fa-question"></i>
                 }
