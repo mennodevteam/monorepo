@@ -66,7 +66,10 @@ export class TopProductsCardComponent {
     queryKey: ['topProductsDashboard', this.fromDate(), this.toDate()],
     queryFn: () =>
       lastValueFrom(
-        this.http.get<any>(`/dashboard/topProducts/${this.fromDate()?.toISOString()}/${this.toDate()?.toISOString()}`),
+        this.http.get<any>(
+          `/dashboard/topProducts/${this.fromDate()?.toISOString()}/${this.toDate()?.toISOString()}`,
+        ),
       ),
+    enabled: !!this.fromDate() && !!this.toDate(),
   }));
 }

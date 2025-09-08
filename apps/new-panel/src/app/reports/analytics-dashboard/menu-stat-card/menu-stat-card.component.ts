@@ -77,5 +77,6 @@ export class MenuStatCardComponent {
       lastValueFrom(
         this.http.get<any>(`/dashboard/menuStat/${this.fromDate().toISOString()}/${this.toDate().toISOString()}`),
       ),
+    enabled: !!this.fromDate() && !!this.toDate(),
   }));
 }

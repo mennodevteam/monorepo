@@ -77,6 +77,7 @@ export class UserStatCardComponent {
           `/dashboard/userStat/${this.fromDate().toISOString()}/${this.toDate().toISOString()}`,
         ),
       ),
+    enabled: !!this.fromDate() && !!this.toDate(),
   }));
 
   retentionRate = computed(() => {

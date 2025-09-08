@@ -66,5 +66,6 @@ export class LoadMenuRefCardComponent {
           `/dashboard/loadMenuRef/${this.fromDate().toISOString()}/${this.toDate().toISOString()}`,
         ),
       ),
+    enabled: !!this.fromDate() && !!this.toDate(),
   }));
 }

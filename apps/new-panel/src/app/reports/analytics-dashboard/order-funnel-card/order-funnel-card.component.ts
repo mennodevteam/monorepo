@@ -99,6 +99,7 @@ export class OrderFunnelCardComponent {
           `/dashboard/orderFunnel/${this.fromDate().toISOString()}/${this.toDate().toISOString()}`,
         ),
       ),
+    enabled: !!this.fromDate() && !!this.toDate(),
   }));
 
   conversionRate = computed(() => {

@@ -34,13 +34,13 @@ export class AnalyticsDashboardComponent {
   toDate = signal<Date>(new Date());
 
   validFromDate = computed(() => {
-    const date = new Date((this.fromDate() as any)._d || this.fromDate());
+    const date = new Date((this.fromDate() as any)?._d || this.fromDate());
     date.setHours(0, 0, 0, 0);
     return date;
   });
 
   validToDate = computed(() => {
-    const date = new Date((this.toDate() as any)._d || this.toDate());
+    const date = new Date((this.toDate() as any)?._d || this.toDate());
     date.setHours(23, 59, 59, 999);
     return date;
   });

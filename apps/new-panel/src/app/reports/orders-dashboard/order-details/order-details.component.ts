@@ -28,5 +28,6 @@ export class OrderDetailsComponent {
       lastValueFrom(
         this.http.get<any>(`/dashboard/orderDetails/${this.fromDate()?.toISOString()}/${this.toDate()?.toISOString()}`),
       ),
+    enabled: !!this.fromDate() && !!this.toDate(),
   }));
 }
