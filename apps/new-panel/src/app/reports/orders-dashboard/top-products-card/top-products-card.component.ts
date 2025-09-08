@@ -28,13 +28,13 @@ export class TopProductsCardComponent {
 
   public chartOptions: ChartConfiguration['options'] = {
     plugins: {
-      legend: { display: false },
-    },
-    scales: {
-      y: {
-        ticks: {
-          stepSize: 1,
-        },
+      legend: { 
+        display: true,
+        position: 'bottom',
+        labels: {
+          usePointStyle: true,
+          padding: 20,
+        }
       },
     },
     responsive: true,
@@ -48,19 +48,40 @@ export class TopProductsCardComponent {
         datasets: [
           {
             data: [],
+            backgroundColor: [],
           },
         ],
         labels: [],
       } as ChartConfiguration['data'];
+    
+    // Generate colors for pie chart segments
+    const colors = this.generateColors(data.length);
+    
     return {
       datasets: [
         {
           data: data.map((x: any) => x.count),
+          backgroundColor: colors,
+          borderWidth: 2,
+          borderColor: '#fff',
         },
       ],
       labels: data.map((x: any) => x.product),
     } as ChartConfiguration['data'];
   });
+
+  private generateColors(count: number): string[] {
+    const colors = [
+      '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
+      '#FF9F40', '#FF6384', '#C9CBCF', '#4BC0C0', '#FF6384'
+    ];
+    
+    const result: string[] = [];
+    for (let i = 0; i < count; i++) {
+      result.push(colors[i % colors.length]);
+    }
+    return result;
+  }
 
   query = injectQuery(() => ({
     queryKey: ['topProductsDashboard', this.fromDate(), this.toDate()],
