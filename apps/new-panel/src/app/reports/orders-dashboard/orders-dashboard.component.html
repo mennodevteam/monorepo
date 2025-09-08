@@ -15,5 +15,6 @@
     <app-top-products-card fxFlex [fromDate]="validFromDate()" [toDate]="validToDate()" />
   </div>
   <div fxLayout="row" fxLayoutGap="16px" fxLayout.lt-md="column">
+    <app-orders-per-day-chart fxFlex [fromDate]="validFromDate()" [toDate]="validToDate()" />
   </div>
 </main>

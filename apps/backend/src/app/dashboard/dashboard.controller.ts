@@ -103,8 +103,6 @@ export class DashboardController {
     };
   }
 
-  
-
   @Roles(UserRole.Panel)
   @Get('loadMenuRef/:from/:to')
   async loadMenuRef(@LoginUser() user: AuthPayload, @Param('from') from: string, @Param('to') to: string) {
@@ -204,7 +202,6 @@ export class DashboardController {
       .groupBy('day')
       .orderBy('day')
       .getRawMany();
-
 
     const memberResult = await this.membersRepo
       .createQueryBuilder('member')
@@ -401,7 +398,11 @@ export class DashboardController {
 
   @Roles(UserRole.Panel)
   @Get('orderDetails/:from/:to')
-  async getOrderDetails(@LoginUser() user: AuthPayload, @Param('from') from: string, @Param('to') to: string) {
+  async getOrderDetails(
+    @LoginUser() user: AuthPayload,
+    @Param('from') from: string,
+    @Param('to') to: string,
+  ) {
     const shop = await this.auth.getPanelUserShop(user);
     const fromDate = new Date(from);
     const toDate = new Date(to);
@@ -439,13 +440,15 @@ export class DashboardController {
     const avg = total / count;
 
     // Calculate non-abstract item count average
-    const nonAbstractItemCounts = orders.map(order => 
-      order.items.filter(item => !item.isAbstract).length
+    const nonAbstractItemCounts = orders.map(
+      (order) => order.items.filter((item) => !item.isAbstract).length,
     );
     const nonAbstractItemCountAvg = nonAbstractItemCounts.reduce((sum, count) => sum + count, 0) / count;
 
     // Calculate material cost related metrics
-    const ordersWithMaterialCost = orders.filter(order => order.materialCost !== null && order.materialCost !== undefined);
+    const ordersWithMaterialCost = orders.filter(
+      (order) => order.materialCost !== null && order.materialCost !== undefined,
+    );
     const avgOrdersHaveMaterialCost = ordersWithMaterialCost.length / count;
 
     // Calculate total extra cost (0 for empty/null values)
@@ -470,8 +473,8 @@ export class DashboardController {
 
       // For orders without material cost, use average percentage of profit
       const avgProfitPercentage = profitCount > 0 ? totalProfitPercentage / profitCount : 0;
-      const ordersWithoutMaterialCost = orders.filter(order => 
-        order.materialCost === null || order.materialCost === undefined
+      const ordersWithoutMaterialCost = orders.filter(
+        (order) => order.materialCost === null || order.materialCost === undefined,
       );
 
       for (const order of ordersWithoutMaterialCost) {
@@ -489,7 +492,7 @@ export class DashboardController {
       }
 
       const avgProfitPercentage = profitCount > 0 ? totalProfitPercentage / profitCount : 0;
-      
+
       // Apply average percentage to all orders
       for (const order of orders) {
         const estimatedProfit = (order.totalPrice * avgProfitPercentage) / 100;
@@ -512,5 +515,53 @@ export class DashboardController {
       avgOrdersHaveMaterialCost,
       totalExtraCost,
     };
+  }
+
+  @Roles(UserRole.Panel)
+  @Get('ordersPerDay/:from/:to')
+  async getOrdersPerDay(
+    @LoginUser() user: AuthPayload,
+    @Param('from') from: string,
+    @Param('to') to: string,
+  ) {
+    const shop = await this.auth.getPanelUserShop(user);
+
+    // Get orders count and total sales grouped by day
+    const ordersPerDay = await this.ordersRepo
+      .createQueryBuilder('order')
+      .select("to_char(Date(order.createdAt), 'YYYY-MM-DD')", 'date')
+      .addSelect('CAST(COUNT(order.id) AS INTEGER)', 'count')
+      .addSelect('CAST(SUM(order.totalPrice) AS DECIMAL)', 'totalSales')
+      .where('order.shop = :shopId', { shopId: shop.id })
+      .andWhere('order.state != :canceledState', { canceledState: OrderState.Canceled })
+      .andWhere('order.excludeFromReports = :excludeFromReports', { excludeFromReports: false })
+      .andWhere('order.deletedAt IS NULL')
+      .andWhere('order.createdAt >= :from', { from: `${from}` })
+      .andWhere('order.createdAt <= :to', { to: `${to}` })
+      .groupBy('DATE(order.createdAt)')
+      .orderBy('date', 'ASC')
+      .getRawMany();
+
+    // Fill in missing dates with zero counts and sales
+    const result: { date: string; count: number; totalSales: number }[] = [];
+    const currentDate = new Date(from);
+    const endDate = new Date(to);
+
+    while (currentDate <= endDate) {
+      const dateString = currentDate
+        .toLocaleDateString('en-CA', { year: 'numeric', day: '2-digit', month: '2-digit' })
+        .replace(/\//g, '-');
+
+      const dayData = ordersPerDay.find((item) => item.date === dateString);
+      result.push({
+        date: dateString,
+        count: dayData ? Number(dayData.count) : 0,
+        totalSales: dayData ? Number(dayData.totalSales) || 0 : 0,
+      });
+
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return result;
   }
 }

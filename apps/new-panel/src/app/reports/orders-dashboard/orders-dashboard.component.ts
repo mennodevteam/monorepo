@@ -3,6 +3,7 @@ import { Component, computed, signal } from '@angular/core';
 import { SHARED } from '../../shared';
 import { TopProductsCardComponent } from './top-products-card/top-products-card.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
+import { OrdersPerDayChartComponent } from './orders-per-day-chart/orders-per-day-chart.component';
 import { FormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -17,6 +18,7 @@ import * as moment from 'jalali-moment';
     SHARED, 
     TopProductsCardComponent, 
     OrderDetailsComponent,
+    OrdersPerDayChartComponent,
     FormsModule,
     MatDatepickerModule,
     MatInputModule,

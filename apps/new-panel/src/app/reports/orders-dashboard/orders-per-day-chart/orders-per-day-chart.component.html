@@ -1,0 +1,15 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>
+      {{ 'dashboard.ordersPerDayTitle' | translate }}
+    </mat-card-title>
+    <mat-card-subtitle>
+      {{ 'dashboard.ordersPerDaySubtitle' | translate }}
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    @if (query.data()) {
+      <canvas baseChart [data]="chartData()" [options]="chartOptions" type="line" height="300px"></canvas>
+    }
+  </mat-card-content>
+</mat-card>
