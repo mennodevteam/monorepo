@@ -9,7 +9,15 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { FormControl, FormsModule, Validators } from '@angular/forms';
 import { MaterialsService } from '../inventory/materials.service';
-import { Product, ProductVariant, Material, BillOfMaterial, ProductCategory, MenuCost, Status } from '@menno/types';
+import {
+  Product,
+  ProductVariant,
+  Material,
+  BillOfMaterial,
+  ProductCategory,
+  MenuCost,
+  Status,
+} from '@menno/types';
 import { MenuService } from '../menu/menu.service';
 import { SHARED } from '../shared';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -27,7 +35,6 @@ interface PricingItem {
   category: ProductCategory;
   product: Product;
   variant?: ProductVariant;
-  boms: BillOfMaterial[];
   costs: MenuCost[];
   discounts: MenuCost[];
   total: number;
@@ -104,6 +111,9 @@ export class PricingComponent {
     const categories = this.menuService.data()?.categories || [];
     const selectedCategory = this.selectedCategory();
     const showInactiveItems = this.showInactiveItems();
+    const allBoms = this.materialsService.bomsQuery.data() || [];
+    const allBops = this.materialsService.bopsQuery.data() || [];
+
     for (const category of categories) {
       // Skip if category filter is applied and doesn't match
       if (selectedCategory && category.id !== selectedCategory.id) {
@@ -118,12 +128,12 @@ export class PricingComponent {
           if (this.searchQuery() && !product.title.toLowerCase().includes(this.searchQuery().toLowerCase()))
             continue;
 
-          const productBoms = this.boms().filter((bom) => bom.product?.id === product.id);
-          const materialCost = product.variants?.length ? 0 : BillOfMaterial.calculateCost(productBoms);
+          const materialCost = product.variants?.length
+            ? 0
+            : Product.calculateCost(product, null, allBoms, allBops);
           result.push({
             category,
             product,
-            boms: productBoms.filter((bom) => !!bom.variant),
             materialCost: materialCost || 0,
             costs: product.costs?.filter((cost) => (cost.fixedCost || cost.percentageCost) > 0) || [],
             discounts: product.costs?.filter((cost) => (cost.fixedCost || cost.percentageCost) < 0) || [],
@@ -143,14 +153,12 @@ export class PricingComponent {
             )
               continue;
 
-            const variantBoms = this.boms().filter((bom) => bom.variant?.id === variant.id);
-            const materialCost = this.calculateCost(variantBoms);
+            const materialCost = Product.calculateCost(product, variant, allBoms, allBops);
             result.push({
               category,
               product,
               variant,
-              boms: variantBoms,
-              materialCost,
+              materialCost: materialCost || 0,
               costs: product.costs?.filter((cost) => (cost.fixedCost || cost.percentageCost) > 0) || [],
               discounts: product.costs?.filter((cost) => (cost.fixedCost || cost.percentageCost) < 0) || [],
               total: Product.totalPrice(product, variant),
