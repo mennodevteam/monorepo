@@ -35,7 +35,7 @@
         <mat-list-item>
           <span matListItemTitle>{{ 'dashboard.averageOrderValue' | translate }}</span>
           <span matListItemMeta eng>
-            {{ query.data().avg || 0 | number | menuCurrency }}
+            {{ query.data().avg || 0 | number : '1.0-0' | menuCurrency }}
           </span>
         </mat-list-item>
 
@@ -49,7 +49,7 @@
             }
           </span>
           <span matListItemMeta eng>
-            {{ query.data().totalProfit || 0 | number | menuCurrency }}
+            {{ query.data().totalProfit || 0 | number : '1.0-0' | menuCurrency }}
           </span>
         </mat-list-item>
 
@@ -63,8 +63,8 @@
             }
           </span>
           <span matListItemMeta eng>
-            {{ query.data().avgProfit || 0 | number | menuCurrency }}
-            ({{ query.data().avgPercentageProfit | number: '1.1-1' }}%)
+            {{ query.data().avgProfit || 0 | number : '1.0-0' | menuCurrency }}
+            ({{ query.data().avgPercentageProfit | number: '1.0-0' }}%)
           </span>
         </mat-list-item>
 
