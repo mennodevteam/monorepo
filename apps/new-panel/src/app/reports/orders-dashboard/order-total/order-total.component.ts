@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { injectQuery } from '@tanstack/angular-query-experimental';
@@ -16,9 +16,11 @@ import { MatListModule } from '@angular/material/list';
 })
 export class OrderTotalComponent {
   private readonly http = inject(HttpClient);
+  public readonly fromDate = input<Date>();
+  public readonly toDate = input<Date>();
 
   query = injectQuery(() => ({
-    queryKey: ['orderTotalDashboard'],
+    queryKey: ['orderTotalDashboard', this.fromDate(), this.toDate()],
     queryFn: () => lastValueFrom(this.http.get<any>('/dashboard/sum/count')),
   }));
 }

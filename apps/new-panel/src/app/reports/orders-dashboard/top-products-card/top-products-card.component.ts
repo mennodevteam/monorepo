@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 
 import { SHARED } from '../../../shared';
 import { MatCardModule } from '@angular/material/card';
@@ -23,7 +23,8 @@ export class TopProductsCardComponent {
   private readonly http = inject(HttpClient);
   public readonly shopService = inject(ShopService);
   public readonly t = inject(TranslateService);
-  days = signal(30);
+  public readonly fromDate = input<Date>();
+  public readonly toDate = input<Date>();
 
   public chartOptions: ChartConfiguration['options'] = {
     plugins: {
@@ -61,18 +62,11 @@ export class TopProductsCardComponent {
     } as ChartConfiguration['data'];
   });
 
-  now = signal(new Date());
-  from = computed(() => {
-    const date = new Date(this.now());
-    date.setDate(date.getDate() - this.days());
-    return date;
-  });
-
   query = injectQuery(() => ({
-    queryKey: ['topProductsDashboard', this.days()],
+    queryKey: ['topProductsDashboard', this.fromDate(), this.toDate()],
     queryFn: () =>
       lastValueFrom(
-        this.http.get<any>(`/dashboard/topProducts/${this.from().toISOString()}/${this.now().toISOString()}`),
+        this.http.get<any>(`/dashboard/topProducts/${this.fromDate()?.toISOString()}/${this.toDate()?.toISOString()}`),
       ),
   }));
 }

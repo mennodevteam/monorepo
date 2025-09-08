@@ -3,24 +3,6 @@
     <mat-card-title>
       {{ 'dashboard.topProductsTitle' | translate }}
     </mat-card-title>
-    <button mat-stroked-button id="days-filter" [matMenuTriggerFor]="daysMenu">
-      {{ 'dashboard.lastDays' | translate: { value: days() } }}
-    </button>
-
-    <mat-menu #daysMenu="matMenu">
-      <button mat-menu-item (click)="days.set(3)">
-        {{ 'dashboard.lastDays' | translate: { value: 3 } }}
-      </button>
-      <button mat-menu-item (click)="days.set(7)">
-        {{ 'dashboard.lastDays' | translate: { value: 7 } }}
-      </button>
-      <button mat-menu-item (click)="days.set(30)">
-        {{ 'dashboard.lastDays' | translate: { value: 30 } }}
-      </button>
-      <button mat-menu-item (click)="days.set(90)">
-        {{ 'dashboard.lastDays' | translate: { value: 90 } }}
-      </button>
-    </mat-menu>
   </mat-card-header>
   <br />
   <mat-card-content>

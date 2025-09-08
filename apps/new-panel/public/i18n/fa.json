@@ -625,7 +625,15 @@
     "viewCart": "مشاهده سبد خرید",
     "viewCheckout": "مشاهده صفحه پرداخت",
     "selectAddress": "انتخاب آدرس",
-    "addOrder": "ثبت سفارش"
+    "addOrder": "ثبت سفارش",
+    "orderDetailsTitle": "جزئیات سفارشات",
+    "averageOrderValue": "میانگین ارزش سفارش",
+    "averageItemsPerOrder": "میانگین تعداد آیتم در هر سفارش",
+    "totalProfit": "کل سود",
+    "averageProfit": "میانگین سود",
+    "averageProfitPercentage": "میانگین درصد سود",
+    "ordersWithMaterialCost": "سفارشات دارای هزینه مواد",
+    "totalExtraCost": "کل هزینه‌های اضافی"
   },
   "menuCost": {
     "add": "ایجاد",

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { Roles } from '../auth/roles.decorators';
 import { Member, MenuStat, Order, OrderItem, OrderState, StatAction, UserRole } from '@menno/types';
 import { LoginUser } from '../auth/user.decorator';
@@ -102,6 +102,8 @@ export class DashboardController {
       },
     };
   }
+
+  
 
   @Roles(UserRole.Panel)
   @Get('loadMenuRef/:from/:to')
@@ -394,6 +396,121 @@ export class DashboardController {
       viewCheckout: parseInt(viewCheckoutCount.count) || 0,
       selectAddress: parseInt(selectAddressCount.count) || 0,
       addOrder: parseInt(addOrderCount.count) || 0,
+    };
+  }
+
+  @Roles(UserRole.Panel)
+  @Get('orderDetails/:from/:to')
+  async getOrderDetails(@LoginUser() user: AuthPayload, @Param('from') from: string, @Param('to') to: string) {
+    const shop = await this.auth.getPanelUserShop(user);
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
+
+    const defaultFilter: FindOptionsWhere<Order> = {
+      shop: { id: shop.id },
+      state: Not(OrderState.Canceled),
+      excludeFromReports: false,
+      createdAt: Between(fromDate, toDate),
+    };
+
+    // Get all orders with their items for detailed calculations
+    const orders = await this.ordersRepo.find({
+      where: defaultFilter,
+      relations: ['items'],
+    });
+
+    if (orders.length === 0) {
+      return {
+        total: 0,
+        count: 0,
+        avg: 0,
+        nonAbstractItemCountAvg: 0,
+        totalProfit: 0,
+        avgProfit: 0,
+        avgPercentageProfit: 0,
+        avgOrdersHaveMaterialCost: 0,
+        totalExtraCost: 0,
+      };
+    }
+
+    // Calculate basic metrics
+    const total = orders.reduce((sum, order) => sum + order.totalPrice, 0);
+    const count = orders.length;
+    const avg = total / count;
+
+    // Calculate non-abstract item count average
+    const nonAbstractItemCounts = orders.map(order => 
+      order.items.filter(item => !item.isAbstract).length
+    );
+    const nonAbstractItemCountAvg = nonAbstractItemCounts.reduce((sum, count) => sum + count, 0) / count;
+
+    // Calculate material cost related metrics
+    const ordersWithMaterialCost = orders.filter(order => order.materialCost !== null && order.materialCost !== undefined);
+    const avgOrdersHaveMaterialCost = ordersWithMaterialCost.length / count;
+
+    // Calculate total extra cost (0 for empty/null values)
+    const totalExtraCost = orders.reduce((sum, order) => sum + (order.extraCosts || 0), 0);
+
+    // Calculate profit metrics
+    let totalProfit = 0;
+    let profitCount = 0;
+    let totalProfitPercentage = 0;
+
+    // Check if more than 60% of orders have material cost
+    const hasEnoughMaterialCostData = avgOrdersHaveMaterialCost > 0.6;
+
+    if (hasEnoughMaterialCostData) {
+      // Calculate profit for orders with material cost: total - materialCost - extraCost
+      for (const order of ordersWithMaterialCost) {
+        const profit = order.totalPrice - (order.materialCost || 0) - (order.extraCosts || 0);
+        totalProfit += profit;
+        profitCount++;
+        totalProfitPercentage += (profit / order.totalPrice) * 100;
+      }
+
+      // For orders without material cost, use average percentage of profit
+      const avgProfitPercentage = profitCount > 0 ? totalProfitPercentage / profitCount : 0;
+      const ordersWithoutMaterialCost = orders.filter(order => 
+        order.materialCost === null || order.materialCost === undefined
+      );
+
+      for (const order of ordersWithoutMaterialCost) {
+        const estimatedProfit = (order.totalPrice * avgProfitPercentage) / 100;
+        totalProfit += estimatedProfit;
+        totalProfitPercentage += avgProfitPercentage;
+      }
+    } else {
+      // If less than 60% have material cost, calculate average percentage from available data
+      for (const order of ordersWithMaterialCost) {
+        const profit = order.totalPrice - (order.materialCost || 0) - (order.extraCosts || 0);
+        totalProfit += profit;
+        profitCount++;
+        totalProfitPercentage += (profit / order.totalPrice) * 100;
+      }
+
+      const avgProfitPercentage = profitCount > 0 ? totalProfitPercentage / profitCount : 0;
+      
+      // Apply average percentage to all orders
+      for (const order of orders) {
+        const estimatedProfit = (order.totalPrice * avgProfitPercentage) / 100;
+        totalProfit += estimatedProfit;
+        totalProfitPercentage += avgProfitPercentage;
+      }
+    }
+
+    const avgProfit = totalProfit / count;
+    const avgPercentageProfit = totalProfitPercentage / count;
+
+    return {
+      total,
+      count,
+      avg,
+      nonAbstractItemCountAvg,
+      totalProfit,
+      avgProfit,
+      avgPercentageProfit,
+      avgOrdersHaveMaterialCost,
+      totalExtraCost,
     };
   }
 }
