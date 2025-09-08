@@ -629,13 +629,13 @@
     "orderDetailsTitle": "گزارش سفارشات",
     "saleSum": "جمع کل فروش",
     "saleCount": "تعداد سفارشات",
-    "averageOrderValue": "میانگین ارزش سفارش",
+    "averageOrderValue": "میانگین مبلغ سفارش",
     "averageItemsPerOrder": "میانگین تعداد آیتم در هر سفارش",
     "totalProfit": "کل سود",
-    "averageProfit": "میانگین سود",
-    "averageProfitPercentage": "میانگین درصد سود",
+    "averageProfit": "میانگین سود هر سفارش",
     "ordersWithMaterialCost": "سفارشات دارای هزینه مواد",
-    "totalExtraCost": "کل هزینه‌های اضافی"
+    "totalExtraCost": "کل هزینه‌های اضافی",
+    "profitEstimateTooltip": "تنها سود {{percentage}}% از سفارشات مشخص شده است و این عدد تخمینی است"
   },
   "menuCost": {
     "add": "ایجاد",

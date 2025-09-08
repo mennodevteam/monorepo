@@ -7,12 +7,13 @@ import { SHARED } from '../../../shared';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ShopService } from '../../../shop/shop.service';
 
 @Component({
   selector: 'app-order-details',
   standalone: true,
-  imports: [CommonModule, SHARED, MatCardModule, MatListModule, MatDividerModule],
+  imports: [CommonModule, SHARED, MatCardModule, MatListModule, MatDividerModule, MatTooltipModule],
   templateUrl: './order-details.component.html',
   styleUrl: './order-details.component.scss',
 })

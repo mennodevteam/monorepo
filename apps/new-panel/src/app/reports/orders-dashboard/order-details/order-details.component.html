@@ -1,3 +1,16 @@
+@let isProfitEstimate =
+  query.data() && query.data().avgOrdersHaveMaterialCost > 0 && query.data().avgOrdersHaveMaterialCost < 1;
+<ng-template #profitEstimateIcon>
+  <i
+    class="fas fa-exclamation-triangle text-warning"
+    [matTooltip]="
+      'dashboard.profitEstimateTooltip'
+        | translate: { percentage: query.data().avgOrdersHaveMaterialCost * 100 | number: '1.0-0' }
+    "
+    matTooltipPosition="above"
+    style="font-size: 12px; margin-right: 4px"
+  ></i>
+</ng-template>
 <mat-card appearance="outlined">
   <mat-card-header>
     <mat-card-title>{{ 'dashboard.orderDetailsTitle' | translate }}</mat-card-title>
@@ -6,17 +19,17 @@
     @if (query.data()) {
       <mat-list>
         <mat-list-item>
-          <span matListItemTitle>{{ 'app.count' | translate }}</span>
-          <span matListItemMeta eng>{{ query.data().count | number }}</span>
+          <span matListItemTitle>{{ 'dashboard.saleSum' | translate }}</span>
+          <span matListItemMeta eng>{{ query.data().total || 0 | number | menuCurrency }}</span>
         </mat-list-item>
 
         <mat-divider></mat-divider>
 
         <mat-list-item>
-          <span matListItemTitle>{{ 'app.total' | translate }}</span>
-          <span matListItemMeta eng>{{ query.data().total || 0 | number | menuCurrency }}</span>
+          <span matListItemTitle>{{ 'dashboard.saleCount' | translate }}</span>
+          <span matListItemMeta eng>{{ query.data().count | number }}</span>
         </mat-list-item>
-        
+
         <mat-divider></mat-divider>
 
         <mat-list-item>
@@ -29,16 +42,12 @@
         <mat-divider></mat-divider>
 
         <mat-list-item>
-          <span matListItemTitle>{{ 'dashboard.averageItemsPerOrder' | translate }}</span>
-          <span matListItemMeta eng>
-            {{ query.data().nonAbstractItemCountAvg | number:'1.1-1' }}
+          <span matListItemTitle>
+            {{ 'dashboard.totalProfit' | translate }}
+            @if (isProfitEstimate) {
+              <ng-container *ngTemplateOutlet="profitEstimateIcon" />
+            }
           </span>
-        </mat-list-item>
-
-        <mat-divider></mat-divider>
-
-        <mat-list-item>
-          <span matListItemTitle>{{ 'dashboard.totalProfit' | translate }}</span>
           <span matListItemMeta eng>
             {{ query.data().totalProfit || 0 | number | menuCurrency }}
           </span>
@@ -47,27 +56,15 @@
         <mat-divider></mat-divider>
 
         <mat-list-item>
-          <span matListItemTitle>{{ 'dashboard.averageProfit' | translate }}</span>
+          <span matListItemTitle>
+            {{ 'dashboard.averageProfit' | translate }}
+            @if (isProfitEstimate) {
+              <ng-container *ngTemplateOutlet="profitEstimateIcon" />
+            }
+          </span>
           <span matListItemMeta eng>
             {{ query.data().avgProfit || 0 | number | menuCurrency }}
-          </span>
-        </mat-list-item>
-
-        <mat-divider></mat-divider>
-
-        <mat-list-item>
-          <span matListItemTitle>{{ 'dashboard.averageProfitPercentage' | translate }}</span>
-          <span matListItemMeta eng>
-            {{ query.data().avgPercentageProfit | number:'1.1-1' }}%
-          </span>
-        </mat-list-item>
-
-        <mat-divider></mat-divider>
-
-        <mat-list-item>
-          <span matListItemTitle>{{ 'dashboard.ordersWithMaterialCost' | translate }}</span>
-          <span matListItemMeta eng>
-            {{ (query.data().avgOrdersHaveMaterialCost * 100) | number:'1.1-1' }}%
+            ({{ query.data().avgPercentageProfit | number: '1.1-1' }}%)
           </span>
         </mat-list-item>
 
@@ -77,6 +74,15 @@
           <span matListItemTitle>{{ 'dashboard.totalExtraCost' | translate }}</span>
           <span matListItemMeta eng>
             {{ query.data().totalExtraCost || 0 | number | menuCurrency }}
+          </span>
+        </mat-list-item>
+
+        <mat-divider></mat-divider>
+
+        <mat-list-item>
+          <span matListItemTitle>{{ 'dashboard.averageItemsPerOrder' | translate }}</span>
+          <span matListItemMeta eng>
+            {{ query.data().nonAbstractItemCountAvg | number: '1.1-1' }}
           </span>
         </mat-list-item>
       </mat-list>
