@@ -1,7 +1,6 @@
 import { Component, computed, signal } from '@angular/core';
 
 import { SHARED } from '../../shared';
-import { OrderTotalComponent } from './order-total/order-total.component';
 import { TopProductsCardComponent } from './top-products-card/top-products-card.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 import { FormsModule } from '@angular/forms';
@@ -16,7 +15,6 @@ import * as moment from 'jalali-moment';
   standalone: true,
   imports: [
     SHARED, 
-    OrderTotalComponent, 
     TopProductsCardComponent, 
     OrderDetailsComponent,
     FormsModule,

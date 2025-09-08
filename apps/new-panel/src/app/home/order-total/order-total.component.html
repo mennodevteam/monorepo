@@ -57,4 +57,12 @@
       <app-data-loading />
     }
   </mat-card-content>
+  @if (query.data()) {
+    <mat-divider />
+    <mat-card-actions>
+      <button mat-button routerLink="/reports/orders-dashboard">
+        {{ 'nav.dashboard' | translate }}
+      </button>
+    </mat-card-actions>
+  }
 </mat-card>
