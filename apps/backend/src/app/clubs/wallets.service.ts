@@ -1,4 +1,4 @@
-import { Shop, User, Wallet, WalletLog, WalletLogType } from '@menno/types';
+import { Shop, Wallet, WalletLog, WalletLogType } from '@menno/types';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -62,5 +62,37 @@ export class WalletsService {
   async getMemberWallet(memberId: string) {
     const wallet = await this.walletsRepo.findOneBy({ member: { id: memberId } });
     return wallet || (await this.walletsRepo.save({ member: { id: memberId }, charge: 0 } as Wallet));
+  }
+
+  async groupChargeMembers(
+    dto: { amount: number; memberIds: string[] },
+    shopId: string,
+    userId: string
+  ): Promise<{ success: Wallet[]; failed: { memberId: string; error: string }[] }> {
+    const success: Wallet[] = [];
+    const failed: { memberId: string; error: string }[] = [];
+
+    for (const memberId of dto.memberIds) {
+      try {
+        const wallet = await this.getMemberWallet(memberId);
+        const updatedWallet = await this.updateWalletAmount(
+          {
+            amount: dto.amount,
+            type: WalletLogType.ManualCharge,
+            wallet: wallet,
+            user: { id: userId },
+          } as WalletLog,
+          shopId
+        );
+        success.push(updatedWallet);
+      } catch (error) {
+        failed.push({
+          memberId,
+          error: error.message || 'Unknown error occurred',
+        });
+      }
+    }
+
+    return { success, failed };
   }
 }

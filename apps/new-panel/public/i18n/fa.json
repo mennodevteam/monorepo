@@ -692,7 +692,9 @@
     "deselectAll": "لغو انتخاب",
     "downloadCsv": "دانلود CSV",
     "filterTitle": "فیلتر مشتریان",
-    "sendSmsToFilter": "ارسال پیامک به {{value}} مشتری",
+    "sendSms": "ارسال پیامک",
+    "chargeWallet": "شارژ کیف پول",
+    "filterTooltip": "ارسال پیامک به {{value}} مشتری",
     "firstOrderDateRange": "بازه اولین سفارش",
     "lastOrderDateRange": "بازه آخرین سفارش",
     "joinedAtDateRange": "بازه تاریخ عضویت",
@@ -713,7 +715,8 @@
     },
     "chargeWalletDialog": {
       "title": "شارژ کیف پول",
-      "amountLabel": "مبلغ شارژ"
+      "amountLabel": "مبلغ شارژ",
+      "description": "مبلغ وارد شده در زیر به موجودی فعلی مشتری اضافه می‌شود"
     }
   },
   "membersTable": {

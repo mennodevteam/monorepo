@@ -21,18 +21,26 @@
         <button mat-stroked-button (click)="openFilterDialog()">
           {{ 'members.filterTitle' | translate }}
         </button>
+        <small>{{ 'app.number' | translate: { value: query.data()?.totalCount | number } }}</small>
       }
       <span fxFlex></span>
       @if (query.data()) {
-        @if (!selectedMembersLength) {
-          <small>{{ 'app.number' | translate: { value: query.data()?.totalCount | number } }}</small>
-        }
-        <button mat-button (click)="sendMessage()">
+        @let totalCount = selectedMembersLength || query.data()?.totalCount;
+        <button
+          mat-button
+          (click)="sendMessage()"
+          matTooltip="{{ 'members.filterTooltip' | translate: { value: totalCount | number } }}"
+        >
           <i class="fa-regular fa-message"></i>
-          {{
-            'members.sendSmsToFilter'
-              | translate: { value: selectedMembersLength || query.data()?.totalCount | number }
-          }}
+          {{ 'members.sendSms' | translate }}
+        </button>
+        <button
+          mat-button
+          (click)="chargeWallet()"
+          matTooltip="{{ 'members.filterTooltip' | translate: { value: totalCount | number } }}"
+        >
+          <i class="fa-regular fa-wallet"></i>
+          {{ 'members.chargeWallet' | translate }}
         </button>
       }
     </mat-toolbar-row>

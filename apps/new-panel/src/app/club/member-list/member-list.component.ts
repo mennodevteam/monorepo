@@ -20,6 +20,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ClubService } from '../../core/services/club.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-member-list',
@@ -34,6 +35,7 @@ import { ClubService } from '../../core/services/club.service';
     MatSortModule,
     MatDialogModule,
     MatChipsModule,
+    MatTooltipModule,
   ],
   templateUrl: './member-list.component.html',
   styleUrl: './member-list.component.scss',
@@ -90,6 +92,18 @@ export class MemberListComponent {
   walletChargeMutation = injectMutation(() => ({
     mutationFn: (dto: { memberId: string; amount: number }) =>
       lastValueFrom(this.http.post<void>(`/wallets/charge`, dto)),
+    onMutate: () => {
+      this.snack.open(this.t.instant('app.saving'), '', { duration: 4000 });
+    },
+    onSuccess: (response) => {
+      this.snack.open(this.t.instant('app.savedSuccessfully'), '', { duration: 2000 });
+      this.query.refetch();
+    },
+  }));
+
+  groupWalletChargeMutation = injectMutation(() => ({
+    mutationFn: (dto: { memberIds: string[]; amount: number }) =>
+      lastValueFrom(this.http.post<void>(`/wallets/groupCharge`, dto)),
     onMutate: () => {
       this.snack.open(this.t.instant('app.saving'), '', { duration: 4000 });
     },
@@ -195,7 +209,9 @@ export class MemberListComponent {
     );
   });
 
-  removeFilter(type: 'joinedAt' | 'lastVisit' | 'firstOrder' | 'lastOrder' | 'orderCount' | 'query' | 'star') {
+  removeFilter(
+    type: 'joinedAt' | 'lastVisit' | 'firstOrder' | 'lastOrder' | 'orderCount' | 'query' | 'star',
+  ) {
     this.filterDto.update((dto) => {
       switch (type) {
         case 'joinedAt':
@@ -283,20 +299,39 @@ export class MemberListComponent {
       });
   }
 
-  chargeWallet(member: Member) {
+  chargeWallet(member?: Member) {
     this.dialogService
-      .prompt(this.t.instant('members.chargeWalletDialog.title'), {
-        amount: {
-          label: this.t.instant('members.chargeWalletDialog.amountLabel'),
-          control: new FormControl(0, Validators.required),
-          type: 'number',
-          eng: true,
-          ltr: true,
+      .prompt(
+        this.t.instant('members.chargeWalletDialog.title'),
+        {
+          amount: {
+            label: this.t.instant('members.chargeWalletDialog.amountLabel'),
+            control: new FormControl(0, Validators.required),
+            type: 'number',
+            eng: true,
+            ltr: true,
+          },
         },
-      })
+        {
+          description: this.t.instant('members.chargeWalletDialog.description'),
+        },
+      )
       .then(async (dto) => {
         if (dto) {
-          this.walletChargeMutation.mutate({ memberId: member.id, amount: dto.amount });
+          if (member) {
+            this.walletChargeMutation.mutate({ memberId: member.id, amount: dto.amount });
+          } else {
+            const memberIds = this.selectedMembers()?.length
+              ? this.selectedMembersIds()
+              : this.query.data()?.data?.map((m) => m.member.id);
+
+            if (memberIds?.length) {
+              this.groupWalletChargeMutation.mutate({
+                memberIds,
+                amount: dto.amount,
+              });
+            }
+          }
         }
       });
   }
