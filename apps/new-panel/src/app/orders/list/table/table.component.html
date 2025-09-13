@@ -103,7 +103,7 @@
     <td mat-cell *matCellDef="let order" style="width: 180px">
       @if (order.materialCost) {
         @let totalCost =
-          order.totalPrice - (order.extraCosts || 0) - order.materialCost - (order.useWallet || 0);
+          (order.extraCosts || 0) + order.materialCost + (order.useWallet || 0);
         <span class="success-text">
           <i class="fa-solid fa-arrow-trend-up"></i>
           {{ order.totalPrice - totalCost | number: '1.0-0' | menuCurrency }}
