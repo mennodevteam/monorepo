@@ -945,5 +945,13 @@
       "sent": "موفق",
       "scheduled": "زمانبندی"
     }
+  },
+  "pagination": {
+    "showing": "نمایش",
+    "of": "از",
+    "first": "اول",
+    "previous": "قبلی",
+    "next": "بعدی",
+    "last": "آخر"
   }
 }

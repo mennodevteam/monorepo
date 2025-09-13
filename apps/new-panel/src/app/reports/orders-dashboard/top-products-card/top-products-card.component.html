@@ -7,7 +7,22 @@
   <br />
   <mat-card-content>
     @if (query.data()) {
-      <canvas baseChart [data]="chartData()" [options]="chartOptions" type="bar" height="300px"></canvas>
+      <canvas baseChart [data]="chartData()" [options]="chartOptions()" type="bar" height="300px"></canvas>
     }
   </mat-card-content>
+  @if (totalPages() > 1) {
+    <mat-card-actions fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+      @for (page of pages(); track page) {
+        @if (page === currentPage()) {
+          <button mat-flat-button color="primary" (click)="goToPage(page)">
+            {{ page }}
+          </button>
+        } @else {
+          <button mat-stroked-button (click)="goToPage(page)">
+            {{ page }}
+          </button>
+        }
+      }
+    </mat-card-actions>
+  }
 </mat-card>

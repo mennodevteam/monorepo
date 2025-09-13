@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 
 import { SHARED } from '../../../shared';
 import { MatCardModule } from '@angular/material/card';
@@ -10,12 +10,13 @@ import { Chart, ChartConfiguration } from 'chart.js';
 import { ShopService } from '../../../shop/shop.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 Chart.defaults.font.family = 'IRANSans';
 
 @Component({
   selector: 'app-top-products-card',
   standalone: true,
-  imports: [SHARED, MatCardModule, BaseChartDirective, MatMenuModule],
+  imports: [SHARED, MatCardModule, BaseChartDirective, MatMenuModule, MatButtonModule],
   templateUrl: './top-products-card.component.html',
   styleUrl: './top-products-card.component.scss',
 })
@@ -26,8 +27,37 @@ export class TopProductsCardComponent {
   public readonly fromDate = input<Date>();
   public readonly toDate = input<Date>();
 
-  public chartOptions: ChartConfiguration['options'] = {
-    // Remove indexAxis to make it a vertical bar chart (default)
+  // Pagination state
+  public readonly currentPage = signal(1);
+  public readonly itemsPerPage = 10;
+  public readonly Math = Math; // Make Math available in template
+
+  // Pagination computed properties
+  public readonly totalItems = computed(() => this.query.data()?.length || 0);
+  public readonly totalPages = computed(() => Math.ceil(this.totalItems() / this.itemsPerPage));
+  public readonly paginatedData = computed(() => {
+    const data = this.query.data();
+    if (!data) return [];
+
+    const startIndex = (this.currentPage() - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return data.slice(startIndex, endIndex);
+  });
+  public readonly pages = computed(() => {
+    const totalPages = this.totalPages();
+    if (!totalPages) return [];
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  });
+
+  // Calculate max value from entire dataset for consistent Y-axis scaling
+  public readonly maxValue = computed(() => {
+    const data = this.query.data();
+    if (!data || data.length === 0) return 0;
+    return Math.max(...data.map((x: any) => x.count));
+  });
+
+  public chartOptions = computed((): ChartConfiguration['options'] => ({
+    indexAxis: 'y', // Make it a horizontal bar chart
     plugins: {
       legend: {
         display: false, // Hide legend for bar chart as labels are on the axis
@@ -35,19 +65,8 @@ export class TopProductsCardComponent {
     },
     scales: {
       x: {
-        grid: {
-          display: false,
-        },
-        ticks: {
-          font: {
-            family: 'IRANSans',
-          },
-          maxRotation: 45, // Rotate labels for better readability
-          minRotation: 0,
-        },
-      },
-      y: {
         beginAtZero: true,
+        max: this.maxValue(), // Use the max value from entire dataset
         grid: {
           display: true,
         },
@@ -57,14 +76,26 @@ export class TopProductsCardComponent {
           },
         },
       },
+      y: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          font: {
+            family: 'IRANSans',
+          },
+          maxRotation: 0, // No rotation needed for horizontal bars
+          minRotation: 0,
+        },
+      },
     },
     responsive: true,
     maintainAspectRatio: false,
-  };
+  }));
 
   chartData = computed(() => {
-    const data = this.query.data();
-    if (!data)
+    const data = this.paginatedData();
+    if (!data || data.length === 0)
       return {
         datasets: [
           {
@@ -118,4 +149,8 @@ export class TopProductsCardComponent {
       ),
     enabled: !!this.fromDate() && !!this.toDate(),
   }));
+
+  public goToPage(page: number) {
+    this.currentPage.set(page);
+  }
 }
