@@ -165,7 +165,7 @@ export class DashboardController {
       .groupBy('item.product')
       .groupBy('product.title')
       .orderBy('count', 'DESC')
-      .limit(20)
+      .limit(50)
       .getRawMany();
 
     return topProducts;
@@ -424,12 +424,10 @@ export class DashboardController {
       return {
         total: 0,
         count: 0,
-        avg: 0,
         nonAbstractItemCountAvg: 0,
-        totalProfit: 0,
         avgProfit: 0,
-        avgPercentageProfit: 0,
         avgOrdersHaveMaterialCost: 0,
+        avgMaterialCost: 0,
         totalExtraCost: 0,
       };
     }
@@ -437,7 +435,6 @@ export class DashboardController {
     // Calculate basic metrics
     const total = orders.reduce((sum, order) => sum + order.totalPrice, 0);
     const count = orders.length;
-    const avg = total / count;
 
     // Calculate non-abstract item count average
     const nonAbstractItemCounts = orders.map(
@@ -455,63 +452,32 @@ export class DashboardController {
     const totalExtraCost = orders.reduce((sum, order) => sum + (order.extraCosts || 0), 0);
 
     // Calculate profit metrics
-    let totalProfit = 0;
-    let profitCount = 0;
-    let totalProfitPercentage = 0;
+    let avgProfit = 0;
+    let avgMaterialCost = 0;
 
     // Check if more than 60% of orders have material cost
     const hasEnoughMaterialCostData = avgOrdersHaveMaterialCost > 0.6;
 
     if (hasEnoughMaterialCostData) {
+      let totalProfit = 0;
+      let totalMaterialCost = 0;
       // Calculate profit for orders with material cost: total - materialCost - extraCost
       for (const order of ordersWithMaterialCost) {
-        const profit = order.totalPrice - (order.materialCost || 0) - (order.extraCosts || 0);
+        const profit =
+          order.totalPrice - (order.materialCost || 0) - (order.extraCosts || 0) - (order.useWallet || 0);
         totalProfit += profit;
-        profitCount++;
-        totalProfitPercentage += (profit / order.totalPrice) * 100;
+        totalMaterialCost += order.materialCost || 0;
       }
-
-      // For orders without material cost, use average percentage of profit
-      const avgProfitPercentage = profitCount > 0 ? totalProfitPercentage / profitCount : 0;
-      const ordersWithoutMaterialCost = orders.filter(
-        (order) => order.materialCost === null || order.materialCost === undefined,
-      );
-
-      for (const order of ordersWithoutMaterialCost) {
-        const estimatedProfit = (order.totalPrice * avgProfitPercentage) / 100;
-        totalProfit += estimatedProfit;
-        totalProfitPercentage += avgProfitPercentage;
-      }
-    } else {
-      // If less than 60% have material cost, calculate average percentage from available data
-      for (const order of ordersWithMaterialCost) {
-        const profit = order.totalPrice - (order.materialCost || 0) - (order.extraCosts || 0);
-        totalProfit += profit;
-        profitCount++;
-        totalProfitPercentage += (profit / order.totalPrice) * 100;
-      }
-
-      const avgProfitPercentage = profitCount > 0 ? totalProfitPercentage / profitCount : 0;
-
-      // Apply average percentage to all orders
-      for (const order of orders) {
-        const estimatedProfit = (order.totalPrice * avgProfitPercentage) / 100;
-        totalProfit += estimatedProfit;
-        totalProfitPercentage += avgProfitPercentage;
-      }
+      avgProfit = totalProfit / ordersWithMaterialCost.length;
+      avgMaterialCost = totalMaterialCost / ordersWithMaterialCost.length;
     }
-
-    const avgProfit = totalProfit / count;
-    const avgPercentageProfit = totalProfitPercentage / count;
 
     return {
       total,
       count,
-      avg,
       nonAbstractItemCountAvg,
-      totalProfit,
+      avgMaterialCost,
       avgProfit,
-      avgPercentageProfit,
       avgOrdersHaveMaterialCost,
       totalExtraCost,
     };

@@ -636,6 +636,7 @@
     "averageOrderValue": "میانگین مبلغ سفارش",
     "averageItemsPerOrder": "میانگین تعداد آیتم در هر سفارش",
     "totalProfit": "کل سود",
+    "totalMaterialCost": "کل هزینه مواد اولیه",
     "averageProfit": "میانگین سود هر سفارش",
     "ordersWithMaterialCost": "سفارشات دارای هزینه مواد",
     "totalExtraCost": "کل هزینه‌های اضافی",
