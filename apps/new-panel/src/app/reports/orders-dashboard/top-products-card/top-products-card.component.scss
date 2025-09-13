@@ -1,10 +1,21 @@
 mat-card {
-  height: 437px;
+  height: 565px;
   position: relative;
+}
+
+mat-card-content {
+  height: calc(100% - 80px); // Account for header and padding
+  padding: 16px;
 }
 
 #days-filter {
   position: absolute;
   left: 16px;
   top: 16px;
+}
+
+// Ensure chart container takes full height
+canvas {
+  width: 100% !important;
+  height: 100% !important;
 }

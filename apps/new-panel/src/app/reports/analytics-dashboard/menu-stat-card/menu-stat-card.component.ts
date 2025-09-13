@@ -61,10 +61,14 @@ export class MenuStatCardComponent {
         {
           data: data.map((x: any) => x.menuCount),
           label: this.t.instant('dashboard.view'),
+          borderColor: '#6B9BD2',
+          backgroundColor: '#6B9BD2',
         },
         {
           data: data.map((x: any) => x.memberCount),
           label: this.t.instant('dashboard.joinClub'),
+          borderColor: '#8FBC8F',
+          backgroundColor: '#8FBC8F',
         },
       ],
       labels: data.map((x: any) => formatter.format(new Date(x.date))),

@@ -48,10 +48,15 @@ export class LoadMenuRefCardComponent {
         ],
         labels: [],
       } as ChartConfiguration['data'];
+    const colors = [
+      '#6B9BD2', '#8FBC8F', '#D2B48C', '#DDA0DD'
+    ];
+    
     return {
       datasets: [
         {
           data: data.map((x: any) => x.count),
+          backgroundColor: colors.slice(0, data.length),
         },
       ],
       labels: data.map((x: any) => x.source),

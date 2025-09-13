@@ -27,14 +27,35 @@ export class TopProductsCardComponent {
   public readonly toDate = input<Date>();
 
   public chartOptions: ChartConfiguration['options'] = {
+    // Remove indexAxis to make it a vertical bar chart (default)
     plugins: {
-      legend: { 
-        display: true,
-        position: 'bottom',
-        labels: {
-          usePointStyle: true,
-          padding: 20,
-        }
+      legend: {
+        display: false, // Hide legend for bar chart as labels are on the axis
+      },
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          font: {
+            family: 'IRANSans',
+          },
+          maxRotation: 45, // Rotate labels for better readability
+          minRotation: 0,
+        },
+      },
+      y: {
+        beginAtZero: true,
+        grid: {
+          display: true,
+        },
+        ticks: {
+          font: {
+            family: 'IRANSans',
+          },
+        },
       },
     },
     responsive: true,
@@ -53,29 +74,33 @@ export class TopProductsCardComponent {
         ],
         labels: [],
       } as ChartConfiguration['data'];
-    
-    // Generate colors for pie chart segments
-    const colors = this.generateColors(data.length);
-    
+
+    // Generate colors for bar chart
+    const fillColors = this.generateFillColors(data.length);
+
     return {
       datasets: [
         {
+          label: this.t.instant('app.count'),
           data: data.map((x: any) => x.count),
-          backgroundColor: colors,
-          borderWidth: 2,
-          borderColor: '#fff',
+          backgroundColor: fillColors,
+          borderWidth: 0,
+          borderRadius: 4,
+          borderSkipped: false,
         },
       ],
       labels: data.map((x: any) => x.product),
     } as ChartConfiguration['data'];
   });
 
-  private generateColors(count: number): string[] {
+  private generateFillColors(count: number): string[] {
     const colors = [
-      '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
-      '#FF9F40', '#FF6384', '#C9CBCF', '#4BC0C0', '#FF6384'
+      '#6B9BD2', // Soft Blue
+      '#8FBC8F', // Soft Green
+      '#D2B48C', // Soft Beige
+      '#DDA0DD', // Soft Purple
     ];
-    
+
     const result: string[] = [];
     for (let i = 0; i < count; i++) {
       result.push(colors[i % colors.length]);
