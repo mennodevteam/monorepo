@@ -37,6 +37,14 @@
           </span>
         </span>
       </mat-list-item>
+      <mat-list-item>
+        <span matListItemTitle> {{ 'order.useWallet' | translate }}: </span>
+        <span matListItemMeta>
+          <span>
+            {{ order()?.useWallet || 0 | number | menuCurrency }}
+          </span>
+        </span>
+      </mat-list-item>
     </mat-list>
     @if (!isSmallScreen()) {
       <mat-checkbox [ngModel]="showCost()" (ngModelChange)="onShowCostChange($event)">

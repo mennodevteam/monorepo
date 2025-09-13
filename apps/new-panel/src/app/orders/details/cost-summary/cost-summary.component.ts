@@ -44,7 +44,7 @@ export class CostSummaryComponent {
   orderTotalCost = computed(() => {
     const order = this.order();
     if (order && order.materialCost) {
-      return order.materialCost + (order.extraCosts || 0);
+      return order.materialCost + (order.extraCosts || 0) - (order.useWallet || 0);
     }
     return 0;
   });

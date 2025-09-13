@@ -26,6 +26,7 @@ const ALL_COLS = [
   'price',
   'materialCost',
   'extraCosts',
+  'useWallet',
   'profit',
   'state',
   'actions',
@@ -123,6 +124,7 @@ export class TableComponent {
       actions: this.translate.instant('app.actions'),
       materialCost: this.translate.instant('order.materialCost'),
       extraCosts: this.translate.instant('order.extraCosts'),
+      useWallet: this.translate.instant('order.useWallet'),
       profit: this.translate.instant('order.totalProfit'),
     };
 
@@ -184,6 +186,7 @@ export class TableComponent {
           case 'state': return this.translate.instant('app.status');
           case 'materialCost': return this.translate.instant('order.materialCost');
           case 'extraCosts': return this.translate.instant('order.extraCosts');
+          case 'useWallet': return this.translate.instant('order.useWallet');
           case 'profit': return this.translate.instant('order.totalProfit');
           default: return col;
         }
@@ -220,6 +223,9 @@ export class TableComponent {
             break;
           case 'materialCost':
             value = order.materialCost?.toString() || '';
+            break;
+          case 'useWallet':
+            value = (order.useWallet || 0).toString();
             break;
           case 'extraCosts':
             value = (order.extraCosts || 0).toString();
