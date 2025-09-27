@@ -8,6 +8,7 @@ import { AppConfigComponent } from './app-config/app-config.component';
 import { AiChatbotComponent } from './ai-chatbot/ai-chatbot.component';
 import { DeliveryAreaComponent } from './delivery-area/delivery-area.component';
 import { WelcomeMessageComponent } from './welcome-message/welcome-message.component';
+import { UserManagementComponent } from './user-management/user-management.component';
 
 export const settingsRoutes: Route[] = [
   {
@@ -21,6 +22,7 @@ export const settingsRoutes: Route[] = [
       { path: 'ai-chatbot', component: AiChatbotComponent, canDeactivate: [dirtyFormDeactivator] },
       { path: 'welcome-message', component: WelcomeMessageComponent, canDeactivate: [dirtyFormDeactivator] },
       { path: 'delivery-area', component: DeliveryAreaComponent },
+      { path: 'users', component: UserManagementComponent },
       { path: '', redirectTo: 'shop', pathMatch: 'full' },
     ],
   },

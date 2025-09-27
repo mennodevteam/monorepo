@@ -1,0 +1,29 @@
+<mat-toolbar class="content-toolbar">
+  <button mat-icon-button goBack>
+    <i class="fa-regular fa-arrow-right"></i>
+  </button>
+  <h2 flex>{{ 'userManagement.pageTitle' | translate }}</h2>
+  <span fxFlex></span>
+  <button mat-flat-button color="primary" (click)="openAddShopUsersDialog(undefined)">
+    {{ 'userManagement.add' | translate }}
+  </button>
+</mat-toolbar>
+
+<main p-md>
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <app-user-management-table
+        [hidden]="!query.data()"
+        [shopUsers]="query.data() || []"
+        (onChange)="query.refetch()"
+        (editEmit)="openAddShopUsersDialog($event)"
+        (removeEmit)="removeShopUsers($event)"
+      ></app-user-management-table>
+      @if (query.data()?.length === 0) {
+        <app-empty-state icon="fa-users"></app-empty-state>
+      } @else if (!query.data() && query.isLoading()) {
+        <app-data-loading />
+      }
+    </mat-card-content>
+  </mat-card>
+</main>

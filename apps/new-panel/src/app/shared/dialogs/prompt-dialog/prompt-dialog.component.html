@@ -31,7 +31,7 @@
             ></textarea>
           }
           @case ('select') {
-            <mat-select [placeholder]="fields[key].placeholder || ''" [formControl]="fields[key].control">
+            <mat-select [placeholder]="fields[key].placeholder || ''" [formControl]="fields[key].control" [multiple]="fields[key].multiple">
               @for (option of fields[key].options; track option.value) {
                 <mat-option [value]="option.value">{{ option.text }}</mat-option>
               }

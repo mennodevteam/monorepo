@@ -954,5 +954,50 @@
     "previous": "قبلی",
     "next": "بعدی",
     "last": "آخر"
+  },
+  "userManagement": {
+    "pageTitle": "مدیریت کاربران",
+    "add": "افزودن کاربر جدید",
+    "removeDialogTitle": "حذف کاربر",
+    "removeDialogDescription": "شما در حال حذف آیتم {{value}} هستید. در صورت اطمینان لطفا تایید کنید.",
+    "name": "نام",
+    "username": "نام کاربری",
+    "password": "رمز عبور",
+    "actions": "دسترسی ها",
+    "dialog": {
+      "newTitle": "افزودن کاربر جدید",
+      "firstName": "نام",
+      "lastName": "نام خانوادگی",
+      "username": "نام کاربری",
+      "usernameHint": "به ابتدای نام کاربری {{value}} اضافه میشود.",
+      "password": "رمز عبور",
+      "mobile": "شماره موبایل",
+      "menu": "مدیریت منو",
+      "order": "مدیریت سفارشات",
+      "club": "باشگاه مشتریان",
+      "chargeMemberWallet": "افزایش اعتبار کیف پول مشتری",
+      "sms": "پیام ها",
+      "coupons": "مدیریت کدهای تخفیف",
+      "marketing": "مارکتینگ و تبلیغات",
+      "report": "گزارشات",
+      "payment": "مالی",
+      "setting": "تنظیمات",
+      "actions": "دسترسی ها"
+    }
+  },
+  "userAction": {
+    "report": "گزارشات",
+    "menu": "مدیریت منو",
+    "order": "مدیریت سفارشات",
+    "hideDailyTotal": "مخفی کردن جمع روزانه",
+    "club": "باشگاه مشتریان",
+    "chargeMemberWallet": "افزایش اعتبار کیف پول مشتری",
+    "sms": "پیام ها",
+    "marketing": "مارکتینگ و تبلیغات",
+    "payment": "مالی",
+    "coupons": "مدیریت کدهای تخفیف",
+    "setting": "تنظیمات",
+    "reports": "گزارشات",
+    "inventory": "انبار و مواد اولیه"
   }
 }

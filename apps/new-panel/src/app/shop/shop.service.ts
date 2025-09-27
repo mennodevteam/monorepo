@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, effect, inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AppConfig, BusinessCategory, Shop } from '@menno/types';
+import { AppConfig, BusinessCategory, Shop, ShopUser } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { injectMutation, injectQuery, injectQueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
@@ -120,4 +120,16 @@ export class ShopService {
         return 'store';
     }
   });
+
+  async getShopUsers(): Promise<ShopUser[]> {
+    return lastValueFrom(this.http.get<ShopUser[]>('/shopUsers'));
+  }
+
+  async saveShopUser(shopUser: ShopUser): Promise<ShopUser> {
+    return lastValueFrom(this.http.post<ShopUser>('/shopUsers', shopUser));
+  }
+
+  async removeShopUser(id: string): Promise<void> {
+    return lastValueFrom(this.http.delete<void>(`/shopUsers/${id}`));
+  }
 }

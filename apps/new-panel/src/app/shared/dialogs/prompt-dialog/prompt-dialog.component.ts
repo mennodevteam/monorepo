@@ -14,6 +14,7 @@ export type PromptField = {
   type?: string;
   control: FormControl;
   options?: { value: any; text: string }[];
+  multiple?: boolean;
   hint?: string;
   placeholder?: string;
   rows?: number;
