@@ -17,6 +17,8 @@ import { WelcomeSetupComponent } from './welcome-setup/welcome-setup.component';
 import { missionsRoutes } from './missions/missions.routes';
 import { discountCouponsRoutes } from './discount-coupons/discount-coupons.routes';
 import { smsRoutes } from './sms-group/sms.routes';
+import { userActionsGuard } from './core/guards/user-actions.guard';
+import { UserAction } from '@menno/types';
 
 export const appRoutes: Route[] = [
   {
@@ -33,16 +35,66 @@ export const appRoutes: Route[] = [
         canActivate: [authGuard, shopDataActivator, menuDataActivator],
         children: [
           { path: 'home', component: HomeComponent },
-          { path: 'reports', children: reportRoutes },
-          { path: 'menu', children: menuRoutes },
-          { path: 'orders', children: orderRoutes },
-          { path: 'pricing', component: PricingComponent },
-          { path: 'settings', children: settingsRoutes },
-          { path: 'club', children: clubRoutes },
-          { path: 'inventory', children: materialsRoutes },
-          { path: 'missions', children: missionsRoutes },
-          { path: 'coupons', children: discountCouponsRoutes },
-          { path: 'sms', children: smsRoutes },
+          {
+            path: 'reports',
+            children: reportRoutes,
+            canActivate: [userActionsGuard],
+            data: { userActions: [UserAction.Reports] },
+          },
+          {
+            path: 'menu',
+            children: menuRoutes,
+            canActivate: [userActionsGuard],
+            data: { userActions: [UserAction.Menu] },
+          },
+          {
+            path: 'orders',
+            children: orderRoutes,
+            canActivate: [userActionsGuard],
+            data: { userActions: [UserAction.Order] },
+          },
+          {
+            path: 'pricing',
+            component: PricingComponent,
+            canActivate: [userActionsGuard],
+            data: { userActions: [UserAction.Menu] },
+          },
+          {
+            path: 'settings',
+            children: settingsRoutes,
+            canActivate: [userActionsGuard],
+            data: { userActions: [UserAction.Setting] },
+          },
+          {
+            path: 'club',
+            children: clubRoutes,
+            canActivate: [userActionsGuard],
+            data: { userActions: [UserAction.Club] },
+          },
+          {
+            path: 'inventory',
+            children: materialsRoutes,
+            canActivate: [userActionsGuard],
+            data: { userActions: [UserAction.Inventory] },
+          },
+          {
+            path: 'missions',
+            children: missionsRoutes,
+            canActivate: [userActionsGuard],
+            data: { userActions: [UserAction.Marketing] },
+          },
+          {
+            path: 'coupons',
+            children: discountCouponsRoutes,
+            canActivate: [userActionsGuard],
+            data: { userActions: [UserAction.Coupons] },
+          },
+          {
+            path: 'sms',
+            children: smsRoutes,
+            canActivate: [userActionsGuard],
+            data: { userActions: [UserAction.Reports] },
+          },
           { path: '', redirectTo: 'home', pathMatch: 'full' },
         ],
       },

@@ -11,7 +11,9 @@
     </div>
     <div fxLayout="column" fxLayoutGap="24px" fxFlex>
       <app-plan-card></app-plan-card>
-      <app-order-total />
+      @if (auth.hasAccess(UserAction.Reports)) {
+        <app-order-total />
+      }
     </div>
   </main>
 }

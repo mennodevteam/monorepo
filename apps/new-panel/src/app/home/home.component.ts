@@ -6,6 +6,8 @@ import { ShopService } from '../shop/shop.service';
 import { ShopInfoCardComponent } from './shop-info-card/shop-info-card.component';
 import { PlanCardComponent } from './plan-card/plan-card.component';
 import { OrderTotalComponent } from './order-total/order-total.component';
+import { AuthService } from '../auth/auth.service';
+import { UserAction } from '@menno/types';
 
 @Component({
   selector: 'app-home',
@@ -16,4 +18,6 @@ import { OrderTotalComponent } from './order-total/order-total.component';
 })
 export class HomeComponent {
   readonly shopService = inject(ShopService);
+  readonly auth = inject(AuthService);
+  readonly UserAction = UserAction;
 }
