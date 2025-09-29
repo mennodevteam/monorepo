@@ -98,15 +98,42 @@
             if (scripts) {
               for (const script of scripts) {
                 try {
-                  if (script.head) {
-                    const scriptElement = document.createElement('script');
-                    scriptElement.innerHTML = decodeURIComponent(script.head);
-                    document.head.appendChild(scriptElement);
-                  }
-                  if (script.body) {
-                    const scriptElement = document.createElement('script');
-                    scriptElement.innerHTML = decodeURIComponent(script.body);
-                    document.body.appendChild(scriptElement);
+                  // Check if script is active before executing
+                  if (script.active !== false) {
+                    if (script.head) {
+                      const scriptContent = decodeURIComponent(script.head);
+
+                      // Check if content already contains <script> tags
+                      const scriptTagRegex = /<script[^>]*>([\s\S]*?)<\/script>/gi;
+                      const hasScriptTags = scriptTagRegex.test(scriptContent);
+
+                      if (hasScriptTags) {
+                        // Add content directly to head (including script tags)
+                        document.head.insertAdjacentHTML('beforeend', scriptContent);
+                      } else {
+                        // Create script element for raw JavaScript
+                        const scriptElement = document.createElement('script');
+                        scriptElement.innerHTML = scriptContent;
+                        document.head.appendChild(scriptElement);
+                      }
+                    }
+                    if (script.body) {
+                      const scriptContent = decodeURIComponent(script.body);
+
+                      // Check if content already contains <script> tags
+                      const scriptTagRegex = /<script[^>]*>([\s\S]*?)<\/script>/gi;
+                      const hasScriptTags = scriptTagRegex.test(scriptContent);
+
+                      if (hasScriptTags) {
+                        // Add content directly to body (including script tags)
+                        document.body.insertAdjacentHTML('beforeend', scriptContent);
+                      } else {
+                        // Create script element for raw JavaScript
+                        const scriptElement = document.createElement('script');
+                        scriptElement.innerHTML = scriptContent;
+                        document.body.appendChild(scriptElement);
+                      }
+                    }
                   }
                 } catch (error) {
                   console.error(error);
