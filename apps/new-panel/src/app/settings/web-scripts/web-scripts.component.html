@@ -1,0 +1,68 @@
+<mat-toolbar class="content-toolbar">
+  <h2>{{ 'settings.webScripts' | translate }}</h2>
+  <span fxFlex></span>
+  <button mat-flat-button color="primary" (click)="addScript()">
+    <i class="fa-regular fa-plus"></i>
+    {{ 'webScripts.add' | translate }}
+  </button>
+</mat-toolbar>
+
+<main p-md w-md>
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>
+        {{ 'webScripts.title' | translate }}
+      </mat-card-title>
+      <mat-card-subtitle>
+        {{ 'webScripts.description' | translate }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <br />
+    <mat-card-content>
+      @if (scripts().length === 0) {
+        <app-empty-state
+          [text]="'webScripts.emptyTitle' | translate"
+          [icon]="'fa-regular fa-code'"
+          [action]="{
+            label: 'webScripts.addFirstScript' | translate,
+            icon: 'plus',
+          }"
+          (actionClick)="addScript()"
+        />
+      } @else {
+        <mat-list>
+          @for (script of scripts(); track $index) {
+            <mat-list-item>
+              <i matListItemIcon class="fa-solid fa-code"></i>
+              <div matListItemTitle>
+                {{ script.name || ('webScripts.script' | translate) + ' ' + ($index + 1) }}
+              </div>
+              <div matListItemMeta fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+                <mat-slide-toggle [checked]="script.active !== false" (change)="toggleScript(script, $index)">
+                </mat-slide-toggle>
+                <button
+                  mat-icon-button
+                  (click)="editScript(script, $index)"
+                  matTooltip="{{ 'app.edit' | translate }}"
+                >
+                  <i class="fa-regular fa-edit"></i>
+                </button>
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="deleteScript(script, $index)"
+                  matTooltip="{{ 'app.delete' | translate }}"
+                >
+                  <i class="fa-regular fa-trash"></i>
+                </button>
+              </div>
+            </mat-list-item>
+            @if (!$last) {
+              <mat-divider></mat-divider>
+            }
+          }
+        </mat-list>
+      }
+    </mat-card-content>
+  </mat-card>
+</main>

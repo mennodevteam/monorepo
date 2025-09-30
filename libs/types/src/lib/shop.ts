@@ -44,8 +44,10 @@ export interface ShopDetails {
 }
 
 export interface WebScript {
+  name?: string;
   head?: string;
   body?: string;
+  active?: boolean;
 }
 
 export class Shop {

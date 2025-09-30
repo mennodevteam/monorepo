@@ -9,6 +9,7 @@ import { AiChatbotComponent } from './ai-chatbot/ai-chatbot.component';
 import { DeliveryAreaComponent } from './delivery-area/delivery-area.component';
 import { WelcomeMessageComponent } from './welcome-message/welcome-message.component';
 import { UserManagementComponent } from './user-management/user-management.component';
+import { WebScriptsComponent } from './web-scripts/web-scripts.component';
 
 export const settingsRoutes: Route[] = [
   {
@@ -23,6 +24,7 @@ export const settingsRoutes: Route[] = [
       { path: 'welcome-message', component: WelcomeMessageComponent, canDeactivate: [dirtyFormDeactivator] },
       { path: 'delivery-area', component: DeliveryAreaComponent },
       { path: 'users', component: UserManagementComponent },
+      { path: 'web-scripts', component: WebScriptsComponent },
       { path: '', redirectTo: 'shop', pathMatch: 'full' },
     ],
   },

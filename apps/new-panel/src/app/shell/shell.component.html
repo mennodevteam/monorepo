@@ -309,6 +309,15 @@
           <i matListItemIcon class="fa-duotone fa-puzzle-piece"></i>
           <span matListItemTitle>{{ 'settings.thirdParties' | translate }}</span>
         </a>
+        <a
+          mat-list-item
+          routerLinkActive="active-link"
+          routerLink="/settings/web-scripts"
+          (click)="isSmallScreen() && isDrawerClose.set(true)"
+        >
+          <i matListItemIcon class="fa-duotone fa-code"></i>
+          <span matListItemTitle>{{ 'settings.webScripts' | translate }}</span>
+        </a>
       }
     </mat-nav-list>
     <!-- @if (auth.user) {
