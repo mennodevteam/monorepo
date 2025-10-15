@@ -73,7 +73,6 @@
   "cart": {
     "title": "سبد خرید",
     "complete": "تکمیل خرید",
-    "viewInvoiceAndComplete": "مشاهده فاکتور و تکمیل خرید",
     "addCoupon": "افزودن کد تخفیف",
     "removeCoupon": "حذف کد تخفیف",
     "clear": "حذف همه",

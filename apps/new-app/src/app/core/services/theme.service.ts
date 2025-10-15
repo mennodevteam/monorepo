@@ -41,7 +41,7 @@ export class ThemeService {
       '--mat-sys-surface': `${this.isDark ? '#131313' : '#FFFFFF'}`,
       '--mat-sys-on-surface': `${this.isDark ? '#FFFFFF' : '#161616'}`,
       '--mat-sys-surface-variant': `${this.isDark ? '#292B2B' : '#F2F3F4'}`,
-      '--mat-sys-on-surface-variant': `${this.isDark ? '#8C9090' : '#A5AAB0'}`,
+      '--mat-sys-on-surface-variant': `${this.isDark ? '#656868' : '#6E737A'}`,
       '--mat-sys-outline': `${this.isDark ? '#8C9090' : '#727A82'}`,
       '--mat-sys-outline-variant': `${this.isDark ? '#292B2B' : '#E5E7E8'}`,
     };

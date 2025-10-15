@@ -30,13 +30,7 @@
   p-md
   [analyticsEvent]="'complete order'"
 >
-  <a
-    mat-flat-button
-    fxFlex
-    max-center
-    (click)="submit()"
-    class="large"
-  >
-    {{ 'cart.viewInvoiceAndComplete' | translate }}
+  <a mat-flat-button fxFlex max-center (click)="submit()" class="large">
+    {{ 'cart.complete' | translate }} ({{ cart.total() | menuCurrency }})
   </a>
 </mat-toolbar>
