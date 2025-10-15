@@ -80,7 +80,7 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
 
       this.addressForm = new FormGroup({
         region: new FormControl(this.address?.region),
-        title: new FormControl(this.address?.title, Validators.required),
+        title: new FormControl(this.address?.title),
         description: new FormControl(this.address?.description, Validators.required),
         unit: new FormControl(this.address?.unit, Validators.required),
         ring: new FormControl(this.address?.ring, Validators.required),

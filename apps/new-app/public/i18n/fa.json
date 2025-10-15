@@ -175,7 +175,8 @@
   "editAddress": {
     "newTitle": "ثبت آدرس جدید",
     "editTitle": "ویرایش آدرس",
-    "titleLabel": "عنوان آدرس",
+    "titleLabel": "عنوان آدرس (اختیاری)",
+    "addressDescription": "جزئیات زیر از روی موقعیت شما برداشته شده است. درصورتی که جزئیات آدرس درست نیست، لطفا تغییر دهید و یا آن را تکمیل کنید",
     "regionLabel": "شهر",
     "stateLabel": "استان",
     "titlePlaceholder": "مثلا: خونه",
