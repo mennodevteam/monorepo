@@ -49,6 +49,21 @@
       </div>
     </mat-list-item>
   }
+
+  @if (
+    cart.address()?.deliveryArea?.minPriceForFree &&
+    cart.address()!.deliveryArea!.minPriceForFree! > cart.sum()
+  ) {
+    <mat-list-item>
+      <span matListItemTitle>
+        {{
+          'cart.addressMinPriceForFreeInline'
+            | translate: { value: cart.address()!.deliveryArea!.minPriceForFree! - cart.sum() | menuCurrency }
+        }}
+      </span>
+    </mat-list-item>
+  }
+
   <mat-list-item>
     <span matListItemTitle>
       <b>
