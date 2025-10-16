@@ -121,8 +121,8 @@ export class MissionsService {
   }
 
   private async completeMission(mission: Mission, member: Member, shop: Shop, totalPrice = 0) {
-    if (mission.rewardType === MissionRewardType.WalletCharge && mission.rewardValue) {
-      let amount = mission.rewardValue;
+    if (mission.rewardType === MissionRewardType.WalletCharge && (mission.rewardValue || mission.percentageRewardValue)) {
+      let amount = mission.rewardValue || 0;
       if (mission.percentageRewardValue) amount += (totalPrice * mission.percentageRewardValue) / 100;
       const wallet = await this.walletService.getMemberWallet(member.id);
       this.walletService.updateWalletAmount({
