@@ -3,6 +3,10 @@
     <i class="fa-regular fa-arrow-right"></i>
   </button>
   <h1 fxFlex>{{ 'deliveryArea.pageTitle' | translate }}</h1>
+  <button mat-button (click)="onAddNewArea()">
+    <i class="fa-solid fa-plus"></i>
+    {{ 'deliveryArea.addNewArea' | translate }}
+  </button>
   <button
     mat-icon-button
     (click)="openDeliveryTypeDialog()"

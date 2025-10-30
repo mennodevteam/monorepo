@@ -90,6 +90,7 @@ export class DeliveryAreaComponent {
 
   private checkShopLocation() {
     const shop = this.shopService.data();
+    if (shop?.appConfig?.deliveryType === DeliveryType.Post) return;
     if (!shop?.latitude || !shop?.longitude) {
       this.dialogService
         .alert(
@@ -104,7 +105,7 @@ export class DeliveryAreaComponent {
 
   async openEditDialog(area?: DeliveryArea, polygon?: [number, number][]) {
     const deliveryType = this.shopService.data()?.appConfig?.deliveryType;
-    
+
     const dialogRef = this.dialog.open(DeliveryAreaEditDialogComponent, {
       width: '600px',
       data: { area, polygon, deliveryType },
