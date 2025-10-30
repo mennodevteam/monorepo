@@ -43,6 +43,11 @@ export const DeliveryAreaSchema = new EntitySchema<DeliveryArea>({
     },
     polygon: {
       type: 'simple-json',
+      nullable: true,
+    },
+    state: {
+      type: String,
+      nullable: true,
     },
   },
   relations: {
@@ -50,6 +55,11 @@ export const DeliveryAreaSchema = new EntitySchema<DeliveryArea>({
       type: 'many-to-one',
       inverseSide: 'deliveryAreas',
       target: 'Shop',
+    },
+    region: {
+      type: 'many-to-one',
+      target: 'Region',
+      nullable: true,
     },
   },
 });

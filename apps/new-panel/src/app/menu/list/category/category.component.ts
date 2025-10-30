@@ -5,7 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { Product, ProductCategory, Status } from '@menno/types';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ProductTableComponent } from './table/table.component';
-import { MenuStatusChipComponent } from '../../status-chip/status-chip.component';
+import { StatusChipComponent } from '../../../shared/components/status-chip/status-chip.component';
 import { MenuService } from '../../menu.service';
 import { SortDialogComponent } from '../../../shared/dialogs/sort-dialog/sort-dialog.component';
 import { DialogService } from '../../../core/services/dialog.service';
@@ -14,13 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-menu-category',
   standalone: true,
-  imports: [
-    SHARED,
-    MatCardModule,
-    MatToolbarModule,
-    ProductTableComponent,
-    MenuStatusChipComponent
-],
+  imports: [SHARED, MatCardModule, MatToolbarModule, ProductTableComponent, StatusChipComponent],
   templateUrl: './category.component.html',
   styleUrl: './category.component.scss',
 })

@@ -25,7 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class DeliveryAreaListComponent {
   readonly Status = Status;
-  
+
   deliveryAreas = input<DeliveryArea[]>([]);
   loading = input<boolean>(false);
   isEmpty = input<boolean>(false);
@@ -45,4 +45,5 @@ export class DeliveryAreaListComponent {
   onAddNewArea() {
     this.addNewArea.emit();
   }
-} 
+}
+

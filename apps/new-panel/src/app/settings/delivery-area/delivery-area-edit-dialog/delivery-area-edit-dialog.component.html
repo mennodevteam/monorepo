@@ -1,0 +1,110 @@
+<h4 matDialogTitle>
+  {{ (data.area ? 'deliveryAreaDialog.editTitle' : 'deliveryAreaDialog.newTitle') | translate }}
+</h4>
+
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'app.title' | translate }}</mat-label>
+      <input matInput formControlName="title" />
+      @if (form.get('title')?.hasError('required')) {
+        <mat-error>{{ 'app.required' | translate }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'deliveryAreaDialog.label' | translate }}</mat-label>
+      <input
+        matInput
+        formControlName="label"
+        [placeholder]="'deliveryAreaDialog.labelPlaceholder' | translate"
+      />
+    </mat-form-field>
+
+    @if (data.deliveryType === DeliveryType.Post) {
+      <div class="area-type-section">
+        <label class="area-type-label">{{ 'deliveryAreaDialog.areaType' | translate }}</label>
+        <mat-button-toggle-group
+          [value]="areaType"
+          (change)="onAreaTypeChange($event.value)"
+          class="area-type-toggle"
+        >
+          <mat-button-toggle value="all">
+            {{ 'deliveryAreaDialog.allCountry' | translate }}
+          </mat-button-toggle>
+          <mat-button-toggle value="region">
+            {{ 'deliveryAreaDialog.regionBased' | translate }}
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+
+      @if (areaType === 'region') {
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'deliveryAreaDialog.selectState' | translate }}</mat-label>
+          <mat-select formControlName="state" (selectionChange)="onStateChange($event.value)">
+            @for (state of states; track state) {
+              <mat-option [value]="state">{{ state }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'deliveryAreaDialog.selectRegion' | translate }}</mat-label>
+          <mat-select formControlName="region" [disabled]="form.get('state')?.value === null">
+            <mat-option [value]="null">
+              {{ 'deliveryAreaDialog.allRegions' | translate }}
+            </mat-option>
+            @for (region of filteredRegions; track region.id) {
+              <mat-option [value]="region.id">{{ region.title }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      }
+      <br />
+    }
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'app.price' | translate }}</mat-label>
+      <input matInput type="number" formControlName="price" ltr eng />
+      <mat-error>{{ 'app.required' | translate }}</mat-error>
+      <mat-hint>{{ form.controls['price'].value | number | menuCurrency }}</mat-hint>
+    </mat-form-field>
+    <br />
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'deliveryAreaDialog.percentagePrice' | translate }}</mat-label>
+      <input matInput type="number" formControlName="percentagePrice" ltr eng />
+      @if (form.controls['percentagePrice'].value) {
+        <mat-hint>{{
+          'deliveryAreaDialog.percentagePriceHintValue'
+            | translate: { value: form.controls['percentagePrice'].value }
+        }}</mat-hint>
+      } @else {
+        <mat-hint>{{ 'deliveryAreaDialog.percentagePriceHint' | translate }}</mat-hint>
+      }
+    </mat-form-field>
+    <br />
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'deliveryAreaDialog.minOrderPrice' | translate }}</mat-label>
+      <input matInput type="number" formControlName="minOrderPrice" ltr eng />
+      <mat-hint>{{ 'deliveryAreaDialog.minOrderPriceHint' | translate }}</mat-hint>
+    </mat-form-field>
+    <br />
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'deliveryAreaDialog.minPriceForFree' | translate }}</mat-label>
+      <input matInput type="number" formControlName="minPriceForFree" ltr eng />
+      <mat-hint>{{ 'deliveryAreaDialog.minPriceForFreeHint' | translate }}</mat-hint>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="cancel()">
+    {{ 'app.cancel' | translate }}
+  </button>
+  <button mat-flat-button color="primary" (click)="save()" [disabled]="!form.valid">
+    {{ 'app.save' | translate }}
+  </button>
+</mat-dialog-actions>

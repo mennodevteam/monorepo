@@ -11,9 +11,9 @@ import { CategoryFormDialogComponent } from '../category-form-dialog/category-fo
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
-import { MenuStatusChipComponent } from '../status-chip/status-chip.component';
 import { ShopService } from '../../shop/shop.service';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
+import { StatusChipComponent } from '../../shared/components/status-chip/status-chip.component';
 
 const COLS = ['index', 'title', 'costs', 'status', 'actions'];
 
@@ -27,7 +27,7 @@ const COLS = ['index', 'title', 'costs', 'status', 'actions'];
     MatCardModule,
     MatTableModule,
     MatChipsModule,
-    MenuStatusChipComponent,
+    StatusChipComponent,
     EmptyStateComponent,
   ],
   templateUrl: './category-list.component.html',
@@ -75,9 +75,9 @@ export class CategoryListComponent {
     const confirmed = await this.dialog.alert(
       this.t.instant('app.confirmDelete'),
       this.t.instant('app.deleteConfirmMessage', { value: category.title }),
-      { config: { data: { confirm: true } } }
+      { config: { data: { confirm: true } } },
     );
-    
+
     if (confirmed) {
       this.menuService.deleteCategoryMutation.mutate(category.id);
     }

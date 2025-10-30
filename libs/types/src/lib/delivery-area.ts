@@ -1,5 +1,6 @@
 import { Status } from './status.enum';
 import { Shop } from './shop';
+import { Region } from './region';
 
 export class DeliveryArea {
   id: string;
@@ -10,17 +11,27 @@ export class DeliveryArea {
   minPriceForFree?: number;
   isPost: boolean;
   label?: string;
-  polygon: [number, number][];
+  polygon?: [number, number][];
+  region?: Region;
+  state?: string;
   status: Status;
   shop: Shop;
 
-  static isInWitchArea(areas: DeliveryArea[], point: [number, number]): DeliveryArea | null {
-    try {
-      areas.sort((a, b) => this.sampleArea(a) - this.sampleArea(b));
+  static isInWitchArea(
+    areas: DeliveryArea[],
+    point?: [number, number],
+    region?: Region,
+  ): DeliveryArea | null {
+    if (point) {
       for (const area of areas) {
-        if (DeliveryArea.isInside(point, area.polygon)) return area;
+        if (area.polygon && DeliveryArea.isInside(point, area.polygon)) return area;
       }
-    } catch (error) {}
+    } else if (region) {
+      let area = areas.find((x) => x.region?.id === region.id);
+      if (!area) area = areas.find((x) => x.state === region.state);
+      if (!area) area = areas.find((x) => !x.polygon && !x.state && !x.region);
+      return area || null;
+    }
     return null;
   }
 

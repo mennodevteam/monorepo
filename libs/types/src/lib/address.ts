@@ -5,8 +5,8 @@ import { User } from './user';
 export class Address {
   id: number;
   title?: string;
-  latitude: number;
-  longitude: number;
+  latitude?: number;
+  longitude?: number;
   description: string;
   unit?: string;
   ring?: string;

@@ -13,7 +13,7 @@ import { AuthService } from '../auth/auth.service';
 import { Roles } from '../auth/roles.decorators';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
-import { Address, DeliveryArea, Shop, UserRole } from '@menno/types';
+import { Address, DeliveryArea, Region, Shop, UserRole } from '@menno/types';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -24,7 +24,9 @@ export class DeliveryAreasController {
     @InjectRepository(Shop)
     private shopsRepo: Repository<Shop>,
     @InjectRepository(DeliveryArea)
-    private repo: Repository<DeliveryArea>
+    private repo: Repository<DeliveryArea>,
+    @InjectRepository(Region)
+    private regionsRepo: Repository<Region>,
   ) {}
 
   @Get()
@@ -56,11 +58,25 @@ export class DeliveryAreasController {
     this.repo.delete(id);
   }
 
+  @Get(`:shopId/region/:regionId`)
+  async findDeliveryAreaWithRegion(@Param() params) {
+    const shop = await this.shopsRepo.findOne({
+      where: { id: params.shopId },
+      relations: ['deliveryAreas.region'],
+    });
+    const region = await this.regionsRepo.findOne({
+      where: { id: params.regionId },
+    });
+    const d = DeliveryArea.isInWitchArea(shop.deliveryAreas || [], undefined, region);
+    if (d) return d;
+    throw new HttpException('not found', HttpStatus.NOT_FOUND);
+  }
+
   @Get(`:shopId/:lat/:lng`)
   async findDeliveryArea(@Param() params) {
     const shop = await this.shopsRepo.findOne({
       where: { id: params.shopId },
-      relations: ['deliveryAreas'],
+      relations: ['deliveryAreas.region'],
     });
     const d = DeliveryArea.isInWitchArea(shop.deliveryAreas || [], [Number(params.lat), Number(params.lng)]);
     if (d) return d;

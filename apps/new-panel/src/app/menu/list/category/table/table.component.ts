@@ -4,7 +4,7 @@ import { MenuCost, Product, ProductCategory, ProductVariant, Status } from '@men
 import { SHARED } from '../../../../shared';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
-import { MenuStatusChipComponent } from '../../../status-chip/status-chip.component';
+import { StatusChipComponent } from '../../../../shared/components/status-chip/status-chip.component';
 import { MenuService } from '../../../menu.service';
 import { PromptFields } from '../../../../shared/dialogs/prompt-dialog/prompt-dialog.component';
 import { FormControl, Validators } from '@angular/forms';
@@ -14,7 +14,7 @@ const COLS = ['index', 'image', 'title', 'price', 'costs', 'status', 'actions'];
 @Component({
   selector: 'app-product-table',
   standalone: true,
-  imports: [CommonModule, SHARED, MatTableModule, MatChipsModule, MenuStatusChipComponent],
+  imports: [CommonModule, SHARED, MatTableModule, MatChipsModule, StatusChipComponent],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })

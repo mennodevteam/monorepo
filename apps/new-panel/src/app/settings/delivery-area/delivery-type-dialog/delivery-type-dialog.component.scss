@@ -1,0 +1,92 @@
+.delivery-type-card {
+  cursor: pointer;
+  
+  &.selected {
+    border-color: var(--mat-sys-primary);
+  }
+}
+
+// .dialog-description {
+//   margin-bottom: 24px;
+//   color: rgba(0, 0, 0, 0.6);
+//   line-height: 1.6;
+// }
+
+// .delivery-type-cards {
+//   display: flex;
+//   gap: 16px;
+//   flex-wrap: wrap;
+// }
+
+// .delivery-type-card {
+//   flex: 1;
+//   min-width: 200px;
+//   cursor: pointer;
+//   transition: all 0.3s ease;
+//   position: relative;
+//   border: 2px solid transparent;
+
+//   &:hover {
+//     transform: translateY(-2px);
+//     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+//   }
+
+//   &.selected {
+//     border-color: var(--mat-sys-primary);
+
+//     .check-indicator {
+//       opacity: 1;
+//     }
+//   }
+
+//   mat-card-content {
+//     padding: 20px;
+//   }
+
+//   .card-header {
+//     display: flex;
+//     align-items: center;
+//     gap: 12px;
+//     margin-bottom: 12px;
+
+//     .card-icon {
+//       font-size: 32px;
+//       color: var(--primary-color, #3f51b5);
+//     }
+
+//     .card-title {
+//       margin: 0;
+//       font-size: 18px;
+//       font-weight: 600;
+//     }
+//   }
+
+//   .card-description {
+//     margin: 0;
+//     font-size: 14px;
+//     line-height: 1.5;
+//     color: rgba(0, 0, 0, 0.7);
+//   }
+
+//   .check-indicator {
+//     position: absolute;
+//     top: 12px;
+//     left: 12px;
+//     opacity: 0;
+//     transition: opacity 0.3s ease;
+
+//     i {
+//       font-size: 24px;
+//       color: var(--primary-color, #3f51b5);
+//     }
+//   }
+// }
+
+// // RTL support
+// :host-context([dir='rtl']) {
+//   .delivery-type-card .check-indicator {
+//     left: auto;
+//     right: 12px;
+//   }
+// }
+

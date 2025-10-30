@@ -75,20 +75,20 @@
         @if (category()?.status === Status.Active) {
           @if (product.variants?.length && product.status === Status.Active) {
             @for (variant of product.variants; track variant.id) {
-              <app-menu-status-chip
+              <app-status-chip
                 [title]="variant.title"
                 [status]="variant.status"
                 (statusChange)="changeProductVariantStatus(product, variant, $event)"
               />
             }
           } @else {
-            <app-menu-status-chip
+            <app-status-chip
               [status]="product.status"
               (statusChange)="changeProductStatus(product, $event)"
             />
           }
         } @else {
-          <app-menu-status-chip
+          <app-status-chip
             [disabled]="true"
             title="{{ 'menu.category' | translate }}"
             [status]="category()!.status"

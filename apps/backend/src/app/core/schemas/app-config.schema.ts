@@ -1,4 +1,4 @@
-import { AppConfig, HomePage, MenuViewType, OrderType, ThemeMode } from '@menno/types';
+import { AppConfig, DeliveryType, HomePage, MenuViewType, OrderType, ThemeMode } from '@menno/types';
 import { EntitySchema } from 'typeorm';
 
 export const AppConfigSchema = new EntitySchema<AppConfig>({
@@ -31,6 +31,11 @@ export const AppConfigSchema = new EntitySchema<AppConfig>({
     disableOrdering: {
       type: Boolean,
       default: false,
+    },
+    deliveryType: {
+      type: 'enum',
+      enum: DeliveryType,
+      default: DeliveryType.Standard,
     },
     ding: {
       type: Boolean,

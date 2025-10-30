@@ -1,0 +1,56 @@
+<h4 matDialogTitle>{{ 'deliveryTypeDialog.title' | translate }}</h4>
+
+<mat-dialog-content>
+  <p>{{ 'deliveryTypeDialog.description' | translate }}</p>
+
+  <div fxLayout="column" fxLayoutGap="16px" class="delivery-type-cards">
+    <mat-card
+      class="delivery-type-card"
+      [class.selected]="selectedType() === DeliveryType.Standard"
+      (click)="selectType(DeliveryType.Standard)"
+      appearance="outlined"
+    >
+      <mat-card-header>
+        <mat-card-title>
+          <i class="fa-solid fa-motorcycle"></i>
+          {{ 'deliveryTypeDialog.standard.title' | translate }}
+          @if (selectedType() === DeliveryType.Standard) {
+            <i class="fa-solid fa-circle-check success-text"></i>
+          }
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        {{ 'deliveryTypeDialog.standard.description' | translate }}
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card
+      class="delivery-type-card"
+      [class.selected]="selectedType() === DeliveryType.Post"
+      (click)="selectType(DeliveryType.Post)"
+      appearance="outlined"
+    >
+      <mat-card-header>
+        <mat-card-title>
+          <i class="fa-solid fa-box"></i>
+          {{ 'deliveryTypeDialog.post.title' | translate }}
+          @if (selectedType() === DeliveryType.Post) {
+            <i class="fa-solid fa-circle-check success-text"></i>
+          }
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        {{ 'deliveryTypeDialog.post.description' | translate }}
+      </mat-card-content>
+    </mat-card>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="cancel()">
+    {{ 'app.cancel' | translate }}
+  </button>
+  <button mat-flat-button color="primary" (click)="save()">
+    {{ 'app.save' | translate }}
+  </button>
+</mat-dialog-actions>

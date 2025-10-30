@@ -6,15 +6,12 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
 import { SHARED } from '../../../shared';
 import * as L from 'leaflet';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-delivery-area-map',
   standalone: true,
-  imports: [
-    SHARED,
-    LeafletModule,
-    LeafletDrawModule,
-  ],
+  imports: [SHARED, LeafletModule, LeafletDrawModule, MatCardModule],
   templateUrl: './delivery-area-map.component.html',
   styleUrl: './delivery-area-map.component.scss',
 })
@@ -51,15 +48,16 @@ export class DeliveryAreaMapComponent implements OnInit {
     const shop = this.shopService.data();
     this.options = {
       layers: [
-        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
-          maxZoom: 18, 
-          attribution: '...' 
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 18,
+          attribution: '...',
         }),
       ],
       zoom: 14,
-      center: shop?.latitude && shop?.longitude
-        ? L.latLng(shop.latitude, shop.longitude)
-        : L.latLng(36.274171699242515, 59.60280418395997),
+      center:
+        shop?.latitude && shop?.longitude
+          ? L.latLng(shop.latitude, shop.longitude)
+          : L.latLng(36.274171699242515, 59.60280418395997),
     };
 
     this.drawOptions = {
@@ -89,7 +87,7 @@ export class DeliveryAreaMapComponent implements OnInit {
     // Set up map translations
     setTimeout(() => {
       this.drawOptions.draw.polygon.drawError.message = this.translate.instant(
-        'deliveryArea.drawPolygonErrorTooltip'
+        'deliveryArea.drawPolygonErrorTooltip',
       );
 
       L.drawLocal.draw.toolbar.actions.text = this.translate.instant('app.cancel');
@@ -152,4 +150,4 @@ export class DeliveryAreaMapComponent implements OnInit {
       }
     }
   }
-} 
+}

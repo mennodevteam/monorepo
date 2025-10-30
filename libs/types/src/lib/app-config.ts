@@ -21,6 +21,11 @@ export enum HomePage {
   Info = 'INFO',
   Menu = 'MENU',
 }
+
+export enum DeliveryType {
+  Standard = 'STANDARD',
+  Post = 'POST',
+}
 export class AppConfig {
   id: string;
   theme: Theme;
@@ -39,6 +44,7 @@ export class AppConfig {
   menuViewType: MenuViewType;
   ding: boolean;
   dings: string[];
+  deliveryType: DeliveryType;
   welcomeMessage?: {
     enabled?: boolean;
     title: string;

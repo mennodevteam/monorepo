@@ -1,29 +1,47 @@
-<mat-toolbar class="page-toolbar">
+<mat-toolbar class="content-toolbar" fxLayoutGap="8px">
   <button mat-icon-button goBack>
     <i class="fa-regular fa-arrow-right"></i>
   </button>
-  <h1 flex>{{ 'deliveryArea.pageTitle' | translate }}</h1>
+  <h1 fxFlex>{{ 'deliveryArea.pageTitle' | translate }}</h1>
+  <button
+    mat-icon-button
+    (click)="openDeliveryTypeDialog()"
+    [matTooltip]="'deliveryTypeDialog.title' | translate"
+  >
+    <i class="fa-solid fa-gear"></i>
+  </button>
 </mat-toolbar>
 
-<mat-drawer-container class="drawer-container">
-  <mat-drawer mode="side" opened disableClose class="drawer">
-    <app-delivery-area-list
-      [deliveryAreas]="deliveryAreasData"
-      [loading]="isLoading"
-      [isEmpty]="isEmpty"
-      (editArea)="onEditArea($event)"
-      (deleteArea)="onDeleteArea($event)"
-      (addNewArea)="onAddNewArea()"
-    />
-  </mat-drawer>
-
-  <mat-drawer-content class="drawer-content">
-    <app-delivery-area-map
-      [deliveryAreas]="deliveryAreasData"
-      [isEmpty]="isEmpty"
-      (polygonCreated)="onPolygonCreated($event)"
-      (polygonEdited)="onPolygonEdited($event)"
-      (polygonDeleted)="onPolygonDeleted($event)"
-    />
-  </mat-drawer-content>
-</mat-drawer-container>
+@if (isLoading()) {
+  <main p-md m-md>
+    <app-data-loading />
+  </main>
+} @else {
+  @if (isEmpty()) {
+    <main p-md m-md>
+      <app-empty-state
+        [text]="'deliveryArea.emptyState.title' | translate"
+        [icon]="'fa-solid fa-map-marker-alt'"
+      />
+    </main>
+  } @else {
+    <main p-md m-md>
+      <app-delivery-area-table
+        [deliveryAreas]="deliveryAreasData()"
+        (editArea)="openEditDialog($event)"
+        (deleteArea)="onDeleteArea($event)"
+        (addNewArea)="onAddNewArea()"
+        (changeStatus)="saveDeliveryArea($event)"
+      />
+    </main>
+    @if (shopService.data()?.appConfig?.deliveryType === DeliveryType.Standard) {
+      <app-delivery-area-map
+        [deliveryAreas]="deliveryAreasData()"
+        [isEmpty]="isEmpty()"
+        (polygonCreated)="onPolygonCreated($event)"
+        (polygonEdited)="onPolygonEdited($event)"
+        (polygonDeleted)="onPolygonDeleted($event)"
+      />
+    }
+  }
+}

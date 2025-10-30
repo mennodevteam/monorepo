@@ -1,4 +1,4 @@
-import { Address, DeliveryArea, Shop, User, UserRole } from '@menno/types';
+import { Address, DeliveryArea, DeliveryType, Shop, User, UserRole } from '@menno/types';
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Query } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -28,15 +28,18 @@ export class AddressesController {
       where: {
         user: { id: user.id },
       },
+      relations: ['region'],
     });
     if (shopId && addresses) {
       const shop = await this.shopsRepo.findOne({
         where: { id: shopId },
-        relations: ['deliveryAreas'],
+        relations: ['deliveryAreas.region', 'appConfig'],
       });
       for (const add of addresses) {
-        if (add.latitude && add.longitude)
+        if (shop.appConfig?.deliveryType === DeliveryType.Standard && add.latitude && add.longitude)
           add.deliveryArea = DeliveryArea.isInWitchArea(shop.deliveryAreas, [add.latitude, add.longitude]);
+        else if (shop.appConfig?.deliveryType === DeliveryType.Post && add.region)
+          add.deliveryArea = DeliveryArea.isInWitchArea(shop.deliveryAreas, undefined, add.region);
       }
     }
     return addresses;
@@ -45,7 +48,7 @@ export class AddressesController {
   @Roles(UserRole.Panel)
   @Get(':userId')
   async getMemberAddresses(@LoginUser() user: AuthPayload, @Param('userId') userId: string) {
-    const shop = await this.auth.getPanelUserShop(user, ['deliveryAreas']);
+    const shop = await this.auth.getPanelUserShop(user, ['deliveryAreas.region', 'appConfig']);
     const addresses = await this.repo.find({
       where: {
         user: { id: userId },
@@ -57,8 +60,10 @@ export class AddressesController {
     });
     if (shop && addresses) {
       for (const add of addresses) {
-        if (add.latitude && add.longitude)
+        if (shop.appConfig?.deliveryType === DeliveryType.Standard && add.latitude && add.longitude)
           add.deliveryArea = DeliveryArea.isInWitchArea(shop.deliveryAreas, [add.latitude, add.longitude]);
+        else if (shop.appConfig?.deliveryType === DeliveryType.Post && add.region)
+          add.deliveryArea = DeliveryArea.isInWitchArea(shop.deliveryAreas, undefined, add.region);
       }
     }
     return addresses;
