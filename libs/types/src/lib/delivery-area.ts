@@ -24,12 +24,13 @@ export class DeliveryArea {
   ): DeliveryArea | null {
     if (point) {
       for (const area of areas) {
+        if (area.status !== Status.Active) continue;
         if (area.polygon && DeliveryArea.isInside(point, area.polygon)) return area;
       }
     } else if (region) {
-      let area = areas.find((x) => x.region?.id === region.id);
-      if (!area) area = areas.find((x) => x.state === region.state);
-      if (!area) area = areas.find((x) => !x.polygon && !x.state && !x.region);
+      let area = areas.find((x) => x.status === Status.Active && x.region?.id === region.id);
+      if (!area) area = areas.find((x) => x.status === Status.Active && x.state === region.state);
+      if (!area) area = areas.find((x) => x.status === Status.Active && !x.polygon && !x.state && !x.region);
       return area || null;
     }
     return null;
