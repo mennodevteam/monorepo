@@ -952,6 +952,7 @@
   "deliveryAreaDialog": {
     "editTitle": "ویرایش محدوده",
     "newTitle": "درج محدوده جدید",
+    "addNewArea": "افزودن محدوده جدید",
     "label": "برچسب (به کاربر نمایش داده ‌می‌شود)",
     "labelPlaceholder": "مثلا: ارسال با پست پیشتاز",
     "isPostLabel": "نوع ارسال",
