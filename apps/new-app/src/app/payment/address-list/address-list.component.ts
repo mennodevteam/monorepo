@@ -6,11 +6,13 @@ import { Address, OrderType, StatAction } from '@menno/types';
 import { FormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
 import { AnalyticsService } from '../../core/services/analytics.service';
+import { MatCardModule } from '@angular/material/card';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-address-list',
   standalone: true,
-  imports: [COMMON, FormsModule, MatListModule],
+  imports: [COMMON, FormsModule, MatListModule, MatCardModule, MatToolbarModule],
   templateUrl: './address-list.component.html',
   styleUrl: './address-list.component.scss',
 })

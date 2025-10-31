@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Address, DeliveryArea, Region, StatAction, State, ThemeMode } from '@menno/types';
+import { Address, DeliveryArea, DeliveryType, Region, StatAction, State, ThemeMode } from '@menno/types';
 import {
   AddressesService,
   CartService,
@@ -50,6 +50,8 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
     const state = this.regionState();
     return state?.regions || [];
   });
+  deliveryType = computed(() => this.shopService.shop?.appConfig?.deliveryType);
+  DeliveryType = DeliveryType;
   @ViewChild('regionStateElem') regionStateElem: MatSelect;
 
   constructor(
@@ -65,19 +67,9 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
     private menuStat: MenuStatService,
   ) {
     this.address = this.router.getCurrentNavigation()?.extras?.state?.['address'];
-    if (!this.coordinate && this.address) this.location.back();
+    if (this.deliveryType() === DeliveryType.Standard && !this.coordinate && this.address)
+      this.location.back();
     else {
-      this.deliveryArea = this.router.getCurrentNavigation()?.extras?.state?.['deliveryArea'];
-      if (!this.deliveryArea) {
-        this.http
-          .get<DeliveryArea>(
-            `deliveryAreas/${this.shopService.shop.id}/${this.coordinate?.[0]}/${this.coordinate?.[1]}`,
-          )
-          .subscribe((delivery) => {
-            this.deliveryArea = delivery;
-          });
-      }
-
       this.addressForm = new FormGroup({
         region: new FormControl(this.address?.region),
         title: new FormControl(this.address?.title),
@@ -85,35 +77,35 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
         unit: new FormControl(this.address?.unit, Validators.required),
         ring: new FormControl(this.address?.ring, Validators.required),
         postalCode: new FormControl(this.address?.postalCode),
-        latitude: new FormControl(this.coordinate?.[0], Validators.required),
-        longitude: new FormControl(this.coordinate?.[1], Validators.required),
       });
       this.findAndSetRegion();
     }
   }
 
   ngAfterViewInit(): void {
-    this.timeout = setTimeout(() => {
-      new nmp_mapboxgl.Map({
-        mapType:
-          this.theme.mode === ThemeMode.Light
-            ? nmp_mapboxgl.Map.mapTypes.neshanVector
-            : nmp_mapboxgl.Map.mapTypes.neshanVectorNight,
-        container: 'map',
-        zoom: 15,
-        pitch: 0,
-        center: [this.coordinate?.[1] || 0, this.coordinate?.[0] || 0],
-        trackResize: true,
-        mapKey: environment.neshanMapApiKey,
-        dragPan: false,
-        poi: true,
-        traffic: false,
+    if (this.deliveryType() === DeliveryType.Standard) {
+      this.timeout = setTimeout(() => {
+        new nmp_mapboxgl.Map({
+          mapType:
+            this.theme.mode === ThemeMode.Light
+              ? nmp_mapboxgl.Map.mapTypes.neshanVector
+              : nmp_mapboxgl.Map.mapTypes.neshanVectorNight,
+          container: 'map',
+          zoom: 15,
+          pitch: 0,
+          center: [this.coordinate?.[1] || 0, this.coordinate?.[0] || 0],
+          trackResize: true,
+          mapKey: environment.neshanMapApiKey,
+          dragPan: false,
+          poi: true,
+          traffic: false,
 
-        mapTypeControllerOptions: {
-          show: false,
-        },
-      });
-    }, 800);
+          mapTypeControllerOptions: {
+            show: false,
+          },
+        });
+      }, 800);
+    }
   }
 
   findAndSetRegion() {
@@ -170,14 +162,32 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
   get dto() {
     const dto: Address = this.addressForm.getRawValue();
     if (this.address) dto.id = this.address.id;
-    if (this.deliveryArea) dto.deliveryArea = { id: this.deliveryArea.id } as DeliveryArea;
     return dto;
   }
 
   async submit() {
     if (!this.addressForm.valid) return;
     this.saving.set(true);
-    const address = await this.addressesService.save(this.dto);
+
+    this.deliveryArea = this.router.getCurrentNavigation()?.extras?.state?.['deliveryArea'];
+    if (!this.deliveryArea) {
+      if (this.deliveryType() === DeliveryType.Standard) {
+        this.deliveryArea = await this.http
+          .get<DeliveryArea>(
+            `deliveryAreas/${this.shopService.shop.id}/${this.coordinate?.[0]}/${this.coordinate?.[1]}`,
+          )
+          .toPromise();
+      } else if (this.deliveryType() === DeliveryType.Post) {
+        this.deliveryArea = await this.http
+          .get<DeliveryArea>(`deliveryAreas/${this.shopService.shop.id}/region/${this.dto.region?.id}`)
+          .toPromise();
+      }
+    }
+
+    const dto = this.dto;
+    if (this.deliveryArea) dto.deliveryArea;
+
+    const address = await this.addressesService.save(dto);
     if (address) {
       this.cart.address.set(address);
       // Track address addition/editing
@@ -187,7 +197,9 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
 
       if (!this.address) this.menuStat.send(StatAction.AddAddress);
     }
-    window.history.go(-2);
+    const backCount = this.route.snapshot.queryParams['historyBackCount'];
+    if (backCount) window.history.go(-Number(backCount));
+    else window.history.go(-2);
   }
 
   ngOnDestroy(): void {

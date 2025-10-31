@@ -35,11 +35,19 @@ export class AddressesController {
         where: { id: shopId },
         relations: ['deliveryAreas.region', 'appConfig'],
       });
+      const allCountryDeliveryArea = shop.deliveryAreas.find(
+        (area) => area.region === null && area.state === null,
+      );
       for (const add of addresses) {
         if (shop.appConfig?.deliveryType === DeliveryType.Standard && add.latitude && add.longitude)
           add.deliveryArea = DeliveryArea.isInWitchArea(shop.deliveryAreas, [add.latitude, add.longitude]);
-        else if (shop.appConfig?.deliveryType === DeliveryType.Post && add.region)
-          add.deliveryArea = DeliveryArea.isInWitchArea(shop.deliveryAreas, undefined, add.region);
+        else if (shop.appConfig?.deliveryType === DeliveryType.Post) {
+          if (add.region) {
+            add.deliveryArea = DeliveryArea.isInWitchArea(shop.deliveryAreas, undefined, add.region);
+          } else if (allCountryDeliveryArea) {
+            add.deliveryArea = allCountryDeliveryArea;
+          }
+        }
       }
     }
     return addresses;
@@ -79,12 +87,18 @@ export class AddressesController {
       dto.user = { id: user.id } as User;
     }
     const add = await this.repo.save(dto);
-    if (shopId && add && add.latitude && add.longitude) {
+    if (shopId && add) {
       const shop = await this.shopsRepo.findOne({
         where: { id: shopId },
-        relations: ['deliveryAreas'],
+        relations: ['deliveryAreas.region', 'appConfig'],
       });
-      add.deliveryArea = DeliveryArea.isInWitchArea(shop.deliveryAreas, [add.latitude, add.longitude]);
+      if (shop.appConfig?.deliveryType === DeliveryType.Standard && add.latitude && add.longitude)
+        add.deliveryArea = DeliveryArea.isInWitchArea(shop.deliveryAreas || [], [
+          add.latitude,
+          add.longitude,
+        ]);
+      else if (shop.appConfig?.deliveryType === DeliveryType.Post && add.region)
+        add.deliveryArea = DeliveryArea.isInWitchArea(shop.deliveryAreas || [], undefined, add.region);
     }
     return add;
   }

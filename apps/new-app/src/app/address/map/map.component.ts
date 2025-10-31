@@ -6,7 +6,7 @@ import { ShopService, ThemeService } from '../../core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { environment } from '../../../environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DeliveryArea, Status, ThemeMode } from '@menno/types';
+import { DeliveryArea, DeliveryType, Status, ThemeMode } from '@menno/types';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import nmp_mapboxgl from '@neshan-maps-platform/mapbox-gl';
@@ -36,6 +36,11 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     private translate: TranslateService,
     private http: HttpClient,
   ) {
+    if (this.shopService.shop?.appConfig?.deliveryType === DeliveryType.Post) {
+      this.router.navigate(['/address/edit'], {
+        replaceUrl: true,
+      });
+    }
     this.route.queryParams.subscribe((params) => {
       setTimeout(() => {
         if (this.coordinate) {

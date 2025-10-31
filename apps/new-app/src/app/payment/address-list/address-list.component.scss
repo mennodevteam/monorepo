@@ -1,5 +1,21 @@
-#view-more-address {
-  margin: auto;
-  // margin-top: -8px;
-  // display: block;
+mat-toolbar {
+  padding-inline: 0;
+  h4 {
+    font-size: 16px;
+  }
+}
+
+#select-address-button {
+  width: 100%;
+}
+
+.address-card {
+  h4 {
+    font-size: 14px;
+  }
+
+  p {
+    font-size: 11px;
+    color: var(--mat-sys-on-surface-variant);
+  }
 }

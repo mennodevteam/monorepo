@@ -2,11 +2,7 @@
 @if (cart.length()) {
   <main fxLayout="column" fxLayoutGap="16" p-md max-center pb>
     @if (cart.isPaymentRequired && vpnQuery.data() === true) {
-      <app-alert-banner
-        type="warning"
-        title="{{ 'vpnError.title' | translate }}"
-        description="{{ 'vpnError.description' | translate }}"
-      />
+      <app-alert-banner type="error" title="{{ 'vpnError' | translate }}" [compact]="true" />
     }
 
     @if (menu.type() === OrderType.Delivery) {
@@ -21,7 +17,15 @@
 }
 
 <mat-toolbar fxLayout="row" fxLayoutAlign="center" id="actionbar" class="background-background" p-md>
-  <a mat-flat-button fxFlex (click)="submit()" class="large" [disabled]="cart.saving()" max-center id="checkout-button">
+  <a
+    mat-flat-button
+    fxFlex
+    (click)="submit()"
+    class="large"
+    [disabled]="cart.saving()"
+    max-center
+    id="checkout-button"
+  >
     {{ 'order.add' | translate }} ({{ total() | menuCurrency }})
     @if (cart.saving()) {
       ...

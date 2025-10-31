@@ -28,9 +28,10 @@ export class DeliveryArea {
         if (area.polygon && DeliveryArea.isInside(point, area.polygon)) return area;
       }
     } else if (region) {
+      const allCountryDeliveryArea = areas.find((area) => area.region === null && area.state === null);
       let area = areas.find((x) => x.status === Status.Active && x.region?.id === region.id);
       if (!area) area = areas.find((x) => x.status === Status.Active && x.state === region.state);
-      if (!area) area = areas.find((x) => x.status === Status.Active && !x.polygon && !x.state && !x.region);
+      if (!area && allCountryDeliveryArea) area = allCountryDeliveryArea;
       return area || null;
     }
     return null;

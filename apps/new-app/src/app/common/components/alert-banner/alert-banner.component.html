@@ -1,18 +1,32 @@
 <mat-card
+  appearance="outlined"
   [ngClass]="{
-    'error-container-background on-error-container-text': type === 'error',
-    'surface-variant-background': !type,
+    error: type === 'error',
+    compact: compact,
   }"
 >
-  <mat-card-content fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="8px">
-    @if (!type || type === 'info') {
-      <i class="fa-regular fa-square-info"></i>
-    } @else if (type === 'success') {
-      <i class="fa-regular fa-check-circle"></i>
-    } @else {
-      <i class="fa-regular fa-triangle-exclamation"></i>
-    }
-    <h4>{{ title }}</h4>
-    <p f-sm>{{ description }}</p>
-  </mat-card-content>
+  @if (!compact) {
+    <mat-card-content fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="8px">
+      @if (!type || type === 'info') {
+        <i class="fa-regular fa-square-info"></i>
+      } @else if (type === 'success') {
+        <i class="fa-regular fa-check-circle"></i>
+      } @else {
+        <i class="fa-regular fa-triangle-exclamation"></i>
+      }
+      <h4>{{ title }}</h4>
+      <p f-sm>{{ description }}</p>
+    </mat-card-content>
+  } @else {
+    <mat-card-content fxLayout="row" fxLayoutGap="4px">
+      @if (!type || type === 'info') {
+        <i class="fa-regular fa-square-info"></i>
+      } @else if (type === 'success') {
+        <i class="fa-regular fa-check-circle"></i>
+      } @else {
+        <i class="fa-regular fa-triangle-exclamation"></i>
+      }
+      <p>{{ title }}</p>
+    </mat-card-content>
+  }
 </mat-card>

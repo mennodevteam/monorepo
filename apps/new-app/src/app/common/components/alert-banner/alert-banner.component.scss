@@ -1,11 +1,27 @@
 mat-card {
-  text-align: center;
+  &:not(.compact) {
+    text-align: center;
 
-  mat-card-content {
-    padding: 16px 64px;
+    mat-card-content {
+      padding: 16px 64px;
+    }
+
+    i {
+      font-size: 24px;
+    }
   }
 
-  i {
-    font-size: 24px;
+  &.compact {
+    font-size: 12px !important;
+
+    i {
+      font-size: 16px !important;
+    }
+  }
+
+  &.error {
+    background-color: var(--mat-sys-error-container);
+    color: var(--mat-sys-on-error-container);
+    border-color: transparent !important;
   }
 }

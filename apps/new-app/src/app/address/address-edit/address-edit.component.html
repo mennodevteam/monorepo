@@ -3,10 +3,12 @@
   title="{{ 'editAddress.' + (this.address ? 'editTitle' : 'newTitle') | translate }}"
 />
 <form [formGroup]="addressForm" p-md fxLayout="column" (ngSubmit)="submit()" pb>
-  <div id="map">
-    <i id="marker" class="fa-solid fa-location-dot fa-lg error-text"></i>
-  </div>
-  <br />
+  @if (deliveryType() === DeliveryType.Standard) {
+    <div id="map">
+      <i id="marker" class="fa-solid fa-location-dot fa-lg error-text"></i>
+    </div>
+    <br />
+  }
 
   <mat-form-field>
     <mat-label>{{ 'editAddress.stateLabel' | translate }}</mat-label>
@@ -15,6 +17,7 @@
       [value]="regionState"
       (valueChange)="regionState.set($event)"
       [disabled]="loading()"
+      required
     >
       @for (state of states; track state.title) {
         <mat-option [value]="state">
@@ -26,7 +29,7 @@
 
   <mat-form-field>
     <mat-label>{{ 'editAddress.regionLabel' | translate }}</mat-label>
-    <mat-select formControlName="region">
+    <mat-select formControlName="region" required>
       @for (region of regions(); track region.id) {
         <mat-option [value]="region">
           {{ region.title }}
@@ -35,7 +38,9 @@
     </mat-select>
   </mat-form-field>
 
-  {{ 'editAddress.addressDescription' | translate }}
+  @if (deliveryType() === DeliveryType.Standard) {
+    {{ 'editAddress.addressDescription' | translate }}
+  }
 
   <mat-form-field>
     <mat-label>{{ 'editAddress.addressLabel' | translate }}</mat-label>
@@ -62,7 +67,7 @@
     </mat-form-field>
   </div>
 
-  @if (deliveryArea?.isPost || address?.postalCode) {
+  @if (address?.postalCode || deliveryType() === DeliveryType.Post) {
     <mat-form-field>
       <mat-label>{{ 'editAddress.postalCode' | translate }}</mat-label>
       <input matInput formControlName="postalCode" type="text" />

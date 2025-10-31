@@ -14,4 +14,5 @@ export class AlertBannerComponent {
   @Input() type?: 'info' | 'error' | 'warning' | 'success';
   @Input() title: string;
   @Input() description: string;
+  @Input() compact?: boolean;
 }
