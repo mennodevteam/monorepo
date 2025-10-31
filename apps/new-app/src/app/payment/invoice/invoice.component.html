@@ -50,18 +50,27 @@
     </mat-list-item>
   }
 
-  @if (
-    cart.address()?.deliveryArea?.minPriceForFree &&
-    cart.address()!.deliveryArea!.minPriceForFree! > cart.sum()
-  ) {
-    <mat-list-item>
-      <span matListItemTitle>
-        {{
-          'cart.addressMinPriceForFreeInline'
+  @let minPriceForFree = cart.address()?.deliveryArea?.minPriceForFree;
+  @if (minPriceForFree && minPriceForFree > cart.sum()) {
+    @if (cart.sum() / minPriceForFree > 0.8) {
+      <app-alert-banner
+        type="info"
+        emoji="🎉"
+        [compact]="true"
+        title="{{
+          'cart.addressMinPriceForFreeInlineRemaining'
             | translate: { value: cart.address()!.deliveryArea!.minPriceForFree! - cart.sum() | menuCurrency }
-        }}
-      </span>
-    </mat-list-item>
+        }}"
+      />
+    } @else {
+      <app-alert-banner
+        type="info"
+        [compact]="true"
+        title="{{
+          'cart.addressMinPriceForFreeInline' | translate: { value: minPriceForFree | menuCurrency }
+        }}"
+      />
+    }
   }
 
   <mat-list-item>

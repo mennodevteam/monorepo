@@ -7,7 +7,9 @@
 >
   @if (!compact) {
     <mat-card-content fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="8px">
-      @if (!type || type === 'info') {
+      @if (emoji) {
+        <em>{{ emoji }}</em>
+      } @else if (!type || type === 'info') {
         <i class="fa-regular fa-square-info"></i>
       } @else if (type === 'success') {
         <i class="fa-regular fa-check-circle"></i>
@@ -18,8 +20,10 @@
       <p f-sm>{{ description }}</p>
     </mat-card-content>
   } @else {
-    <mat-card-content fxLayout="row" fxLayoutGap="4px">
-      @if (!type || type === 'info') {
+    <mat-card-content fxLayout="row" fxLayoutGap="8px">
+      @if (emoji) {
+        <em>{{ emoji }}</em>
+      } @else if (!type || type === 'info') {
         <i class="fa-regular fa-square-info"></i>
       } @else if (type === 'success') {
         <i class="fa-regular fa-check-circle"></i>

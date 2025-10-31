@@ -12,6 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class AlertBannerComponent {
   @Input() type?: 'info' | 'error' | 'warning' | 'success';
+  @Input() emoji?: string;
   @Input() title: string;
   @Input() description: string;
   @Input() compact?: boolean;
