@@ -1,13 +1,14 @@
-<nav>
-  <ul>
-    @for (item of navItems; track item.path) {
-      <li>
-        <a [routerLink]="item.path" routerLinkActive="active">
-          <span>{{ item.icon }}</span>
-          <span>{{ item.label }}</span>
-        </a>
-      </li>
-    }
-  </ul>
-</nav>
+<mat-toolbar class="bottom-nav">
+  @for (item of navItems; track item.path) {
+    <button
+      mat-button
+      [routerLink]="item.path"
+      routerLinkActive="active"
+      class="nav-button"
+    >
+      <mat-icon class="material-icons-rounded">{{ item.icon }}</mat-icon>
+      <span class="nav-label">{{ item.label }}</span>
+    </button>
+  }
+</mat-toolbar>
 
