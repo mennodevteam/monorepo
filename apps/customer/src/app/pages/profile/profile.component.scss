@@ -1,0 +1,36 @@
+.page-container {
+  padding: 16px;
+
+  .profile-section {
+    border: 1px solid #ddd;
+    padding: 16px;
+    margin-bottom: 16px;
+
+    h2 {
+      margin-top: 0;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+
+      li {
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #ff4444;
+      color: white;
+      border: none;
+    }
+  }
+}
+

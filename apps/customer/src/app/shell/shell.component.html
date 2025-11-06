@@ -1,0 +1,12 @@
+<div class="shell-container">
+  @if (loading) {
+    <div class="loading-overlay">
+      <p>Loading...</p>
+    </div>
+  }
+  <main class="shell-content">
+    <router-outlet></router-outlet>
+  </main>
+  <app-bottom-navigation></app-bottom-navigation>
+</div>
+

@@ -1,0 +1,32 @@
+.shell-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.shell-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 60px; // Space for bottom navigation
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 60px; // Above bottom navigation
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+
+  p {
+    font-size: 18px;
+    color: #666;
+  }
+}
+

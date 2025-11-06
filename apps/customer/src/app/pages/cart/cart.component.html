@@ -1,0 +1,19 @@
+<div class="page-container">
+  <h1>Shopping Cart</h1>
+  <p>Your cart items</p>
+  
+  <!-- Placeholder content for scrolling -->
+  @for (item of [1,2,3,4,5,6,7,8,9,10]; track item) {
+    <div class="cart-item">
+      <h3>Cart Item {{ item }}</h3>
+      <p>Price: ${{ item * 10 }}</p>
+      <p>Quantity: 1</p>
+    </div>
+  }
+  
+  <div class="cart-summary">
+    <h2>Total: $550</h2>
+    <button>Checkout</button>
+  </div>
+</div>
+

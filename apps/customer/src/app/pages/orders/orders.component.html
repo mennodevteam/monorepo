@@ -1,0 +1,15 @@
+<div class="page-container">
+  <h1>My Orders</h1>
+  <p>Your order history</p>
+  
+  <!-- Placeholder content for scrolling -->
+  @for (order of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]; track order) {
+    <div class="order-item">
+      <h3>Order #{{ 1000 + order }}</h3>
+      <p>Date: 2025-11-{{ order }}</p>
+      <p>Status: {{ order % 3 === 0 ? 'Delivered' : order % 3 === 1 ? 'Shipped' : 'Processing' }}</p>
+      <p>Total: ${{ order * 50 }}</p>
+    </div>
+  }
+</div>
+
