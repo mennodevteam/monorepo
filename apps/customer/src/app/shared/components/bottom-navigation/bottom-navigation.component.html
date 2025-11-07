@@ -4,11 +4,13 @@
       mat-button
       [routerLink]="item.path"
       routerLinkActive="active"
+      #rla="routerLinkActive"
       class="nav-button"
     >
-      <mat-icon class="material-icons-rounded">{{ item.icon }}</mat-icon>
-      <span class="nav-label">{{ item.label }}</span>
+      <div class="nav-button_content-wrapper">
+        <ng-icon [svg]="rla.isActive ? item.activeIcon : item.icon" size="24"></ng-icon>
+        <span class="nav-label">{{ item.label }}</span>
+      </div>
     </button>
   }
 </mat-toolbar>
-

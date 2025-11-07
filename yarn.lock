@@ -3165,6 +3165,41 @@
   dependencies:
     uuid "8.3.2"
 
+"@ng-icons/core@^32.3.0":
+  version "32.3.0"
+  resolved "https://registry.yarnpkg.com/@ng-icons/core/-/core-32.3.0.tgz#57fb0f777c932b01d93bd393db1e212f5e02e643"
+  integrity sha512-zS6cz4b9f3SAN53uzUhp0QO3JxRVSqxX0MTOIwxi5jNvVv3j1pFC3ukJbcxGM3IzBCP4WtAMY8O1RSrFnpY6eA==
+  dependencies:
+    tslib "^2.3.0"
+
+"@ng-icons/iconsax@^32.3.0":
+  version "32.3.0"
+  resolved "https://registry.yarnpkg.com/@ng-icons/iconsax/-/iconsax-32.3.0.tgz#9476197e73a78f65bc896280f2eb221553e5532a"
+  integrity sha512-zHJvnZSBlJoZ5nQz/zJTE56KE+y8KSy/CGJsPahejE84Gn3hqNMnyTFhAASQoBruCqL5X9Bnr7W7SFznnBojtw==
+  dependencies:
+    tslib "^2.3.0"
+
+"@ng-icons/material-icons@^32.3.0":
+  version "32.3.0"
+  resolved "https://registry.yarnpkg.com/@ng-icons/material-icons/-/material-icons-32.3.0.tgz#3cac61aa42313dcdc6fe4b5b6a8220d73b8dabb9"
+  integrity sha512-9FP/p27Le2jlsFGzkZhDPj7tUZbiPTvNSXDxph9ZosU7eXQFrAkhQRTrv/wTdFI2OkMbApr07RqWsBEwFN94OA==
+  dependencies:
+    tslib "^2.3.0"
+
+"@ng-icons/material-symbols@^32.3.0":
+  version "32.3.0"
+  resolved "https://registry.yarnpkg.com/@ng-icons/material-symbols/-/material-symbols-32.3.0.tgz#cc7d65f867b4e7c5961ad84ccdcb3aa4819fd002"
+  integrity sha512-5QEGwgXOIZ7UEqd/Uow84zfjSHuEt9Qoc85bInus+atwYx9ddoAx3r3Qa5lNQ7HMhD2j5Nl6vNcqYHmN7STe+A==
+  dependencies:
+    tslib "^2.3.0"
+
+"@ng-icons/phosphor-icons@^32.3.0":
+  version "32.3.0"
+  resolved "https://registry.yarnpkg.com/@ng-icons/phosphor-icons/-/phosphor-icons-32.3.0.tgz#fb47f65221095e5bc866ed359dc3661e5ccbe781"
+  integrity sha512-CRDDzlR4iOe+h7dWH1cwnUSeZcWrpbbTAPWSXd/xNJ6SLIpGxaQBsKOfThJH9YrgucJ1BGQbltLhziWVjSIO0A==
+  dependencies:
+    tslib "^2.3.0"
+
 "@ngtools/webpack@20.1.3":
   version "20.1.3"
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-20.1.3.tgz#5f046ede2548cfb5bdf5b75f034020c27cc285ab"
