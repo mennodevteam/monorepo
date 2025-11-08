@@ -1,6 +1,13 @@
 <mat-toolbar>
-  <img src="https://file.maghzook.com/2117/1722969716336_logo_md.webp" alt="maghzook" />
-  <h1>مغزوک</h1>
+  @if (shopLogoUrl(); as logo) {
+    <img [imageLoader]="logo" [alt]="shopTitle()" />
+  }
+  <h1>
+    @if (shopTitle(); as title) {
+      {{ title }}
+    }
+  </h1>
+
   <button mat-icon-button>
     <ng-icon [svg]="searchIcon"></ng-icon>
   </button>

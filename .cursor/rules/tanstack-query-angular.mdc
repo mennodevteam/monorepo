@@ -1,0 +1,83 @@
+---
+description: This rule captures the conventions we follow when integrating TanStack Query with Angular applications.
+scope: apps/customer/**
+globs: ["**/*.ts", "**/*.html"]
+---
+
+# TanStack Query for Angular
+
+We rely on `@tanstack/angular-query-experimental` (Query v5) for managing server state in Angular. The package is still marked experimental, so we pin versions and follow the official guidance closely to avoid breaking changes.
+
+## Query Client Provisioning
+
+- Register a single `QueryClient` at application bootstrap using `provideTanStackQuery(new QueryClient({...}))`. Keep the instance creation side-effect free so Angular can tree-shake and reuse it.
+- Centralize defaults in `defaultOptions`, e.g. disable retries for non-idempotent mutations and configure `staleTime`, `gcTime`, or `retry` behaviour for queries.
+- When we need request-scoped configuration (e.g. per app shell), compose providers in `app.config.ts` so that feature apps inherit the same client instance.
+- Inject an existing client with `inject(QueryClient)` instead of older helpers such as `injectQueryClient`; the direct injection keeps dependency graphs explicit.
+
+## Query Keys
+
+- Always use array-style keys: `['orders', orderId]`. Namespace keys by domain to avoid collisions and make selective invalidation trivial.
+- When queries depend on optional params, include explicit placeholders (e.g. `['orders', { status: filter() ?? 'all' }]`) instead of branching to `null`.
+- Avoid anonymous or inline object literals that can change identity on every render; keep key factories small and reusable.
+
+## Query Functions
+
+- Use Angular's `HttpClient` and convert observables with `firstValueFrom` / `lastValueFrom` inside the `queryFn`. Never subscribe manually.
+- Keep `queryFn` pure: no shared mutable state, no direct DOM work, and surface rich domain types rather than `any`.
+- Defensively narrow errors (e.g. map backend error shapes) so templates can present actionable feedback.
+
+```ts
+const http = inject(HttpClient);
+
+const repoQuery = injectQuery(() => ({
+  queryKey: ['repo', slug()],
+  queryFn: () =>
+    lastValueFrom(
+      http.get<RepositoryDto>(`${environment.apiBase}/repos/${slug()}`),
+    ),
+}));
+```
+
+## Component Usage
+
+- Call `injectQuery`, `injectInfiniteQuery`, and `injectMutation` at the top level of components, directives, or services—never inside callbacks.
+- Treat query results as signals: prefer `computed` for derived state to avoid recomputation in templates.
+- Use Angular's built-in control flow (`@if`, `@switch`) to branch on `query.isPending()`, `query.error()`, and `query.data()`.
+- When accessing `query.data()`, immediately assign `as data` in templates to keep type narrowing tight and readable.
+
+## Mutations & Cache Updates
+
+- Use `injectMutation` for writes. Prefer `mutationFn` returning a `Promise`, not `Observable`.
+- Expose mutation state in the template (`isPending`, `isError`, `isSuccess`) and call `mutation.reset()` whenever you need to clear error/data before the next interaction.
+- Favor `mutation.mutateAsync()` inside `async` flows (forms, dialogs) when you need to await completion; reserve `mutate` for event handlers where fire-and-forget is fine.
+- Remember that `onSuccess`/`onError` passed to `injectMutation` run for every mutation, while the handler provided to `mutate` only runs for that specific call. Use per-call overrides for contextual side effects.
+- Serialize related mutations with `scope: { id: 'resource' }` when order matters; the queue prevents race conditions without extra logic.
+- After successful mutations, invalidate or update related queries through the injected `QueryClient` (`queryClient.invalidateQueries({ queryKey: [...] })` or `queryClient.setQueryData(...)`).
+- Use `onMutate` for optimistic updates and pair it with `onError` rollbacks; always return the rollback context.
+- Keep mutation retries disabled by default; if you enable `retry`, ensure idempotency or scope-specific compensation logic.
+- For offline support, put shared defaults in `queryClient.setMutationDefaults` and hydrate/dehydrate paused mutations alongside queries; always provide a fallback `mutationFn` so resume works after reload.
+- Share mutation signals with templates for loading/disabled states (`mutation.isPending()`).
+
+## Background Behaviour
+
+- Leverage background refetch cues (`query.isRefetching()`, `query.fetchStatus()`) to show subtle loading indicators rather than blocking UI.
+- Default to `refetchOnWindowFocus: false` unless data must stay live. For dashboards or real-time surfaces, set `refetchInterval` or `refetchOnReconnect` as appropriate.
+- Disable retries on mutations and on queries where repeat calls can cause side effects; otherwise rely on the built-in exponential backoff.
+
+## Error & Empty States
+
+- Differentiate transport errors from empty responses. Surface `query.error()` for failures and derive explicit empty-state signals from `query.data()`.
+- For global errors, hook into the `QueryCache` on the shared `QueryClient` (e.g. `queryCache.subscribe`) in a dedicated service rather than scattering toast logic.
+
+## Testing
+
+- Wrap tested components with a `QueryClientProvider` configured with `defaultOptions.queries.retry = false` to avoid retry noise.
+- Use the same query keys in tests so cache helpers (`setQueryData`, `invalidateQueries`) behave identically.
+- When snapshotting templates, set queries to success by seeding data through `queryClient.setQueryData`.
+
+## Versioning & Upgrades
+
+- Pin the dependency (`"@tanstack/angular-query-experimental": "^x.y.z"`) and avoid broad `^` bumps without a review of the changelog.
+- After upgrades, verify that new defaults (network mode, stale times, behaviours) align with application expectations before rolling forward.
+
