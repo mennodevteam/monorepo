@@ -17,6 +17,11 @@ export const appRoutes: Route[] = [
           import('./pages/home/home.component').then((m) => m.HomeComponent),
       },
       {
+        path: 'categories',
+        loadComponent: () =>
+          import('./pages/categories/categories.component').then((m) => m.CategoriesComponent),
+      },
+      {
         path: 'cart',
         loadComponent: () =>
           import('./pages/cart/cart.component').then((m) => m.CartComponent),

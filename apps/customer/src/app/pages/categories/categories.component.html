@@ -1,0 +1,15 @@
+<div class="page-container">
+  @if (menuQuery.isPending()) {
+    <div class="state state--loading">
+      <mat-spinner diameter="32"></mat-spinner>
+    </div>
+  } @else if (menuQuery.isError()) {
+    <div class="state state--error">مشکلی در دریافت دسته‌بندی‌ها رخ داد. لطفاً دوباره تلاش کنید.</div>
+  } @else {
+    @if (hasCategories()) {
+      <app-category-list [categories]="categories()" view="list" />
+    } @else {
+      <div class="state state--empty">هنوز دسته‌بندی‌ای در این منو ثبت نشده است.</div>
+    }
+  }
+</div>

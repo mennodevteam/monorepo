@@ -53,8 +53,14 @@
   gap: 8px;
 
   .category-card {
+
+    mat-card-content {
+      height: 48px;
+      overflow: hidden;
+    }
+
     .category-card__title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 400;
     }
 
