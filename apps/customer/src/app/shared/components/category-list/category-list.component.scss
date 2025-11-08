@@ -34,7 +34,7 @@
 
     .category-card__image {
       height: 120px;
-      margin: -8px;
+      margin: -16px;
       flex: none;
       border-radius: 8px;
     }
@@ -65,9 +65,10 @@
     }
 
     .category-card__image {
-      height: 72px;
-      margin: -12px;
-      border-radius: 8px;
+      flex: none;
+      height: 80px;
+      margin: -16px;
+      border-radius: var(--mat-sys-corner-medium);
     }
   }
 }
