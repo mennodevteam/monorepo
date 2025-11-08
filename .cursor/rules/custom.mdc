@@ -1,9 +1,0 @@
----
-description: 
-globs: 
-alwaysApply: false
----
-in apps/new-app and apps/new-panel, that are angulr:
-use the latest flow of angular. @if, @for
-for input use latest input and view childs use signalBased input
-in developing htmls, use translation.

@@ -1,0 +1,16 @@
+<section class="section">
+  <mat-toolbar appearance="flat" class="section__toolbar">
+    <h2 class="section__title">{{ title() }}</h2>
+
+    @if (routerLink()) {
+      <a [routerLink]="routerLink()" mat-button>
+        {{ seeMoreLabel() }}
+      </a>
+    }
+  </mat-toolbar>
+
+  <div class="section__content">
+    <ng-content></ng-content>
+  </div>
+</section>
+

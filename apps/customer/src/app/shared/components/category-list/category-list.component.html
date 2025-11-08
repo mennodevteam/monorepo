@@ -1,0 +1,19 @@
+@if (visibleCategories().length) {
+  <div class="category-list" [class.category-list--grid]="isGrid()">
+    @for (category of visibleCategories(); track category.id) {
+      <mat-card class="category-card" appearance="outlined">
+          <mat-card-content>
+            <div class="category-card__text">
+              <h3 class="category-card__title">{{ category.title }}</h3>
+              @if (!isGrid() && category.description) {
+                <p class="category-card__description">{{ category.description }}</p>
+              }
+            </div>
+            <img class="category-card__image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-BefKL2ZnTv90c7kYQZinkawfMWIc6SA9jQ&s" >
+          </mat-card-content>
+      </mat-card>
+    }
+  </div>
+} @else {
+  <p class="category-list__empty">دسته‌بندی فعالی وجود ندارد.</p>
+}

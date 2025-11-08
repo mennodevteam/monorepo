@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @use '@angular/material' as mat;
 @use '../public/fonts/iransans/iransans.scss';
+@use 'customer_theme-colors' as theme;
 
 @include mat.core();
 
@@ -8,7 +9,7 @@ html {
   color-scheme: light;
   @include mat.theme(
     (
-      // color: mat.$violet-palette,
+      color: theme.$primary-palette,
       typography: IRANSans,
       density: 0
     )
@@ -26,4 +27,22 @@ body {
 body {
   margin: 0;
   padding: 0;
+}
+
+@include mat.theme-overrides((
+  primary: #000000,
+  on-primary: #ffffff,
+  background: #ffffff,
+  on-background: #000000,
+));
+
+:root {
+  @include mat.toolbar-overrides((
+    container-background-color: var(--mat-sys-background),
+    container-text-color: var(--mat-sys-on-background),
+  ));
+
+  @include mat.card-overrides((
+    outlined-outline-color: transparent,
+  ));
 }

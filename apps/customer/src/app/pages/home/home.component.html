@@ -1,13 +1,7 @@
-<div class="page-container">
-  <h1>Home Page</h1>
-  <p>Welcome to the shop</p>
-  
-  <!-- Placeholder content for scrolling -->
-  @for (item of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]; track item) {
-    <div class="item">
-      <h3>Product {{ item }}</h3>
-      <p>Product description {{ item }}</p>
-    </div>
-  }
-</div>
+<app-home-toolbar></app-home-toolbar>
 
+<div class="page-container">
+  <app-section title="دسته‌بندی‌های پیشنهادی" seeMoreLabel="مشاهده همه">
+    <app-category-list [categories]="sampleCategories" [maxItems]="6" view="grid" />
+  </app-section>
+</div>

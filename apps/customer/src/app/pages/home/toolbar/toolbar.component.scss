@@ -1,0 +1,14 @@
+mat-toolbar {
+  display: flex;
+  gap: 8px;
+
+  img {
+    height: 32px;
+    border-radius: 8px;
+  }
+
+  h1 {
+    font-weight: 600;
+    flex: 1;
+  }
+}

@@ -1,0 +1,22 @@
+:host {
+  display: block;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+}
+
+.section__toolbar {
+  padding-inline: 0;
+}
+
+.section__title {
+  margin: 0;
+  font: var(--mat-sys-title-medium);
+  flex: 1;
+}
+
+.section__content {
+  display: block;
+}

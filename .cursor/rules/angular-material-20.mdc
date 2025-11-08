@@ -1,8 +1,9 @@
 ---
 description: This rule provides comprehensive best practices and coding standards for Angular development with Angular Material, focusing on Material 3 (a.k.a. M3) design, theme configuration and various API usages.
+scope: apps/customer/**
 globs: ["**/*.{ts,html,scss,css}"]
+alwaysApply: false
 ---
-
 # Angular Material 20 Best Practices
 
 This project adheres to modern Angular Material best practices, emphasizing maintainability, performance, accessibility, scalability and correct usage of APIs.
