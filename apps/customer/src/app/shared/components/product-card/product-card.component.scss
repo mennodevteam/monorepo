@@ -1,0 +1,99 @@
+:host {
+  display: block;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-radius: var(--mat-sys-corner-medium);
+  background: var(--mat-sys-surface-container-low);
+}
+
+.product-card__media {
+  position: relative;
+  width: 100%;
+  border-radius: calc(var(--mat-sys-corner-medium) - 2px);
+  overflow: hidden;
+  background: var(--mat-sys-surface-container-highest);
+  aspect-ratio: 4 / 3;
+}
+
+.product-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.product-card__badge {
+  position: absolute;
+  top: 12px;
+  inset-inline-end: 12px;
+  padding: 4px 10px;
+  border-radius: var(--mat-sys-corner-extra-large);
+  font: var(--mat-sys-label-medium);
+  background: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+}
+
+.product-card__badge--status {
+  background: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
+}
+
+.product-card__badge--discount {
+  background: var(--mat-sys-tertiary);
+  color: var(--mat-sys-on-tertiary);
+}
+
+.product-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.product-card__title {
+  margin: 0;
+  font: var(--mat-sys-title-large);
+  color: var(--mat-sys-on-surface);
+}
+
+.product-card__variant {
+  margin: 0;
+  font: var(--mat-sys-body-small);
+  color: var(--mat-sys-outline);
+}
+
+.product-card__description {
+  margin: 0;
+  font: var(--mat-sys-body-medium);
+  color: var(--mat-sys-on-surface-variant);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-card__price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.product-card__price {
+  font: var(--mat-sys-title-medium);
+  color: var(--mat-sys-on-surface);
+}
+
+.product-card__price--original {
+  font: var(--mat-sys-body-medium);
+  color: var(--mat-sys-on-surface-variant);
+  text-decoration: line-through;
+}
+
+.product-card__currency {
+  font: var(--mat-sys-body-small);
+  color: var(--mat-sys-on-surface-variant);
+}
+

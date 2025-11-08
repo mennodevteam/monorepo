@@ -1,0 +1,53 @@
+<mat-card
+  class="product-card"
+  appearance="outlined"
+  [routerLink]="routerLink()"
+  [queryParams]="routerLink() ? queryParams() : null"
+>
+  <div class="product-card__media">
+    <img
+      class="product-card__image"
+      [imageLoader]="imageSource()"
+      [imageFile]="imageFile()"
+      [imageSize]="'md'"
+      [attr.alt]="product().title"
+    />
+
+    @if (statusLabel()) {
+      <span class="product-card__badge product-card__badge--status">{{ statusLabel() }}</span>
+    } @else if (discountPercentage()) {
+      <span class="product-card__badge product-card__badge--discount">
+        {{ discountPercentage() }}٪ تخفیف
+      </span>
+    }
+  </div>
+
+  <mat-card-content class="product-card__content">
+    <h3 class="product-card__title">{{ product().title }}</h3>
+
+    @if (showVariantHint() && variantLabel()) {
+      <p class="product-card__variant">از {{ variantLabel() }}</p>
+    }
+
+    @if (showDescription() && product().description) {
+      <p class="product-card__description">{{ product().description }}</p>
+    }
+
+    <div class="product-card__price-row">
+      @if (originalPrice()) {
+        <span class="product-card__price product-card__price--original">
+          {{ originalPrice() | number: '1.0-0' }}
+        </span>
+      }
+
+      <span class="product-card__price product-card__price--current">
+        {{ price() | number: '1.0-0' }}
+      </span>
+
+      <span class="product-card__currency">{{ currencyLabel() }}</span>
+    </div>
+  </mat-card-content>
+
+  <ng-content />
+</mat-card>
+

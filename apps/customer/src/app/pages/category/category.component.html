@@ -1,0 +1,42 @@
+<div class="page-container">
+  <app-home-toolbar />
+
+  @if (isLoading()) {
+    <div class="state state--loading">
+      <mat-progress-spinner diameter="32" mode="indeterminate" />
+      <p>در حال دریافت اطلاعات دسته‌بندی...</p>
+    </div>
+  } @else if (isError()) {
+    <div class="state state--error">
+      مشکلی در دریافت اطلاعات این دسته‌بندی رخ داد. لطفاً دوباره تلاش کنید.
+    </div>
+  } @else if (isNotFound()) {
+    <div class="state state--empty">
+      دسته‌بندی موردنظر پیدا نشد.
+    </div>
+  } @else {
+    <section class="category-header">
+      <h1 class="category-header__title">{{ category()?.title }}</h1>
+      @if (category()?.description) {
+        <p class="category-header__description">{{ category()?.description }}</p>
+      }
+    </section>
+
+    @if (hasProducts()) {
+      <div class="product-grid">
+        @for (product of products(); track product.id) {
+          <app-product-card
+            [product]="product"
+            [showVariantHint]="true"
+            [currencyLabel]="currencyLabel()"
+          />
+        }
+      </div>
+    } @else {
+      <div class="state state--empty">
+        هنوز محصولی برای این دسته‌بندی ثبت نشده است.
+      </div>
+    }
+  }
+</div>
+
