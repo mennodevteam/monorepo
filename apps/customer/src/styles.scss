@@ -22,6 +22,7 @@ body {
   height: 100%;
   margin: 0;
   font-family: IRANSans, 'Helvetica Neue', sans-serif;
+  background-color: var(--mat-sys-background);
 }
 
 body {
@@ -44,5 +45,6 @@ body {
 
   @include mat.card-overrides((
     outlined-outline-color: transparent,
+    outlined-container-color: var(--mat-sys-surface-container),
   ));
 }

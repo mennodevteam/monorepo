@@ -31,6 +31,7 @@
               {{ variantTotalPrice(variant) | number }}
             </span>
           </div>
+          <app-quantity-selector />
         </mat-card-actions>
       }
     } @else {
@@ -42,6 +43,7 @@
           }
           {{ totalPrice() | number }}
         </span>
+        <app-quantity-selector />
       </mat-card-actions>
     }
   }

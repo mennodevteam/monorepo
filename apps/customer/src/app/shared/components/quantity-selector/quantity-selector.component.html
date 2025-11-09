@@ -1,0 +1,21 @@
+<button
+  mat-icon-button
+  class="quantity-selector__button"
+  aria-label="افزایش تعداد"
+  [disabled]="!canIncrement()"
+  (click)="increment()"
+>
+  <ng-icon [svg]="incrementIcon"></ng-icon>
+</button>
+
+<span class="quantity-selector__value" aria-live="polite">{{ value() }}</span>
+
+<button
+  mat-icon-button
+  class="quantity-selector__button"
+  aria-label="کاهش تعداد"
+  [disabled]="!canDecrement()"
+  (click)="decrement()"
+>
+  <ng-icon [svg]="decrementIcon"></ng-icon>
+</button>

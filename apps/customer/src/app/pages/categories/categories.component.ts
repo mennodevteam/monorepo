@@ -4,7 +4,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MenuService } from '../../core/services/menu.service';
 import { SectionComponent } from '../../shared/components/section/section.component';
 import { CategoryListComponent } from '../../shared/components/category-list/category-list.component';
-import { HomeToolbarComponent } from '../home/toolbar/toolbar.component';
+import { RootAppBarComponent } from '../../shared/components/root-app-bar/root-app-bar.component';
 
 @Component({
   selector: 'app-categories',
@@ -12,7 +12,7 @@ import { HomeToolbarComponent } from '../home/toolbar/toolbar.component';
   imports: [
     CommonModule,
     MatProgressSpinnerModule,
-    HomeToolbarComponent,
+    RootAppBarComponent,
     SectionComponent,
     CategoryListComponent,
   ],

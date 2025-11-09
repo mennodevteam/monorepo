@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HomeToolbarComponent } from './toolbar/toolbar.component';
+import { RootAppBarComponent } from '../../shared/components/root-app-bar/root-app-bar.component';
 import { SectionComponent } from '../../shared/components/section/section.component';
 import { CategoryListComponent } from '../../shared/components/category-list/category-list.component';
 import { Menu, OrderType, ProductCategory, Status } from '@menno/types';
@@ -97,7 +97,7 @@ const SAMPLE_CATEGORIES: ProductCategory[] = [
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, HomeToolbarComponent, SectionComponent, CategoryListComponent],
+  imports: [CommonModule, RootAppBarComponent, SectionComponent, CategoryListComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

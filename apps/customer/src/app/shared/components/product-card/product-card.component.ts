@@ -7,10 +7,19 @@ import { ImageLoaderDirective } from '../../directives/image-loader.directive';
 import { MatRippleModule } from '@angular/material/core';
 import { saxStopCircleBold } from '@ng-icons/iconsax/bold';
 import { NgIcon, provideIcons } from '@ng-icons/core';
+import { QuantitySelectorComponent } from '../quantity-selector/quantity-selector.component';
 
 @Component({
   selector: 'app-product-card',
-  imports: [MatCardModule, MatListModule, DecimalPipe, ImageLoaderDirective, MatRippleModule, NgIcon],
+  imports: [
+    MatCardModule,
+    MatListModule,
+    DecimalPipe,
+    ImageLoaderDirective,
+    MatRippleModule,
+    NgIcon,
+    QuantitySelectorComponent,
+  ],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
   providers: [

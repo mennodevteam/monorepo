@@ -3,13 +3,13 @@ import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { HomeToolbarComponent } from '../home/toolbar/toolbar.component';
+import { RootAppBarComponent } from '../../shared/components/root-app-bar/root-app-bar.component';
 import { MenuService } from '../../core/services/menu.service';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 
 @Component({
   selector: 'app-category',
-  imports: [HomeToolbarComponent, MatProgressSpinner, ProductCardComponent],
+  imports: [RootAppBarComponent, MatProgressSpinner, ProductCardComponent],
   templateUrl: './category.component.html',
   styleUrl: './category.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

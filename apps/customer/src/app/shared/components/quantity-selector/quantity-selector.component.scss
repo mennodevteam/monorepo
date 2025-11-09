@@ -1,0 +1,11 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.quantity-selector__value {
+  min-width: 0.6rem;
+  text-align: center;
+  font: var(--mat-sys-title-medium);
+}

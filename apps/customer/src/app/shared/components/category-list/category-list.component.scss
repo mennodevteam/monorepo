@@ -4,7 +4,6 @@
 
 .category-card {
   height: 100%;
-  background: var(--mat-sys-surface-container);
 
   mat-card-content {
     display: flex;
@@ -21,13 +20,11 @@
 
     .category-card__title {
       margin: 0;
-      font-size: 16px;
-      font-weight: 600;
+      font: var(--mat-sys-title-medium);
     }
 
     .category-card__description {
-      font-size: 12px;
-      font-weight: 400;
+      font: var(--mat-sys-body-small);
       margin: 0;
       color: var(--mat-sys-on-surface-variant);
     }
@@ -60,8 +57,7 @@
     }
 
     .category-card__title {
-      font-size: 13px;
-      font-weight: 400;
+      font: var(--mat-sys-title-small);
     }
 
     .category-card__image {

@@ -65,6 +65,7 @@
 .product-card__variant-text {
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .product-card__price-title {
@@ -72,6 +73,7 @@
 }
 
 .product-card__price {
+  flex: 1;
   .product-card__price-old {
     text-decoration: line-through;
     color: var(--mat-sys-error);
