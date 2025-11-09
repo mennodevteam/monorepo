@@ -51,19 +51,5 @@ export class CategoryComponent {
     () => !this.isLoading() && !this.isError() && this.category() == null,
   );
 
-  readonly currencyLabel = computed(() => {
-    const currency = this.menuService.data()?.currency;
-    if (!currency) {
-      return 'تومان';
-    }
-    const normalized = currency.toLowerCase();
-    if (normalized === 'irr' || normalized === 'rial' || normalized === 'ریال') {
-      return 'ریال';
-    }
-    if (normalized === 'irt' || normalized === 'تومان') {
-      return 'تومان';
-    }
-    return currency;
-  });
 }
 

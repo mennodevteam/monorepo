@@ -11,9 +11,7 @@
       مشکلی در دریافت اطلاعات این دسته‌بندی رخ داد. لطفاً دوباره تلاش کنید.
     </div>
   } @else if (isNotFound()) {
-    <div class="state state--empty">
-      دسته‌بندی موردنظر پیدا نشد.
-    </div>
+    <div class="state state--empty">دسته‌بندی موردنظر پیدا نشد.</div>
   } @else {
     <section class="category-header">
       <h1 class="category-header__title">{{ category()?.title }}</h1>
@@ -25,18 +23,11 @@
     @if (hasProducts()) {
       <div class="product-grid">
         @for (product of products(); track product.id) {
-          <app-product-card
-            [product]="product"
-            [showVariantHint]="true"
-            [currencyLabel]="currencyLabel()"
-          />
+          <app-product-card [product]="product" [largeImage]="$index % 2 === 0" />
         }
       </div>
     } @else {
-      <div class="state state--empty">
-        هنوز محصولی برای این دسته‌بندی ثبت نشده است.
-      </div>
+      <div class="state state--empty">هنوز محصولی برای این دسته‌بندی ثبت نشده است.</div>
     }
   }
 </div>
-

@@ -19,6 +19,12 @@ export class MenuService {
     queryKey: MENU_QUERY_KEY(this.username),
     queryFn: () => this.fetchMenu(this.username),
     refetchOnWindowFocus: false,
+    select: (data: Menu) => {
+      if (data) {
+        Menu.setRefsAndSort(data, undefined, false, false);
+      }
+      return data;
+    },
   }));
 
   prefetchMenu(username: string) {
@@ -38,5 +44,3 @@ export class MenuService {
     );
   }
 }
-
-

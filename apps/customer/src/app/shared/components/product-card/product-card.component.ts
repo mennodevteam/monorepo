@@ -1,110 +1,68 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { MatCard, MatCardContent } from '@angular/material/card';
+import { Component, computed, input } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
 import { DecimalPipe } from '@angular/common';
-import { Product, ProductVariant, Status } from '@menno/types';
+import { Product, ProductVariant } from '@menno/types';
 import { ImageLoaderDirective } from '../../directives/image-loader.directive';
-
-type PriceDetails = {
-  current: number;
-  original: number | null;
-  discountPercentage: number | null;
-  variant: ProductVariant | null;
-};
+import { MatRippleModule } from '@angular/material/core';
+import { saxStopCircleBold } from '@ng-icons/iconsax/bold';
+import { NgIcon, provideIcons } from '@ng-icons/core';
 
 @Component({
   selector: 'app-product-card',
-  imports: [
-    MatCard,
-    MatCardContent,
-    RouterLink,
-    DecimalPipe,
-    ImageLoaderDirective,
-  ],
+  imports: [MatCardModule, MatListModule, DecimalPipe, ImageLoaderDirective, MatRippleModule, NgIcon],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'app-product-card',
-  },
+  providers: [
+    provideIcons({
+      saxStopCircleBold,
+    }),
+  ],
 })
 export class ProductCardComponent {
-  private static readonly FALLBACK_CURRENCY_LABEL = 'تومان';
-
+  readonly stopCircleIcon = saxStopCircleBold;
   readonly product = input.required<Product>();
-  readonly routerLink = input<(string | number)[] | string | undefined>();
-  readonly queryParams = input<Record<string, unknown> | undefined>();
-  readonly currencyLabel = input(ProductCardComponent.FALLBACK_CURRENCY_LABEL);
   readonly showDescription = input(true);
-  readonly showVariantHint = input(true);
+  readonly showVariants = input(true);
+  readonly showPrice = input(true);
+  readonly largeImage = input(true);
 
-  private readonly details = computed<PriceDetails>(() => {
-    const product = this.product();
-    const variants = product.variants ?? [];
-
-    if (variants.length === 0) {
-      const hasDiscount = Product.hasDiscount(product);
-      return {
-        current: Product.totalPrice(product),
-        original: hasDiscount ? Product.realPrice(product) : null,
-        discountPercentage: hasDiscount ? Product.percentageDiscount(product) : null,
-        variant: null,
-      };
-    }
-
-    let bestVariant = variants[0]!;
-    let lowestTotal = Product.totalPrice(product, bestVariant);
-
-    for (const variant of variants.slice(1)) {
-      const total = Product.totalPrice(product, variant);
-      if (total < lowestTotal) {
-        bestVariant = variant;
-        lowestTotal = total;
-      }
-    }
-
-    const hasDiscount = Product.hasDiscount(product, bestVariant);
-
-    return {
-      current: lowestTotal,
-      original: hasDiscount ? Product.realPrice(product, bestVariant) : null,
-      discountPercentage: hasDiscount ? Product.percentageDiscount(product, bestVariant) : null,
-      variant: bestVariant,
-    };
-  });
+  readonly variants = computed(() => this.product().variants ?? []);
+  readonly hasVariants = computed(() => this.variants().length > 0);
+  readonly firstVariant = computed(() => this.variants()[0] ?? null);
+  readonly firstVariantTitle = computed(() => this.firstVariant()?.title ?? null);
 
   readonly imageFile = computed(() => Product.mainImageFile(this.product()) ?? undefined);
   readonly imageSource = computed(() => {
     const product = this.product();
-    if (product.images && product.images.length > 0) {
-      return product.images[0];
-    }
-    return undefined;
+    const images = product.images ?? [];
+    return images.length > 0 ? images[0] : undefined;
   });
 
-  readonly price = computed(() => this.details().current);
-  readonly originalPrice = computed(() => this.details().original);
-  readonly discountPercentage = computed(() => this.details().discountPercentage);
-  readonly variantLabel = computed(() => this.details().variant?.title ?? null);
-
-  readonly isUnavailable = computed(() => {
-    const product = this.product();
-    const variants = product.variants ?? [];
+  readonly totalPrice = computed(() => Product.totalPrice(this.product()));
+  readonly hasDiscount = computed(() => Product.hasDiscount(this.product()));
+  readonly realPrice = computed(() => (this.hasDiscount() ? Product.realPrice(this.product()) : null));
+  readonly fixedDiscount = computed(() =>
+    this.hasDiscount() ? Product.fixedDiscount(this.product()) : null,
+  );
+  readonly percentageDiscount = computed(() =>
+    this.hasDiscount() ? Product.percentageDiscount(this.product()) : null,
+  );
+  readonly isFinished = computed(() => {
+    const variants = this.variants();
     if (!variants.length) {
-      return Product.isFinished(product);
+      return Product.isFinished(this.product());
     }
-    return variants.every((variant) => Product.isFinished(product, variant));
+    return variants.every((variant) => Product.isFinished(this.product(), variant));
   });
 
-  readonly statusLabel = computed(() => {
-    const product = this.product();
-    if (product.status === Status.Inactive || product.status === Status.Blocked) {
-      return 'غیرفعال';
-    }
-    if (this.isUnavailable()) {
-      return 'ناموجود';
-    }
-    return null;
-  });
+  readonly variantTotalPrice = (variant: ProductVariant) => Product.totalPrice(this.product(), variant);
+  readonly variantHasDiscount = (variant: ProductVariant) => Product.hasDiscount(this.product(), variant);
+  readonly variantRealPrice = (variant: ProductVariant) =>
+    this.variantHasDiscount(variant) ? Product.realPrice(this.product(), variant) : null;
+  readonly variantFixedDiscount = (variant: ProductVariant) =>
+    this.variantHasDiscount(variant) ? Product.fixedDiscount(this.product(), variant) : null;
+  readonly variantPercentageDiscount = (variant: ProductVariant) =>
+    this.variantHasDiscount(variant) ? Product.percentageDiscount(this.product(), variant) : null;
+  readonly variantIsFinished = (variant: ProductVariant) => Product.isFinished(this.product(), variant);
 }
-
