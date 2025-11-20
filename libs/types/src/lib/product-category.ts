@@ -4,6 +4,7 @@ import { Product } from './product';
 import { OrderType } from './order-type.enum';
 import { MenuCost } from './menu-cost';
 import { MenuViewType } from './app-config';
+import { Image } from './image';
 
 export class ProductCategory {
   id: number;
@@ -23,6 +24,8 @@ export class ProductCategory {
   createdAt?: Date;
   deletedAt?: Date;
   menuViewType?: MenuViewType;
+  slug?: string;
+  imageFile?: Image | null;
   
   static sort(cats: ProductCategory[]) {
     cats.sort((a, b) => {

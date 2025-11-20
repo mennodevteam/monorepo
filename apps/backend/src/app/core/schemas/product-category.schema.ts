@@ -34,6 +34,10 @@ export const ProductCategorySchema = new EntitySchema<ProductCategory>({
       type: String,
       nullable: true,
     },
+    slug: {
+      type: String,
+      nullable: true,
+    },
     position: {
       type: Number,
       nullable: true,
@@ -60,6 +64,10 @@ export const ProductCategorySchema = new EntitySchema<ProductCategory>({
     menuViewType: {
       type: 'enum',
       enum: MenuViewType,
+      nullable: true,
+    },
+    imageFile: {
+      type: 'jsonb',
       nullable: true,
     },
   },

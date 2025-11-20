@@ -16,6 +16,7 @@
     min-width: 0;
     height: 64px;
     border-radius: 0;
+    color: var(--mat-sys-outline);
 
     .nav-button_content-wrapper {
       display: flex;
@@ -32,11 +33,6 @@
 
     &.active {
       color: var(--mat-toolbar-container-text-color, inherit);
-      background-color: rgba(0, 0, 0, 0.04);
-
-      mat-icon {
-        color: primary;
-      }
     }
   }
 }

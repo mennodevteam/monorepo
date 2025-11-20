@@ -1,0 +1,115 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <mat-toolbar class="content-toolbar" fxLayout="row" fxLayoutGap="8px">
+    <button mat-icon-button goBack type="button">
+      <i class="fa-regular fa-arrow-right"></i>
+    </button>
+    <h2 fxFlex>
+      @if (category()) {
+        {{ 'categoryDialog.editTitle' | translate: { value: category()?.title } }}
+      } @else {
+        {{ 'categoryDialog.newTitle' | translate }}
+      }
+    </h2>
+    <button mat-button (click)="location.back()" type="button">
+      {{ 'app.cancel' | translate }}
+    </button>
+    <button mat-flat-button [disabled]="form.invalid || !form.dirty" type="submit">
+      {{ 'app.save' | translate }}
+    </button>
+  </mat-toolbar>
+
+  <main p-md w-md fxLayout="column" fxLayout.gt-md="row" fxLayoutGap="24px">
+    <div fxFlex fxLayout="column" fxLayoutGap="24px">
+      <mat-card appearance="outlined">
+        <mat-card-content fxLayout="column" fxLayoutGap="24px">
+          <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+            <mat-label>{{ 'app.title' | translate }}</mat-label>
+            <input matInput formControlName="title" required />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+            <mat-label>{{ 'categoryDialog.icon' | translate }}</mat-label>
+            <input
+              matInput
+              placeholder="{{ 'categoryDialog.iconPlaceholder' | translate }}"
+              formControlName="faIcon"
+              ltr
+              eng
+            />
+            <i matIconSuffix class="fa-regular mat-icon fa-{{ form.controls.faIcon.value }}"></i>
+            <mat-hint>
+              {{ 'categoryDialog.iconHint' | translate }}
+              <a href="https://fontawesome.com/" target="_blank">fontawesome</a>
+            </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+            <mat-label>{{ 'app.description' | translate }}</mat-label>
+            <textarea matInput rows="3" formControlName="description"></textarea>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+            <mat-label>{{ 'categoryDialog.menuViewType' | translate }}</mat-label>
+            <mat-select formControlName="menuViewType">
+              <mat-option [value]="null">{{ 'app.default' | translate }}</mat-option>
+              <mat-option [value]="MenuViewType.Grid">{{ 'menuViewType.Grid' | translate }}</mat-option>
+              <mat-option [value]="MenuViewType.Card">{{ 'menuViewType.Card' | translate }}</mat-option>
+              <mat-option [value]="MenuViewType.Compact">{{ 'menuViewType.Compact' | translate }}</mat-option>
+              <mat-option [value]="MenuViewType.Carousel">{{ 'menuViewType.Carousel' | translate }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card appearance="outlined">
+        <mat-card-content fxLayout="column" fxLayoutGap="16px">
+          <div>
+            <h3 class="mat-h3">{{ 'categoryDialog.slugCardTitle' | translate }}</h3>
+            <p class="mat-body-2 slug-description">
+              {{ 'categoryDialog.slugDescription' | translate }}
+            </p>
+          </div>
+          <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+            <mat-label>{{ 'categoryDialog.slug' | translate }}</mat-label>
+            <input matInput formControlName="slug" placeholder="my-category" ltr eng />
+            <mat-hint>{{ 'categoryDialog.slugHint' | translate }}</mat-hint>
+            <mat-error *ngIf="form.controls.slug.invalid && form.controls.slug.touched">
+              {{ 'categoryDialog.slugInvalid' | translate }}
+            </mat-error>
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div fxFlex="35" fxLayout="column">
+      <mat-card appearance="outlined" class="image-card">
+        <mat-card-header>
+          <mat-card-title>{{ 'categoryDialog.imageTitle' | translate }}</mat-card-title>
+          <mat-card-subtitle>{{ 'categoryDialog.imageSubtitle' | translate }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="image-preview" *ngIf="form.controls.imageFile.value; else emptyImage">
+            <button mat-mini-fab class="remove-button" type="button" (click)="removeImage()">
+              <i class="fa-regular fa-trash-alt"></i>
+            </button>
+            @if (isBase64ImageFile(form.controls.imageFile.value)) {
+              <img [src]="form.controls.imageFile.value.base64" alt="category image" />
+            } @else {
+              <img imageLoader [imageFile]="form.controls.imageFile.value" imageSize="sm" alt="category image" />
+            }
+          </div>
+          <ng-template #emptyImage>
+            <app-empty-state icon="image" [text]="'categoryDialog.noImage' | translate" />
+          </ng-template>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button type="button" (click)="addImage()">
+            <i class="fa-regular fa-circle-plus"></i>
+            {{ form.controls.imageFile.value ? ('categoryDialog.changeImage' | translate) : ('app.add' | translate) }}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </main>
+</form>
+

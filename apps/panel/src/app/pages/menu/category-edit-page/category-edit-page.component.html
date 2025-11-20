@@ -3,8 +3,13 @@
     <button mat-icon-button goBack>
       <i class="fa-regular fa-arrow-right fa-large"></i>
     </button>
-    <h2 flex *ngIf="!category">{{ 'categoryEdit.newTitle' | translate }}</h2>
-    <h2 flex *ngIf="category">{{ 'categoryEdit.editTitle' | translate: { value: category.title } }}</h2>
+    <h2 flex>
+      @if (!category) {
+        {{ 'categoryEdit.newTitle' | translate }}
+      } @else {
+        {{ 'categoryEdit.editTitle' | translate: { value: category.title } }}
+      }
+    </h2>
     <button mat-flat-button color="accent" (click)="save()" [disabled]="!form.dirty">
       {{ 'app.save' | translate }}
     </button>
@@ -26,9 +31,11 @@
             <label>{{ 'categoryEdit.icon' | translate }}</label>
             <mat-button-toggle-group formControlName="faIcon">
               <mat-button-toggle [value]="undefined"> - </mat-button-toggle>
-              <mat-button-toggle [value]="icon" *ngFor="let icon of icons">
-                <i class="fa-solid fa-{{ icon }} fa-large"></i>
-              </mat-button-toggle>
+              @for (icon of icons; track icon) {
+                <mat-button-toggle [value]="icon">
+                  <i class="fa-solid fa-{{ icon }} fa-large"></i>
+                </mat-button-toggle>
+              }
             </mat-button-toggle-group>
             <span spacer-2x></span>
 

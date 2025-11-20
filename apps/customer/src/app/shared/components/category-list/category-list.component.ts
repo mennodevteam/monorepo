@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
-import { MatCard, MatCardContent } from '@angular/material/card';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { RouterLink } from '@angular/router';
 import { ProductCategory, Status } from '@menno/types';
+import { ImageLoaderDirective } from '../../directives';
 
 type CategoryListView = 'list' | 'grid';
 
 @Component({
   selector: 'app-category-list',
   standalone: true,
-  imports: [MatCard, MatCardContent, RouterLink, NgOptimizedImage],
+  imports: [MatGridListModule, RouterLink, ImageLoaderDirective],
   templateUrl: './category-list.component.html',
   styleUrl: './category-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

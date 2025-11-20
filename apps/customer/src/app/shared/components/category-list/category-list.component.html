@@ -1,23 +1,19 @@
 @if (visibleCategories().length) {
-  <div class="category-list" [class.category-list--grid]="isGrid()">
+  <mat-grid-list cols="2" rowHeight="1:1">
     @for (category of visibleCategories(); track category.id) {
-      <mat-card class="category-card" appearance="outlined" [routerLink]="['/categories', category.id]">
-        <mat-card-content>
-          <div class="category-card__text">
-            <h3 class="category-card__title">{{ category.title }}</h3>
-            @if (!isGrid() && category.description) {
-              <p class="category-card__description">{{ category.description }}</p>
-            }
-          </div>
-          <img
-            class="category-card__image"
-            src="https://maplegifts.co.uk/cdn/shop/files/spice-kitchen-hanout2_700x700.webp?v=1726664913"
-            alt="{{ category.title }}"
-          />
-        </mat-card-content>
-      </mat-card>
+      <mat-grid-tile 
+        [routerLink]="['/categories', category.id]"
+        class="category-tile"
+        [imageFile]="category.imageFile ?? undefined"
+        [imageSize]="'md'"
+        imageLoader
+      >
+      <mat-grid-tile-footer class="category-tile-footer">
+        {{ category.title }}
+      </mat-grid-tile-footer>
+      </mat-grid-tile>
     }
-  </div>
+  </mat-grid-list>
 } @else {
   <p class="category-list__empty">دسته‌بندی فعالی وجود ندارد.</p>
 }

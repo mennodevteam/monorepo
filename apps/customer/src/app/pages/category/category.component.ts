@@ -3,23 +3,25 @@ import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { RootAppBarComponent } from '../../shared/components/root-app-bar/root-app-bar.component';
 import { MenuService } from '../../core/services/menu.service';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
+import { ShopService } from '../../core/services/shop.service';
+import { MenuViewType } from '@menno/types';
 
 @Component({
   selector: 'app-category',
-  imports: [RootAppBarComponent, MatProgressSpinner, ProductCardComponent],
+  imports: [RootAppBarComponent, MatProgressSpinner, ProductCardComponent, MatGridListModule],
   templateUrl: './category.component.html',
   styleUrl: './category.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryComponent {
+  MenuViewType = MenuViewType;
   private readonly menuService = inject(MenuService);
+  private readonly shopService = inject(ShopService);
   private readonly route = inject(ActivatedRoute);
-
-  readonly menuQuery = this.menuService.menuQuery;
-
   private readonly categoryIdParam = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('categoryId'))),
     { initialValue: this.route.snapshot.paramMap.get('categoryId') },
@@ -43,13 +45,17 @@ export class CategoryComponent {
     return menu.categories?.find((item) => item.id === id);
   });
 
-  readonly products = computed(() => this.category()?.products ?? []);
-  readonly hasProducts = computed(() => this.products().length > 0);
-  readonly isLoading = computed(() => this.menuQuery.isPending());
-  readonly isError = computed(() => this.menuQuery.isError());
-  readonly isNotFound = computed(
-    () => !this.isLoading() && !this.isError() && this.category() == null,
+  readonly categoryType = computed(
+    () =>
+      this.category()?.menuViewType ?? this.shopService.data()?.appConfig?.menuViewType ?? MenuViewType.Grid,
   );
 
-}
+  readonly isGrid = computed(() => this.categoryType() === MenuViewType.Grid);
+  readonly isCard = computed(
+    () => this.categoryType() === MenuViewType.Card || this.categoryType() === MenuViewType.CardLargeImage,
+  );
 
+  readonly products = computed(() => this.category()?.products ?? []);
+  readonly hasProducts = computed(() => this.products().length > 0);
+  readonly isLoading = computed(() => !this.menuService.data());
+}

@@ -2,71 +2,13 @@
   display: block;
 }
 
-.category-card {
-  height: 100%;
-
-  mat-card-content {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-
-    .category-card__text {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-
-    .category-card__title {
-      margin: 0;
-      font: var(--mat-sys-title-medium);
-    }
-
-    .category-card__description {
-      font: var(--mat-sys-body-small);
-      margin: 0;
-      color: var(--mat-sys-on-surface-variant);
-    }
-
-    .category-card__image {
-      height: 120px;
-      margin: -16px;
-      flex: none;
-      border-radius: 8px;
-    }
-  }
-}
-
-.category-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.category-list--grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-
-  .category-card {
-
-    mat-card-content {
-      height: 48px;
-      overflow: hidden;
-    }
-
-    .category-card__title {
-      font: var(--mat-sys-title-small);
-    }
-
-    .category-card__image {
-      flex: none;
-      height: 80px;
-      margin: -16px;
-      border-radius: var(--mat-sys-corner-medium);
-    }
-  }
+.category-tile-footer {
+  font-size: 13px;
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.2),
+    0 -1px 3px rgba(0, 0, 0, 0.2),
+    1px 0 3px rgba(0, 0, 0, 0.2),
+    -1px 0 3px rgba(0, 0, 0, 0.2);
 }
 
 .category-list__empty {

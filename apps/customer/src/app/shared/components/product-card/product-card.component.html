@@ -9,7 +9,7 @@
     />
 
     <div class="product-card__texts">
-      <h3 class="product-card__title">{{ product().title }}</h3>
+      <h3 class="product-card__title" [class.small]="compact()">{{ product().title }}</h3>
 
       @if (showDescription() && product().description) {
         <p class="product-card__description">{{ product().description }}</p>
@@ -17,7 +17,7 @@
     </div>
   </mat-card-content>
   @if (showPrice()) {
-    @if (hasVariants()) {
+    @if (hasVariants() && showVariants()) {
       @for (variant of variants(); track variant.id) {
         <mat-card-actions class="product-card__price-actions">
           <!-- <ng-icon class="product-card__variant-icon" [svg]="stopCircleIcon" /> -->
@@ -31,11 +31,13 @@
               {{ variantTotalPrice(variant) | number }}
             </span>
           </div>
-          <app-quantity-selector />
+          @if (showAddToCart()) {
+            <app-quantity-selector />
+          }
         </mat-card-actions>
       }
     } @else {
-      <mat-card-actions class="product-card__price-actions">
+      <mat-card-actions class="product-card__price-actions" [class.small]="compact()">
         <span class="product-card__price">
           @if (hasDiscount()) {
             <span class="product-card__price-old">{{ realPrice() | number }}</span>
@@ -43,7 +45,9 @@
           }
           {{ totalPrice() | number }}
         </span>
-        <app-quantity-selector />
+        @if (showAddToCart()) {
+          <app-quantity-selector />
+        }
       </mat-card-actions>
     }
   }

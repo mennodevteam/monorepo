@@ -2,14 +2,7 @@
   @if (isLoading()) {
     <div class="state state--loading">
       <mat-progress-spinner diameter="32" mode="indeterminate" />
-      <p>در حال دریافت اطلاعات دسته‌بندی...</p>
     </div>
-  } @else if (isError()) {
-    <div class="state state--error">
-      مشکلی در دریافت اطلاعات این دسته‌بندی رخ داد. لطفاً دوباره تلاش کنید.
-    </div>
-  } @else if (isNotFound()) {
-    <div class="state state--empty">دسته‌بندی موردنظر پیدا نشد.</div>
   } @else {
     <section class="category-header">
       <h1 class="category-header__title">{{ category()?.title }}</h1>
@@ -19,9 +12,17 @@
     </section>
 
     @if (hasProducts()) {
-      <div class="product-grid">
+      <div class="product-container" [class.grid]="isGrid()">
         @for (product of products(); track product.id) {
-          <app-product-card [product]="product" [largeImage]="$index % 2 === 0" />
+          <app-product-card
+            [product]="product"
+            [showAddToCart]="isCard()"
+            [showVariants]="isCard()"
+            [showVariants]="isCard()"
+            [showDescription]="isCard()"
+            [compact]="isGrid()"
+            [largeImage]="categoryType() === MenuViewType.CardLargeImage || isGrid()"
+          />
         }
       </div>
     } @else {

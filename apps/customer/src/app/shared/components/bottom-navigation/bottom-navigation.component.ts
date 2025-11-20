@@ -4,8 +4,20 @@ import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { saxHome2Bold, saxCategoryBold, saxBagBold, saxBoxBold, saxProfile2userBold } from '@ng-icons/iconsax/bold';
-import { saxHome2Outline, saxCategoryOutline, saxBagOutline, saxBoxOutline, saxProfile2userOutline } from '@ng-icons/iconsax/outline';
+import {
+  saxHome2Bold,
+  saxCategoryBold,
+  saxBagBold,
+  saxBoxBold,
+  saxProfile2userBold,
+} from '@ng-icons/iconsax/bold';
+import {
+  saxHome2Outline,
+  saxCategoryOutline,
+  saxBagOutline,
+  saxBoxOutline,
+  saxProfile2userOutline,
+} from '@ng-icons/iconsax/outline';
 
 @Component({
   selector: 'app-bottom-navigation',

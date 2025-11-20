@@ -35,6 +35,8 @@ export class ProductCardComponent {
   readonly showVariants = input(true);
   readonly showPrice = input(true);
   readonly largeImage = input(true);
+  readonly compact = input(false);
+  readonly showAddToCart = input(false);
 
   readonly variants = computed(() => this.product().variants ?? []);
   readonly hasVariants = computed(() => this.variants().length > 0);

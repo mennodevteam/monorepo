@@ -11,10 +11,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { ProductCategory } from '@menno/types';
-import { DialogService } from '../../core/services/dialog.service';
-import { TranslateService } from '@ngx-translate/core';
-import { MatDialog } from '@angular/material/dialog';
-import { CategoryFormDialogComponent } from '../category-form-dialog/category-form-dialog.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -44,7 +40,6 @@ import { ShopService } from '../../shop/shop.service';
 export class MenuListComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly matDialog = inject(MatDialog);
 
   menuService = inject(MenuService);
   shopService = inject(ShopService);
@@ -68,10 +63,8 @@ export class MenuListComponent {
   }
 
   editCategory(category?: ProductCategory) {
-    this.matDialog.open(CategoryFormDialogComponent, {
-      data: category,
-      width: '360px',
-      disableClose: true,
+    this.router.navigate(['/menu/categories/edit'], {
+      queryParams: category ? { id: category.id } : {},
     });
   }
 

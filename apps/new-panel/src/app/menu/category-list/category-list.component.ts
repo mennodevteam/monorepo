@@ -6,14 +6,13 @@ import { MenuService } from '../menu.service';
 import { DialogService } from '../../core/services/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuCost, ProductCategory, Status } from '@menno/types';
-import { MatDialog } from '@angular/material/dialog';
-import { CategoryFormDialogComponent } from '../category-form-dialog/category-form-dialog.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
 import { ShopService } from '../../shop/shop.service';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
 import { StatusChipComponent } from '../../shared/components/status-chip/status-chip.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 const COLS = ['index', 'title', 'costs', 'status', 'actions'];
 
@@ -34,19 +33,19 @@ const COLS = ['index', 'title', 'costs', 'status', 'actions'];
   styleUrl: './category-list.component.scss',
 })
 export class CategoryListComponent {
-  private readonly matDialog = inject(MatDialog);
   private readonly dialog = inject(DialogService);
   private readonly t = inject(TranslateService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   readonly shop = inject(ShopService);
   readonly menuService = inject(MenuService);
   readonly displayedColumns = COLS;
   Status = Status;
 
   editCategory(category?: ProductCategory) {
-    this.matDialog.open(CategoryFormDialogComponent, {
-      data: category,
-      width: '360px',
-      disableClose: true,
+    this.router.navigate(['./edit'], {
+      relativeTo: this.route,
+      queryParams: category ? { id: category.id } : {},
     });
   }
 
