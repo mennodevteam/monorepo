@@ -1,0 +1,60 @@
+@if (product(); as product) {
+  <div class="product-carousel">
+    @for (image of images(); track image) {
+      @if (isImage(image)) {
+        <img
+          class="product-carousel__image"
+          imageLoader
+          [imageFile]="$any(image)"
+          imageSize="md"
+          [attr.alt]="product.title"
+        />
+      } @else {
+        <img
+          class="product-carousel__image"
+          imageLoader
+          [imageLoader]="$any(image)"
+          [attr.alt]="product.title"
+        />
+      }
+    }
+  </div>
+
+  <div class="product-content">
+    @if (product.description) {
+      <p class="product-description">{{ product.description }}</p>
+    }
+
+    <div class="product-variants">
+      @if (hasVariants()) {
+        @for (variant of variants(); track variant.id) {
+          <div class="variant-item">
+            <div class="variant-info">
+              <span class="variant-title">{{ variant.title }}</span>
+              <div class="variant-price-container">
+                @if (variantHasDiscount(variant)) {
+                  <span class="price-old">{{ variantRealPrice(variant) | number }} تومان</span>
+                }
+                <span class="price-current">{{ variantTotalPrice(variant) | number }} تومان</span>
+              </div>
+            </div>
+            <app-quantity-selector />
+          </div>
+        }
+      } @else {
+        <div class="variant-item">
+          <div class="variant-info">
+            <span class="variant-title">قیمت</span>
+            <div class="variant-price-container">
+              @if (hasDiscount()) {
+                <span class="price-old">{{ realPrice() | number }} تومان</span>
+              }
+              <span class="price-current">{{ totalPrice() | number }} تومان</span>
+            </div>
+          </div>
+          <app-quantity-selector />
+        </div>
+      }
+    </div>
+  </div>
+}

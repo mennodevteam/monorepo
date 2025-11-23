@@ -59,14 +59,20 @@ export class ShellComponent implements OnInit {
     }
 
     let rootPage = false;
+    let hideBottomNav: boolean | undefined = undefined;
 
     while (currentRoute) {
       if (!rootPage && currentRoute.snapshot.data['isRootPage'] === true) {
         rootPage = true;
       }
+
+      if (hideBottomNav === undefined && currentRoute.snapshot.data['hideBottomNav'] !== undefined) {
+        hideBottomNav = currentRoute.snapshot.data['hideBottomNav'];
+      }
+
       currentRoute = currentRoute.parent;
     }
 
-    this.hideBottomNav.set(!rootPage);
+    this.hideBottomNav.set(hideBottomNav || false);
   }
 }

@@ -40,29 +40,10 @@ export const appRoutes: Route[] = [
         loadComponent: () => import('./pages/profile/profile.component').then((m) => m.ProfileComponent),
         data: { isRootPage: true },
       },
+      {
+        path: 'categories/:categoryId/:id',
+        loadComponent: () => import('./pages/product/product.component').then((m) => m.ProductComponent),
+      },
     ],
   },
-  // Future routes without shell (no bottom navigation)
-  // Example structure for pages like auth, pdp, etc:
-  // {
-  //   path: 'auth',
-  //   children: [
-  //     {
-  //       path: 'login',
-  //       loadComponent: () => import('./pages/auth/login/login.component').then(m => m.LoginComponent)
-  //     },
-  //     {
-  //       path: 'register',
-  //       loadComponent: () => import('./pages/auth/register/register.component').then(m => m.RegisterComponent)
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: 'product/:id',
-  //   loadComponent: () => import('./pages/pdp/pdp.component').then(m => m.PdpComponent)
-  // },
-  // {
-  //   path: 'search',
-  //   loadComponent: () => import('./pages/search/search.component').then(m => m.SearchComponent)
-  // },
 ];

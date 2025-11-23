@@ -1,4 +1,5 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, inject } from '@angular/core';
+import { Router, RouterLinkWithHref } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { DecimalPipe } from '@angular/common';
@@ -19,6 +20,7 @@ import { QuantitySelectorComponent } from '../quantity-selector/quantity-selecto
     MatRippleModule,
     NgIcon,
     QuantitySelectorComponent,
+    RouterLinkWithHref,
   ],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
@@ -64,4 +66,10 @@ export class ProductCardComponent {
   readonly variantPercentageDiscount = (variant: ProductVariant) =>
     this.variantHasDiscount(variant) ? Product.percentageDiscount(this.product(), variant) : null;
   readonly variantIsFinished = (variant: ProductVariant) => Product.isFinished(this.product(), variant);
+
+  private readonly router = inject(Router);
+
+  openProduct() {
+    this.router.navigate(['/product', this.product().id]);
+  }
 }
