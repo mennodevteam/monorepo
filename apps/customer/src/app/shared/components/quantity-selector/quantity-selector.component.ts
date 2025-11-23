@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, effect, input, output, signal, comp
 import { MatButtonModule } from '@angular/material/button';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { saxAddSquareOutline, saxMinusSquareOutline } from '@ng-icons/iconsax/outline';
+import { saxAddSquareBold } from '@ng-icons/iconsax/bold';
 
 @Component({
   selector: 'app-quantity-selector',
@@ -16,6 +17,7 @@ import { saxAddSquareOutline, saxMinusSquareOutline } from '@ng-icons/iconsax/ou
     provideIcons({
       saxAddSquareOutline,
       saxMinusSquareOutline,
+      saxAddSquareBold,
     }),
   ],
 })
@@ -30,6 +32,7 @@ export class QuantitySelectorComponent {
 
   readonly incrementIcon = saxAddSquareOutline;
   readonly decrementIcon = saxMinusSquareOutline;
+  readonly addIcon = saxAddSquareBold;
 
   private readonly current = signal(1);
 
