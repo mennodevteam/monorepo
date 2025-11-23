@@ -5,10 +5,10 @@
       <p>Loading...</p>
     </div>
   }
-  <main class="shell-content" [class.no-bottom-nav]="!showBottomNav()">
+  <main class="shell-content" [class.no-bottom-nav]="hideBottomNav()">
     <router-outlet></router-outlet>
   </main>
-  @if (showBottomNav()) {
+  @if (!hideBottomNav()) {
     <app-bottom-navigation></app-bottom-navigation>
   }
 </div>

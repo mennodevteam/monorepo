@@ -25,7 +25,7 @@ export class ShellComponent implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
 
   loading = signal(false);
-  showBottomNav = signal(true);
+  hideBottomNav = signal(false);
 
   ngOnInit(): void {
     // Handle loading state
@@ -67,6 +67,6 @@ export class ShellComponent implements OnInit {
       currentRoute = currentRoute.parent;
     }
 
-    this.showBottomNav.set(rootPage);
+    this.hideBottomNav.set(!rootPage);
   }
 }
