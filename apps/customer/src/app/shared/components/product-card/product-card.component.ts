@@ -31,24 +31,12 @@ import { QuantitySelectorComponent } from '../quantity-selector/quantity-selecto
 export class ProductCardComponent {
   readonly stopCircleIcon = saxStopCircleBold;
   readonly product = input.required<Product>();
-  readonly showDescription = input(true);
-  readonly showVariants = input(true);
-  readonly showPrice = input(true);
   readonly largeImage = input(true);
-  readonly compact = input(false);
-  readonly showAddToCart = input(false);
 
   readonly variants = computed(() => this.product().variants ?? []);
   readonly hasVariants = computed(() => this.variants().length > 0);
-  readonly firstVariant = computed(() => this.variants()[0] ?? null);
-  readonly firstVariantTitle = computed(() => this.firstVariant()?.title ?? null);
 
   readonly imageFile = computed(() => Product.mainImageFile(this.product()) ?? undefined);
-  readonly imageSource = computed(() => {
-    const product = this.product();
-    const images = product.images ?? [];
-    return images.length > 0 ? images[0] : undefined;
-  });
 
   readonly totalPrice = computed(() => Product.totalPrice(this.product()));
   readonly hasDiscount = computed(() => Product.hasDiscount(this.product()));

@@ -1,54 +1,51 @@
 <mat-card class="product-card" appearance="outlined">
-  <mat-card-content class="product-card__content" [class.side-media]="!largeImage()">
+  <mat-card-content class="product-card__content" [class.large-image]="!largeImage()">
     <img
       class="product-card__image"
-      [imageLoader]="imageSource()"
+      imageLoader
       [imageFile]="imageFile()"
       [imageSize]="largeImage() ? 'md' : 'sm'"
       [attr.alt]="product().title"
     />
 
     <div class="product-card__texts">
-      <h3 class="product-card__title" [class.small]="compact()">{{ product().title }}</h3>
+      <h3 class="product-card__title">{{ product().title }}</h3>
 
-      @if (showDescription() && product().description) {
+      @if (product().description) {
         <p class="product-card__description">{{ product().description }}</p>
       }
     </div>
   </mat-card-content>
-  @if (showPrice()) {
-    @if (hasVariants() && showVariants()) {
-      @for (variant of variants(); track variant.id) {
-        <mat-card-actions class="product-card__price-actions">
-          <!-- <ng-icon class="product-card__variant-icon" [svg]="stopCircleIcon" /> -->
-          <div class="product-card__variant-text">
-            <span class="product-card__price-title">{{ variant.title }}</span>
-            <span class="product-card__price">
-              @if (variantHasDiscount(variant)) {
-                <span class="product-card__price-old">{{ variantRealPrice(variant) | number }}</span>
-                &nbsp;
-              }
-              {{ variantTotalPrice(variant) | number }}
-            </span>
-          </div>
-          @if (showAddToCart()) {
-            <app-quantity-selector />
-          }
-        </mat-card-actions>
-      }
-    } @else {
-      <mat-card-actions class="product-card__price-actions" [class.small]="compact()">
-        <span class="product-card__price">
-          @if (hasDiscount()) {
-            <span class="product-card__price-old">{{ realPrice() | number }}</span>
-            &nbsp;
-          }
-          {{ totalPrice() | number }}
-        </span>
-        @if (showAddToCart()) {
-          <app-quantity-selector />
-        }
+  @if (hasVariants()) {
+    @for (variant of variants(); track variant.id) {
+      <mat-card-actions class="product-card__price-actions">
+        <!-- <ng-icon class="product-card__variant-icon" [svg]="stopCircleIcon" /> -->
+        <div class="product-card__variant-text">
+          <span class="product-card__price-title">{{ variant.title }}</span>
+          <span class="product-card__price">
+            @if (variantHasDiscount(variant)) {
+              <span class="product-card__price-old">{{ variantRealPrice(variant) | number }} تومان</span>
+              &nbsp;
+            }
+            {{ variantTotalPrice(variant) | number }} تومان
+          </span>
+        </div>
+        <app-quantity-selector />
       </mat-card-actions>
     }
+  } @else {
+    <mat-card-actions class="product-card__price-actions">
+      <div class="product-card__variant-text">
+        <span class="product-card__price-title">قیمت</span>
+        <span class="product-card__price">
+          @if (hasDiscount()) {
+            <span class="product-card__price-old">{{ realPrice() | number }} تومان</span>
+            &nbsp;
+          }
+          {{ totalPrice() | number }} تومان
+        </span>
+      </div>
+      <app-quantity-selector />
+    </mat-card-actions>
   }
 </mat-card>
