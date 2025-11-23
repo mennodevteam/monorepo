@@ -1,32 +1,72 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
+import {
+  RouterModule,
+  Router,
+  NavigationStart,
+  NavigationEnd,
+  NavigationCancel,
+  NavigationError,
+  ActivatedRoute,
+} from '@angular/router';
+import { filter, map } from 'rxjs';
 import { BottomNavigationComponent } from '../shared/components/bottom-navigation/bottom-navigation.component';
-import { RootAppBarComponent } from '../shared/components/root-app-bar/root-app-bar.component';
+import { TopAppBarComponent } from '../shared/components/top-app-bar/top-app-bar.component';
 
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [CommonModule, RouterModule, BottomNavigationComponent, RootAppBarComponent],
+  imports: [CommonModule, RouterModule, BottomNavigationComponent, TopAppBarComponent],
   templateUrl: './shell.component.html',
   styleUrl: './shell.component.scss',
 })
 export class ShellComponent implements OnInit {
   private router = inject(Router);
-  loading = false;
+  private activatedRoute = inject(ActivatedRoute);
+
+  loading = signal(false);
+  showBottomNav = signal(true);
 
   ngOnInit(): void {
+    // Handle loading state
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
-        this.loading = true;
+        this.loading.set(true);
       } else if (
         event instanceof NavigationEnd ||
         event instanceof NavigationCancel ||
         event instanceof NavigationError
       ) {
-        this.loading = false;
+        this.loading.set(false);
       }
     });
+
+    // Check route data for hideBottomNav flag
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.checkRoute();
+      }
+    });
+
+    // Initial check
+    this.checkRoute();
+  }
+
+  private checkRoute(): void {
+    let currentRoute: ActivatedRoute | null = this.router.routerState.root;
+    while (currentRoute.firstChild) {
+      currentRoute = currentRoute.firstChild;
+    }
+
+    let rootPage = false;
+
+    while (currentRoute) {
+      if (!rootPage && currentRoute.snapshot.data['isRootPage'] === true) {
+        rootPage = true;
+      }
+      currentRoute = currentRoute.parent;
+    }
+
+    this.showBottomNav.set(rootPage);
   }
 }
-

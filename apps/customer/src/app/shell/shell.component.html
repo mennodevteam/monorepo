@@ -1,12 +1,14 @@
 <div class="shell-container">
-  <app-root-app-bar class="shell-app-bar"></app-root-app-bar>
-  @if (loading) {
+  <app-top-app-bar class="shell-app-bar"></app-top-app-bar>
+  @if (loading()) {
     <div class="loading-overlay">
       <p>Loading...</p>
     </div>
   }
-  <main class="shell-content">
+  <main class="shell-content" [class.no-bottom-nav]="!showBottomNav()">
     <router-outlet></router-outlet>
   </main>
-  <app-bottom-navigation></app-bottom-navigation>
+  @if (showBottomNav()) {
+    <app-bottom-navigation></app-bottom-navigation>
+  }
 </div>

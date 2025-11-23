@@ -1,0 +1,23 @@
+<mat-toolbar>
+  @if (!isRootPage()) {
+    <button mat-icon-button (click)="goBack()">
+      <ng-icon [svg]="backIcon"></ng-icon>
+    </button>
+  } @else {
+    @if (shopLogoUrl(); as logo) {
+      <img [imageLoader]="logo" [alt]="shopTitle()" />
+    }
+    <h1>
+      {{ shopTitle() }}
+    </h1>
+  }
+
+  <span class="spacer"></span>
+
+  <button mat-icon-button>
+    <ng-icon [svg]="searchIcon"></ng-icon>
+  </button>
+  <button mat-icon-button>
+    <ng-icon [svg]="infoIcon"></ng-icon>
+  </button>
+</mat-toolbar>

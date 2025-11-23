@@ -17,6 +17,10 @@
   flex: 1;
   overflow-y: auto;
   padding-bottom: 60px; // Space for bottom navigation
+
+  &.no-bottom-nav {
+    padding-bottom: 0;
+  }
 }
 
 .loading-overlay {

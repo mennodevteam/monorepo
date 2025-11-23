@@ -1,18 +1,18 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { RootAppBarComponent } from '../../shared/components/root-app-bar/root-app-bar.component';
 import { MenuService } from '../../core/services/menu.service';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { ShopService } from '../../core/services/shop.service';
+import { TitleService } from '../../core/services/title.service';
 import { MenuViewType } from '@menno/types';
 
 @Component({
   selector: 'app-category',
-  imports: [RootAppBarComponent, MatProgressSpinner, ProductCardComponent, MatGridListModule],
+  imports: [MatProgressSpinner, ProductCardComponent, MatGridListModule],
   templateUrl: './category.component.html',
   styleUrl: './category.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,6 +22,7 @@ export class CategoryComponent {
   private readonly menuService = inject(MenuService);
   private readonly shopService = inject(ShopService);
   private readonly route = inject(ActivatedRoute);
+  private readonly titleService = inject(TitleService);
   private readonly categoryIdParam = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('categoryId'))),
     { initialValue: this.route.snapshot.paramMap.get('categoryId') },
@@ -58,4 +59,10 @@ export class CategoryComponent {
   readonly products = computed(() => this.category()?.products ?? []);
   readonly hasProducts = computed(() => this.products().length > 0);
   readonly isLoading = computed(() => !this.menuService.data());
+
+  // Set title dynamically based on category name
+  private readonly updateTitle = effect(() => {
+    const category = this.category();
+    this.titleService.setTitle(category?.title);
+  });
 }

@@ -7,7 +7,21 @@
     <div class="state state--error">مشکلی در دریافت دسته‌بندی‌ها رخ داد. لطفاً دوباره تلاش کنید.</div>
   } @else {
     @if (hasCategories()) {
-      <app-category-list [categories]="categories()" view="list" />
+      <mat-grid-list cols="2" rowHeight="1:1">
+        @for (category of categories(); track category.id) {
+          <mat-grid-tile 
+            [routerLink]="['/categories', category.id]"
+            class="category-tile"
+            [imageFile]="category.imageFile ?? undefined"
+            [imageSize]="'md'"
+            imageLoader
+          >
+          <mat-grid-tile-footer class="category-tile-footer">
+            {{ category.title }}
+          </mat-grid-tile-footer>
+          </mat-grid-tile>
+        }
+      </mat-grid-list>
     } @else {
       <div class="state state--empty">هنوز دسته‌بندی‌ای در این منو ثبت نشده است.</div>
     }
