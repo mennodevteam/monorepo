@@ -1,5 +1,5 @@
 @if (product(); as product) {
-  <div class="product-carousel">
+  <div class="product-carousel" #carousel (scroll)="onCarouselScroll()">
     @for (image of images(); track image) {
       @if (isImage(image)) {
         <img
@@ -19,6 +19,18 @@
       }
     }
   </div>
+
+  @if (images().length > 1) {
+    <div class="carousel-dots">
+      @for (image of images(); track $index) {
+        <div
+          class="carousel-dot"
+          [class.active]="$index === activeImageIndex()"
+          (click)="scrollToIndex($index)"
+        ></div>
+      }
+    </div>
+  }
 
   <div class="product-content">
     @if (product.description) {
