@@ -10,6 +10,7 @@ import { Product } from '@menno/types';
 import Fuse from 'fuse.js';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { saxArrowRight1Outline, saxSearchNormal1Outline } from '@ng-icons/iconsax/outline';
+import { GoBackDirective } from '../../shared/directives';
 
 @Component({
   selector: 'app-search',
@@ -22,6 +23,7 @@ import { saxArrowRight1Outline, saxSearchNormal1Outline } from '@ng-icons/iconsa
     MatButtonModule,
     ProductCardComponent,
     NgIcon,
+    GoBackDirective,
   ],
   providers: [
     provideIcons({

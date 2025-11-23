@@ -1,28 +1,24 @@
-<div class="search-container" dir="rtl">
-  <mat-toolbar class="search-toolbar">
-    <button mat-icon-button (click)="goBack()">
-      <ng-icon name="saxArrowRight1Outline" size="24"></ng-icon>
-    </button>
-    <div class="search-input-wrapper">
-      <input
-        type="text"
-        [(ngModel)]="searchQuery"
-        placeholder="جستجو در محصولات..."
-        class="search-input"
-        autofocus
-      />
-    </div>
-  </mat-toolbar>
+<mat-toolbar class="search-toolbar">
+  <button mat-icon-button goBack>
+    <ng-icon name="saxArrowRight1Outline" size="24"></ng-icon>
+  </button>
+  <input
+    type="text"
+    [(ngModel)]="searchQuery"
+    placeholder="جستجو در محصولات..."
+    class="search-input"
+    autofocus
+  />
+</mat-toolbar>
 
-  <div class="products-list">
-    @for (product of filteredProducts(); track product.id) {
-      <app-product-card [product]="product"></app-product-card>
-    } @empty {
-      @if (searchQuery()) {
-        <div class="no-results">
-          <p>محصولی یافت نشد.</p>
-        </div>
-      }
+<div class="products-list">
+  @for (product of filteredProducts(); track product.id) {
+    <app-product-card [product]="product"></app-product-card>
+  } @empty {
+    @if (searchQuery()) {
+      <div class="no-results">
+        <p>محصولی یافت نشد.</p>
+      </div>
     }
-  </div>
+  }
 </div>

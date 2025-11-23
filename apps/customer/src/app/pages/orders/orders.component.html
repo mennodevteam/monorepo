@@ -1,15 +1,41 @@
 <div class="page-container">
   <h1>My Orders</h1>
-  <p>Your order history</p>
-  
-  <!-- Placeholder content for scrolling -->
-  @for (order of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]; track order) {
-    <div class="order-item">
-      <h3>Order #{{ 1000 + order }}</h3>
-      <p>Date: 2025-11-{{ order }}</p>
-      <p>Status: {{ order % 3 === 0 ? 'Delivered' : order % 3 === 1 ? 'Shipped' : 'Processing' }}</p>
-      <p>Total: ${{ order * 50 }}</p>
-    </div>
-  }
-</div>
+  <div class="orders-container">
+    @if (query.isPending()) {
+      <div class="loading-shade">
+        <mat-spinner diameter="50"></mat-spinner>
+      </div>
+    }
 
+    @if (query.data()) {
+      <div class="orders-list">
+        @for (order of query.data(); track order.id) {
+          <mat-card class="order-card" appearance="outlined" [routerLink]="['/orders', order.id]">
+            <mat-card-header>
+              <div mat-card-avatar class="order-avatar" [imageLoader]="order.shop?.logo"></div>
+              <mat-card-title>{{ order.shop?.title }}</mat-card-title>
+              <mat-card-subtitle>{{ order.createdAt | date: 'medium' }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="order-details">
+                <span class="price">{{ order.totalPrice | currency: 'IRR' : 'symbol-narrow' }}</span>
+                <span class="status">Order #{{ order.qNumber }}</span>
+              </div>
+              <div class="order-status">Status: {{ order.state }}</div>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+
+      <mat-paginator
+        [length]="total()"
+        [pageSize]="pageSize"
+        [pageIndex]="page()"
+        [hidePageSize]="true"
+        (page)="onPageChange($event)"
+        aria-label="Select page of orders"
+      >
+      </mat-paginator>
+    }
+  </div>
+</div>
