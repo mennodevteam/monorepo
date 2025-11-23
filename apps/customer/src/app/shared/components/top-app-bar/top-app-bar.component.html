@@ -7,10 +7,10 @@
     @if (shopLogoUrl(); as logo) {
       <img [imageLoader]="logo" [alt]="shopTitle()" />
     }
-    <h1>
-      {{ shopTitle() }}
-    </h1>
   }
+  <h1>
+    {{ displayTitle() }}
+  </h1>
 
   <span class="spacer"></span>
 

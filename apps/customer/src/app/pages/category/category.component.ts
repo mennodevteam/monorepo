@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, effect } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -23,6 +24,7 @@ export class CategoryComponent {
   private readonly shopService = inject(ShopService);
   private readonly route = inject(ActivatedRoute);
   private readonly titleService = inject(TitleService);
+
   private readonly categoryIdParam = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('categoryId'))),
     { initialValue: this.route.snapshot.paramMap.get('categoryId') },
@@ -60,9 +62,14 @@ export class CategoryComponent {
   readonly hasProducts = computed(() => this.products().length > 0);
   readonly isLoading = computed(() => !this.menuService.data());
 
-  // Set title dynamically based on category name
-  private readonly updateTitle = effect(() => {
-    const category = this.category();
-    this.titleService.setTitle(category?.title);
-  });
+  constructor() {
+    effect(() => {
+      const category = this.category();
+      this.titleService.setTitle(category?.title);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.titleService.clearTitle();
+  }
 }

@@ -1,6 +1,6 @@
 mat-toolbar {
   display: flex;
-  gap: 4px;
+  gap: 8px;
 
   img {
     height: 32px;
@@ -8,7 +8,7 @@ mat-toolbar {
   }
 
   h1 {
-    font: var(--mat-sys-headline-small);
+    font: var(--mat-sys-title-medium);
   }
 
   .spacer {
