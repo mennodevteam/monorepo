@@ -8,16 +8,15 @@ import {
   saxInfoCircleOutline,
   saxSearchNormal1Outline,
 } from '@ng-icons/iconsax/outline';
-import { filter, map } from 'rxjs';
+import { filter } from 'rxjs';
 import { ShopService } from '../../../core/services/shop.service';
-import { ImageLoaderDirective } from '../../directives';
-import { Location } from '@angular/common';
+import { GoBackDirective, ImageLoaderDirective } from '../../directives';
 import { TitleService } from '../../../core/services/title.service';
 
 @Component({
   selector: 'app-top-app-bar',
   standalone: true,
-  imports: [MatToolbarModule, MatButtonModule, NgIcon, ImageLoaderDirective],
+  imports: [MatToolbarModule, MatButtonModule, NgIcon, ImageLoaderDirective, GoBackDirective],
   templateUrl: './top-app-bar.component.html',
   styleUrl: './top-app-bar.component.scss',
   providers: [
@@ -34,8 +33,6 @@ export class TopAppBarComponent implements OnInit {
 
   private readonly shopService = inject(ShopService);
   private readonly router = inject(Router);
-  private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly location = inject(Location);
   private readonly titleService = inject(TitleService); // Injected TitleService
 
   readonly shopTitle = computed(() => this.shopService.data()?.title ?? '');
@@ -87,9 +84,5 @@ export class TopAppBarComponent implements OnInit {
 
     this.isRootPage.set(isRoot);
     this.routeTitle.set(title); // Set routeTitle
-  }
-
-  goBack(): void {
-    this.location.back();
   }
 }

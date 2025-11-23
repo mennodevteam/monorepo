@@ -66,12 +66,15 @@ export class ShopService {
     }
 
     try {
-      window.localStorage.setItem(
-        SHOP_STORAGE_KEY(username),
-        JSON.stringify(shop),
-      );
+      window.localStorage.setItem(SHOP_STORAGE_KEY(username), JSON.stringify(shop));
     } catch {
       // Ignore storage failures (quota, private mode, etc.)
     }
   }
+
+  isPaymentAvailable = computed(() => {
+    const data = this.data();
+    if (data) return Shop.isPaymentAvailable(data);
+    return false;
+  });
 }

@@ -3,10 +3,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { saxAddSquareOutline, saxMinusSquareOutline } from '@ng-icons/iconsax/outline';
 import { saxAddSquareBold } from '@ng-icons/iconsax/bold';
+import { StopPropagationDirective } from '../../directives';
 
 @Component({
   selector: 'app-quantity-selector',
-  imports: [NgIcon, MatButtonModule],
+  imports: [NgIcon, MatButtonModule, StopPropagationDirective],
   templateUrl: './quantity-selector.component.html',
   styleUrl: './quantity-selector.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

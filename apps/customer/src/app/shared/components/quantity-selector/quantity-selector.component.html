@@ -5,6 +5,7 @@
     aria-label="افزایش تعداد"
     [disabled]="!canIncrement()"
     (click)="increment()"
+    stopPropagation
   >
     <ng-icon [svg]="incrementIcon"></ng-icon>
   </button>
@@ -17,11 +18,12 @@
     aria-label="کاهش تعداد"
     [disabled]="!canDecrement()"
     (click)="decrement()"
+    stopPropagation
   >
     <ng-icon [svg]="decrementIcon"></ng-icon>
   </button>
 } @else {
-  <button mat-button [disabled]="!canIncrement()" (click)="increment()">
+  <button mat-button [disabled]="!canIncrement()" (click)="increment()" stopPropagation>
     <ng-icon class="quantity-selector__button-icon" [svg]="addIcon"></ng-icon>
     افزودن
   </button>

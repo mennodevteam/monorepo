@@ -1,6 +1,6 @@
 <mat-toolbar>
   @if (!isRootPage()) {
-    <button mat-icon-button (click)="goBack()">
+    <button mat-icon-button goBack>
       <ng-icon [svg]="backIcon"></ng-icon>
     </button>
   } @else {

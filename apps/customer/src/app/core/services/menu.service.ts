@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject } from '@angular/core';
 import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { firstValueFrom } from 'rxjs';
-import { Menu } from '@menno/types';
+import { Menu, Product } from '@menno/types';
 import { resolveShopUsername } from '../functions';
 
 const MENU_QUERY_KEY = (username: string) => ['menu', username] as const;
@@ -42,5 +42,9 @@ export class MenuService {
         headers: { skipJwt: 'true' },
       }),
     );
+  }
+
+  getProductById(id: string): Product | null {
+    return Menu.getProductById(this.data()!, id);
   }
 }
