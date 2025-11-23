@@ -20,8 +20,8 @@ import { saxAddSquareOutline, saxMinusSquareOutline } from '@ng-icons/iconsax/ou
   ],
 })
 export class QuantitySelectorComponent {
-  readonly quantity = input(1);
-  readonly min = input(1);
+  readonly quantity = input(0);
+  readonly min = input(0);
   readonly max = input<number | null>(null);
   readonly step = input(1);
   readonly disabled = input(false);
