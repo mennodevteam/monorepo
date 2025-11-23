@@ -3,7 +3,7 @@ import { Injectable, signal } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '@menno/types';
-import * as md5 from 'md5';
+import md5 from 'md5';
 import { Guid } from 'guid-typescript';
 
 @Injectable({

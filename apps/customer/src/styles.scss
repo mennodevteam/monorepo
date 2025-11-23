@@ -11,7 +11,7 @@ html {
     (
       color: theme.$primary-palette,
       typography: IRANSans,
-      density: 0
+      density: 0,
     )
   );
 }
@@ -30,21 +30,32 @@ body {
   padding: 0;
 }
 
-@include mat.theme-overrides((
-  primary: #000000,
-  on-primary: #ffffff,
-  background: #ffffff,
-  on-background: #000000,
-));
+input,
+textarea {
+  font-family: inherit;
+}
+
+@include mat.theme-overrides(
+  (
+    primary: #000000,
+    on-primary: #ffffff,
+    background: #ffffff,
+    on-background: #000000,
+  )
+);
 
 :root {
-  @include mat.toolbar-overrides((
-    container-background-color: var(--mat-sys-surface-container-lowest),
-    // container-text-color: var(--mat-sys-on-background),
-  ));
+  @include mat.toolbar-overrides(
+    (
+      container-background-color: var(--mat-sys-surface-container-lowest),
+      // container-text-color: var(--mat-sys-on-background),
+    )
+  );
 
-  @include mat.card-overrides((
-    // outlined-outline-color: transparent,
-    // outlined-container-color: var(--mat-sys-surface-container-lowest),
-  ));
+  @include mat.card-overrides(
+    (
+      // outlined-outline-color: transparent,
+       // outlined-container-color: var(--mat-sys-surface-container-lowest),
+    )
+  );
 }

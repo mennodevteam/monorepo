@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Order, OrderDto, StatAction } from '@menno/types';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TranslateService } from '@ngx-translate/core';
 import { PayService } from './pay.service';
 import { MenuStatService } from './menu-stat.service';
 
@@ -14,7 +13,6 @@ export class OrdersService {
     private http: HttpClient,
     private payService: PayService,
     private snack: MatSnackBar,
-    private translate: TranslateService,
     private menuStat: MenuStatService,
   ) {}
 
@@ -45,7 +43,7 @@ export class OrdersService {
     if (link === '0') {
       return this.save(dto);
     } else if (link) {
-      this.snack.open(this.translate.instant('cart.redirectingToPayment'), '', { duration: 4000 });
+      this.snack.open('در حال انتقال به بانک...', '', { duration: 4000 });
       this.menuStat.send(StatAction.GoToBank, { value: total });
       await this.payService.redirect(link);
     }

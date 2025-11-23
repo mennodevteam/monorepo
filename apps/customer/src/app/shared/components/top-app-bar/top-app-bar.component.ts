@@ -1,7 +1,7 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLinkWithHref } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   saxArrowRight1Outline,
@@ -16,7 +16,14 @@ import { TitleService } from '../../../core/services/title.service';
 @Component({
   selector: 'app-top-app-bar',
   standalone: true,
-  imports: [MatToolbarModule, MatButtonModule, NgIcon, ImageLoaderDirective, GoBackDirective],
+  imports: [
+    MatToolbarModule,
+    MatButtonModule,
+    NgIcon,
+    ImageLoaderDirective,
+    GoBackDirective,
+    RouterLinkWithHref,
+  ],
   templateUrl: './top-app-bar.component.html',
   styleUrl: './top-app-bar.component.scss',
   providers: [

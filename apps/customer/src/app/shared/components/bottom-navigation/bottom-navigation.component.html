@@ -8,7 +8,13 @@
       class="nav-button"
     >
       <div class="nav-button_content-wrapper">
-        <ng-icon [svg]="rla.isActive ? item.activeIcon : item.icon" size="24"></ng-icon>
+        <ng-icon
+          [svg]="rla.isActive ? item.activeIcon : item.icon"
+          size="24"
+          [matBadge]="cart.totalQuantity()"
+          matBadgeColor="warn"
+          [matBadgeHidden]="item.path !== '/cart' || cart.totalQuantity() === 0"
+        ></ng-icon>
         <span class="nav-label">{{ item.label }}</span>
       </div>
     </button>

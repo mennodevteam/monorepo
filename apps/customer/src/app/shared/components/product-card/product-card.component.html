@@ -30,7 +30,7 @@
             {{ variantTotalPrice(variant) | number }} تومان
           </span>
         </div>
-        <app-quantity-selector />
+        <app-quantity-selector [product]="product()" [variant]="variant" />
       </mat-card-actions>
     }
   } @else {
@@ -45,7 +45,7 @@
           {{ totalPrice() | number }} تومان
         </span>
       </div>
-      <app-quantity-selector />
+      <app-quantity-selector [product]="product()" />
     </mat-card-actions>
   }
 </mat-card>

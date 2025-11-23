@@ -26,7 +26,7 @@ export class AddressesService {
     this.http
       .get<Address[]>(`addresses`, {
         params: {
-          shopId: this.shopService.shop?.id || '',
+          shopId: this.shopService.data()?.id || '',
         },
       })
       .subscribe((addresses) => {
@@ -39,7 +39,7 @@ export class AddressesService {
     const address = await this.http
       .post<Address>(`addresses`, dto, {
         params: {
-          shopId: this.shopService.shop?.id || '',
+          shopId: this.shopService.data()?.id || '',
         },
       })
       .toPromise();

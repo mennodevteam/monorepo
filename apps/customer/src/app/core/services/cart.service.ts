@@ -9,7 +9,6 @@ import {
   Product,
   ProductItem,
   ProductVariant,
-  Shop,
   StatAction,
   Status,
 } from '@menno/types';
@@ -18,7 +17,6 @@ import { ShopService } from './shop.service';
 import { OrdersService } from './orders.service';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TranslateService } from '@ngx-translate/core';
 import { AddressesService } from './addresses.service';
 import { ClubService } from './club.service';
 import { PersianNumberService } from '@menno/utils';
@@ -66,6 +64,10 @@ export class CartService {
     return this.quantity().length;
   });
 
+  totalQuantity = computed(() => {
+    return this.quantity().reduce((acc, item) => acc + item.quantity(), 0);
+  });
+
   orderItems = computed(() => {
     return OrderDto.productItems(this.dto(), this.menuService.data()!);
   });
@@ -105,7 +107,6 @@ export class CartService {
     private campaign: CampaignService,
     private http: HttpClient,
     private snack: MatSnackBar,
-    private translate: TranslateService,
     private addressesService: AddressesService,
     private club: ClubService,
     private initialParamsService: InitialParamsService,
@@ -181,11 +182,10 @@ export class CartService {
     const item = signalItem ? this.getItem(signalItem) : undefined;
 
     if (!OrderDto.isStockValidForAddOne(product, variant, item)) {
-      this.snack.open(
-        this.translate.instant('cart.stockLimit', { value: variant?.stock || product.stock }),
-        '',
-        { panelClass: 'warning', duration: 2000 },
-      );
+      this.snack.open(`تعداد بیشتری در انبار موجود نیست`, '', {
+        panelClass: 'warning',
+        duration: 2000,
+      });
       return;
     }
 
@@ -196,7 +196,7 @@ export class CartService {
       );
       const productSum = productItemsQuantity.reduce((partialSum, a) => partialSum + a, 0);
       if (productSum >= 1) {
-        this.snack.open(this.translate.instant('cart.basketLimit', { value: product.maxBasket }), '', {
+        this.snack.open(`امکان انتخاب بیشتر از ${product.maxBasket} از این محصول وجود ندارد`, '', {
           panelClass: 'warning',
           duration: 2000,
         });
@@ -321,37 +321,27 @@ export class CartService {
 
     const address = this.address();
     if (!address) {
-      this.snack.open(this.translate.instant('cart.noAddressWarning'), '', { duration: 2000 });
+      this.snack.open('لطفا آدرس خود را انتخاب کنید', '', { duration: 2000 });
       return;
     } else if (address.deliveryArea == null || address.deliveryArea.status != Status.Active) {
-      this.snack.open(this.translate.instant('cart.addressOutOfRangeWarning'), '', { duration: 2000 });
+      this.snack.open('آدرس انخاب شده خارج از محدوده است', '', { duration: 2000 });
       return;
     } else if (address?.deliveryArea.minOrderPrice && address.deliveryArea.minOrderPrice > this.total()) {
-      this.snack.open(
-        this.translate.instant('cart.addressMinPriceWarning', {
-          value: PersianNumberService.withCommas(address.deliveryArea.minOrderPrice),
-        }),
-        '',
-        { duration: 4000 },
-      );
+      this.snack.open(`مبلغ سفارش حداقل ${address.deliveryArea.minOrderPrice} باشد`, '', {
+        duration: 4000,
+      });
       return;
     }
 
     const coupon = this.coupon();
     if (coupon) {
       if (coupon.minPrice && this.sum() < coupon.minPrice) {
-        this.snack.open(
-          this.translate.instant('cart.discountCouponMinPriceWarning', {
-            value: coupon.minPrice,
-          }),
-          '',
-          { duration: 4000 },
-        );
+        this.snack.open(`مبلغ سفارش حداقل ${coupon.minPrice} باشد`, '', { duration: 4000 });
         return;
       }
 
       if (coupon.orderTypes?.length && coupon.orderTypes.indexOf(OrderType.Delivery!) === -1) {
-        this.snack.open(this.translate.instant('cart.discountCouponOrderTypeWarning'), '', {
+        this.snack.open(`امکان استفاده از این کد تخفیف در سفارشات ارسالی وجود ندارد`, '', {
           duration: 4000,
         });
         return;
