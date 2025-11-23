@@ -84,20 +84,6 @@ export class ProductComponent implements OnDestroy {
   private readonly carousel = viewChild<ElementRef<HTMLElement>>('carousel');
   private intervalId: any;
 
-  constructor() {
-    effect(() => {
-      const product = this.product();
-      if (product) {
-        this.titleService.setTitle(product.title);
-      }
-    });
-
-    effect((onCleanup) => {
-      this.startAutoScroll();
-      onCleanup(() => this.stopAutoScroll());
-    });
-  }
-
   ngOnDestroy(): void {
     this.titleService.clearTitle();
     this.stopAutoScroll();
@@ -161,5 +147,38 @@ export class ProductComponent implements OnDestroy {
 
     // Restart timer after interaction
     this.startAutoScroll();
+  }
+
+  readonly isExpanded = signal(false);
+  readonly showReadMore = signal(false);
+  readonly descriptionEl = viewChild<ElementRef<HTMLParagraphElement>>('description');
+
+  constructor() {
+    effect(() => {
+      const product = this.product();
+      if (product) {
+        this.titleService.setTitle(product.title);
+      }
+    });
+
+    effect((onCleanup) => {
+      this.startAutoScroll();
+      onCleanup(() => this.stopAutoScroll());
+    });
+
+    effect(() => {
+      const el = this.descriptionEl()?.nativeElement;
+      const product = this.product();
+      if (el && product) {
+        // Wait for render
+        setTimeout(() => {
+          this.showReadMore.set(el.scrollHeight > el.clientHeight);
+        });
+      }
+    });
+  }
+
+  toggleDescription() {
+    this.isExpanded.update((v) => !v);
   }
 }

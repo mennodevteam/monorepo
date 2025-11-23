@@ -57,10 +57,41 @@
 }
 
 .product-description {
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--mat-sys-on-surface-variant);
+  font: var(--mat-sys-body-small);
+  color: var(--mat-sys-outline);
+  text-align: justify;
+  margin-bottom: 8px;
+  white-space: pre-line;
+  line-height: 1.8 !important;
+
+  max-height: calc(1.8em * 5);
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+
+  &.expanded {
+    max-height: 1000px;
+  }
+}
+
+.read-more-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  padding: 0;
   margin-bottom: 24px;
+  font: var(--mat-sys-label-medium);
+  color: var(--mat-sys-primary);
+  cursor: pointer;
+
+  svg {
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
 .variant-item {
@@ -82,8 +113,7 @@
 }
 
 .variant-title {
-  font-weight: 500;
-  font-size: 16px;
+  font: var(--mat-sys-title-medium);
   color: var(--mat-sys-on-surface);
 }
 
@@ -96,11 +126,11 @@
 .price-old {
   text-decoration: line-through;
   color: var(--mat-sys-on-surface-variant);
-  font-size: 12px;
+  font: var(--mat-sys-label-medium);
 }
 
 .price-current {
-  font-weight: bold;
-  font-size: 14px;
+  font: var(--mat-sys-body-medium);
+  font-weight: bold; /* Keep bold for emphasis if not inherent in body-medium */
   color: var(--mat-sys-on-surface);
 }
