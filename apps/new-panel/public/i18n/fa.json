@@ -245,7 +245,10 @@
     "removeImage": {
       "title": "حذف تصویر",
       "description": "آیا از حذف این تصویر اطمینان دارید؟"
-    }
+    },
+    "limitationSection": "محدودیت",
+    "limitationDescription": "مشخص کنید کاربر از این تعداد بیشتر نتواند به سبد خرید خود اضافه کند",
+    "maxBasket": "حداکثر تعداد در سبد خرید"
   },
   "dirtyFormDialog": {
     "title": "عدم ذخیره تغییرات",

@@ -112,6 +112,7 @@ export class ProductEditComponent implements FormComponent {
           category: [category, Validators.required],
           variants: this.variantsForm,
           imageFiles: this.imagesForm,
+          maxBasket: [product?.maxBasket],
         });
       }
     });
@@ -139,7 +140,7 @@ export class ProductEditComponent implements FormComponent {
             }),
           );
       });
-      this.variantsForm.markAsDirty();
+    this.variantsForm.markAsDirty();
   }
 
   addImage() {

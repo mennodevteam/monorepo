@@ -2,7 +2,7 @@
 <mat-toolbar class="content-toolbar" fxLayoutGap="8px">
   <h1 fxFlex>{{ 'nav.costs' | translate }}</h1>
   @if (!isEmpty) {
-    <button mat-flat-button>
+    <button mat-flat-button routerLink="edit">
       <i class="fa-regular fa-plus"></i>
       {{ 'menuCost.add' | translate }}
     </button>
