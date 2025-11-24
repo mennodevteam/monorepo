@@ -1,6 +1,7 @@
 mat-toolbar {
   display: flex;
   gap: 8px;
+  background-color: var(--mat-sys-background);
 
   img {
     height: 32px;

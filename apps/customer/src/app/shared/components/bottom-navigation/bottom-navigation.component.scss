@@ -5,10 +5,13 @@
   right: 0;
   display: flex;
   justify-content: space-around;
-  padding: 0;
   height: auto;
   min-height: 64px;
   z-index: 1000;
+
+  mat-toolbar-row {
+    padding: 0;
+  }
 
   .nav-button {
     flex: 1;

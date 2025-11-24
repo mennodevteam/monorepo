@@ -48,19 +48,3 @@ textarea {
     on-background: #000000,
   )
 );
-
-:root {
-  @include mat.toolbar-overrides(
-    (
-      container-background-color: var(--mat-sys-surface-container-lowest),
-      // container-text-color: var(--mat-sys-on-background),
-    )
-  );
-
-  @include mat.card-overrides(
-    (
-      // outlined-outline-color: transparent,
-       // outlined-container-color: var(--mat-sys-surface-container-lowest),
-    )
-  );
-}

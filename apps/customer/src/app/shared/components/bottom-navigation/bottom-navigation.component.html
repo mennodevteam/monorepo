@@ -1,22 +1,24 @@
-<mat-toolbar class="bottom-nav mat-elevation-z8">
-  @for (item of navItems; track item.path) {
-    <button
-      mat-button
-      [routerLink]="item.path"
-      routerLinkActive="active"
-      #rla="routerLinkActive"
-      class="nav-button"
-    >
-      <div class="nav-button_content-wrapper">
-        <ng-icon
-          [svg]="rla.isActive ? item.activeIcon : item.icon"
-          size="24"
-          [matBadge]="cart.length()"
-          matBadgeColor="warn"
-          [matBadgeHidden]="item.path !== '/cart' || cart.length() === 0"
-        ></ng-icon>
-        <span class="nav-label">{{ item.label }}</span>
-      </div>
-    </button>
-  }
+<mat-toolbar class="bottom-nav">
+  <mat-toolbar-row>
+    @for (item of navItems; track item.path) {
+      <button
+        mat-button
+        [routerLink]="item.path"
+        routerLinkActive="active"
+        #rla="routerLinkActive"
+        class="nav-button"
+      >
+        <div class="nav-button_content-wrapper">
+          <ng-icon
+            [svg]="rla.isActive ? item.activeIcon : item.icon"
+            size="24"
+            [matBadge]="cart.length()"
+            matBadgeColor="warn"
+            [matBadgeHidden]="item.path !== '/cart' || cart.length() === 0"
+          ></ng-icon>
+          <span class="nav-label">{{ item.label }}</span>
+        </div>
+      </button>
+    }
+  </mat-toolbar-row>
 </mat-toolbar>
