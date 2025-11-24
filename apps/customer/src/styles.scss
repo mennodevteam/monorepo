@@ -14,6 +14,7 @@ html {
       density: 0,
     )
   );
+  @include mat.system-classes();
 }
 
 // Global styles
