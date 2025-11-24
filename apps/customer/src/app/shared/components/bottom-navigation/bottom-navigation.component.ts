@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -20,11 +20,21 @@ import {
   saxProfile2userOutline,
 } from '@ng-icons/iconsax/outline';
 import { CartService } from '../../../core/services/cart.service';
+import { CommonModule } from '@angular/common';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-bottom-navigation',
   standalone: true,
-  imports: [RouterModule, MatToolbarModule, MatButtonModule, NgIcon, MatBadgeModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatToolbarModule,
+    MatButtonModule,
+    NgIcon,
+    MatBadgeModule,
+    MatDividerModule,
+  ],
   templateUrl: './bottom-navigation.component.html',
   styleUrl: './bottom-navigation.component.scss',
   providers: [
@@ -44,6 +54,7 @@ import { CartService } from '../../../core/services/cart.service';
 })
 export class BottomNavigationComponent {
   cart = inject(CartService);
+  showCheckout = input(false);
   navItems = [
     { path: '/home', label: 'خانه', icon: saxHome2Outline, activeIcon: saxHome2Bold },
     { path: '/categories', label: 'دسته‌بندی‌ها', icon: saxCategoryOutline, activeIcon: saxCategoryBold },

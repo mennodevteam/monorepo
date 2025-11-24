@@ -9,6 +9,6 @@
     <router-outlet></router-outlet>
   </main>
   @if (!hideBottomNav()) {
-    <app-bottom-navigation></app-bottom-navigation>
+    <app-bottom-navigation [showCheckout]="showCheckout()"></app-bottom-navigation>
   }
 </div>

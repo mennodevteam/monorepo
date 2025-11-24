@@ -5,12 +5,27 @@
   right: 0;
   display: flex;
   justify-content: space-around;
-  height: auto;
   min-height: 64px;
   z-index: 1000;
 
-  mat-toolbar-row {
+  #checkout-action {
+    height: 56px;
+    &__texts {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    &__button {
+      width: 180px;
+    }
+  }
+
+  #nav-row {
     padding: 0;
+    height: 64px;
+    background-color: inherit;
+    z-index: 100;
   }
 
   .nav-button {
@@ -37,5 +52,18 @@
     &.active {
       color: var(--mat-toolbar-container-text-color, inherit);
     }
+  }
+}
+
+.slide-animation {
+  animation: slide 0.2s ease-in-out;
+}
+
+@keyframes slide {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
   }
 }

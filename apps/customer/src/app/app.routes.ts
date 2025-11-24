@@ -23,7 +23,7 @@ export const appRoutes: Route[] = [
         path: 'categories',
         loadComponent: () =>
           import('./pages/categories/categories.component').then((m) => m.CategoriesComponent),
-        data: { isRootPage: true, title: 'Categories' },
+        data: { isRootPage: true },
       },
       {
         path: 'categories/:categoryId',
@@ -32,7 +32,7 @@ export const appRoutes: Route[] = [
       {
         path: 'cart',
         loadComponent: () => import('./pages/cart/cart.component').then((m) => m.CartComponent),
-        data: { isRootPage: true },
+        data: { isRootPage: true, showCheckout: true },
       },
       {
         path: 'orders',
