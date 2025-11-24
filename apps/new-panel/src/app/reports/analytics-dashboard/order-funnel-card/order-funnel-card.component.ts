@@ -10,7 +10,6 @@ import { lastValueFrom } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 
-
 @Component({
   selector: 'app-order-funnel-card',
   standalone: true,
@@ -36,7 +35,7 @@ export class OrderFunnelCardComponent {
             const value = context.parsed.x || context.parsed.y;
             const data = context.dataset.data as number[];
             const total = data[0] || 0;
-            const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0.0';
+            const percentage = total > 0 && value ? ((value / total) * 100).toFixed(1) : '0.0';
             return `${context.label}: ${value} (${percentage}%)`;
           },
         },

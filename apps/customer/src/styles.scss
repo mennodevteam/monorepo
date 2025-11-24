@@ -36,6 +36,10 @@ textarea {
   font-family: inherit;
 }
 
+.mat-mdc-list-item-meta {
+  align-self: center !important;
+}
+
 @include mat.theme-overrides(
   (
     primary: #000000,

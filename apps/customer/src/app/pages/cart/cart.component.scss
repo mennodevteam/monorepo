@@ -1,15 +1,16 @@
 .page-container {
   padding: 16px;
 
-  .cart-summary {
-    padding: 16px;
-    border-top: 1px solid var(--mat-sys-outline-variant);
-    margin-top: 24px;
+  mat-list-item {
+    &.three-line {
+      height: auto;
+      min-height: 72px;
+    }
 
-    button {
-      width: 100%;
-      padding: 8px;
-      margin-top: 16px;
+    s {
+      color: var(--mat-sys-error);
+      margin-inline-end: 8px;
+      opacity: 0.7;
     }
   }
 }
