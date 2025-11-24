@@ -4,117 +4,149 @@
     [disabled]="POS.saving"
     (valueChange)="POS.setType($event)"
     [hideSingleSelectionIndicator]="true"
-  >
+    >
     <mat-button-toggle [value]="OrderType.DineIn">{{ 'orderType.dineIn' | translate }}</mat-button-toggle>
     <mat-button-toggle [value]="OrderType.Takeaway">{{ 'orderType.takeaway' | translate }}</mat-button-toggle>
     <mat-button-toggle [value]="OrderType.Delivery">{{ 'orderType.delivery' | translate }}</mat-button-toggle>
   </mat-button-toggle-group>
-  <mat-nav-list *ngIf="POS.type === OrderType.DineIn && tables?.length">
-    <a mat-list-item (click)="selectTable()">
-      <span matListItemTitle>{{ 'pos.table' | translate }}</span>
-      <span matListItemLine>
-        {{ POS.details?.table }}
-      </span>
-      <i matListItemMeta class="fa-regular fa-angle-left"></i>
-    </a>
-  </mat-nav-list>
+  @if (POS.type === OrderType.DineIn && tables?.length) {
+    <mat-nav-list>
+      <a mat-list-item (click)="selectTable()">
+        <span matListItemTitle>{{ 'pos.table' | translate }}</span>
+        <span matListItemLine>
+          {{ POS.details?.table }}
+        </span>
+        <i matListItemMeta class="fa-regular fa-angle-left"></i>
+      </a>
+    </mat-nav-list>
+  }
   <mat-divider></mat-divider>
-  <form *ngIf="!POS.customer" (ngSubmit)="searchMember()" [formGroup]="userQueryForm">
-    <input
-      class="search-input"
-      flex
-      matInput
-      autofocus
-      formControlName="query"
-      placeholder="{{ 'pos.searchUser' | translate }}"
-    />
-    <button mat-icon-button type="submit">
-      <i class="fa-regular fa-search"></i>
-    </button>
-    <button mat-icon-button (click)="openAddMemberDialog()" type="button">
-      <i class="fa-regular fa-user-plus"></i>
-    </button>
-  </form>
+  @if (!POS.customer) {
+    <form (ngSubmit)="searchMember()" [formGroup]="userQueryForm">
+      <input
+        class="search-input"
+        flex
+        matInput
+        autofocus
+        formControlName="query"
+        placeholder="{{ 'pos.searchUser' | translate }}"
+        />
+      <button mat-icon-button type="submit">
+        <i class="fa-regular fa-search"></i>
+      </button>
+      <button mat-icon-button (click)="openAddMemberDialog()" type="button">
+        <i class="fa-regular fa-user-plus"></i>
+      </button>
+    </form>
+  }
 
   <mat-nav-list>
-    <a mat-list-item *ngIf="POS.customer">
-      <i matListItemIcon class="fa-solid fa-user"></i>
-      <span matListItemTitle>{{ User.fullName(POS.customer) }}</span>
-      <span matListItemLine>{{ POS.customer.mobilePhone | phone }}</span>
-      <button
-        *ngIf="!POS.editOrder?.paymentType && POS.isManual"
-        mat-icon-button
-        color="warn"
-        matListItemMeta
-        style="margin-top: 12px"
-        stopPropagation
-        (click)="removeMember()"
-      >
-        <i class="fa-solid fa-times-circle"></i>
-      </button>
-    </a>
-    <a mat-list-item *ngFor="let m of searchMembers || []" (click)="selectMember(m)">
-      <i matListItemIcon class="fa-solid fa-user"></i>
-      <span matListItemTitle>{{ User.fullName(m.user) }}</span>
-      <span matListItemLine>{{ m.user.mobilePhone | phone }}</span>
-    </a>
+    @if (POS.customer) {
+      <a mat-list-item>
+        <i matListItemIcon class="fa-solid fa-user"></i>
+        <span matListItemTitle>{{ User.fullName(POS.customer) }}</span>
+        <span matListItemLine>{{ POS.customer.mobilePhone | phone }}</span>
+        @if (!POS.editOrder?.paymentType && POS.isManual) {
+          <button
+            mat-icon-button
+            color="warn"
+            matListItemMeta
+            style="margin-top: 12px"
+            stopPropagation
+            (click)="removeMember()"
+            >
+            <i class="fa-solid fa-times-circle"></i>
+          </button>
+        }
+      </a>
+    }
+    @for (m of searchMembers || []; track m) {
+      <a mat-list-item (click)="selectMember(m)">
+        <i matListItemIcon class="fa-solid fa-user"></i>
+        <span matListItemTitle>{{ User.fullName(m.user) }}</span>
+        <span matListItemLine>{{ m.user.mobilePhone | phone }}</span>
+      </a>
+    }
 
-    <a mat-list-item *ngIf="POS.customer">
-      <h3 matListItemTitle>{{ 'pos.thisWeekOrders' | translate }}</h3>
-      <p matListItemLine>{{ POS.thisWeekPurchases.total | menuCurrency: undefined:true }}</p>
-      <b matListItemMeta>
-        {{ 'app.number' | translate: { value: (POS.thisWeekPurchases.count | number) } }}
-      </b>
-    </a>
-    <a mat-list-item *ngIf="POS.customer">
-      <h3 matListItemTitle>{{ 'pos.thisMonthOrder' | translate }}</h3>
-      <p matListItemLine>{{ POS.thisMonthPurchases.total | menuCurrency }}</p>
-      <b matListItemMeta>
-        {{ 'app.number' | translate: { value: (POS.thisMonthPurchases.count | number) } }}
-      </b>
-    </a>
-    <a mat-list-item *ngIf="POS.customer">
-      <h3 matListItemTitle>{{ 'pos.thisYearOrder' | translate }}</h3>
-      <p matListItemLine>{{ POS.thisYearPurchases.total | menuCurrency }}</p>
-      <b matListItemMeta>
-        {{ 'app.number' | translate: { value: (POS.thisYearPurchases.count | number) } }}
-      </b>
-    </a>
-    <mat-divider *ngIf="POS.customer"></mat-divider>
-    <a mat-list-item *ngIf="POS.customer && POS.discountCoupons?.length" [matMenuTriggerFor]="discountMenu">
-      <i class="fa-solid fa-tag mat-icon fa-large" matListItemIcon></i>
-      <span matListItemTitle>{{ 'pos.discountCoupon' | translate }}</span>
-      <span matListItemLine *ngIf="POS.discountCoupon">{{ POS.discountCoupon.title }}</span>
-      <div class="secondary" matListItemMeta>
-        <span *ngIf="discountPrice">{{ discountPrice | menuCurrency }}</span>
-        <i class="fa-regular fa-angle-left"></i>
-      </div>
-      <mat-menu #discountMenu="matMenu">
-        <button mat-menu-item *ngIf="POS.discountCoupon" (click)="POS.discountCoupon = undefined">
-          <i class="fa-solid fa-trash-alt mat-icon"></i>
-          {{ 'app.remove' | translate }}
-        </button>
-        <mat-divider></mat-divider>
-        <button mat-menu-item *ngFor="let d of POS.discountCoupons" (click)="POS.discountCoupon = d">
-          <i class="fa-solid fa-tag mat-icon"></i>
-          {{ d.title }}
-        </button>
-      </mat-menu>
-    </a>
-    <a
-      mat-list-item
-      *ngIf="POS.customer && POS.type === OrderType.Delivery && POS.customerAddresses"
-      (click)="selectCustomerAddress()"
-    >
-      <i class="fa-solid fa-location-dot mat-icon fa-large" matListItemIcon></i>
-      <span matListItemTitle>{{ 'pos.aaddress' | translate }}</span>
-      <span matListItemLine *ngIf="POS.address">{{
-        POS.address.deliveryArea?.title || POS.address.description
-      }}</span>
-      <div class="secondary" matListItemMeta>
-        <span *ngIf="deliveryPrice">{{ deliveryPrice | menuCurrency }}</span>
-        <i class="fa-regular fa-angle-left"></i>
-      </div>
-    </a>
+    @if (POS.customer) {
+      <a mat-list-item>
+        <h3 matListItemTitle>{{ 'pos.thisWeekOrders' | translate }}</h3>
+        <p matListItemLine>{{ POS.thisWeekPurchases.total | menuCurrency: undefined:true }}</p>
+        <b matListItemMeta>
+          {{ 'app.number' | translate: { value: (POS.thisWeekPurchases.count | number) } }}
+        </b>
+      </a>
+    }
+    @if (POS.customer) {
+      <a mat-list-item>
+        <h3 matListItemTitle>{{ 'pos.thisMonthOrder' | translate }}</h3>
+        <p matListItemLine>{{ POS.thisMonthPurchases.total | menuCurrency }}</p>
+        <b matListItemMeta>
+          {{ 'app.number' | translate: { value: (POS.thisMonthPurchases.count | number) } }}
+        </b>
+      </a>
+    }
+    @if (POS.customer) {
+      <a mat-list-item>
+        <h3 matListItemTitle>{{ 'pos.thisYearOrder' | translate }}</h3>
+        <p matListItemLine>{{ POS.thisYearPurchases.total | menuCurrency }}</p>
+        <b matListItemMeta>
+          {{ 'app.number' | translate: { value: (POS.thisYearPurchases.count | number) } }}
+        </b>
+      </a>
+    }
+    @if (POS.customer) {
+      <mat-divider></mat-divider>
+    }
+    @if (POS.customer && POS.discountCoupons?.length) {
+      <a mat-list-item [matMenuTriggerFor]="discountMenu">
+        <i class="fa-solid fa-tag mat-icon fa-large" matListItemIcon></i>
+        <span matListItemTitle>{{ 'pos.discountCoupon' | translate }}</span>
+        @if (POS.discountCoupon) {
+          <span matListItemLine>{{ POS.discountCoupon.title }}</span>
+        }
+        <div class="secondary" matListItemMeta>
+          @if (discountPrice) {
+            <span>{{ discountPrice | menuCurrency }}</span>
+          }
+          <i class="fa-regular fa-angle-left"></i>
+        </div>
+        <mat-menu #discountMenu="matMenu">
+          @if (POS.discountCoupon) {
+            <button mat-menu-item (click)="POS.discountCoupon = undefined">
+              <i class="fa-solid fa-trash-alt mat-icon"></i>
+              {{ 'app.remove' | translate }}
+            </button>
+          }
+          <mat-divider></mat-divider>
+          @for (d of POS.discountCoupons; track d) {
+            <button mat-menu-item (click)="POS.discountCoupon = d">
+              <i class="fa-solid fa-tag mat-icon"></i>
+              {{ d.title }}
+            </button>
+          }
+        </mat-menu>
+      </a>
+    }
+    @if (POS.customer && POS.type === OrderType.Delivery && POS.customerAddresses) {
+      <a
+        mat-list-item
+        (click)="selectCustomerAddress()"
+        >
+        <i class="fa-solid fa-location-dot mat-icon fa-large" matListItemIcon></i>
+        <span matListItemTitle>{{ 'pos.aaddress' | translate }}</span>
+        @if (POS.address) {
+          <span matListItemLine>{{
+            POS.address.deliveryArea?.title || POS.address.description
+          }}</span>
+        }
+        <div class="secondary" matListItemMeta>
+          @if (deliveryPrice) {
+            <span>{{ deliveryPrice | menuCurrency }}</span>
+          }
+          <i class="fa-regular fa-angle-left"></i>
+        </div>
+      </a>
+    }
   </mat-nav-list>
 </div>

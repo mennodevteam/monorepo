@@ -1,58 +1,72 @@
-<h2 *ngIf="!auth.user?.extraInfo?.mobilePhone">{{ 'loginBottomSheet.title' | translate }}</h2>
-<h2 *ngIf="auth.user?.extraInfo?.mobilePhone">{{ 'loginBottomSheet.acceptNumberTitle' | translate }}</h2>
-<form *ngIf="(mobilePhone | async) === undefined" [formGroup]="mobileForm" (ngSubmit)="sendToken()">
-  <p>{{ 'loginBottomSheet.mobileDescription' | translate }}</p>
-  <mat-form-field appearance="outline">
-    <mat-label>{{ 'loginBottomSheet.mobileLabel' | translate }}</mat-label>
-    <input
-      #mobileInput
-      type="tel"
-      autofocus="true"
-      autocomplete="off"
-      class="ltr"
-      matInput
-      formControlName="mobile"
-      required
-    />
-  </mat-form-field>
-  <button mat-flat-button color="primary" type="submit" [disabled]="loading" class="submit-button">
-    {{ 'app.continue' | translate }}
-    <i *ngIf="loading" class="fad fa-spinner-third fa-spin"></i>
-  </button>
-</form>
-<form *ngIf="mobilePhone | async" [formGroup]="codeForm" (ngSubmit)="login()">
-  <ng-container *ngIf="!isRegistered">
+@if (!auth.user?.extraInfo?.mobilePhone) {
+  <h2>{{ 'loginBottomSheet.title' | translate }}</h2>
+}
+@if (auth.user?.extraInfo?.mobilePhone) {
+  <h2>{{ 'loginBottomSheet.acceptNumberTitle' | translate }}</h2>
+}
+@if ((mobilePhone | async) === undefined) {
+  <form [formGroup]="mobileForm" (ngSubmit)="sendToken()">
+    <p>{{ 'loginBottomSheet.mobileDescription' | translate }}</p>
     <mat-form-field appearance="outline">
-      <mat-label>{{ 'profile.firstName' | translate }}</mat-label>
-      <input matInput formControlName="firstName" required />
+      <mat-label>{{ 'loginBottomSheet.mobileLabel' | translate }}</mat-label>
+      <input
+        #mobileInput
+        type="tel"
+        autofocus="true"
+        autocomplete="off"
+        class="ltr"
+        matInput
+        formControlName="mobile"
+        required
+        />
     </mat-form-field>
+    <button mat-flat-button color="primary" type="submit" [disabled]="loading" class="submit-button">
+      {{ 'app.continue' | translate }}
+      @if (loading) {
+        <i class="fad fa-spinner-third fa-spin"></i>
+      }
+    </button>
+  </form>
+}
+@if (mobilePhone | async) {
+  <form [formGroup]="codeForm" (ngSubmit)="login()">
+    @if (!isRegistered) {
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'profile.firstName' | translate }}</mat-label>
+        <input matInput formControlName="firstName" required />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'profile.lastName' | translate }}</mat-label>
+        <input matInput formControlName="lastName" required />
+      </mat-form-field>
+    }
+    <p>{{ 'loginBottomSheet.codeDescription' | translate: { value: (mobilePhone | async) } }}</p>
     <mat-form-field appearance="outline">
-      <mat-label>{{ 'profile.lastName' | translate }}</mat-label>
-      <input matInput formControlName="lastName" required />
+      <mat-label>{{ 'loginBottomSheet.codeLabel' | translate }}</mat-label>
+      <input
+        #codeInput
+        type="tel"
+        autofocus="true"
+        autocomplete="off"
+        class="ltr"
+        matInput
+        formControlName="code"
+        required
+        />
     </mat-form-field>
-  </ng-container>
-  <p>{{ 'loginBottomSheet.codeDescription' | translate: { value: (mobilePhone | async) } }}</p>
-  <mat-form-field appearance="outline">
-    <mat-label>{{ 'loginBottomSheet.codeLabel' | translate }}</mat-label>
-    <input
-    #codeInput
-    type="tel"
-    autofocus="true"
-    autocomplete="off"
-      class="ltr"
-      matInput
-      formControlName="code"
-      required
-    />
-  </mat-form-field>
-  <button mat-button [disabled]="(timer | async)! > 0" (click)="sendAgain()" type="button">
-    {{ 'loginBottomSheet.sendAgain' | translate }}
-    <span spacer></span>
-    <span class="ltr" *ngIf="timer | async">({{ timer | async }})</span>
-  </button>
-  <span spacer-2x></span>
-  <button mat-flat-button color="primary" type="submit" [disabled]="loading" class="submit-button">
-    {{ 'app.continue' | translate }}
-    <i *ngIf="loading" class="fad fa-spinner-third fa-spin"></i>
-  </button>
-</form>
+    <button mat-button [disabled]="(timer | async)! > 0" (click)="sendAgain()" type="button">
+      {{ 'loginBottomSheet.sendAgain' | translate }}
+      <span spacer></span>
+      @if (timer | async) {
+        <span class="ltr">({{ timer | async }})</span>
+      }
+    </button>
+    <span spacer-2x></span>
+    <button mat-flat-button color="primary" type="submit" [disabled]="loading" class="submit-button">
+      {{ 'app.continue' | translate }}
+      @if (loading) {
+        <i class="fad fa-spinner-third fa-spin"></i>
+      }
+    </button>
+  </form>
+}

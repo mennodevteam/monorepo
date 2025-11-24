@@ -38,116 +38,138 @@
           </mat-chip-option>
         }
         @if (product.costs.length) {
-          <mat-chip-option [selectable]="false" *ngFor="let c of product.costs">
-            {{ c.title }}
-            (<span *ngIf="c.percentageCost">{{ abs(c.percentageCost) }}%</span>
-            <span *ngIf="c.fixedCost">{{ abs(c.fixedCost) | menuCurrency }}</span
-            >)
-          </mat-chip-option>
-        }
-      </mat-chip-listbox>
-    </td>
-  </ng-container>
+          @for (c of product.costs; track c) {
+            <mat-chip-option [selectable]="false">
+              {{ c.title }}
+              (@if (c.percentageCost) {
+              <span>{{ abs(c.percentageCost) }}%</span>
+            }
+            @if (c.fixedCost) {
+              <span>{{ abs(c.fixedCost) | menuCurrency }}</span
+                >
+                })
+              </mat-chip-option>
+            }
+          }
+        </mat-chip-listbox>
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="stock">
-    <th mat-header-cell *matHeaderCellDef>{{ 'productTable.stock' | translate }}</th>
-    <td mat-cell *matCellDef="let product">
-      <ng-container *ngIf="!product.variants?.length">
+    <ng-container matColumnDef="stock">
+      <th mat-header-cell *matHeaderCellDef>{{ 'productTable.stock' | translate }}</th>
+      <td mat-cell *matCellDef="let product">
+        @if (!product.variants?.length) {
+          <button
+            mat-stroked-button
+            [mat-menu-trigger-for]="stockMenu"
+            stopPropagation
+            [disabled]="product._changingStatus"
+            >
+            @if (product.stock == null) {
+              <span>
+                <i class="fa-solid fa-infinity green"></i>
+                {{ 'productTable.infinity' | translate }}
+              </span>
+            }
+            @if (product.stock != null) {
+              <span [ngClass]="{ red: product.stock === 0 }">
+                {{ 'app.number' | translate: { value: product.stock } }}
+              </span>
+            }
+          </button>
+          <mat-menu #stockMenu="matMenu">
+            <button mat-menu-item (click)="changeStock(product, true)">
+              <i class="fa-solid fa-infinity mat-icon"></i>
+              {{ 'productTable.infinity' | translate }}
+            </button>
+            <button mat-menu-item (click)="changeStock(product)">
+              {{ 'productTable.setStock' | translate }}
+            </button>
+          </mat-menu>
+        }
+        @if (product.variants?.length) {
+          <small>{{ 'productTable.basedOnVariants' | translate }}</small>
+        }
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>{{ 'app.status' | translate }}</th>
+      <td mat-cell *matCellDef="let product">
         <button
           mat-stroked-button
-          [mat-menu-trigger-for]="stockMenu"
+          [mat-menu-trigger-for]="statusMenu"
           stopPropagation
           [disabled]="product._changingStatus"
-        >
-          <span *ngIf="product.stock == null">
-            <i class="fa-solid fa-infinity green"></i>
-            {{ 'productTable.infinity' | translate }}
-          </span>
-          <span *ngIf="product.stock != null" [ngClass]="{ red: product.stock === 0 }">
-            {{ 'app.number' | translate: { value: product.stock } }}
-          </span>
+          >
+          @if (product.status === Status.Active) {
+            <span>
+              <i class="fa-solid fa-check-circle green"></i>
+              {{ 'app.active' | translate }}
+            </span>
+          }
+          @if (product.status === Status.Blocked) {
+            <span>
+              <i class="fa-solid fa-circle-0 red"></i>
+              {{ 'app.finished' | translate }}
+            </span>
+          }
+          @if (product.status === Status.Inactive) {
+            <span>
+              <i class="fa-solid fa-ban red"></i>
+              {{ 'app.inactive' | translate }}
+            </span>
+          }
         </button>
-        <mat-menu #stockMenu="matMenu">
-          <button mat-menu-item (click)="changeStock(product, true)">
-            <i class="fa-solid fa-infinity mat-icon"></i>
-            {{ 'productTable.infinity' | translate }}
+        <mat-menu #statusMenu="matMenu">
+          <button mat-menu-item (click)="changeStatus(product, Status.Active)">
+            <i class="fa-solid fa-check-circle mat-icon"></i>
+            {{ 'app.active' | translate }}
           </button>
-          <button mat-menu-item (click)="changeStock(product)">
-            {{ 'productTable.setStock' | translate }}
+          <button mat-menu-item (click)="changeStatus(product, Status.Blocked)">
+            <i class="fa-solid fa-circle-0 mat-icon"></i>
+            {{ 'app.finished' | translate }}
+          </button>
+          <button mat-menu-item (click)="changeStatus(product, Status.Inactive)">
+            <i class="fa-solid fa-ban mat-icon"></i>
+            {{ 'app.inactive' | translate }}
           </button>
         </mat-menu>
-      </ng-container>
-      <small *ngIf="product.variants?.length">{{ 'productTable.basedOnVariants' | translate }}</small>
-    </td>
-  </ng-container>
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="status">
-    <th mat-header-cell *matHeaderCellDef>{{ 'app.status' | translate }}</th>
-    <td mat-cell *matCellDef="let product">
-      <button
-        mat-stroked-button
-        [mat-menu-trigger-for]="statusMenu"
-        stopPropagation
-        [disabled]="product._changingStatus"
-      >
-        <span *ngIf="product.status === Status.Active">
-          <i class="fa-solid fa-check-circle green"></i>
-          {{ 'app.active' | translate }}
-        </span>
-        <span *ngIf="product.status === Status.Blocked">
-          <i class="fa-solid fa-circle-0 red"></i>
-          {{ 'app.finished' | translate }}
-        </span>
-        <span *ngIf="product.status === Status.Inactive">
-          <i class="fa-solid fa-ban red"></i>
-          {{ 'app.inactive' | translate }}
-        </span>
-      </button>
-      <mat-menu #statusMenu="matMenu">
-        <button mat-menu-item (click)="changeStatus(product, Status.Active)">
-          <i class="fa-solid fa-check-circle mat-icon"></i>
-          {{ 'app.active' | translate }}
-        </button>
-        <button mat-menu-item (click)="changeStatus(product, Status.Blocked)">
-          <i class="fa-solid fa-circle-0 mat-icon"></i>
-          {{ 'app.finished' | translate }}
-        </button>
-        <button mat-menu-item (click)="changeStatus(product, Status.Inactive)">
-          <i class="fa-solid fa-ban mat-icon"></i>
-          {{ 'app.inactive' | translate }}
-        </button>
-      </mat-menu>
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let product">
-      <div style="display: flex; justify-content: end; align-items: center; gap: 4px">
-        <span class="order-types" *ngIf="product.orderTypes?.length < 3">
-          <ng-container *ngFor="let t of product.orderTypes; let last = last">
-            <span>
-              {{ t | orderType }}
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let product">
+        <div style="display: flex; justify-content: end; align-items: center; gap: 4px">
+          @if (product.orderTypes?.length < 3) {
+            <span class="order-types">
+              @for (t of product.orderTypes; track t; let last = $last) {
+                <span>
+                  {{ t | orderType }}
+                </span>
+                @if (!last) {
+                  <mat-divider vertical></mat-divider>
+                }
+              }
             </span>
-            <mat-divider vertical *ngIf="!last"></mat-divider>
-          </ng-container>
-        </span>
+          }
 
-        <button
-          mat-icon-button
-          routerLink="product"
-          [queryParams]="{ id: product.id }"
-          [matTooltip]="'productTable.edit' | translate"
-        >
-          <i class="fa-regular fa-pencil"></i>
-        </button>
-        <button mat-icon-button [matTooltip]="'app.remove' | translate" (click)="deleteProduct(product)">
-          <i class="fa-regular fa-trash-alt"></i>
-        </button>
-      </div>
-    </td>
-  </ng-container>
+          <button
+            mat-icon-button
+            routerLink="product"
+            [queryParams]="{ id: product.id }"
+            [matTooltip]="'productTable.edit' | translate"
+            >
+            <i class="fa-regular fa-pencil"></i>
+          </button>
+          <button mat-icon-button [matTooltip]="'app.remove' | translate" (click)="deleteProduct(product)">
+            <i class="fa-regular fa-trash-alt"></i>
+          </button>
+        </div>
+      </td>
+    </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-</table>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>

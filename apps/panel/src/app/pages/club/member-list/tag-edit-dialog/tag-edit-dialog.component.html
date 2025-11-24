@@ -6,11 +6,17 @@
     <input matInput [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
   </mat-form-field>
   <div class="colors">
-    <button mat-icon-button [style.color]="c" *ngFor="let c of colors"
-      (click)="color = c">
-      <i *ngIf="c !== color" class="fas fa-circle fa-2x"></i>
-      <i *ngIf="c === color" class="fas fa-check-circle fa-2x"></i>
-    </button>
+    @for (c of colors; track c) {
+      <button mat-icon-button [style.color]="c"
+        (click)="color = c">
+        @if (c !== color) {
+          <i class="fas fa-circle fa-2x"></i>
+        }
+        @if (c === color) {
+          <i class="fas fa-check-circle fa-2x"></i>
+        }
+      </button>
+    }
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>

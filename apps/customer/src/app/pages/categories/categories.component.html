@@ -9,16 +9,16 @@
     @if (hasCategories()) {
       <mat-grid-list cols="2" rowHeight="1:1">
         @for (category of categories(); track category.id) {
-          <mat-grid-tile 
+          <mat-grid-tile
             [routerLink]="['/categories', category.id]"
             class="category-tile"
             [imageFile]="category.imageFile ?? undefined"
             [imageSize]="'md'"
-            imageLoader
+            appImageLoader
           >
-          <mat-grid-tile-footer class="category-tile-footer">
-            {{ category.title }}
-          </mat-grid-tile-footer>
+            <mat-grid-tile-footer class="category-tile-footer">
+              {{ category.title }}
+            </mat-grid-tile-footer>
           </mat-grid-tile>
         }
       </mat-grid-list>

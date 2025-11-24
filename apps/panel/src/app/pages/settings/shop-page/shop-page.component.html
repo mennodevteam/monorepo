@@ -23,9 +23,11 @@
           <mat-form-field>
             <mat-label> {{ 'shopPage.businessCategory' | translate }} </mat-label>
             <mat-select matInput formControlName="businessCategory">
-              <mat-option *ngFor="let cat of categories" [value]="cat">
-                {{ cat | businessCategory }}
-              </mat-option>
+              @for (cat of categories; track cat) {
+                <mat-option [value]="cat">
+                  {{ cat | businessCategory }}
+                </mat-option>
+              }
             </mat-select>
           </mat-form-field>
           <mat-form-field>
@@ -48,18 +50,22 @@
               matInput
               (selectionChange)="regionState.set($event.value)"
               [value]="regionState()"
-            >
-              <mat-option *ngFor="let state of regionService.states()" [value]="state.title">
-                {{ state.title }}
-              </mat-option>
+              >
+              @for (state of regionService.states(); track state) {
+                <mat-option [value]="state.title">
+                  {{ state.title }}
+                </mat-option>
+              }
             </mat-select>
           </mat-form-field>
           <mat-form-field>
             <mat-label> {{ 'shopPage.region' | translate }} </mat-label>
             <mat-select [disabled]="!regions().length" matInput formControlName="region">
-              <mat-option *ngFor="let region of regions() || []" [value]="region">
-                {{ region.title }}
-              </mat-option>
+              @for (region of regions() || []; track region) {
+                <mat-option [value]="region">
+                  {{ region.title }}
+                </mat-option>
+              }
             </mat-select>
           </mat-form-field>
 
@@ -69,15 +75,17 @@
           </mat-form-field>
 
           <mat-toolbar>
-            <span flex *ngIf="mapEdit">
-              {{ 'shopPage.locationDraft' | translate }}
-            </span>
-            <ng-container *ngIf="!mapEdit">
+            @if (mapEdit) {
+              <span flex>
+                {{ 'shopPage.locationDraft' | translate }}
+              </span>
+            }
+            @if (!mapEdit) {
               <span flex>
                 {{ 'shopPage.location' | translate }}
               </span>
               <button mat-stroked-button (click)="mapEdit = true">{{ 'app.edit' | translate }}</button>
-            </ng-container>
+            }
           </mat-toolbar>
           <div
             class="map-container"
@@ -85,8 +93,10 @@
             [leafletOptions]="mapOptions"
             (leafletClick)="mapClick($event)"
             (leafletMapReady)="mapReady($event)"
-          >
-            <div *ngIf="marker" [leafletLayer]="marker"></div>
+            >
+            @if (marker) {
+              <div [leafletLayer]="marker"></div>
+            }
           </div>
         </mat-card-content>
       </mat-card>
@@ -97,23 +107,28 @@
           <mat-card-title>{{ 'shopPage.logo' | translate }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <img class="logo" *ngIf="!imageCropperResult" [imageLoader]="form.controls['logo'].value" />
-          <img class="logo" *ngIf="imageCropperResult" [src]="imageCropperResult.base64" />
+          @if (!imageCropperResult) {
+            <img class="logo" [imageLoader]="form.controls['logo'].value" />
+          }
+          @if (imageCropperResult) {
+            <img class="logo" [src]="imageCropperResult.base64" />
+          }
         </mat-card-content>
         <mat-card-actions>
           <button mat-button color="primary" type="button" (click)="upload()">
             <i class="fa-regular fa-upload"></i>
             {{ 'app.upload' | translate }}
           </button>
-          <button
-            *ngIf="imageCropperResult"
-            mat-button
-            type="button"
-            (click)="imageCropperResult = undefined"
-          >
-            <i class="fa-regular fa-undo"></i>
-            {{ 'app.undo' | translate }}
-          </button>
+          @if (imageCropperResult) {
+            <button
+              mat-button
+              type="button"
+              (click)="imageCropperResult = undefined"
+              >
+              <i class="fa-regular fa-undo"></i>
+              {{ 'app.undo' | translate }}
+            </button>
+          }
           <div flex></div>
           <button mat-icon-button color="warn" type="button" (click)="removePhoto()">
             <i class="fa-regular fa-trash-alt"></i>
@@ -130,22 +145,23 @@
           <mat-form-field>
             <mat-label>{{ 'shopPage.phonesLabel' | translate }}</mat-label>
             <mat-chip-grid #chipGrid>
-              <mat-chip-row
-                *ngFor="let phone of form.controls['phones'].value"
-                (removed)="removePhone(phone)"
-              >
-                {{ phone }}
-                <button matChipRemove>
-                  <i class="fa-regular fa-close"></i>
-                </button>
-              </mat-chip-row>
+              @for (phone of form.controls['phones'].value; track phone) {
+                <mat-chip-row
+                  (removed)="removePhone(phone)"
+                  >
+                  {{ phone }}
+                  <button matChipRemove>
+                    <i class="fa-regular fa-close"></i>
+                  </button>
+                </mat-chip-row>
+              }
               <input
                 placeholder="{{ 'shopPage.phonesPlaceholder' | translate }}"
                 [matChipInputFor]="chipGrid"
                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                 [matChipInputAddOnBlur]="true"
                 (matChipInputTokenEnd)="addPhone($event)"
-              />
+                />
             </mat-chip-grid>
             <mat-hint>{{ 'shopPage.phonesHint' | translate }}</mat-hint>
           </mat-form-field>

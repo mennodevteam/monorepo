@@ -16,7 +16,7 @@
     routerLink="discounts"
     class="show-xs"
     matTooltip="{{ 'menuDiscountPage.pageTitle' | translate }}"
-  >
+    >
     <i class="fa-regular fa-badge-percent"></i>
   </button>
   <button
@@ -24,7 +24,7 @@
     routerLink="costs"
     class="show-xs"
     matTooltip="{{ 'menuCostPage.pageTitle' | translate }}"
-  >
+    >
     <i class="fa-regular fa-grid-2-plus"></i>
   </button>
   <button mat-flat-button color="primary" routerLink="category">
@@ -55,22 +55,25 @@
   mat-stretch-tabs="false"
   (selectedIndexChange)="selectedTabChange($event)"
   animationDuration="0"
->
-  <mat-tab *ngFor="let cat of categories">
-    <ng-template mat-tab-label>
-      {{ cat.title }}
-      <ng-container *ngIf="cat.status !== Status.Active">
-        <i class="fa-solid fa-period red"></i>
-      </ng-container>
-    </ng-template>
-    <div class="content-wrapper">
-      <menu-category-container [category]="cat"></menu-category-container>
-    </div>
-  </mat-tab>
+  >
+  @for (cat of categories; track cat) {
+    <mat-tab>
+      <ng-template mat-tab-label>
+        {{ cat.title }}
+        @if (cat.status !== Status.Active) {
+          <i class="fa-solid fa-period red"></i>
+        }
+      </ng-template>
+      <div class="content-wrapper">
+        <menu-category-container [category]="cat"></menu-category-container>
+      </div>
+    </mat-tab>
+  }
 </mat-tab-group>
 
-<empty-state
-  *ngIf="!categories?.length"
-  text="{{ 'menu.noCategory' | translate }}"
-  icon="fa-face-smile-tongue"
-></empty-state>
+@if (!categories?.length) {
+  <empty-state
+    text="{{ 'menu.noCategory' | translate }}"
+    icon="fa-face-smile-tongue"
+  ></empty-state>
+}

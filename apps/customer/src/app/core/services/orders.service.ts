@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Order, OrderDto, StatAction } from '@menno/types';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PayService } from './pay.service';
@@ -9,12 +9,10 @@ import { MenuStatService } from './menu-stat.service';
   providedIn: 'root',
 })
 export class OrdersService {
-  constructor(
-    private http: HttpClient,
-    private payService: PayService,
-    private snack: MatSnackBar,
-    private menuStat: MenuStatService,
-  ) {}
+  private http = inject(HttpClient);
+  private payService = inject(PayService);
+  private snack = inject(MatSnackBar);
+  private menuStat = inject(MenuStatService);
 
   async save(dto: OrderDto) {
     const order = await this.http.post<Order>(`orders`, dto).toPromise();

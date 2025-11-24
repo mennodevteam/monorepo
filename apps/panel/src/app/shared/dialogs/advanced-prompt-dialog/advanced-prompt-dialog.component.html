@@ -1,40 +1,60 @@
-<h3 mat-dialog-title *ngIf="title">{{ title }}</h3>
+@if (title) {
+  <h3 mat-dialog-title>{{ title }}</h3>
+}
 <form [formGroup]="form">
   <mat-dialog-content>
-    <p *ngIf="description">{{ description }}</p>
+    @if (description) {
+      <p>{{ description }}</p>
+    }
 
-    <mat-form-field appearance="fill" *ngFor="let key of keys">
-      <mat-label>{{ fields[key].label }}</mat-label>
-      <input *ngIf="['textarea', 'select', 'multiple', 'datepicker'].indexOf(fields[key].type!) === -1" matInput
-        formControlName="{{ key }}" [placeholder]="fields[key].placeholder!" type="{{ fields[key].type }}"
-        [class.ltr]="fields[key].ltr" />
-
-      <input *ngIf="fields[key].type === 'datepicker'" matInput formControlName="{{ key }}"
-        [placeholder]="fields[key].placeholder!" [matDatepicker]="picker" />
-      <mat-datepicker-toggle *ngIf="fields[key].type === 'datepicker'" matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker [hidden]="fields[key].type !== 'datepicker'" #picker></mat-datepicker>
-
-      <textarea *ngIf="fields[key].type === 'textarea'" matInput formControlName="{{ key }}"
-        [placeholder]="fields[key].placeholder!" type="{{ fields[key].type }}" [rows]="fields[key].rows || 3"></textarea>
-
-
-      <mat-select *ngIf="fields[key].type === 'select' || fields[key].type === 'multiple'" formControlName="{{ key }}"
-        [multiple]="fields[key].type === 'multiple'">
-        <ng-container *ngIf="fields[key].options">
-          <mat-option *ngFor="let option of fields[key].options" [value]="option.value">
-            {{ option.text }}
-          </mat-option>
-        </ng-container>
-        <ng-container *ngIf="fields[key].groups">
-          <mat-optgroup *ngFor="let group of fields[key].groups" [label]="group.text">
-            <mat-option *ngFor="let option of group.options" [value]="option.value">
-              {{ option.text }}
-            </mat-option>
-          </mat-optgroup>
-        </ng-container>
-      </mat-select>
-      <mat-hint *ngIf="fields[key].hint"> {{ fields[key].hint }} </mat-hint>
-    </mat-form-field>
+    @for (key of keys; track key) {
+      <mat-form-field appearance="fill">
+        <mat-label>{{ fields[key].label }}</mat-label>
+        @if (['textarea', 'select', 'multiple', 'datepicker'].indexOf(fields[key].type!) === -1) {
+          <input matInput
+            formControlName="{{ key }}" [placeholder]="fields[key].placeholder!" type="{{ fields[key].type }}"
+            [class.ltr]="fields[key].ltr" />
+        }
+        @if (fields[key].type === 'datepicker') {
+          <input matInput formControlName="{{ key }}"
+            [placeholder]="fields[key].placeholder!" [matDatepicker]="picker" />
+        }
+        @if (fields[key].type === 'datepicker') {
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        }
+        <mat-datepicker [hidden]="fields[key].type !== 'datepicker'" #picker></mat-datepicker>
+        @if (fields[key].type === 'textarea') {
+          <textarea matInput formControlName="{{ key }}"
+          [placeholder]="fields[key].placeholder!" type="{{ fields[key].type }}" [rows]="fields[key].rows || 3"></textarea>
+        }
+        @if (fields[key].type === 'select' || fields[key].type === 'multiple') {
+          <mat-select formControlName="{{ key }}"
+            [multiple]="fields[key].type === 'multiple'">
+            @if (fields[key].options) {
+              @for (option of fields[key].options; track option) {
+                <mat-option [value]="option.value">
+                  {{ option.text }}
+                </mat-option>
+              }
+            }
+            @if (fields[key].groups) {
+              @for (group of fields[key].groups; track group) {
+                <mat-optgroup [label]="group.text">
+                  @for (option of group.options; track option) {
+                    <mat-option [value]="option.value">
+                      {{ option.text }}
+                    </mat-option>
+                  }
+                </mat-optgroup>
+              }
+            }
+          </mat-select>
+        }
+        @if (fields[key].hint) {
+          <mat-hint> {{ fields[key].hint }} </mat-hint>
+        }
+      </mat-form-field>
+    }
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-button (click)="submit()" [disabled]="!form.dirty" color="primary">

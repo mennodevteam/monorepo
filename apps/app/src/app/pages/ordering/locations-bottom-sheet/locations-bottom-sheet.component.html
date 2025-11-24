@@ -7,17 +7,21 @@
     </span>
     <mat-divider></mat-divider>
   </a>
-  <ng-container *ngFor="let location of locations | async; let last = last">
+  @for (location of locations | async; track location; let last = $last) {
     <a mat-list-item (click)="sheetRef.dismiss(location)">
       <i matListItemIcon class="fa-regular fa-location-dot"></i>
       <span matListItemLine>
         {{ location.description }}
       </span>
-      <span matListItemMeta *ngIf="location.deliveryArea" class="tertiary-text">
-        {{ location.deliveryArea.price | menuCurrency }}
-      </span>
+      @if (location.deliveryArea) {
+        <span matListItemMeta class="tertiary-text">
+          {{ location.deliveryArea.price | menuCurrency }}
+        </span>
+      }
     </a>
     <mat-divider></mat-divider>
-  </ng-container>
+  }
 </mat-nav-list>
-<mat-spinner [diameter]="36" mode="indeterminate" *ngIf="loading"></mat-spinner>
+@if (loading) {
+  <mat-spinner [diameter]="36" mode="indeterminate"></mat-spinner>
+}

@@ -2,7 +2,7 @@
   <mat-card-content class="product-card__content" [class.large-image]="!largeImage()">
     <img
       class="product-card__image"
-      imageLoader
+      appImageLoader
       [imageFile]="imageFile()"
       [imageSize]="largeImage() ? 'md' : 'sm'"
       [attr.alt]="product().title"

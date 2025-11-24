@@ -11,28 +11,38 @@
       <mat-radio-button value="category">
         {{ 'selectProductCard.someCategories' | translate }}
       </mat-radio-button>
-      <div class="padding-container" *ngIf="typeControl.value == 'category'">
-        <mat-form-field>
-          <mat-label>{{ 'selectProductCard.selectCategory' | translate }}</mat-label>
-          <mat-select multiple [formControl]="categoryControl">
-            <mat-option *ngFor="let cat of categories" [value]="cat">{{ cat.title }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+      @if (typeControl.value == 'category') {
+        <div class="padding-container">
+          <mat-form-field>
+            <mat-label>{{ 'selectProductCard.selectCategory' | translate }}</mat-label>
+            <mat-select multiple [formControl]="categoryControl">
+              @for (cat of categories; track cat) {
+                <mat-option [value]="cat">{{ cat.title }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+      }
       <span spacer></span>
       <mat-radio-button value="product">
         {{ 'selectProductCard.someProducts' | translate }}
       </mat-radio-button>
-      <div class="padding-container" *ngIf="typeControl.value == 'product'">
-        <mat-form-field>
-          <mat-label>{{ 'selectProductCard.selectProduct' | translate }}</mat-label>
-          <mat-select multiple [formControl]="productControl">
-            <mat-optgroup *ngFor="let cat of categories" [label]="cat.title" [hidden]="!cat.products?.length">
-              <mat-option *ngFor="let p of cat.products" [value]="p">{{ p.title }}</mat-option>
-            </mat-optgroup>
-          </mat-select>
-        </mat-form-field>
-      </div>
+      @if (typeControl.value == 'product') {
+        <div class="padding-container">
+          <mat-form-field>
+            <mat-label>{{ 'selectProductCard.selectProduct' | translate }}</mat-label>
+            <mat-select multiple [formControl]="productControl">
+              @for (cat of categories; track cat) {
+                <mat-optgroup [label]="cat.title" [hidden]="!cat.products?.length">
+                  @for (p of cat.products; track p) {
+                    <mat-option [value]="p">{{ p.title }}</mat-option>
+                  }
+                </mat-optgroup>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+      }
     </mat-radio-group>
   </mat-card-content>
 </mat-card>

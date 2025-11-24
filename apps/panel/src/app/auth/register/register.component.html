@@ -16,9 +16,11 @@
         <mat-form-field appearance="outline">
           <mat-label> نوع مجموعه </mat-label>
           <mat-select matInput formControlName="businessCategory">
-            <mat-option *ngFor="let cat of categories" [value]="cat">
-              {{ cat | businessCategory }}
-            </mat-option>
+            @for (cat of categories; track cat) {
+              <mat-option [value]="cat">
+                {{ cat | businessCategory }}
+              </mat-option>
+            }
           </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline">
@@ -27,24 +29,30 @@
             [disabled]="!regionService.regions().length"
             matInput
             (selectionChange)="regionState.set($event.value)"
-          >
-            <mat-option *ngFor="let state of regionService.states()" [value]="state.title">
-              {{ state.title }}
-            </mat-option>
+            >
+            @for (state of regionService.states(); track state) {
+              <mat-option [value]="state.title">
+                {{ state.title }}
+              </mat-option>
+            }
           </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label> شهر </mat-label>
           <mat-select [disabled]="!regions().length" matInput formControlName="regionId">
-            <mat-option *ngFor="let region of regions() || []" [value]="region.id">
-              {{ region.title }}
-            </mat-option>
+            @for (region of regions() || []; track region) {
+              <mat-option [value]="region.id">
+                {{ region.title }}
+              </mat-option>
+            }
           </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="outline" *ngIf="form.controls['regionId'].value === null">
-          <mat-label> نام شهر </mat-label>
-          <input matInput formControlName="regionTitle" />
-        </mat-form-field>
+        @if (form.controls['regionId'].value === null) {
+          <mat-form-field appearance="outline">
+            <mat-label> نام شهر </mat-label>
+            <input matInput formControlName="regionTitle" />
+          </mat-form-field>
+        }
       </mat-card-content>
     </mat-card>
 
@@ -61,10 +69,14 @@
         <mat-form-field appearance="outline">
           <mat-label> زیر دامنه </mat-label>
           <input matInput #usernameInput formControlName="username" class="ltr eng" required />
-          <mat-hint *ngIf="!usernameInput.value">متشکل از حروف انگلیسی کوچک و اعداد</mat-hint>
-          <mat-hint class="ltr eng" *ngIf="usernameInput.value">
-            {{ usernameInput.value }}.menno.pro
-          </mat-hint>
+          @if (!usernameInput.value) {
+            <mat-hint>متشکل از حروف انگلیسی کوچک و اعداد</mat-hint>
+          }
+          @if (usernameInput.value) {
+            <mat-hint class="ltr eng">
+              {{ usernameInput.value }}.menno.pro
+            </mat-hint>
+          }
         </mat-form-field>
         <span spacer></span>
         <small class="gray">
@@ -122,10 +134,16 @@
             [disabled]="otpStatus !== 'none'"
             (click)="sentToken()"
             type="button"
-          >
-            <span *ngIf="otpStatus === 'none'">ارسال کد</span>
-            <span *ngIf="otpStatus === 'sending'">درحال ارسال...</span>
-            <span *ngIf="otpStatus === 'sent'">ارسال مجدد ({{ otpTimer }})</span>
+            >
+            @if (otpStatus === 'none') {
+              <span>ارسال کد</span>
+            }
+            @if (otpStatus === 'sending') {
+              <span>درحال ارسال...</span>
+            }
+            @if (otpStatus === 'sent') {
+              <span>ارسال مجدد ({{ otpTimer }})</span>
+            }
           </button>
         </p>
         <mat-form-field appearance="outline">

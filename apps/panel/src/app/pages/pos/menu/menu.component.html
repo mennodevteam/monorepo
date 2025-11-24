@@ -1,22 +1,25 @@
 <mat-tab-group mat-stretch-tabs="false" class="categories">
-  <mat-tab label="{{ cat.title }}" *ngFor="let cat of POS.categories">
-    <mat-grid-list class="items" cols="{{ (isXSmall$ | async) ? 2 : 4 }}" rowHeight="64px">
-      <mat-grid-tile
-        class="product-tile no-select"
-        matRipple
-        *ngFor="let product of cat.products"
-        (click)="POS.plus(product.id)"
-      >
-        <span spacer></span>
-        <ng-container *ngIf="product.images && !(isHandset$ | async)">
-          <img [imageLoader]="product.images[0]" fileImage />
-          <span spacer></span>
-        </ng-container>
-        <div class="texts">
-          <p>{{ product.title }}</p>
-          <h4>{{ Product.totalPrice(product, product.variants[0]) | menuCurrency }}</h4>
-        </div>
-      </mat-grid-tile>
-    </mat-grid-list>
-  </mat-tab>
+  @for (cat of POS.categories; track cat) {
+    <mat-tab label="{{ cat.title }}">
+      <mat-grid-list class="items" cols="{{ (isXSmall$ | async) ? 2 : 4 }}" rowHeight="64px">
+        @for (product of cat.products; track product) {
+          <mat-grid-tile
+            class="product-tile no-select"
+            matRipple
+            (click)="POS.plus(product.id)"
+            >
+            <span spacer></span>
+            @if (product.images && !(isHandset$ | async)) {
+              <img [imageLoader]="product.images[0]" fileImage />
+              <span spacer></span>
+            }
+            <div class="texts">
+              <p>{{ product.title }}</p>
+              <h4>{{ Product.totalPrice(product, product.variants[0]) | menuCurrency }}</h4>
+            </div>
+          </mat-grid-tile>
+        }
+      </mat-grid-list>
+    </mat-tab>
+  }
 </mat-tab-group>

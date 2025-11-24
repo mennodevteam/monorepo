@@ -1,10 +1,12 @@
 <h3 mat-dialog-title>{{ 'sortDialog.title' | translate }}</h3>
 <mat-dialog-content>
   <mat-nav-list cdkDropList (cdkDropListDropped)="drop($event)">
-    <a mat-list-item *ngFor="let item of items" cdkDrag>
-      <i matListItemIcon class="fa-solid fa-grip-dots-vertical"></i>
-      <h5 matListItemTitle>{{ item.value }}</h5>
-    </a>
+    @for (item of items; track item) {
+      <a mat-list-item cdkDrag>
+        <i matListItemIcon class="fa-solid fa-grip-dots-vertical"></i>
+        <h5 matListItemTitle>{{ item.value }}</h5>
+      </a>
+    }
   </mat-nav-list>
 </mat-dialog-content>
 <mat-dialog-actions>

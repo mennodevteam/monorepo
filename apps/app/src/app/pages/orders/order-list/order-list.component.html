@@ -4,6 +4,10 @@
   </button>
 </mat-toolbar>
 
-<main *ngIf="orders">
-  <order-card *ngFor="let order of orders" [order]="order"></order-card>
-</main>
+@if (orders) {
+  <main>
+    @for (order of orders; track order) {
+      <order-card [order]="order"></order-card>
+    }
+  </main>
+}

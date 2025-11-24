@@ -3,8 +3,12 @@
     <button mat-icon-button goBack>
       <i class="fa-regular fa-arrow-right fa-large"></i>
     </button>
-    <h2 flex *ngIf="!product">{{ 'productEdit.newTitle' | translate }}</h2>
-    <h2 flex *ngIf="product">{{ 'productEdit.editTitle' | translate: { value: product.title } }}</h2>
+    @if (!product) {
+      <h2 flex>{{ 'productEdit.newTitle' | translate }}</h2>
+    }
+    @if (product) {
+      <h2 flex>{{ 'productEdit.editTitle' | translate: { value: product.title } }}</h2>
+    }
     <button mat-flat-button color="accent" (click)="save()" [disabled]="!form.dirty">
       {{ 'app.save' | translate }}
     </button>
@@ -26,10 +30,14 @@
             <mat-form-field>
               <mat-label>{{ 'productEdit.categoryLabel' | translate }}</mat-label>
               <mat-select formControlName="category" required>
-                <mat-option *ngFor="let cat of categories" [value]="cat">
-                  <i *ngIf="cat.faIcon" class="fa-solid fa-{{ cat.faIcon }}"></i>
-                  {{ cat.title }}
-                </mat-option>
+                @for (cat of categories; track cat) {
+                  <mat-option [value]="cat">
+                    @if (cat.faIcon) {
+                      <i class="fa-solid fa-{{ cat.faIcon }}"></i>
+                    }
+                    {{ cat.title }}
+                  </mat-option>
+                }
               </mat-select>
             </mat-form-field>
 
@@ -71,80 +79,94 @@
             <p>
               {{ 'productEdit.variantSectionDescription' | translate }}
             </p>
-            <mat-list
-              *ngIf="form.controls['variants'].value?.length"
-              cdkDropList
-              (cdkDropListDropped)="sortVariants($event)"
-            >
-              <mat-list-item *ngFor="let variant of form.controls['variants'].value" cdkDrag>
-                <i matListItemIcon class="fa-solid fa-grip-dots-vertical"></i>
-                <span matListItemTitle>{{ variant.title }}</span>
-                <div class="secondary" matListItemMeta>
-                  <b class="blue">{{ variant.price | menuCurrency }}</b>
-                  <button
-                    *ngIf="form.controls['variants'].value.length > 1"
-                    mat-stroked-button
-                    [mat-menu-trigger-for]="statusMenu"
-                  >
-                    <span *ngIf="variant.status === Status.Active">
-                      <i class="fa-solid fa-check-circle green"></i>
-                      {{ 'app.active' | translate }}
-                    </span>
-                    <span *ngIf="variant.status === Status.Blocked">
-                      <i class="fa-solid fa-circle-0 red"></i>
-                      {{ 'app.finished' | translate }}
-                    </span>
-                    <span *ngIf="variant.status === Status.Inactive">
-                      <i class="fa-solid fa-ban red"></i>
-                      {{ 'app.inactive' | translate }}
-                    </span>
-                  </button>
-                  <mat-menu #statusMenu="matMenu">
-                    <button mat-menu-item (click)="variant.status = Status.Active; form.markAsDirty()">
-                      <i class="fa-solid fa-check-circle mat-icon"></i>
-                      {{ 'app.active' | translate }}
-                    </button>
-                    <button mat-menu-item (click)="variant.status = Status.Blocked; form.markAsDirty()">
-                      <i class="fa-solid fa-circle-0 mat-icon"></i>
-                      {{ 'app.finished' | translate }}
-                    </button>
-                    <button mat-menu-item (click)="variant.status = Status.Inactive; form.markAsDirty()">
-                      <i class="fa-solid fa-ban mat-icon"></i>
-                      {{ 'app.inactive' | translate }}
-                    </button>
-                  </mat-menu>
-                  <button
-                    mat-stroked-button
-                    [mat-menu-trigger-for]="stockMenu"
-                    stopPropagation
-                    [disabled]="variant._changingStatus"
-                  >
-                    <span *ngIf="variant.stock == null">
-                      <i class="fa-solid fa-infinity green"></i>
-                      {{ 'productTable.infinity' | translate }}
-                    </span>
-                    <span *ngIf="variant.stock != null" [ngClass]="{ red: variant.stock === 0 }">
-                      {{ 'app.number' | translate: { value: variant.stock } }}
-                    </span>
-                  </button>
-                  <mat-menu #stockMenu="matMenu">
-                    <button mat-menu-item (click)="changeStock(variant, true)">
-                      <i class="fa-solid fa-infinity mat-icon"></i>
-                      {{ 'productTable.infinity' | translate }}
-                    </button>
-                    <button mat-menu-item (click)="changeStock(variant)">
-                      {{ 'productTable.setStock' | translate }}
-                    </button>
-                  </mat-menu>
-                  <button mat-icon-button (click)="editVariantDialog(variant)" [disabled]="!variant.id">
-                    <i class="fa-regular fa-pencil-alt"></i>
-                  </button>
-                  <button mat-icon-button (click)="removeVariant(variant)">
-                    <i class="fa-regular fa-trash-alt"></i>
-                  </button>
-                </div>
-              </mat-list-item>
-            </mat-list>
+            @if (form.controls['variants'].value?.length) {
+              <mat-list
+                cdkDropList
+                (cdkDropListDropped)="sortVariants($event)"
+                >
+                @for (variant of form.controls['variants'].value; track variant) {
+                  <mat-list-item cdkDrag>
+                    <i matListItemIcon class="fa-solid fa-grip-dots-vertical"></i>
+                    <span matListItemTitle>{{ variant.title }}</span>
+                    <div class="secondary" matListItemMeta>
+                      <b class="blue">{{ variant.price | menuCurrency }}</b>
+                      @if (form.controls['variants'].value.length > 1) {
+                        <button
+                          mat-stroked-button
+                          [mat-menu-trigger-for]="statusMenu"
+                          >
+                          @if (variant.status === Status.Active) {
+                            <span>
+                              <i class="fa-solid fa-check-circle green"></i>
+                              {{ 'app.active' | translate }}
+                            </span>
+                          }
+                          @if (variant.status === Status.Blocked) {
+                            <span>
+                              <i class="fa-solid fa-circle-0 red"></i>
+                              {{ 'app.finished' | translate }}
+                            </span>
+                          }
+                          @if (variant.status === Status.Inactive) {
+                            <span>
+                              <i class="fa-solid fa-ban red"></i>
+                              {{ 'app.inactive' | translate }}
+                            </span>
+                          }
+                        </button>
+                      }
+                      <mat-menu #statusMenu="matMenu">
+                        <button mat-menu-item (click)="variant.status = Status.Active; form.markAsDirty()">
+                          <i class="fa-solid fa-check-circle mat-icon"></i>
+                          {{ 'app.active' | translate }}
+                        </button>
+                        <button mat-menu-item (click)="variant.status = Status.Blocked; form.markAsDirty()">
+                          <i class="fa-solid fa-circle-0 mat-icon"></i>
+                          {{ 'app.finished' | translate }}
+                        </button>
+                        <button mat-menu-item (click)="variant.status = Status.Inactive; form.markAsDirty()">
+                          <i class="fa-solid fa-ban mat-icon"></i>
+                          {{ 'app.inactive' | translate }}
+                        </button>
+                      </mat-menu>
+                      <button
+                        mat-stroked-button
+                        [mat-menu-trigger-for]="stockMenu"
+                        stopPropagation
+                        [disabled]="variant._changingStatus"
+                        >
+                        @if (variant.stock == null) {
+                          <span>
+                            <i class="fa-solid fa-infinity green"></i>
+                            {{ 'productTable.infinity' | translate }}
+                          </span>
+                        }
+                        @if (variant.stock != null) {
+                          <span [ngClass]="{ red: variant.stock === 0 }">
+                            {{ 'app.number' | translate: { value: variant.stock } }}
+                          </span>
+                        }
+                      </button>
+                      <mat-menu #stockMenu="matMenu">
+                        <button mat-menu-item (click)="changeStock(variant, true)">
+                          <i class="fa-solid fa-infinity mat-icon"></i>
+                          {{ 'productTable.infinity' | translate }}
+                        </button>
+                        <button mat-menu-item (click)="changeStock(variant)">
+                          {{ 'productTable.setStock' | translate }}
+                        </button>
+                      </mat-menu>
+                      <button mat-icon-button (click)="editVariantDialog(variant)" [disabled]="!variant.id">
+                        <i class="fa-regular fa-pencil-alt"></i>
+                      </button>
+                      <button mat-icon-button (click)="removeVariant(variant)">
+                        <i class="fa-regular fa-trash-alt"></i>
+                      </button>
+                    </div>
+                  </mat-list-item>
+                }
+              </mat-list>
+            }
           </mat-card-content>
           <mat-card-actions>
             <button mat-button color="primary" (click)="editVariantDialog()">
@@ -161,23 +183,28 @@
 
         <mat-card>
           <mat-card-content>
-            <img *ngIf="!imageCropperResult" [imageLoader]="form.controls['images'].value[0]" />
-            <img *ngIf="imageCropperResult" [src]="imageCropperResult.base64" />
+            @if (!imageCropperResult) {
+              <img [imageLoader]="form.controls['images'].value[0]" />
+            }
+            @if (imageCropperResult) {
+              <img [src]="imageCropperResult.base64" />
+            }
           </mat-card-content>
           <mat-card-actions>
             <button mat-button color="primary" type="button" (click)="upload()">
               <i class="fa-regular fa-upload"></i>
               {{ 'app.upload' | translate }}
             </button>
-            <button
-              *ngIf="imageCropperResult"
-              mat-button
-              type="button"
-              (click)="imageCropperResult = undefined"
-            >
-              <i class="fa-regular fa-undo"></i>
-              {{ 'app.undo' | translate }}
-            </button>
+            @if (imageCropperResult) {
+              <button
+                mat-button
+                type="button"
+                (click)="imageCropperResult = undefined"
+                >
+                <i class="fa-regular fa-undo"></i>
+                {{ 'app.undo' | translate }}
+              </button>
+            }
             <div flex></div>
             <button mat-icon-button color="warn" type="button" (click)="removePhoto()">
               <i class="fa-regular fa-trash-alt"></i>
@@ -199,7 +226,7 @@
                 <mat-grid-tile
                   (click)="setSpan([1, 1])"
                   [class.selected]="form.controls['spans'].value[0] == 1"
-                >
+                  >
                   1x1
                 </mat-grid-tile>
                 <mat-grid-tile
@@ -208,7 +235,7 @@
                   [class.selected]="
                     form.controls['spans'].value[0] == 2 && form.controls['spans'].value[1] == 1
                   "
-                >
+                  >
                   2x1
                 </mat-grid-tile>
                 <mat-grid-tile
@@ -218,7 +245,7 @@
                   [class.selected]="
                     form.controls['spans'].value[0] == 2 && form.controls['spans'].value[1] == 2
                   "
-                >
+                  >
                   2x2
                 </mat-grid-tile>
               </mat-grid-list>

@@ -1,37 +1,49 @@
 <mat-grid-list [cols]="menuCols" gutterSize="4px" rowHeight="1:1">
-  <mat-grid-tile
-    matRipple
-    [rowspan]="product.details?.rowspan || 1"
-    [colspan]="product.details?.colspan || 1"
-    class="product-tile"
-    [ngClass]="{ finished: product.status === Status.Blocked }"
-    *ngFor="let product of category.products"
-    routerLink="/menu/product/{{ product.id }}"
-    [imageLoader]="product.imageFiles?.[0]?.xs || (product.images ? product.images[0] : undefined) || undefined"
-  >
-    <!-- <div class="badge tertiary on-tertiary-text mat-elevation-z3" *ngIf="product._orderItem?.quantity">
+  @for (product of category.products; track product) {
+    <mat-grid-tile
+      matRipple
+      [rowspan]="product.details?.rowspan || 1"
+      [colspan]="product.details?.colspan || 1"
+      class="product-tile"
+      [ngClass]="{ finished: product.status === Status.Blocked }"
+      routerLink="/menu/product/{{ product.id }}"
+      [imageLoader]="product.imageFiles?.[0]?.xs || (product.images ? product.images[0] : undefined) || undefined"
+      >
+      <!-- <div class="badge tertiary on-tertiary-text mat-elevation-z3" *ngIf="product._orderItem?.quantity">
       {{ product._orderItem?.quantity }}
     </div> -->
-    <discount-badge *ngIf="Product.hasDiscount(product)">
-      <span *ngIf="menuCols > 2">{{ Product.percentageDiscount(product) }}%</span>
-      <span *ngIf="menuCols <= 2">
-        {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
-      </span>
-    </discount-badge>
-    <mat-grid-tile-footer *ngIf="!product.details?.hideTitle || !product.details?.hidePrice">
-      <span class="product-title cut-text" [hidden]="!!product.details?.hideTitle">
-        {{ product.title }}
-      </span>
-      <span
-        class="product-price"
-        *ngIf="product.status === Status.Active"
-        [hidden]="product.details?.hidePrice"
-      >
-        {{ Product.totalPrice(product) | menuCurrency }}
-      </span>
-      <span class="product-price" *ngIf="product.status === Status.Blocked">
-        {{ 'app.finished' | translate }}
-      </span>
-    </mat-grid-tile-footer>
+    @if (Product.hasDiscount(product)) {
+      <discount-badge>
+        @if (menuCols > 2) {
+          <span>{{ Product.percentageDiscount(product) }}%</span>
+        }
+        @if (menuCols <= 2) {
+          <span>
+            {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
+          </span>
+        }
+      </discount-badge>
+    }
+    @if (!product.details?.hideTitle || !product.details?.hidePrice) {
+      <mat-grid-tile-footer>
+        <span class="product-title cut-text" [hidden]="!!product.details?.hideTitle">
+          {{ product.title }}
+        </span>
+        @if (product.status === Status.Active) {
+          <span
+            class="product-price"
+            [hidden]="product.details?.hidePrice"
+            >
+            {{ Product.totalPrice(product) | menuCurrency }}
+          </span>
+        }
+        @if (product.status === Status.Blocked) {
+          <span class="product-price">
+            {{ 'app.finished' | translate }}
+          </span>
+        }
+      </mat-grid-tile-footer>
+    }
   </mat-grid-tile>
+}
 </mat-grid-list>

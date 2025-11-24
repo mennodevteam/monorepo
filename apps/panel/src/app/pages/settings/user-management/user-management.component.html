@@ -18,8 +18,12 @@
         (editEmit)="openAddShopUsersDialog($event)"
         (removeEmit)="removeShopUsers($event)"
       ></app-user-management-table>
-      <mat-spinner *ngIf="!shopUsers" [diameter]="32" color="primary"></mat-spinner>
-      <empty-state *ngIf="shopUsers?.length === 0" icon="fa-users"></empty-state>
+      @if (!shopUsers) {
+        <mat-spinner [diameter]="32" color="primary"></mat-spinner>
+      }
+      @if (shopUsers?.length === 0) {
+        <empty-state icon="fa-users"></empty-state>
+      }
     </mat-card-content>
   </mat-card>
 </main>

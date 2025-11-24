@@ -1,24 +1,27 @@
 <mat-card>
   <mat-card-content>
     <mat-list>
-      <mat-list-item *ngFor="let p of printers">
-        <i matListItemIcon class="fa-solid fa-print fa-large"></i>
-        <h4 matListItemTitle>{{ p.title }}</h4>
-        <p matListItemLine>{{ p.printer.name }}</p>
-        <div matListItemMeta>
-          <button mat-icon-button (click)="PS.openSaveDialog(p)">
-            <i class="fa-regular fa-pencil"></i>
-          </button>
-          <button mat-icon-button color="warn" (click)="remove(p)">
-            <i class="fa-regular fa-trash-alt"></i>
-          </button>
-        </div>
-      </mat-list-item>
+      @for (p of printers; track p) {
+        <mat-list-item>
+          <i matListItemIcon class="fa-solid fa-print fa-large"></i>
+          <h4 matListItemTitle>{{ p.title }}</h4>
+          <p matListItemLine>{{ p.printer.name }}</p>
+          <div matListItemMeta>
+            <button mat-icon-button (click)="PS.openSaveDialog(p)">
+              <i class="fa-regular fa-pencil"></i>
+            </button>
+            <button mat-icon-button color="warn" (click)="remove(p)">
+              <i class="fa-regular fa-trash-alt"></i>
+            </button>
+          </div>
+        </mat-list-item>
+      }
     </mat-list>
-    <empty-state
-      *ngIf="!printers.length"
-      icon="fa-print"
-      text="{{ 'printers.emptyState' | translate }}"
-    ></empty-state>
+    @if (!printers.length) {
+      <empty-state
+        icon="fa-print"
+        text="{{ 'printers.emptyState' | translate }}"
+      ></empty-state>
+    }
   </mat-card-content>
 </mat-card>

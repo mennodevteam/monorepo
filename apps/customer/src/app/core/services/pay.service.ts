@@ -1,15 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AnalyticsService } from './analytics.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PayService {
-  constructor(
-    private http: HttpClient,
-    private analytics: AnalyticsService,
-  ) {}
+  private http = inject(HttpClient);
+  private analytics = inject(AnalyticsService);
 
   async redirect(link: string) {
     try {
@@ -23,6 +21,8 @@ export class PayService {
       document.body.appendChild(form);
       form.submit();
       document.body.removeChild(form);
-    } catch (error) {}
+    } catch (error) {
+      // Ignore errors during redirect
+    }
   }
 }

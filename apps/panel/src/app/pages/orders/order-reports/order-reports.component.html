@@ -95,7 +95,9 @@
           </mat-button-toggle-group>
           <span spacer-2x></span>
 
-          <mat-spinner [diameter]="24" *ngIf="loading"></mat-spinner>
+          @if (loading) {
+            <mat-spinner [diameter]="24"></mat-spinner>
+          }
           <div [hidden]="loading">
             <div>
               <canvas baseChart [data]="chartData" [options]="chartOptions" [type]="chartType"></canvas>
@@ -121,10 +123,12 @@
               </span>
             </button>
             <mat-menu #printMenu="matMenu">
-              <button mat-menu-item *ngFor="let p of printers" (click)="print(p)" type="button">
-                <i class="fa-solid fa-print mat-icon"></i>
-                <span>{{ p.title }}</span>
-              </button>
+              @for (p of printers; track p) {
+                <button mat-menu-item (click)="print(p)" type="button">
+                  <i class="fa-solid fa-print mat-icon"></i>
+                  <span>{{ p.title }}</span>
+                </button>
+              }
             </mat-menu>
           </mat-toolbar>
 

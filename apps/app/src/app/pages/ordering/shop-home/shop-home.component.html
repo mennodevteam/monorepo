@@ -3,7 +3,9 @@
     <img [imageLoader]="shop?.logoImage?.sm || shop?.logo" id="logo" />
     <div class="header-texts">
       <h1 id="title">{{ shop?.title }}</h1>
-      <p *ngIf="shop?.description" id="description">{{ shop?.description }}</p>
+      @if (shop?.description) {
+        <p id="description">{{ shop?.description }}</p>
+      }
     </div>
 
     <button mat-raised-button color="primary" routerLink="menu" class="submit-button">
@@ -11,52 +13,59 @@
       <i class="fa-solid fa-utensils fa-large"></i>
     </button>
 
-    <ng-container *ngIf="shop?.club">
+    @if (shop?.club) {
       <button
         class="member-button"
         mat-stroked-button
         [disabled]="member || loadingMember"
         color="primary"
         (click)="join()"
-      >
-        <span *ngIf="member">
-          <i class="fa-solid fa-check-circle success-text fa-lg"></i>
-          شما عضو باشگاه مشتریان هستید
-        </span>
-        <span *ngIf="!member"> عضویت در باشگاه مشتریان </span>
+        >
+        @if (member) {
+          <span>
+            <i class="fa-solid fa-check-circle success-text fa-lg"></i>
+            شما عضو باشگاه مشتریان هستید
+          </span>
+        }
+        @if (!member) {
+          <span> عضویت در باشگاه مشتریان </span>
+        }
       </button>
-    </ng-container>
+    }
   </header>
 
   <mat-nav-list>
-    <a *ngIf="shop?.phones" mat-list-item href="tel:{{ shop!.phones[0] }}">
-      <span matListItemTitle>تلفن</span>
-      <span matListItemLine>
-        {{ shop?.phones }}
-      </span>
-      <div class="secondary" matListItemMeta>
-        <i class="fa-solid fa-phone"></i>
-      </div>
-    </a>
-    <a
-      mat-list-item
-      *ngIf="shop?.instagram"
-      href="https://www.instagram.com/{{ shop?.instagram }}"
-      target="_blank"
-    >
-      <span matListItemTitle>اینستاگرام</span>
-      <span matListItemLine>
-        {{ shop?.instagram }}
-      </span>
-      <div class="secondary" matListItemMeta>
-        <i class="fa-brands fa-instagram"></i>
-      </div>
-    </a>
-    <a
-      mat-list-item
-      lines="3"
-      *ngIf="shop?.address"
-      target="_blank"
+    @if (shop?.phones) {
+      <a mat-list-item href="tel:{{ shop!.phones[0] }}">
+        <span matListItemTitle>تلفن</span>
+        <span matListItemLine>
+          {{ shop?.phones }}
+        </span>
+        <div class="secondary" matListItemMeta>
+          <i class="fa-solid fa-phone"></i>
+        </div>
+      </a>
+    }
+    @if (shop?.instagram) {
+      <a
+        mat-list-item
+        href="https://www.instagram.com/{{ shop?.instagram }}"
+        target="_blank"
+        >
+        <span matListItemTitle>اینستاگرام</span>
+        <span matListItemLine>
+          {{ shop?.instagram }}
+        </span>
+        <div class="secondary" matListItemMeta>
+          <i class="fa-brands fa-instagram"></i>
+        </div>
+      </a>
+    }
+    @if (shop?.address) {
+      <a
+        mat-list-item
+        lines="3"
+        target="_blank"
       [attr.href]="
         shop?.latitude && shop?.longitude
           ? 'geo:' +
@@ -72,71 +81,79 @@
             ')'
           : null
       "
-    >
-      <span matListItemTitle>آدرس</span>
-      <span>
-        {{ shop?.address }}
-      </span>
-      <div class="secondary" matListItemMeta>
-        <i class="fa-solid fa-location-dot"></i>
-      </div>
-    </a>
+        >
+        <span matListItemTitle>آدرس</span>
+        <span>
+          {{ shop?.address }}
+        </span>
+        <div class="secondary" matListItemMeta>
+          <i class="fa-solid fa-location-dot"></i>
+        </div>
+      </a>
+    }
 
     <mat-divider></mat-divider>
 
-    <a mat-list-item *ngIf="shop?.shopGroup" routerLink="/g">
-      <span matListItemTitle> لیست سایر {{ shop?.shopGroup?.listName || 'شعب' }} </span>
-      <div class="secondary" matListItemMeta>
-        <i class="fa-sharp fa-solid fa-sitemap"></i>
-      </div>
-    </a>
+    @if (shop?.shopGroup) {
+      <a mat-list-item routerLink="/g">
+        <span matListItemTitle> لیست سایر {{ shop?.shopGroup?.listName || 'شعب' }} </span>
+        <div class="secondary" matListItemMeta>
+          <i class="fa-sharp fa-solid fa-sitemap"></i>
+        </div>
+      </a>
+    }
 
     <a mat-list-item routerLink="/club">
       <span matListItemTitle>
         باشگاه مشتریان
-        <span *ngIf="couponCount" style="font-size: 11px" class="error-text"
-          >({{ 'app.number' | translate: { value: couponCount } }})</span
-        >
-      </span>
-      <div class="secondary" matListItemMeta>
-        <i class="fa-sharp fa-solid fa-tags"></i>
-      </div>
-    </a>
+        @if (couponCount) {
+          <span style="font-size: 11px" class="error-text"
+            >({{ 'app.number' | translate: { value: couponCount } }})</span
+            >
+          }
+        </span>
+        <div class="secondary" matListItemMeta>
+          <i class="fa-sharp fa-solid fa-tags"></i>
+        </div>
+      </a>
 
-    <a mat-list-item routerLink="/orders">
-      <span matListItemTitle>لیست سفارشات پیشین</span>
-      <div class="secondary" matListItemMeta>
-        <i class="fa-sharp fa-solid fa-clock-rotate-left"></i>
-      </div>
-    </a>
+      <a mat-list-item routerLink="/orders">
+        <span matListItemTitle>لیست سفارشات پیشین</span>
+        <div class="secondary" matListItemMeta>
+          <i class="fa-sharp fa-solid fa-clock-rotate-left"></i>
+        </div>
+      </a>
 
-    <a mat-list-item routerLink="/profile">
-      <span matListItemTitle>حساب کاربری</span>
-      <div class="secondary" matListItemMeta>
-        <i class="fa-sharp fa-solid fa-user"></i>
-      </div>
-    </a>
-  </mat-nav-list>
-  <div
-    class="enamad surface-variant"
-    [innerHTML]="sanitizeEnamadInnerHtml"
-    *ngIf="sanitizeEnamadInnerHtml"
-  ></div>
-  <div class="enamad surface-variant" *ngIf="shop?.details?.enamad">
-    <a
-      referrerpolicy="origin"
-      target="_blank"
+      <a mat-list-item routerLink="/profile">
+        <span matListItemTitle>حساب کاربری</span>
+        <div class="secondary" matListItemMeta>
+          <i class="fa-sharp fa-solid fa-user"></i>
+        </div>
+      </a>
+    </mat-nav-list>
+    @if (sanitizeEnamadInnerHtml) {
+      <div
+        class="enamad surface-variant"
+        [innerHTML]="sanitizeEnamadInnerHtml"
+      ></div>
+    }
+    @if (shop?.details?.enamad) {
+      <div class="enamad surface-variant">
+        <a
+          referrerpolicy="origin"
+          target="_blank"
       href="https://trustseal.enamad.ir/u?id={{ shop?.details?.enamad?.id }}&code={{
         shop?.details?.enamad?.code
       }}"
-      ><img
-        referrerpolicy="origin"
+          ><img
+          referrerpolicy="origin"
         src="https://trustseal.enamad.ir/logo.aspx?id={{ shop?.details?.enamad?.id }}&code={{
           shop?.details?.enamad?.code
         }}"
-        alt=""
-        style="cursor: pointer"
-        [attr.code]="shop?.details?.enamad?.code"
-    /></a>
+          alt=""
+          style="cursor: pointer"
+          [attr.code]="shop?.details?.enamad?.code"
+        /></a>
+      </div>
+    }
   </div>
-</div>

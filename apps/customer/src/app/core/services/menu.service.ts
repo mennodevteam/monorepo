@@ -45,6 +45,7 @@ export class MenuService {
   }
 
   getProductById(id: string): Product | null {
-    return Menu.getProductById(this.data()!, id);
+    const data = this.data();
+    return data ? Menu.getProductById(data, id) : null;
   }
 }

@@ -1,5 +1,7 @@
 <mat-dialog-content>
-  <mat-spinner [diameter]="24" *ngIf="!imageChangedEvent" style="margin: 24px auto"></mat-spinner>
+  @if (!imageChangedEvent) {
+    <mat-spinner [diameter]="24" style="margin: 24px auto"></mat-spinner>
+  }
   <div>
     <image-cropper
       style="max-height: 60vh"
@@ -28,5 +30,5 @@
     type="file"
     (change)="fileChangeEvent($event)"
     accept="image/x-png,image/gif,image/jpeg,image/heic"
-  />
+    />
 </mat-dialog-actions>

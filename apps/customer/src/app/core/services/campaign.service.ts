@@ -28,9 +28,9 @@ export class CampaignService {
   }
 
   get params() {
-    const params: any = {};
-    if (this.campaign) params.campaign = this.campaign;
-    if (this.referrer) params.referrer = this.referrer;
+    const params: Record<string, string> = {};
+    if (this.campaign) params['campaign'] = this.campaign;
+    if (this.referrer) params['referrer'] = this.referrer;
     return params;
   }
 }

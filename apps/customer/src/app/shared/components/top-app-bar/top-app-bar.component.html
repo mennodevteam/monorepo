@@ -1,11 +1,11 @@
 <mat-toolbar>
   @if (!isRootPage()) {
-    <button mat-icon-button goBack>
+    <button mat-icon-button appGoBack>
       <ng-icon [svg]="backIcon"></ng-icon>
     </button>
   } @else {
     @if (shopLogoUrl(); as logo) {
-      <img [imageLoader]="logo" [alt]="shopTitle()" />
+      <img [appImageLoader]="logo" [alt]="shopTitle()" />
     }
   }
   <h1>

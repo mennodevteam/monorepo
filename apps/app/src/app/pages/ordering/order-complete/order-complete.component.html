@@ -3,7 +3,9 @@
   <h2>{{ 'orderComplete.title' | translate }}</h2>
   <a mat-flat-button color="primary" (click)="goToOrderPage()">
     {{ 'orderComplete.action' | translate }}
-    <span *ngIf="timer > 0"> ({{ timer }}) </span>
+    @if (timer > 0) {
+      <span> ({{ timer }}) </span>
+    }
   </a>
 </div>
 

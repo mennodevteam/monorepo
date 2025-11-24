@@ -28,7 +28,7 @@ export class ProductDetailsComponent {
   hasInCart = computed(() => {
     return !!this.cart.quantity().find((x) => x.productId === this.product?.id && x.quantity);
   });
-  isFirstRoute = this.router.getCurrentNavigation()?.previousNavigation == null;
+  isFirstRoute = this.router.currentNavigation()?.previousNavigation == null;
   constructor(
     public menuService: MenuService,
     public cart: CartService,

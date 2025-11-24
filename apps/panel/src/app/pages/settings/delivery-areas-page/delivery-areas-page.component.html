@@ -8,7 +8,7 @@
 <mat-drawer-container>
   <mat-drawer mode="side" opened disableClose>
     <mat-list>
-      <ng-container *ngFor="let area of deliveryAreas">
+      @for (area of deliveryAreas; track area) {
         <mat-list-item>
           <span matListItemTitle>{{ area.title }}</span>
           <span matListItemLine>{{ area.price | menuCurrency }}</span>
@@ -27,17 +27,17 @@
           </mat-menu>
         </mat-list-item>
         <mat-divider></mat-divider>
-      </ng-container>
+      }
     </mat-list>
   </mat-drawer>
   <mat-drawer-content>
-    <ng-container *ngIf="deliveryAreas">
+    @if (deliveryAreas) {
       <app-delivery-map
         class="map"
         [deliveryAreas]="deliveryAreas"
         (onAdd)="openEditDialog(undefined, $event)"
         (onEdit)="onEditDraw($event)"
       ></app-delivery-map>
-    </ng-container>
+    }
   </mat-drawer-content>
 </mat-drawer-container>

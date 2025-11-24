@@ -9,32 +9,48 @@
   <ng-container matColumnDef="type">
     <th mat-header-cell *matHeaderCellDef>{{ 'smsSettings.orderType' | translate }}</th>
     <td mat-cell *matCellDef="let message">
-      <span *ngIf="message.type != undefined">{{ message.type | orderType }}</span>
-      <span *ngIf="message.type == undefined">{{ 'app.all' | translate }}</span>
+      @if (message.type != undefined) {
+        <span>{{ message.type | orderType }}</span>
+      }
+      @if (message.type == undefined) {
+        <span>{{ 'app.all' | translate }}</span>
+      }
     </td>
   </ng-container>
 
   <ng-container matColumnDef="state">
     <th mat-header-cell *matHeaderCellDef>{{ 'smsSettings.orderState' | translate }}</th>
     <td mat-cell *matCellDef="let message">
-      <span *ngIf="message.state != undefined">{{ message.state | orderState }}</span>
-      <span *ngIf="message.state == undefined">{{ 'app.all' | translate }}</span>
+      @if (message.state != undefined) {
+        <span>{{ message.state | orderState }}</span>
+      }
+      @if (message.state == undefined) {
+        <span>{{ 'app.all' | translate }}</span>
+      }
     </td>
   </ng-container>
 
   <ng-container matColumnDef="payment">
     <th mat-header-cell *matHeaderCellDef>{{ 'smsSettings.orderPayment' | translate }}</th>
     <td mat-cell *matCellDef="let message">
-      <span *ngIf="message.payment != undefined">{{ message.payment | orderPayment }}</span>
-      <span *ngIf="message.payment == undefined">{{ 'app.all' | translate }}</span>
+      @if (message.payment != undefined) {
+        <span>{{ message.payment | orderPayment }}</span>
+      }
+      @if (message.payment == undefined) {
+        <span>{{ 'app.all' | translate }}</span>
+      }
     </td>
   </ng-container>
 
   <ng-container matColumnDef="manual">
     <th mat-header-cell *matHeaderCellDef>{{ 'smsSettings.orderManual' | translate }}</th>
     <td mat-cell *matCellDef="let message">
-      <span *ngIf="message.isManual != undefined">{{ message.isManual }}</span>
-      <span *ngIf="message.isManual == undefined">{{ 'app.all' | translate }}</span>
+      @if (message.isManual != undefined) {
+        <span>{{ message.isManual }}</span>
+      }
+      @if (message.isManual == undefined) {
+        <span>{{ 'app.all' | translate }}</span>
+      }
     </td>
   </ng-container>
 
@@ -61,7 +77,7 @@
         [disabled]="message.status === Status.Pending"
         [checked]="message.status == Status.Active"
         (change)="changeMessageStatus(message, $event)"
-      >
+        >
         {{ (message.status ? 'app.active' : 'app.inactive') | translate }}
       </mat-slide-toggle>
     </td>

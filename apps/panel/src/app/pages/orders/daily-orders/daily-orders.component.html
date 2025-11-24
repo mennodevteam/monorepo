@@ -1,71 +1,82 @@
-<mat-toolbar class="page-toolbar" *ngIf="!grouping">
-  <button mat-icon-button (click)="goToPrevDate()" class="hide-xs">
-    <i class="fa-regular fa-angle-right"></i>
-  </button>
-  <button mat-stroked-button (click)="picker.open()" style="width: 100px">
-    {{ date() | pdate: 'YYYY/MM/DD' }}
-  </button>
-  <input hidden [matDatepicker]="picker" [formControl]="dateControl" [max]="today" />
-  <mat-datepicker touchUi #picker></mat-datepicker>
-  <button mat-icon-button [disabled]="isToday()" (click)="goToNextDate()" class="hide-xs">
-    <i class="fa-regular fa-angle-left"></i>
-  </button>
-  <button mat-icon-button *ngIf="!isToday()" color="warn" (click)="goToToday()">
-    <i class="fa-regular fa-angles-left"></i>
-  </button>
-  <span flex></span>
-  <button mat-stroked-button class="hide-xs" (click)="grouping = true">
-    <i class="fa-regular fa-code-merge fa-sm"></i>
-    {{ 'dailyOrder.group' | translate }}
-  </button>
-  <button mat-stroked-button routerLink="../filter" class="hide-xs" [disabled]="!accessReport">
-    <i class="fa-regular fa-filter-list fa-sm"></i>
-    {{ 'dailyOrder.advancedFilter' | translate }}
-  </button>
-  <button mat-stroked-button [matMenuTriggerFor]="reportMenu" class="hide-xs" [disabled]="!accessReport">
-    <i class="fa-regular fa-chart-line fa-sm"></i>
-    {{ 'dailyOrder.report' | translate }}
-  </button>
-  <button mat-icon-button class="show-xs" (click)="grouping = true">
-    <i class="fa-regular fa-code-merge fa-sm"></i>
-  </button>
-  <button mat-icon-button routerLink="../filter" class="show-xs" [disabled]="!accessReport">
-    <i class="fa-regular fa-filter-list fa-sm"></i>
-  </button>
-  <button mat-icon-button [matMenuTriggerFor]="reportMenu" class="show-xs" [disabled]="!accessReport">
-    <i class="fa-regular fa-chart-line fa-sm"></i>
-  </button>
-  <mat-menu #reportMenu="matMenu">
-    <button mat-menu-item disabled>
-      {{ 'dailyOrder.totalPrice' | translate }}: {{ totalPrice() | menuCurrency: undefined : true }}
+@if (!grouping) {
+  <mat-toolbar class="page-toolbar">
+    <button mat-icon-button (click)="goToPrevDate()" class="hide-xs">
+      <i class="fa-regular fa-angle-right"></i>
     </button>
-    <button mat-menu-item disabled>
-      {{ 'dailyOrder.payedTotalPrice' | translate }}: {{ payedTotalPrice() | menuCurrency: undefined : true }}
+    <button mat-stroked-button (click)="picker.open()" style="width: 100px">
+      {{ date() | pdate: 'YYYY/MM/DD' }}
     </button>
-    <mat-divider></mat-divider>
-    <button mat-menu-item routerLink="../report">
-      {{ 'dailyOrder.advancedReport' | translate }}
+    <input hidden [matDatepicker]="picker" [formControl]="dateControl" [max]="today" />
+    <mat-datepicker touchUi #picker></mat-datepicker>
+    <button mat-icon-button [disabled]="isToday()" (click)="goToNextDate()" class="hide-xs">
+      <i class="fa-regular fa-angle-left"></i>
     </button>
-  </mat-menu>
-</mat-toolbar>
-<mat-toolbar class="page-toolbar form-theme" *ngIf="grouping">
-  <i class="red fa-solid fa-circle-info"></i>
-  {{ 'dailyOrder.grouping' | translate }}...
-  <span flex></span>
-  <button *ngIf="!savingGroup" mat-button (click)="cancelGrouping()">
-    {{ 'app.cancel' | translate }}
-  </button>
-  <button
-    *ngIf="!savingGroup"
-    mat-flat-button
-    color="accent"
-    (click)="mergeGroup()"
-    [disabled]="selectedOrders.length < 2"
-  >
-    {{ 'app.ok' | translate }}
-  </button>
-  <mat-spinner [diameter]="24" *ngIf="savingGroup"></mat-spinner>
-</mat-toolbar>
+    @if (!isToday()) {
+      <button mat-icon-button color="warn" (click)="goToToday()">
+        <i class="fa-regular fa-angles-left"></i>
+      </button>
+    }
+    <span flex></span>
+    <button mat-stroked-button class="hide-xs" (click)="grouping = true">
+      <i class="fa-regular fa-code-merge fa-sm"></i>
+      {{ 'dailyOrder.group' | translate }}
+    </button>
+    <button mat-stroked-button routerLink="../filter" class="hide-xs" [disabled]="!accessReport">
+      <i class="fa-regular fa-filter-list fa-sm"></i>
+      {{ 'dailyOrder.advancedFilter' | translate }}
+    </button>
+    <button mat-stroked-button [matMenuTriggerFor]="reportMenu" class="hide-xs" [disabled]="!accessReport">
+      <i class="fa-regular fa-chart-line fa-sm"></i>
+      {{ 'dailyOrder.report' | translate }}
+    </button>
+    <button mat-icon-button class="show-xs" (click)="grouping = true">
+      <i class="fa-regular fa-code-merge fa-sm"></i>
+    </button>
+    <button mat-icon-button routerLink="../filter" class="show-xs" [disabled]="!accessReport">
+      <i class="fa-regular fa-filter-list fa-sm"></i>
+    </button>
+    <button mat-icon-button [matMenuTriggerFor]="reportMenu" class="show-xs" [disabled]="!accessReport">
+      <i class="fa-regular fa-chart-line fa-sm"></i>
+    </button>
+    <mat-menu #reportMenu="matMenu">
+      <button mat-menu-item disabled>
+        {{ 'dailyOrder.totalPrice' | translate }}: {{ totalPrice() | menuCurrency: undefined : true }}
+      </button>
+      <button mat-menu-item disabled>
+        {{ 'dailyOrder.payedTotalPrice' | translate }}: {{ payedTotalPrice() | menuCurrency: undefined : true }}
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item routerLink="../report">
+        {{ 'dailyOrder.advancedReport' | translate }}
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+}
+@if (grouping) {
+  <mat-toolbar class="page-toolbar form-theme">
+    <i class="red fa-solid fa-circle-info"></i>
+    {{ 'dailyOrder.grouping' | translate }}...
+    <span flex></span>
+    @if (!savingGroup) {
+      <button mat-button (click)="cancelGrouping()">
+        {{ 'app.cancel' | translate }}
+      </button>
+    }
+    @if (!savingGroup) {
+      <button
+        mat-flat-button
+        color="accent"
+        (click)="mergeGroup()"
+        [disabled]="selectedOrders.length < 2"
+        >
+        {{ 'app.ok' | translate }}
+      </button>
+    }
+    @if (savingGroup) {
+      <mat-spinner [diameter]="24"></mat-spinner>
+    }
+  </mat-toolbar>
+}
 <nav mat-tab-nav-bar mat-stretch-tabs="false" class="border-bottom" [tabPanel]="tabPanel">
   <a mat-tab-link (click)="stateFilter.set('all')" [active]="stateFilter() === 'all'">
     {{ 'dailyOrder.filter.all' | translate }}
@@ -90,34 +101,42 @@
   </a>
 </nav>
 <main class="content-wrapper">
-  <mat-chip-listbox
-    (change)="tableFilter.set($event.value)"
-    [value]="tableFilter()"
-    *ngIf="tables && tables.length"
-  >
-    <mat-chip-option [value]="null" color="warn" *ngIf="tableFilter()">
-      <i class="fa-solid fa-close"></i>
-      {{ 'dailyOrder.removeTableFilter' | translate }}
-    </mat-chip-option>
-    <mat-chip-option [value]="t.code" *ngFor="let t of tables">{{ t.code }}</mat-chip-option>
-  </mat-chip-listbox>
+  @if (tables && tables.length) {
+    <mat-chip-listbox
+      (change)="tableFilter.set($event.value)"
+      [value]="tableFilter()"
+      >
+      @if (tableFilter()) {
+        <mat-chip-option [value]="null" color="warn">
+          <i class="fa-solid fa-close"></i>
+          {{ 'dailyOrder.removeTableFilter' | translate }}
+        </mat-chip-option>
+      }
+      @for (t of tables; track t) {
+        <mat-chip-option [value]="t.code">{{ t.code }}</mat-chip-option>
+      }
+    </mat-chip-listbox>
+  }
   <span spacer-sm></span>
   <mat-tab-nav-panel #tabPanel>
     <mat-card>
       <mat-card-content style="overflow-x: auto">
-        <ng-container *ngIf="orders() && !ordersQuery.isLoading()">
+        @if (orders() && !ordersQuery.isLoading()) {
           <orders-table
             [showCheckbox]="grouping"
             [orders]="orders"
             (orderClicked)="orderClicked($event)"
           ></orders-table>
-          <empty-state
-            *ngIf="!orders().length"
-            icon="fa-face-frown"
-            text="{{ 'dailyOrder.emptyState' | translate }}"
-          ></empty-state>
-        </ng-container>
-        <mat-spinner class="loading-spinner" *ngIf="ordersQuery.isLoading()" [diameter]="24"></mat-spinner>
+          @if (!orders().length) {
+            <empty-state
+              icon="fa-face-frown"
+              text="{{ 'dailyOrder.emptyState' | translate }}"
+            ></empty-state>
+          }
+        }
+        @if (ordersQuery.isLoading()) {
+          <mat-spinner class="loading-spinner" [diameter]="24"></mat-spinner>
+        }
       </mat-card-content>
     </mat-card>
   </mat-tab-nav-panel>

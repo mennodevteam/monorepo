@@ -6,52 +6,63 @@
   <h1>{{ 'basket.pageTitle' | translate }}</h1>
 </mat-toolbar>
 <main>
-  <p *ngIf="!items?.length" class="empty outline-text">{{ 'basket.emptyDescription' | translate }}</p>
+  @if (!items?.length) {
+    <p class="empty outline-text">{{ 'basket.emptyDescription' | translate }}</p>
+  }
 
-  <ng-container *ngIf="items?.length">
+  @if (items?.length) {
     <mat-list>
-      <mat-list-item *ngFor="let item of items" class="product-item">
-        <h3 matListItemTitle>{{ item.title }}</h3>
-        <p matListItemLine>{{ item.price | menuCurrency }}</p>
-        <div matListItemMeta>
-          <count-selector
-            [(count)]="item.quantity"
-            (plusClick)="basket.plus(item.product!, item.productVariant)"
-            (minusClick)="basket.minus(item.product!, item.productVariant)"
-          ></count-selector>
-        </div>
-      </mat-list-item>
+      @for (item of items; track item) {
+        <mat-list-item class="product-item">
+          <h3 matListItemTitle>{{ item.title }}</h3>
+          <p matListItemLine>{{ item.price | menuCurrency }}</p>
+          <div matListItemMeta>
+            <count-selector
+              [(count)]="item.quantity"
+              (plusClick)="basket.plus(item.product!, item.productVariant)"
+              (minusClick)="basket.minus(item.product!, item.productVariant)"
+            ></count-selector>
+          </div>
+        </mat-list-item>
+      }
       <mat-divider></mat-divider>
-      <mat-list-item *ngFor="let item of abstractItems">
-        <h3 matListItemTitle>{{ item.title }}</h3>
-        <span matListItemLine *ngIf="item.title === DISCOUNT_CODE_TITLE && basket.discountCoupon">
-          {{ 'basket.discountCouponTitle' | translate: { value: basket.discountCoupon.title } }}
-        </span>
-        <div matListItemMeta style="display: flex" [class.error-text]="item.price < 0">
+      @for (item of abstractItems; track item) {
+        <mat-list-item>
+          <h3 matListItemTitle>{{ item.title }}</h3>
+          @if (item.title === DISCOUNT_CODE_TITLE && basket.discountCoupon) {
+            <span matListItemLine>
+              {{ 'basket.discountCouponTitle' | translate: { value: basket.discountCoupon.title } }}
+            </span>
+          }
+          <div matListItemMeta style="display: flex" [class.error-text]="item.price < 0">
+            @if (item.title === DISCOUNT_CODE_TITLE) {
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="basket.discountCoupon = undefined"
+                >
+                <i class="fa-regular fa-times-circle"></i>
+              </button>
+            }
+            <p>{{ Math.abs(item.price) | menuCurrency }}</p>
+          </div>
+        </mat-list-item>
+      }
+      @if (!basket.discountCoupon) {
+        <mat-list-item>
+          <h3 matListItemTitle>{{ 'basket.discountCoupon' | translate }}</h3>
           <button
-            mat-icon-button
-            color="warn"
-            (click)="basket.discountCoupon = undefined"
-            *ngIf="item.title === DISCOUNT_CODE_TITLE"
-          >
-            <i class="fa-regular fa-times-circle"></i>
+            mat-button
+            color="accent"
+            matListItemMeta
+            class="primary-text"
+            (click)="getNewDiscountCouponCode()"
+            >
+            {{ 'basket.setDiscountCoupon' | translate }}
+            <i class="fa-regular fa-angle-left"></i>
           </button>
-          <p>{{ Math.abs(item.price) | menuCurrency }}</p>
-        </div>
-      </mat-list-item>
-      <mat-list-item *ngIf="!basket.discountCoupon">
-        <h3 matListItemTitle>{{ 'basket.discountCoupon' | translate }}</h3>
-        <button
-          mat-button
-          color="accent"
-          matListItemMeta
-          class="primary-text"
-          (click)="getNewDiscountCouponCode()"
-        >
-          {{ 'basket.setDiscountCoupon' | translate }}
-          <i class="fa-regular fa-angle-left"></i>
-        </button>
-      </mat-list-item>
+        </mat-list-item>
+      }
       <mat-list-item class="total">
         <h3 matListItemTitle>
           <b>{{ 'basket.total' | translate }}</b>
@@ -71,19 +82,22 @@
         [rows]="5"
       ></textarea>
     </mat-form-field>
-  </ng-container>
+  }
 </main>
 
-<div *ngIf="disableOrdering" style="padding: 24px">
-  <disable-ordering-card></disable-ordering-card>
-</div>
+@if (disableOrdering) {
+  <div style="padding: 24px">
+    <disable-ordering-card></disable-ordering-card>
+  </div>
+}
 
-<mat-toolbar
-  class="actions-toolbar background"
-  *ngIf="basket.items?.length && !disableOrdering"
-  routerLink="/basket"
->
-  <button mat-raised-button [disabled]="saving" color="primary" (click)="complete()">
-    {{ 'basket.complete' | translate }}
-  </button>
-</mat-toolbar>
+@if (basket.items?.length && !disableOrdering) {
+  <mat-toolbar
+    class="actions-toolbar background"
+    routerLink="/basket"
+    >
+    <button mat-raised-button [disabled]="saving" color="primary" (click)="complete()">
+      {{ 'basket.complete' | translate }}
+    </button>
+  </mat-toolbar>
+}

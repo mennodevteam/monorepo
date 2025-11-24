@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, effect } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -18,7 +18,7 @@ import { MenuViewType } from '@menno/types';
   styleUrl: './category.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CategoryComponent {
+export class CategoryComponent implements OnDestroy {
   MenuViewType = MenuViewType;
   private readonly menuService = inject(MenuService);
   private readonly shopService = inject(ShopService);

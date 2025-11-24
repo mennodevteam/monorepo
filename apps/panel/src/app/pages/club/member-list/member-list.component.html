@@ -1,95 +1,98 @@
-<mat-toolbar class="page-toolbar" *ngIf="!selection.hasValue()">
-  <h2 class="hide-xs">{{ 'members.title' | translate }}</h2>
-  <span flex></span>
-  <button mat-stroked-button routerLink="missions">
-    <i class="far fa-bullseye-arrow"></i>
-    <span spacer-sm></span>
-    <span>{{ 'members.missions' | translate }}</span>
-    <span spacer-sm></span>
-    <i class="fas fa-sparkles red"></i>
-  </button>
-  <button mat-stroked-button routerLink="discount-coupons">
-    <i class="far fa-tags"></i>
-    <span spacer-sm></span>
-    <span>{{ 'members.discountCodes' | translate }}</span>
-  </button>
-  <button mat-flat-button color="primary" [matMenuTriggerFor]="addMenu">
-    {{ 'members.add' | translate }}
-  </button>
-  <mat-menu #addMenu="matMenu">
-    <button mat-menu-item (click)="openAddMemberDialog()">
-      {{ 'members.addOne' | translate }}
+@if (!selection.hasValue()) {
+  <mat-toolbar class="page-toolbar">
+    <h2 class="hide-xs">{{ 'members.title' | translate }}</h2>
+    <span flex></span>
+    <button mat-stroked-button routerLink="missions">
+      <i class="far fa-bullseye-arrow"></i>
+      <span spacer-sm></span>
+      <span>{{ 'members.missions' | translate }}</span>
+      <span spacer-sm></span>
+      <i class="fas fa-sparkles red"></i>
     </button>
-    <button mat-menu-item [matMenuTriggerFor]="excelMenu">
-      {{ 'app.addExcel' | translate }}
+    <button mat-stroked-button routerLink="discount-coupons">
+      <i class="far fa-tags"></i>
+      <span spacer-sm></span>
+      <span>{{ 'members.discountCodes' | translate }}</span>
     </button>
-
-    <mat-menu #excelMenu="matMenu">
-      <a mat-menu-item download href="assets/files/club-members.xlsx">
-        <i class="far fa-file-download fa-large"></i>
-        {{ 'app.downloadSampleExcel' | translate }}
-      </a>
-      <button mat-menu-item (click)="fileInput.click()">
-        <i class="far fa-file-upload fa-large"></i>
-        {{ 'app.uploadExcel' | translate }}
+    <button mat-flat-button color="primary" [matMenuTriggerFor]="addMenu">
+      {{ 'members.add' | translate }}
+    </button>
+    <mat-menu #addMenu="matMenu">
+      <button mat-menu-item (click)="openAddMemberDialog()">
+        {{ 'members.addOne' | translate }}
       </button>
+      <button mat-menu-item [matMenuTriggerFor]="excelMenu">
+        {{ 'app.addExcel' | translate }}
+      </button>
+      <mat-menu #excelMenu="matMenu">
+        <a mat-menu-item download href="assets/files/club-members.xlsx">
+          <i class="far fa-file-download fa-large"></i>
+          {{ 'app.downloadSampleExcel' | translate }}
+        </a>
+        <button mat-menu-item (click)="fileInput.click()">
+          <i class="far fa-file-upload fa-large"></i>
+          {{ 'app.uploadExcel' | translate }}
+        </button>
+      </mat-menu>
     </mat-menu>
-  </mat-menu>
-
-  <a mat-icon-button [matMenuTriggerFor]="moreMenu">
-    <i class="fas fa-ellipsis-vertical"></i>
-  </a>
-  <mat-menu #moreMenu="matMenu">
-    <button mat-menu-item (click)="sendSmsToAll()">
-      <i class="mat-icon far fa-message-lines fa-large"></i>
-      {{ 'members.sendSmsAll' | translate }}
-    </button>
-    <a mat-menu-item routerLink="sms/group">
-      <i class="mat-icon far fa-message-check fa-large"></i>
-      {{ 'smsList.pageTitle' | translate }}
+    <a mat-icon-button [matMenuTriggerFor]="moreMenu">
+      <i class="fas fa-ellipsis-vertical"></i>
     </a>
-    <a mat-menu-item (click)="downloadCsv()" [disabled]="downloadingCSV">
-      <i class="mat-icon far fa-arrow-down-to-line fa-large"></i>
-      {{ 'app.download' | translate }}
-    </a>
-  </mat-menu>
-  <input style="display: none" #fileInput type="file" (change)="excelInputFileChanged($event)" />
-</mat-toolbar>
+    <mat-menu #moreMenu="matMenu">
+      <button mat-menu-item (click)="sendSmsToAll()">
+        <i class="mat-icon far fa-message-lines fa-large"></i>
+        {{ 'members.sendSmsAll' | translate }}
+      </button>
+      <a mat-menu-item routerLink="sms/group">
+        <i class="mat-icon far fa-message-check fa-large"></i>
+        {{ 'smsList.pageTitle' | translate }}
+      </a>
+      <a mat-menu-item (click)="downloadCsv()" [disabled]="downloadingCSV">
+        <i class="mat-icon far fa-arrow-down-to-line fa-large"></i>
+        {{ 'app.download' | translate }}
+      </a>
+    </mat-menu>
+    <input style="display: none" #fileInput type="file" (change)="excelInputFileChanged($event)" />
+  </mat-toolbar>
+}
 
 <main class="content-wrapper">
-  <div class="dark-theme" *ngIf="selection.hasValue()">
-    <mat-card>
-      <mat-toolbar>
-        <button mat-button (click)="sendSelectedSms()" color="primary">
-          <i matListIcon class="far fa-comment-alt-lines"></i>
-          {{ 'members.sendSms' | translate }}
-        </button>
-        <span spacer></span>
-        <button color="primary" mat-button [matMenuTriggerFor]="tagMenu">
-          {{ 'members.addTag' | translate }}
-        </button>
-        <span style="flex: 1"></span>
-        <button mat-button (click)="selection.clear()">
-          {{ 'app.cancel' | translate }}
-        </button>
-
-        <mat-menu #tagMenu="matMenu">
-          <button mat-menu-item (click)="addSelectedTag()">
-            <i class="fas fa-plus-circle"></i>
-            {{ 'membersTable.addTag' | translate }}
+  @if (selection.hasValue()) {
+    <div class="dark-theme">
+      <mat-card>
+        <mat-toolbar>
+          <button mat-button (click)="sendSelectedSms()" color="primary">
+            <i matListIcon class="far fa-comment-alt-lines"></i>
+            {{ 'members.sendSms' | translate }}
           </button>
-          <button mat-menu-item *ngFor="let tag of club.tags | async" (click)="addSelectedTag(tag)">
-            <i class="fas fa-circle" [style.color]="tag.color"></i>
-            {{ tag.title }}
+          <span spacer></span>
+          <button color="primary" mat-button [matMenuTriggerFor]="tagMenu">
+            {{ 'members.addTag' | translate }}
           </button>
-        </mat-menu>
-      </mat-toolbar>
-      <mat-card-content>
-        <clb-members-table [hidden]="loading" [members]="selectedMembers" [selection]="selection">
-        </clb-members-table>
-      </mat-card-content>
-    </mat-card>
-  </div>
+          <span style="flex: 1"></span>
+          <button mat-button (click)="selection.clear()">
+            {{ 'app.cancel' | translate }}
+          </button>
+          <mat-menu #tagMenu="matMenu">
+            <button mat-menu-item (click)="addSelectedTag()">
+              <i class="fas fa-plus-circle"></i>
+              {{ 'membersTable.addTag' | translate }}
+            </button>
+            @for (tag of club.tags | async; track tag) {
+              <button mat-menu-item (click)="addSelectedTag(tag)">
+                <i class="fas fa-circle" [style.color]="tag.color"></i>
+                {{ tag.title }}
+              </button>
+            }
+          </mat-menu>
+        </mat-toolbar>
+        <mat-card-content>
+          <clb-members-table [hidden]="loading" [members]="selectedMembers" [selection]="selection">
+          </clb-members-table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
 
   <form [formGroup]="filterForm" class="form-theme">
     <mat-card class="filter-card">
@@ -100,16 +103,18 @@
             matInput
             placeholder="{{ 'members.queryPlaceholder' | translate }}"
             formControlName="query"
-          />
+            />
         </mat-form-field>
         <span spacer></span>
         <mat-form-field appearance="fill">
           <mat-label>{{ 'members.tagsLabel' | translate }}</mat-label>
           <mat-select multiple formControlName="tagIds">
-            <mat-option *ngFor="let tag of club.tags | async" [value]="tag.id">
-              <i class="fas fa-circle" [style.color]="tag.color"></i>
-              {{ tag.title }}
-            </mat-option>
+            @for (tag of club.tags | async; track tag) {
+              <mat-option [value]="tag.id">
+                <i class="fas fa-circle" [style.color]="tag.color"></i>
+                {{ tag.title }}
+              </mat-option>
+            }
           </mat-select>
         </mat-form-field>
         <span style="flex: 1"></span>
@@ -119,9 +124,11 @@
         <button mat-flat-button color="accent" [disabled]="!filterForm.dirty && loading" (click)="load(true)">
           {{ 'members.filter' | translate }}
         </button>
-        <button mat-button color="warn" *ngIf="filterForm.dirty" (click)="removeFilter()">
-          {{ 'members.removeFilter' | translate }}
-        </button>
+        @if (filterForm.dirty) {
+          <button mat-button color="warn" (click)="removeFilter()">
+            {{ 'members.removeFilter' | translate }}
+          </button>
+        }
       </mat-card-actions>
     </mat-card>
   </form>
@@ -132,8 +139,12 @@
         <i mat-card-avatar class="fa-solid fa-user"></i>
         <div class="info-card__texts">
           <p>{{ 'members.memberCount' | translate }}</p>
-          <h4 *ngIf="!loading">{{ 'app.number' | translate: { value: (totalCount | number) } }}</h4>
-          <h4 *ngIf="loading">-</h4>
+          @if (!loading) {
+            <h4>{{ 'app.number' | translate: { value: (totalCount | number) } }}</h4>
+          }
+          @if (loading) {
+            <h4>-</h4>
+          }
         </div>
       </mat-card-content>
     </mat-card>
@@ -164,7 +175,9 @@
         [selection]="selection"
         (sortChanged)="sortChanged($event)"
       ></clb-members-table>
-      <mat-spinner *ngIf="loading" [diameter]="32" color="primary"></mat-spinner>
+      @if (loading) {
+        <mat-spinner [diameter]="32" color="primary"></mat-spinner>
+      }
     </mat-card-content>
   </mat-card>
 </main>

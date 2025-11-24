@@ -28,11 +28,13 @@ export class AnalyticsService {
     return this.shopService.data()?.thirdParties?.find((t) => t.app === ThirdPartyApp.Clarity)?.token;
   }
 
-  trackEvent(event: string, data?: any) {
+  trackEvent(event: string, _data?: unknown) {
     try {
       if (this.clarityProjectId) {
         clarity.event(event);
       }
-    } catch (error) {}
+    } catch (error) {
+      // Ignore analytics errors
+    }
   }
 }

@@ -1,6 +1,12 @@
-<mat-dialog-content *ngIf="tables">
-    <button mat-stroked-button *ngFor="let t of tables" [mat-dialog-close]="t">
+@if (tables) {
+  <mat-dialog-content>
+    @for (t of tables; track t) {
+      <button mat-stroked-button [mat-dialog-close]="t">
         {{t.code}}
-        <span *ngIf="t.title"> ({{t.title}})</span>
-    </button>
-</mat-dialog-content>
+        @if (t.title) {
+          <span> ({{t.title}})</span>
+        }
+      </button>
+    }
+  </mat-dialog-content>
+}

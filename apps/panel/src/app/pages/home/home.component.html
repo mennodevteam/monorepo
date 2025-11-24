@@ -1,12 +1,14 @@
 <main class="content-wrapper">
-  <mat-card class="warning" *ngIf="!webPush.isSubscribed && webPush.isEnabled">
-    <mat-card-content>
-      {{ 'home.enableNotificationDescription' | translate }}
-      <button mat-button color="primary" (click)="webPush.subscribe()">
-        {{ 'home.enableNotificationAction' | translate }}
-      </button>
-    </mat-card-content>
-  </mat-card>
+  @if (!webPush.isSubscribed && webPush.isEnabled) {
+    <mat-card class="warning">
+      <mat-card-content>
+        {{ 'home.enableNotificationDescription' | translate }}
+        <button mat-button color="primary" (click)="webPush.subscribe()">
+          {{ 'home.enableNotificationAction' | translate }}
+        </button>
+      </mat-card-content>
+    </mat-card>
+  }
   <div class="form-page-layout">
     <div class="flex-col">
       <mat-card>
@@ -43,7 +45,9 @@
             <span spacer-sm></span>
             {{ 'home.planTitle' | translate }}
           </mat-card-title>
-          <mat-card-subtitle *ngIf="plugin?.description">{{ plugin?.description }}</mat-card-subtitle>
+          @if (plugin?.description) {
+            <mat-card-subtitle>{{ plugin?.description }}</mat-card-subtitle>
+          }
         </mat-card-header>
         <mat-card-content class="form-theme">
           <mat-list>
@@ -67,9 +71,11 @@
               [color]="remainingDays > 20 ? 'accent' : 'warn'"
             ></mat-progress-bar>
           </mat-list>
-          <mat-card class="error" *ngIf="remainingDays < 8">
-            <mat-card-content>{{ 'home.expireWarning' | translate }}</mat-card-content>
-          </mat-card>
+          @if (remainingDays < 8) {
+            <mat-card class="error">
+              <mat-card-content>{{ 'home.expireWarning' | translate }}</mat-card-content>
+            </mat-card>
+          }
           <span spacer></span>
         </mat-card-content>
         <mat-divider></mat-divider>
@@ -86,27 +92,33 @@
             <a mat-list-item routerLink="/menu">
               <i matListItemIcon class="fa-solid mat-icon fa-book-open"></i>
               <span matListItemTitle>{{ 'home.menu' | translate }}</span>
-              <span matListItemMeta class="red" *ngIf="plugin?.plugins?.indexOf(Plugin.Menu) == -1">
-                {{ 'home.upgradePlan' | translate }}
-              </span>
+              @if (plugin?.plugins?.indexOf(Plugin.Menu) == -1) {
+                <span matListItemMeta class="red">
+                  {{ 'home.upgradePlan' | translate }}
+                </span>
+              }
               <i matListItemMeta class="fa-regular fa-angle-left"></i>
             </a>
             <mat-divider></mat-divider>
             <a mat-list-item routerLink="/orders">
               <i matListItemIcon class="fa-solid mat-icon fa-{{ shopService.orderIcon }}"></i>
               <span matListItemTitle>{{ 'home.order' | translate }}</span>
-              <span matListItemMeta class="red" *ngIf="plugin?.plugins?.indexOf(Plugin.Ordering) == -1">
-                {{ 'home.upgradePlan' | translate }}
-              </span>
+              @if (plugin?.plugins?.indexOf(Plugin.Ordering) == -1) {
+                <span matListItemMeta class="red">
+                  {{ 'home.upgradePlan' | translate }}
+                </span>
+              }
               <i matListItemMeta class="fa-regular fa-angle-left"></i>
             </a>
             <mat-divider></mat-divider>
             <a mat-list-item routerLink="/club">
               <i matListItemIcon class="fa-solid mat-icon fa-crown"></i>
               <span matListItemTitle>{{ 'home.club' | translate }}</span>
-              <span matListItemMeta class="red" *ngIf="plugin?.plugins?.indexOf(Plugin.Club) == -1">
-                {{ 'home.upgradePlan' | translate }}
-              </span>
+              @if (plugin?.plugins?.indexOf(Plugin.Club) == -1) {
+                <span matListItemMeta class="red">
+                  {{ 'home.upgradePlan' | translate }}
+                </span>
+              }
               <i matListItemMeta class="fa-regular fa-angle-left"></i>
             </a>
           </mat-nav-list>
@@ -124,23 +136,25 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <mat-list *ngIf="shop.smsAccount">
-            <mat-list-item>
-              <span matListItemLine>{{ 'home.smsAccountCharge' | translate }}</span>
-              <span matListItemMeta [ngClass]="{ red: shop.smsAccount.charge <= 1000 }">{{
-                shop.smsAccount.charge | menuCurrency: '1.0-0' : true
-              }}</span>
-            </mat-list-item>
-            <mat-list-item>
-              <span matListItemLine>{{ 'home.smsCount' | translate }}</span>
-              <span matListItemMeta>
-                {{
+          @if (shop.smsAccount) {
+            <mat-list>
+              <mat-list-item>
+                <span matListItemLine>{{ 'home.smsAccountCharge' | translate }}</span>
+                <span matListItemMeta [ngClass]="{ red: shop.smsAccount.charge <= 1000 }">{{
+                  shop.smsAccount.charge | menuCurrency: '1.0-0' : true
+                }}</span>
+              </mat-list-item>
+              <mat-list-item>
+                <span matListItemLine>{{ 'home.smsCount' | translate }}</span>
+                <span matListItemMeta>
+                  {{
                   'app.number'
-                    | translate: { value: (shop.smsAccount.charge / avgSmsCharge | number: '1.0-0') }
-                }}
-              </span>
-            </mat-list-item>
-          </mat-list>
+                  | translate: { value: (shop.smsAccount.charge / avgSmsCharge | number: '1.0-0') }
+                  }}
+                </span>
+              </mat-list-item>
+            </mat-list>
+          }
         </mat-card-content>
         <mat-divider></mat-divider>
         <mat-card-actions>
@@ -212,25 +226,31 @@
           </mat-card-title>
           <mat-card-subtitle
             >{{ 'home.lastUpdate' | translate }}: {{ update.date | pdate: 'D MMMM YYYY' }}</mat-card-subtitle
-          >
-        </mat-card-header>
-        <mat-card-content>
-          <mat-list>
-            <mat-list-item *ngFor="let item of update.items">
-              <i matListItemIcon *ngIf="item.type === 'feature'" class="fa-solid fa-sparkles green fa-lg"></i>
-              <i matListItemIcon *ngIf="item.type === 'bug'" class="fa-solid fa-square-check gray fa-lg"></i>
-              <h5 matListItemTitle>{{ item.title }}</h5>
-              <mat-divider></mat-divider>
-            </mat-list-item>
-          </mat-list>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <mat-card-actions>
-          <a mat-button color="primary" [href]="env.updateDocLink" target="_blank">
-            {{ 'home.updateMore' | translate }}
-          </a>
-        </mat-card-actions>
-      </mat-card>
+            >
+          </mat-card-header>
+          <mat-card-content>
+            <mat-list>
+              @for (item of update.items; track item) {
+                <mat-list-item>
+                  @if (item.type === 'feature') {
+                    <i matListItemIcon class="fa-solid fa-sparkles green fa-lg"></i>
+                  }
+                  @if (item.type === 'bug') {
+                    <i matListItemIcon class="fa-solid fa-square-check gray fa-lg"></i>
+                  }
+                  <h5 matListItemTitle>{{ item.title }}</h5>
+                  <mat-divider></mat-divider>
+                </mat-list-item>
+              }
+            </mat-list>
+          </mat-card-content>
+          <mat-divider></mat-divider>
+          <mat-card-actions>
+            <a mat-button color="primary" [href]="env.updateDocLink" target="_blank">
+              {{ 'home.updateMore' | translate }}
+            </a>
+          </mat-card-actions>
+        </mat-card>
+      </div>
     </div>
-  </div>
-</main>
+  </main>

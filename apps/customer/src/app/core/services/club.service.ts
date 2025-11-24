@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { effect, Injectable, signal, untracked } from '@angular/core';
+import { effect, Injectable, signal, untracked, inject } from '@angular/core';
 import { ShopService } from './shop.service';
 import { DiscountCoupon, Member } from '@menno/types';
 import { AuthService } from './auth.service';
@@ -10,16 +10,16 @@ import { CampaignService } from './campaign.service';
   providedIn: 'root',
 })
 export class ClubService {
+  private http = inject(HttpClient);
+  private shopService = inject(ShopService);
+  private auth = inject(AuthService);
+  private menu = inject(MenuService);
+  private campaign = inject(CampaignService);
+
   member = signal<Member | undefined>(undefined);
   coupons = signal<DiscountCoupon[]>([]);
 
-  constructor(
-    private http: HttpClient,
-    private shopService: ShopService,
-    private auth: AuthService,
-    private menu: MenuService,
-    private campaign: CampaignService,
-  ) {
+  constructor() {
     effect(() => {
       const user = this.auth.user();
       if (user?.id) {
@@ -35,23 +35,25 @@ export class ClubService {
   }
 
   async join() {
-    if (!this.auth.isGuestUser && this.shopService.data()?.club) {
+    const shop = this.shopService.data();
+    if (!this.auth.isGuestUser && shop?.club) {
       try {
         return await this.http
-          .get<Member>(`clubs/join/${this.shopService.data()!.club!.id}`, {
+          .get<Member>(`clubs/join/${shop.club.id}`, {
             params: this.campaign.params,
           })
           .toPromise();
-      } catch (error) {}
+      } catch (error) {
+        // Ignore errors
+      }
     }
     return;
   }
 
   async getMember() {
-    if (this.shopService.data()?.club) {
-      const member = await this.http
-        .get<Member>(`members/club/${this.shopService.data()!.club!.id}`)
-        .toPromise();
+    const shop = this.shopService.data();
+    if (shop?.club) {
+      const member = await this.http.get<Member>(`members/club/${shop.club.id}`).toPromise();
       return member;
     }
     return undefined;

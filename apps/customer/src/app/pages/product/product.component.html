@@ -4,7 +4,7 @@
       @if (isImage(image)) {
         <img
           class="product-carousel__image"
-          imageLoader
+          appImageLoader
           [imageFile]="$any(image)"
           imageSize="md"
           [attr.alt]="product.title"
@@ -12,8 +12,8 @@
       } @else {
         <img
           class="product-carousel__image"
-          imageLoader
-          [imageLoader]="$any(image)"
+          appImageLoader
+          [appImageLoader]="$any(image)"
           [attr.alt]="product.title"
         />
       }

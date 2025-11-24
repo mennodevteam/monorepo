@@ -12,183 +12,190 @@
       {{ 'app.save' | translate }}
     </button>
   </mat-toolbar>
-  <mat-spinner *ngIf="loading" [diameter]="36"></mat-spinner>
-  <main class="form-page-layout content-wrapper" *ngIf="!loading">
-    <div class="flex-col">
-      <mat-card>
-        <mat-toolbar>
-          <b class="flex">
-            {{ 'appConfig.homeSection' | translate }}
-          </b>
-        </mat-toolbar>
-        <mat-card-content>
-          <div fxLayout="row" fxLayout.sm="column">
-            <div fxFlex>
-              <p>
-                {{ 'appConfig.homeDescription' | translate }}
-              </p>
-              <mat-radio-group formControlName="homePage" fxLayout="column">
-                <mat-radio-button [value]="HomePage.Menu">{{ menu.businessCategoryTitle }}</mat-radio-button>
-                <mat-radio-button [value]="HomePage.Welcome">{{
-                  'appConfig.homePageWelcome' | translate
-                }}</mat-radio-button>
-              </mat-radio-group>
-              @if (form.value?.homePage === HomePage.Welcome) {
-                <div style="padding: 24px">
-                  {{ 'appConfig.homePageCover' | translate }}
-                  <button
-                    mat-button
-                    color="primary"
-                    type="button"
-                    (click)="uploadVertical()"
-                    [disabled]="savingCover"
+  @if (loading) {
+    <mat-spinner [diameter]="36"></mat-spinner>
+  }
+  @if (!loading) {
+    <main class="form-page-layout content-wrapper">
+      <div class="flex-col">
+        <mat-card>
+          <mat-toolbar>
+            <b class="flex">
+              {{ 'appConfig.homeSection' | translate }}
+            </b>
+          </mat-toolbar>
+          <mat-card-content>
+            <div fxLayout="row" fxLayout.sm="column">
+              <div fxFlex>
+                <p>
+                  {{ 'appConfig.homeDescription' | translate }}
+                </p>
+                <mat-radio-group formControlName="homePage" fxLayout="column">
+                  <mat-radio-button [value]="HomePage.Menu">{{ menu.businessCategoryTitle }}</mat-radio-button>
+                  <mat-radio-button [value]="HomePage.Welcome">{{
+                    'appConfig.homePageWelcome' | translate
+                  }}</mat-radio-button>
+                </mat-radio-group>
+                @if (form.value?.homePage === HomePage.Welcome) {
+                  <div style="padding: 24px">
+                    {{ 'appConfig.homePageCover' | translate }}
+                    <button
+                      mat-button
+                      color="primary"
+                      type="button"
+                      (click)="uploadVertical()"
+                      [disabled]="savingCover"
+                      >
+                      <i class="fa-regular fa-upload"></i>
+                      {{ 'app.upload' | translate }}
+                    </button>
+                    <img
+                      style="display: block; border-radius: 16px; width: 200px"
+                      [imageLoader]="shopService.shop?.verticalCover"
+                      [imageFile]="shopService.shop?.verticalCoverImage"
+                      [imageSize]="'sm'"
+                      />
+                  </div>
+                }
+              </div>
+              <div class="image-section" fxFlex="none">
+                @switch (form.value?.homePage) {
+                  @case (HomePage.Welcome) {
+                    <img src="assets/images/screenshots/welcome.jpg" />
+                  }
+                  @default {
+                    <img src="assets/images/screenshots/menu.jpg" />
+                  }
+                }
+              </div>
+            </div>
+          </mat-card-content>
+          @if (form.value?.homePage === HomePage.Welcome) {
+            <mat-card-actions> </mat-card-actions>
+          }
+        </mat-card>
+        <mat-card>
+          <mat-toolbar>
+            <b class="flex">
+              {{ 'appConfig.themeSection' | translate }}
+            </b>
+          </mat-toolbar>
+          <span spacer-2x></span>
+          <mat-card-content>
+            <div fxLayout="row" fxLayout.sm="column">
+              <div fxFlex>
+                <mat-form-field>
+                  <mat-label>{{ 'appConfig.theme' | translate }}</mat-label>
+                  <mat-select formControlName="theme">
+                    @for (t of themes; track t) {
+                      <mat-option [value]="t">
+                        <i class="fa-solid fa-circle" [style.color]="t.primaryColor"></i>
+                        {{ t.title }}
+                      </mat-option>
+                    }
+                  </mat-select>
+                  <i
+                    matSuffix
+                    [style.color]="form.controls['theme'].value?.primaryColor"
+                    class="fa-solid fa-circle"
+                    style="width: 48px; text-align: center"
+                  ></i>
+                </mat-form-field>
+                <h5>{{ 'appConfig.themeMode' | translate }}</h5>
+                <mat-radio-group formControlName="themeMode" fxLayout="column">
+                  <mat-radio-button [value]="ThemeMode.Dark">
+                    {{ 'appConfig.themeModeDark' | translate }}
+                  </mat-radio-button>
+                  <mat-radio-button [value]="ThemeMode.Light">
+                    {{ 'appConfig.themeModeLight' | translate }}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="image-section" fxFlex="none">
+                @if (form.value?.themeMode === ThemeMode.Light) {
+                  <img style="border: 1px solid gray" src="assets/images/screenshots/menu light.jpg" />
+                } @else {
+                  <img src="assets/images/screenshots/menu.jpg" />
+                }
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card>
+          <mat-toolbar>
+            <b class="flex"> {{ 'appConfig.menuSection' | translate }} {{ menu.businessCategoryTitle }} </b>
+          </mat-toolbar>
+          <span spacer-2x></span>
+          <mat-card-content>
+            <div fxLayout="row" fxLayout.sm="column">
+              <div fxFlex>
+                <mat-radio-group formControlName="menuViewType" fxLayout="column">
+                  <mat-radio-button [value]="MenuViewType.Grid">{{
+                    'appConfig.menuViewTypeGrid' | translate
+                  }}</mat-radio-button>
+                  <mat-radio-button [value]="MenuViewType.Card">{{
+                    'appConfig.menuViewTypeCard' | translate
+                  }}</mat-radio-button>
+                  <mat-radio-button [value]="MenuViewType.Compact">{{
+                    'appConfig.menuViewTypeCompact' | translate
+                  }}</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="image-section" fxFlex="none">
+                @switch (form.value?.menuViewType) {
+                  @case (MenuViewType.Card) {
+                    <img src="assets/images/screenshots/card.jpg" />
+                  }
+                  @case (MenuViewType.Compact) {
+                    <img src="assets/images/screenshots/compact.jpg" />
+                  }
+                  @default {
+                    <img src="assets/images/screenshots/menu.jpg" />
+                  }
+                }
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card>
+          <mat-toolbar>
+            <b class="flex">
+              {{ 'appConfig.horizontalCover' | translate }}
+            </b>
+          </mat-toolbar>
+          <mat-card-content>
+            <div fxLayout="row" fxLayout.sm="column">
+              <div fxFlex>
+                <p>
+                  {{ 'appConfig.horizontalCoverDescription' | translate }}
+                </p>
+                <button
+                  mat-button
+                  color="primary"
+                  type="button"
+                  (click)="uploadHorizontal()"
+                  [disabled]="savingCover"
                   >
-                    <i class="fa-regular fa-upload"></i>
-                    {{ 'app.upload' | translate }}
-                  </button>
-                  <img
-                    style="display: block; border-radius: 16px; width: 200px"
-                    [imageLoader]="shopService.shop?.verticalCover"
-                    [imageFile]="shopService.shop?.verticalCoverImage"
-                    [imageSize]="'sm'"
+                  <i class="fa-regular fa-upload"></i>
+                  {{ 'app.upload' | translate }}
+                </button>
+                <img
+                  style="display: block; border-radius: 16px; width: 200px"
+                  [imageLoader]="shopService.shop?.cover"
+                  [imageFile]="shopService.shop?.coverImage"
+                  [imageSize]="'sm'"
                   />
-                </div>
-              }
+              </div>
+              <div class="image-section" fxFlex="none">
+                <img src="assets/images/screenshots/welcome.jpg" />
+              </div>
             </div>
-            <div class="image-section" fxFlex="none">
-              @switch (form.value?.homePage) {
-                @case (HomePage.Welcome) {
-                  <img src="assets/images/screenshots/welcome.jpg" />
-                }
-                @default {
-                  <img src="assets/images/screenshots/menu.jpg" />
-                }
-              }
-            </div>
-          </div>
-        </mat-card-content>
-        <mat-card-actions *ngIf="form.value?.homePage === HomePage.Welcome"> </mat-card-actions>
-      </mat-card>
-
-      <mat-card>
-        <mat-toolbar>
-          <b class="flex">
-            {{ 'appConfig.themeSection' | translate }}
-          </b>
-        </mat-toolbar>
-        <span spacer-2x></span>
-        <mat-card-content>
-          <div fxLayout="row" fxLayout.sm="column">
-            <div fxFlex>
-              <mat-form-field>
-                <mat-label>{{ 'appConfig.theme' | translate }}</mat-label>
-                <mat-select formControlName="theme">
-                  <mat-option *ngFor="let t of themes" [value]="t">
-                    <i class="fa-solid fa-circle" [style.color]="t.primaryColor"></i>
-                    {{ t.title }}
-                  </mat-option>
-                </mat-select>
-                <i
-                  matSuffix
-                  [style.color]="form.controls['theme'].value?.primaryColor"
-                  class="fa-solid fa-circle"
-                  style="width: 48px; text-align: center"
-                ></i>
-              </mat-form-field>
-              <h5>{{ 'appConfig.themeMode' | translate }}</h5>
-              <mat-radio-group formControlName="themeMode" fxLayout="column">
-                <mat-radio-button [value]="ThemeMode.Dark">
-                  {{ 'appConfig.themeModeDark' | translate }}
-                </mat-radio-button>
-                <mat-radio-button [value]="ThemeMode.Light">
-                  {{ 'appConfig.themeModeLight' | translate }}
-                </mat-radio-button>
-              </mat-radio-group>
-            </div>
-            <div class="image-section" fxFlex="none">
-              @if (form.value?.themeMode === ThemeMode.Light) {
-                <img style="border: 1px solid gray" src="assets/images/screenshots/menu light.jpg" />
-              } @else {
-                <img src="assets/images/screenshots/menu.jpg" />
-              }
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card>
-        <mat-toolbar>
-          <b class="flex"> {{ 'appConfig.menuSection' | translate }} {{ menu.businessCategoryTitle }} </b>
-        </mat-toolbar>
-        <span spacer-2x></span>
-        <mat-card-content>
-          <div fxLayout="row" fxLayout.sm="column">
-            <div fxFlex>
-              <mat-radio-group formControlName="menuViewType" fxLayout="column">
-                <mat-radio-button [value]="MenuViewType.Grid">{{
-                  'appConfig.menuViewTypeGrid' | translate
-                }}</mat-radio-button>
-                <mat-radio-button [value]="MenuViewType.Card">{{
-                  'appConfig.menuViewTypeCard' | translate
-                }}</mat-radio-button>
-                <mat-radio-button [value]="MenuViewType.Compact">{{
-                  'appConfig.menuViewTypeCompact' | translate
-                }}</mat-radio-button>
-              </mat-radio-group>
-            </div>
-            <div class="image-section" fxFlex="none">
-              @switch (form.value?.menuViewType) {
-                @case (MenuViewType.Card) {
-                  <img src="assets/images/screenshots/card.jpg" />
-                }
-                @case (MenuViewType.Compact) {
-                  <img src="assets/images/screenshots/compact.jpg" />
-                }
-                @default {
-                  <img src="assets/images/screenshots/menu.jpg" />
-                }
-              }
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card>
-        <mat-toolbar>
-          <b class="flex">
-            {{ 'appConfig.horizontalCover' | translate }}
-          </b>
-        </mat-toolbar>
-        <mat-card-content>
-          <div fxLayout="row" fxLayout.sm="column">
-            <div fxFlex>
-              <p>
-                {{ 'appConfig.horizontalCoverDescription' | translate }}
-              </p>
-              <button
-                mat-button
-                color="primary"
-                type="button"
-                (click)="uploadHorizontal()"
-                [disabled]="savingCover"
-              >
-                <i class="fa-regular fa-upload"></i>
-                {{ 'app.upload' | translate }}
-              </button>
-              <img
-                style="display: block; border-radius: 16px; width: 200px"
-                [imageLoader]="shopService.shop?.cover"
-                [imageFile]="shopService.shop?.coverImage"
-                [imageSize]="'sm'"
-              />
-            </div>
-            <div class="image-section" fxFlex="none">
-              <img src="assets/images/screenshots/welcome.jpg" />
-            </div>
-          </div>
-        </mat-card-content>
-        <mat-card-actions *ngIf="form.value?.homePage === HomePage.Welcome"> </mat-card-actions>
-      </mat-card>
-    </div>
-  </main>
+          </mat-card-content>
+          @if (form.value?.homePage === HomePage.Welcome) {
+            <mat-card-actions> </mat-card-actions>
+          }
+        </mat-card>
+      </div>
+    </main>
+  }
 </form>

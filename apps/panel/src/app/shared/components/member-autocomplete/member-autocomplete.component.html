@@ -6,10 +6,12 @@
     matInput
     [formControl]="control"
     [matAutocomplete]="auto"
-  />
+    />
   <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
-    <mat-option *ngFor="let member of filteredMembers | async" [value]="member">
-      {{ User.fullName(member.user) }} ({{ member.user.mobilePhone | phone }})
-    </mat-option>
+    @for (member of filteredMembers | async; track member) {
+      <mat-option [value]="member">
+        {{ User.fullName(member.user) }} ({{ member.user.mobilePhone | phone }})
+      </mat-option>
+    }
   </mat-autocomplete>
 </mat-form-field>

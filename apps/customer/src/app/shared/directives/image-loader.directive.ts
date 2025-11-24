@@ -24,7 +24,7 @@ const PERSON_PLACEHOLDER_DATA_URL =
   'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect fill="%23f2f2f2" width="120" height="120"/><circle cx="60" cy="48" r="24" fill="%23d9d9d9"/><path d="M20 108c0-22 18-40 40-40s40 18 40 40" fill="%23d9d9d9"/></svg>';
 
 @Directive({
-  selector: '[imageLoader]',
+  selector: '[appImageLoader]',
   standalone: true,
 })
 export class ImageLoaderDirective implements AfterViewInit, OnDestroy {
@@ -67,7 +67,7 @@ export class ImageLoaderDirective implements AfterViewInit, OnDestroy {
   private readonly element = inject(ElementRef<HTMLElement>);
   private readonly injector = inject(Injector);
 
-  imageLoader = input<string | undefined>(undefined);
+  appImageLoader = input<string | undefined>(undefined);
   imageFile = input<Image | undefined>();
   imageSize = input<keyof Image | undefined>();
   placeholderImageSize = input<keyof Image>('xxs');
@@ -120,7 +120,7 @@ export class ImageLoaderDirective implements AfterViewInit, OnDestroy {
       return getFileUrl(key);
     }
 
-    const loader = this.imageLoader();
+    const loader = this.appImageLoader();
     return getFileUrl(loader);
   }
 

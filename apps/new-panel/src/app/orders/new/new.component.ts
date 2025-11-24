@@ -59,7 +59,7 @@ export class NewOrderComponent implements FormComponent {
     enabled: !!this.orderId(),
   }));
   order = computed<Order | undefined>(() => {
-    return this.orderQuery.data() || this.router.getCurrentNavigation()?.extras?.state?.['order'];
+    return this.orderQuery.data() || this.router.currentNavigation()?.extras?.state?.['order'];
   });
 
   constructor() {

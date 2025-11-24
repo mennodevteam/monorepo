@@ -12,7 +12,7 @@
         @for (order of query.data(); track order.id) {
           <mat-card class="order-card" appearance="outlined" [routerLink]="['/orders', order.id]">
             <mat-card-header>
-              <div mat-card-avatar class="order-avatar" [imageLoader]="order.shop?.logo"></div>
+              <div mat-card-avatar class="order-avatar" [appImageLoader]="order.shop?.logo"></div>
               <mat-card-title>{{ order.shop?.title }}</mat-card-title>
               <mat-card-subtitle>{{ order.createdAt | date: 'medium' }}</mat-card-subtitle>
             </mat-card-header>

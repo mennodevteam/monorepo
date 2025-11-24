@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '@menno/types';
@@ -10,15 +10,16 @@ import { Guid } from 'guid-typescript';
   providedIn: 'root',
 })
 export class AuthService {
+  private http = inject(HttpClient);
   private _loading = new BehaviorSubject<void>(undefined);
   user = signal<User | undefined>(undefined);
 
-  constructor(private http: HttpClient) {
+  constructor() {
     this.init();
   }
 
   async init() {
-    const _item: any = sessionStorage?.getItem('appLoginUser') || localStorage?.getItem('appLoginUser');
+    const _item = sessionStorage?.getItem('appLoginUser') || localStorage?.getItem('appLoginUser');
     if (_item) {
       try {
         const user = JSON.parse(_item);
@@ -27,7 +28,9 @@ export class AuthService {
           this.user.set(info);
           this._loading.complete();
         }
-      } catch (error) {}
+      } catch (error) {
+        // Ignore initialization errors
+      }
     }
 
     if (!this.user()) {
@@ -43,7 +46,7 @@ export class AuthService {
   }
 
   register(username: string, password: string) {
-    return this.http.post<any>(`auth/login/app`, { username, password }).pipe(
+    return this.http.post<User>(`auth/login/app`, { username, password }).pipe(
       map((user) => {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         this.user.set(user);
@@ -60,7 +63,7 @@ export class AuthService {
   }
 
   sendToken(mobilePhone: string) {
-    return this.http.get<any>('auth/sendToken/' + mobilePhone);
+    return this.http.get<void>('auth/sendToken/' + mobilePhone);
   }
 
   async loginWithToken(mobile: string, token: string, userDto?: User) {

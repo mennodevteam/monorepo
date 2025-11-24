@@ -6,8 +6,10 @@
 <main class="content-wrapper">
   <mat-card>
     <mat-card-content>
-      <mat-spinner *ngIf="loading" class="loading" [diameter]="32"></mat-spinner>
-      <ng-container *ngIf="!loading">
+      @if (loading) {
+        <mat-spinner class="loading" [diameter]="32"></mat-spinner>
+      }
+      @if (!loading) {
         <table mat-table [dataSource]="smsGroups">
           <ng-container matColumnDef="message">
             <th mat-header-cell *matHeaderCellDef>
@@ -15,34 +17,30 @@
             </th>
             <td mat-cell *matCellDef="let group">{{ group.message }}</td>
           </ng-container>
-
           <ng-container matColumnDef="createdAt">
             <th mat-header-cell *matHeaderCellDef>
               {{ 'app.date' | translate }}
             </th>
             <td mat-cell *matCellDef="let group">{{ group.createdAt | pdate }}</td>
           </ng-container>
-
           <ng-container matColumnDef="cost">
             <th mat-header-cell *matHeaderCellDef>
               {{ 'app.cost' | translate }}
             </th>
             <td mat-cell *matCellDef="let group">{{ group.cost | menuCurrency }}</td>
           </ng-container>
-
           <ng-container matColumnDef="receptors">
             <th mat-header-cell *matHeaderCellDef>
               {{ 'smsList.receptors' | translate }}
             </th>
             <td mat-cell *matCellDef="let group">
               {{
-                group.receptors?.length === 1
-                  ? group.receptors[0]
-                  : ('app.number' | translate: { value: group.count })
+              group.receptors?.length === 1
+              ? group.receptors[0]
+              : ('app.number' | translate: { value: group.count })
               }}
             </td>
           </ng-container>
-
           <ng-container matColumnDef="failed">
             <th mat-header-cell *matHeaderCellDef>
               <i class="fa-solid fa-circle-xmark red"></i>
@@ -50,7 +48,6 @@
             </th>
             <td mat-cell *matCellDef="let group">{{ group.statusCount[0] | number }}</td>
           </ng-container>
-
           <ng-container matColumnDef="inQueue">
             <th mat-header-cell *matHeaderCellDef>
               <i class="fa-solid fa-list-timeline"></i>
@@ -58,7 +55,6 @@
             </th>
             <td mat-cell *matCellDef="let group">{{ group.statusCount[1] | number }}</td>
           </ng-container>
-
           <ng-container matColumnDef="sent">
             <th mat-header-cell *matHeaderCellDef>
               <i class="fa-solid fa-circle-check green"></i>
@@ -66,7 +62,6 @@
             </th>
             <td mat-cell *matCellDef="let group">{{ group.statusCount[2] | number }}</td>
           </ng-container>
-
           <ng-container matColumnDef="scheduled">
             <th mat-header-cell *matHeaderCellDef>
               <i class="fa-solid fa-clock"></i>
@@ -74,13 +69,14 @@
             </th>
             <td mat-cell *matCellDef="let group">{{ group.statusCount[3] | number }}</td>
           </ng-container>
-
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row class="clickable" routerLink="{{row.id}}" *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
-        <empty-state *ngIf="!smsGroups?.length" icon="fa-tags" text="{{ 'app.noData' | translate }}">
-        </empty-state>
-      </ng-container>
+        @if (!smsGroups?.length) {
+          <empty-state icon="fa-tags" text="{{ 'app.noData' | translate }}">
+          </empty-state>
+        }
+      }
     </mat-card-content>
   </mat-card>
 </main>

@@ -1,5 +1,5 @@
 import { Component, inject, signal, effect } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { SHARED } from '../shared';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -29,7 +29,6 @@ import { FormComponent } from '../core/guards/dirty-form-deactivator.guard';
   selector: 'app-discount-coupons-edit',
   standalone: true,
   imports: [
-    CommonModule,
     SHARED,
     MatToolbarModule,
     MatButtonModule,
@@ -38,8 +37,8 @@ import { FormComponent } from '../core/guards/dirty-form-deactivator.guard';
     MatCardModule,
     MatSelectModule,
     MatDatepickerModule,
-    ReactiveFormsModule,
-  ],
+    ReactiveFormsModule
+],
   templateUrl: './discount-coupons-edit.component.html',
   styleUrl: './discount-coupons-edit.component.scss',
 })

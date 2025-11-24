@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {
   RouterModule,
   Router,
@@ -9,14 +9,14 @@ import {
   NavigationError,
   ActivatedRoute,
 } from '@angular/router';
-import { filter, map } from 'rxjs';
+
 import { BottomNavigationComponent } from '../shared/components/bottom-navigation/bottom-navigation.component';
 import { TopAppBarComponent } from '../shared/components/top-app-bar/top-app-bar.component';
 
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [CommonModule, RouterModule, BottomNavigationComponent, TopAppBarComponent],
+  imports: [RouterModule, BottomNavigationComponent, TopAppBarComponent],
   templateUrl: './shell.component.html',
   styleUrl: './shell.component.scss',
 })

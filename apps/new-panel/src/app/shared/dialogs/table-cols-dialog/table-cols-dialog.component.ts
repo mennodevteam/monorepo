@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
@@ -22,12 +22,11 @@ export type TableColsVisibility = {
   selector: 'app-table-cols-dialog',
   standalone: true,
   imports: [
-    CommonModule,
     SHARED,
     MatListModule,
     MatDialogModule,
-    DragDropModule,
-  ],
+    DragDropModule
+],
   templateUrl: './table-cols-dialog.component.html',
   styleUrl: './table-cols-dialog.component.scss',
 })

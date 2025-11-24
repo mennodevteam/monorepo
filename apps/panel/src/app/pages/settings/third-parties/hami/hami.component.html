@@ -27,41 +27,45 @@
         </form>
       </mat-card-content>
       <mat-card-actions>
-        <button
-          mat-stroked-button
-          color="primary"
-          *ngIf="thirdPartyForm.disabled"
-          (click)="thirdPartyForm.enable()"
-        >
-          {{ 'app.edit' | translate }}
-        </button>
-        <ng-container *ngIf="!thirdPartyForm.disabled">
+        @if (thirdPartyForm.disabled) {
+          <button
+            mat-stroked-button
+            color="primary"
+            (click)="thirdPartyForm.enable()"
+            >
+            {{ 'app.edit' | translate }}
+          </button>
+        }
+        @if (!thirdPartyForm.disabled) {
           <button mat-flat-button color="accent" (click)="save()">
             {{ 'app.save' | translate }}
           </button>
           <button mat-button (click)="initForm()">
             {{ 'app.cancel' | translate }}
           </button>
-        </ng-container>
+        }
       </mat-card-actions>
     </mat-card>
   </div>
   <div class="flex-col">
     <mat-card
       ><mat-card-content>
+      @if (!thirdParty) {
         <empty-state
-          *ngIf="!thirdParty"
           icon="fa-triangle-exclamation"
           text="{{ 'thirdParties.notConnectedDescription' | translate }}"
         ></empty-state>
+      }
 
-        <mat-nav-list *ngIf="thirdParty">
+      @if (thirdParty) {
+        <mat-nav-list>
           <a mat-list-item (click)="syncMenu()">
             <span matListItemTitle>{{ 'thirdParties.hami.syncMenu' | translate }}</span>
             <span matListItemLine>{{ 'thirdParties.hami.syncMenuDescription' | translate }}</span>
           </a>
         </mat-nav-list>
-      </mat-card-content>
-    </mat-card>
-  </div>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>
 </main>

@@ -15,21 +15,21 @@
     <mat-chip tabindex="-1" (click)="manualDiscountFixed = 2000"> {{ 2000 | menuCurrency }} </mat-chip>
     <mat-chip tabindex="-1" (click)="manualDiscountFixed = 5000"> {{ 5000 | menuCurrency }} </mat-chip>
     <mat-chip tabindex="-1" (click)="manualDiscountFixed = 10000"> {{ 10000 | menuCurrency }} </mat-chip>
-    <ng-container *ngIf="mod1000">
+    @if (mod1000) {
       <mat-chip tabindex="-1" (click)="manualDiscountFixed = mod1000">
         {{ mod1000 | menuCurrency }}
       </mat-chip>
-    </ng-container>
-    <ng-container *ngIf="mod5000 && mod5000 != mod1000">
+    }
+    @if (mod5000 && mod5000 != mod1000) {
       <mat-chip tabindex="-1" (click)="manualDiscountFixed = mod5000">
         {{ mod5000 | menuCurrency }}
       </mat-chip>
-    </ng-container>
-    <ng-container *ngIf="mod10000 && mod10000 != mod5000">
+    }
+    @if (mod10000 && mod10000 != mod5000) {
       <mat-chip tabindex="-1" (click)="manualDiscountFixed = mod10000">
         {{ mod10000 | menuCurrency }}
       </mat-chip>
-    </ng-container>
+    }
   </mat-chip-listbox>
   <span spacer-2x></span>
   <mat-form-field appearance="fill">

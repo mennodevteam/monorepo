@@ -1,25 +1,27 @@
-<div
-  class="wrapper"
-  *ngIf="shop"
-  [imageLoader]="shop?.verticalCoverImage?.md || shop.verticalCover"
-  [placeholder]="'assets/images/placeholder/welcome.jpg'"
->
-  <div id="main-menu">
-    <main-menu></main-menu>
+@if (shop) {
+  <div
+    class="wrapper"
+    [imageLoader]="shop?.verticalCoverImage?.md || shop.verticalCover"
+    [placeholder]="'assets/images/placeholder/welcome.jpg'"
+    >
+    <div id="main-menu">
+      <main-menu></main-menu>
+    </div>
+    <div class="content">
+      <img [imageLoader]="shop?.logoImage?.sm || shop.logo" id="logo" />
+      <h1 id="title">{{ shop.title }}</h1>
+      @if (shop.description) {
+        <p id="description">{{ shop.description }}</p>
+      }
+      <button mat-raised-button color="primary" routerLink="/menu" class="submit-button">
+        مشاهده منو و ثبت سفارش
+        <i class="fa-solid fa-utensils fa-large"></i>
+      </button>
+      <mat-toolbar flex-row>
+        <button mat-button flex (click)="openShopInfoModal()">اطلاعات مجموعه</button>
+        <mat-divider vertical></mat-divider>
+        <button mat-button flex routerLink="/club">باشگاه مشتریان</button>
+      </mat-toolbar>
+    </div>
   </div>
-  <div class="content">
-    <img [imageLoader]="shop?.logoImage?.sm || shop.logo" id="logo" />
-    <h1 id="title">{{ shop.title }}</h1>
-    <p *ngIf="shop.description" id="description">{{ shop.description }}</p>
-    <button mat-raised-button color="primary" routerLink="/menu" class="submit-button">
-      مشاهده منو و ثبت سفارش
-      <i class="fa-solid fa-utensils fa-large"></i>
-    </button>
-
-    <mat-toolbar flex-row>
-      <button mat-button flex (click)="openShopInfoModal()">اطلاعات مجموعه</button>
-      <mat-divider vertical></mat-divider>
-      <button mat-button flex routerLink="/club">باشگاه مشتریان</button>
-    </mat-toolbar>
-  </div>
-</div>
+}

@@ -1,4 +1,4 @@
-import { Injectable, WritableSignal, computed, effect, signal, untracked } from '@angular/core';
+import { Injectable, WritableSignal, computed, effect, signal, untracked, inject } from '@angular/core';
 import {
   Address,
   DeliveryArea,
@@ -19,7 +19,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddressesService } from './addresses.service';
 import { ClubService } from './club.service';
-import { PersianNumberService } from '@menno/utils';
+
 import { CampaignService } from './campaign.service';
 import { InitialParamsService } from './initial-params.service';
 import { AnalyticsService } from './analytics.service';
@@ -33,6 +33,18 @@ type SignalProductItem = { productId: string; variantId?: number; quantity: Writ
   providedIn: 'root',
 })
 export class CartService {
+  private menuService = inject(MenuService);
+  private shopService = inject(ShopService);
+  private ordersService = inject(OrdersService);
+  private campaign = inject(CampaignService);
+  private http = inject(HttpClient);
+  private snack = inject(MatSnackBar);
+  private addressesService = inject(AddressesService);
+  private club = inject(ClubService);
+  private initialParamsService = inject(InitialParamsService);
+  private analytics = inject(AnalyticsService);
+  private menuStat = inject(MenuStatService);
+
   paymentType = signal<OrderPaymentType | undefined>(undefined);
   useWallet = signal<boolean>(false);
   quantity = signal<SignalProductItem[]>([]);
@@ -69,19 +81,23 @@ export class CartService {
   });
 
   orderItems = computed(() => {
-    return OrderDto.productItems(this.dto(), this.menuService.data()!);
+    const menu = this.menuService.data();
+    return menu ? OrderDto.productItems(this.dto(), menu) : [];
   });
 
   abstractItems = computed(() => {
-    return OrderDto.abstractItems(this.dto(), this.menuService.data()!);
+    const menu = this.menuService.data();
+    return menu ? OrderDto.abstractItems(this.dto(), menu) : [];
   });
 
   sum = computed(() => {
-    return OrderDto.sum(this.dto(), this.menuService.data()!);
+    const menu = this.menuService.data();
+    return menu ? OrderDto.sum(this.dto(), menu) : 0;
   });
 
   realSum = computed(() => {
-    return OrderDto.realSum(this.dto(), this.menuService.data()!);
+    const menu = this.menuService.data();
+    return menu ? OrderDto.realSum(this.dto(), menu) : 0;
   });
 
   sumDiscount = computed(() => {
@@ -89,34 +105,25 @@ export class CartService {
   });
 
   total = computed(() => {
-    return OrderDto.total(this.dto(), this.menuService.data()!);
+    const menu = this.menuService.data();
+    return menu ? OrderDto.total(this.dto(), menu) : 0;
   });
 
   realTotal = computed(() => {
-    return OrderDto.realTotal(this.dto(), this.menuService.data()!);
+    const menu = this.menuService.data();
+    return menu ? OrderDto.realTotal(this.dto(), menu) : 0;
   });
 
   totalDiscount = computed(() => {
-    return OrderDto.totalDiscount(this.dto(), this.menuService.data()!);
+    const menu = this.menuService.data();
+    return menu ? OrderDto.totalDiscount(this.dto(), menu) : 0;
   });
 
-  constructor(
-    private menuService: MenuService,
-    private shopService: ShopService,
-    private ordersService: OrdersService,
-    private campaign: CampaignService,
-    private http: HttpClient,
-    private snack: MatSnackBar,
-    private addressesService: AddressesService,
-    private club: ClubService,
-    private initialParamsService: InitialParamsService,
-    private analytics: AnalyticsService,
-    private menuStat: MenuStatService,
-  ) {
+  constructor() {
     const localQuantity = JSON.parse(localStorage.getItem(LOCAL_CART_QUANTITY_KEY) || 'null');
     if (localQuantity?.items?.length && localQuantity.date > Date.now() - 1000 * 60 * 60 * 24) {
       this.quantity.set(
-        localQuantity.items.map((x: any) => ({
+        localQuantity.items.map((x: { productId: string; variantId?: number; quantity: number }) => ({
           productId: x.productId,
           variantId: x.variantId,
           quantity: signal(x.quantity),
@@ -129,7 +136,10 @@ export class CartService {
       if (items.length) {
         localStorage.setItem(
           LOCAL_CART_QUANTITY_KEY,
-          JSON.stringify({ date: Date.now(), items: items.map((x) => ({ ...x, quantity: x.quantity() })) }),
+          JSON.stringify({
+            date: Date.now(),
+            items: items.map((x: SignalProductItem) => ({ ...x, quantity: x.quantity() })),
+          }),
         );
       } else {
         localStorage.removeItem(LOCAL_CART_QUANTITY_KEY);
@@ -137,7 +147,8 @@ export class CartService {
     });
 
     effect(() => {
-      const menu = this.menuService.data()!;
+      const menu = this.menuService.data();
+      if (!menu) return;
       const items = untracked(() => this.quantity());
       if (items.length) {
         const copy = [...items];
@@ -169,12 +180,6 @@ export class CartService {
         if (coupons[0] && !this.coupon()) this.coupon.set(coupons[0]);
       });
     });
-    // this.menuService.typeObservable.subscribe((type) => {
-    //   if (type != undefined) {
-    //     if (this.type != type) this.clear();
-    //     this.type = type;
-    //   }
-    // });
   }
 
   plus(product: Product, variant?: ProductVariant) {
@@ -340,7 +345,7 @@ export class CartService {
         return;
       }
 
-      if (coupon.orderTypes?.length && coupon.orderTypes.indexOf(OrderType.Delivery!) === -1) {
+      if (coupon.orderTypes?.length && coupon.orderTypes.indexOf(OrderType.Delivery) === -1) {
         this.snack.open(`امکان استفاده از این کد تخفیف در سفارشات ارسالی وجود ندارد`, '', {
           duration: 4000,
         });

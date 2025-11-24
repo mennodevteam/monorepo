@@ -35,7 +35,7 @@
               formControlName="faIcon"
               ltr
               eng
-            />
+              />
             <i matIconSuffix class="fa-regular mat-icon fa-{{ form.controls.faIcon.value }}"></i>
             <mat-hint>
               {{ 'categoryDialog.iconHint' | translate }}
@@ -73,9 +73,11 @@
             <mat-label>{{ 'categoryDialog.slug' | translate }}</mat-label>
             <input matInput formControlName="slug" placeholder="my-category" ltr eng />
             <mat-hint>{{ 'categoryDialog.slugHint' | translate }}</mat-hint>
-            <mat-error *ngIf="form.controls.slug.invalid && form.controls.slug.touched">
-              {{ 'categoryDialog.slugInvalid' | translate }}
-            </mat-error>
+            @if (form.controls.slug.invalid && form.controls.slug.touched) {
+              <mat-error>
+                {{ 'categoryDialog.slugInvalid' | translate }}
+              </mat-error>
+            }
           </mat-form-field>
         </mat-card-content>
       </mat-card>
@@ -88,19 +90,20 @@
           <mat-card-subtitle>{{ 'categoryDialog.imageSubtitle' | translate }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-          <div class="image-preview" *ngIf="form.controls.imageFile.value; else emptyImage">
-            <button mat-mini-fab class="remove-button" type="button" (click)="removeImage()">
-              <i class="fa-regular fa-trash-alt"></i>
-            </button>
-            @if (isBase64ImageFile(form.controls.imageFile.value)) {
-              <img [src]="form.controls.imageFile.value.base64" alt="category image" />
-            } @else {
-              <img imageLoader [imageFile]="form.controls.imageFile.value" imageSize="sm" alt="category image" />
-            }
-          </div>
-          <ng-template #emptyImage>
+          @if (form.controls.imageFile.value) {
+            <div class="image-preview">
+              <button mat-mini-fab class="remove-button" type="button" (click)="removeImage()">
+                <i class="fa-regular fa-trash-alt"></i>
+              </button>
+              @if (isBase64ImageFile(form.controls.imageFile.value)) {
+                <img [src]="form.controls.imageFile.value.base64" alt="category image" />
+              } @else {
+                <img imageLoader [imageFile]="form.controls.imageFile.value" imageSize="sm" alt="category image" />
+              }
+            </div>
+          } @else {
             <app-empty-state icon="image" [text]="'categoryDialog.noImage' | translate" />
-          </ng-template>
+          }
         </mat-card-content>
         <mat-card-actions>
           <button mat-button type="button" (click)="addImage()">

@@ -4,34 +4,22 @@
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es2015",
+    "target": "ES2022",
     "module": "esnext",
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "strictPropertyInitialization": false,
     "paths": {
-      "@menno/old-types": [
-        "libs/old-types/src/index.ts"
-      ],
-      "@menno/types": [
-        "libs/types/src/index.ts"
-      ],
-      "@menno/utils": [
-        "libs/utils/src/index.ts"
-      ]
+      "@menno/old-types": ["libs/old-types/src/index.ts"],
+      "@menno/types": ["libs/types/src/index.ts"],
+      "@menno/utils": ["libs/utils/src/index.ts"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }

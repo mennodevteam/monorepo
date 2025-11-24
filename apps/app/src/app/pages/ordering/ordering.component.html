@@ -1,5 +1,12 @@
-<ng-container [ngSwitch]="homePage">
-  <shop-welcome *ngSwitchCase="HomePage.Welcome" />
-  <menu-page *ngSwitchCase="HomePage.Menu" />
-  <shop-home *ngSwitchDefault />
-</ng-container>
+
+@switch (homePage) {
+  @case (HomePage.Welcome) {
+    <shop-welcome />
+  }
+  @case (HomePage.Menu) {
+    <menu-page />
+  }
+  @default {
+    <shop-home />
+  }
+}

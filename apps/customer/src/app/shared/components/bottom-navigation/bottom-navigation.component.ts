@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -24,7 +24,7 @@ import { CartService } from '../../../core/services/cart.service';
 @Component({
   selector: 'app-bottom-navigation',
   standalone: true,
-  imports: [CommonModule, RouterModule, MatToolbarModule, MatButtonModule, NgIcon, MatBadgeModule],
+  imports: [RouterModule, MatToolbarModule, MatButtonModule, NgIcon, MatBadgeModule],
   templateUrl: './bottom-navigation.component.html',
   styleUrl: './bottom-navigation.component.scss',
   providers: [

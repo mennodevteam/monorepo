@@ -66,7 +66,7 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
     private analytics: AnalyticsService,
     private menuStat: MenuStatService,
   ) {
-    this.address = this.router.getCurrentNavigation()?.extras?.state?.['address'];
+    this.address = this.router.currentNavigation()?.extras?.state?.['address'];
     if (this.deliveryType() === DeliveryType.Standard && !this.coordinate && this.address)
       this.location.back();
     else {
@@ -169,7 +169,7 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
     if (!this.addressForm.valid) return;
     this.saving.set(true);
 
-    this.deliveryArea = this.router.getCurrentNavigation()?.extras?.state?.['deliveryArea'];
+    this.deliveryArea = this.router.currentNavigation()?.extras?.state?.['deliveryArea'];
     if (!this.deliveryArea) {
       if (this.deliveryType() === DeliveryType.Standard) {
         this.deliveryArea = await this.http

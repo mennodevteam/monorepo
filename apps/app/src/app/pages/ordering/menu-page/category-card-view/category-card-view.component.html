@@ -1,10 +1,10 @@
 <div>
-  <ng-container *ngFor="let product of category.products; let last = last">
+  @for (product of category.products; track product; let last = $last) {
     <mat-card
       routerLink="/menu/product/{{ product.id }}"
       class="product surface-variant on-surface-variant-text"
       matRipple
-    >
+      >
       <mat-card-header>
         <mat-card-title-group>
           <img
@@ -14,94 +14,122 @@
             [imageLoader]="
               product.imageFiles?.[0]?.xs || (product.images ? product.images[0] : undefined) || undefined
             "
-          />
+            />
           <mat-card-title class="product__title">{{ product.title }}</mat-card-title>
           <mat-card-subtitle class="product__description outline-text">
             {{ product.description }}
           </mat-card-subtitle>
         </mat-card-title-group>
       </mat-card-header>
-      <mat-card-actions class="price-section" *ngIf="!product.variants?.length">
-        <span flex *ngIf="!shopService.hasOrderingPlugin()"></span>
-        <span class="price-section__text">
-          <span class="price-section__text__old error-text" *ngIf="Product.hasDiscount(product)">
-            {{ Product.realPrice(product) | menuCurrency }}
-          </span>
-          <b class="secondary-text">{{ Product.totalPrice(product) | menuCurrency }}</b>
-        </span>
-        <ng-container *ngIf="!product._orderItem?.quantity">
-          <span spacer></span>
-          <discount-badge *ngIf="Product.hasDiscount(product)">
-            {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
-          </discount-badge>
-        </ng-container>
-
-        <ng-container *ngIf="shopService.hasOrderingPlugin()">
-          <span flex></span>
-          <count-selector
-            *ngIf="product._orderItem?.quantity"
-            [(count)]="product._orderItem!.quantity"
-            (plusClick)="plus(product, undefined, $event)"
-            (minusClick)="minus(product, undefined, $event)"
-          ></count-selector>
-          <button
-            mat-stroked-button
-            (click)="plus(product, undefined, $event)"
-            *ngIf="!product._orderItem?.quantity"
-            [disabled]="product.status === Status.Blocked || product.stock === 0"
-          >
-            <span *ngIf="product.status === Status.Blocked || product.stock === 0">
-              {{ 'app.finished' | translate }}
-            </span>
-            <span class="error-text" *ngIf="product.status === Status.Active && product.stock !== 0">
-              {{ 'app.add' | translate }}
-            </span>
-          </button>
-        </ng-container>
-      </mat-card-actions>
-      <ng-container *ngIf="product.variants?.length">
-        <mat-card-actions *ngFor="let variant of product.variants" class="price-section">
-          <span>{{ variant.title }}</span>
-          <span spacer-sm></span>
-          <span flex *ngIf="!shopService.hasOrderingPlugin()"></span>
-          <span class="price-section__text">
-            <span class="price-section__text__old error-text" *ngIf="Product.hasDiscount(product, variant)">
-              {{ Product.realPrice(product, variant) | number }}
-            </span>
-            <b class="secondary-text">{{ Product.totalPrice(product, variant) | menuCurrency }}</b>
-          </span>
-          <ng-container *ngIf="!variant._orderItem?.quantity">
-            <span spacer></span>
-            <discount-badge *ngIf="Product.hasDiscount(product, variant)">
-              {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
-            </discount-badge>
-          </ng-container>
-
-          <ng-container *ngIf="shopService.hasOrderingPlugin()">
+      @if (!product.variants?.length) {
+        <mat-card-actions class="price-section">
+          @if (!shopService.hasOrderingPlugin()) {
             <span flex></span>
-            <count-selector
-              *ngIf="variant._orderItem?.quantity"
-              [count]="variant._orderItem?.quantity || 0"
-              (plusClick)="plus(product, variant, $event)"
-              (minusClick)="minus(product, variant, $event)"
-            ></count-selector>
-            <button
-              mat-stroked-button
-              (click)="plus(product, variant, $event)"
-              *ngIf="!variant._orderItem?.quantity"
-              [disabled]="variant.status === Status.Blocked || variant.stock === 0"
-            >
-              <span *ngIf="variant.status === Status.Blocked || variant.stock === 0">
-                {{ 'app.finished' | translate }}
+          }
+          <span class="price-section__text">
+            @if (Product.hasDiscount(product)) {
+              <span class="price-section__text__old error-text">
+                {{ Product.realPrice(product) | menuCurrency }}
               </span>
-              <span class="error-text" *ngIf="variant.status === Status.Active && variant.stock !== 0">
-                {{ 'app.add' | translate }}
-              </span>
-            </button>
-          </ng-container>
+            }
+            <b class="secondary-text">{{ Product.totalPrice(product) | menuCurrency }}</b>
+          </span>
+          @if (!product._orderItem?.quantity) {
+            <span spacer></span>
+            @if (Product.hasDiscount(product)) {
+              <discount-badge>
+                {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
+              </discount-badge>
+            }
+          }
+          @if (shopService.hasOrderingPlugin()) {
+            <span flex></span>
+            @if (product._orderItem?.quantity) {
+              <count-selector
+                [(count)]="product._orderItem!.quantity"
+                (plusClick)="plus(product, undefined, $event)"
+                (minusClick)="minus(product, undefined, $event)"
+              ></count-selector>
+            }
+            @if (!product._orderItem?.quantity) {
+              <button
+                mat-stroked-button
+                (click)="plus(product, undefined, $event)"
+                [disabled]="product.status === Status.Blocked || product.stock === 0"
+                >
+                @if (product.status === Status.Blocked || product.stock === 0) {
+                  <span>
+                    {{ 'app.finished' | translate }}
+                  </span>
+                }
+                @if (product.status === Status.Active && product.stock !== 0) {
+                  <span class="error-text">
+                    {{ 'app.add' | translate }}
+                  </span>
+                }
+              </button>
+            }
+          }
         </mat-card-actions>
-      </ng-container>
+      }
+      @if (product.variants?.length) {
+        @for (variant of product.variants; track variant) {
+          <mat-card-actions class="price-section">
+            <span>{{ variant.title }}</span>
+            <span spacer-sm></span>
+            @if (!shopService.hasOrderingPlugin()) {
+              <span flex></span>
+            }
+            <span class="price-section__text">
+              @if (Product.hasDiscount(product, variant)) {
+                <span class="price-section__text__old error-text">
+                  {{ Product.realPrice(product, variant) | number }}
+                </span>
+              }
+              <b class="secondary-text">{{ Product.totalPrice(product, variant) | menuCurrency }}</b>
+            </span>
+            @if (!variant._orderItem?.quantity) {
+              <span spacer></span>
+              @if (Product.hasDiscount(product, variant)) {
+                <discount-badge>
+                  {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
+                </discount-badge>
+              }
+            }
+            @if (shopService.hasOrderingPlugin()) {
+              <span flex></span>
+              @if (variant._orderItem?.quantity) {
+                <count-selector
+                  [count]="variant._orderItem?.quantity || 0"
+                  (plusClick)="plus(product, variant, $event)"
+                  (minusClick)="minus(product, variant, $event)"
+                ></count-selector>
+              }
+              @if (!variant._orderItem?.quantity) {
+                <button
+                  mat-stroked-button
+                  (click)="plus(product, variant, $event)"
+                  [disabled]="variant.status === Status.Blocked || variant.stock === 0"
+                  >
+                  @if (variant.status === Status.Blocked || variant.stock === 0) {
+                    <span>
+                      {{ 'app.finished' | translate }}
+                    </span>
+                  }
+                  @if (variant.status === Status.Active && variant.stock !== 0) {
+                    <span class="error-text">
+                      {{ 'app.add' | translate }}
+                    </span>
+                  }
+                </button>
+              }
+            }
+          </mat-card-actions>
+        }
+      }
     </mat-card>
-    <span spacer *ngIf="!last"></span>
-  </ng-container>
+    @if (!last) {
+      <span spacer></span>
+    }
+  }
 </div>

@@ -26,7 +26,7 @@ import { ShopService } from '../../shop/shop.service';
 import { Router } from '@angular/router';
 import { injectQuery, injectQueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
-import { CommonModule } from '@angular/common';
+
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DeliveryAreaTableComponent } from './delivery-area-table/delivery-area-table.component';
 import { DeliveryTypeDialogComponent } from './delivery-type-dialog/delivery-type-dialog.component';
@@ -36,7 +36,6 @@ import { DeliveryAreaEditDialogComponent } from './delivery-area-edit-dialog/del
   selector: 'app-delivery-area',
   standalone: true,
   imports: [
-    CommonModule,
     SHARED,
     MatToolbarModule,
     MatCardModule,
@@ -56,8 +55,8 @@ import { DeliveryAreaEditDialogComponent } from './delivery-area-edit-dialog/del
     DeliveryAreaMapComponent,
     ReactiveFormsModule,
     FormsModule,
-    DeliveryAreaTableComponent,
-  ],
+    DeliveryAreaTableComponent
+],
   templateUrl: './delivery-area.component.html',
   styleUrl: './delivery-area.component.scss',
 })

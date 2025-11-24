@@ -53,20 +53,22 @@
 <main class="content-wrapper">
   <mat-card>
     <mat-card-content style="overflow-x: auto">
-      <ng-container *ngIf="data() && !ordersQuery.isPending()">
+      @if (data() && !ordersQuery.isPending()) {
         <orders-table [orders]="data" (orderClicked)="orderClicked($event)"></orders-table>
-        <empty-state
-          *ngIf="!data().length"
-          icon="fa-face-frown"
-          text="{{ 'dailyOrder.emptyState' | translate }}"
-        ></empty-state>
-      </ng-container>
+        @if (!data().length) {
+          <empty-state
+            icon="fa-face-frown"
+            text="{{ 'dailyOrder.emptyState' | translate }}"
+          ></empty-state>
+        }
+      }
       @if (ordersQuery.isLoading() || ordersQuery.isFetchingNextPage()) {
-        <mat-spinner
-          class="center-align"
-          *ngIf="ordersQuery.isLoading() || ordersQuery.isFetchingNextPage()"
-          [diameter]="24"
-        ></mat-spinner>
+        @if (ordersQuery.isLoading() || ordersQuery.isFetchingNextPage()) {
+          <mat-spinner
+            class="center-align"
+            [diameter]="24"
+          ></mat-spinner>
+        }
       } @else if (ordersQuery.hasNextPage()) {
         <button mat-button color="primary" class="center-align" (click)="ordersQuery.fetchNextPage()">
           {{ 'app.loadMore' | translate }}

@@ -55,7 +55,7 @@ export class OrderDetailsComponent {
     enabled: !!this.orderId(),
   }));
   order = computed<Order | undefined>(() => {
-    return this.query.data() || this.router.getCurrentNavigation()?.extras?.state?.['order'];
+    return this.query.data() || this.router.currentNavigation()?.extras?.state?.['order'];
   });
 
   constructor() {

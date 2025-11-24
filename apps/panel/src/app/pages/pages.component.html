@@ -55,9 +55,11 @@
     <i class="fa-solid fa-plus-circle"></i>
     {{ 'shell.addOrder' | translate }}
   </button>
-  <button mat-icon-button (click)="club.openAddMemberDialog()" class="hide-xs" *ngIf="!isClubDisabled">
-    <i class="fa-solid fa-user-plus"></i>
-  </button>
+  @if (!isClubDisabled) {
+    <button mat-icon-button (click)="club.openAddMemberDialog()" class="hide-xs">
+      <i class="fa-solid fa-user-plus"></i>
+    </button>
+  }
   <button mat-icon-button class="hide-xs" [matMenuTriggerFor]="mobileMenu">
     <i class="fa-solid fa-mobile"></i>
   </button>
@@ -89,16 +91,17 @@
 </mat-toolbar>
 <router-outlet></router-outlet>
 <app-notifications></app-notifications>
-<a
-  *ngIf="shop && telegramVisibility"
-  href="https://t.me/menno_pro"
-  target="_blank"
-  mat-mini-fab
-  id="telegram"
-  color="primary"
-  matTooltip="کانال تلگرام menno_pro@"
-  matTooltipPosition="right"
-  [@bounceIn]
->
-  <i class="fa-brands fa-telegram fa-lg"></i>
-</a>
+@if (shop && telegramVisibility) {
+  <a
+    href="https://t.me/menno_pro"
+    target="_blank"
+    mat-mini-fab
+    id="telegram"
+    color="primary"
+    matTooltip="کانال تلگرام menno_pro@"
+    matTooltipPosition="right"
+    [@bounceIn]
+    >
+    <i class="fa-brands fa-telegram fa-lg"></i>
+  </a>
+}

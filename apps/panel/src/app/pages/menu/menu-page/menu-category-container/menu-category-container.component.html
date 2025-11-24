@@ -2,29 +2,51 @@
   <mat-toolbar>
     <mat-toolbar-row>
       <h3 flex>
-        <i *ngIf="category.faIcon" class="fa-solid fa-{{ category.faIcon }}"></i>
+        @if (category.faIcon) {
+          <i class="fa-solid fa-{{ category.faIcon }}"></i>
+        }
         {{ category.title }}
-        <span *ngIf="category.status !== Status.Active" class="inactive-badge">
-          {{ 'app.inactive' | translate }}
-        </span>
-        <span class="order-types" *ngIf="category.orderTypes && category.orderTypes.length < 3">
-          <ng-container *ngFor="let t of category.orderTypes; let last = last">
-            <span>
-              {{ t | orderType }}
-            </span>
-            <mat-divider vertical *ngIf="!last"></mat-divider>
-          </ng-container>
-        </span>
+        @if (category.status !== Status.Active) {
+          <span class="inactive-badge">
+            {{ 'app.inactive' | translate }}
+          </span>
+        }
+        @if (category.orderTypes && category.orderTypes.length < 3) {
+          <span class="order-types">
+            @for (t of category.orderTypes; track t; let last = $last) {
+              <span>
+                {{ t | orderType }}
+              </span>
+              @if (!last) {
+                <mat-divider vertical></mat-divider>
+              }
+            }
+          </span>
+        }
       </h3>
 
       <button mat-stroked-button [matMenuTriggerFor]="starMenu">
-        <span *ngIf="category.star == null">{{ 'menu.star.all' | translate }}</span>
-        <span *ngIf="category.star === 0" class="red">{{ 'menu.star.star0' | translate }}</span>
-        <span *ngIf="category.star === 1" class="red">{{ 'menu.star.star1' | translate }}</span>
-        <span *ngIf="category.star === 2" class="red">{{ 'menu.star.star2' | translate }}</span>
-        <span *ngIf="category.star === 3" class="red">{{ 'menu.star.star3' | translate }}</span>
-        <span *ngIf="category.star === 4" class="red">{{ 'menu.star.star4' | translate }}</span>
-        <span *ngIf="category.star === 5" class="red">{{ 'menu.star.star5' | translate }}</span>
+        @if (category.star == null) {
+          <span>{{ 'menu.star.all' | translate }}</span>
+        }
+        @if (category.star === 0) {
+          <span class="red">{{ 'menu.star.star0' | translate }}</span>
+        }
+        @if (category.star === 1) {
+          <span class="red">{{ 'menu.star.star1' | translate }}</span>
+        }
+        @if (category.star === 2) {
+          <span class="red">{{ 'menu.star.star2' | translate }}</span>
+        }
+        @if (category.star === 3) {
+          <span class="red">{{ 'menu.star.star3' | translate }}</span>
+        }
+        @if (category.star === 4) {
+          <span class="red">{{ 'menu.star.star4' | translate }}</span>
+        }
+        @if (category.star === 5) {
+          <span class="red">{{ 'menu.star.star5' | translate }}</span>
+        }
       </button>
       <mat-menu #starMenu="matMenu">
         <button mat-menu-item (click)="changeStar(null)">
@@ -54,7 +76,7 @@
         matTooltip="{{ 'menu.editCategory' | translate }}"
         routerLink="category"
         [queryParams]="{ id: category.id }"
-      >
+        >
         <i class="fa-regular fa-pencil-alt"></i>
       </button>
       <button mat-icon-button matTooltip="{{ 'menu.deleteCategory' | translate }}" (click)="deleteCategory()">
@@ -73,13 +95,17 @@
   </mat-toolbar>
   <mat-divider></mat-divider>
   <mat-card-content style="overflow-x: auto">
-    <ng-container *ngIf="category.products && category.products.length">
+    @if (category.products && category.products.length) {
       <products-table [products]="category.products"></products-table>
-    </ng-container>
-    <div *ngIf="!category.products?.length" class="empty-state">
-      <i *ngIf="category.faIcon" empty-state-icon class="fa-solid fa-{{ category.faIcon }}"></i>
-      <p>{{ 'menu.emptyProductsDescription' | translate }}</p>
-    </div>
+    }
+    @if (!category.products?.length) {
+      <div class="empty-state">
+        @if (category.faIcon) {
+          <i empty-state-icon class="fa-solid fa-{{ category.faIcon }}"></i>
+        }
+        <p>{{ 'menu.emptyProductsDescription' | translate }}</p>
+      </div>
+    }
   </mat-card-content>
   <mat-divider></mat-divider>
   <mat-card-actions>

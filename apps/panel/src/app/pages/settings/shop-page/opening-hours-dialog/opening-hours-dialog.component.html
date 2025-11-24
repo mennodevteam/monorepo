@@ -4,25 +4,27 @@
     <h5 matSubheader>
       {{ 'dayOfWeeks.saturday' | translate }}
     </h5>
-    <ng-container *ngIf="times[0] && times[0].length">
-      <a mat-list-item *ngFor="let t of times[0]; let i = index">
-        <i matListItemIcon class="far fa-clock fa-sm"></i>
-        <p matListItemTitle>{{ 'app.fromTo' | translate: { from: t.split('-')[0], to: t.split('-')[1] } }}</p>
-        <div matListItemMeta class="secondary">
-          <button mat-icon-button (click)="addTime(0, i)">
-            <i class="far fa-pencil-alt"></i>
-          </button>
-          <button mat-icon-button (click)="removeTime(0, i)">
-            <i class="far fa-trash-alt"></i>
-          </button>
-        </div>
-      </a>
-    </ng-container>
-    <ng-container *ngIf="!times[0] || !times[0].length">
+    @if (times[0] && times[0].length) {
+      @for (t of times[0]; track t; let i = $index) {
+        <a mat-list-item>
+          <i matListItemIcon class="far fa-clock fa-sm"></i>
+          <p matListItemTitle>{{ 'app.fromTo' | translate: { from: t.split('-')[0], to: t.split('-')[1] } }}</p>
+          <div matListItemMeta class="secondary">
+            <button mat-icon-button (click)="addTime(0, i)">
+              <i class="far fa-pencil-alt"></i>
+            </button>
+            <button mat-icon-button (click)="removeTime(0, i)">
+              <i class="far fa-trash-alt"></i>
+            </button>
+          </div>
+        </a>
+      }
+    }
+    @if (!times[0] || !times[0].length) {
       <p class="gray no-time">
         {{ 'openingHoursDialog.noTimeAdded' | translate }}
       </p>
-    </ng-container>
+    }
     <a mat-list-item (click)="addTime(0)">
       <i matListItemIcon class="fas fa-plus-circle fa-sm"></i>
       <p matListItemTitle>{{ 'openingHoursDialog.addTime' | translate }}</p>
@@ -35,25 +37,27 @@
         {{ 'openingHoursDialog.syncSaturday' | translate }}
       </button>
     </h5>
-    <ng-container *ngIf="times[1] && times[1].length">
-      <a mat-list-item *ngFor="let t of times[1]; let i = index">
-        <i matListItemIcon class="far fa-clock fa-sm"></i>
-        <p matListItemTitle>{{ 'app.fromTo' | translate: { from: t.split('-')[0], to: t.split('-')[1] } }}</p>
-        <div matListItemMeta class="secondary">
-          <button mat-icon-button (click)="addTime(1, i)">
-            <i class="far fa-pencil-alt"></i>
-          </button>
-          <button mat-icon-button (click)="removeTime(1, i)">
-            <i class="far fa-trash-alt"></i>
-          </button>
-        </div>
-      </a>
-    </ng-container>
-    <ng-container *ngIf="!times[1] || !times[1].length">
+    @if (times[1] && times[1].length) {
+      @for (t of times[1]; track t; let i = $index) {
+        <a mat-list-item>
+          <i matListItemIcon class="far fa-clock fa-sm"></i>
+          <p matListItemTitle>{{ 'app.fromTo' | translate: { from: t.split('-')[0], to: t.split('-')[1] } }}</p>
+          <div matListItemMeta class="secondary">
+            <button mat-icon-button (click)="addTime(1, i)">
+              <i class="far fa-pencil-alt"></i>
+            </button>
+            <button mat-icon-button (click)="removeTime(1, i)">
+              <i class="far fa-trash-alt"></i>
+            </button>
+          </div>
+        </a>
+      }
+    }
+    @if (!times[1] || !times[1].length) {
       <p class="gray no-time">
         {{ 'openingHoursDialog.noTimeAdded' | translate }}
       </p>
-    </ng-container>
+    }
     <a mat-list-item (click)="addTime(1)">
       <i matListItemIcon class="fas fa-plus-circle fa-sm"></i>
       <p matListItemTitle>{{ 'openingHoursDialog.addTime' | translate }}</p>
@@ -66,25 +70,27 @@
         {{ 'openingHoursDialog.syncSaturday' | translate }}
       </button>
     </h5>
-    <ng-container *ngIf="times[2] && times[2].length">
-      <a mat-list-item *ngFor="let t of times[2]; let i = index">
-        <i matListItemIcon class="far fa-clock fa-sm"></i>
-        <p matListItemTitle>{{ 'app.fromTo' | translate: { from: t.split('-')[0], to: t.split('-')[1] } }}</p>
-        <div matListItemMeta class="secondary">
-          <button mat-icon-button (click)="addTime(2, i)">
-            <i class="far fa-pencil-alt"></i>
-          </button>
-          <button mat-icon-button (click)="removeTime(2, i)">
-            <i class="far fa-trash-alt"></i>
-          </button>
-        </div>
-      </a>
-    </ng-container>
-    <ng-container *ngIf="!times[2] || !times[2].length">
+    @if (times[2] && times[2].length) {
+      @for (t of times[2]; track t; let i = $index) {
+        <a mat-list-item>
+          <i matListItemIcon class="far fa-clock fa-sm"></i>
+          <p matListItemTitle>{{ 'app.fromTo' | translate: { from: t.split('-')[0], to: t.split('-')[1] } }}</p>
+          <div matListItemMeta class="secondary">
+            <button mat-icon-button (click)="addTime(2, i)">
+              <i class="far fa-pencil-alt"></i>
+            </button>
+            <button mat-icon-button (click)="removeTime(2, i)">
+              <i class="far fa-trash-alt"></i>
+            </button>
+          </div>
+        </a>
+      }
+    }
+    @if (!times[2] || !times[2].length) {
       <p class="gray no-time">
         {{ 'openingHoursDialog.noTimeAdded' | translate }}
       </p>
-    </ng-container>
+    }
     <a mat-list-item (click)="addTime(2)">
       <i matListItemIcon class="fas fa-plus-circle fa-sm"></i>
       <p matListItemTitle>{{ 'openingHoursDialog.addTime' | translate }}</p>
@@ -97,25 +103,27 @@
         {{ 'openingHoursDialog.syncSaturday' | translate }}
       </button>
     </h5>
-    <ng-container *ngIf="times[3] && times[3].length">
-      <a mat-list-item *ngFor="let t of times[3]; let i = index">
-        <i matListItemIcon class="far fa-clock fa-sm"></i>
-        <p matListItemTitle>{{ 'app.fromTo' | translate: { from: t.split('-')[0], to: t.split('-')[1] } }}</p>
-        <div matListItemMeta class="secondary">
-          <button mat-icon-button (click)="addTime(3, i)">
-            <i class="far fa-pencil-alt"></i>
-          </button>
-          <button mat-icon-button (click)="removeTime(3, i)">
-            <i class="far fa-trash-alt"></i>
-          </button>
-        </div>
-      </a>
-    </ng-container>
-    <ng-container *ngIf="!times[3] || !times[3].length">
+    @if (times[3] && times[3].length) {
+      @for (t of times[3]; track t; let i = $index) {
+        <a mat-list-item>
+          <i matListItemIcon class="far fa-clock fa-sm"></i>
+          <p matListItemTitle>{{ 'app.fromTo' | translate: { from: t.split('-')[0], to: t.split('-')[1] } }}</p>
+          <div matListItemMeta class="secondary">
+            <button mat-icon-button (click)="addTime(3, i)">
+              <i class="far fa-pencil-alt"></i>
+            </button>
+            <button mat-icon-button (click)="removeTime(3, i)">
+              <i class="far fa-trash-alt"></i>
+            </button>
+          </div>
+        </a>
+      }
+    }
+    @if (!times[3] || !times[3].length) {
       <p class="gray no-time">
         {{ 'openingHoursDialog.noTimeAdded' | translate }}
       </p>
-    </ng-container>
+    }
     <a mat-list-item (click)="addTime(3)">
       <i matListItemIcon class="fas fa-plus-circle fa-sm"></i>
       <p matListItemTitle>{{ 'openingHoursDialog.addTime' | translate }}</p>
@@ -128,25 +136,27 @@
         {{ 'openingHoursDialog.syncSaturday' | translate }}
       </button>
     </h5>
-    <ng-container *ngIf="times[4] && times[4].length">
-      <a mat-list-item *ngFor="let t of times[4]; let i = index">
-        <i matListItemIcon class="far fa-clock fa-sm"></i>
-        <p matListItemTitle>{{ 'app.fromTo' | translate: { from: t.split('-')[0], to: t.split('-')[1] } }}</p>
-        <div matListItemMeta class="secondary">
-          <button mat-icon-button (click)="addTime(4, i)">
-            <i class="far fa-pencil-alt"></i>
-          </button>
-          <button mat-icon-button (click)="removeTime(4, i)">
-            <i class="far fa-trash-alt"></i>
-          </button>
-        </div>
-      </a>
-    </ng-container>
-    <ng-container *ngIf="!times[4] || !times[4].length">
+    @if (times[4] && times[4].length) {
+      @for (t of times[4]; track t; let i = $index) {
+        <a mat-list-item>
+          <i matListItemIcon class="far fa-clock fa-sm"></i>
+          <p matListItemTitle>{{ 'app.fromTo' | translate: { from: t.split('-')[0], to: t.split('-')[1] } }}</p>
+          <div matListItemMeta class="secondary">
+            <button mat-icon-button (click)="addTime(4, i)">
+              <i class="far fa-pencil-alt"></i>
+            </button>
+            <button mat-icon-button (click)="removeTime(4, i)">
+              <i class="far fa-trash-alt"></i>
+            </button>
+          </div>
+        </a>
+      }
+    }
+    @if (!times[4] || !times[4].length) {
       <p class="gray no-time">
         {{ 'openingHoursDialog.noTimeAdded' | translate }}
       </p>
-    </ng-container>
+    }
     <a mat-list-item (click)="addTime(4)">
       <i matListItemIcon class="fas fa-plus-circle fa-sm"></i>
       <p matListItemTitle>{{ 'openingHoursDialog.addTime' | translate }}</p>
@@ -159,25 +169,27 @@
         {{ 'openingHoursDialog.syncSaturday' | translate }}
       </button>
     </h5>
-    <ng-container *ngIf="times[5] && times[5].length">
-      <a mat-list-item *ngFor="let t of times[5]; let i = index">
-        <i matListItemIcon class="far fa-clock fa-sm"></i>
-        <p matListItemTitle>{{ 'app.fromTo' | translate: { from: t.split('-')[0], to: t.split('-')[1] } }}</p>
-        <div matListItemMeta class="secondary">
-          <button mat-icon-button (click)="addTime(5, i)">
-            <i class="far fa-pencil-alt"></i>
-          </button>
-          <button mat-icon-button (click)="removeTime(5, i)">
-            <i class="far fa-trash-alt"></i>
-          </button>
-        </div>
-      </a>
-    </ng-container>
-    <ng-container *ngIf="!times[5] || !times[5].length">
+    @if (times[5] && times[5].length) {
+      @for (t of times[5]; track t; let i = $index) {
+        <a mat-list-item>
+          <i matListItemIcon class="far fa-clock fa-sm"></i>
+          <p matListItemTitle>{{ 'app.fromTo' | translate: { from: t.split('-')[0], to: t.split('-')[1] } }}</p>
+          <div matListItemMeta class="secondary">
+            <button mat-icon-button (click)="addTime(5, i)">
+              <i class="far fa-pencil-alt"></i>
+            </button>
+            <button mat-icon-button (click)="removeTime(5, i)">
+              <i class="far fa-trash-alt"></i>
+            </button>
+          </div>
+        </a>
+      }
+    }
+    @if (!times[5] || !times[5].length) {
       <p class="gray no-time">
         {{ 'openingHoursDialog.noTimeAdded' | translate }}
       </p>
-    </ng-container>
+    }
     <a mat-list-item (click)="addTime(5)">
       <i matListItemIcon class="fas fa-plus-circle fa-sm"></i>
       <p matListItemTitle>{{ 'openingHoursDialog.addTime' | translate }}</p>
@@ -190,25 +202,27 @@
         {{ 'openingHoursDialog.syncSaturday' | translate }}
       </button>
     </h5>
-    <ng-container *ngIf="times[6] && times[6].length">
-      <a mat-list-item *ngFor="let t of times[6]; let i = index">
-        <i matListItemIcon class="far fa-clock fa-sm"></i>
-        <p matListItemTitle>{{ 'app.fromTo' | translate: { from: t.split('-')[0], to: t.split('-')[1] } }}</p>
-        <div matListItemMeta class="secondary">
-          <button mat-icon-button (click)="addTime(6, i)">
-            <i class="far fa-pencil-alt"></i>
-          </button>
-          <button mat-icon-button (click)="removeTime(6, i)">
-            <i class="far fa-trash-alt"></i>
-          </button>
-        </div>
-      </a>
-    </ng-container>
-    <ng-container *ngIf="!times[6] || !times[6].length">
+    @if (times[6] && times[6].length) {
+      @for (t of times[6]; track t; let i = $index) {
+        <a mat-list-item>
+          <i matListItemIcon class="far fa-clock fa-sm"></i>
+          <p matListItemTitle>{{ 'app.fromTo' | translate: { from: t.split('-')[0], to: t.split('-')[1] } }}</p>
+          <div matListItemMeta class="secondary">
+            <button mat-icon-button (click)="addTime(6, i)">
+              <i class="far fa-pencil-alt"></i>
+            </button>
+            <button mat-icon-button (click)="removeTime(6, i)">
+              <i class="far fa-trash-alt"></i>
+            </button>
+          </div>
+        </a>
+      }
+    }
+    @if (!times[6] || !times[6].length) {
       <p class="gray no-time">
         {{ 'openingHoursDialog.noTimeAdded' | translate }}
       </p>
-    </ng-container>
+    }
     <a mat-list-item (click)="addTime(6)">
       <i matListItemIcon class="fas fa-plus-circle fa-sm"></i>
       <p matListItemTitle>{{ 'openingHoursDialog.addTime' | translate }}</p>

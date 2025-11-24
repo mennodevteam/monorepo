@@ -54,7 +54,7 @@ export class OtpComponent implements OnDestroy {
     private analytics: AnalyticsService,
     private menuStat: MenuStatService,
   ) {
-    const phone = this.router.getCurrentNavigation()?.extras?.state?.['phone'];
+    const phone = this.router.currentNavigation()?.extras?.state?.['phone'];
 
     if (!phone) {
       router.navigate(['/login'], { replaceUrl: true });

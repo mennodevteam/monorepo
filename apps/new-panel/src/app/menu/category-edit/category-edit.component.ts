@@ -1,5 +1,5 @@
 import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
-import { CommonModule, PlatformLocation } from '@angular/common';
+import { PlatformLocation } from '@angular/common';
 import { SHARED } from '../../shared';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -24,7 +24,6 @@ type CategoryImageValue = (Image & { file?: File }) | { base64: string; file: Fi
   selector: 'app-category-edit',
   standalone: true,
   imports: [
-    CommonModule,
     SHARED,
     ReactiveFormsModule,
     MatToolbarModule,
@@ -34,8 +33,8 @@ type CategoryImageValue = (Image & { file?: File }) | { base64: string; file: Fi
     MatInputModule,
     MatSelectModule,
     MatOptionModule,
-    EmptyStateComponent,
-  ],
+    EmptyStateComponent
+],
   templateUrl: './category-edit.component.html',
   styleUrl: './category-edit.component.scss',
 })

@@ -66,7 +66,7 @@ export class OrderDetailsComponent implements OnDestroy {
     private breakpoints: BreakpointObserver,
     private router: Router,
   ) {
-    this.order = this.router.getCurrentNavigation()?.extras?.state?.['order'];
+    this.order = this.router.currentNavigation()?.extras?.state?.['order'];
     const isMobile = this.breakpoints.isMatched('(max-width: 800px)');
     if (isMobile) {
       this.displayedColumns = ['title', 'quantity', 'sum'];

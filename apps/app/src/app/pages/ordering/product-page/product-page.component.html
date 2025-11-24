@@ -7,85 +7,106 @@
   </mat-toolbar-row>
 </mat-toolbar>
 
-<main *ngIf="product">
-  <img
-    id="product-image"
-    [imageLoader]="product.imageFiles?.[0]?.origin || (product.images ? product.images[0] : undefined) || undefined"
-  />
-  <span spacer></span>
-  <p class="outline-text description">{{ product.description }}</p>
-
-  <mat-list>
-    <mat-list-item *ngIf="!product.variants?.length">
-      <span matListItemTitle>{{ Product.totalPrice(product) | menuCurrency }}</span>
-      <span matListItemLine *ngIf="Product.hasDiscount(product)">
-        <span class="error-text line-through">
-          {{ Product.realPrice(product) | menuCurrency }}
-          <span spacer-sm></span>
-          {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
-        </span>
-      </span>
-      <div class="secondary" matListItemMeta>
-        <count-selector
-          *ngIf="product._orderItem?.quantity"
-          [(count)]="product._orderItem!.quantity"
-          (plusClick)="plus()"
-          (minusClick)="minus()"
-        ></count-selector>
-        <button
-          mat-stroked-button
-          [disabled]="product.status === Status.Blocked || product.stock === 0"
-          *ngIf="!product?._orderItem?.quantity"
-          (click)="plus()"
-        >
-          <span *ngIf="product.status === Status.Active && product.stock !== 0">{{
-            'app.select' | translate
-          }}</span>
-          <span *ngIf="product.status === Status.Blocked || product.stock === 0">{{
-            'app.finished' | translate
-          }}</span>
-        </button>
-      </div>
-    </mat-list-item>
-    <ng-container *ngIf="product.variants?.length">
-      <mat-list-item *ngFor="let variant of product.variants">
-        <span matListItemTitle>{{ variant.title }}</span>
-        <span matListItemLine>
-          <span class="error-text line-through" *ngIf="Product.hasDiscount(product, variant)">
-            {{ Product.realPrice(product, variant) | menuCurrency }}
-            <span spacer-sm></span>
-          </span>
-          {{ Product.totalPrice(product, variant) | menuCurrency }}
-        </span>
-        <div class="secondary" matListItemMeta *ngIf="shopService.hasOrderingPlugin()">
-          <ng-container>
-            <count-selector
-              *ngIf="variant._orderItem?.quantity"
-              [(count)]="variant._orderItem!.quantity"
-              (plusClick)="plus(variant)"
-              (minusClick)="minus(variant)"
-            ></count-selector>
-
-            <button
-              mat-stroked-button
-              [disabled]="variant.status === Status.Blocked || variant.stock === 0"
-              *ngIf="!variant?._orderItem?.quantity"
-              (click)="plus(variant)"
-            >
-              <span *ngIf="variant.status === Status.Active && variant.stock !== 0">{{
-                'app.select' | translate
-              }}</span>
-              <span *ngIf="variant.status === Status.Blocked || variant.stock === 0">{{
-                'app.finished' | translate
-              }}</span>
-            </button>
-          </ng-container>
-        </div>
-      </mat-list-item>
-    </ng-container>
-  </mat-list>
-  <span #selectButtonRow></span>
-  <!-- <mat-toolbar>
+@if (product) {
+  <main>
+    <img
+      id="product-image"
+      [imageLoader]="product.imageFiles?.[0]?.origin || (product.images ? product.images[0] : undefined) || undefined"
+      />
+    <span spacer></span>
+    <p class="outline-text description">{{ product.description }}</p>
+    <mat-list>
+      @if (!product.variants?.length) {
+        <mat-list-item>
+          <span matListItemTitle>{{ Product.totalPrice(product) | menuCurrency }}</span>
+          @if (Product.hasDiscount(product)) {
+            <span matListItemLine>
+              <span class="error-text line-through">
+                {{ Product.realPrice(product) | menuCurrency }}
+                <span spacer-sm></span>
+                {{ 'discount.percentage' | translate: { value: Product.percentageDiscount(product) } }}
+              </span>
+            </span>
+          }
+          <div class="secondary" matListItemMeta>
+            @if (product._orderItem?.quantity) {
+              <count-selector
+                [(count)]="product._orderItem!.quantity"
+                (plusClick)="plus()"
+                (minusClick)="minus()"
+              ></count-selector>
+            }
+            @if (!product?._orderItem?.quantity) {
+              <button
+                mat-stroked-button
+                [disabled]="product.status === Status.Blocked || product.stock === 0"
+                (click)="plus()"
+                >
+                @if (product.status === Status.Active && product.stock !== 0) {
+                  <span>{{
+                    'app.select' | translate
+                  }}</span>
+                }
+                @if (product.status === Status.Blocked || product.stock === 0) {
+                  <span>{{
+                    'app.finished' | translate
+                  }}</span>
+                }
+              </button>
+            }
+          </div>
+        </mat-list-item>
+      }
+      @if (product.variants?.length) {
+        @for (variant of product.variants; track variant) {
+          <mat-list-item>
+            <span matListItemTitle>{{ variant.title }}</span>
+            <span matListItemLine>
+              @if (Product.hasDiscount(product, variant)) {
+                <span class="error-text line-through">
+                  {{ Product.realPrice(product, variant) | menuCurrency }}
+                  <span spacer-sm></span>
+                </span>
+              }
+              {{ Product.totalPrice(product, variant) | menuCurrency }}
+            </span>
+            @if (shopService.hasOrderingPlugin()) {
+              <div class="secondary" matListItemMeta>
+                <ng-container>
+                  @if (variant._orderItem?.quantity) {
+                    <count-selector
+                      [(count)]="variant._orderItem!.quantity"
+                      (plusClick)="plus(variant)"
+                      (minusClick)="minus(variant)"
+                    ></count-selector>
+                  }
+                  @if (!variant?._orderItem?.quantity) {
+                    <button
+                      mat-stroked-button
+                      [disabled]="variant.status === Status.Blocked || variant.stock === 0"
+                      (click)="plus(variant)"
+                      >
+                      @if (variant.status === Status.Active && variant.stock !== 0) {
+                        <span>{{
+                          'app.select' | translate
+                        }}</span>
+                      }
+                      @if (variant.status === Status.Blocked || variant.stock === 0) {
+                        <span>{{
+                          'app.finished' | translate
+                        }}</span>
+                      }
+                    </button>
+                  }
+                </ng-container>
+              </div>
+            }
+          </mat-list-item>
+        }
+      }
+    </mat-list>
+    <span #selectButtonRow></span>
+    <!-- <mat-toolbar>
     <mat-toolbar-row class="price-section">
       <p *ngIf="!Product.hasDiscount(product)" flex>{{ 'app.price' | translate }}</p>
       <span class="price-section__text">
@@ -108,36 +129,41 @@
     </mat-toolbar-row>
     <span #selectButtonRow></span>
   </mat-toolbar> -->
-
-  <ng-container *ngIf="shopService.hasOrderingPlugin()">
+  @if (shopService.hasOrderingPlugin()) {
     <div style="height: 72px"></div>
-
     <mat-toolbar class="actions background mat-elevation-z5">
       <button mat-stroked-button color="primary" goBack>
         {{ 'productPage.backMenu' | translate }}
       </button>
       <span spacer></span>
-      <button
-        flex
-        mat-raised-button
-        *ngIf="product?._orderItem?.quantity"
-        color="primary"
-        routerLink="/basket"
-        [disabled]="!basket.items.length"
-      >
-        {{ 'productPage.complete' | translate }}
-      </button>
-      <button
-        flex
-        mat-raised-button
-        [disabled]="product.status === Status.Blocked"
-        *ngIf="!product?._orderItem?.quantity"
-        color="primary"
-        (click)="plus(undefined, true)"
-      >
-        <span *ngIf="product.status === Status.Active">{{ 'app.select' | translate }}</span>
-        <span *ngIf="product.status === Status.Blocked">{{ 'app.finished' | translate }}</span>
-      </button>
+      @if (product?._orderItem?.quantity) {
+        <button
+          flex
+          mat-raised-button
+          color="primary"
+          routerLink="/basket"
+          [disabled]="!basket.items.length"
+          >
+          {{ 'productPage.complete' | translate }}
+        </button>
+      }
+      @if (!product?._orderItem?.quantity) {
+        <button
+          flex
+          mat-raised-button
+          [disabled]="product.status === Status.Blocked"
+          color="primary"
+          (click)="plus(undefined, true)"
+          >
+          @if (product.status === Status.Active) {
+            <span>{{ 'app.select' | translate }}</span>
+          }
+          @if (product.status === Status.Blocked) {
+            <span>{{ 'app.finished' | translate }}</span>
+          }
+        </button>
+      }
     </mat-toolbar>
-  </ng-container>
+  }
 </main>
+}

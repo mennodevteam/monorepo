@@ -63,26 +63,39 @@ export class ProductComponent implements OnDestroy {
     return [];
   });
 
-  readonly totalPrice = computed(() => (this.product() ? Product.totalPrice(this.product()!) : 0));
-  readonly hasDiscount = computed(() => (this.product() ? Product.hasDiscount(this.product()!) : false));
-  readonly realPrice = computed(() =>
-    this.hasDiscount() && this.product() ? Product.realPrice(this.product()!) : null,
-  );
+  readonly totalPrice = computed(() => {
+    const p = this.product();
+    return p ? Product.totalPrice(p) : 0;
+  });
+  readonly hasDiscount = computed(() => {
+    const p = this.product();
+    return p ? Product.hasDiscount(p) : false;
+  });
+  readonly realPrice = computed(() => {
+    const p = this.product();
+    return this.hasDiscount() && p ? Product.realPrice(p) : null;
+  });
 
-  isImage(value: any): boolean {
+  isImage(value: unknown): boolean {
     return typeof value === 'object' && value !== null && 'md' in value;
   }
 
-  readonly variantTotalPrice = (variant: ProductVariant) =>
-    this.product() ? Product.totalPrice(this.product()!, variant) : 0;
-  readonly variantHasDiscount = (variant: ProductVariant) =>
-    this.product() ? Product.hasDiscount(this.product()!, variant) : false;
-  readonly variantRealPrice = (variant: ProductVariant) =>
-    this.variantHasDiscount(variant) && this.product() ? Product.realPrice(this.product()!, variant) : null;
+  readonly variantTotalPrice = (variant: ProductVariant) => {
+    const p = this.product();
+    return p ? Product.totalPrice(p, variant) : 0;
+  };
+  readonly variantHasDiscount = (variant: ProductVariant) => {
+    const p = this.product();
+    return p ? Product.hasDiscount(p, variant) : false;
+  };
+  readonly variantRealPrice = (variant: ProductVariant) => {
+    const p = this.product();
+    return this.variantHasDiscount(variant) && p ? Product.realPrice(p, variant) : null;
+  };
 
   readonly activeImageIndex = signal(0);
   private readonly carousel = viewChild<ElementRef<HTMLElement>>('carousel');
-  private intervalId: any;
+  private intervalId: ReturnType<typeof setInterval> | null = null;
 
   ngOnDestroy(): void {
     this.titleService.clearTitle();

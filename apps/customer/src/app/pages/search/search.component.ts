@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
@@ -16,7 +16,6 @@ import { GoBackDirective } from '../../shared/directives';
   selector: 'app-search',
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     MatToolbarModule,
     MatInputModule,
@@ -45,7 +44,7 @@ export class SearchComponent {
     const menu = this.menu();
     if (!menu || !menu.categories) return [];
 
-    let products: Product[] = [];
+    const products: Product[] = [];
     for (const cat of menu.categories) {
       if (cat.products) {
         products.push(...cat.products);
@@ -64,7 +63,6 @@ export class SearchComponent {
 
   readonly filteredProducts = computed(() => {
     const query = this.searchQuery();
-    const products = this.allProducts();
 
     if (!query) return [];
 
@@ -72,8 +70,4 @@ export class SearchComponent {
       .search(query)
       .map((result) => result.item);
   });
-
-  goBack() {
-    this.location.back();
-  }
 }

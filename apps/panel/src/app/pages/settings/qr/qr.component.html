@@ -63,24 +63,28 @@
             {{ 'tableEdit.dialogNewTitle' | translate }}
           </button>
         </mat-toolbar>
-        <mat-list-item *ngFor="let t of tables">
-          <i matListItemIcon class="mat-icon fa-solid fa-qrcode"></i>
-          <span matListItemTitle>
-            {{ t.code }}
-            <span *ngIf="t.title">({{ t.title }})</span>
-          </span>
-          <div class="actions" matListItemMeta>
+        @for (t of tables; track t) {
+          <mat-list-item>
+            <i matListItemIcon class="mat-icon fa-solid fa-qrcode"></i>
+            <span matListItemTitle>
+              {{ t.code }}
+              @if (t.title) {
+                <span>({{ t.title }})</span>
+              }
+            </span>
+            <div class="actions" matListItemMeta>
             <a matListItemMeta mat-button color="primary" target="_blank" [href]="getLink('table=' + t.code)">
               {{ 'qrPage.download' | translate }}
-            </a>
-            <button mat-icon-button (click)="editTable(t)">
-              <i class="fa-regular fa-pencil-alt"></i>
-            </button>
-            <button mat-icon-button (click)="remove(t)">
-              <i class="fa-regular fa-trash-alt"></i>
-            </button>
-          </div>
-        </mat-list-item>
+              </a>
+              <button mat-icon-button (click)="editTable(t)">
+                <i class="fa-regular fa-pencil-alt"></i>
+              </button>
+              <button mat-icon-button (click)="remove(t)">
+                <i class="fa-regular fa-trash-alt"></i>
+              </button>
+            </div>
+          </mat-list-item>
+        }
       </mat-list>
     </mat-card-content>
   </mat-card>

@@ -1,8 +1,10 @@
 <mat-nav-list>
-  <ng-container *ngFor="let d of dings; let last = last">
+  @for (d of dings; track d; let last = $last) {
     <a mat-list-item (click)="sheetRef.dismiss(d)">
       <span matListItemTitle>{{ d }}</span>
     </a>
-    <mat-divider *ngIf="!last"></mat-divider>
-  </ng-container>
+    @if (!last) {
+      <mat-divider></mat-divider>
+    }
+  }
 </mat-nav-list>

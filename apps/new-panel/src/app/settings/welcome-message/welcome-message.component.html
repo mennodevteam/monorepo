@@ -24,10 +24,12 @@
             formControlName="title"
             placeholder="{{ 'welcomeMessage.titlePlaceholder' | translate }}"
             [disabled]="!form.get('enabled')?.value"
-          />
-          <mat-error *ngIf="form.get('title')?.hasError('required')">
-            {{ 'app.required' | translate }}
-          </mat-error>
+            />
+          @if (form.get('title')?.hasError('required')) {
+            <mat-error>
+              {{ 'app.required' | translate }}
+            </mat-error>
+          }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
@@ -38,11 +40,13 @@
             formControlName="description"
             placeholder="{{ 'welcomeMessage.descriptionPlaceholder' | translate }}"
             [disabled]="!form.get('enabled')?.value"
-          >
+            >
           </textarea>
-          <mat-error *ngIf="form.get('description')?.hasError('required')">
-            {{ 'app.required' | translate }}
-          </mat-error>
+          @if (form.get('description')?.hasError('required')) {
+            <mat-error>
+              {{ 'app.required' | translate }}
+            </mat-error>
+          }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
@@ -55,11 +59,13 @@
             [disabled]="!form.get('enabled')?.value"
             eng
             ltr
-          />
+            />
           <mat-hint>{{ 'welcomeMessage.delayHint' | translate }}</mat-hint>
-          <mat-error *ngIf="form.get('delayInSeconds')?.hasError('min')">
-            {{ 'app.minValue' | translate: { value: 0 } }}
-          </mat-error>
+          @if (form.get('delayInSeconds')?.hasError('min')) {
+            <mat-error>
+              {{ 'app.minValue' | translate: { value: 0 } }}
+            </mat-error>
+          }
         </mat-form-field>
       </mat-card-content>
     </mat-card>

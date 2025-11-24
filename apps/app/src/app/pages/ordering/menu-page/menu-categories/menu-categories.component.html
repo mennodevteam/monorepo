@@ -1,7 +1,11 @@
 <mat-chip-set aria-label="categories" class="category-chips background">
-  <mat-chip #categoryChip class="outline-variant" (click)="chipClick.emit(i)" *ngFor="let c of categories; let i = index">
-    <i *ngIf="c.faIcon" class="fa-solid fa-{{ c.faIcon }}"></i>
-    {{ c.title }}
-  </mat-chip>
+  @for (c of categories; track c; let i = $index) {
+    <mat-chip #categoryChip class="outline-variant" (click)="chipClick.emit(i)">
+      @if (c.faIcon) {
+        <i class="fa-solid fa-{{ c.faIcon }}"></i>
+      }
+      {{ c.title }}
+    </mat-chip>
+  }
   <span spacer-2x></span>
 </mat-chip-set>

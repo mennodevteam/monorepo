@@ -1,14 +1,14 @@
 import { PlatformLocation } from '@angular/common';
-import { Directive, HostListener } from '@angular/core';
+import { Directive, HostListener, inject } from '@angular/core';
 
 @Directive({
   standalone: true,
-  selector: '[goBack]',
+  selector: '[appGoBack]',
 })
 export class GoBackDirective {
-  constructor(private location: PlatformLocation) {}
+  private location = inject(PlatformLocation);
 
-  @HostListener('click', ['$event']) onClick($event: any): void {
+  @HostListener('click') onClick(): void {
     this.location.back();
   }
 }

@@ -15,7 +15,7 @@ import { AuthService } from '../../auth/auth.service';
 import { ShopService } from '../../shop/shop.service';
 import { injectMutation } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
-import { CommonModule } from '@angular/common';
+
 import { DialogService } from '../../core/services/dialog.service';
 
 enum VerificationStep {
@@ -27,7 +27,6 @@ enum VerificationStep {
   selector: 'app-phone-verification',
   standalone: true,
   imports: [
-    CommonModule,
     SHARED,
     MatFormFieldModule,
     MatInputModule,
@@ -35,8 +34,8 @@ enum VerificationStep {
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatButtonModule,
-    MatInputModule,
-  ],
+    MatInputModule
+],
   templateUrl: './phone-verification.component.html',
   styleUrl: './phone-verification.component.scss',
 })

@@ -9,12 +9,12 @@ import { injectQuery } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-order-funnel-card',
   standalone: true,
-  imports: [CommonModule, SHARED, BaseChartDirective, MatCardModule, MatListModule],
+  imports: [SHARED, BaseChartDirective, MatCardModule, MatListModule],
   templateUrl: './order-funnel-card.component.html',
   styleUrl: './order-funnel-card.component.scss',
 })
