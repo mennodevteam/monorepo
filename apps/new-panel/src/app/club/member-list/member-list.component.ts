@@ -271,7 +271,9 @@ export class MemberListComponent {
             )
           ) {
             this.sendMessageMutation.mutate({
-              filter: receptors.length ? undefined : this.filterDto(),
+              filter: receptors.length
+                ? undefined
+                : { ...this.filterDto(), take: undefined, skip: undefined },
               message: dto.text,
               receptors,
             });
