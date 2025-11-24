@@ -100,9 +100,12 @@
 
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let product" style="width: 128px">
+    <td mat-cell *matCellDef="let product" style="width: 148px">
       <button mat-icon-button routerLink="../product" [queryParams]="{ id: product.id }">
         <i class="fa-regular fa-edit fa-xs"></i>
+      </button>
+      <button mat-icon-button (click)="duplicateProduct(product)">
+        <i class="fa-regular fa-copy fa-xs"></i>
       </button>
       <button mat-icon-button>
         <i class="fa-regular fa-trash-alt fa-xs"></i>

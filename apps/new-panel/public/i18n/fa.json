@@ -224,6 +224,10 @@
       "NUTS": "محصولات",
       "FRUITS": "محصولات",
       "OTHER": "محصولات"
+    },
+    "duplicate": {
+      "title": "کپی محصول",
+      "categoryLabel": "دسته‌بندی مقصد"
     }
   },
   "productEdit": {

@@ -10,6 +10,7 @@ import { PromptFields } from '../../../../shared/dialogs/prompt-dialog/prompt-di
 import { FormControl, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../../core/services/dialog.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 const COLS = ['index', 'image', 'title', 'price', 'costs', 'status', 'actions'];
 @Component({
   selector: 'app-product-table',
@@ -23,6 +24,7 @@ export class ProductTableComponent {
   menu = inject(MenuService);
   dialog = inject(DialogService);
   t = inject(TranslateService);
+  snack = inject(MatSnackBar);
   readonly displayedColumns = COLS;
   Status = Status;
 
@@ -82,5 +84,51 @@ export class ProductTableComponent {
 
   editCost(cost: MenuCost) {
     //
+  }
+
+  duplicateProduct(product: Product) {
+    const categories = this.menu.categories();
+    if (!categories?.length) return;
+
+    this.dialog
+      .prompt(this.t.instant('menu.duplicate.title'), {
+        category: {
+          label: this.t.instant('menu.duplicate.categoryLabel'),
+          control: new FormControl(this.category()?.id, Validators.required),
+          type: 'select',
+          options: categories.map((c) => ({ text: c.title, value: c.id })),
+        },
+      })
+      .then(async (res) => {
+        if (res) {
+          const categoryId = res.category;
+          const category = { id: categoryId } as ProductCategory;
+          if (category) {
+            const newProduct: Product = {
+              ...product,
+              id: undefined as any,
+              category,
+              variants:
+                product.variants?.map(
+                  (v) =>
+                    ({
+                      title: v.title,
+                      price: v.price,
+                      status: v.status,
+                      position: v.position,
+                    }) as ProductVariant,
+                ) || [],
+              imageFiles: product.imageFiles, // Keep same image references
+              createdAt: undefined,
+              updatedAt: undefined,
+              deletedAt: undefined,
+              costs: undefined,
+            };
+            this.snack.open(this.t.instant('app.saving'), '', { duration: 5000 });
+            await this.menu.saveProductMutation.mutateAsync(newProduct);
+            this.snack.open(this.t.instant('app.savedSuccessfully'), '', { duration: 2000 });
+          }
+        }
+      });
   }
 }
