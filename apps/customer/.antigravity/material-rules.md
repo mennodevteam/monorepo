@@ -1,31 +1,4 @@
-# Customer App Development Rules
-
-## Angular 21 Features
-
-### Use Latest Angular 21 Syntax and Features
-
-- **Always use standalone components** - No NgModules
-- **Use the new `inject()` function** for dependency injection instead of constructor injection
-- **Use signals** (`signal()`, `computed()`, `effect()`) for reactive state management
-- **Use the new control flow syntax** in templates:
-  - `@if` instead of `*ngIf`
-  - `@for` instead of `*ngFor`
-  - `@switch` instead of `*ngSwitch`
-  - `@defer` for lazy loading components
-- **Use `input()` and `output()`** for component inputs and outputs instead of `@Input()` and `@Output()`
-- **Use `viewChild()` and `viewChildren()`** instead of `@ViewChild()` and `@ViewChildren()`
-- **Use `model()` for two-way binding** instead of `[(ngModel)]`
-- **Use resource API** for data fetching when applicable
-- **Use `linkedSignal()` and `toSignal()`** for reactive patterns
-- **Prefer functional guards and resolvers** over class-based ones
-- **Use `provideRouter` with `withComponentInputBinding()`** to bind route params directly to component inputs
-
-### TypeScript Best Practices
-
-- Use strict TypeScript settings
-- Prefer `readonly` for immutable properties
-- Use proper typing, avoid `any`
-- Use type inference where appropriate
+# Material Design 3 Rules
 
 ## Angular Material 21 Theming
 
@@ -165,15 +138,9 @@ Use Material elevation tokens:
 
 - `--mat-sys-level0` through `--mat-sys-level5` for elevation
 
-### Spacing
-
-Use consistent spacing based on 4px or 8px grid system
-
 ## Material Design 3 Utility Classes
 
 **PREFER utility classes over custom CSS** when you only need simple styling!
-
-The app includes comprehensive utility classes for quick styling without writing custom CSS. Use these classes in your templates whenever possible.
 
 ### Typography Utility Classes
 
@@ -238,19 +205,6 @@ Apply typography styles directly in HTML:
 - `.mat-bg-surface-dim`, `.mat-bg-surface-bright`
 - `.mat-bg-background`
 
-### Border Utility Classes
-
-```html
-<div class="mat-border">Default border</div>
-<div class="mat-border-outline">Outline border</div>
-<div class="mat-border-top">Top border only</div>
-```
-
-**Available classes:**
-
-- `.mat-border`, `.mat-border-outline`, `.mat-border-outline-variant`
-- `.mat-border-top`, `.mat-border-bottom`, `.mat-border-left`, `.mat-border-right`
-
 ### Elevation Utility Classes
 
 ```html
@@ -260,78 +214,11 @@ Apply typography styles directly in HTML:
 
 **Available classes:** `.mat-elevation-0` through `.mat-elevation-5`
 
-### Spacing Utility Classes
-
-Based on 4px/8px grid system:
-
-```html
-<!-- Padding -->
-<div class="mat-p-16">Padding 16px all sides</div>
-<div class="mat-px-24">Padding 24px horizontal</div>
-<div class="mat-py-12">Padding 12px vertical</div>
-
-<!-- Margin -->
-<div class="mat-m-16">Margin 16px all sides</div>
-<div class="mat-mx-auto">Centered horizontally</div>
-<div class="mat-my-24">Margin 24px vertical</div>
-<div class="mat-mt-16">Margin top 16px</div>
-<div class="mat-mb-8">Margin bottom 8px</div>
-
-<!-- Gap (for flex/grid) -->
-<div class="mat-flex mat-gap-16">Flex with 16px gap</div>
-```
-
-**Available spacing values:** `0`, `4`, `8`, `12`, `16`, `20`, `24`, `32`, `40`, `48`
-
-### Layout Utility Classes
-
-```html
-<!-- Flexbox -->
-<div class="mat-flex mat-gap-16">Flex container</div>
-<div class="mat-flex-column mat-gap-8">Flex column</div>
-<div class="mat-flex-center">Centered content</div>
-<div class="mat-flex-between">Space between</div>
-
-<!-- Alignment -->
-<div class="mat-flex mat-items-center">Vertically centered</div>
-<div class="mat-flex mat-justify-end">Right aligned</div>
-
-<!-- Display -->
-<div class="mat-block">Block element</div>
-<span class="mat-inline-block">Inline block</span>
-<div class="mat-hidden">Hidden element</div>
-```
-
-**Available classes:**
-
-- Flex: `.mat-flex`, `.mat-flex-column`, `.mat-flex-row`, `.mat-flex-center`, `.mat-flex-between`, `.mat-flex-around`, `.mat-flex-wrap`, `.mat-flex-1`
-- Alignment: `.mat-items-center/start/end`, `.mat-justify-center/start/end/between`
-- Display: `.mat-block`, `.mat-inline-block`, `.mat-inline`, `.mat-hidden`
-
-### Text Alignment Utility Classes
-
-```html
-<p class="mat-text-center">Centered text</p>
-<p class="mat-text-right">Right aligned text</p>
-<p class="mat-text-justify">Justified text</p>
-```
-
-**Available classes:** `.mat-text-left`, `.mat-text-center`, `.mat-text-right`, `.mat-text-justify`
-
-### Size Utility Classes
-
-```html
-<div class="mat-w-full">Full width</div>
-<div class="mat-h-full">Full height</div>
-```
-
-**Available classes:** `.mat-w-full`, `.mat-h-full`, `.mat-w-auto`, `.mat-h-auto`
-
 ### When to Use Utility Classes vs Custom CSS
 
 ✅ **Use utility classes when:**
 
-- You only need simple styling (margins, padding, colors, typography)
+- You only need simple styling (colors, typography)
 - The styling is a one-off and won't be reused
 - You want to quickly prototype
 - The element doesn't need complex or component-specific styling
@@ -343,20 +230,6 @@ Based on 4px/8px grid system:
 - You have animations or transitions
 - You need media queries
 - The styling is part of a reusable component pattern
-
-### Example: Using Utility Classes
-
-```html
-<!-- Good: Simple card with utility classes -->
-<div class="mat-bg-surface-container mat-p-16 mat-border mat-elevation-1">
-  <h2 class="mat-title-large mat-m-0 mat-mb-8">Card Title</h2>
-  <p class="mat-body-medium mat-color-on-surface-variant mat-m-0">Card description text</p>
-  <div class="mat-flex mat-gap-8 mat-mt-16">
-    <button mat-button>Cancel</button>
-    <button mat-raised-button color="primary">Confirm</button>
-  </div>
-</div>
-```
 
 ## Component Development
 
@@ -468,62 +341,8 @@ export class MyComponent {
 }
 ```
 
-## Services and State Management
-
-### Service Structure
-
-```typescript
-import { Injectable, signal, computed, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-
-@Injectable({
-  providedIn: 'root',
-})
-export class MyService {
-  private http = inject(HttpClient);
-
-  // Use signals for reactive state
-  private _items = signal<Item[]>([]);
-  items = this._items.asReadonly();
-
-  itemCount = computed(() => this._items().length);
-
-  addItem(item: Item) {
-    this._items.update((items) => [...items, item]);
-  }
-}
-```
-
-## Routing
-
-### Route Configuration
-
-```typescript
-import { Routes } from '@angular/router';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
-
-export const routes: Routes = [
-  {
-    path: 'products/:id',
-    loadComponent: () => import('./product/product.component').then((m) => m.ProductComponent),
-    // Route params automatically bound to component inputs
-  },
-];
-
-// In app.config.ts
-export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes, withComponentInputBinding())],
-};
-```
-
 ## Critical Rules
 
 1. **NO hardcoded colors** - Always use `--mat-sys-*` tokens or utility classes
 2. **NO hardcoded font sizes** - Always use `--mat-sys-*` typography tokens or utility classes
 3. **PREFER utility classes** - Use `.mat-*` utility classes for simple styling instead of custom CSS
-4. **NO NgModules** - Everything must be standalone
-5. **NO constructor injection** - Use `inject()` function
-6. **NO old control flow** - Use `@if`, `@for`, `@switch`, `@defer`
-7. **NO `@Input()/@Output()`** - Use `input()`/`output()` functions
-8. **Prefer signals** over RxJS observables for simple state
-9. **Use `toSignal()`** when working with observables in templates
