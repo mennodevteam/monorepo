@@ -31,4 +31,17 @@
   } @else {
     <p>سبد خرید شما خالی است.</p>
   }
+
+  @if (cart.orderItems().length) {
+    <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200 z-10 flex justify-center">
+      <a
+        mat-flat-button
+        color="primary"
+        class="w-full max-w-screen-md h-12 text-lg rounded-xl"
+        routerLink="/checkout"
+      >
+        تکمیل سفارش ({{ cart.total() | number }} تومان)
+      </a>
+    </div>
+  }
 </div>

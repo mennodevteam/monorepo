@@ -1,0 +1,35 @@
+<app-top-app-bar title="تکمیل سفارش" [sticky]="true" [hideMenu]="true"></app-top-app-bar>
+
+@if (cart.length()) {
+  <main class="flex flex-col gap-4 p-4 pb-24 max-w-screen-md mx-auto">
+    <!-- Address Section (Only for Delivery) -->
+    @if (cart.orderType() === 'Delivery') {
+      <app-address-list></app-address-list>
+      <div class="h-px bg-gray-200 w-full"></div>
+    }
+
+    <!-- Invoice Section -->
+    <app-invoice></app-invoice>
+
+    <!-- Payment Methods Section -->
+    <app-payment-methods></app-payment-methods>
+  </main>
+}
+
+<mat-toolbar
+  class="flex justify-center fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-10 px-4"
+>
+  <button
+    mat-flat-button
+    color="primary"
+    class="w-full max-w-screen-md h-12 text-lg rounded-xl"
+    (click)="submit()"
+    [disabled]="cart.saving()"
+  >
+    @if (cart.saving()) {
+      <span>در حال ثبت...</span>
+    } @else {
+      <span>ثبت سفارش ({{ total() | number }} تومان)</span>
+    }
+  </button>
+</mat-toolbar>

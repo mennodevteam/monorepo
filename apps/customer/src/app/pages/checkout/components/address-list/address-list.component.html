@@ -1,0 +1,35 @@
+<div class="flex flex-col gap-4 p-4 bg-white rounded-xl shadow-sm">
+  <div class="flex justify-between items-center">
+    <h3 class="text-lg font-bold m-0">آدرس تحویل</h3>
+    <button mat-stroked-button color="primary" (click)="openAddressDialog()">
+      <mat-icon>add</mat-icon>
+      افزودن آدرس
+    </button>
+  </div>
+
+  @if (addresses.length > 0) {
+    <mat-selection-list [multiple]="false" class="w-full">
+      @for (address of addresses; track address.id) {
+        <mat-list-option
+          [value]="address"
+          [selected]="selectedAddressId() === address.id"
+          (click)="selectAddress(address)"
+          class="mb-2 border border-gray-100 rounded-lg"
+        >
+          <div matListItemTitle class="font-bold">{{ address.title || 'آدرس' }}</div>
+          <div matListItemLine class="text-gray-600 text-sm mt-1">
+            {{ address.city }} - {{ address.region }}
+          </div>
+          <div matListItemLine class="text-gray-500 text-xs mt-1">
+            {{ address.description }}
+          </div>
+        </mat-list-option>
+      }
+    </mat-selection-list>
+  } @else {
+    <div class="text-center py-8 text-gray-500">
+      <mat-icon class="text-4xl mb-2">location_off</mat-icon>
+      <p>هنوز آدرسی ثبت نکرده‌اید.</p>
+    </div>
+  }
+</div>

@@ -4,11 +4,12 @@ import { CartService } from '../../core/services/cart.service';
 import { MatListModule } from '@angular/material/list';
 import { QuantitySelectorComponent } from '../../shared/components/quantity-selector/quantity-selector.component';
 import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, MatListModule, QuantitySelectorComponent, MatButtonModule],
+  imports: [CommonModule, MatListModule, QuantitySelectorComponent, MatButtonModule, RouterModule],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
 })

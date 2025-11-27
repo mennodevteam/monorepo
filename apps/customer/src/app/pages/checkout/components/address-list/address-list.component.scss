@@ -1,0 +1,14 @@
+:host {
+  display: block;
+}
+
+mat-selection-list {
+  padding-top: 0;
+}
+
+mat-list-option {
+  &.mat-mdc-list-item-selected {
+    background-color: rgba(var(--primary-color-rgb), 0.05);
+    border-color: var(--primary-color);
+  }
+}

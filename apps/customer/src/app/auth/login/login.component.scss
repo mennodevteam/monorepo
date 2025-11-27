@@ -1,0 +1,32 @@
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  margin: 0 auto;
+  max-width: 400px;
+
+  h1 {
+    margin: 0;
+    font: var(--mat-sys-headline-small);
+  }
+
+  p {
+    margin: 0;
+    font: var(--mat-sys-body-medium);
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  mat-form-field {
+    font-family: monospace;
+
+    input {
+      direction: ltr;
+    }
+  }
+
+  .large {
+    height: 48px;
+    font: var(--mat-sys-label-large);
+  }
+}

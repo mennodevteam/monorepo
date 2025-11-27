@@ -1,9 +1,15 @@
 import { Route } from '@angular/router';
+import { loginActivator } from './core/guards/login.guard';
+import { authRoutes } from './auth/auth.routes';
 
 export const appRoutes: Route[] = [
   {
     path: 'search',
     loadComponent: () => import('./pages/search/search.component').then((m) => m.SearchComponent),
+  },
+  {
+    path: 'login',
+    children: authRoutes,
   },
   {
     path: '',
@@ -35,14 +41,20 @@ export const appRoutes: Route[] = [
         data: { isRootPage: true, showCheckout: true },
       },
       {
+        path: 'checkout',
+        loadComponent: () => import('./pages/checkout/checkout.component').then((m) => m.CheckoutComponent),
+      },
+      {
         path: 'orders',
         loadComponent: () => import('./pages/orders/orders.component').then((m) => m.OrdersComponent),
         data: { isRootPage: true },
+        canActivate: [loginActivator],
       },
       {
         path: 'profile',
         loadComponent: () => import('./pages/profile/profile.component').then((m) => m.ProfileComponent),
         data: { isRootPage: true },
+        canActivate: [loginActivator],
       },
       {
         path: 'categories/:categoryId/:id',

@@ -1,0 +1,82 @@
+import { Component, computed, inject } from '@angular/core';
+import { PlatformLocation } from '@angular/common';
+import { Router } from '@angular/router';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
+import { CartService } from '../../core/services/cart.service';
+import { ShopService } from '../../core/services/shop.service';
+import { AnalyticsService } from '../../core/services/analytics.service';
+import { MenuStatService } from '../../core/services/menu-stat.service';
+import { ClubService } from '../../core/services/club.service';
+import { TopAppBarComponent } from '../../shared/components/top-app-bar/top-app-bar.component';
+import { AddressListComponent } from './components/address-list/address-list.component';
+import { InvoiceComponent } from './components/invoice/invoice.component';
+import { PaymentMethodsComponent } from './components/payment-methods/payment-methods.component';
+import { StatAction, OrderType } from '@menno/types';
+
+@Component({
+  selector: 'app-checkout',
+  standalone: true,
+  imports: [
+    TopAppBarComponent,
+    AddressListComponent,
+    InvoiceComponent,
+    PaymentMethodsComponent,
+    MatToolbarModule,
+    MatButtonModule,
+    TranslateModule,
+  ],
+  templateUrl: './checkout.component.html',
+  styleUrl: './checkout.component.scss',
+})
+export class CheckoutComponent {
+  cart = inject(CartService);
+  shopService = inject(ShopService);
+  analytics = inject(AnalyticsService);
+  menuStat = inject(MenuStatService);
+  club = inject(ClubService);
+  router = inject(Router);
+  location = inject(PlatformLocation);
+
+  constructor() {
+    if (this.cart.length() === 0) {
+      this.location.back();
+    } else {
+      this.menuStat.send(StatAction.ViewCheckout, { value: this.cart.total() });
+    }
+  }
+
+  total = computed(() => {
+    if (!this.cart.useWallet()) return this.cart.total();
+    else {
+      const useWallet = this.club.wallet?.charge || 0;
+      return Math.max(0, this.cart.total() - useWallet);
+    }
+  });
+
+  async submit() {
+    // Track order placement attempt
+    this.analytics.trackEvent('place_order_attempted', {
+      itemCount: this.cart.length(),
+      totalAmount: this.total(),
+      paymentType: this.cart.paymentType(),
+    });
+
+    const order = await this.cart.complete();
+    if (order) {
+      // Track successful order placement
+      this.analytics.trackEvent('order_placed_successfully', {
+        orderId: order.id,
+        itemCount: this.cart.length(),
+        totalAmount: this.total(),
+        paymentType: this.cart.paymentType(),
+      });
+
+      order.shop = this.shopService.data();
+      // Navigate to orders page or success page
+      // Assuming orders page for now based on app routes
+      this.router.navigate(['/orders'], { replaceUrl: true });
+    }
+  }
+}

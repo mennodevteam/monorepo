@@ -22,7 +22,7 @@ export class AddressesService {
     });
   }
 
-  private load() {
+  load() {
     this.http
       .get<Address[]>(`addresses`, {
         params: {

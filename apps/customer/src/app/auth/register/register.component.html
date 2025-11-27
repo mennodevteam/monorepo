@@ -1,0 +1,28 @@
+<app-top-app-bar />
+<form class="register-form" (ngSubmit)="submit($event)">
+  <h1>تکمیل اطلاعات</h1>
+  <p>لطفا نام و نام خانوادگی خود را وارد کنید</p>
+
+  <mat-form-field>
+    <mat-label>نام</mat-label>
+    <input matInput [(ngModel)]="firstName" name="firstName" required />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>نام خانوادگی</mat-label>
+    <input matInput [(ngModel)]="lastName" name="lastName" required />
+  </mat-form-field>
+
+  <button
+    type="submit"
+    [disabled]="!firstName() || !lastName() || loading()"
+    matButton="filled"
+    color="primary"
+    class="large"
+  >
+    ثبت و ادامه
+    @if (loading()) {
+      <mat-spinner diameter="20"></mat-spinner>
+    }
+  </button>
+</form>

@@ -1,0 +1,33 @@
+<app-top-app-bar />
+<div class="otp-container">
+  <h1>کد تایید</h1>
+  <p>کد ارسال شده به شماره {{ phone }} را وارد کنید</p>
+
+  <mat-form-field>
+    <input
+      matInput
+      type="text"
+      inputmode="numeric"
+      [(ngModel)]="otp"
+      maxlength="4"
+      class="otp-input"
+      autocomplete="one-time-code"
+      [disabled]="loading()"
+      [autoFocus]="true"
+    />
+  </mat-form-field>
+
+  <div class="actions">
+    <button matButton (click)="sendTokenAgain()" [disabled]="time() > 0 || loading()">
+      @if (time() > 0) {
+        ارسال مجدد در {{ time() }} ثانیه
+      } @else {
+        ارسال مجدد
+      }
+    </button>
+  </div>
+
+  @if (loading()) {
+    <mat-spinner diameter="40" class="spinner"></mat-spinner>
+  }
+</div>

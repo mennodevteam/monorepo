@@ -1,0 +1,27 @@
+<app-top-app-bar />
+<form class="login-form" (ngSubmit)="sendToken($event)">
+  <h1>ورود / ثبت‌نام</h1>
+  <p>لطفا شماره موبایل خود را وارد کنید</p>
+  <mat-form-field>
+    <input
+      [(ngModel)]="phone"
+      name="phone"
+      matInput
+      type="number"
+      placeholder="9123456789"
+      [readonly]="loading()"
+      minlength="10"
+      maxlength="10"
+      class="mono"
+    />
+    <span matTextSuffix class="ltr mono">0</span>
+    <mat-error>شماره موبایل معتبر نیست</mat-error>
+  </mat-form-field>
+
+  <button type="submit" [disabled]="loading()" matButton="filled" class="large">
+    ارسال کد تایید
+    @if (loading()) {
+      <mat-spinner diameter="20"></mat-spinner>
+    }
+  </button>
+</form>

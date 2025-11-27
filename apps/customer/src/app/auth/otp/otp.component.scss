@@ -1,0 +1,40 @@
+:host {
+  display: block;
+  padding: 16px;
+}
+
+.otp-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding-top: 24px;
+  text-align: center;
+
+  h1 {
+    margin: 0;
+    font: var(--mat-sys-headline-small);
+  }
+
+  p {
+    margin: 0;
+    font: var(--mat-sys-body-medium);
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  mat-form-field {
+    width: 100%;
+    max-width: 200px;
+    font: var(--mat-sys-headline-small);
+    text-align: center;
+
+    input {
+      text-align: center;
+      letter-spacing: 8px;
+    }
+  }
+
+  .spinner {
+    margin-top: 16px;
+  }
+}
