@@ -2,6 +2,7 @@
   "menno": "menno",
   "app": {
     "date": "تاریخ",
+    "time": "ساعت",
     "type": "نوع",
     "all": "همه",
     "save": "ذخیره",
@@ -307,7 +308,9 @@
       "text": "اطلاع‌رسانی تغییر وضعیت به مشتری",
       "action": "ارسال پیامک"
     },
-    "deliveryArea": "ارسال"
+    "deliveryArea": "ارسال",
+    "printCustomer": "چاپ برای مشتری",
+    "printShop": "چاپ برای {{value}}"
   },
   "address": {
     "postalCode": "کدپستی",

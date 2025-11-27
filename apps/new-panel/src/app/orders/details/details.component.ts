@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SHARED } from '../../shared';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
 import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
@@ -17,6 +18,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { FormsModule } from '@angular/forms';
 import { CostSummaryComponent } from './cost-summary/cost-summary.component';
+import { TranslateService } from '@ngx-translate/core';
+import { printOrder } from '../print-order.helper';
+
+import { ShopService } from '../../shop/shop.service';
 
 @Component({
   selector: 'app-order-details',
@@ -26,6 +31,7 @@ import { CostSummaryComponent } from './cost-summary/cost-summary.component';
     SHARED,
     MatCardModule,
     MatToolbarModule,
+    MatMenuModule,
     OrderItemTableComponent,
     OrderStateChipComponent,
     OrderChatComponent,
@@ -43,12 +49,15 @@ export class OrderDetailsComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly queryClient = inject(QueryClient);
   readonly ordersService = inject(OrdersService);
+  readonly shopService = inject(ShopService);
   User = User;
   OrderType = OrderType;
   orderId = signal(this.route.snapshot.params['id']);
   isSmallScreen = signal(false);
   showCost = signal(false);
+
   private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly translate = inject(TranslateService);
   query = injectQuery(() => ({
     queryKey: ['orderDetails', this.orderId()],
     queryFn: () => lastValueFrom(this.http.get<Order>(`/orders/panel/${this.orderId()}`)),
@@ -61,7 +70,7 @@ export class OrderDetailsComponent {
   constructor() {
     this.breakpointObserver.observe([Breakpoints.XSmall]).subscribe((result) => {
       this.isSmallScreen.set(result.matches);
-    });    
+    });
     effect(() => {
       this.route.paramMap.subscribe((params) => {
         this.orderId.set(params.get('id'));
@@ -72,6 +81,13 @@ export class OrderDetailsComponent {
       this.order();
       this.queryClient.invalidateQueries({ queryKey: ['notifications'] });
     });
+  }
+
+  printOrder(type: 'customer' | 'shop') {
+    const order = this.order();
+    const shop = this.shopService.data();
+    if (!order || !shop) return;
+    printOrder(order, shop, this.translate, type);
   }
 
   stateChange(state: OrderState) {
@@ -86,5 +102,4 @@ export class OrderDetailsComponent {
   onShowCostChange(value: boolean) {
     this.showCost.set(value);
   }
-
 }

@@ -9,6 +9,17 @@
     <button mat-icon-button routerLink="../../edit/{{ orderId() }}">
       <i class="fa-regular fa-edit"></i>
     </button>
+    <button mat-icon-button [matMenuTriggerFor]="printMenu">
+      <i class="fa-regular fa-print"></i>
+    </button>
+    <mat-menu #printMenu="matMenu">
+      <button mat-menu-item (click)="printOrder('customer')">
+        <span>{{ 'order.printCustomer' | translate }}</span>
+      </button>
+      <button mat-menu-item (click)="printOrder('shop')">
+        <span>{{ 'order.printShop' | translate: { value: shopService.data()?.title } }}</span>
+      </button>
+    </mat-menu>
     <button mat-icon-button>
       <i class="fa-regular fa-trash-alt"></i>
     </button>
