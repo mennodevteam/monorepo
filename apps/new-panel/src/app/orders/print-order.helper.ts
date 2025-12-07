@@ -117,7 +117,7 @@ export function printOrder(
           <div class="customer-row">
             <span>${customerLabel}: ${customerName} - ${customerPhone}</span>
           </div>
-          ${address ? `<p>${translate.instant('shop.addressSection')}: ${order.address?.region?.title ? `${order.address.region.title} - ` : ''}${address}${order.address?.unit ? ` - ${translate.instant('address.unit')}: ${order.address.unit}` : ''}${order.address?.ring ? ` - ${translate.instant('address.ring')}: ${order.address.ring}` : ''}</p>` : ''}
+          ${address ? `<p>${translate.instant('shop.addressSection')}: ${order.address?.region?.title ? `${order.address.region.title} - ` : ''}${address}${order.address?.unit ? ` - ${translate.instant('address.unit')}: ${order.address.unit}` : ''}${order.address?.ring ? ` - ${translate.instant('address.ring')}: ${order.address.ring}` : ''}${order.address?.postalCode ? ` - ${translate.instant('address.postalCode')}: ${order.address.postalCode}` : ''}</p>` : ''}
         </div>
 
         <table>

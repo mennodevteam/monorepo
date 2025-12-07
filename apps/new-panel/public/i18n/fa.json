@@ -629,7 +629,8 @@
   "chat": {
     "title": "پیگیری سفارش",
     "send": "ارسال پیام",
-    "text": "متن پیام"
+    "text": "متن پیام",
+    "editTitle": "ویرایش پیام"
   },
   "dashboard": {
     "orderTotalTitle": "گزارش فروش",

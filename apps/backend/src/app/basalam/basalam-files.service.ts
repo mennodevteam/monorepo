@@ -32,7 +32,7 @@ export class BasalamFilesService {
       .toPromise();
 
     const formData = new FormData();
-    const buffer = await this.streamToBuffer(fileResponse.data);
+    const buffer = (await this.streamToBuffer(fileResponse.data)) as any;
     const blob = new Blob([buffer]);
 
     formData.append('file', blob, 'file');

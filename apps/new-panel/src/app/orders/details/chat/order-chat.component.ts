@@ -53,6 +53,16 @@ export class OrderChatComponent {
     },
   }));
 
+  editMutation = injectMutation(() => ({
+    mutationFn: (chat: Chat) => lastValueFrom(this.http.post<Chat>(`/chat`, chat)),
+    onSuccess: (response, variables) => {
+      this.queryClient.setQueryData(['chat', 'order', this.order().id], (oldData: Chat[]) => {
+        if (!oldData) return [response];
+        return oldData.map((item) => (item.id === variables.id ? { ...item, text: variables.text } : item));
+      });
+    },
+  }));
+
   seenMutation = injectMutation(() => ({
     mutationFn: (ids: string[]) => lastValueFrom(this.http.post<void>(`/chat/seen`, ids)),
     onSuccess: (response, ids) => {
@@ -98,6 +108,23 @@ export class OrderChatComponent {
           const customer = this.order().customer;
           const text = dto.text.replace(/@@@/g, customer ? User.fullName(customer) : 'مشتری');
           this.sendMutation.mutate(text);
+        }
+      });
+  }
+
+  editMessage(chat: Chat) {
+    this.dialog
+      .prompt(this.t.instant('chat.editTitle'), {
+        text: {
+          label: this.t.instant('chat.text'),
+          control: new FormControl(chat.text, Validators.required),
+          type: 'textarea',
+          rows: 4,
+        },
+      })
+      .then((dto) => {
+        if (dto) {
+          this.editMutation.mutate({ ...chat, text: dto.text });
         }
       });
   }

@@ -68,6 +68,7 @@ export class PanelNotificationsService {
         shop: { id: shopId },
       },
       relations: ['order'],
+      withDeleted: true,
       order: {
         createdAt: 'DESC',
       },

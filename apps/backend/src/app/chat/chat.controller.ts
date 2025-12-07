@@ -39,7 +39,7 @@ export class ChatController {
   async save(@Body() chat: Chat, @LoginUser() user: AuthPayload): Promise<Chat> {
     if (user.role === UserRole.Panel) {
       const shop = await this.auth.getPanelUserShop(user, ['appConfig', 'smsAccount']);
-      if (chat.order) {
+      if (chat.order && !chat.id) {
         this.ordersRepo
           .findOne({ where: { id: chat.order.id }, relations: ['shop.smsAccount', 'customer'] })
           .then((order) => {

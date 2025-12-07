@@ -42,6 +42,12 @@
           @if (chat.seen && chat.type === ChatType.Receive) {
             <i class="fa-solid fa-eye fa-sm outline-text"></i>
           }
+
+          @if (chat.type === ChatType.Receive) {
+            <button mat-icon-button class="edit-btn" (click)="editMessage(chat)">
+              <i class="fa-regular fa-pen-to-square"></i>
+            </button>
+          }
         </mat-card-content>
       </mat-card>
     }
