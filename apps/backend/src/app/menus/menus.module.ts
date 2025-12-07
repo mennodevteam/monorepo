@@ -9,10 +9,11 @@ import { MenuCostsController } from './menu-costs.controller';
 import { HttpModule } from '@nestjs/axios';
 import { FilesModule } from '../files/files.module';
 import { MenuStatsController } from './menu-stats.controller';
+import { MenuStatsSubscriber } from './menu-stats.subscriber';
 
 @Module({
   imports: [CoreModule, AuthModule, HttpModule, FilesModule],
-  providers: [MenusService],
+  providers: [MenusService, MenuStatsSubscriber],
   controllers: [
     MenusController,
     ProductsController,
