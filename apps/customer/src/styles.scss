@@ -56,4 +56,11 @@ textarea {
       protected-label-text-color: var(--mat-sys-on-primary),
     )
   );
+
+  @include mat.card-overrides(
+    (
+      filled-container-color: var(--mat-sys-surface-container-low),
+      filled-container-shape: var(--mat-sys-corner-large),
+    )
+  );
 }

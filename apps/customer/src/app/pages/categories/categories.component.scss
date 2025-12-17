@@ -21,6 +21,10 @@
   }
 }
 
+.category-tile {
+  border-radius: var(--mat-sys-corner-large);
+}
+
 .category-tile-footer {
   font: var(--mat-sys-label-medium);
   text-shadow:

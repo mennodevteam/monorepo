@@ -5,11 +5,12 @@
     <mat-list>
       @for (item of cart.orderItems(); track $index) {
         <mat-list-item [class.three-line]="item.productVariant">
-          <span matListItemTitle class="mat-title-small">{{ item.product?.title }}</span>
+          <img matListItemAvatar appImageLoader [imageFile]="Product.mainImageFile(item?.product)" [alt]="item.product?.title" />
+          <span matListItemTitle class="mat-font-title-sm">{{ item.product?.title }}</span>
           @if (item.productVariant) {
-            <span matListItemLine class="mat-body-small">{{ item.productVariant.title }}</span>
+            <span matListItemLine class="mat-font-body-sm">{{ item.productVariant.title }}</span>
           }
-          <span matListItemLine class="mat-body-small">
+          <span matListItemLine class="mat-font-label-sm price-text">
             @if (item.realPrice) {
               <s class="mat-color-error">{{ item.realPrice | number }}</s>
             }
@@ -25,9 +26,9 @@
           </div>
         </mat-list-item>
 
-        @if (!$last) {
+        <!-- @if (!$last) {
           <mat-divider />
-        }
+        } -->
       }
     </mat-list>
   } @else {

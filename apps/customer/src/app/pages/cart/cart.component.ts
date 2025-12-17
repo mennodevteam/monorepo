@@ -8,6 +8,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { TopAppBarComponent } from '../../shared/components/top-app-bar/top-app-bar.component';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
+import { Product } from '@menno/types';
+import { ImageLoaderDirective } from '../../shared/directives';
 
 @Component({
   selector: 'app-cart',
@@ -22,10 +24,12 @@ import { EmptyStateComponent } from '../../shared/components/empty-state/empty-s
     TopAppBarComponent,
     EmptyStateComponent,
     DecimalPipe,
+    ImageLoaderDirective,
   ],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
 })
 export class CartComponent {
   cart = inject(CartService);
+  Product = Product;
 }
