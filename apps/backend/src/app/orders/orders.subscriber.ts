@@ -37,7 +37,6 @@ import { PrintersService } from '../printers/printers.service';
 import * as Sentry from '@sentry/node';
 import { RedisKey, RedisService } from '../core/redis.service';
 import { PersianNumberService } from '@menno/utils';
-import * as pd from 'persian-date';
 
 @EventSubscriber()
 export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
@@ -77,35 +76,8 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     return Order;
   }
 
-  /**
-   * Populates Persian calendar date components from createdAt timestamp
-   */
-  private populatePersianDateFields(order: Order) {
-    if (!order.createdAt) return;
-
-    // Convert to Tehran timezone and get Persian date
-    const persianDate = new pd(new Date(order.createdAt));
-
-    // Format date as YYYY-MM-DD
-    const year = persianDate.year();
-    const month = String(persianDate.month()).padStart(2, '0');
-    const day = String(persianDate.date()).padStart(2, '0');
-    order.createdAtLocalDate = `${year}-${month}-${day}`;
-
-    // Format time as HH:mm:ss
-    const hour = String(persianDate.hour()).padStart(2, '0');
-    const minute = String(persianDate.minute()).padStart(2, '0');
-    const second = String(persianDate.second()).padStart(2, '0');
-    order.createdAtLocalTime = `${hour}:${minute}:${second}`;
-
-    order.createdAtLocalDayOfWeek = persianDate.day();
-  }
-
   async beforeInsert(event: InsertEvent<Order>) {
     const order = event.entity;
-
-    // Populate Persian date fields
-    this.populatePersianDateFields(order);
     const customer = order.customer ? await this.usersRepo.findOneBy({ id: order.customer.id }) : undefined;
     const shop = order.shop
       ? await this.shopsRepo.findOne({ where: { id: order.shop.id }, relations: ['club'] })
@@ -198,13 +170,6 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     try {
       this.materialConsumption(order, false);
     } catch (error) {}
-  }
-
-  async beforeUpdate(event: UpdateEvent<Order>) {
-    // If createdAt is being updated, recalculate Persian date fields
-    if (event.entity.createdAt !== undefined) {
-      this.populatePersianDateFields(event.entity as Order);
-    }
   }
 
   async afterUpdate(event: UpdateEvent<Order>): Promise<any> {

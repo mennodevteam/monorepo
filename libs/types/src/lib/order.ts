@@ -58,10 +58,6 @@ export class Order {
   updatedAt: Date;
   deletedAt: Date;
   seenAt?: Date;
-  // Persian calendar date components (Tehran timezone) - for fast querying
-  createdAtLocalDate?: string; // Format: "1403-07-15" (YYYY-MM-DD)
-  createdAtLocalTime?: string; // Format: "14:30:45" (HH:mm:ss)
-  createdAtLocalDayOfWeek?: number; // 1 = Saturday (شنبه), 2 = Sunday (یکشنبه), ..., 7 = Friday (جمعه)
 
   static sum(order: Order) {
     let sum = 0;

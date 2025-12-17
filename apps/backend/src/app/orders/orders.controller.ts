@@ -16,7 +16,6 @@ import {
   Get,
   HttpException,
   HttpStatus,
-  Logger,
   Param,
   ParseIntPipe,
   Post,
@@ -24,20 +23,16 @@ import {
   Query,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, IsNull, Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 import { Roles } from '../auth/roles.decorators';
 import { OrdersService } from './orders.service';
 import { SmsService } from '../sms/sms.service';
-import { Public } from '../auth/public.decorator';
-import * as pd from 'persian-date';
 
 @Controller('orders')
 export class OrdersController {
-  private readonly logger = new Logger(OrdersController.name);
-
   constructor(
     @InjectRepository(Order)
     private ordersRepo: Repository<Order>,
@@ -341,220 +336,5 @@ export class OrdersController {
         'shop.paymentGateway',
       ],
     });
-  }
-
-  // TEMPORARY: Public endpoint to backfill Persian date fields for existing orders
-  // TODO: Remove this after backfilling is complete
-  @Public()
-  @Get('temp/backfill-persian-dates')
-  async backfillPersianDates(@Query('batchSize') batchSize = '1000') {
-    const BATCH_SIZE = Math.min(Number(batchSize) || 1000, 5000); // Max 5000 per batch
-    this.logger.log(`🚀 Starting Persian date fields backfill with batch size: ${BATCH_SIZE}`);
-    
-    try {
-      // Get count of orders that need backfilling
-      this.logger.log('📊 Counting orders that need backfilling...');
-      const totalCount = await this.ordersRepo.count({
-        where: {
-          createdAtLocalDate: IsNull(),
-        },
-      });
-
-      if (totalCount === 0) {
-        this.logger.log('✅ All orders already have Persian date fields populated!');
-        return {
-          success: true,
-          message: 'All orders already have Persian date fields populated!',
-          processed: 0,
-          total: 0,
-        };
-      }
-
-      this.logger.log(`📊 Found ${totalCount} orders to backfill`);
-
-      let processed = 0;
-      let errors = 0;
-      const startTime = Date.now();
-      let batchNumber = 0;
-      const MAX_BATCHES = 10000; // Safety limit to prevent infinite loops
-      let lastProcessedCount = 0;
-      let stuckCount = 0;
-
-      // Process in batches
-      let hasMore = true;
-      while (hasMore) {
-        batchNumber++;
-        
-        // Safety check: prevent infinite loops
-        if (batchNumber > MAX_BATCHES) {
-          this.logger.error(`❌ Reached maximum batch limit (${MAX_BATCHES}). Stopping to prevent infinite loop.`);
-          break;
-        }
-
-        const batchStartTime = Date.now();
-        
-        this.logger.log(`📦 Fetching batch #${batchNumber}...`);
-        const orders = await this.ordersRepo.find({
-          where: {
-            createdAtLocalDate: IsNull(),
-          },
-          take: BATCH_SIZE,
-          order: {
-            createdAt: 'ASC',
-          },
-        });
-
-        if (orders.length === 0) {
-          hasMore = false;
-          this.logger.log('✅ No more orders to process');
-          break;
-        }
-
-        // Check if we're stuck (processing same orders repeatedly)
-        if (processed === lastProcessedCount && orders.length > 0) {
-          stuckCount++;
-          this.logger.warn(`⚠️  Possible stuck loop detected (${stuckCount} times). Processed count unchanged.`);
-          if (stuckCount >= 3) {
-            this.logger.error(`❌ Stuck loop detected. Breaking to prevent infinite loop.`);
-            this.logger.error(`   Last batch had ${orders.length} orders but processed count didn't increase.`);
-            this.logger.error(`   This might indicate the save operation is not persisting correctly.`);
-            break;
-          }
-        } else {
-          stuckCount = 0; // Reset if we made progress
-        }
-
-        this.logger.log(`📦 Processing batch #${batchNumber} with ${orders.length} orders...`);
-
-        // Calculate Persian date fields for all orders
-        const ordersToSave: Order[] = [];
-        for (const order of orders) {
-          try {
-            if (!order.createdAt) {
-              this.logger.warn(`⚠️  Order ${order.id} has no createdAt, skipping...`);
-              continue;
-            }
-
-            // Convert to Persian date (matching subscriber logic)
-            const persianDate = new pd(new Date(order.createdAt));
-
-            // Format date as YYYY-MM-DD
-            const year = persianDate.year();
-            const month = String(persianDate.month()).padStart(2, '0');
-            const day = String(persianDate.date()).padStart(2, '0');
-            order.createdAtLocalDate = `${year}-${month}-${day}`;
-
-            // Format time as HH:mm:ss
-            const hour = String(persianDate.hour()).padStart(2, '0');
-            const minute = String(persianDate.minute()).padStart(2, '0');
-            const second = String(persianDate.second()).padStart(2, '0');
-            order.createdAtLocalTime = `${hour}:${minute}:${second}`;
-
-            order.createdAtLocalDayOfWeek = persianDate.day();
-
-            ordersToSave.push(order);
-          } catch (error) {
-            errors++;
-            this.logger.error(`❌ Error processing order ${order.id}: ${error.message}`);
-          }
-        }
-
-        // Bulk update orders using update() instead of save() to avoid subscriber interference
-        if (ordersToSave.length > 0) {
-          try {
-            const saveStartTime = Date.now();
-            
-            // Use update() for each order to ensure persistence
-            // This bypasses the subscriber's beforeUpdate hook for createdAt changes
-            const updatePromises = ordersToSave.map((order) =>
-              this.ordersRepo.update(order.id, {
-                createdAtLocalDate: order.createdAtLocalDate,
-                createdAtLocalTime: order.createdAtLocalTime,
-                createdAtLocalDayOfWeek: order.createdAtLocalDayOfWeek,
-              }),
-            );
-            
-            await Promise.all(updatePromises);
-            const saveDuration = ((Date.now() - saveStartTime) / 1000).toFixed(2);
-            
-            // Verify the update actually persisted
-            const sampleOrderId = ordersToSave[0].id;
-            const verifyOrder = await this.ordersRepo.findOne({
-              where: {
-                id: sampleOrderId,
-              },
-              select: ['id', 'createdAtLocalDate', 'createdAtLocalTime', 'createdAtLocalDayOfWeek'],
-            });
-            
-            if (!verifyOrder || !verifyOrder.createdAtLocalDate) {
-              this.logger.error(`❌ Update verification failed! Order ${sampleOrderId} still has null createdAtLocalDate after update.`);
-              this.logger.error(`   This indicates the update operation may not be working correctly.`);
-            }
-            
-            lastProcessedCount = processed;
-            processed += ordersToSave.length;
-            
-            const batchDuration = ((Date.now() - batchStartTime) / 1000).toFixed(2);
-            const progress = totalCount > 0 ? ((processed / totalCount) * 100).toFixed(1) : 'N/A';
-            
-            this.logger.log(
-              `✅ Batch #${batchNumber} completed: ${ordersToSave.length} orders updated in ${saveDuration}s (batch total: ${batchDuration}s, progress: ${processed}/${totalCount} - ${progress}%)`,
-            );
-          } catch (error) {
-            errors += ordersToSave.length;
-            this.logger.error(`❌ Error bulk updating batch #${batchNumber}: ${error.message}`, error.stack);
-          }
-        } else {
-          this.logger.warn(`⚠️  Batch #${batchNumber} had no valid orders to update`);
-          // If we keep getting batches with no valid orders, we might be stuck
-          if (orders.length > 0 && ordersToSave.length === 0) {
-            this.logger.warn(`⚠️  All ${orders.length} orders in batch had issues. This might indicate a data problem.`);
-            // Break if we consistently get no valid orders
-            if (batchNumber > 5) {
-              this.logger.error(`❌ Too many batches with no valid orders. Breaking loop.`);
-              break;
-            }
-          }
-        }
-      }
-
-      const duration = ((Date.now() - startTime) / 1000).toFixed(2);
-      this.logger.log(`📊 Verifying remaining orders...`);
-      const remaining = await this.ordersRepo.count({
-        where: {
-          createdAtLocalDate: null,
-        },
-      });
-
-      const result = {
-        success: true,
-        message: remaining === 0 ? 'All orders backfilled successfully!' : 'Batch processed',
-        processed,
-        errors,
-        remaining,
-        total: totalCount,
-        duration: `${duration}s`,
-        completed: remaining === 0,
-      };
-
-      if (remaining === 0) {
-        this.logger.log(
-          `✨ Backfill completed successfully! Processed ${processed} orders in ${duration}s (${errors} errors)`,
-        );
-      } else {
-        this.logger.log(
-          `📊 Backfill batch completed. Processed ${processed}/${totalCount} orders (${remaining} remaining, ${errors} errors) in ${duration}s`,
-        );
-      }
-
-      return result;
-    } catch (error) {
-      this.logger.error(`💥 Backfill failed: ${error.message}`, error.stack);
-      return {
-        success: false,
-        message: 'Backfill failed',
-        error: error.message,
-      };
-    }
   }
 }

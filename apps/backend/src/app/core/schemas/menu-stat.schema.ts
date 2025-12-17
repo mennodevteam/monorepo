@@ -30,19 +30,6 @@ export const MenuStatSchema = new EntitySchema<MenuStat>({
       type: 'float',
       nullable: true,
     },
-    // Persian calendar date components (Tehran timezone) - for fast querying
-    createdAtLocalDate: {
-      type: String,
-      nullable: true,
-    }, // Format: "1403-07-15" (YYYY-MM-DD)
-    createdAtLocalTime: {
-      type: String,
-      nullable: true,
-    }, // Format: "14:30:45" (HH:mm:ss)
-    createdAtLocalDayOfWeek: {
-      type: Number,
-      nullable: true,
-    }, // 1 = Saturday (شنبه), 2 = Sunday (یکشنبه), ..., 7 = Friday (جمعه)
   },
   relations: {
     menu: {
