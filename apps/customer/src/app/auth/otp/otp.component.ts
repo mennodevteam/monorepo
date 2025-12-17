@@ -1,4 +1,4 @@
-import { Component, OnDestroy, signal, effect, inject } from '@angular/core';
+import { Component, OnDestroy, signal, effect, inject, model } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
@@ -32,8 +32,8 @@ export class OtpComponent implements OnDestroy {
   phone: string;
   loading = signal(false);
   error = signal(false);
-  interval?: any;
-  otp = signal('');
+  interval?: ReturnType<typeof setInterval>;
+  otp = model('');
 
   private route = inject(ActivatedRoute);
   private auth = inject(AuthService);
@@ -84,13 +84,15 @@ export class OtpComponent implements OnDestroy {
             });
           }, 100);
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         this.error.set(true);
         this.loading.set(false);
-        if (error.status === 403) {
+        if (error && typeof error === 'object' && 'status' in error && error.status === 403) {
           this.snack.open('کد وارد شده صحیح نیست', '', { duration: 2000 });
-        } else {
+        } else if (error && typeof error === 'object' && 'message' in error && typeof error.message === 'string') {
           this.snack.open(error.message, '', { duration: 6000 });
+        } else {
+          this.snack.open('خطایی رخ داد', '', { duration: 6000 });
         }
       }
     }

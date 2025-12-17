@@ -1,4 +1,4 @@
-<mat-toolbar>
+<mat-toolbar [class.sticky]="sticky()">
   @if (!isRootPage()) {
     <button mat-icon-button appGoBack>
       <ng-icon [svg]="backIcon"></ng-icon>

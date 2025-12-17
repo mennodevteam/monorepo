@@ -18,7 +18,9 @@
         >
           <div matListItemTitle class="font-bold">{{ address.title || 'آدرس' }}</div>
           <div matListItemLine class="text-gray-600 text-sm mt-1">
-            {{ address.city }} - {{ address.region }}
+            @if (address.region) {
+              {{ address.region.state ? address.region.state + ' - ' : '' }}{{ address.region.title }}
+            }
           </div>
           <div matListItemLine class="text-gray-500 text-xs mt-1">
             {{ address.description }}

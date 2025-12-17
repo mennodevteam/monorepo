@@ -1,5 +1,5 @@
 import { Component, computed, inject } from '@angular/core';
-import { PlatformLocation } from '@angular/common';
+import { PlatformLocation, DecimalPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,6 +26,7 @@ import { StatAction, OrderType } from '@menno/types';
     MatToolbarModule,
     MatButtonModule,
     TranslateModule,
+    DecimalPipe,
   ],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss',
@@ -38,6 +39,7 @@ export class CheckoutComponent {
   club = inject(ClubService);
   router = inject(Router);
   location = inject(PlatformLocation);
+  OrderType = OrderType;
 
   constructor() {
     if (this.cart.length() === 0) {

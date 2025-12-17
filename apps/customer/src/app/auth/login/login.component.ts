@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, model, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -36,7 +36,7 @@ import { TopAppBarComponent } from '../../shared/components/top-app-bar/top-app-
 export class LoginComponent {
   readonly backIcon = saxArrowRight1Outline;
   loading = signal(false);
-  phone = signal('');
+  phone = model('');
 
   private auth = inject(AuthService);
   private router = inject(Router);

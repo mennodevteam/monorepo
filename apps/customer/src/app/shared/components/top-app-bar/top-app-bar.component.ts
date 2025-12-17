@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import {} from '@angular/material/core';
@@ -36,6 +36,10 @@ import { TitleService } from '../../../core/services/title.service';
   ],
 })
 export class TopAppBarComponent implements OnInit {
+  readonly title = input<string>();
+  readonly sticky = input<boolean>(false);
+  readonly hideMenu = input<boolean>(false);
+
   readonly isRootPage = signal<boolean>(true);
   readonly routeTitle = signal<string | undefined>(undefined); // Added routeTitle signal
 
@@ -51,6 +55,8 @@ export class TopAppBarComponent implements OnInit {
 
   // Added displayTitle computed property
   readonly displayTitle = computed(() => {
+    const titleValue = this.title();
+    if (titleValue) return titleValue;
     return this.isRootPage() ? this.shopTitle() : this.titleService.title();
   });
 

@@ -3,7 +3,7 @@
 @if (cart.length()) {
   <main class="flex flex-col gap-4 p-4 pb-24 max-w-screen-md mx-auto">
     <!-- Address Section (Only for Delivery) -->
-    @if (cart.orderType() === 'Delivery') {
+    @if (cart.orderType() === OrderType.Delivery) {
       <app-address-list></app-address-list>
       <div class="h-px bg-gray-200 w-full"></div>
     }

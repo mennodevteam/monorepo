@@ -53,12 +53,13 @@ export class CartService {
   coupon = signal<DiscountCoupon | undefined>(undefined);
   table = signal<string | undefined>(undefined);
   saving = signal<boolean>(false);
+  orderType = signal<OrderType>(OrderType.Delivery);
 
   private dto = computed(() => {
     return {
       productItems: this.productItems(),
       shopId: this.shopService.data()?.id,
-      type: OrderType.Delivery,
+      type: this.orderType(),
       isManual: false,
       address: this.address(),
       note: this.note(),

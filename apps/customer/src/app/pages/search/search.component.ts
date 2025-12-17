@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, model } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -37,7 +37,7 @@ export class SearchComponent {
   private readonly menuService = inject(MenuService);
   private readonly location = inject(Location);
 
-  readonly searchQuery = signal('');
+  readonly searchQuery = model('');
   readonly menu = this.menuService.data;
 
   readonly allProducts = computed(() => {

@@ -3,6 +3,12 @@ mat-toolbar {
   gap: 8px;
   background-color: var(--mat-sys-background);
 
+  &.sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
   img {
     height: 32px;
     border-radius: 8px;

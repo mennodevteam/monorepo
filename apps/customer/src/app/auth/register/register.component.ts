@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, model, signal } from '@angular/core';
 import { CommonModule, PlatformLocation } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -26,15 +26,21 @@ import { User } from '@menno/types';
 })
 export class RegisterComponent {
   loading = signal(false);
-  firstName = signal('');
-  lastName = signal('');
+  firstName = model('');
+  lastName = model('');
 
   private auth = inject(AuthService);
   private location = inject(PlatformLocation);
 
   constructor() {
-    this.firstName.set(this.auth?.user()?.firstName || '');
-    this.lastName.set(this.auth?.user()?.lastName || '');
+    // Initialize from user data if available
+    const user = this.auth.user();
+    if (user?.firstName) {
+      this.firstName.set(user.firstName);
+    }
+    if (user?.lastName) {
+      this.lastName.set(user.lastName);
+    }
   }
 
   get dto() {

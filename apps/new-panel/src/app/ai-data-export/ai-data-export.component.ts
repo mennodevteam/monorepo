@@ -444,9 +444,6 @@ export class AiDataExportComponent {
     }
 
     // Local date components
-    flat['createdAtLocalDate'] = order.createdAtLocalDate || '';
-    flat['createdAtLocalTime'] = order.createdAtLocalTime || '';
-    flat['createdAtLocalDayOfWeek'] = order.createdAtLocalDayOfWeek || '';
 
     // Order state (convert enum to text)
     flat['state'] = order.state !== undefined ? this.getOrderStateText(order.state) : '';
