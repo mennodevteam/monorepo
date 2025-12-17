@@ -19,6 +19,7 @@ import { discountCouponsRoutes } from './discount-coupons/discount-coupons.route
 import { smsRoutes } from './sms-group/sms.routes';
 import { userActionsGuard } from './core/guards/user-actions.guard';
 import { UserAction } from '@menno/types';
+import { AiDataExportComponent } from './ai-data-export/ai-data-export.component';
 
 export const appRoutes: Route[] = [
   {
@@ -92,6 +93,12 @@ export const appRoutes: Route[] = [
           {
             path: 'sms',
             children: smsRoutes,
+            canActivate: [userActionsGuard],
+            data: { userActions: [UserAction.Reports] },
+          },
+          {
+            path: 'ai-export',
+            component: AiDataExportComponent,
             canActivate: [userActionsGuard],
             data: { userActions: [UserAction.Reports] },
           },

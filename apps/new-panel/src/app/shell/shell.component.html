@@ -194,6 +194,15 @@
         <i matListItemIcon class="fa-duotone fa-message-smile"></i>
         <span matListItemTitle>{{ 'nav.sms' | translate }}</span>
       </a>
+      <a
+        mat-list-item
+        routerLinkActive="active-link"
+        routerLink="/ai-export"
+        (click)="isSmallScreen() && isDrawerClose.set(true)"
+      >
+        <i matListItemIcon class="fa-duotone fa-hexagon-nodes"></i>
+        <span matListItemTitle>{{ 'nav.aiExport' | translate }}</span>
+      </a>
       <mat-divider />
       <a mat-list-item routerLinkActive="active-link" (click)="toggleSection('settings')">
         <span matListItemTitle>

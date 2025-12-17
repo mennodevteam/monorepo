@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+@if (data.description) {
+  <p mat-dialog-content>{{ data.description }}</p>
+}
+<mat-dialog-content>
+  <form [formGroup]="form" fxLayout="column" fxLayoutGap="16px">
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'app.fromDate' | translate }}</mat-label>
+      <input matInput [matDatepicker]="fromPicker" formControlName="fromDate" />
+      <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+      <mat-datepicker #fromPicker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'app.toDate' | translate }}</mat-label>
+      <input matInput [matDatepicker]="toPicker" formControlName="toDate" />
+      <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+      <mat-datepicker #toPicker></mat-datepicker>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button matDialogClose>{{ 'app.cancel' | translate }}</button>
+  <button mat-flat-button (click)="submit()">{{ 'app.ok' | translate }}</button>
+</mat-dialog-actions>
+
+

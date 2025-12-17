@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="outline" style="width: 100%;">
+    <textarea
+      matInput
+      [value]="content"
+      readonly
+      [rows]="15"
+      style="font-family: monospace; font-size: 12px;"
+      dir="ltr"
+      eng
+    ></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="end center">
+  <button mat-stroked-button (click)="copyToClipboard()">
+    <i class="fa-regular fa-copy"></i>
+    {{ 'aiExport.copy' | translate }}
+  </button>
+  <button mat-stroked-button (click)="download()">
+    <i class="fa-regular fa-download"></i>
+    {{ 'aiExport.download' | translate }}
+  </button>
+  <button mat-button matDialogClose>{{ 'app.cancel' | translate }}</button>
+</mat-dialog-actions>
+

@@ -5,7 +5,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
-import { FilterOrderDto, Order, OrderState, User } from '@menno/types';
+import { FilterOrderDto, Order, OrderState } from '@menno/types';
 import { TableComponent } from './table/table.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
@@ -22,6 +22,7 @@ import { CardComponent } from './card/card.component';
 import { DialogService } from '../../core/services/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatButtonModule } from '@angular/material/button';
 
 const SCROLL_STORAGE_KEY = 'orderList_scrollPosition';
 
@@ -50,6 +51,7 @@ const DEFAULT_STATES = [
     SearchMemberAutocompleteComponent,
     CardComponent,
     MatDatepickerModule,
+    MatButtonModule,
   ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
@@ -78,11 +80,17 @@ export class OrderListComponent {
   );
   customerFilter = signal<string | undefined>(this.queryParams['customer']);
   dateFilter = computed(() => {
-    const fromDate = (this.fromDate() as any)?._d || this.fromDate();
+    const fromDateValue = this.fromDate();
+    const fromDate = (fromDateValue && typeof fromDateValue === 'object' && '_d' in fromDateValue) 
+      ? (fromDateValue as { _d?: Date })._d || fromDateValue 
+      : fromDateValue;
     if (fromDate) {
       fromDate.setHours(0, 0, 0, 0);
     }
-    const toDate = (this.toDate() as any)?._d || this.toDate();
+    const toDateValue = this.toDate();
+    const toDate = (toDateValue && typeof toDateValue === 'object' && '_d' in toDateValue)
+      ? (toDateValue as { _d?: Date })._d || toDateValue
+      : toDateValue;
     if (toDate) {
       toDate.setHours(23, 59, 59, 999);
     }

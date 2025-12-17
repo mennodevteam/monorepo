@@ -1,0 +1,89 @@
+<mat-toolbar class="content-toolbar">
+  <span>{{ 'aiExport.title' | translate }}</span>
+</mat-toolbar>
+<main p-md>
+  <div fxLayout="column" fxLayoutGap="24px">
+    <!-- Orders Export Card -->
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>
+          <i class="fa-duotone fa-receipt"></i>
+          {{ 'aiExport.ordersTitle' | translate }}
+        </mat-card-title>
+        <mat-card-subtitle>{{ 'aiExport.ordersDescription' | translate }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ 'aiExport.ordersInfo' | translate }}</p>
+      </mat-card-content>
+      <mat-card-actions fxLayout="row" fxLayoutGap="8px">
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="exportOrdersJSON()"
+          [disabled]="exportingOrdersJSON()"
+        >
+          @if (exportingOrdersJSON()) {
+            <mat-spinner diameter="20"></mat-spinner>
+          } @else {
+            <i class="fa-regular fa-file-code"></i>
+          }
+          {{ 'aiExport.downloadJSON' | translate }}
+        </button>
+        <button
+          mat-stroked-button
+          (click)="exportOrdersTOON()"
+          [disabled]="exportingOrdersTOON()"
+        >
+          @if (exportingOrdersTOON()) {
+            <mat-spinner diameter="20"></mat-spinner>
+          } @else {
+            <i class="fa-regular fa-file-lines"></i>
+          }
+          {{ 'aiExport.downloadTOON' | translate }}
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- Menu Export Card -->
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>
+          <i class="fa-duotone fa-box"></i>
+          {{ 'aiExport.menuTitle' | translate }}
+        </mat-card-title>
+        <mat-card-subtitle>{{ 'aiExport.menuDescription' | translate }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ 'aiExport.menuInfo' | translate }}</p>
+      </mat-card-content>
+      <mat-card-actions fxLayout="row" fxLayoutGap="8px">
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="exportMenuJSON()"
+          [disabled]="exportingMenuJSON()"
+        >
+          @if (exportingMenuJSON()) {
+            <mat-spinner diameter="20"></mat-spinner>
+          } @else {
+            <i class="fa-regular fa-file-code"></i>
+          }
+          {{ 'aiExport.downloadJSON' | translate }}
+        </button>
+        <button
+          mat-stroked-button
+          (click)="exportMenuTOON()"
+          [disabled]="exportingMenuTOON()"
+        >
+          @if (exportingMenuTOON()) {
+            <mat-spinner diameter="20"></mat-spinner>
+          } @else {
+            <i class="fa-regular fa-file-lines"></i>
+          }
+          {{ 'aiExport.downloadTOON' | translate }}
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</main>
+
