@@ -1,27 +1,18 @@
 @if (visible()) {
-  <mat-toolbar
-    class="bottom-nav"
-    animate.enter="bottom-nav-enter"
-    animate.leave="bottom-nav-leave"
-  >
-    <mat-toolbar-row id="nav-row">
-      @for (item of navItems; track item.path) {
-        <button
-          mat-button
-          [routerLink]="item.path"
-          routerLinkActive="active"
-          #rla="routerLinkActive"
-          class="nav-button"
-        >
-          <div class="nav-button_content-wrapper">
-            <ng-icon
-              [svg]="rla.isActive ? item.activeIcon : item.icon"
-              size="24"
-            ></ng-icon>
-            <span class="nav-label">{{ item.label }}</span>
-          </div>
-        </button>
-      }
-    </mat-toolbar-row>
+  <mat-toolbar class="bottom-nav" animate.enter="bottom-nav-enter" animate.leave="bottom-nav-leave">
+    @for (item of navItems; track item.path) {
+      <button
+        mat-button
+        [routerLink]="item.path"
+        routerLinkActive="active"
+        #rla="routerLinkActive"
+        class="nav-button"
+      >
+        <div class="nav-button_content-wrapper">
+          <ng-icon [svg]="rla.isActive ? item.activeIcon : item.icon" size="24"></ng-icon>
+          <span class="nav-label">{{ item.label }}</span>
+        </div>
+      </button>
+    }
   </mat-toolbar>
 }

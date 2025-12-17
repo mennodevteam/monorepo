@@ -44,26 +44,9 @@
   justify-content: space-around;
   min-height: 64px;
   z-index: 1000;
-
-  #checkout-action {
-    height: 56px;
-    &__texts {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-
-    &__button {
-      width: 180px;
-    }
-  }
-
-  #nav-row {
-    padding: 0;
-    height: 64px;
-    background-color: inherit;
-    z-index: 100;
-  }
+  background-color: var(--mat-sys-surface-container);
+  box-shadow: var(--mat-sys-level2);
+  border-radius: var(--mat-sys-corner-large) var(--mat-sys-corner-large) 0 0 !important;
 
   .nav-button {
     flex: 1;
