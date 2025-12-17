@@ -23,9 +23,6 @@
           <ng-icon
             [svg]="rla.isActive ? item.activeIcon : item.icon"
             size="24"
-            [matBadge]="cart.length()"
-            matBadgeColor="warn"
-            [matBadgeHidden]="item.path !== '/cart' || cart.length() === 0"
           ></ng-icon>
           <span class="nav-label">{{ item.label }}</span>
         </div>

@@ -1,18 +1,20 @@
 import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatBadgeModule } from '@angular/material/badge';
 import {} from '@angular/material/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterLinkWithHref } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   saxArrowRight1Outline,
-  saxInfoCircleOutline,
   saxSearchNormal1Outline,
+  saxBagOutline,
 } from '@ng-icons/iconsax/outline';
 import { filter } from 'rxjs';
 import { ShopService } from '../../../core/services/shop.service';
 import { GoBackDirective, ImageLoaderDirective } from '../../directives';
 import { TitleService } from '../../../core/services/title.service';
+import { CartService } from '../../../core/services/cart.service';
 
 @Component({
   selector: 'app-top-app-bar',
@@ -20,6 +22,7 @@ import { TitleService } from '../../../core/services/title.service';
   imports: [
     MatToolbarModule,
     MatButtonModule,
+    MatBadgeModule,
     NgIcon,
     ImageLoaderDirective,
     GoBackDirective,
@@ -30,8 +33,8 @@ import { TitleService } from '../../../core/services/title.service';
   providers: [
     provideIcons({
       saxSearchNormal1Outline,
-      saxInfoCircleOutline,
       saxArrowRight1Outline,
+      saxBagOutline,
     }),
   ],
 })
@@ -46,6 +49,7 @@ export class TopAppBarComponent implements OnInit {
   private readonly shopService = inject(ShopService);
   private readonly router = inject(Router);
   private readonly titleService = inject(TitleService); // Injected TitleService
+  readonly cart = inject(CartService);
 
   readonly shopTitle = computed(() => this.shopService.data()?.title ?? '');
   readonly shopLogoUrl = computed(() => {
@@ -61,7 +65,7 @@ export class TopAppBarComponent implements OnInit {
   });
 
   readonly searchIcon = saxSearchNormal1Outline;
-  readonly infoIcon = saxInfoCircleOutline;
+  readonly cartIcon = saxBagOutline;
   readonly backIcon = saxArrowRight1Outline;
 
   ngOnInit(): void {

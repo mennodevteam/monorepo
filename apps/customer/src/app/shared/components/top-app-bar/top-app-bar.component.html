@@ -17,7 +17,12 @@
   <button mat-icon-button routerLink="/search">
     <ng-icon [svg]="searchIcon"></ng-icon>
   </button>
-  <button mat-icon-button>
-    <ng-icon [svg]="infoIcon"></ng-icon>
+  <button mat-icon-button routerLink="/cart">
+    <ng-icon
+      [svg]="cartIcon"
+      [matBadge]="cart.length()"
+      matBadgeColor="warn"
+      [matBadgeHidden]="cart.length() === 0"
+    ></ng-icon>
   </button>
 </mat-toolbar>
