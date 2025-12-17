@@ -51,6 +51,7 @@ import { MatDividerModule } from '@angular/material/divider';
 export class BottomNavigationComponent {
   cart = inject(CartService);
   showCheckout = input(false);
+  visible = input(true);
   navItems = [
     { path: '/home', label: 'خانه', icon: saxHome2Outline, activeIcon: saxHome2Bold },
     { path: '/categories', label: 'دسته‌بندی‌ها', icon: saxCategoryOutline, activeIcon: saxCategoryBold },

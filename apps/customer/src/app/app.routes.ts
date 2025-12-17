@@ -38,7 +38,7 @@ export const appRoutes: Route[] = [
       {
         path: 'cart',
         loadComponent: () => import('./pages/cart/cart.component').then((m) => m.CartComponent),
-        data: { isRootPage: true, showCheckout: true },
+        data: { showCheckout: true, hideBottomNav: true, title: 'سبد خرید' },
       },
       {
         path: 'checkout',
@@ -59,6 +59,7 @@ export const appRoutes: Route[] = [
       {
         path: 'categories/:categoryId/:id',
         loadComponent: () => import('./pages/product/product.component').then((m) => m.ProductComponent),
+        data: { hideBottomNav: true },
       },
     ],
   },

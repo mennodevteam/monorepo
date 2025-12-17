@@ -1,3 +1,40 @@
+:host {
+  display: block;
+}
+
+// Bottom navigation enter/leave animation
+@starting-style {
+  .bottom-nav {
+    transform: translateY(100%);
+  }
+}
+
+.bottom-nav-enter {
+  animation: bottom-nav-enter 350ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.bottom-nav-leave {
+  animation: bottom-nav-leave 350ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes bottom-nav-enter {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes bottom-nav-leave {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
 .bottom-nav {
   position: fixed;
   bottom: 0;
