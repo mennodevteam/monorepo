@@ -1,0 +1,41 @@
+<div class="p-6">
+  <h3 class="text-xl font-bold mb-2">کد تخفیف</h3>
+  <p class="text-gray-600 mb-6">کد تخفیف خود را وارد کنید</p>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4">
+    <mat-form-field appearance="outline">
+      <mat-label>کد تخفیف</mat-label>
+      <input
+        matInput
+        formControlName="code"
+        placeholder="کد را وارد کنید"
+        [disabled]="loading()"
+        class="ltr"
+        autofocus
+      />
+      @if (form.get('code')?.hasError('required') && form.get('code')?.touched) {
+        <mat-error>لطفا کد تخفیف را وارد کنید</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="flex gap-2">
+      <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        [disabled]="form.invalid || loading()"
+        class="flex-1"
+      >
+        @if (loading()) {
+          <span>در حال بررسی...</span>
+        } @else {
+          <span>اعمال کد</span>
+        }
+      </button>
+      <button mat-stroked-button type="button" (click)="cancel()" [disabled]="loading()">
+        انصراف
+      </button>
+    </div>
+  </form>
+</div>
+

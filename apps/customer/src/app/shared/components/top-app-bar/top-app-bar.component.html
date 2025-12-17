@@ -13,16 +13,17 @@
   </h1>
 
   <span class="spacer"></span>
-
-  <button mat-icon-button routerLink="/search">
-    <ng-icon [svg]="searchIcon"></ng-icon>
-  </button>
-  <button mat-icon-button routerLink="/cart">
-    <ng-icon
-      [svg]="cartIcon"
-      [matBadge]="cart.length()"
-      matBadgeColor="warn"
-      [matBadgeHidden]="cart.length() === 0"
-    ></ng-icon>
-  </button>
+  @if (!hideMetaAction()) {
+    <button mat-icon-button routerLink="/search">
+      <ng-icon [svg]="searchIcon"></ng-icon>
+    </button>
+    <button mat-icon-button routerLink="/cart">
+      <ng-icon
+        [svg]="cartIcon"
+        [matBadge]="cart.length()"
+        matBadgeColor="warn"
+        [matBadgeHidden]="cart.length() === 0"
+      ></ng-icon>
+    </button>
+  }
 </mat-toolbar>

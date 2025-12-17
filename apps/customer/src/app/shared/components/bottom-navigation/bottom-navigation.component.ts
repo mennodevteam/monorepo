@@ -17,7 +17,6 @@ import {
   saxBoxOutline,
   saxProfile2userOutline,
 } from '@ng-icons/iconsax/outline';
-import { CartService } from '../../../core/services/cart.service';
 import { CommonModule } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 
@@ -49,8 +48,6 @@ import { MatDividerModule } from '@angular/material/divider';
   ],
 })
 export class BottomNavigationComponent {
-  cart = inject(CartService);
-  showCheckout = input(false);
   visible = input(true);
   navItems = [
     { path: '/home', label: 'خانه', icon: saxHome2Outline, activeIcon: saxHome2Bold },

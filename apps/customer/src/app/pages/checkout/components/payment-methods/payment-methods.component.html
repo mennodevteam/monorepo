@@ -1,30 +1,30 @@
-<div class="flex flex-col gap-4 p-4 bg-white rounded-xl shadow-sm">
-  <h3 class="text-lg font-bold m-0">شیوه پرداخت</h3>
+<div class="payment-section">
+  <h3 class="mat-title-medium">شیوه پرداخت</h3>
 
   @if (club.wallet?.charge) {
-    <div class="flex items-center justify-between p-3 border border-gray-100 rounded-lg">
+    <div class="wallet-option">
       <mat-checkbox [checked]="cart.useWallet()" (change)="onWalletChange($event.checked)" color="primary">
         استفاده از کیف پول
       </mat-checkbox>
-      <span class="text-sm font-bold">{{ club.wallet?.charge | number }} تومان</span>
+      <span class="mat-title-small">{{ club.wallet?.charge | number }} تومان</span>
     </div>
   }
 
   <mat-radio-group
     [ngModel]="selectedPaymentType"
     (ngModelChange)="onPaymentTypeChange($event)"
-    class="flex flex-col gap-2"
+    class="payment-options"
   >
     @if (shopService.isPaymentAvailable()) {
-      <div class="border border-gray-100 rounded-lg p-2">
-        <mat-radio-button [value]="OrderPaymentType.Online" color="primary" class="w-full">
+      <div class="payment-option">
+        <mat-radio-button [value]="OrderPaymentType.Online" color="primary">
           پرداخت آنلاین
         </mat-radio-button>
       </div>
     }
 
-    <div class="border border-gray-100 rounded-lg p-2">
-      <mat-radio-button [value]="OrderPaymentType.Cash" color="primary" class="w-full">
+    <div class="payment-option">
+      <mat-radio-button [value]="OrderPaymentType.Cash" color="primary">
         پرداخت نقدی / کارتخوان
       </mat-radio-button>
     </div>

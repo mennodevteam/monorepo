@@ -41,7 +41,7 @@ import { CartService } from '../../../core/services/cart.service';
 export class TopAppBarComponent implements OnInit {
   readonly title = input<string>();
   readonly sticky = input<boolean>(false);
-  readonly hideMenu = input<boolean>(false);
+  readonly hideMetaAction = input<boolean>(false);
 
   readonly isRootPage = signal<boolean>(true);
   readonly routeTitle = signal<string | undefined>(undefined); // Added routeTitle signal

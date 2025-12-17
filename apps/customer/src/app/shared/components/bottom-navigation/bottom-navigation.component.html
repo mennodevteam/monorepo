@@ -4,17 +4,6 @@
     animate.enter="bottom-nav-enter"
     animate.leave="bottom-nav-leave"
   >
-    @if (showCheckout() && cart.length() > 0) {
-      <mat-toolbar-row id="checkout-action" animate.enter="slide-animation">
-        <div id="checkout-action__texts">
-          <span class="mat-font-label-md">جمع کل:</span>
-          <span class="mat-font-label-lg">{{ cart.total() | number }} تومان</span>
-        </div>
-        <button mat-flat-button id="checkout-action__button">
-          <span class="mat-font-label-md">تکمیل خرید</span>
-        </button>
-      </mat-toolbar-row>
-    }
     <mat-toolbar-row id="nav-row">
       @for (item of navItems; track item.path) {
         <button

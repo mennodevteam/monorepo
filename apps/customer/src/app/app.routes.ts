@@ -12,6 +12,14 @@ export const appRoutes: Route[] = [
     children: authRoutes,
   },
   {
+    path: 'cart',
+    loadComponent: () => import('./pages/cart/cart.component').then((m) => m.CartComponent),
+  },
+  {
+    path: 'payment',
+    loadComponent: () => import('./pages/checkout/checkout.component').then((m) => m.CheckoutComponent),
+  },
+  {
     path: '',
     loadComponent: () => import('./shell/shell.component').then((m) => m.ShellComponent),
     children: [
@@ -34,15 +42,6 @@ export const appRoutes: Route[] = [
       {
         path: 'categories/:categoryId',
         loadComponent: () => import('./pages/category/category.component').then((m) => m.CategoryComponent),
-      },
-      {
-        path: 'cart',
-        loadComponent: () => import('./pages/cart/cart.component').then((m) => m.CartComponent),
-        data: { showCheckout: true, hideBottomNav: true, title: 'سبد خرید' },
-      },
-      {
-        path: 'checkout',
-        loadComponent: () => import('./pages/checkout/checkout.component').then((m) => m.CheckoutComponent),
       },
       {
         path: 'orders',

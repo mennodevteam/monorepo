@@ -48,3 +48,12 @@ textarea {
     on-background: #000000,
   )
 );
+
+:root {
+  @include mat.button-overrides(
+    (
+      protected-container-color: var(--mat-sys-primary),
+      protected-label-text-color: var(--mat-sys-on-primary),
+    )
+  );
+}

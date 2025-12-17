@@ -1,11 +1,38 @@
-<app-top-app-bar title="تکمیل سفارش" [sticky]="true" [hideMenu]="true"></app-top-app-bar>
+<app-top-app-bar title="تکمیل سفارش" [sticky]="true" [hideMetaAction]="true"></app-top-app-bar>
 
 @if (cart.length()) {
-  <main class="flex flex-col gap-4 p-4 pb-24 max-w-screen-md mx-auto">
+  <main class="main-content">
     <!-- Address Section (Only for Delivery) -->
     @if (cart.orderType() === OrderType.Delivery) {
-      <app-address-list></app-address-list>
-      <div class="h-px bg-gray-200 w-full"></div>
+      <div class="address-section">
+        <div class="address-header">
+          <h3 class="mat-title-medium">آدرس تحویل</h3>
+          <button mat-stroked-button color="primary" (click)="openAddressDialog()">
+            <ng-icon [svg]="editIcon" size="20"></ng-icon>
+            تغییر آدرس
+          </button>
+        </div>
+
+        @if (cart.address(); as address) {
+          <div class="address-card">
+            <div class="mat-title-small">{{ address.title || 'آدرس' }}</div>
+            <div class="mat-body-small mat-color-on-surface-variant">
+              @if (address.region) {
+                {{ address.region.state ? address.region.state + ' - ' : '' }}{{ address.region.title }}
+              }
+            </div>
+            <div class="mat-body-small mat-color-on-surface-variant">{{ address.description }}</div>
+          </div>
+        } @else {
+          <div class="address-empty">
+            <button mat-flat-button color="primary" (click)="openAddressDialog()">
+              <ng-icon [svg]="addIcon" size="20"></ng-icon>
+              افزودن آدرس
+            </button>
+          </div>
+        }
+      </div>
+      <mat-divider></mat-divider>
     }
 
     <!-- Invoice Section -->
@@ -16,13 +43,9 @@
   </main>
 }
 
-<mat-toolbar
-  class="flex justify-center fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-10 px-4"
->
+<mat-toolbar class="action-toolbar">
   <button
-    mat-flat-button
-    color="primary"
-    class="w-full max-w-screen-md h-12 text-lg rounded-xl"
+    mat-raised-button
     (click)="submit()"
     [disabled]="cart.saving()"
   >

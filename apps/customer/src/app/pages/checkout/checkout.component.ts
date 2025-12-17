@@ -3,6 +3,13 @@ import { PlatformLocation, DecimalPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatDialog } from '@angular/material/dialog';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import {
+  saxEditOutline,
+  saxAddOutline,
+} from '@ng-icons/iconsax/outline';
 import { TranslateModule } from '@ngx-translate/core';
 import { CartService } from '../../core/services/cart.service';
 import { ShopService } from '../../core/services/shop.service';
@@ -10,9 +17,10 @@ import { AnalyticsService } from '../../core/services/analytics.service';
 import { MenuStatService } from '../../core/services/menu-stat.service';
 import { ClubService } from '../../core/services/club.service';
 import { TopAppBarComponent } from '../../shared/components/top-app-bar/top-app-bar.component';
-import { AddressListComponent } from './components/address-list/address-list.component';
 import { InvoiceComponent } from './components/invoice/invoice.component';
 import { PaymentMethodsComponent } from './components/payment-methods/payment-methods.component';
+import { AddressSelectionDialogComponent } from './components/address-selection-dialog/address-selection-dialog.component';
+import { AddressesService } from '../../core/services/addresses.service';
 import { StatAction, OrderType } from '@menno/types';
 
 @Component({
@@ -20,13 +28,20 @@ import { StatAction, OrderType } from '@menno/types';
   standalone: true,
   imports: [
     TopAppBarComponent,
-    AddressListComponent,
     InvoiceComponent,
     PaymentMethodsComponent,
     MatToolbarModule,
     MatButtonModule,
+    MatDividerModule,
+    NgIcon,
     TranslateModule,
     DecimalPipe,
+  ],
+  providers: [
+    provideIcons({
+      saxEditOutline,
+      saxAddOutline,
+    }),
   ],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss',
@@ -39,7 +54,11 @@ export class CheckoutComponent {
   club = inject(ClubService);
   router = inject(Router);
   location = inject(PlatformLocation);
+  dialog = inject(MatDialog);
+  addressesService = inject(AddressesService);
   OrderType = OrderType;
+  editIcon = saxEditOutline;
+  addIcon = saxAddOutline;
 
   constructor() {
     if (this.cart.length() === 0) {
@@ -47,6 +66,20 @@ export class CheckoutComponent {
     } else {
       this.menuStat.send(StatAction.ViewCheckout, { value: this.cart.total() });
     }
+  }
+
+  openAddressDialog() {
+    const dialogRef = this.dialog.open(AddressSelectionDialogComponent, {
+      width: '90%',
+      maxWidth: '500px',
+      disableClose: false,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.addressesService.load(); // Reload addresses
+      }
+    });
   }
 
   total = computed(() => {

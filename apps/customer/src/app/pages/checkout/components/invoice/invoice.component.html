@@ -1,54 +1,54 @@
-<div class="flex flex-col gap-4 p-4 bg-white rounded-xl shadow-sm">
-  <h3 class="text-lg font-bold m-0">فاکتور</h3>
+<div class="invoice-section">
+  <h3 class="mat-title-medium">فاکتور</h3>
 
-  <div class="flex flex-col gap-2">
-    <div class="flex justify-between text-gray-600">
-      <span>مجموع اقلام ({{ cart.length() }})</span>
-      <span>{{ cart.realSum() | number }} تومان</span>
+  <div class="invoice-details">
+    <div class="invoice-row">
+      <span class="mat-body-medium">مجموع اقلام ({{ cart.length() }})</span>
+      <span class="mat-body-medium">{{ cart.realSum() | number }} تومان</span>
     </div>
 
     @if (cart.sumDiscount()) {
-      <div class="flex justify-between text-red-500">
-        <span>تخفیف</span>
-        <span>{{ cart.sumDiscount() | number }} تومان -</span>
+      <div class="invoice-row discount">
+        <span class="mat-body-medium">تخفیف</span>
+        <span class="mat-body-medium mat-color-error">{{ cart.sumDiscount() | number }} تومان -</span>
       </div>
     }
 
     @for (item of cart.abstractItems(); track item.title) {
-      <div class="flex justify-between text-gray-600">
-        <span>
+      <div class="invoice-row">
+        <span class="mat-body-medium">
           {{ item.title }}
           @if (item.title === DELIVERY_COST_TITLE && cart.address()?.deliveryArea?.label) {
             - {{ cart.address()?.deliveryArea?.label }}
           }
         </span>
-        <span>{{ (item.price > 0 ? item.price : -item.price) | number }} تومان</span>
+        <span class="mat-body-medium">{{ (item.price > 0 ? item.price : -item.price) | number }} تومان</span>
       </div>
     }
 
     @if (cart.totalDiscount()) {
-      <div class="flex justify-between text-red-500">
-        <span>تخفیف نهایی</span>
-        <span>{{ cart.totalDiscount() | number }} تومان -</span>
+      <div class="invoice-row discount">
+        <span class="mat-body-medium">تخفیف نهایی</span>
+        <span class="mat-body-medium mat-color-error">{{ cart.totalDiscount() | number }} تومان -</span>
       </div>
     }
 
-    <div class="h-px bg-gray-100 my-2"></div>
+    <mat-divider class="invoice-divider"></mat-divider>
 
-    <div class="flex justify-between font-bold text-lg">
-      <span>قابل پرداخت</span>
-      <span>{{ cart.total() | number }} تومان</span>
+    <div class="invoice-row total">
+      <span class="mat-title-medium">قابل پرداخت</span>
+      <span class="mat-title-medium">{{ cart.total() | number }} تومان</span>
     </div>
   </div>
 
   @if (cart.coupon()) {
-    <button mat-stroked-button color="warn" (click)="cart.coupon.set(undefined)" class="mt-2">
-      <mat-icon>remove_circle_outline</mat-icon>
+    <button mat-stroked-button color="warn" (click)="cart.coupon.set(undefined)">
+      <ng-icon [svg]="removeIcon" size="20"></ng-icon>
       حذف کد تخفیف
     </button>
   } @else {
-    <button mat-stroked-button color="primary" (click)="addCoupon()" class="mt-2">
-      <mat-icon>local_offer</mat-icon>
+    <button mat-stroked-button color="primary" (click)="addCoupon()">
+      <ng-icon [svg]="couponIcon" size="20"></ng-icon>
       افزودن کد تخفیف
     </button>
   }

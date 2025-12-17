@@ -1,15 +1,17 @@
+<app-top-app-bar title="سبد خرید" [sticky]="true" [hideMetaAction]="true"></app-top-app-bar>
+
 <div class="page-container">
   @if (cart.orderItems().length) {
     <mat-list>
       @for (item of cart.orderItems(); track $index) {
         <mat-list-item [class.three-line]="item.productVariant">
-          <span matListItemTitle class="mat-font-title-sm">{{ item.product?.title }}</span>
+          <span matListItemTitle class="mat-title-small">{{ item.product?.title }}</span>
           @if (item.productVariant) {
-            <span matListItemLine class="mat-font-body-sm">{{ item.productVariant.title }}</span>
+            <span matListItemLine class="mat-body-small">{{ item.productVariant.title }}</span>
           }
-          <span matListItemLine class="mat-font-body-sm">
+          <span matListItemLine class="mat-body-small">
             @if (item.realPrice) {
-              <s>{{ item.realPrice | number }}</s>
+              <s class="mat-color-error">{{ item.realPrice | number }}</s>
             }
             {{ item.price | number }} تومان
           </span>
@@ -29,19 +31,14 @@
       }
     </mat-list>
   } @else {
-    <p>سبد خرید شما خالی است.</p>
+    <app-empty-state text="سبد خرید شما خالی است."></app-empty-state>
   }
 
   @if (cart.orderItems().length) {
-    <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200 z-10 flex justify-center">
-      <a
-        mat-flat-button
-        color="primary"
-        class="w-full max-w-screen-md h-12 text-lg rounded-xl"
-        routerLink="/checkout"
-      >
+    <mat-toolbar class="action-toolbar">
+      <a matButton="elevated" routerLink="/payment">
         تکمیل سفارش ({{ cart.total() | number }} تومان)
       </a>
-    </div>
+    </mat-toolbar>
   }
 </div>

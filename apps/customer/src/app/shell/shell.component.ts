@@ -26,7 +26,6 @@ export class ShellComponent implements OnInit {
 
   loading = signal(false);
   hideBottomNav = signal(false);
-  showCheckout = signal(false);
 
   ngOnInit(): void {
     // Handle loading state
@@ -61,15 +60,10 @@ export class ShellComponent implements OnInit {
 
     let rootPage = false;
     let hideBottomNav: boolean | undefined = undefined;
-    let showCheckout = false;
 
     while (currentRoute) {
       if (!rootPage && currentRoute.snapshot.data['isRootPage'] === true) {
         rootPage = true;
-      }
-
-      if (!showCheckout && currentRoute.snapshot.data['showCheckout'] === true) {
-        showCheckout = true;
       }
 
       if (hideBottomNav === undefined && currentRoute.snapshot.data['hideBottomNav'] !== undefined) {
@@ -80,6 +74,5 @@ export class ShellComponent implements OnInit {
     }
 
     this.hideBottomNav.set(hideBottomNav || false);
-    this.showCheckout.set(showCheckout || false);
   }
 }
