@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
 import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -22,6 +23,7 @@ import { DiscountCouponModalComponent } from '../../../../shared/components/disc
     MatListModule,
     MatButtonModule,
     MatDividerModule,
+    MatCardModule,
     MatBottomSheetModule,
     TranslateModule,
     NgIcon,

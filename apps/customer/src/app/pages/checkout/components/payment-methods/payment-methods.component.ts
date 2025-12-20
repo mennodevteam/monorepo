@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
 import { TranslateModule } from '@ngx-translate/core';
 import { CartService } from '../../../../core/services/cart.service';
 import { ClubService } from '../../../../core/services/club.service';
@@ -14,7 +15,7 @@ import { ShopService } from '../../../../core/services/shop.service';
 @Component({
   selector: 'app-payment-methods',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatListModule, MatRadioModule, MatCheckboxModule, TranslateModule],
+  imports: [CommonModule, FormsModule, MatListModule, MatRadioModule, MatCheckboxModule, MatCardModule, TranslateModule],
   templateUrl: './payment-methods.component.html',
   styleUrl: './payment-methods.component.scss',
 })

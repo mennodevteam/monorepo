@@ -2,9 +2,27 @@
 
 @if (cart.length()) {
   <main class="main-content">
+    <app-section title="آدرس تحویل" seeMoreLabel="تغییر آدرس" routerLink="/addresses">
+      @if (cart.address(); as address) {
+        <mat-card appearance="filled">
+          <mat-card-header>
+            <mat-card-title>
+              @if (address.title) {
+                {{ address.title }}:
+              } @else {
+                {{ address.region?.title }}
+              }
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            {{ address.description }}
+          </mat-card-content>
+        </mat-card>
+      }
+    </app-section>
     <!-- Address Section (Only for Delivery) -->
     @if (cart.orderType() === OrderType.Delivery) {
-      <div class="address-section">
+      <mat-card appearance="filled">
         <div class="address-header">
           <h3 class="mat-title-medium">آدرس تحویل</h3>
           <button mat-stroked-button color="primary" (click)="openAddressDialog()">
@@ -31,8 +49,7 @@
             </button>
           </div>
         }
-      </div>
-      <mat-divider></mat-divider>
+      </mat-card>
     }
 
     <!-- Invoice Section -->
@@ -44,11 +61,7 @@
 }
 
 <mat-toolbar class="action-toolbar">
-  <button
-    mat-raised-button
-    (click)="submit()"
-    [disabled]="cart.saving()"
-  >
+  <button mat-raised-button (click)="submit()" [disabled]="cart.saving()">
     @if (cart.saving()) {
       <span>در حال ثبت...</span>
     } @else {

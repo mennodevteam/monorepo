@@ -1,32 +1,42 @@
-<div class="payment-section">
-  <h3 class="mat-title-medium">شیوه پرداخت</h3>
+<mat-card appearance="filled">
+  <mat-card-content>
+    <h3 class="mat-title-medium">شیوه پرداخت</h3>
 
-  @if (club.wallet?.charge) {
-    <div class="wallet-option">
-      <mat-checkbox [checked]="cart.useWallet()" (change)="onWalletChange($event.checked)" color="primary">
-        استفاده از کیف پول
-      </mat-checkbox>
-      <span class="mat-title-small">{{ club.wallet?.charge | number }} تومان</span>
-    </div>
-  }
-
-  <mat-radio-group
-    [ngModel]="selectedPaymentType"
-    (ngModelChange)="onPaymentTypeChange($event)"
-    class="payment-options"
-  >
-    @if (shopService.isPaymentAvailable()) {
-      <div class="payment-option">
-        <mat-radio-button [value]="OrderPaymentType.Online" color="primary">
-          پرداخت آنلاین
-        </mat-radio-button>
-      </div>
+    @if (club.wallet?.charge) {
+      <mat-card appearance="filled" style="margin-top: 16px;">
+        <mat-card-content>
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <mat-checkbox [checked]="cart.useWallet()" (change)="onWalletChange($event.checked)" color="primary">
+              استفاده از کیف پول
+            </mat-checkbox>
+            <span class="mat-title-small">{{ club.wallet?.charge | number }} تومان</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
     }
 
-    <div class="payment-option">
-      <mat-radio-button [value]="OrderPaymentType.Cash" color="primary">
-        پرداخت نقدی / کارتخوان
-      </mat-radio-button>
-    </div>
-  </mat-radio-group>
-</div>
+    <mat-radio-group
+      [ngModel]="selectedPaymentType"
+      (ngModelChange)="onPaymentTypeChange($event)"
+      style="display: flex; flex-direction: column; gap: 8px; margin-top: 16px;"
+    >
+      @if (shopService.isPaymentAvailable()) {
+        <mat-card appearance="filled">
+          <mat-card-content>
+            <mat-radio-button [value]="OrderPaymentType.Online" color="primary">
+              پرداخت آنلاین
+            </mat-radio-button>
+          </mat-card-content>
+        </mat-card>
+      }
+
+      <mat-card appearance="filled">
+        <mat-card-content>
+          <mat-radio-button [value]="OrderPaymentType.Cash" color="primary">
+            پرداخت نقدی / کارتخوان
+          </mat-radio-button>
+        </mat-card-content>
+      </mat-card>
+    </mat-radio-group>
+  </mat-card-content>
+</mat-card>

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
@@ -22,6 +23,7 @@ import { PaymentMethodsComponent } from './components/payment-methods/payment-me
 import { AddressSelectionDialogComponent } from './components/address-selection-dialog/address-selection-dialog.component';
 import { AddressesService } from '../../core/services/addresses.service';
 import { StatAction, OrderType } from '@menno/types';
+import { SectionComponent } from '../../shared/components/section/section.component';
 
 @Component({
   selector: 'app-checkout',
@@ -33,8 +35,10 @@ import { StatAction, OrderType } from '@menno/types';
     MatToolbarModule,
     MatButtonModule,
     MatDividerModule,
+    MatCardModule,
     NgIcon,
     TranslateModule,
+    SectionComponent,
     DecimalPipe,
   ],
   providers: [
