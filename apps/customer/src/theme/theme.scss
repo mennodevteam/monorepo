@@ -1,0 +1,139 @@
+@use '@angular/material' as mat;
+@use '../../public/fonts/iransans/iransans.scss';
+@use '../customer_theme-colors' as theme;
+@use './theme-utilities';
+
+@include mat.core();
+
+html {
+  @include mat.theme(
+    (
+      color: theme.$primary-palette,
+      typography: IRANSans,
+      density: 0,
+    )
+  );
+  @include mat.system-classes();
+}
+
+:root {
+  --shop-main-color: #000000;
+  --shop-on-main-color: #ffffff;
+  --shop-main-container-color: #d5deec;
+  --shop-on-main-container-color: #0b0b0b;
+  --shop-background-color: #ffffff;
+  --shop-on-background-color: #0f0f0f;
+  --shop-surface-color: #ffffff;
+  --shop-on-surface-color: #1a1a1a;
+  --shop-surface-low-color: #f4f4f4;
+
+  --status-info: #1976d2;
+  --status-info-container: #c9defa;
+  --status-success: #2e7d32;
+  --status-success-container: #d4eed9;
+  --status-error: #d32f2f;
+  --status-error-container: #ffd9dd;
+  --status-warn: #ed6c02;
+  --status-warn-container: #ffe1b3;
+
+  color-scheme: light;
+
+  --mat-sys-primary: var(--shop-main-color);
+  --mat-sys-on-primary: var(--shop-on-main-color);
+  --mat-sys-primary-container: var(--shop-main-container-color);
+  --mat-sys-on-primary-container: var(--shop-on-main-container-color);
+  --mat-sys-background: var(--shop-background-color);
+  --mat-sys-on-background: var(--shop-on-background-color);
+  --mat-sys-surface: var(--shop-surface-color);
+  --mat-sys-on-surface: var(--shop-on-surface-color);
+  --mat-sys-surface-container-low: var(--shop-surface-low-color);
+
+  @include mat.button-overrides(
+    (
+      protected-container-color: var(--mat-sys-primary),
+      protected-label-text-color: var(--mat-sys-on-primary),
+      tonal-container-color: var(--mat-sys-primary-container),
+      tonal-label-text-color: var(--mat-sys-on-primary-container),
+    )
+  );
+
+  @include mat.card-overrides(
+    (
+      filled-container-color: var(--mat-sys-surface-container-low),
+      filled-container-shape: var(--mat-sys-corner-large),
+      outlined-container-color: var(--mat-sys-surface-container-low),
+    )
+  );
+
+  // Keep form fields blue regardless of primary/main color using official overrides.
+  @include mat.form-field-overrides(
+    (
+      outlined-focus-outline-color: var(--status-info),
+      outlined-focus-label-text-color: var(--status-info),
+      filled-focus-active-indicator-color: var(--status-info),
+      filled-focus-label-text-color: var(--status-info),
+    )
+  );
+}
+
+body.shop-light {
+  color-scheme: light;
+}
+
+body.shop-dark {
+  color-scheme: dark;
+  --shop-background-color: #0f0f0f;
+  --shop-on-background-color: #f6f6f6;
+  --shop-surface-color: #1a1a1a;
+  --shop-on-surface-color: #f6f6f6;
+  --shop-surface-low-color: #242424;
+  --status-info-container: #12324d;
+  --status-success-container: #123121;
+  --status-error-container: #3a1c1c;
+  --status-warn-container: #3a2a14;
+}
+
+.info-theme {
+  color: var(--status-info);
+  border-color: var(--status-info);
+}
+
+.info-theme-surface {
+  background-color: var(--status-info-container);
+  color: var(--status-info);
+  border: 1px solid var(--status-info);
+}
+
+.success-theme {
+  color: var(--status-success);
+  border-color: var(--status-success);
+}
+
+.success-theme-surface {
+  background-color: var(--status-success-container);
+  color: var(--status-success);
+  border: 1px solid var(--status-success);
+}
+
+.error-theme {
+  color: var(--status-error);
+  border-color: var(--status-error);
+}
+
+.error-theme-surface {
+  background-color: var(--status-error-container);
+  color: var(--status-error);
+  border: 1px solid var(--status-error);
+}
+
+.warn-theme {
+  color: var(--status-warn);
+  border-color: var(--status-warn);
+}
+
+.warn-theme-surface {
+  background-color: var(--status-warn-container);
+  color: var(--status-warn);
+  border: 1px solid var(--status-warn);
+}
+

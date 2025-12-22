@@ -1,0 +1,73 @@
+.theme-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  background: var(--mat-sys-surface-container-low);
+  border-radius: 12px;
+}
+
+.theme-demo__header h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.theme-demo__header p {
+  margin: 4px 0 0;
+  color: var(--mat-sys-on-surface);
+  opacity: 0.8;
+}
+
+.theme-demo__controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.theme-demo__control {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+}
+
+.theme-demo__control select,
+.theme-demo__control input[type='color'] {
+  min-height: 36px;
+}
+
+.theme-demo__swatches {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.theme-demo__swatches > div {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+}
+
+.theme-demo__forms {
+  display: grid;
+  gap: 12px;
+}
+
+.card-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.theme-demo section > div {
+  margin-bottom: 4px;
+}
+
+.theme-demo section > div + div {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+

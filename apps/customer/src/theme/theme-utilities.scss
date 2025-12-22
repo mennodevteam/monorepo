@@ -1,0 +1,102 @@
+@use '@angular/material' as mat;
+
+// Utility classes for applying status colors to buttons and cards using CSS classes (no props).
+
+// Buttons: apply to any mat-button variant (text/filled/raised/outlined/tonal).
+.btn-info {
+  @include mat.button-overrides(
+    (
+      filled-container-color: var(--status-info),
+      filled-label-text-color: #ffffff,
+      tonal-container-color: var(--status-info-container),
+      tonal-label-text-color: var(--status-info),
+      outlined-label-text-color: var(--status-info),
+      outlined-outline-color: var(--status-info),
+      text-label-text-color: var(--status-info),
+    )
+  );
+}
+
+.btn-success {
+  @include mat.button-overrides(
+    (
+      filled-container-color: var(--status-success),
+      filled-label-text-color: #ffffff,
+      tonal-container-color: var(--status-success-container),
+      tonal-label-text-color: var(--status-success),
+      outlined-label-text-color: var(--status-success),
+      outlined-outline-color: var(--status-success),
+      text-label-text-color: var(--status-success),
+    )
+  );
+}
+
+.btn-warn {
+  @include mat.button-overrides(
+    (
+      filled-container-color: var(--status-warn),
+      filled-label-text-color: #ffffff,
+      tonal-container-color: var(--status-warn-container),
+      tonal-label-text-color: var(--status-warn),
+      outlined-label-text-color: var(--status-warn),
+      outlined-outline-color: var(--status-warn),
+      text-label-text-color: var(--status-warn),
+    )
+  );
+}
+
+.btn-error {
+  @include mat.button-overrides(
+    (
+      filled-container-color: var(--status-error),
+      filled-label-text-color: #ffffff,
+      tonal-container-color: var(--status-error-container),
+      tonal-label-text-color: var(--status-error),
+      outlined-label-text-color: var(--status-error),
+      outlined-outline-color: var(--status-error),
+      text-label-text-color: var(--status-error),
+    )
+  );
+}
+
+// Cards: apply to mat-card host to recolor low containers.
+.card-info {
+  @include mat.card-overrides(
+    (
+      outlined-container-color: var(--status-info-container),
+      outlined-outline-color: var(--status-info),
+      subtitle-text-color: var(--status-info),
+    )
+  );
+}
+
+.card-success {
+  @include mat.card-overrides(
+    (
+      outlined-container-color: var(--status-success-container),
+      outlined-outline-color: var(--status-success),
+      subtitle-text-color: var(--status-success),
+    )
+  );
+}
+
+.card-warn {
+  @include mat.card-overrides(
+    (
+      outlined-container-color: var(--status-warn-container),
+      outlined-outline-color: var(--status-warn),
+      subtitle-text-color: var(--status-warn),
+    )
+  );
+}
+
+.card-error {
+  @include mat.card-overrides(
+    (
+      outlined-container-color: var(--status-error-container),
+      outlined-outline-color: var(--status-error),
+      subtitle-text-color: var(--status-error),
+    )
+  );
+}
+

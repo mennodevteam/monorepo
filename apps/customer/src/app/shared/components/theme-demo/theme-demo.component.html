@@ -1,0 +1,130 @@
+<section class="theme-demo">
+  <header class="theme-demo__header">
+    <h3>Theme demo</h3>
+    <p>Switch mode and main color to verify dynamic theming.</p>
+  </header>
+
+  <div class="theme-demo__controls">
+    <label class="theme-demo__control">
+      <span>Mode</span>
+      <select [(ngModel)]="mode" aria-label="Theme mode">
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
+    </label>
+
+    <label class="theme-demo__control">
+      <span>Main color</span>
+      <input type="color" [(ngModel)]="mainColor" aria-label="Main color" />
+    </label>
+
+    <button mat-raised-button color="primary" type="button" (click)="apply()">Apply theme</button>
+  </div>
+
+  <div class="theme-demo__swatches">
+    <div class="info-theme-surface">Info surface</div>
+    <div class="success-theme-surface">Success surface</div>
+    <div class="warn-theme-surface">Warn surface</div>
+    <div class="error-theme-surface">Error surface</div>
+    <div class="info-theme">Info text/border</div>
+    <div class="success-theme">Success text/border</div>
+    <div class="warn-theme">Warn text/border</div>
+    <div class="error-theme">Error text/border</div>
+  </div>
+
+  <div class="theme-demo__forms">
+    <mat-form-field appearance="outline">
+      <mat-label>Form stays blue</mat-label>
+      <input matInput placeholder="Primary stays blue for forms" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Filled form (blue)</mat-label>
+      <input matInput placeholder="Filled input shows blue tokens" />
+    </mat-form-field>
+
+    <mat-divider />
+
+    <section>
+      <div>Outlined Cards</div>
+      <div class="card-row">
+        <mat-card appearance="outlined" class="card-info">
+          <mat-card-content>  
+            Info card
+          </mat-card-content>
+        </mat-card>
+        <mat-card appearance="outlined" class="card-success">
+          <mat-card-content>
+            Success card
+          </mat-card-content>
+        </mat-card>
+        <mat-card appearance="outlined" class="card-warn">
+          <mat-card-content>
+            Warn card
+          </mat-card-content>
+        </mat-card>
+        <mat-card appearance="outlined" class="card-error">
+          <mat-card-content>
+            Error card
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </section>
+
+    <mat-divider />
+
+    <section>
+      <div>Text</div>
+      <div>
+        <button matButton>Basic</button>
+        <button matButton disabled>Disabled</button>
+        <a matButton href="https://www.google.com/" target="_blank">Link</a>
+      </div>
+    </section>
+
+    <mat-divider />
+
+    <section>
+      <div>Elevated</div>
+      <div>
+        <button matButton="elevated">Basic</button>
+        <button matButton="elevated" disabled>Disabled</button>
+        <a matButton="elevated" href="https://www.google.com/" target="_blank">Link</a>
+      </div>
+    </section>
+
+    <mat-divider />
+
+    <section>
+      <div>Outlined</div>
+      <div>
+        <button matButton="outlined">Basic</button>
+        <button matButton="outlined" disabled>Disabled</button>
+        <a matButton="outlined" href="https://www.google.com/" target="_blank">Link</a>
+      </div>
+    </section>
+
+    <mat-divider />
+
+    <section>
+      <div>Filled</div>
+      <div>
+        <button matButton="filled">Basic</button>
+        <button matButton="filled" disabled>Disabled</button>
+        <a matButton="filled" href="https://www.google.com/" target="_blank">Link</a>
+      </div>
+    </section>
+
+    <mat-divider />
+
+    <section>
+      <div>Tonal</div>
+      <div>
+        <button matButton="tonal">Basic</button>
+        <button matButton="tonal" disabled>Disabled</button>
+        <a matButton="tonal" href="https://www.google.com/" target="_blank">Link</a>
+      </div>
+    </section>
+  </div>
+</section>
+

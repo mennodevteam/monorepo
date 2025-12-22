@@ -1,29 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
-@use '@angular/material' as mat;
-@use '../public/fonts/iransans/iransans.scss';
-@use 'customer_theme-colors' as theme;
+@use './theme/theme';
 
-@include mat.core();
-
-html {
-  color-scheme: light;
-  @include mat.theme(
-    (
-      color: theme.$primary-palette,
-      typography: IRANSans,
-      density: 0,
-    )
-  );
-  @include mat.system-classes();
-}
-
-// Global styles
 html,
 body {
   height: 100%;
   margin: 0;
   font-family: IRANSans, 'Helvetica Neue', sans-serif;
   background-color: var(--mat-sys-background);
+  color: var(--mat-sys-on-background);
 }
 
 body {
@@ -38,29 +21,4 @@ textarea {
 
 .mat-mdc-list-item-meta {
   align-self: center !important;
-}
-
-@include mat.theme-overrides(
-  (
-    primary: #000000,
-    on-primary: #ffffff,
-    background: #ffffff,
-    on-background: #000000,
-  )
-);
-
-:root {
-  @include mat.button-overrides(
-    (
-      protected-container-color: var(--mat-sys-primary),
-      protected-label-text-color: var(--mat-sys-on-primary),
-    )
-  );
-
-  @include mat.card-overrides(
-    (
-      filled-container-color: var(--mat-sys-surface-container-low),
-      filled-container-shape: var(--mat-sys-corner-large),
-    )
-  );
 }

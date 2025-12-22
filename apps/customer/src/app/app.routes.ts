@@ -20,6 +20,11 @@ export const appRoutes: Route[] = [
     loadComponent: () => import('./pages/checkout/checkout.component').then((m) => m.CheckoutComponent),
   },
   {
+    path: 'theme-demo',
+    loadComponent: () =>
+      import('./shared/components/theme-demo/theme-demo.component').then((m) => m.ThemeDemoComponent),
+  },
+  {
     path: '',
     loadComponent: () => import('./shell/shell.component').then((m) => m.ShellComponent),
     children: [
