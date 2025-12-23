@@ -1,0 +1,21 @@
+@if (products().length > 0) {
+  <app-section [title]="title() || ''">
+    @if (isCarousel()) {
+      <div class="product-list-carousel-container">
+        <div class="product-list-carousel">
+          @for (product of products(); track product.id) {
+            <div class="product-list-carousel-item">
+              <app-product-card [product]="product" [largeImage]="false" [hideVariants]="true" />
+            </div>
+          }
+        </div>
+      </div>
+    } @else if (isGrid()) {
+      <div class="product-list-grid">
+        @for (product of products(); track product.id) {
+          <app-product-card [product]="product" [largeImage]="true" [hideVariants]="true" />
+        }
+      </div>
+    }
+  </app-section>
+}

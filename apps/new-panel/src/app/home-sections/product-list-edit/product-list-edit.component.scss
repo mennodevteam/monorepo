@@ -1,0 +1,27 @@
+.product-list {
+  margin-top: 16px;
+}
+
+mat-list-item[cdkDrag] {
+  cursor: grab;
+  
+  &:active {
+    cursor: grabbing;
+  }
+  
+  .fa-grip-vertical {
+    cursor: grab;
+    color: var(--mat-sys-on-surface-variant);
+    
+    &:active {
+      cursor: grabbing;
+    }
+  }
+}
+
+.category-label {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.875rem;
+  margin-left: 8px;
+}
+

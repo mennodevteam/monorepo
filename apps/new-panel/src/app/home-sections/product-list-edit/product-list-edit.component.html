@@ -1,0 +1,96 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <mat-toolbar class="content-toolbar" fxLayout="row" fxLayoutGap="8px">
+    <button mat-icon-button goBack type="button">
+      <i class="fa-regular fa-arrow-right"></i>
+    </button>
+    <h2 fxFlex>
+      @if (section()) {
+        {{ 'homeSections.editProductList' | translate }}
+      } @else {
+        {{ 'homeSections.newProductList' | translate }}
+      }
+    </h2>
+    <button mat-button (click)="location.back()" type="button">
+      {{ 'app.cancel' | translate }}
+    </button>
+    <button mat-flat-button [disabled]="form.invalid || !form.dirty" type="submit">
+      {{ 'app.save' | translate }}
+    </button>
+  </mat-toolbar>
+
+  <main p-md w-md fxLayout="column" fxLayoutGap="24px">
+    <mat-card appearance="outlined">
+      <mat-card-content fxLayout="column" fxLayoutGap="24px">
+        <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+          <mat-label>{{ 'app.title' | translate }}</mat-label>
+          <input matInput formControlName="title" />
+          <mat-hint>{{ 'homeSections.titleHint' | translate }}</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+          <mat-label>{{ 'homeSections.viewType' | translate }}</mat-label>
+          <mat-select formControlName="viewType">
+            <mat-option [value]="ProductListViewType.Carousel">
+              {{ 'homeSections.carousel' | translate }}
+            </mat-option>
+            <mat-option [value]="ProductListViewType.Grid">
+              {{ 'homeSections.grid' | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>{{ 'homeSections.products' | translate }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content fxLayout="column" fxLayoutGap="24px">
+        <br />
+        <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
+          <mat-label>{{ 'homeSections.selectProducts' | translate }}</mat-label>
+          <input
+            matInput
+            [(ngModel)]="searchProductInput"
+            [matAutocomplete]="auto"
+            [ngModelOptions]="{ standalone: true }"
+            placeholder="{{ 'homeSections.selectProducts' | translate }}"
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            autoActiveFirstOption
+            (optionSelected)="selectProduct($event.option.value)"
+          >
+            @for (item of filteredProducts(); track item.product.id) {
+              <mat-option [value]="item">
+                <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex>
+                  <span>{{ item.product.title }}</span>
+                  <span class="category-label"> &nbsp; ({{ item.category.title }})</span>
+                </div>
+              </mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+
+        @if (form.controls.productIds.value.length > 0) {
+          <mat-list cdkDropList (cdkDropListDropped)="moveProduct($event)" class="product-list">
+            @for (productId of form.controls.productIds.value; track productId; let i = $index) {
+              @if (getProductById(productId)) {
+                <mat-list-item cdkDrag>
+                  <i matListItemIcon class="fa-solid fa-grip-vertical" cdkDragHandle></i>
+                  <span matListItemTitle>{{ getProductById(productId)?.title }}</span>
+                  <span matListItemLine>{{ getCategoryForProduct(productId) }}</span>
+                  <button mat-icon-button matListItemMeta (click)="removeProduct(productId)">
+                    <i class="fa-regular fa-trash-alt"></i>
+                  </button>
+                </mat-list-item>
+              }
+            }
+          </mat-list>
+        } @else {
+          <app-empty-state icon="box" [text]="'homeSections.noProductsSelected' | translate" />
+        }
+      </mat-card-content>
+    </mat-card>
+  </main>
+</form>

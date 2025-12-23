@@ -16,36 +16,38 @@
       }
     </div>
   </mat-card-content>
-  @if (hasVariants()) {
-    @for (variant of variants(); track variant.id) {
+  @if (!hideVariants()) {
+    @if (hasVariants()) {
+      @for (variant of variants(); track variant.id) {
+        <mat-card-actions class="product-card__price-actions">
+          <!-- <ng-icon class="product-card__variant-icon" [svg]="stopCircleIcon" /> -->
+          <div class="product-card__variant-text">
+            <span class="product-card__price-title">{{ variant.title }}</span>
+            <span class="product-card__price">
+              @if (variantHasDiscount(variant)) {
+                <span class="product-card__price-old">{{ variantRealPrice(variant) | number }} تومان</span>
+                &nbsp;
+              }
+              {{ variantTotalPrice(variant) | number }} تومان
+            </span>
+          </div>
+          <app-quantity-selector [product]="product()" [variant]="variant" />
+        </mat-card-actions>
+      }
+    } @else {
       <mat-card-actions class="product-card__price-actions">
-        <!-- <ng-icon class="product-card__variant-icon" [svg]="stopCircleIcon" /> -->
         <div class="product-card__variant-text">
-          <span class="product-card__price-title">{{ variant.title }}</span>
+          <span class="product-card__price-title">قیمت</span>
           <span class="product-card__price">
-            @if (variantHasDiscount(variant)) {
-              <span class="product-card__price-old">{{ variantRealPrice(variant) | number }} تومان</span>
+            @if (hasDiscount()) {
+              <span class="product-card__price-old">{{ realPrice() | number }} تومان</span>
               &nbsp;
             }
-            {{ variantTotalPrice(variant) | number }} تومان
+            {{ totalPrice() | number }} تومان
           </span>
         </div>
-        <app-quantity-selector [product]="product()" [variant]="variant" />
+        <app-quantity-selector [product]="product()" />
       </mat-card-actions>
     }
-  } @else {
-    <mat-card-actions class="product-card__price-actions">
-      <div class="product-card__variant-text">
-        <span class="product-card__price-title">قیمت</span>
-        <span class="product-card__price">
-          @if (hasDiscount()) {
-            <span class="product-card__price-old">{{ realPrice() | number }} تومان</span>
-            &nbsp;
-          }
-          {{ totalPrice() | number }} تومان
-        </span>
-      </div>
-      <app-quantity-selector [product]="product()" />
-    </mat-card-actions>
   }
 </mat-card>

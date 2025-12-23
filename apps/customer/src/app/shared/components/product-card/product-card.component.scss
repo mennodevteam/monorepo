@@ -1,5 +1,12 @@
 :host {
   display: block;
+  height: 100%;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .product-card__content {

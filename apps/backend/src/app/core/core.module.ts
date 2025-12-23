@@ -53,6 +53,7 @@ import {
   BillOfProductSchema,
   MaterialSchema,
   InventoryTransactionSchema,
+  HomeSectionSchema,
 } from './schemas';
 import { RedisService } from './redis.service';
 import { HttpModule } from '@nestjs/axios';
@@ -115,6 +116,7 @@ import { ChatSchema } from './schemas/chat.schema';
       MaterialSchema,
       BillOfMaterialSchema,
       BillOfProductSchema,
+      HomeSectionSchema,
     ]),
   ],
   providers: [RedisService],

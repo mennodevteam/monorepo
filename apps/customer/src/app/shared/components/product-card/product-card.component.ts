@@ -34,6 +34,7 @@ export class ProductCardComponent {
   readonly stopCircleIcon = saxStopCircleBold;
   readonly product = input.required<Product>();
   readonly largeImage = input(true);
+  readonly hideVariants = input(false);
 
   readonly variants = computed(() => this.product().variants ?? []);
   readonly hasVariants = computed(() => this.variants().length > 0);

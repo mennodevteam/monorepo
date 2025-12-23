@@ -168,7 +168,8 @@
     "materials": "انبار مواد اولیه",
     "bom": "مواد اولیه {{value}}",
     "sms": "گزارش پیامک‌های ارسالی",
-    "aiExport": "خروجی داده برای هوش مصنوعی"
+    "aiExport": "خروجی داده برای هوش مصنوعی",
+    "homeSections": "بخش‌های صفحه اصلی"
   },
   "login": {
     "title": "ورود به پنل"
@@ -1083,5 +1084,32 @@
     "selectDateRangeForOrders": "لطفا بازه زمانی مورد نظر برای خروجی سفارشات را انتخاب کنید.",
     "noMenuData": "داده‌ای برای خروجی وجود ندارد",
     "noMenuItemsToExport": "هیچ آیتم منویی برای خروجی وجود ندارد"
+  },
+  "homeSections": {
+    "title": "بخش‌های صفحه اصلی",
+    "banner": "بنر",
+    "productList": "لیست محصولات",
+    "type": "نوع",
+    "visible": "قابل مشاهده",
+    "emptyTitle": "هیچ بخشی تعریف نشده است",
+    "editBanner": "ویرایش بنر",
+    "newBanner": "بنر جدید",
+    "aspectRatio": "نسبت تصویر",
+    "aspectRatio1to1": "1:1",
+    "aspectRatio3to1": "3:1",
+    "fullWidth": "عرض کامل",
+    "images": "تصاویر",
+    "link": "لینک",
+    "noImages": "هیچ تصویری اضافه نشده است",
+    "editProductList": "ویرایش لیست محصولات",
+    "newProductList": "لیست محصولات جدید",
+    "viewType": "نوع نمایش",
+    "carousel": "کاروسل",
+    "grid": "گرید",
+    "titleHint": "عنوان اختیاری برای نمایش در بالای لیست محصولات",
+    "products": "محصولات",
+    "selectProducts": "انتخاب محصولات",
+    "noProductsSelected": "هیچ محصولی انتخاب نشده است",
+    "sortSections": "مرتب‌سازی بخش‌ها"
   }
 }

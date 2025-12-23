@@ -22,6 +22,7 @@ export * from './filter-sms.dto';
 export * from './filter-smsTemplate.dto';
 export * from './gem-log';
 export * from './gender-type.enum';
+export * from './home-section';
 export * from './image';
 export * from './jsonbin';
 export * from './manual-settlement.dto';

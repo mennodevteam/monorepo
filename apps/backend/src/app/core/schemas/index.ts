@@ -9,6 +9,7 @@ export * from './delivery-area.schema';
 export * from './ding.schema';
 export * from './discount-coupon.schema';
 export * from './gem-log.schema';
+export * from './home-section.schema';
 export * from './member-tag.schema';
 export * from './member.schema';
 export * from './menu-cost.schema';

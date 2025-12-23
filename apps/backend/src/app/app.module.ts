@@ -35,6 +35,7 @@ import { ChatModule } from './chat/chat.module';
 import { PanelNotificationsModule } from './panel-notifications/panel-notifications.module';
 import { MaterialsModule } from './materials/materials.module';
 import { AiChatbotModule } from './ai-chatbot/ai-chatbot.module';
+import { HomeSectionsModule } from './home-sections/home-sections.module';
 
 @Module({
   imports: [
@@ -93,6 +94,7 @@ import { AiChatbotModule } from './ai-chatbot/ai-chatbot.module';
     PanelNotificationsModule,
     MaterialsModule,
     AiChatbotModule,
+    HomeSectionsModule,
   ],
   controllers: [AppController, AppRedirectController],
   providers: [

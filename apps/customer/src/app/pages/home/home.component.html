@@ -1,3 +1,19 @@
 <div class="page-container">
-
+  @if (isLoading()) {
+    <div class="loading-state">
+      <p>Loading...</p>
+    </div>
+  } @else if (sections().length > 0) {
+    @for (section of sections(); track section.id) {
+      @if (section.type === HomeSectionType.Banner) {
+        <app-banner [section]="section" />
+      } @else if (section.type === HomeSectionType.ProductList) {
+        <app-product-list [section]="section" />
+      }
+    }
+  } @else {
+    <div class="empty-state">
+      <p>No content available</p>
+    </div>
+  }
 </div>

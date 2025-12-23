@@ -20,6 +20,7 @@ import { smsRoutes } from './sms-group/sms.routes';
 import { userActionsGuard } from './core/guards/user-actions.guard';
 import { UserAction } from '@menno/types';
 import { AiDataExportComponent } from './ai-data-export/ai-data-export.component';
+import { homeSectionsRoutes } from './home-sections/home-sections.routes';
 
 export const appRoutes: Route[] = [
   {
@@ -101,6 +102,12 @@ export const appRoutes: Route[] = [
             component: AiDataExportComponent,
             canActivate: [userActionsGuard],
             data: { userActions: [UserAction.Reports] },
+          },
+          {
+            path: 'home-sections',
+            children: homeSectionsRoutes,
+            canActivate: [userActionsGuard],
+            data: { userActions: [UserAction.Setting] },
           },
           { path: '', redirectTo: 'home', pathMatch: 'full' },
         ],
