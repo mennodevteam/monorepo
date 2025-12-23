@@ -1,8 +1,8 @@
-<app-top-app-bar />
-<form class="login-form" (ngSubmit)="sendToken($event)">
+<app-top-app-bar [hideMetaAction]="true" />
+<form (ngSubmit)="sendToken($event)">
   <h1>ورود / ثبت‌نام</h1>
   <p>لطفا شماره موبایل خود را وارد کنید</p>
-  <mat-form-field>
+  <mat-form-field appearance="outline">
     <input
       [(ngModel)]="phone"
       name="phone"

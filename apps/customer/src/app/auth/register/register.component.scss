@@ -1,13 +1,8 @@
-:host {
-  display: block;
-  padding: 16px;
-}
-
-.register-form {
+form {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding-top: 24px;
+  padding: 16px;
   margin: 0 auto;
   max-width: 400px;
 
@@ -20,6 +15,14 @@
     margin: 0;
     font: var(--mat-sys-body-medium);
     color: var(--mat-sys-on-surface-variant);
+  }
+
+  mat-form-field {
+    font-family: monospace;
+
+    input {
+      direction: ltr;
+    }
   }
 
   .large {

@@ -1,14 +1,14 @@
-<app-top-app-bar />
-<form class="register-form" (ngSubmit)="submit($event)">
+<app-top-app-bar [hideMetaAction]="true" />
+<form (ngSubmit)="submit($event)">
   <h1>تکمیل اطلاعات</h1>
   <p>لطفا نام و نام خانوادگی خود را وارد کنید</p>
 
-  <mat-form-field>
+  <mat-form-field appearance="outline">
     <mat-label>نام</mat-label>
     <input matInput [(ngModel)]="firstName" name="firstName" required />
   </mat-form-field>
 
-  <mat-form-field>
+  <mat-form-field appearance="outline">
     <mat-label>نام خانوادگی</mat-label>
     <input matInput [(ngModel)]="lastName" name="lastName" required />
   </mat-form-field>

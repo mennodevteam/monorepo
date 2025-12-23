@@ -1,9 +1,9 @@
-<app-top-app-bar />
+<app-top-app-bar [hideMetaAction]="true" />
 <div class="otp-container">
   <h1>کد تایید</h1>
   <p>کد ارسال شده به شماره {{ phone }} را وارد کنید</p>
 
-  <mat-form-field>
+  <mat-form-field appearance="outline">
     <input
       matInput
       type="text"
@@ -18,7 +18,7 @@
   </mat-form-field>
 
   <div class="actions">
-    <button matButton (click)="sendTokenAgain()" [disabled]="time() > 0 || loading()">
+    <button matButton type="button" (click)="sendTokenAgain()" [disabled]="time() > 0 || loading()">
       @if (time() > 0) {
         ارسال مجدد در {{ time() }} ثانیه
       } @else {

@@ -1,15 +1,10 @@
-:host {
-  display: block;
-  padding: 16px;
-}
-
 .otp-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 24px;
-  padding-top: 24px;
-  text-align: center;
+  gap: 16px;
+  padding: 16px;
+  margin: 0 auto;
+  max-width: 400px;
 
   h1 {
     margin: 0;
@@ -23,18 +18,15 @@
   }
 
   mat-form-field {
-    width: 100%;
-    max-width: 200px;
-    font: var(--mat-sys-headline-small);
-    text-align: center;
+    font-family: monospace;
 
     input {
-      text-align: center;
-      letter-spacing: 8px;
+      direction: ltr;
     }
   }
 
-  .spinner {
-    margin-top: 16px;
+  .large {
+    height: 48px;
+    font: var(--mat-sys-label-large);
   }
 }
