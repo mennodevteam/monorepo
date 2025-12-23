@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+mat-card {
+  cursor: pointer;
+
+  &.selected {
+    border-color: var(--mat-sys-on-background);
+  }
+
+  mat-card-content {
+    padding: 8px;
+  }
+}

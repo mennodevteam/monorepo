@@ -1,42 +1,36 @@
-<mat-card appearance="filled">
-  <mat-card-content>
-    <h3 class="mat-title-medium">شیوه پرداخت</h3>
-
-    @if (club.wallet?.charge) {
-      <mat-card appearance="filled" style="margin-top: 16px;">
-        <mat-card-content>
-          <div style="display: flex; align-items: center; justify-content: space-between;">
-            <mat-checkbox [checked]="cart.useWallet()" (change)="onWalletChange($event.checked)" color="primary">
-              استفاده از کیف پول
-            </mat-checkbox>
-            <span class="mat-title-small">{{ club.wallet?.charge | number }} تومان</span>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    }
-
-    <mat-radio-group
-      [ngModel]="selectedPaymentType"
-      (ngModelChange)="onPaymentTypeChange($event)"
-      style="display: flex; flex-direction: column; gap: 8px; margin-top: 16px;"
+<section class="container">
+  @if (shopService.isPaymentAvailable()) {
+    <mat-card
+      appearance="outlined"
+      (click)="onPaymentTypeChange(OrderPaymentType.Online)"
+      matRipple
+      [class.selected]="selectedPaymentType === OrderPaymentType.Online"
     >
-      @if (shopService.isPaymentAvailable()) {
-        <mat-card appearance="filled">
-          <mat-card-content>
-            <mat-radio-button [value]="OrderPaymentType.Online" color="primary">
-              پرداخت آنلاین
-            </mat-radio-button>
-          </mat-card-content>
-        </mat-card>
-      }
+      <mat-card-content>
+        <mat-radio-button [checked]="selectedPaymentType === OrderPaymentType.Online" color="primary">
+          پرداخت آنلاین
+        </mat-radio-button>
+      </mat-card-content>
+    </mat-card>
+  }
 
-      <mat-card appearance="filled">
-        <mat-card-content>
-          <mat-radio-button [value]="OrderPaymentType.Cash" color="primary">
-            پرداخت نقدی / کارتخوان
-          </mat-radio-button>
-        </mat-card-content>
-      </mat-card>
-    </mat-radio-group>
-  </mat-card-content>
-</mat-card>
+  <mat-card
+    appearance="outlined"
+    (click)="onPaymentTypeChange(OrderPaymentType.Cash)"
+    matRipple
+    [class.selected]="selectedPaymentType === OrderPaymentType.Cash"
+  >
+    <mat-card-content>
+      <mat-radio-button [checked]="selectedPaymentType === OrderPaymentType.Cash" color="primary">
+        پرداخت نقدی / کارتخوان
+      </mat-radio-button>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- @if (club.wallet?.charge) { -->
+  <mat-checkbox [checked]="cart.useWallet()" (change)="onWalletChange($event.checked)" color="primary">
+    استفاده از کیف پول
+    <span class="mat-title-small" style="margin-right: 8px">{{ club.wallet?.charge | number }} تومان</span>
+  </mat-checkbox>
+  <!-- } -->
+</section>

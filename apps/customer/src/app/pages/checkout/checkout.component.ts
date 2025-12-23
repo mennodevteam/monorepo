@@ -8,7 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { saxEditOutline, saxAddOutline } from '@ng-icons/iconsax/outline';
-import { saxLocationBold, saxBillBold } from '@ng-icons/iconsax/bold';
+import { saxLocationBold, saxBillBold, saxCardBold } from '@ng-icons/iconsax/bold';
 import { TranslateModule } from '@ngx-translate/core';
 import { CartService } from '../../core/services/cart.service';
 import { ShopService } from '../../core/services/shop.service';
@@ -22,6 +22,7 @@ import { AddressSelectionDialogComponent } from './components/address-selection-
 import { AddressesService } from '../../core/services/addresses.service';
 import { StatAction, OrderType } from '@menno/types';
 import { SectionComponent } from '../../shared/components/section/section.component';
+import { AddressCardComponent } from './components/address-card/address-card.component';
 
 @Component({
   selector: 'app-checkout',
@@ -38,6 +39,7 @@ import { SectionComponent } from '../../shared/components/section/section.compon
     TranslateModule,
     SectionComponent,
     DecimalPipe,
+    AddressCardComponent,
   ],
   providers: [
     provideIcons({
@@ -45,6 +47,7 @@ import { SectionComponent } from '../../shared/components/section/section.compon
       saxAddOutline,
       saxLocationBold,
       saxBillBold,
+      saxCardBold,
     }),
   ],
   templateUrl: './checkout.component.html',
@@ -65,7 +68,8 @@ export class CheckoutComponent {
   addIcon = saxAddOutline;
   addressIcon = saxLocationBold;
   invoiceIcon = saxBillBold;
-
+  paymentIcon = saxCardBold;
+  
   constructor() {
     if (this.cart.length() === 0) {
       this.location.back();

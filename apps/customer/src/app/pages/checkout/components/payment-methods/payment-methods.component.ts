@@ -11,11 +11,21 @@ import { ClubService } from '../../../../core/services/club.service';
 import { AnalyticsService } from '../../../../core/services/analytics.service';
 import { OrderPaymentType } from '@menno/types';
 import { ShopService } from '../../../../core/services/shop.service';
+import { MatRippleModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-payment-methods',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatListModule, MatRadioModule, MatCheckboxModule, MatCardModule, TranslateModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatListModule,
+    MatRadioModule,
+    MatCheckboxModule,
+    MatCardModule,
+    TranslateModule,
+    MatRippleModule,
+  ],
   templateUrl: './payment-methods.component.html',
   styleUrl: './payment-methods.component.scss',
 })

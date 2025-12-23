@@ -1,0 +1,17 @@
+@if (address(); as addressValue) {
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>
+        @if (addressValue.title) {
+          {{ addressValue.title }}:
+        } @else {
+          {{ addressValue.region?.title }}
+        }
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      {{ addressValue.description }}
+    </mat-card-content>
+  </mat-card>
+}
+

@@ -3,54 +3,8 @@
 @if (cart.length()) {
   <main class="main-content">
     <app-section title="آدرس تحویل" [icon]="addressIcon" seeMoreLabel="تغییر آدرس" routerLink="/addresses">
-      @if (cart.address(); as address) {
-        <mat-card appearance="outlined">
-          <mat-card-header>
-            <mat-card-title>
-              @if (address.title) {
-                {{ address.title }}:
-              } @else {
-                {{ address.region?.title }}
-              }
-            </mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            {{ address.description }}
-          </mat-card-content>
-        </mat-card>
-      }
+      <app-address-card [address]="cart.address()"></app-address-card>
     </app-section>
-    <!-- Address Section (Only for Delivery) -->
-    <!-- @if (cart.orderType() === OrderType.Delivery) {
-      <mat-card appearance="filled">
-        <div class="address-header">
-          <h3 class="mat-title-medium">آدرس تحویل</h3>
-          <button mat-stroked-button color="primary" (click)="openAddressDialog()">
-            <ng-icon [svg]="editIcon" size="20"></ng-icon>
-            تغییر آدرس
-          </button>
-        </div>
-
-        @if (cart.address(); as address) {
-          <div class="address-card">
-            <div class="mat-title-small">{{ address.title || 'آدرس' }}</div>
-            <div class="mat-body-small mat-color-on-surface-variant">
-              @if (address.region) {
-                {{ address.region.state ? address.region.state + ' - ' : '' }}{{ address.region.title }}
-              }
-            </div>
-            <div class="mat-body-small mat-color-on-surface-variant">{{ address.description }}</div>
-          </div>
-        } @else {
-          <div class="address-empty">
-            <button mat-flat-button color="primary" (click)="openAddressDialog()">
-              <ng-icon [svg]="addIcon" size="20"></ng-icon>
-              افزودن آدرس
-            </button>
-          </div>
-        }
-      </mat-card>
-    } -->
 
     <!-- Invoice Section -->
     <app-section title="صورتحساب" [icon]="invoiceIcon">
@@ -58,7 +12,9 @@
     </app-section>
 
     <!-- Payment Methods Section -->
-    <app-payment-methods></app-payment-methods>
+     <app-section title="شیوه پرداخت" [icon]="paymentIcon">
+       <app-payment-methods></app-payment-methods>
+     </app-section>
   </main>
 }
 
