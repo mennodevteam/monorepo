@@ -151,7 +151,7 @@ export class CategoryEditComponent implements FormComponent {
     const dto: Partial<ProductCategory> = {
       title: formValue.title,
       faIcon: formValue.faIcon ?? undefined,
-      slug: this.buildFinalSlug(formValue.slug),
+      slug: (this.buildFinalSlug(formValue.slug) ?? null) as string | undefined,
       description: formValue.description ?? undefined,
       menuViewType: formValue.menuViewType ?? undefined,
       imageFile: null,
@@ -221,6 +221,6 @@ export class CategoryEditComponent implements FormComponent {
       (cat) => cat.slug === value && cat.id !== currentCategoryId,
     );
 
-    return duplicate ? { slugNotUnique: true } : null;
+    return duplicate ? { slugNotUnique: { title: duplicate.title } } : null;
   }
 }

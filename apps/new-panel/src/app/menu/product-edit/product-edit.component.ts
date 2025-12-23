@@ -119,6 +119,7 @@ export class ProductEditComponent implements FormComponent {
                 Validators.pattern(/^[a-z0-9-]*$/),
                 this.slugUniquenessValidator.bind(this),
               ],
+              nonNullable: false,
             },
           ],
           variants: this.variantsForm,
@@ -232,7 +233,7 @@ export class ProductEditComponent implements FormComponent {
     const fv = this.form.getRawValue();
     if (this.productId) fv.id = this.productId;
     fv.category = { id: fv.category.id };
-    fv.slug = this.buildFinalSlug(fv.slug);
+    fv.slug = this.buildFinalSlug(fv.slug) ?? null;
 
     for (let i = 0; i < fv.imageFiles?.length; i++) {
       const imageFile = fv.imageFiles[i];
@@ -278,18 +279,20 @@ export class ProductEditComponent implements FormComponent {
     if (!menu || !menu.categories) return null;
 
     const currentProductId = this.product()?.id;
-    const categoryId = this.form?.controls['category']?.value?.id;
-    if (!categoryId) return null;
 
-    // Check for duplicate slug within the same category
-    const category = menu.categories.find((cat) => cat.id === categoryId);
-    if (!category || !category.products) return null;
+    // Check for duplicate slug across ALL products in ALL categories
+    for (const category of menu.categories) {
+      if (category.products) {
+        const duplicate = category.products.find(
+          (prod) => prod.slug === value && prod.id !== currentProductId,
+        );
+        if (duplicate) {
+          return { slugNotUnique: { title: duplicate.title } };
+        }
+      }
+    }
 
-    const duplicate = category.products.find(
-      (prod) => prod.slug === value && prod.id !== currentProductId,
-    );
-
-    return duplicate ? { slugNotUnique: true } : null;
+    return null;
   }
 
   canDeactivate() {

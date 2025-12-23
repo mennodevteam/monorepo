@@ -105,7 +105,11 @@
               @if (form.controls['slug'].invalid && form.controls['slug'].touched) {
                 <mat-error>
                   @if (form.controls['slug'].errors?.['slugNotUnique']) {
-                    {{ 'categoryDialog.slugNotUnique' | translate }}
+                    @if (form.controls['slug'].errors?.['slugNotUnique']?.title) {
+                      {{ 'categoryDialog.slugNotUnique' | translate }}: {{ form.controls['slug'].errors?.['slugNotUnique'].title }}
+                    } @else {
+                      {{ 'categoryDialog.slugNotUnique' | translate }}
+                    }
                   } @else {
                     {{ 'categoryDialog.slugInvalid' | translate }}
                   }
