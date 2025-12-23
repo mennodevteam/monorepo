@@ -4,9 +4,9 @@
       <p>Loading...</p>
     </div>
   } @else if (sections().length > 0) {
-    @for (section of sections(); track section.id) {
+    @for (section of sections(); track section.id; let i = $index) {
       @if (section.type === HomeSectionType.Banner) {
-        <app-banner [section]="section" />
+        <app-banner [section]="section" [isFirst]="i === 0" />
       } @else if (section.type === HomeSectionType.ProductList) {
         <app-product-list [section]="section" />
       } @else if (section.type === HomeSectionType.CategoryList) {

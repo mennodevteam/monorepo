@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 })
 export class BannerComponent implements OnDestroy {
   readonly section = input.required<HomeSection>();
+  readonly isFirst = input<boolean>(false);
   private readonly router = inject(Router);
   private readonly linkService = inject(LinkService);
 

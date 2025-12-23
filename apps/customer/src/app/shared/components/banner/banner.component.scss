@@ -1,6 +1,9 @@
 .banner-wrapper {
   margin-inline: -16px;
 
+  &.not-first {
+    margin-top: 16px;
+  }
 }
 
 .banner-container {
