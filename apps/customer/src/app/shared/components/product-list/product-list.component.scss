@@ -1,26 +1,31 @@
 .product-list-carousel-container {
   margin-inline: -16px;
-}
 
-.product-list-carousel {
-  display: flex;
-  overflow-x: auto;
-  gap: 12px;
-  padding-inline: 16px;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  .product-list-carousel {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    padding-inline: 16px;
+    margin-bottom: 12px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
 
-  .product-list-carousel-item {
-    flex: none !important;
-    width: 320px;
+    &.multi-row {
+      margin-bottom: 16px;
+    }
 
-    app-product-card {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
+    .product-list-carousel-item {
+      flex: none !important;
+      width: 320px;
+
+      app-product-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
     }
   }
 }

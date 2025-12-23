@@ -41,6 +41,10 @@ export const ProductSchema = new EntitySchema<Product>({
       type: String,
       nullable: true,
     },
+    slug: {
+      type: String,
+      nullable: true,
+    },
     updatedAt: {
       type: 'timestamptz',
       updateDate: true,

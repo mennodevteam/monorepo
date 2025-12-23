@@ -75,7 +75,11 @@
             <mat-hint>{{ 'categoryDialog.slugHint' | translate }}</mat-hint>
             @if (form.controls.slug.invalid && form.controls.slug.touched) {
               <mat-error>
-                {{ 'categoryDialog.slugInvalid' | translate }}
+                @if (form.controls.slug.errors?.['slugNotUnique']) {
+                  {{ 'categoryDialog.slugNotUnique' | translate }}
+                } @else {
+                  {{ 'categoryDialog.slugInvalid' | translate }}
+                }
               </mat-error>
             }
           </mat-form-field>

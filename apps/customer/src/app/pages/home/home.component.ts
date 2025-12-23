@@ -3,12 +3,13 @@ import { HomeSectionType } from '@menno/types';
 import { HomeSectionService } from '../../core/services/home-section.service';
 import { BannerComponent } from '../../shared/components/banner/banner.component';
 import { ProductListComponent } from '../../shared/components/product-list/product-list.component';
+import { CategoryListComponent } from '../../shared/components/category-list/category-list.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, BannerComponent, ProductListComponent],
+  imports: [CommonModule, BannerComponent, ProductListComponent, CategoryListComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

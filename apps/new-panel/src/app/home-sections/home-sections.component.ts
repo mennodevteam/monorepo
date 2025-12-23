@@ -60,9 +60,15 @@ export class HomeSectionsComponent {
 
   editSection(section: HomeSection) {
     if (section.type === HomeSectionType.Banner) {
-      this.router.navigate(['./banner', section.id], { relativeTo: this.route });
+      this.router.navigate(['./banner', section.id], { 
+        relativeTo: this.route,
+        state: { section }
+      });
     } else if (section.type === HomeSectionType.ProductList) {
-      this.router.navigate(['./product-list', section.id], { relativeTo: this.route });
+      this.router.navigate(['./product-list', section.id], { 
+        relativeTo: this.route,
+        state: { section }
+      });
     }
   }
 

@@ -26,6 +26,7 @@ export class Product {
   productLabel?: string;
   maxBasket?: number;
   thirdPartyId?: string;
+  slug?: string;
   _orderItem?: ProductItem;
   _changingStatus?: boolean;
   _priceLoading?: boolean;

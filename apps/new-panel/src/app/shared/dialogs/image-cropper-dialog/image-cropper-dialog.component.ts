@@ -20,16 +20,31 @@ export class ImageCropperDialogComponent implements AfterViewInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) @Optional() public data: any,
     public dialogRef: MatDialogRef<any>,
-  ) {}
+  ) {
+    // Reset state when dialog opens
+    this.imageChangedEvent = '';
+    this.result = null;
+  }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.fileInput.nativeElement.click();
+      if (this.fileInput?.nativeElement) {
+        // Reset the file input to allow selecting the same file again
+        this.fileInput.nativeElement.value = '';
+        this.fileInput.nativeElement.click();
+      }
     }, 500);
   }
 
   async fileChangeEvent(event: any) {
-    const file = event.target.files[0];
+    const file = event.target.files?.[0];
+    if (!file) {
+      return;
+    }
+    
+    // Reset result when new file is selected
+    this.result = null;
+    
     if (file.type.search('heic') >= 0) {
       const convertedFile: Blob = (await heic2any({
         blob: file,
@@ -40,16 +55,8 @@ export class ImageCropperDialogComponent implements AfterViewInit {
       const list = new DataTransfer();
       list.items.add(new File([convertedFile], 'file.jpeg', { type: 'image/jpeg' }));
 
-      const newInput = document.createElement('input');
-      newInput.files = list.files;
-
-      // this.fileInput.nativeElement.value = convertedFile;
-      // // const newFile = new File([convertedFile], 'img.jpg', { type: 'image/jpeg', lastModified: new Date().getTime() });
-      // // let container = new DataTransfer();
-      // event.target.files = [convertedFile];
-      // this.imageChangedEvent = list;
       this.fileInput.nativeElement.files = list.files;
-      this.imageChangedEvent = event;
+      this.imageChangedEvent = { target: { files: list.files } };
     } else {
       this.imageChangedEvent = event;
     }

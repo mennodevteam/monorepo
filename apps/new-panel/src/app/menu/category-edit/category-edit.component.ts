@@ -8,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MenuService } from '../menu.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Image, ProductCategory, MenuViewType, Menu } from '@menno/types';
@@ -59,7 +59,13 @@ export class CategoryEditComponent implements FormComponent {
   readonly form = this.fb.group({
     title: this.fb.control('', { validators: [Validators.required], nonNullable: true }),
     faIcon: this.fb.control(''),
-    slug: this.fb.control('', { validators: [Validators.pattern(/^[a-z0-9-]*$/)], nonNullable: false }),
+    slug: this.fb.control('', {
+      validators: [
+        Validators.pattern(/^[a-z0-9-]*$/),
+        this.slugUniquenessValidator.bind(this),
+      ],
+      nonNullable: false,
+    }),
     description: this.fb.control(''),
     menuViewType: this.fb.control<MenuViewType | null>(null),
     imageFile: this.fb.control<CategoryImageValue>(null),
@@ -101,6 +107,17 @@ export class CategoryEditComponent implements FormComponent {
       const sanitized = this.sanitizeSlug(value);
       if (sanitized !== value) {
         slugControl.setValue(sanitized, { emitEvent: false });
+      } else {
+        // Re-validate uniqueness when value changes
+        slugControl.updateValueAndValidity();
+      }
+    });
+
+    // Re-validate slug when categories change
+    effect(() => {
+      const categories = this.menuService.categories();
+      if (categories && this.initialized()) {
+        slugControl.updateValueAndValidity();
       }
     });
   }
@@ -192,5 +209,20 @@ export class CategoryEditComponent implements FormComponent {
     const sanitized = this.sanitizeSlug(value);
     const trimmed = sanitized.replace(/(^-+)|(-+$)/g, '');
     return trimmed || undefined;
+  }
+
+  private slugUniquenessValidator(control: AbstractControl) {
+    const value = control.value;
+    if (!value) return null;
+
+    const categories = this.menuService.categories();
+    if (!categories) return null;
+
+    const currentCategoryId = this.category()?.id;
+    const duplicate = categories.find(
+      (cat) => cat.slug === value && cat.id !== currentCategoryId,
+    );
+
+    return duplicate ? { slugNotUnique: true } : null;
   }
 }

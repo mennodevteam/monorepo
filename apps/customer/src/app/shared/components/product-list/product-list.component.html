@@ -2,19 +2,21 @@
   <app-section [title]="title() || ''">
     @if (isCarousel()) {
       <div class="product-list-carousel-container">
-        <div class="product-list-carousel">
-          @for (product of products(); track product.id) {
-            <div class="product-list-carousel-item">
-              <app-product-card [product]="product" [largeImage]="false" [hideVariants]="true" />
-            </div>
-          }
-        </div>
+        @for (rowIndex of getRowIndices(); track rowIndex) {
+          <div class="product-list-carousel" [class.multi-row]="carouselRows() > 1">
+            @for (product of getProductsForRow(rowIndex); track product.id) {
+              <div class="product-list-carousel-item">
+                <app-product-card [product]="product" [largeImage]="false" [hideVariants]="true" />
+              </div>
+            }
+          </div>
+        }
       </div>
     } @else if (isGrid()) {
       <mat-grid-list [cols]="gridCols()" rowHeight="1:1" gutterSize="8">
         @for (product of products(); track product.id) {
           <mat-grid-tile
-            [routerLink]="['/product', product.id]"
+            [routerLink]="getProductLink(product)"
             class="product-tile"
             [imageFile]="getProductImage(product)"
             [imageSize]="'md'"

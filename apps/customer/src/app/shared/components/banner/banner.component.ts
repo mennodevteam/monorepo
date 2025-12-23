@@ -1,7 +1,8 @@
 import { Component, input, computed, inject, signal, viewChild, ElementRef, effect, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { HomeSection, BannerConfig, BannerAspectRatio } from '@menno/types';
+import { HomeSection, BannerConfig, BannerAspectRatio, BannerLinkType } from '@menno/types';
 import { ImageLoaderDirective } from '../../directives/image-loader.directive';
+import { LinkService } from '../../../core/services/link.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -14,11 +15,13 @@ import { CommonModule } from '@angular/common';
 export class BannerComponent implements OnDestroy {
   readonly section = input.required<HomeSection>();
   private readonly router = inject(Router);
+  private readonly linkService = inject(LinkService);
 
   readonly config = computed(() => this.section().config as BannerConfig);
   readonly images = computed(() => this.config().images || []);
   readonly fullWidth = computed(() => this.config().fullWidth);
   readonly links = computed(() => this.config().links || []);
+  readonly aspectRatio = computed(() => this.config().aspectRatio);
 
   readonly activeImageIndex = signal(0);
   private readonly carousel = viewChild<ElementRef<HTMLElement>>('carousel');
@@ -94,12 +97,16 @@ export class BannerComponent implements OnDestroy {
 
   handleImageClick(index: number) {
     const link = this.links()[index];
-    if (link) {
-      if (link.startsWith('http://') || link.startsWith('https://')) {
-        window.open(link, '_blank');
-      } else {
-        this.router.navigateByUrl(link);
-      }
+    if (!link) return;
+
+    if (link.type === BannerLinkType.External && link.externalUrl) {
+      window.open(link.externalUrl, '_blank');
+    } else if (link.type === BannerLinkType.Category && link.categoryId) {
+      const categoryLink = this.linkService.getCategoryLink(link.categoryId);
+      this.router.navigateByUrl(categoryLink);
+    } else if (link.type === BannerLinkType.Product && link.productId) {
+      const productLink = this.linkService.getProductLink(link.productId);
+      this.router.navigateByUrl(productLink);
     }
   }
 }

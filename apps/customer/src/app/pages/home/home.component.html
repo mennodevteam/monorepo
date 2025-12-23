@@ -9,6 +9,8 @@
         <app-banner [section]="section" />
       } @else if (section.type === HomeSectionType.ProductList) {
         <app-product-list [section]="section" />
+      } @else if (section.type === HomeSectionType.CategoryList) {
+        <app-category-list [section]="section" />
       }
     }
   } @else {

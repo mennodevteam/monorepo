@@ -6,7 +6,7 @@ import { map } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatRippleModule } from '@angular/material/core';
-import { Product, ProductVariant, Menu } from '@menno/types';
+import { Product, ProductVariant, ProductCategory, Menu } from '@menno/types';
 import { MenuService } from '../../core/services/menu.service';
 import { TitleService } from '../../core/services/title.service';
 import { ImageLoaderDirective } from '../../shared/directives/image-loader.directive';
@@ -40,12 +40,17 @@ export class ProductComponent implements OnDestroy {
   readonly productId = computed(() => this.productIdParam());
 
   readonly product = computed(() => {
-    const id = this.productId();
+    const productParam = this.productId();
     const menu = this.menuService.data();
-    if (!id || !menu) {
+    if (!productParam || !menu) {
       return undefined;
     }
-    return Menu.getProductById(menu, id) || undefined;
+    // Try to find by slug first, then by id
+    const bySlug = menu.categories
+      ?.reduce((acc: Product[], cat: ProductCategory) => acc.concat(cat.products || []), [])
+      .find((p: Product) => p.slug === productParam);
+    if (bySlug) return bySlug;
+    return Menu.getProductById(menu, productParam) || undefined;
   });
 
   readonly variants = computed(() => this.product()?.variants ?? []);

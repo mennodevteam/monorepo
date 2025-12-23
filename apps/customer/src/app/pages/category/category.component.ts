@@ -40,12 +40,19 @@ export class CategoryComponent implements OnDestroy {
   });
 
   readonly category = computed(() => {
-    const id = this.categoryId();
+    const param = this.categoryIdParam();
     const menu = this.menuService.data();
-    if (id == null || !menu) {
+    if (param == null || !menu) {
       return undefined;
     }
-    return menu.categories?.find((item) => item.id === id);
+    // Try to find by slug first, then by id
+    const bySlug = menu.categories?.find((item) => item.slug === param);
+    if (bySlug) return bySlug;
+    const id = Number(param);
+    if (Number.isFinite(id)) {
+      return menu.categories?.find((item) => item.id === id);
+    }
+    return undefined;
   });
 
   readonly categoryType = computed(
