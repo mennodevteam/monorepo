@@ -1,7 +1,7 @@
 @if (images().length > 0) {
-  <div class="banner-container" [class.full-width]="fullWidth()" [class]="aspectRatioClass()">
-    @for (image of images(); track $index) {
-      <div class="banner-image-wrapper" [class.clickable]="links()[$index]">
+  <div class="banner-wrapper">
+    <div class="banner-container" #carousel (scroll)="onCarouselScroll()" [class.full-width]="fullWidth()">
+      @for (image of images(); track $index) {
         <img
           appImageLoader
           [imageFile]="image"
@@ -9,8 +9,19 @@
           [attr.alt]="'Banner image ' + ($index + 1)"
           (click)="handleImageClick($index)"
         />
+      }
+    </div>
+
+    @if (images().length > 1) {
+      <div class="carousel-dots">
+        @for (image of images(); track $index) {
+          <div
+            class="carousel-dot"
+            [class.active]="$index === activeImageIndex()"
+            (click)="scrollToIndex($index)"
+          ></div>
+        }
       </div>
     }
   </div>
 }
-
