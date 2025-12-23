@@ -1103,13 +1103,15 @@
     "noImages": "هیچ تصویری اضافه نشده است",
     "editProductList": "ویرایش لیست محصولات",
     "newProductList": "لیست محصولات جدید",
-    "viewType": "نوع نمایش",
-    "carousel": "کاروسل",
-    "grid": "گرید",
-    "titleHint": "عنوان اختیاری برای نمایش در بالای لیست محصولات",
-    "products": "محصولات",
-    "selectProducts": "انتخاب محصولات",
-    "noProductsSelected": "هیچ محصولی انتخاب نشده است",
+        "viewType": "نوع نمایش",
+        "carousel": "کاروسل",
+        "grid": "گرید",
+        "gridCols": "تعداد ستون‌های گرید",
+        "gridColsHint": "تعداد ستون‌های گرید (1 تا 6)",
+        "titleHint": "عنوان اختیاری برای نمایش در بالای لیست محصولات",
+        "products": "محصولات",
+        "selectProducts": "انتخاب محصولات",
+        "noProductsSelected": "هیچ محصولی انتخاب نشده است",
     "sortSections": "مرتب‌سازی بخش‌ها"
   }
 }

@@ -11,11 +11,21 @@
         </div>
       </div>
     } @else if (isGrid()) {
-      <div class="product-list-grid">
+      <mat-grid-list [cols]="gridCols()" rowHeight="1:1" gutterSize="8">
         @for (product of products(); track product.id) {
-          <app-product-card [product]="product" [largeImage]="true" [hideVariants]="true" />
+          <mat-grid-tile
+            [routerLink]="['/product', product.id]"
+            class="product-tile"
+            [imageFile]="getProductImage(product)"
+            [imageSize]="'md'"
+            appImageLoader
+          >
+            <mat-grid-tile-footer class="product-tile-footer">
+              {{ product.title }}
+            </mat-grid-tile-footer>
+          </mat-grid-tile>
         }
-      </div>
+      </mat-grid-list>
     }
   </app-section>
 }

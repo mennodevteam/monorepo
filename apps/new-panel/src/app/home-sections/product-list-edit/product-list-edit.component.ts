@@ -74,6 +74,10 @@ export class ProductListEditComponent implements FormComponent {
     }),
     title: this.fb.control(''),
     productIds: this.fb.control<string[]>([], { validators: [Validators.required], nonNullable: true }),
+    gridCols: this.fb.control<number>(2, {
+      validators: [Validators.required, Validators.min(1), Validators.max(6)],
+      nonNullable: true,
+    }),
   });
 
   readonly allProducts = this.menuService.data;
@@ -122,6 +126,7 @@ export class ProductListEditComponent implements FormComponent {
         viewType: config?.viewType || ProductListViewType.Carousel,
         title: config?.title || '',
         productIds: config?.productIds || [],
+        gridCols: config?.gridCols || 2,
       });
 
       this.form.markAsPristine();
@@ -178,6 +183,7 @@ export class ProductListEditComponent implements FormComponent {
       viewType: fv.viewType,
       productIds: fv.productIds,
       title: fv.title || undefined,
+      gridCols: fv.viewType === ProductListViewType.Grid ? fv.gridCols : undefined,
     };
 
     const section: HomeSection = {

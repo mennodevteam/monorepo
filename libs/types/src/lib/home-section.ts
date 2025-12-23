@@ -27,6 +27,7 @@ export interface ProductListConfig {
   viewType: ProductListViewType;
   productIds: string[];
   title?: string;
+  gridCols?: number;
 }
 
 export class HomeSection {
