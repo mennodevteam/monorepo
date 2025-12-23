@@ -62,9 +62,8 @@ export class ProductListComponent {
   getProductsForRow(rowIndex: number): Product[] {
     const allProducts = this.products();
     const rows = this.carouselRows();
-    const itemsPerRow = Math.ceil(allProducts.length / rows);
-    const startIndex = rowIndex * itemsPerRow;
-    return allProducts.slice(startIndex, startIndex + itemsPerRow);
+    // Distribute items by index: item at index i goes to row (i % rows)
+    return allProducts.filter((_, index) => index % rows === rowIndex);
   }
 }
 

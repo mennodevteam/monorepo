@@ -15,6 +15,9 @@
     <button mat-menu-item (click)="addSection(HomeSectionType.ProductList)">
       {{ 'homeSections.productList' | translate }}
     </button>
+    <button mat-menu-item (click)="addSection(HomeSectionType.CategoryList)">
+      {{ 'homeSections.categoryList' | translate }}
+    </button>
   </mat-menu>
 </mat-toolbar>
 
@@ -40,7 +43,7 @@
           <ng-container matColumnDef="title">
             <th mat-header-cell *matHeaderCellDef>{{ 'homeSections.title' | translate }}</th>
             <td mat-cell *matCellDef="let section">
-              @if (section.type === HomeSectionType.ProductList) {
+              @if (section.type === HomeSectionType.ProductList || section.type === HomeSectionType.CategoryList) {
                 {{ getSectionTitle(section) }}
               } @else {
                 -

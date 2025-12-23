@@ -11,7 +11,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { HomeSectionsService } from './home-sections.service';
 import { TranslateService } from '@ngx-translate/core';
-import { HomeSection, HomeSectionType, ProductListConfig } from '@menno/types';
+import { HomeSection, HomeSectionType, ProductListConfig, CategoryListConfig } from '@menno/types';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SHARED } from '../shared';
 import { EmptyStateComponent } from '../shared/components/empty-state/empty-state.component';
@@ -55,6 +55,8 @@ export class HomeSectionsComponent {
       this.router.navigate(['./banner'], { relativeTo: this.route });
     } else if (type === HomeSectionType.ProductList) {
       this.router.navigate(['./product-list'], { relativeTo: this.route });
+    } else if (type === HomeSectionType.CategoryList) {
+      this.router.navigate(['./category-list'], { relativeTo: this.route });
     }
   }
 
@@ -66,6 +68,11 @@ export class HomeSectionsComponent {
       });
     } else if (section.type === HomeSectionType.ProductList) {
       this.router.navigate(['./product-list', section.id], { 
+        relativeTo: this.route,
+        state: { section }
+      });
+    } else if (section.type === HomeSectionType.CategoryList) {
+      this.router.navigate(['./category-list', section.id], { 
         relativeTo: this.route,
         state: { section }
       });
@@ -113,6 +120,9 @@ export class HomeSectionsComponent {
     } else if (section.type === HomeSectionType.ProductList) {
       const config = section.config as ProductListConfig;
       return config.title || 'Product List';
+    } else if (section.type === HomeSectionType.CategoryList) {
+      const config = section.config as CategoryListConfig;
+      return config.title || 'Category List';
     }
     return section.type;
   }

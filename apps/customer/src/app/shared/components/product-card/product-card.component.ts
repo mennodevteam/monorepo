@@ -9,6 +9,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { saxStopCircleBold } from '@ng-icons/iconsax/bold';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { QuantitySelectorComponent } from '../quantity-selector/quantity-selector.component';
+import { LinkService } from '../../../core/services/link.service';
 
 @Component({
   selector: 'app-product-card',
@@ -69,8 +70,11 @@ export class ProductCardComponent {
   readonly variantIsFinished = (variant: ProductVariant) => Product.isFinished(this.product(), variant);
 
   private readonly router = inject(Router);
+  private readonly linkService = inject(LinkService);
+
+  readonly productLink = computed(() => this.linkService.getProductLink(this.product()));
 
   openProduct() {
-    this.router.navigate(['/product', this.product().id]);
+    this.router.navigateByUrl(this.productLink());
   }
 }

@@ -107,17 +107,15 @@ export class CategoryEditComponent implements FormComponent {
       const sanitized = this.sanitizeSlug(value);
       if (sanitized !== value) {
         slugControl.setValue(sanitized, { emitEvent: false });
-      } else {
-        // Re-validate uniqueness when value changes
-        slugControl.updateValueAndValidity();
       }
+      // Note: Validation happens automatically via validators, no need to call updateValueAndValidity here
     });
 
-    // Re-validate slug when categories change
+    // Re-validate slug when categories change (only if slug has a value)
     effect(() => {
       const categories = this.menuService.categories();
-      if (categories && this.initialized()) {
-        slugControl.updateValueAndValidity();
+      if (categories && this.initialized() && slugControl.value) {
+        slugControl.updateValueAndValidity({ emitEvent: false });
       }
     });
   }

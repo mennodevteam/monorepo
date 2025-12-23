@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal, DestroyRef } from '@angular/core';
 import { CommonModule, PlatformLocation } from '@angular/common';
 import { SHARED } from '../../shared';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -27,6 +27,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FilesService } from '../../core/services/files.service';
 import { FormComponent } from '../../core/guards/dirty-form-deactivator.guard';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-product-edit',
@@ -59,6 +60,7 @@ export class ProductEditComponent implements FormComponent {
   private readonly snack = inject(MatSnackBar);
   private readonly fileService = inject(FilesService);
   private readonly t = inject(TranslateService);
+  private readonly destroyRef = inject(DestroyRef);
   productId = this.route.snapshot.queryParams['id'];
   categoryId = this.route.snapshot.queryParams['categoryId'];
 
@@ -110,10 +112,38 @@ export class ProductEditComponent implements FormComponent {
           description: [product?.description],
           price: [product?.price, Validators.required],
           category: [category, Validators.required],
+          slug: [
+            product?.slug ?? '',
+            {
+              validators: [
+                Validators.pattern(/^[a-z0-9-]*$/),
+                this.slugUniquenessValidator.bind(this),
+              ],
+            },
+          ],
           variants: this.variantsForm,
           imageFiles: this.imagesForm,
           maxBasket: [product?.maxBasket],
         });
+
+        // Setup slug value changes handler
+        const slugControl = this.form.controls['slug'];
+        slugControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
+          if (value == null) return;
+          const sanitized = this.sanitizeSlug(value);
+          if (sanitized !== value) {
+            slugControl.setValue(sanitized, { emitEvent: false });
+          }
+        });
+
+        // Re-validate slug when category changes
+        this.form.controls['category'].valueChanges
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe(() => {
+            if (slugControl.value) {
+              slugControl.updateValueAndValidity({ emitEvent: false });
+            }
+          });
       }
     });
   }
@@ -202,6 +232,7 @@ export class ProductEditComponent implements FormComponent {
     const fv = this.form.getRawValue();
     if (this.productId) fv.id = this.productId;
     fv.category = { id: fv.category.id };
+    fv.slug = this.buildFinalSlug(fv.slug);
 
     for (let i = 0; i < fv.imageFiles?.length; i++) {
       const imageFile = fv.imageFiles[i];
@@ -223,6 +254,42 @@ export class ProductEditComponent implements FormComponent {
     this.menuService.saveProductMutation.mutate(fv);
     this.form.reset();
     this.location.back();
+  }
+
+  private sanitizeSlug(value: string) {
+    return value
+      .toLowerCase()
+      .replace(/[^a-z0-9-]+/g, '-')
+      .replace(/-{2,}/g, '-');
+  }
+
+  private buildFinalSlug(value?: string | null) {
+    if (!value) return undefined;
+    const sanitized = this.sanitizeSlug(value);
+    const trimmed = sanitized.replace(/(^-+)|(-+$)/g, '');
+    return trimmed || undefined;
+  }
+
+  private slugUniquenessValidator(control: AbstractControl) {
+    const value = control.value;
+    if (!value) return null;
+
+    const menu = this.menuService.data();
+    if (!menu || !menu.categories) return null;
+
+    const currentProductId = this.product()?.id;
+    const categoryId = this.form?.controls['category']?.value?.id;
+    if (!categoryId) return null;
+
+    // Check for duplicate slug within the same category
+    const category = menu.categories.find((cat) => cat.id === categoryId);
+    if (!category || !category.products) return null;
+
+    const duplicate = category.products.find(
+      (prod) => prod.slug === value && prod.id !== currentProductId,
+    );
+
+    return duplicate ? { slugNotUnique: true } : null;
   }
 
   canDeactivate() {

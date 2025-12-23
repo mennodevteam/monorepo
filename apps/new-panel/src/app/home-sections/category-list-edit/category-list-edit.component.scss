@@ -1,0 +1,21 @@
+.category-list {
+  margin-top: 16px;
+}
+
+mat-list-item[cdkDrag] {
+  cursor: grab;
+  
+  &:active {
+    cursor: grabbing;
+  }
+  
+  .fa-grip-vertical {
+    cursor: grab;
+    color: var(--mat-sys-on-surface-variant);
+    
+    &:active {
+      cursor: grabbing;
+    }
+  }
+}
+

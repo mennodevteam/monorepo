@@ -1,10 +1,22 @@
 @if (products().length > 0) {
   <app-section [title]="title() || ''">
     @if (isCarousel()) {
-      <div class="product-list-carousel-container">
-        @for (rowIndex of getRowIndices(); track rowIndex) {
-          <div class="product-list-carousel" [class.multi-row]="carouselRows() > 1">
-            @for (product of getProductsForRow(rowIndex); track product.id) {
+      <div class="product-list-carousel-container" [class.multi-row]="carouselRows() > 1">
+        @if (carouselRows() > 1) {
+          <div class="product-list-carousel-wrapper">
+            @for (rowIndex of getRowIndices(); track rowIndex) {
+              <div class="product-list-carousel-row">
+                @for (product of getProductsForRow(rowIndex); track product.id) {
+                  <div class="product-list-carousel-item">
+                    <app-product-card [product]="product" [largeImage]="false" [hideVariants]="true" />
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="product-list-carousel">
+            @for (product of products(); track product.id) {
               <div class="product-list-carousel-item">
                 <app-product-card [product]="product" [largeImage]="false" [hideVariants]="true" />
               </div>

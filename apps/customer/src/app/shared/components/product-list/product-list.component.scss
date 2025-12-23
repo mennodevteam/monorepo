@@ -13,8 +13,38 @@
       display: none;
     }
 
-    &.multi-row {
-      margin-bottom: 16px;
+    .product-list-carousel-item {
+      flex: none !important;
+      width: 320px;
+
+      app-product-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+    }
+  }
+
+  &.multi-row {
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .product-list-carousel-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-inline: 16px;
+      min-width: fit-content;
+    }
+
+    .product-list-carousel-row {
+      display: flex;
+      gap: 12px;
+      min-width: fit-content;
     }
 
     .product-list-carousel-item {

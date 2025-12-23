@@ -91,6 +91,31 @@
         </mat-card>
 
         <mat-card appearance="outlined">
+          <mat-card-content fxLayout="column" fxLayoutGap="16px">
+            <div>
+              <h3 class="mat-h3">{{ 'categoryDialog.slugCardTitle' | translate }}</h3>
+              <p class="mat-body-2 slug-description">
+                {{ 'productEdit.slugDescription' | translate }}
+              </p>
+            </div>
+            <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+              <mat-label>{{ 'categoryDialog.slug' | translate }}</mat-label>
+              <input matInput formControlName="slug" placeholder="my-product" ltr eng />
+              <mat-hint>{{ 'categoryDialog.slugHint' | translate }}</mat-hint>
+              @if (form.controls['slug'].invalid && form.controls['slug'].touched) {
+                <mat-error>
+                  @if (form.controls['slug'].errors?.['slugNotUnique']) {
+                    {{ 'categoryDialog.slugNotUnique' | translate }}
+                  } @else {
+                    {{ 'categoryDialog.slugInvalid' | translate }}
+                  }
+                </mat-error>
+              }
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card appearance="outlined">
           <mat-card-header>
             <mat-card-title>
               {{ 'productEdit.limitationSection' | translate }}

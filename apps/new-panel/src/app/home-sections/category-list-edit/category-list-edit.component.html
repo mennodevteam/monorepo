@@ -5,9 +5,9 @@
     </button>
     <h2 fxFlex>
       @if (section()) {
-        {{ 'homeSections.editProductList' | translate }}
+        {{ 'homeSections.editCategoryList' | translate }}
       } @else {
-        {{ 'homeSections.newProductList' | translate }}
+        {{ 'homeSections.newCategoryList' | translate }}
       }
     </h2>
     <button mat-button (click)="location.back()" type="button">
@@ -30,16 +30,19 @@
         <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
           <mat-label>{{ 'homeSections.viewType' | translate }}</mat-label>
           <mat-select formControlName="viewType">
-            <mat-option [value]="ProductListViewType.Carousel">
+            <mat-option [value]="CategoryListViewType.Carousel">
               {{ 'homeSections.carousel' | translate }}
             </mat-option>
-            <mat-option [value]="ProductListViewType.Grid">
+            <mat-option [value]="CategoryListViewType.Grid">
               {{ 'homeSections.grid' | translate }}
+            </mat-option>
+            <mat-option [value]="CategoryListViewType.Button">
+              {{ 'homeSections.button' | translate }}
             </mat-option>
           </mat-select>
         </mat-form-field>
 
-        @if (form.controls.viewType.value === ProductListViewType.Grid) {
+        @if (form.controls.viewType.value === CategoryListViewType.Grid) {
           <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
             <mat-label>{{ 'homeSections.gridCols' | translate }}</mat-label>
             <input matInput type="number" formControlName="gridCols" min="1" max="6" />
@@ -47,7 +50,7 @@
           </mat-form-field>
         }
 
-        @if (form.controls.viewType.value === ProductListViewType.Carousel) {
+        @if (form.controls.viewType.value === CategoryListViewType.Carousel || form.controls.viewType.value === CategoryListViewType.Button) {
           <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
             <mat-label>{{ 'homeSections.carouselRows' | translate }}</mat-label>
             <input matInput type="number" formControlName="carouselRows" min="1" max="4" />
@@ -59,44 +62,40 @@
 
     <mat-card appearance="outlined">
       <mat-card-header>
-        <mat-card-title>{{ 'homeSections.products' | translate }}</mat-card-title>
+        <mat-card-title>{{ 'homeSections.categories' | translate }}</mat-card-title>
       </mat-card-header>
       <mat-card-content fxLayout="column" fxLayoutGap="24px">
         <br />
         <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
-          <mat-label>{{ 'homeSections.selectProducts' | translate }}</mat-label>
+          <mat-label>{{ 'homeSections.selectCategories' | translate }}</mat-label>
           <input
             matInput
-            [(ngModel)]="searchProductInput"
+            [(ngModel)]="searchCategoryInput"
             [matAutocomplete]="auto"
             [ngModelOptions]="{ standalone: true }"
-            placeholder="{{ 'homeSections.selectProducts' | translate }}"
+            placeholder="{{ 'homeSections.selectCategories' | translate }}"
           />
           <mat-autocomplete
             #auto="matAutocomplete"
             autoActiveFirstOption
-            (optionSelected)="selectProduct($event.option.value)"
+            (optionSelected)="selectCategory($event.option.value)"
           >
-            @for (item of filteredProducts(); track item.product.id) {
-              <mat-option [value]="item">
-                <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex>
-                  <span>{{ item.product.title }}</span>
-                  <span class="category-label"> &nbsp; ({{ item.category.title }})</span>
-                </div>
+            @for (category of filteredCategories(); track category.id) {
+              <mat-option [value]="category">
+                {{ category.title }}
               </mat-option>
             }
           </mat-autocomplete>
         </mat-form-field>
 
-        @if (form.controls.productIds.value.length > 0) {
-          <mat-list cdkDropList (cdkDropListDropped)="moveProduct($event)" class="product-list">
-            @for (productId of form.controls.productIds.value; track productId; let i = $index) {
-              @if (getProductById(productId)) {
+        @if (form.controls.categoryIds.value.length > 0) {
+          <mat-list cdkDropList (cdkDropListDropped)="moveCategory($event)" class="category-list">
+            @for (categoryId of form.controls.categoryIds.value; track categoryId; let i = $index) {
+              @if (getCategoryById(categoryId)) {
                 <mat-list-item cdkDrag>
                   <i matListItemIcon class="fa-solid fa-grip-vertical" cdkDragHandle></i>
-                  <span matListItemTitle>{{ getProductById(productId)?.title }}</span>
-                  <span matListItemLine>{{ getCategoryForProduct(productId) }}</span>
-                  <button mat-icon-button matListItemMeta (click)="removeProduct(productId)">
+                  <span matListItemTitle>{{ getCategoryById(categoryId)?.title }}</span>
+                  <button mat-icon-button matListItemMeta (click)="removeCategory(categoryId)">
                     <i class="fa-regular fa-trash-alt"></i>
                   </button>
                 </mat-list-item>
@@ -104,9 +103,10 @@
             }
           </mat-list>
         } @else {
-          <app-empty-state icon="box" [text]="'homeSections.noProductsSelected' | translate" />
+          <app-empty-state icon="layer-group" [text]="'homeSections.noCategoriesSelected' | translate" />
         }
       </mat-card-content>
     </mat-card>
   </main>
 </form>
+

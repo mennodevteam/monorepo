@@ -14,7 +14,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HomeSectionsService } from '../home-sections.service';
 import { MenuService } from '../../menu/menu.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HomeSection, HomeSectionType, ProductListConfig, ProductListViewType, Product, Menu } from '@menno/types';
+import { HomeSection, HomeSectionType, CategoryListConfig, CategoryListViewType, ProductCategory } from '@menno/types';
 import { FormComponent } from '../../core/guards/dirty-form-deactivator.guard';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DialogService } from '../../core/services/dialog.service';
@@ -25,7 +25,7 @@ import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray, CdkDragHandle } fro
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-product-list-edit',
+  selector: 'app-category-list-edit',
   standalone: true,
   imports: [
     SHARED,
@@ -45,10 +45,10 @@ import { FormsModule } from '@angular/forms';
     CdkDrag,
     CdkDragHandle,
   ],
-  templateUrl: './product-list-edit.component.html',
-  styleUrl: './product-list-edit.component.scss',
+  templateUrl: './category-list-edit.component.html',
+  styleUrl: './category-list-edit.component.scss',
 })
-export class ProductListEditComponent implements FormComponent {
+export class CategoryListEditComponent implements FormComponent {
   private readonly homeSectionsService = inject(HomeSectionsService);
   private readonly menuService = inject(MenuService);
   private readonly route = inject(ActivatedRoute);
@@ -65,15 +65,15 @@ export class ProductListEditComponent implements FormComponent {
     this.route.snapshot.paramMap.get('id') || null,
   );
   section = signal<HomeSection | null>(null);
-  readonly ProductListViewType = ProductListViewType;
+  readonly CategoryListViewType = CategoryListViewType;
 
   readonly form = this.fb.group({
-    viewType: this.fb.control<ProductListViewType>(ProductListViewType.Carousel, {
+    viewType: this.fb.control<CategoryListViewType>(CategoryListViewType.Carousel, {
       validators: [Validators.required],
       nonNullable: true,
     }),
     title: this.fb.control(''),
-    productIds: this.fb.control<string[]>([], { validators: [Validators.required], nonNullable: true }),
+    categoryIds: this.fb.control<number[]>([], { validators: [Validators.required], nonNullable: true }),
     gridCols: this.fb.control<number>(2, {
       validators: [Validators.required, Validators.min(1), Validators.max(6)],
       nonNullable: true,
@@ -84,27 +84,18 @@ export class ProductListEditComponent implements FormComponent {
     }),
   });
 
-  readonly allProducts = this.menuService.data;
-  searchProductInput = signal<string>('');
+  readonly allCategories = computed(() => this.menuService.categories() || []);
+  searchCategoryInput = signal<string>('');
 
-  readonly filteredProducts = computed(() => {
-    const menu = this.allProducts();
-    if (!menu || !menu.categories) return [];
-    const selectedIds = this.form.controls.productIds.value;
-    const searchQuery = this.searchProductInput().toLowerCase();
-    const products: { product: Product; category: { title: string } }[] = [];
+  readonly filteredCategories = computed(() => {
+    const categories = this.allCategories();
+    const selectedIds = this.form.controls.categoryIds.value;
+    const searchQuery = this.searchCategoryInput().toLowerCase();
     
-    for (const cat of menu.categories) {
-      if (cat.products) {
-        for (const product of cat.products) {
-          // Filter out already selected products and match search query
-          if (!selectedIds.includes(product.id) && product.title.toLowerCase().includes(searchQuery)) {
-            products.push({ product, category: { title: cat.title } });
-          }
-        }
-      }
-    }
-    return products;
+    return categories.filter(
+      (category) =>
+        !selectedIds.includes(category.id) && category.title.toLowerCase().includes(searchQuery)
+    );
   });
 
   constructor() {
@@ -115,21 +106,23 @@ export class ProductListEditComponent implements FormComponent {
 
     effect(() => {
       const sections = this.homeSectionsService.homeSections();
-      const menu = this.allProducts();
-      if (!sections || !menu || this.initialized()) return;
+      const categories = this.allCategories();
+      if (!sections || !categories || this.initialized()) return;
 
-      const existing = this.sectionId()
+      const stateSection = this.router.getCurrentNavigation()?.extras?.state?.['section'] as HomeSection | undefined;
+      
+      const existing = stateSection || (this.sectionId()
         ? sections.find((item) => item.id === this.sectionId())
-        : undefined;
+        : undefined);
 
       this.section.set(existing ?? null);
 
-      const config = existing?.config as ProductListConfig | undefined;
+      const config = existing?.config as CategoryListConfig | undefined;
 
       this.form.patchValue({
-        viewType: config?.viewType || ProductListViewType.Carousel,
+        viewType: config?.viewType || CategoryListViewType.Carousel,
         title: config?.title || '',
-        productIds: config?.productIds || [],
+        categoryIds: config?.categoryIds || [],
         gridCols: config?.gridCols || 2,
         carouselRows: config?.carouselRows || 1,
       });
@@ -139,44 +132,30 @@ export class ProductListEditComponent implements FormComponent {
     });
   }
 
-  getProductById(id: string): Product | undefined {
-    const menu = this.allProducts();
-    if (!menu) return undefined;
-    return Menu.getProductById(menu, id) || undefined;
+  getCategoryById(id: number): ProductCategory | undefined {
+    return this.allCategories().find((cat) => cat.id === id);
   }
 
-  getCategoryForProduct(productId: string): string | undefined {
-    const menu = this.allProducts();
-    if (!menu || !menu.categories) return undefined;
-    
-    for (const cat of menu.categories) {
-      if (cat.products?.some((p) => p.id === productId)) {
-        return cat.title;
-      }
-    }
-    return undefined;
-  }
-
-  selectProduct(item: { product: Product; category: { title: string } }) {
-    const current = this.form.controls.productIds.value;
-    if (!current.includes(item.product.id)) {
-      this.form.controls.productIds.setValue([...current, item.product.id]);
+  selectCategory(category: ProductCategory) {
+    const current = this.form.controls.categoryIds.value;
+    if (!current.includes(category.id)) {
+      this.form.controls.categoryIds.setValue([...current, category.id]);
       this.form.markAsDirty();
     }
-    this.searchProductInput.set('');
+    this.searchCategoryInput.set('');
   }
 
-  removeProduct(productId: string) {
-    const current = this.form.controls.productIds.value;
-    this.form.controls.productIds.setValue(current.filter((id) => id !== productId));
+  removeCategory(categoryId: number) {
+    const current = this.form.controls.categoryIds.value;
+    this.form.controls.categoryIds.setValue(current.filter((id) => id !== categoryId));
     this.form.markAsDirty();
   }
 
-  moveProduct(event: CdkDragDrop<string[]>) {
-    const current = this.form.controls.productIds.value;
+  moveCategory(event: CdkDragDrop<number[]>) {
+    const current = this.form.controls.categoryIds.value;
     const newOrder = [...current];
     moveItemInArray(newOrder, event.previousIndex, event.currentIndex);
-    this.form.controls.productIds.setValue(newOrder);
+    this.form.controls.categoryIds.setValue(newOrder);
     this.form.markAsDirty();
   }
 
@@ -184,17 +163,17 @@ export class ProductListEditComponent implements FormComponent {
     if (this.form.invalid) return;
 
     const fv = this.form.getRawValue();
-    const config: ProductListConfig = {
+    const config: CategoryListConfig = {
       viewType: fv.viewType,
-      productIds: fv.productIds,
+      categoryIds: fv.categoryIds,
       title: fv.title || undefined,
-      gridCols: fv.viewType === ProductListViewType.Grid ? fv.gridCols : undefined,
-      carouselRows: fv.viewType === ProductListViewType.Carousel ? fv.carouselRows : undefined,
+      gridCols: fv.viewType === CategoryListViewType.Grid ? fv.gridCols : undefined,
+      carouselRows: (fv.viewType === CategoryListViewType.Carousel || fv.viewType === CategoryListViewType.Button) ? fv.carouselRows : undefined,
     };
 
     const section: HomeSection = {
       id: this.sectionId() || undefined,
-      type: HomeSectionType.ProductList,
+      type: HomeSectionType.CategoryList,
       config,
       position: 0,
       isVisible: true,
