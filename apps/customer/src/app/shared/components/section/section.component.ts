@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatButton } from '@angular/material/button';
+import { NgIcon } from '@ng-icons/core';
 
 @Component({
   selector: 'app-section',
-  imports: [MatToolbar, MatButton, RouterLink],
+  imports: [MatToolbar, MatButton, RouterLink, NgIcon],
   templateUrl: './section.component.html',
   styleUrls: ['./section.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,6 +16,7 @@ import { MatButton } from '@angular/material/button';
 })
 export class SectionComponent {
   readonly title = input.required<string>();
+  readonly icon = input<string | undefined>();
   readonly routerLink = input<string | undefined>();
   readonly seeMoreLabel = input('مشاهده بیشتر');
 }

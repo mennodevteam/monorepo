@@ -1,5 +1,8 @@
 <section class="section">
   <mat-toolbar appearance="flat" class="section__toolbar">
+    @if (icon()) {
+      <ng-icon [svg]="icon()" size="24"></ng-icon>
+    }
     <h2 class="section__title">{{ title() }}</h2>
 
     @if (routerLink()) {

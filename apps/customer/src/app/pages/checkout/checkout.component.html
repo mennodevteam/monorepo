@@ -2,9 +2,9 @@
 
 @if (cart.length()) {
   <main class="main-content">
-    <app-section title="آدرس تحویل" seeMoreLabel="تغییر آدرس" routerLink="/addresses">
+    <app-section title="آدرس تحویل" [icon]="addressIcon" seeMoreLabel="تغییر آدرس" routerLink="/addresses">
       @if (cart.address(); as address) {
-        <mat-card appearance="filled">
+        <mat-card appearance="outlined">
           <mat-card-header>
             <mat-card-title>
               @if (address.title) {
@@ -21,7 +21,7 @@
       }
     </app-section>
     <!-- Address Section (Only for Delivery) -->
-    @if (cart.orderType() === OrderType.Delivery) {
+    <!-- @if (cart.orderType() === OrderType.Delivery) {
       <mat-card appearance="filled">
         <div class="address-header">
           <h3 class="mat-title-medium">آدرس تحویل</h3>
@@ -50,10 +50,12 @@
           </div>
         }
       </mat-card>
-    }
+    } -->
 
     <!-- Invoice Section -->
-    <app-invoice></app-invoice>
+    <app-section title="صورتحساب" [icon]="invoiceIcon">
+      <app-invoice></app-invoice>
+    </app-section>
 
     <!-- Payment Methods Section -->
     <app-payment-methods></app-payment-methods>

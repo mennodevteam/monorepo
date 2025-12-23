@@ -10,6 +10,11 @@
 .section__toolbar {
   padding-inline: 0;
   background-color: transparent;
+  gap: 8px;
+
+  ng-icon {
+    margin-top: -3px;
+  }
 }
 
 .section__title {

@@ -1,0 +1,52 @@
+mat-card {
+  margin: 0 -16px;
+  border-radius: 0;
+  background-color: var(--mat-sys-surface-container);
+
+  mat-card-content {
+    padding-inline: 0;
+    overflow: hidden;
+
+    mat-list.items-list {
+      padding: 0;
+    }
+
+    mat-list.total-list {
+      margin-top: 16px;
+    }
+
+    mat-divider {
+      position: relative;
+      border-top-style: dashed;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: -12px;
+        left: -12px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: var(--mat-sys-background);
+      }
+      &::after {
+        content: '';
+        position: absolute;
+        top: -12px;
+        right: -12px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: var(--mat-sys-background);
+      }
+    }
+  }
+
+  .coupon-button-container {
+    padding: 8px 24px;
+    padding-bottom: 24px;
+    button {
+      width: -webkit-fill-available;
+    }
+  }
+}

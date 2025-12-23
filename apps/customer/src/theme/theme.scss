@@ -61,7 +61,7 @@ html {
     (
       filled-container-color: var(--mat-sys-surface-container-low),
       filled-container-shape: var(--mat-sys-corner-large),
-      outlined-container-color: var(--mat-sys-surface-container-low),
+      outlined-container-color: var(--mat-sys-surface-container-lowest),
     )
   );
 
@@ -93,47 +93,19 @@ body.shop-dark {
   --status-warn-container: #3a2a14;
 }
 
-.info-theme {
-  color: var(--status-info);
-  border-color: var(--status-info);
+.info-text {
+  color: var(--status-info) !important;
 }
 
-.info-theme-surface {
-  background-color: var(--status-info-container);
-  color: var(--status-info);
-  border: 1px solid var(--status-info);
+.success-text {
+  color: var(--status-success) !important;
 }
 
-.success-theme {
-  color: var(--status-success);
-  border-color: var(--status-success);
+.error-text {
+  color: var(--status-error) !important;
 }
 
-.success-theme-surface {
-  background-color: var(--status-success-container);
-  color: var(--status-success);
-  border: 1px solid var(--status-success);
-}
-
-.error-theme {
-  color: var(--status-error);
-  border-color: var(--status-error);
-}
-
-.error-theme-surface {
-  background-color: var(--status-error-container);
-  color: var(--status-error);
-  border: 1px solid var(--status-error);
-}
-
-.warn-theme {
-  color: var(--status-warn);
-  border-color: var(--status-warn);
-}
-
-.warn-theme-surface {
-  background-color: var(--status-warn-container);
-  color: var(--status-warn);
-  border: 1px solid var(--status-warn);
+.warn-text {
+  color: var(--status-warn) !important;
 }
 

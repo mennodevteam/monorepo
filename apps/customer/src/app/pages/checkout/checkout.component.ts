@@ -7,10 +7,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import {
-  saxEditOutline,
-  saxAddOutline,
-} from '@ng-icons/iconsax/outline';
+import { saxEditOutline, saxAddOutline } from '@ng-icons/iconsax/outline';
+import { saxLocationBold, saxBillBold } from '@ng-icons/iconsax/bold';
 import { TranslateModule } from '@ngx-translate/core';
 import { CartService } from '../../core/services/cart.service';
 import { ShopService } from '../../core/services/shop.service';
@@ -45,6 +43,8 @@ import { SectionComponent } from '../../shared/components/section/section.compon
     provideIcons({
       saxEditOutline,
       saxAddOutline,
+      saxLocationBold,
+      saxBillBold,
     }),
   ],
   templateUrl: './checkout.component.html',
@@ -63,6 +63,8 @@ export class CheckoutComponent {
   OrderType = OrderType;
   editIcon = saxEditOutline;
   addIcon = saxAddOutline;
+  addressIcon = saxLocationBold;
+  invoiceIcon = saxBillBold;
 
   constructor() {
     if (this.cart.length() === 0) {
