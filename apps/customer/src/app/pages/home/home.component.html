@@ -1,7 +1,7 @@
 <div class="page-container">
   @if (isLoading()) {
     <div class="loading-state">
-      <p>Loading...</p>
+      <mat-spinner diameter="24"></mat-spinner>
     </div>
   } @else if (sections().length > 0) {
     @for (section of sections(); track section.id; let i = $index) {

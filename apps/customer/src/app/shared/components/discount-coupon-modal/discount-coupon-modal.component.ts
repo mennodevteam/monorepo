@@ -4,6 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HttpClient } from '@angular/common/http';
 import { DiscountCoupon } from '@menno/types';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -20,6 +21,7 @@ import { AnalyticsService } from '../../../core/services/analytics.service';
     MatInputModule,
     ReactiveFormsModule,
     MatButtonModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './discount-coupon-modal.component.html',
   styleUrl: './discount-coupon-modal.component.scss',

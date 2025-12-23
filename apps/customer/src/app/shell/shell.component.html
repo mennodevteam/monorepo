@@ -2,7 +2,7 @@
   <app-top-app-bar class="shell-app-bar"></app-top-app-bar>
   @if (loading()) {
     <div class="loading-overlay">
-      <p>Loading...</p>
+      <mat-spinner diameter="24"></mat-spinner>
     </div>
   }
   <main class="shell-content" [class.no-bottom-nav]="hideBottomNav()">

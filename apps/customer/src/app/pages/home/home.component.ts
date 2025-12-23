@@ -5,11 +5,12 @@ import { BannerComponent } from '../../shared/components/banner/banner.component
 import { ProductListComponent } from '../../shared/components/product-list/product-list.component';
 import { CategoryListComponent } from '../../shared/components/category-list/category-list.component';
 import { CommonModule } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, BannerComponent, ProductListComponent, CategoryListComponent],
+  imports: [CommonModule, BannerComponent, ProductListComponent, CategoryListComponent, MatProgressSpinnerModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

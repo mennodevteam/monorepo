@@ -12,7 +12,7 @@
 
   <button mat-flat-button type="submit" [disabled]="form.invalid || loading()">
     @if (loading()) {
-      <span>در حال بررسی...</span>
+      <mat-spinner diameter="16"></mat-spinner>
     } @else {
       <span>اعمال کد</span>
     }

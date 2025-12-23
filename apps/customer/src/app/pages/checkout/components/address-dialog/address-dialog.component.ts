@@ -5,6 +5,7 @@ import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AddressesService } from '../../../../core/services/addresses.service';
 
 @Component({
@@ -17,6 +18,7 @@ import { AddressesService } from '../../../../core/services/addresses.service';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatProgressSpinnerModule,
   ],
   template: `
     <h2 mat-dialog-title>افزودن آدرس جدید</h2>
@@ -48,7 +50,11 @@ import { AddressesService } from '../../../../core/services/addresses.service';
     <mat-dialog-actions align="end">
       <button mat-button mat-dialog-close>انصراف</button>
       <button mat-flat-button color="primary" [disabled]="form.invalid || loading" (click)="save()">
-        {{ loading ? 'در حال ثبت...' : 'ثبت آدرس' }}
+        @if (loading) {
+          <mat-spinner diameter="16"></mat-spinner>
+        } @else {
+          ثبت آدرس
+        }
       </button>
     </mat-dialog-actions>
   `,
