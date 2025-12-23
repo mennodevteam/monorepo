@@ -1,9 +1,15 @@
-mat-card {
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#invoice-card {
   margin: 0 -16px;
   border-radius: 0;
   background-color: var(--mat-sys-surface-container);
 
-  mat-card-content {
+  & >mat-card-content {
     padding-inline: 0;
     overflow: hidden;
 

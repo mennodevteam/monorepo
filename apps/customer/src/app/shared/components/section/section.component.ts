@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatButton } from '@angular/material/button';
@@ -18,5 +18,6 @@ export class SectionComponent {
   readonly title = input.required<string>();
   readonly icon = input<string | undefined>();
   readonly routerLink = input<string | undefined>();
-  readonly seeMoreLabel = input('مشاهده بیشتر');
+  readonly seeMoreLabel = input('');
+  readonly seeMoreClick = output<void>();
 }

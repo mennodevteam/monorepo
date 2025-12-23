@@ -91,6 +91,11 @@ export class CartService {
     return menu ? OrderDto.abstractItems(this.dto(), menu) : [];
   });
 
+  deliveryCost = computed(() => {
+    const menu = this.menuService.data();
+    return menu ? OrderDto.deliveryCost(this.dto(), menu) : 0;
+  });
+
   sum = computed(() => {
     const menu = this.menuService.data();
     return menu ? OrderDto.sum(this.dto(), menu) : 0;

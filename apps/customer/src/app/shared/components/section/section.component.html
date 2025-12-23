@@ -5,8 +5,8 @@
     }
     <h2 class="section__title">{{ title() }}</h2>
 
-    @if (routerLink()) {
-      <a [routerLink]="routerLink()" mat-button>
+    @if (seeMoreLabel()) {
+      <a [routerLink]="routerLink()" mat-button (click)="seeMoreClick?.emit()">
         {{ seeMoreLabel() }}
       </a>
     }
@@ -16,4 +16,3 @@
     <ng-content></ng-content>
   </div>
 </section>
-

@@ -1,8 +1,13 @@
 <app-top-app-bar title="تکمیل سفارش" [sticky]="true" [hideMetaAction]="true"></app-top-app-bar>
 
-@if (cart.length()) {
+@if (cart.length() && addressesService.addresses()) {
   <main class="main-content">
-    <app-section title="آدرس تحویل" [icon]="addressIcon" seeMoreLabel="تغییر آدرس" routerLink="/addresses">
+    <app-section
+      title="آدرس تحویل"
+      [icon]="addressIcon"
+      seeMoreLabel="تغییر آدرس"
+      (seeMoreClick)="openAddressDialog()"
+    >
       <app-address-card [address]="cart.address()"></app-address-card>
     </app-section>
 
@@ -12,18 +17,19 @@
     </app-section>
 
     <!-- Payment Methods Section -->
-     <app-section title="شیوه پرداخت" [icon]="paymentIcon">
-       <app-payment-methods></app-payment-methods>
-     </app-section>
+    <app-section title="شیوه پرداخت" [icon]="paymentIcon">
+      <app-payment-methods></app-payment-methods>
+    </app-section>
   </main>
+
+  <mat-toolbar class="action-toolbar">
+    <button mat-raised-button (click)="submit()" [disabled]="cart.saving()">
+      @if (cart.saving()) {
+        <span>در حال ثبت...</span>
+      } @else {
+        <span>ثبت سفارش ({{ total() | number }} تومان)</span>
+      }
+    </button>
+  </mat-toolbar>
 }
 
-<mat-toolbar class="action-toolbar">
-  <button mat-raised-button (click)="submit()" [disabled]="cart.saving()">
-    @if (cart.saving()) {
-      <span>در حال ثبت...</span>
-    } @else {
-      <span>ثبت سفارش ({{ total() | number }} تومان)</span>
-    }
-  </button>
-</mat-toolbar>

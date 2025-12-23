@@ -63,6 +63,21 @@ export class OrderDto {
     return [];
   }
 
+  static deliveryCost(dto: OrderDto, menu: Menu) {
+    const sum = OrderDto.sum(dto, menu);
+    if (dto.address && dto.address.deliveryArea) {
+      const area = dto.address.deliveryArea;
+      if (!area.minPriceForFree || area.minPriceForFree > sum) {
+        let price = area.price;
+        if (area.percentagePrice) {
+          price += (sum * area.percentagePrice) / 100;
+        }
+        return Math.floor(price / FLOOR) * FLOOR;
+      }
+    }
+    return 0;
+  }
+
   static isStockValidForAddOne(
     product: Product,
     productVariant?: ProductVariant,

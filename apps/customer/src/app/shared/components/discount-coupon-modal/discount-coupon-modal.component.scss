@@ -2,8 +2,17 @@
   display: block;
 }
 
-.ltr {
-  direction: ltr;
-  text-align: left;
+h3 {
+  margin: 0;
 }
 
+p {
+  margin: 0;
+  margin-bottom: 16px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

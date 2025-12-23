@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, effect, inject } from '@angular/core';
 import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { firstValueFrom } from 'rxjs';
-import { Shop } from '@menno/types';
+import { OrderType, Shop } from '@menno/types';
 import { resolveShopUsername } from '../functions';
 
 const SHOP_QUERY_KEY = (username: string) => ['shop', username] as const;
@@ -76,5 +76,9 @@ export class ShopService {
     const data = this.data();
     if (data) return Shop.isPaymentAvailable(data);
     return false;
+  });
+
+  isPaymentRequired = computed(() => {
+    return this.isPaymentAvailable() && this.data()?.appConfig?.requiredPayment?.includes(OrderType.Delivery);
   });
 }
