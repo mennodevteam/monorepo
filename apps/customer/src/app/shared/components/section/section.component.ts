@@ -17,7 +17,7 @@ import { NgIcon } from '@ng-icons/core';
 export class SectionComponent {
   readonly title = input.required<string>();
   readonly icon = input<string | undefined>();
-  readonly routerLink = input<string | undefined>();
+  readonly seeMoreRouterLink = input<string | undefined>();
   readonly seeMoreLabel = input('');
   readonly seeMoreClick = output<void>();
 }

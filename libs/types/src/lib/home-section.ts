@@ -60,6 +60,7 @@ export interface CategoryListConfig {
   title?: string;
   gridCols?: number;
   carouselRows?: number;
+  showAll?: boolean;
 }
 
 export class HomeSection {

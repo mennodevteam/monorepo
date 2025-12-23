@@ -6,7 +6,7 @@
     <h2 class="section__title">{{ title() }}</h2>
 
     @if (seeMoreLabel()) {
-      <a [routerLink]="routerLink()" mat-button (click)="seeMoreClick?.emit()">
+      <a [routerLink]="seeMoreRouterLink()" mat-button (click)="seeMoreClick?.emit()">
         {{ seeMoreLabel() }}
       </a>
     }

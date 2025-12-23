@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HomeSectionsService } from '../home-sections.service';
 import { MenuService } from '../../menu/menu.service';
@@ -40,6 +41,7 @@ import { FormsModule } from '@angular/forms';
     MatListModule,
     MatIconModule,
     MatAutocompleteModule,
+    MatCheckboxModule,
     EmptyStateComponent,
     CdkDropList,
     CdkDrag,
@@ -82,6 +84,7 @@ export class CategoryListEditComponent implements FormComponent {
       validators: [Validators.required, Validators.min(1), Validators.max(4)],
       nonNullable: true,
     }),
+    showAll: this.fb.control<boolean>(false, { nonNullable: true }),
   });
 
   readonly allCategories = computed(() => this.menuService.categories() || []);
@@ -125,6 +128,7 @@ export class CategoryListEditComponent implements FormComponent {
         categoryIds: config?.categoryIds || [],
         gridCols: config?.gridCols || 2,
         carouselRows: config?.carouselRows || 1,
+        showAll: config?.showAll || false,
       });
 
       this.form.markAsPristine();
@@ -169,6 +173,7 @@ export class CategoryListEditComponent implements FormComponent {
       title: fv.title || undefined,
       gridCols: fv.viewType === CategoryListViewType.Grid ? fv.gridCols : undefined,
       carouselRows: (fv.viewType === CategoryListViewType.Carousel || fv.viewType === CategoryListViewType.Button) ? fv.carouselRows : undefined,
+      showAll: fv.showAll || undefined,
     };
 
     const section: HomeSection = {

@@ -1,5 +1,5 @@
 import { Component, input, computed, inject } from '@angular/core';
-import { HomeSection, CategoryListConfig, CategoryListViewType, ProductCategory, Menu } from '@menno/types';
+import { HomeSection, CategoryListConfig, CategoryListViewType, ProductCategory } from '@menno/types';
 import { MenuService } from '../../../core/services/menu.service';
 import { LinkService } from '../../../core/services/link.service';
 import { CommonModule } from '@angular/common';
@@ -26,6 +26,9 @@ export class CategoryListComponent {
   readonly title = computed(() => this.config().title);
   readonly gridCols = computed(() => this.config().gridCols || 3);
   readonly carouselRows = computed(() => this.config().carouselRows || 1);
+  readonly showAll = computed(() => this.config().showAll || false);
+  readonly seeMoreLabel = computed(() => (this.showAll() ? 'مشاهده همه' : ''));
+  readonly seeMoreRouterLink = computed(() => (this.showAll() ? '/categories' : undefined));
 
   readonly categories = computed(() => {
     const ids = this.categoryIds();

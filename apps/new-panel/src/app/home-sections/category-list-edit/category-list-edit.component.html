@@ -50,13 +50,17 @@
           </mat-form-field>
         }
 
-        @if (form.controls.viewType.value === CategoryListViewType.Carousel || form.controls.viewType.value === CategoryListViewType.Button) {
+        @if (form.controls.viewType.value === CategoryListViewType.Carousel) {
           <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
             <mat-label>{{ 'homeSections.carouselRows' | translate }}</mat-label>
             <input matInput type="number" formControlName="carouselRows" min="1" max="4" />
             <mat-hint>{{ 'homeSections.carouselRowsHint' | translate }}</mat-hint>
           </mat-form-field>
         }
+
+        <mat-checkbox formControlName="showAll">
+          {{ 'homeSections.showMore' | translate }}
+        </mat-checkbox>
       </mat-card-content>
     </mat-card>
 

@@ -1,28 +1,25 @@
 @if (categories().length > 0) {
-  <app-section [title]="title() || ''">
+  <app-section 
+    [title]="title() || ''"
+    [seeMoreLabel]="seeMoreLabel()"
+    [seeMoreRouterLink]="seeMoreRouterLink()"
+  >
     @if (isCarousel()) {
       <div class="category-list-carousel-container">
         @for (rowIndex of getRowIndices(); track rowIndex) {
           <div class="category-list-carousel" [class.multi-row]="carouselRows() > 1">
             @for (category of getCategoriesForRow(rowIndex); track category.id) {
-              <div class="category-list-carousel-item">
-                <a [routerLink]="getCategoryLink(category)" class="category-card">
-                  @if (getCategoryImage(category)) {
-                    <img
-                      appImageLoader
-                      [imageFile]="getCategoryImage(category)"
-                      imageSize="md"
-                      [attr.alt]="category.title"
-                      class="category-image"
-                    />
-                  } @else if (category.faIcon) {
-                    <div class="category-icon">
-                      <i [class]="category.faIcon"></i>
-                    </div>
-                  }
-                  <div class="category-title">{{ category.title }}</div>
-                </a>
-              </div>
+              <a
+                [routerLink]="getCategoryLink(category)"
+                class="category-tile-carousel"
+                [imageFile]="getCategoryImage(category)"
+                [imageSize]="'md'"
+                appImageLoader
+              >
+                <div class="category-tile-footer">
+                  {{ category.title }}
+                </div>
+              </a>
             }
           </div>
         }
@@ -48,19 +45,6 @@
         <div class="category-list-button-scroll">
           @for (category of categories(); track category.id) {
             <a [routerLink]="getCategoryLink(category)" class="category-button">
-              @if (getCategoryImage(category)) {
-                <img
-                  appImageLoader
-                  [imageFile]="getCategoryImage(category)"
-                  imageSize="sm"
-                  [attr.alt]="category.title"
-                  class="category-button-image"
-                />
-              } @else if (category.faIcon) {
-                <div class="category-button-icon">
-                  <i [class]="category.faIcon"></i>
-                </div>
-              }
               <span class="category-button-title">{{ category.title }}</span>
             </a>
           }
