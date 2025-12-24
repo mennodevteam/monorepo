@@ -1,0 +1,61 @@
+<main style="padding: 16px; max-width: 600px; margin: 0 auto;">
+  
+  <mat-nav-list>
+    @if (auth.isGuestUser) {
+      <a mat-list-item routerLink="/login">
+        <ng-icon [svg]="profileIcon" size="24" matListItemIcon></ng-icon>
+        <div matListItemTitle>ورود</div>
+        <div matListItemMeta>
+          <ng-icon [svg]="chevronIcon" size="16"></ng-icon>
+        </div>
+      </a>
+    } @else {
+      <a mat-list-item routerLink="/login/register">
+        <ng-icon [svg]="profileIcon" size="24" matListItemIcon></ng-icon>
+        <div matListItemTitle>{{ fullName() || 'کاربر' }}</div>
+        <div matListItemLine>{{ user()?.mobilePhone || '' }}</div>
+        <div matListItemMeta>
+          <ng-icon [svg]="editIcon" size="16"></ng-icon>
+        </div>
+      </a>
+    }
+    <a mat-list-item routerLink="/orders" replaceUrl="true">
+      <ng-icon [svg]="ordersIcon" size="24" matListItemIcon></ng-icon>
+      <span matListItemLine>سفارشات</span>
+      <div matListItemMeta>
+        <ng-icon [svg]="chevronIcon" size="16"></ng-icon>
+      </div>
+    </a>
+    <a mat-list-item>
+      <ng-icon [svg]="infoIcon" size="24" matListItemIcon></ng-icon>
+      <span matListItemLine>اطلاعات</span>
+      <div matListItemMeta>
+        <ng-icon [svg]="chevronIcon" size="16"></ng-icon>
+      </div>
+    </a>
+    <a mat-list-item>
+      <ng-icon [svg]="clubIcon" size="24" matListItemIcon></ng-icon>
+      <span matListItemLine>باشگاه مشتریان</span>
+      <div matListItemMeta>
+        <ng-icon [svg]="chevronIcon" size="16"></ng-icon>
+      </div>
+    </a>
+    <a mat-list-item>
+      <ng-icon [svg]="privacyIcon" size="24" matListItemIcon></ng-icon>
+      <span matListItemLine>حریم خصوصی</span>
+      <div matListItemMeta>
+        <ng-icon [svg]="chevronIcon" size="16"></ng-icon>
+      </div>
+    </a>
+    @if (canShare) {
+      <a mat-list-item (click)="share()" >
+        <ng-icon [svg]="shareIcon" size="24" matListItemIcon></ng-icon>
+        <span matListItemLine>اشتراک‌گذاری</span>
+        <div matListItemMeta>
+          <ng-icon [svg]="chevronIcon" size="16"></ng-icon>
+        </div>
+      </a>
+    }
+  </mat-nav-list>
+</main>
+

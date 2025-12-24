@@ -20,7 +20,7 @@ src/app/
 │   ├── home/                      # Home page (with bottom nav)
 │   ├── cart/                      # Shopping cart (with bottom nav)
 │   ├── orders/                    # Order history (with bottom nav)
-│   ├── profile/                   # User profile (with bottom nav)
+│   ├── main-menu/                 # Main menu (with bottom nav)
 │   ├── auth/                      # Authentication pages (no bottom nav) - FUTURE
 │   │   ├── login/
 │   │   └── register/
@@ -45,7 +45,7 @@ The shell component wraps pages that need the bottom navigation. This allows for
 - Home
 - Cart
 - Orders
-- Profile
+- Main Menu
 
 **Pages WITHOUT bottom navigation** (outside shell):
 - Auth pages (login, register)
@@ -65,7 +65,7 @@ The shell component wraps pages that need the bottom navigation. This allows for
     { path: 'home', loadComponent: () => HomeComponent },
     { path: 'cart', loadComponent: () => CartComponent },
     { path: 'orders', loadComponent: () => OrdersComponent },
-    { path: 'profile', loadComponent: () => ProfileComponent },
+    { path: 'main-menu', loadComponent: () => MainMenuComponent },
   ]
 }
 

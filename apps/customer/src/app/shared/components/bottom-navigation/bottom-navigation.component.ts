@@ -53,6 +53,6 @@ export class BottomNavigationComponent {
     { path: '/home', label: 'خانه', icon: saxHome2Outline, activeIcon: saxHome2Bold },
     { path: '/categories', label: 'دسته‌بندی‌ها', icon: saxCategoryOutline, activeIcon: saxCategoryBold },
     { path: '/orders', label: 'سفارشات', icon: saxBoxOutline, activeIcon: saxBoxBold },
-    { path: '/profile', label: 'پروفایل', icon: saxProfile2userOutline, activeIcon: saxProfile2userBold },
+    { path: '/main-menu', label: 'پروفایل', icon: saxProfile2userOutline, activeIcon: saxProfile2userBold },
   ];
 }

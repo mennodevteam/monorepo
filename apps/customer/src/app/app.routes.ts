@@ -55,10 +55,9 @@ export const appRoutes: Route[] = [
         canActivate: [loginActivator],
       },
       {
-        path: 'profile',
-        loadComponent: () => import('./pages/profile/profile.component').then((m) => m.ProfileComponent),
+        path: 'main-menu',
+        loadComponent: () => import('./pages/main-menu/main-menu.component').then((m) => m.MainMenuComponent),
         data: { isRootPage: true },
-        canActivate: [loginActivator],
       },
       {
         path: 'categories/:categoryId/:id',
