@@ -1,6 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { PlatformLocation, DecimalPipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -10,6 +11,8 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import { saxEditOutline, saxAddOutline } from '@ng-icons/iconsax/outline';
 import { saxLocationBold, saxBillBold, saxCardBold } from '@ng-icons/iconsax/bold';
 import { TranslateModule } from '@ngx-translate/core';
+import { injectQuery } from '@tanstack/angular-query-experimental';
+import { lastValueFrom } from 'rxjs';
 import { CartService } from '../../core/services/cart.service';
 import { ShopService } from '../../core/services/shop.service';
 import { AnalyticsService } from '../../core/services/analytics.service';
@@ -63,12 +66,19 @@ export class CheckoutComponent {
   location = inject(PlatformLocation);
   dialog = inject(MatDialog);
   addressesService = inject(AddressesService);
+  http = inject(HttpClient);
   OrderType = OrderType;
   editIcon = saxEditOutline;
   addIcon = saxAddOutline;
   addressIcon = saxLocationBold;
   invoiceIcon = saxBillBold;
   paymentIcon = saxCardBold;
+
+  vpnQuery = injectQuery(() => ({
+    queryKey: ['vpn'],
+    queryFn: () => lastValueFrom(this.http.get<{ country_code: string }>('https://api.ipbase.com/v1/json/')),
+    select: (data: { country_code: string }) => data.country_code !== 'IR',
+  }));
   
   constructor() {
     if (this.cart.length() === 0) {
@@ -119,9 +129,7 @@ export class CheckoutComponent {
       });
 
       order.shop = this.shopService.data();
-      // Navigate to orders page or success page
-      // Assuming orders page for now based on app routes
-      this.router.navigate(['/orders'], { replaceUrl: true });
+      this.router.navigate(['/orders/thanks', order.id], { replaceUrl: true, state: { order } });
     }
   }
 }

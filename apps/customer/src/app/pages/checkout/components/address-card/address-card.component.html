@@ -10,7 +10,12 @@
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      {{ addressValue.description }}
+      <p>{{ addressValue.description }}</p>
+      @if (addressValue.deliveryArea?.label) {
+        <p class="delivery-area-label">
+          {{ addressValue.deliveryArea?.label }}
+        </p>
+      }
     </mat-card-content>
   </mat-card>
 }

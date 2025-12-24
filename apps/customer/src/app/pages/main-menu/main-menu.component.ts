@@ -14,6 +14,8 @@ import {
   saxShieldOutline,
   saxShareOutline,
   saxArrowLeft2Outline,
+  saxLocationOutline,
+  saxDirectDownOutline,
 } from '@ng-icons/iconsax/outline';
 import { AuthService } from '../../core/services/auth.service';
 import { MenuService } from '../../core/services/menu.service';
@@ -45,6 +47,8 @@ import { ImageLoaderDirective } from '../../shared/directives/image-loader.direc
       saxShieldOutline,
       saxShareOutline,
       saxArrowLeft2Outline,
+      saxLocationOutline,
+      saxDirectDownOutline,
     }),
   ],
 })
@@ -68,6 +72,8 @@ export class MainMenuComponent {
   readonly privacyIcon = saxShieldOutline;
   readonly shareIcon = saxShareOutline;
   readonly chevronIcon = saxArrowLeft2Outline;
+  readonly locationIcon = saxLocationOutline;
+  readonly downloadIcon = saxDirectDownOutline;
 
   share() {
     const shop = this.shopService.data();
@@ -87,6 +93,12 @@ export class MainMenuComponent {
 
   get canShare() {
     return 'share' in navigator;
+  }
+
+  downloadApp() {
+    // TODO: Implement download app logic
+    // Can link to app store or show download dialog
+    alert('لینک دانلود اپلیکیشن به زودی اضافه خواهد شد.');
   }
 }
 

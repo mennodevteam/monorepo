@@ -1,0 +1,35 @@
+.page-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding-bottom: 100px;
+}
+
+.address-description {
+  font-size: 12px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 32px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.action-toolbar {
+  background-color: var(--mat-sys-background);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  height: 64px;
+  display: flex;
+  padding: 8px 16px;
+  box-sizing: border-box;
+
+  button {
+    flex: 1;
+    height: 48px;
+  }
+}
+

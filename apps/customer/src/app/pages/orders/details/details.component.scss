@@ -1,0 +1,52 @@
+.page-container {
+  padding: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.loading-shade {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.status-card {
+  margin-bottom: 16px;
+}
+
+.status-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-value {
+  color: var(--mat-sys-primary);
+  font-weight: 500;
+}
+
+.shop-button {
+  display: flex;
+  align-items: center;
+}
+
+.shop-logo {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-left: 8px;
+}
+
+.item-title {
+  font-size: 13px;
+}
+
+.chat-button {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+

@@ -37,9 +37,9 @@
 
   @if (cart.orderItems().length) {
     <mat-toolbar class="action-toolbar">
-      <a matButton="elevated" routerLink="/payment">
+      <button mat-raised-button (click)="proceedToCheckout()">
         تکمیل سفارش ({{ cart.total() | number }} تومان)
-      </a>
+      </button>
     </mat-toolbar>
   }
 </div>

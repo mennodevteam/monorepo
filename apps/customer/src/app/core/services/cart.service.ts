@@ -19,7 +19,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddressesService } from './addresses.service';
 import { ClubService } from './club.service';
-
+import { AuthService } from './auth.service';
 import { CampaignService } from './campaign.service';
 import { InitialParamsService } from './initial-params.service';
 import { AnalyticsService } from './analytics.service';
@@ -41,6 +41,7 @@ export class CartService {
   private snack = inject(MatSnackBar);
   private addressesService = inject(AddressesService);
   private club = inject(ClubService);
+  private auth = inject(AuthService);
   private initialParamsService = inject(InitialParamsService);
   private analytics = inject(AnalyticsService);
   private menuStat = inject(MenuStatService);
@@ -189,6 +190,14 @@ export class CartService {
   }
 
   plus(product: Product, variant?: ProductVariant) {
+    if (this.shopService.isOrderingTemporaryDisabled) {
+      this.snack.open('در حال حاضر امکان ثبت سفارش وجود ندارد. به زودی برمی‌گردیم.', '', {
+        panelClass: 'warning',
+        duration: 4000,
+      });
+      return;
+    }
+
     const signalItem = this.getSignalItem(product.id, variant?.id);
     const item = signalItem ? this.getItem(signalItem) : undefined;
 
@@ -310,25 +319,13 @@ export class CartService {
   }
 
   async complete() {
-    // if (this.shopService.isOrderingTemporaryDisabled) {
-    //   this.snack.open(this.translate.instant('shop.disabledOrderingBanner.description'), '', {
-    //     panelClass: 'warning',
-    //     duration: 4000,
-    //   });
-    //   return;
-    // } else if (this.shopService.isCloseTime) {
-    //   this.snack.open(this.translate.instant('menu.closeTimeBanner.description'), '', {
-    //     panelClass: 'warning',
-    //     duration: 4000,
-    //   });
-    //   return;
-    // } else if (this.shopService.isOrderingDisabledOnType(this.menuService.type())) {
-    //   this.snack.open(this.translate.instant('menu.disabledOrderingGlobalBanner.description'), '', {
-    //     panelClass: 'warning',
-    //     duration: 4000,
-    //   });
-    //   return;
-    // }
+    if (this.shopService.isOrderingTemporaryDisabled) {
+      this.snack.open('در حال حاضر امکان ثبت سفارش وجود ندارد. به زودی برمی‌گردیم.', '', {
+        panelClass: 'warning',
+        duration: 4000,
+      });
+      return;
+    }
 
     const address = this.address();
     if (!address) {
@@ -361,7 +358,10 @@ export class CartService {
 
     this.saving.set(true);
     try {
-      if (this.shopService.isPaymentAvailable()) {
+      if (
+        this.shopService.isPaymentRequired() ||
+        (this.shopService.isPaymentAvailable() && this.paymentType() === OrderPaymentType.Online)
+      ) {
         const order = await this.ordersService.payAndAddOrder(this.dto(), this.total());
         if (order) {
           this.menuStat.send(StatAction.AddOrder, { value: this.total() });
@@ -378,5 +378,17 @@ export class CartService {
       this.saving.set(false);
     }
     return null;
+  }
+
+  get isPaymentRequired() {
+    return this.shopService.isPaymentRequired();
+  }
+
+  get isLoginRequired() {
+    return (
+      this.isPaymentRequired ||
+      this.paymentType() === OrderPaymentType.Online ||
+      this.orderType() === OrderType.Delivery
+    );
   }
 }

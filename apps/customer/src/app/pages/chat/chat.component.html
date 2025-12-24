@@ -1,0 +1,66 @@
+<app-top-app-bar title="پیگیری سفارش" [sticky]="true"></app-top-app-bar>
+
+<div class="chat-container">
+  @if (query.isPending()) {
+    <div class="loading-shade">
+      <mat-spinner diameter="24"></mat-spinner>
+    </div>
+  } @else if (!query.data()?.length) {
+    <div class="empty-state">
+      <p>هنوز پیامی ارسال نشده است.</p>
+    </div>
+  }
+  @for (chat of query.data(); track chat.id) {
+    <mat-card [class.receive]="chat.type === ChatType.Receive" class="chat-message">
+      <mat-card-header>
+        @if (chat.type === ChatType.Receive) {
+          <img
+            mat-card-avatar
+            appImageLoader
+            [imageFile]="chat.shop.logoImage"
+            [appImageLoader]="chat.shop.logo"
+            [alt]="chat.shop.title"
+            class="chat-avatar"
+          />
+        }
+        <mat-card-title>
+          @if (chat.type === ChatType.Receive) {
+            {{ chat.shop.title }}
+          } @else {
+            {{ User.fullName(chat.user || auth.user()!) }}
+          }
+        </mat-card-title>
+        <mat-card-subtitle>{{ chat.createdAt | date: 'short' }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ chat.text }}</p>
+        @if (chat.seen && chat.type === ChatType.Send) {
+          <span class="seen-indicator">✓</span>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+</div>
+
+<mat-toolbar class="chat-input-toolbar">
+  <textarea
+    [(ngModel)]="text"
+    [ngModelOptions]="{ standalone: true }"
+    [disabled]="sendMutation.status() === 'pending'"
+    placeholder="پیام خود را بنویسید..."
+    class="chat-input"
+  ></textarea>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="sendMutation.mutate()"
+    [disabled]="sendMutation.status() === 'pending' || !text()"
+  >
+    @if (sendMutation.status() === 'pending') {
+      <mat-spinner class="inline-spinner"></mat-spinner>
+    } @else {
+      ارسال
+    }
+  </button>
+</mat-toolbar>
+

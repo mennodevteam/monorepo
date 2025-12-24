@@ -81,4 +81,9 @@ export class ShopService {
   isPaymentRequired = computed(() => {
     return this.isPaymentAvailable() && this.data()?.appConfig?.requiredPayment?.includes(OrderType.Delivery);
   });
+
+  get isOrderingTemporaryDisabled() {
+    const shop = this.data();
+    return shop?.appConfig?.disableOrdering === true;
+  }
 }

@@ -1,0 +1,38 @@
+<app-top-app-bar title="مدیریت آدرس‌ها" [sticky]="true"></app-top-app-bar>
+
+<div class="page-container">
+  @if (addresses.length > 0) {
+    <mat-list>
+      @for (address of addresses; track address.id; let isLast = $last) {
+        <mat-list-item (click)="openEditAddressDialog(address)">
+          <span matListItemTitle>{{ address.title || 'آدرس' }}</span>
+          <span matListItemLine>
+            @if (address.region) {
+              {{ address.region.state ? address.region.state + ' - ' : '' }}{{ address.region.title }}
+            }
+          </span>
+          <span matListItemLine class="address-description">
+            {{ address.description }}
+          </span>
+          <div matListItemMeta>
+            <ng-icon [svg]="editIcon"></ng-icon>
+          </div>
+        </mat-list-item>
+        @if (!isLast) {
+          <mat-divider></mat-divider>
+        }
+      }
+    </mat-list>
+  } @else {
+    <div class="empty-state">
+      <p>هنوز آدرسی ثبت نکرده‌اید.</p>
+    </div>
+  }
+</div>
+
+<mat-toolbar class="action-toolbar">
+  <button mat-raised-button (click)="openAddAddressDialog()" class="full-width">
+    افزودن آدرس جدید
+  </button>
+</mat-toolbar>
+

@@ -1,0 +1,74 @@
+<div class="page-container">
+  @if (orderQuery.isPending()) {
+    <div class="loading-shade">
+      <mat-spinner diameter="24"></mat-spinner>
+    </div>
+  } @else if (order()) {
+    <mat-card appearance="outlined" class="status-card">
+      <mat-card-content>
+        <div class="status-info">
+          <strong>وضعیت سفارش:</strong>
+          <span class="status-value">{{ order()?.state }}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-list>
+      <mat-list-item>
+        <span matListItemTitle>شماره سفارش</span>
+        <span matListItemLine>{{ order()?.createdAt | date: 'medium' }}</span>
+        <div matListItemMeta>
+          @if (shop()) {
+            <button mat-button routerLink="/" class="shop-button">
+              <img
+                appImageLoader
+                [imageFile]="shop()?.logoImage"
+                [appImageLoader]="shop()?.logo"
+                [alt]="shop()?.title"
+                class="shop-logo"
+              />
+              {{ shop()?.title }}
+            </button>
+          }
+        </div>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      @for (item of order()?.items; track item.id) {
+        <mat-list-item>
+          <span matListItemTitle class="item-title">{{ item.title }}</span>
+          @if (!item.isAbstract) {
+            <span matListItemLine>تعداد: {{ item.quantity }}</span>
+          }
+          <div matListItemMeta>
+            <span>{{ item.price | number }} تومان</span>
+          </div>
+        </mat-list-item>
+      }
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <span matListItemTitle><strong>جمع کل</strong></span>
+        <div matListItemMeta>
+          <span><strong>{{ order()?.totalPrice | number }} تومان</strong></span>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  }
+</div>
+
+@if (order()) {
+  <button
+    mat-fab
+    extended
+    routerLink="/chat/order/{{ id }}"
+    class="chat-button"
+    [matBadge]="notSeenChatCount()"
+    [matBadgeHidden]="notSeenChatCount() === 0"
+    matBadgeColor="warn"
+  >
+    پیگیری سفارش
+    @if (chatQuery.data()?.length) {
+      ({{ chatQuery.data()?.length }})
+    }
+  </button>
+}
+

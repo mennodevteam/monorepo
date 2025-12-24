@@ -26,6 +26,15 @@
         <ng-icon [svg]="chevronIcon" size="16"></ng-icon>
       </div>
     </a>
+    @if (!auth.isGuestUser) {
+      <a mat-list-item routerLink="/addresses">
+        <ng-icon [svg]="locationIcon" size="24" matListItemIcon></ng-icon>
+        <span matListItemLine>آدرس‌ها</span>
+        <div matListItemMeta>
+          <ng-icon [svg]="chevronIcon" size="16"></ng-icon>
+        </div>
+      </a>
+    }
     <a mat-list-item>
       <ng-icon [svg]="infoIcon" size="24" matListItemIcon></ng-icon>
       <span matListItemLine>اطلاعات</span>
@@ -40,9 +49,16 @@
         <ng-icon [svg]="chevronIcon" size="16"></ng-icon>
       </div>
     </a>
-    <a mat-list-item>
+    <a mat-list-item routerLink="/privacy-policy">
       <ng-icon [svg]="privacyIcon" size="24" matListItemIcon></ng-icon>
       <span matListItemLine>حریم خصوصی</span>
+      <div matListItemMeta>
+        <ng-icon [svg]="chevronIcon" size="16"></ng-icon>
+      </div>
+    </a>
+    <a mat-list-item (click)="downloadApp()">
+      <ng-icon [svg]="downloadIcon" size="24" matListItemIcon></ng-icon>
+      <span matListItemLine>دانلود اپلیکیشن</span>
       <div matListItemMeta>
         <ng-icon [svg]="chevronIcon" size="16"></ng-icon>
       </div>

@@ -21,6 +21,9 @@ textarea {
 
 .mat-mdc-list-item-meta {
   align-self: center !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 ng-icon[middle] {
