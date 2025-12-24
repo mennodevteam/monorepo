@@ -9,7 +9,7 @@ import { MenuService } from '../../core/services/menu.service';
 import { Product } from '@menno/types';
 import Fuse from 'fuse.js';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { saxArrowRight1Outline, saxSearchNormal1Outline } from '@ng-icons/iconsax/outline';
+import { saxSearchNormal1Outline } from '@ng-icons/iconsax/outline';
 import { GoBackDirective } from '../../shared/directives';
 
 @Component({
@@ -26,7 +26,6 @@ import { GoBackDirective } from '../../shared/directives';
   ],
   providers: [
     provideIcons({
-      saxArrowRight1Outline,
       saxSearchNormal1Outline,
     }),
   ],
@@ -35,8 +34,6 @@ import { GoBackDirective } from '../../shared/directives';
 })
 export class SearchComponent {
   private readonly menuService = inject(MenuService);
-  private readonly location = inject(Location);
-
   readonly searchQuery = model('');
   readonly menu = this.menuService.data;
 

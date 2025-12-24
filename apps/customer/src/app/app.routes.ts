@@ -4,10 +4,6 @@ import { authRoutes } from './auth/auth.routes';
 
 export const appRoutes: Route[] = [
   {
-    path: 'search',
-    loadComponent: () => import('./pages/search/search.component').then((m) => m.SearchComponent),
-  },
-  {
     path: 'login',
     children: authRoutes,
   },
@@ -79,6 +75,11 @@ export const appRoutes: Route[] = [
       {
         path: 'main-menu',
         loadComponent: () => import('./pages/main-menu/main-menu.component').then((m) => m.MainMenuComponent),
+        data: { isRootPage: true },
+      },
+      {
+        path: 'search',
+        loadComponent: () => import('./pages/search/search.component').then((m) => m.SearchComponent),
         data: { isRootPage: true },
       },
       {

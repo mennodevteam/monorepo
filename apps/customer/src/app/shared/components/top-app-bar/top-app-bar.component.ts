@@ -7,7 +7,6 @@ import { ActivatedRoute, NavigationEnd, Router, RouterLinkWithHref } from '@angu
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   saxArrowRight1Outline,
-  saxSearchNormal1Outline,
   saxBagOutline,
 } from '@ng-icons/iconsax/outline';
 import { filter } from 'rxjs';
@@ -32,7 +31,6 @@ import { CartService } from '../../../core/services/cart.service';
   styleUrl: './top-app-bar.component.scss',
   providers: [
     provideIcons({
-      saxSearchNormal1Outline,
       saxArrowRight1Outline,
       saxBagOutline,
     }),
@@ -64,7 +62,6 @@ export class TopAppBarComponent implements OnInit {
     return this.isRootPage() ? this.shopTitle() : this.titleService.title();
   });
 
-  readonly searchIcon = saxSearchNormal1Outline;
   readonly cartIcon = saxBagOutline;
   readonly backIcon = saxArrowRight1Outline;
 
