@@ -42,7 +42,7 @@
   right: 0;
   display: flex;
   justify-content: space-around;
-  min-height: 64px;
+  min-height: calc(64px + env(safe-area-inset-bottom));
   padding-bottom: env(safe-area-inset-bottom); // Account for phone's bottom indicator
   z-index: 1000;
   background-color: var(--mat-sys-background);

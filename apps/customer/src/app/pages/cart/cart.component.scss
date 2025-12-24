@@ -36,7 +36,7 @@ mat-list-item {
   left: 0;
   right: 0;
   z-index: 10;
-  height: 64px;
+  height: calc(64px + env(safe-area-inset-bottom));
   padding-bottom: env(safe-area-inset-bottom); // Account for phone's bottom indicator
   display: flex;
 

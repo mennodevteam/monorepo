@@ -16,7 +16,7 @@
 .shell-content {
   flex: 1;
   overflow-y: auto;
-  padding-bottom: calc(60px + env(safe-area-inset-bottom)); // Space for bottom navigation + safe area
+  padding-bottom: calc(64px + env(safe-area-inset-bottom)); // Space for bottom navigation + safe area
 
   &.no-bottom-nav {
     padding-bottom: env(safe-area-inset-bottom); // Still account for safe area even without bottom nav
