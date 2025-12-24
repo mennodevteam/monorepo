@@ -17,6 +17,8 @@
         "tsConfig": "apps/customer/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
+          "apps/customer/src/liara_nginx.conf",
+          "apps/customer/src/liara.json",
           {
             "glob": "**/*",
             "input": "apps/customer/public"
