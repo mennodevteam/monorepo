@@ -28,6 +28,18 @@ export class ShellComponent implements OnInit {
   loading = signal(false);
   hideBottomNav = signal(false);
 
+  constructor() {
+    const elem: HTMLElement | null = document.querySelector('#pre-load-data-container');
+    if (elem) {
+      setTimeout(() => {
+        elem.style.opacity = '0';
+        setTimeout(() => {
+          elem.remove();
+        }, 320);
+      }, 500);
+    }
+  }
+  
   ngOnInit(): void {
     // Handle loading state
     this.router.events.subscribe((event) => {
