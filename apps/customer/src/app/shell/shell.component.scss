@@ -1,7 +1,7 @@
 .shell-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100svh; // Use small viewport height to prevent address bar from hiding
   overflow: hidden;
   position: relative;
 }
@@ -16,10 +16,10 @@
 .shell-content {
   flex: 1;
   overflow-y: auto;
-  padding-bottom: 60px; // Space for bottom navigation
+  padding-bottom: calc(60px + env(safe-area-inset-bottom)); // Space for bottom navigation + safe area
 
   &.no-bottom-nav {
-    padding-bottom: 0;
+    padding-bottom: env(safe-area-inset-bottom); // Still account for safe area even without bottom nav
   }
 }
 

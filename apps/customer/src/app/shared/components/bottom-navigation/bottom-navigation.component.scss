@@ -43,10 +43,10 @@
   display: flex;
   justify-content: space-around;
   min-height: 64px;
+  padding-bottom: env(safe-area-inset-bottom); // Account for phone's bottom indicator
   z-index: 1000;
-  background-color: var(--mat-sys-surface-container);
-  box-shadow: var(--mat-sys-level2);
-  border-radius: var(--mat-sys-corner-large) var(--mat-sys-corner-large) 0 0 !important;
+  background-color: var(--mat-sys-background);
+  box-shadow: var(--mat-sys-level1);
 
   .nav-button {
     flex: 1;

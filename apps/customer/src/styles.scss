@@ -1,17 +1,21 @@
 @use './theme/theme';
 
-html,
-body {
-  height: 100%;
+html {
+  height: 100svh; // Use small viewport height to prevent address bar from hiding
+  height: 100%; // Fallback for browsers that don't support svh
   margin: 0;
-  font-family: IRANSans, 'Helvetica Neue', sans-serif;
-  background-color: var(--mat-sys-background);
-  color: var(--mat-sys-on-background);
+  overflow: hidden; // Prevent html scroll
 }
 
 body {
+  height: 100%;
   margin: 0;
   padding: 0;
+  font-family: IRANSans, 'Helvetica Neue', sans-serif;
+  background-color: var(--mat-sys-background);
+  color: var(--mat-sys-on-background);
+  overflow: hidden; // Prevent body scroll to avoid address bar hiding
+  position: relative;
 }
 
 input,
