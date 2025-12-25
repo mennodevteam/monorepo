@@ -59,7 +59,8 @@
     "errorOccurred": "خطایی رخ داد",
     "loadMore": "نمایش بیشتر",
     "active": "فعال",
-    "inactive": "غیرفعال"
+    "inactive": "غیرفعال",
+    "clear": "پاک کردن"
   },
   "home": {
     "title": "به منّو خوش آمدید",
@@ -151,6 +152,7 @@
   "nav": {
     "home": "خانه",
     "products": "مدیریت {{value}}",
+    "productAvailability": "موجودی محصولات",
     "categories": "دسته‌بندی‌ {{value}}",
     "costs": "هزینه‌های اضافی و تخفیف",
     "pricing": "قیمت‌گذاری {{value}}",
@@ -232,7 +234,14 @@
     "duplicate": {
       "title": "کپی محصول",
       "categoryLabel": "دسته‌بندی مقصد"
-    }
+    },
+    "productAvailability": "موجودی محصولات",
+    "availability": "موجودی",
+    "maxAvailability": "حداکثر موجودی",
+    "minPrice": "حداقل قیمت",
+    "maxPrice": "حداکثر قیمت",
+    "neededQuantity": "مقدار مورد نیاز",
+    "noProducts": "هیچ محصولی یافت نشد"
   },
   "productEdit": {
     "newTitle": "افزودن محصول جدید",

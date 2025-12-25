@@ -1,0 +1,93 @@
+.filters-container {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: var(--mat-sys-surface-container);
+  border-radius: 8px;
+}
+
+.products-table {
+  width: 100%;
+  margin-top: 16px;
+
+  .product-image {
+    width: 48px;
+    height: 48px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .variants-list {
+    margin-top: 8px;
+    font-size: 0.875rem;
+    color: var(--mat-sys-on-surface-variant);
+
+    .variant-item {
+      margin-top: 4px;
+    }
+  }
+
+  .availability-variants {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .variant-stock {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.875rem;
+
+      .variant-title {
+        font-weight: 500;
+        color: var(--mat-sys-on-surface-variant);
+      }
+    }
+  }
+
+  .stock-count {
+    font-weight: 500;
+    font-size: 1rem;
+  }
+
+  .stock-button {
+    min-width: auto;
+    padding: 0 8px;
+  }
+
+  .infinity-stock {
+    color: var(--mat-sys-primary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+  }
+
+  .low-stock {
+    color: var(--mat-sys-error);
+    font-weight: 600;
+  }
+}
+
+.material-menu-header {
+  padding: 12px 16px;
+  font-weight: 500;
+}
+
+.material-menu-item {
+  padding: 12px 16px;
+  min-width: 250px;
+
+  .material-name {
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .material-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.875rem;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+

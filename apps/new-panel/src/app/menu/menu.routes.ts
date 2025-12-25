@@ -6,10 +6,12 @@ import { CategoryListComponent } from './category-list/category-list.component';
 import { CostListComponent } from './cost-list/cost-list.component';
 import { CostEditComponent } from './cost-edit/cost-edit.component';
 import { CategoryEditComponent } from './category-edit/category-edit.component';
+import { ProductAvailabilityComponent } from './product-availability/product-availability.component';
 
 export const menuRoutes: Route[] = [
   { path: 'list', component: MenuListComponent },
   { path: 'product', component: ProductEditComponent, canDeactivate: [dirtyFormDeactivator] },
+  { path: 'availability', component: ProductAvailabilityComponent },
   { path: 'categories/edit', component: CategoryEditComponent, canDeactivate: [dirtyFormDeactivator] },
   { path: 'categories', component: CategoryListComponent },
   { path: 'costs', component: CostListComponent },
