@@ -6,6 +6,7 @@ import {
   OrderMessageEvent,
   OrderReportDto,
   OrderItem,
+  OrderState,
   User,
   UserRole,
 } from '@menno/types';
@@ -315,6 +316,50 @@ export class OrdersController {
   @Get('setCustomer/:orderId/:memberId')
   async setCustomer(@Param('orderId') orderId: string, @Param('memberId') memberId: string) {
     return this.ordersService.setCustomer(orderId, memberId);
+  }
+
+  @Get('product-order-counts')
+  @Roles(UserRole.Panel)
+  async getProductOrderCounts(@LoginUser() user: AuthPayload): Promise<Record<string, number>> {
+    const shop = await this.auth.getPanelUserShop(user);
+    if (!shop) {
+      throw new HttpException('Shop not found', HttpStatus.NOT_FOUND);
+    }
+
+    // Calculate date 30 days ago
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    // Get order items from the last 30 days
+    const orderItems = await this.orderItemsRepo
+      .createQueryBuilder('orderItem')
+      .innerJoin('orderItem.order', 'order')
+      .leftJoin('orderItem.product', 'product')
+      .leftJoin('orderItem.productVariant', 'productVariant')
+      .select('product.id', 'productId')
+      .addSelect('productVariant.id', 'variantId')
+      .addSelect('SUM(orderItem.quantity)', 'totalQuantity')
+      .where('order.shop = :shopId', { shopId: shop.id })
+      .andWhere('order.state != :canceledState', { canceledState: OrderState.Canceled })
+      .andWhere('order.excludeFromReports = :excludeFromReports', { excludeFromReports: false })
+      .andWhere('order.deletedAt IS NULL')
+      .andWhere('order.createdAt >= :fromDate', { fromDate: thirtyDaysAgo })
+      .andWhere('orderItem.isAbstract = :isAbstract', { isAbstract: false })
+      .andWhere('orderItem.product IS NOT NULL')
+      .groupBy('product.id')
+      .addGroupBy('productVariant.id')
+      .getRawMany();
+
+    // Convert to a map for easy lookup
+    const countsMap: Record<string, number> = {};
+    for (const item of orderItems) {
+      const key = item.variantId
+        ? `${item.productId}-${item.variantId}`
+        : `${item.productId}-null`;
+      countsMap[key] = parseInt(item.totalQuantity) || 0;
+    }
+
+    return countsMap;
   }
 
   @Get(':id')

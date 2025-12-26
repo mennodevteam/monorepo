@@ -238,10 +238,12 @@
     "productAvailability": "موجودی محصولات",
     "availability": "موجودی",
     "maxAvailability": "حداکثر موجودی",
+    "minOrder": "حداقل سفارش",
     "minPrice": "حداقل قیمت",
     "maxPrice": "حداکثر قیمت",
     "neededQuantity": "مقدار مورد نیاز",
-    "noProducts": "هیچ محصولی یافت نشد"
+    "noProducts": "هیچ محصولی یافت نشد",
+    "orderCountPerMonth": "تعداد سفارش (۳۰ روز)"
   },
   "productEdit": {
     "newTitle": "افزودن محصول جدید",

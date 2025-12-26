@@ -7,6 +7,9 @@ import { MatChipsModule } from '@angular/material/chips';
 import { StatusChipComponent } from '../../shared/components/status-chip/status-chip.component';
 import { MenuService } from '../menu.service';
 import { MaterialsService } from '../../inventory/materials.service';
+import { HttpClient } from '@angular/common/http';
+import { injectQuery } from '@tanstack/angular-query-experimental';
+import { lastValueFrom } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -26,6 +29,7 @@ interface AvailabilityItem {
   product: Product;
   variant?: ProductVariant;
   availability: number | null;
+  orderCount: number;
 }
 
 interface MaterialAvailability {
@@ -65,14 +69,22 @@ export class ProductAvailabilityComponent {
   menu = inject(MenuService);
   materialsService = inject(MaterialsService);
   shopService = inject(ShopService);
-  readonly displayedColumns = ['category', 'title', 'availability', 'status'];
+  http = inject(HttpClient);
+  readonly displayedColumns = ['category', 'title', 'availability', 'orderCount', 'status'];
   Status = Status;
+
+  // Query for product order counts
+  productOrderCountsQuery = injectQuery(() => ({
+    queryKey: ['productOrderCounts'],
+    queryFn: () => lastValueFrom(this.http.get<Record<string, number>>('/orders/product-order-counts')),
+  }));
 
   // Filters
   searchQuery = signal<string>('');
   selectedCategory = signal<ProductCategory | null>(null);
   showInactiveItems = signal(false);
   maxAvailability = signal<number | null>(null);
+  minOrder = signal<number | null>(null);
   public sort = signal<Sort | null>(null);
 
   categories = computed<ProductCategory[]>(() => {
@@ -203,6 +215,15 @@ export class ProductAvailabilityComponent {
     return Math.min(...availabilityCounts);
   }
 
+  // Get order count for a product/variant
+  getOrderCount(product: Product, variant?: ProductVariant): number {
+    const counts = this.productOrderCountsQuery.data();
+    if (!counts) return 0;
+
+    const key = variant?.id ? `${product.id}-${variant.id}` : `${product.id}-null`;
+    return counts[key] || 0;
+  }
+
   availabilityItems = computed<AvailabilityItem[]>(() => {
     const result: AvailabilityItem[] = [];
     const categories = this.menu.data()?.categories || [];
@@ -210,6 +231,7 @@ export class ProductAvailabilityComponent {
     const showInactiveItems = this.showInactiveItems();
     const searchQuery = this.searchQuery().toLowerCase().trim();
     const maxAvailability = this.maxAvailability();
+    const minOrder = this.minOrder();
 
     for (const category of categories) {
       // Skip if category filter is applied and doesn't match
@@ -229,10 +251,16 @@ export class ProductAvailabilityComponent {
           // Apply max availability filter
           if (maxAvailability !== null && availability !== null && availability > maxAvailability) continue;
 
+          const orderCount = this.getOrderCount(product);
+          
+          // Apply min order filter
+          if (minOrder !== null && orderCount < minOrder) continue;
+
           result.push({
             category,
             product,
             availability,
+            orderCount,
           });
         } else {
           const variants = product.variants || [];
@@ -250,11 +278,17 @@ export class ProductAvailabilityComponent {
             // Apply max availability filter
             if (maxAvailability !== null && availability !== null && availability > maxAvailability) continue;
 
+            const orderCount = this.getOrderCount(product, variant);
+            
+            // Apply min order filter
+            if (minOrder !== null && orderCount < minOrder) continue;
+
             result.push({
               category,
               product,
               variant,
               availability,
+              orderCount,
             });
           }
         }
@@ -288,6 +322,10 @@ export class ProductAvailabilityComponent {
             } else {
               comparison = a.availability - b.availability;
             }
+            break;
+          }
+          case 'orderCount': {
+            comparison = a.orderCount - b.orderCount;
             break;
           }
           default: {
@@ -365,10 +403,20 @@ export class ProductAvailabilityComponent {
     }
   }
 
+  setMinOrder(value: string | number | null) {
+    if (value === null || value === '' || value === undefined) {
+      this.minOrder.set(null);
+    } else {
+      const num = typeof value === 'string' ? parseFloat(value) : value;
+      this.minOrder.set(isNaN(num) ? null : num);
+    }
+  }
+
   clearFilters() {
     this.searchQuery.set('');
     this.selectedCategory.set(null);
     this.maxAvailability.set(null);
+    this.minOrder.set(null);
   }
 
   onMatSortChange(sort: Sort) {

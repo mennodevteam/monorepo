@@ -31,6 +31,18 @@
       />
     </mat-form-field>
 
+    <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="width: 150px">
+      <mat-label>{{ 'menu.minOrder' | translate }}</mat-label>
+      <input
+        matInput
+        type="number"
+        [ngModel]="minOrder()"
+        (ngModelChange)="setMinOrder($event)"
+        eng
+        ltr
+      />
+    </mat-form-field>
+
     <mat-checkbox [(ngModel)]="showInactiveItems">
       {{ 'bom.showInactiveItems' | translate }}
     </mat-checkbox>
@@ -125,6 +137,14 @@
               } @else {
                 <span class="infinity-stock">-</span>
               }
+            </td>
+          </ng-container>
+
+          <!-- Order Count Column -->
+          <ng-container matColumnDef="orderCount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'menu.orderCountPerMonth' | translate }}</th>
+            <td mat-cell *matCellDef="let item" class="rtl eng">
+              <span eng>{{ item.orderCount }}</span>
             </td>
           </ng-container>
 
