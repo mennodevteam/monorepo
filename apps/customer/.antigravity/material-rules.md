@@ -341,8 +341,50 @@ export class MyComponent {
 }
 ```
 
+## Minimal Styling Philosophy
+
+**Avoid excessive custom styling.** Always prioritize Material Angular's native design and behavior.
+
+### General Principles
+
+- **Best-Fit Component**: Before building any UI, search for the most appropriate Angular Material component. Use it exactly as designed.
+- **Base Design Preference**: Stick to the native layout, spacing, and dimensions provided by Material. Do not override these unless a specific design requires it.
+- **Token-Only Customization**: If customization is necessary (e.g., brand colors), use M3 tokens (CSS variables) instead of hardcoding values or adding layers of custom SCSS.
+- **Clean Layouts**: Avoid adding custom padding, margins, or flex structures around Material components unless they are fundamental to the page layout.
+
+### Examples: Material First
+
+```html
+<!-- GOOD: Using material components with their base design -->
+<mat-card>
+  <mat-card-header>
+    <mat-icon mat-card-avatar>store</mat-icon>
+    <mat-card-title>Shop Name</mat-card-title>
+    <mat-card-subtitle>Order Date</mat-card-subtitle>
+  </mat-card-header>
+</mat-card>
+
+<!-- GOOD: Clean Lists -->
+<mat-list>
+  <mat-list-item>
+    <span matListItemTitle>Item Name</span>
+  </mat-list-item>
+</mat-list>
+
+<!-- BAD: Over-styling with custom padding/margins and non-standard layouts -->
+<div class="custom-card">
+  <!-- custom CSS with hardcoded padding/colors -->
+  <div class="header">
+    <mat-icon>store</mat-icon>
+    <span>Shop Name</span>
+    <!-- Not using mat-card-title -->
+  </div>
+</div>
+```
+
 ## Critical Rules
 
-1. **NO hardcoded colors** - Always use `--mat-sys-*` tokens or utility classes
-2. **NO hardcoded font sizes** - Always use `--mat-sys-*` typography tokens or utility classes
-3. **PREFER utility classes** - Use `.mat-*` utility classes for simple styling instead of custom CSS
+1. **MATERIAL FIRST** - Always search for and use the best-fitting Angular Material component.
+2. **MINIMAL STYLING** - Use the base component design; avoid custom margins/padding/layout overrides.
+3. **M3 TOKENS ONLY** - If styling is needed, use `--mat-sys-*` tokens. NO hardcoded colors or font sizes.
+4. **NO REDUNDANT CSS** - Do not write SCSS that duplicates or conflicts with Material's built-in behavior.
