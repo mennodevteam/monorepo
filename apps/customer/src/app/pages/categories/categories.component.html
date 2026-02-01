@@ -7,21 +7,23 @@
     <div class="state state--error">مشکلی در دریافت دسته‌بندی‌ها رخ داد. لطفاً دوباره تلاش کنید.</div>
   } @else {
     @if (hasCategories()) {
-      <mat-grid-list cols="2" rowHeight="1:1" gutterSize="8">
+      <div class="categories-grid">
         @for (category of categories(); track category.id) {
-          <mat-grid-tile
-            [routerLink]="['/categories', category.id]"
-            class="category-tile"
-            [imageFile]="category.imageFile ?? undefined"
-            [imageSize]="'md'"
-            appImageLoader
-          >
-            <mat-grid-tile-footer class="category-tile-footer">
+          <div class="category-item-container">
+            <a
+              [routerLink]="['/categories', category.id]"
+              class="category-circle"
+              [imageFile]="category.imageFile ?? undefined"
+              [imageSize]="'md'"
+              appImageLoader
+            >
+            </a>
+            <div class="category-item-title">
               {{ category.title }}
-            </mat-grid-tile-footer>
-          </mat-grid-tile>
+            </div>
+          </div>
         }
-      </mat-grid-list>
+      </div>
     } @else {
       <div class="state state--empty">هنوز دسته‌بندی‌ای در این منو ثبت نشده است.</div>
     }

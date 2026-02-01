@@ -21,17 +21,51 @@
   }
 }
 
-.category-tile {
-  border-radius: var(--mat-sys-corner-large);
-}
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px 12px;
 
-.category-tile-footer {
-  font: var(--mat-sys-label-medium);
-  text-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.2),
-    0 -1px 3px rgba(0, 0, 0, 0.2),
-    1px 0 3px rgba(0, 0, 0, 0.2),
-    -1px 0 3px rgba(0, 0, 0, 0.2);
+  .category-item-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+
+    .category-circle {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      overflow: hidden;
+      display: block;
+      background-size: cover;
+      background-position: center;
+      background-color: var(--mat-sys-surface-container);
+      border: 1px solid var(--mat-sys-outline-variant);
+      transition: transform 0.2s ease;
+
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+
+    .category-item-title {
+      font: var(--mat-sys-label-medium);
+      text-align: center;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      line-clamp: 2;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      line-height: 1.2;
+    }
+  }
 }
 
 .category-list__empty {

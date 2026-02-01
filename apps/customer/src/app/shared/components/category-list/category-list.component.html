@@ -1,5 +1,5 @@
 @if (categories().length > 0) {
-  <app-section 
+  <app-section
     [title]="title() || ''"
     [seeMoreLabel]="seeMoreLabel()"
     [seeMoreRouterLink]="seeMoreRouterLink()"
@@ -9,37 +9,41 @@
         @for (rowIndex of getRowIndices(); track rowIndex) {
           <div class="category-list-carousel" [class.multi-row]="carouselRows() > 1">
             @for (category of getCategoriesForRow(rowIndex); track category.id) {
-              <a
-                [routerLink]="getCategoryLink(category)"
-                class="category-tile-carousel"
-                [imageFile]="getCategoryImage(category)"
-                [imageSize]="'md'"
-                appImageLoader
-              >
-                <div class="category-tile-footer">
+              <div class="category-item-container">
+                <a
+                  [routerLink]="getCategoryLink(category)"
+                  class="category-circle"
+                  [imageFile]="getCategoryImage(category)"
+                  [imageSize]="'md'"
+                  appImageLoader
+                >
+                </a>
+                <div class="category-item-title">
                   {{ category.title }}
                 </div>
-              </a>
+              </div>
             }
           </div>
         }
       </div>
     } @else if (isGrid()) {
-      <mat-grid-list [cols]="gridCols()" rowHeight="1:1" gutterSize="8">
+      <div class="category-list-grid" [style.--grid-cols]="gridCols()">
         @for (category of categories(); track category.id) {
-          <mat-grid-tile
-            [routerLink]="getCategoryLink(category)"
-            class="category-tile"
-            [imageFile]="getCategoryImage(category)"
-            [imageSize]="'md'"
-            appImageLoader
-          >
-            <mat-grid-tile-footer class="category-tile-footer">
+          <div class="category-item-container">
+            <a
+              [routerLink]="getCategoryLink(category)"
+              class="category-circle"
+              [imageFile]="getCategoryImage(category)"
+              [imageSize]="'md'"
+              appImageLoader
+            >
+            </a>
+            <div class="category-item-title">
               {{ category.title }}
-            </mat-grid-tile-footer>
-          </mat-grid-tile>
+            </div>
+          </div>
         }
-      </mat-grid-list>
+      </div>
     } @else if (isButton()) {
       <div class="category-list-button-container">
         <div class="category-list-button-scroll">
@@ -53,4 +57,3 @@
     }
   </app-section>
 }
-
