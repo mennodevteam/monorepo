@@ -56,27 +56,27 @@ export class FilesService {
 
     const save = async () => {
       const origin: any = await this.uploadFromUrl(
-        `https://img.menno.pro/_/plain/${url}@webp`,
+        `https://imgproxy.iran.liara.run/_/plain/${url}@webp`,
         originKey,
         path,
       );
       const md: any = await this.uploadFromUrl(
-        `https://img.menno.pro/_/width:512/plain/${url}@webp`,
+        `https://imgproxy.iran.liara.run/_/width:512/plain/${url}@webp`,
         mdKey,
         path,
       );
       const sm: any = await this.uploadFromUrl(
-        `https://img.menno.pro/_/width:256/plain/${url}@webp`,
+        `https://imgproxy.iran.liara.run/_/width:256/plain/${url}@webp`,
         smKey,
         path,
       );
       const xs: any = await this.uploadFromUrl(
-        `https://img.menno.pro/_/width:128/plain/${url}@jpeg`,
+        `https://imgproxy.iran.liara.run/_/width:128/plain/${url}@jpeg`,
         xsKey,
         path,
       );
       const xxs: any = await this.uploadFromUrl(
-        `https://img.menno.pro/_/width:64/plain/${url}@jpeg`,
+        `https://imgproxy.iran.liara.run/_/width:64/plain/${url}@jpeg`,
         xxsKey,
         path,
       );
