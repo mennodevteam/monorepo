@@ -1,41 +1,46 @@
 <div class="page-container">
-  <h1>My Orders</h1>
   <div class="orders-container">
     @if (query.isPending()) {
-      <div class="loading-shade">
+      <div class="loading-state">
         <mat-spinner diameter="24"></mat-spinner>
       </div>
     }
 
     @if (query.data()) {
-      <div class="orders-list">
-        @for (order of query.data(); track order.id) {
-          <mat-card class="order-card" appearance="outlined" [routerLink]="['/orders', order.id]">
-            <mat-card-header>
-              <div mat-card-avatar class="order-avatar" [appImageLoader]="order.shop?.logo"></div>
-              <mat-card-title>{{ order.shop?.title }}</mat-card-title>
-              <mat-card-subtitle>{{ order.createdAt | date: 'medium' }}</mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content>
-              <div class="order-details">
-                <span class="price">{{ order.totalPrice | currency: 'IRR' : 'symbol-narrow' }}</span>
-                <span class="status">Order #{{ order.qNumber }}</span>
+      <mat-nav-list class="orders-list">
+        @for (page of query.data()?.pages; track $index) {
+          @for (order of page; track order.id) {
+            <a mat-list-item [routerLink]="['/orders', order.id]" class="order-item">
+              <img
+                matListItemAvatar
+                [appImageLoader]="order.shop?.logo"
+                [alt]="order.shop?.title"
+                class="order-logo"
+              />
+              <span matListItemTitle>{{ order.shop?.title }}</span>
+              <span matListItemLine>
+                {{ order.createdAt | pdate: true }}
+              </span>
+              <div matListItemMeta class="order-price">
+                <span>{{ order.totalPrice | number }} تومان</span>
               </div>
-              <div class="order-status">Status: {{ order.state }}</div>
-            </mat-card-content>
-          </mat-card>
+            </a>
+            <mat-divider></mat-divider>
+          }
         }
-      </div>
+      </mat-nav-list>
 
-      <mat-paginator
-        [length]="total()"
-        [pageSize]="pageSize"
-        [pageIndex]="page()"
-        [hidePageSize]="true"
-        (page)="onPageChange($event)"
-        aria-label="Select page of orders"
-      >
-      </mat-paginator>
+      @if (query.hasNextPage()) {
+        <div class="load-more-container" #loadMoreTrigger>
+          <button mat-button (click)="loadMore()" [disabled]="query.isFetchingNextPage()">
+            @if (query.isFetchingNextPage()) {
+              <mat-spinner diameter="20"></mat-spinner>
+            } @else {
+              مشاهده بیشتر
+            }
+          </button>
+        </div>
+      }
     }
   </div>
 </div>
