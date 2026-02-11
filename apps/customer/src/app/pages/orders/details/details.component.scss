@@ -2,17 +2,85 @@
   padding: 16px;
   max-width: 600px;
   margin: 0 auto;
+  padding-bottom: 100px;
 }
 
 .loading-shade {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
-  justify-content: center;
   align-items: center;
-  min-height: 200px;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 20;
 }
 
 .status-card {
-  margin-bottom: 16px;
+  margin-bottom: 24px;
+  border-radius: 16px;
+  border: none;
+  background-color: var(--mat-sys-surface-container-high);
+
+  &.status-0 {
+    /* Canceled */
+    background-color: #fee2e2;
+    color: #991b1b;
+  }
+  &.status-1 {
+    /* Pending */
+    background-color: #fef3c7;
+    color: #92400e;
+  }
+  &.status-4 {
+    /* Completed */
+    background-color: #d1fae5;
+    color: #065f46;
+  }
+
+  mat-card-content {
+    padding: 20px !important;
+  }
+
+  .status-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .status-icon-container {
+    padding: 8px;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .status-texts {
+    flex: 1;
+
+    .status-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+      font-weight: 700;
+
+      .status-value {
+        font-size: 1.1rem;
+      }
+    }
+
+    .status-description {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      opacity: 0.9;
+    }
+  }
 }
 
 .status-info {
@@ -49,4 +117,3 @@
   transform: translateX(-50%);
   z-index: 1000;
 }
-

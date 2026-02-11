@@ -4,51 +4,57 @@
       <mat-spinner diameter="24"></mat-spinner>
     </div>
   } @else if (order()) {
-    <mat-card appearance="outlined" class="status-card">
+    <header class="order-header">
+      @if (shop()) {
+        <img
+          appImageLoader
+          [imageFile]="shop()?.logoImage"
+          [appImageLoader]="shop()?.logo"
+          [alt]="shop()?.title"
+          class="shop-logo"
+        />
+        <div class="shop-info">
+          <h1>{{ shop()?.title }}</h1>
+          <time class="order-date">{{ order()?.createdAt | pdate: true }}</time>
+        </div>
+      }
+    </header>
+
+    <mat-card appearance="outlined" class="status-card" [ngClass]="'status-' + order()?.state">
       <mat-card-content>
-        <div class="status-info">
-          <strong>وضعیت سفارش:</strong>
-          <span class="status-value">{{ order()?.state }}</span>
+        <div class="status-content">
+          <div class="status-icon-container">
+            <ng-icon [name]="stateIcon" size="28px"></ng-icon>
+          </div>
+          <div class="status-texts">
+            <div class="status-header">
+              <span class="status-label">وضعیت سفارش:</span>
+              <span class="status-value">{{ order()?.state | orderState }}</span>
+            </div>
+            <p class="status-description">{{ stateDescription }}</p>
+          </div>
         </div>
       </mat-card-content>
     </mat-card>
 
-    <mat-list>
-      <mat-list-item>
-        <span matListItemTitle>شماره سفارش</span>
-        <span matListItemLine>{{ order()?.createdAt | date: 'medium' }}</span>
-        <div matListItemMeta>
-          @if (shop()) {
-            <button mat-button routerLink="/" class="shop-button">
-              <img
-                appImageLoader
-                [imageFile]="shop()?.logoImage"
-                [appImageLoader]="shop()?.logo"
-                [alt]="shop()?.title"
-                class="shop-logo"
-              />
-              {{ shop()?.title }}
-            </button>
-          }
-        </div>
-      </mat-list-item>
-      <mat-divider></mat-divider>
+    <mat-list class="items-list">
+      <div matSubheader>اقلام سفارش</div>
       @for (item of order()?.items; track item.id) {
-        <mat-list-item>
+        <mat-list-item class="order-item">
           <span matListItemTitle class="item-title">{{ item.title }}</span>
           @if (!item.isAbstract) {
-            <span matListItemLine>تعداد: {{ item.quantity }}</span>
+            <span matListItemLine class="item-quantity">تعداد: {{ item.quantity }}</span>
           }
-          <div matListItemMeta>
-            <span>{{ item.price | number }} تومان</span>
+          <div matListItemMeta class="item-price">
+            <span>{{ item.price * (item.quantity || 1) | number }} تومان</span>
           </div>
         </mat-list-item>
+        <mat-divider></mat-divider>
       }
-      <mat-divider></mat-divider>
-      <mat-list-item>
-        <span matListItemTitle><strong>جمع کل</strong></span>
-        <div matListItemMeta>
-          <span><strong>{{ order()?.totalPrice | number }} تومان</strong></span>
+      <mat-list-item class="total-row">
+        <span matListItemTitle>جمع کل</span>
+        <div matListItemMeta class="total-price">
+          <span>{{ order()?.totalPrice | number }} تومان</span>
         </div>
       </mat-list-item>
     </mat-list>
@@ -56,19 +62,21 @@
 </div>
 
 @if (order()) {
-  <button
-    mat-fab
-    extended
-    routerLink="/chat/order/{{ id }}"
-    class="chat-button"
-    [matBadge]="notSeenChatCount()"
-    [matBadgeHidden]="notSeenChatCount() === 0"
-    matBadgeColor="warn"
-  >
-    پیگیری سفارش
-    @if (chatQuery.data()?.length) {
-      ({{ chatQuery.data()?.length }})
-    }
-  </button>
+  <div class="bottom-actions">
+    <button
+      mat-fab
+      extended
+      routerLink="/chat/order/{{ id }}"
+      class="chat-button"
+      [matBadge]="notSeenChatCount()"
+      [matBadgeHidden]="notSeenChatCount() === 0"
+      matBadgeColor="warn"
+    >
+      <ng-icon name="saxMessage2Outline" size="20px"></ng-icon>
+      &nbsp; پیگیری سفارش
+      @if (chatQuery.data()?.length) {
+        &nbsp;({{ chatQuery.data()?.length }})
+      }
+    </button>
+  </div>
 }
-

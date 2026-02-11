@@ -59,7 +59,7 @@ import { HomeSectionsModule } from './home-sections/home-sections.module';
           idle: process.env.DB_POOL_MAX ? Number(process.env.DB_POOL_IDLE) : 10000,
         },
       },
-      connectTimeoutMS: 5000,
+      connectTimeoutMS: 10000,
       poolSize: process.env.DB_POOL_MAX ? Number(process.env.DB_POOL_MAX) : 10,
       poolErrorHandler: (error: any) => {
         console.error('pool error handler', error);
