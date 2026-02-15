@@ -2,7 +2,8 @@ import { Component, effect, inject, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { TopAppBarComponent } from '../../shared/components/top-app-bar/top-app-bar.component';
 import { MatCardModule } from '@angular/material/card';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
@@ -14,6 +15,9 @@ import { HttpClient } from '@angular/common/http';
 import { Chat, ChatType, User } from '@menno/types';
 import { ActivatedRoute } from '@angular/router';
 import { ImageLoaderDirective } from '../../shared/directives/image-loader.directive';
+import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { saxMessage2Outline, saxSend1Outline } from '@ng-icons/iconsax/outline';
 
 @Component({
   selector: 'app-chat',
@@ -22,13 +26,17 @@ import { ImageLoaderDirective } from '../../shared/directives/image-loader.direc
     TopAppBarComponent,
     CommonModule,
     MatCardModule,
-    MatToolbarModule,
+    MatFormFieldModule,
+    MatInputModule,
     FormsModule,
     MatProgressSpinnerModule,
     MatButtonModule,
     DatePipe,
     ImageLoaderDirective,
+    EmptyStateComponent,
+    NgIcon,
   ],
+  providers: [provideIcons({ saxMessage2Outline, saxSend1Outline })],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
 })
@@ -39,6 +47,7 @@ export class ChatComponent {
   public route = inject(ActivatedRoute);
   public queryClient = injectQueryClient();
   text = signal<string>('');
+  readonly messageIcon = saxMessage2Outline;
   ChatType = ChatType;
   User = User;
 

@@ -3,18 +3,38 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 48px 16px;
-  gap: 16px;
-  min-height: 300px;
+  text-align: center;
+  padding: 48px 24px;
+  gap: 24px;
+  min-height: 280px;
+}
+
+.icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: var(--mat-sys-surface-container-low, #f0f0f0);
+  color: var(--mat-sys-on-surface-variant);
 }
 
 .icon {
-  color: var(--mat-sys-outline-variant);
-  opacity: 0.6;
+  color: inherit;
 }
 
-p {
-  text-align: center;
+.title {
   margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
 }
 
+.text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--mat-sys-on-surface-variant);
+  max-width: 280px;
+}

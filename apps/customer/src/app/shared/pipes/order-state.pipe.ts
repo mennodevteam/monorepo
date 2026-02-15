@@ -18,7 +18,7 @@ export class OrderStatePipe implements PipeTransform {
       case OrderState.Ready:
         return 'آماده تحویل';
       case OrderState.Completed:
-        return 'تکمیل شده';
+        return 'تحویل شده';
       case OrderState.Canceled:
         return 'لغو شده';
       default:

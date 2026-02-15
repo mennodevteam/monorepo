@@ -1,8 +1,13 @@
 <div class="container">
   @if (icon()) {
-    <ng-icon [svg]="icon()!" size="120" class="icon"></ng-icon>
+    <div class="icon-wrap">
+      <ng-icon [svg]="icon()!" size="64" class="icon"></ng-icon>
+    </div>
   }
-  <p class="mat-body-medium mat-color-on-surface-variant">{{ text() }}</p>
+  @if (title()) {
+    <h2 class="title">{{ title() }}</h2>
+  }
+  <p class="text">{{ text() }}</p>
   @if (actionLabel()) {
     <button mat-flat-button color="primary" (click)="actionClick.emit()">
       {{ actionLabel() }}

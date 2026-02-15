@@ -1,4 +1,4 @@
-<app-top-app-bar title="پیگیری سفارش" [sticky]="true"></app-top-app-bar>
+<app-top-app-bar title="پیگیری سفارش" [sticky]="true" [hideMetaAction]="true"></app-top-app-bar>
 
 <div class="chat-container">
   @if (query.isPending()) {
@@ -6,9 +6,11 @@
       <mat-spinner diameter="24"></mat-spinner>
     </div>
   } @else if (!query.data()?.length) {
-    <div class="empty-state">
-      <p>هنوز پیامی ارسال نشده است.</p>
-    </div>
+    <app-empty-state
+      [icon]="messageIcon"
+      title="هنوز پیامی ارسال نشده است"
+      text="برای پیگیری سفارش، اولین پیام خود را در کادر زیر بنویسید و ارسال کنید."
+    ></app-empty-state>
   }
   @for (chat of query.data(); track chat.id) {
     <mat-card [class.receive]="chat.type === ChatType.Receive" class="chat-message">
@@ -42,25 +44,33 @@
   }
 </div>
 
-<mat-toolbar class="chat-input-toolbar">
-  <textarea
-    [(ngModel)]="text"
-    [ngModelOptions]="{ standalone: true }"
-    [disabled]="sendMutation.status() === 'pending'"
-    placeholder="پیام خود را بنویسید..."
-    class="chat-input"
-  ></textarea>
+<div class="chat-form">
+  <mat-form-field appearance="outline" class="chat-form-field">
+    <textarea
+      matInput
+      [(ngModel)]="text"
+      [ngModelOptions]="{ standalone: true }"
+      [disabled]="sendMutation.status() === 'pending'"
+      placeholder="پیام خود را بنویسید..."
+      rows="2"
+      cdkTextareaAutosize
+      cdkAutosizeMinRows="2"
+      cdkAutosizeMaxRows="5"
+    ></textarea>
+  </mat-form-field>
   <button
     mat-raised-button
     color="primary"
+    type="button"
+    class="chat-form-send"
     (click)="sendMutation.mutate()"
     [disabled]="sendMutation.status() === 'pending' || !text()"
   >
     @if (sendMutation.status() === 'pending') {
-      <mat-spinner class="inline-spinner"></mat-spinner>
+      <mat-spinner diameter="20" class="send-spinner"></mat-spinner>
     } @else {
       ارسال
     }
   </button>
-</mat-toolbar>
+</div>
 

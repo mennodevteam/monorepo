@@ -18,6 +18,7 @@ import { saxBagOutline } from '@ng-icons/iconsax/outline';
 })
 export class EmptyStateComponent {
   icon = input<string | undefined>(saxBagOutline);
+  title = input<string | undefined>();
   text = input<string>('هیچ دیتایی وجود ندارد');
   actionLabel = input<string | undefined>();
   actionClick = output<void>();

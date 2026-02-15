@@ -15,7 +15,7 @@ import { Chat, ChatType, OrderState } from '@menno/types';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   saxTimerOutline,
-  saxCommandOutline,
+  saxBoxOutline,
   saxTruckFastOutline,
   saxTickCircleOutline,
   saxVerifyOutline,
@@ -41,7 +41,7 @@ import {
   providers: [
     provideIcons({
       saxTimerOutline,
-      saxCommandOutline,
+      saxBoxOutline,
       saxTruckFastOutline,
       saxTickCircleOutline,
       saxVerifyOutline,
@@ -93,9 +93,9 @@ export class OrderDetailsComponent {
       case OrderState.Ready:
         return 'سفارش شما آماده است و می‌توانید آن را تحویل بگیرید.';
       case OrderState.Shipping:
-        return 'پیک در حال حمل سفارش شما به مقصد است.';
+        return 'سفارش شما ارسال شده و در مسیر تحویل است.';
       case OrderState.Completed:
-        return 'این سفارش با موفقیت به پایان رسیده است.';
+        return 'این سفارش تحویل شده است.';
       case OrderState.Canceled:
         return 'این سفارش لغو شده است.';
       default:
@@ -109,7 +109,7 @@ export class OrderDetailsComponent {
       case OrderState.Pending:
         return 'saxTimerOutline';
       case OrderState.Processing:
-        return 'saxCommandOutline';
+        return 'saxBoxOutline';
       case OrderState.Ready:
         return 'saxTickCircleOutline';
       case OrderState.Shipping:
