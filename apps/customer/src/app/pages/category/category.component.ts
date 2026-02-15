@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, effect } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, effect, signal } from '@angular/core';
 
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -65,8 +65,34 @@ export class CategoryComponent implements OnDestroy {
     () => this.categoryType() === MenuViewType.Card || this.categoryType() === MenuViewType.CardLargeImage,
   );
 
+  readonly selectedSubcategory = signal<string | null>(null);
   readonly products = computed(() => this.category()?.products ?? []);
-  readonly hasProducts = computed(() => this.products().length > 0);
+  readonly subcategories = computed(() => {
+    const map = new Map<string, string>();
+    for (const product of this.products()) {
+      for (const subcategory of product.subcategories || []) {
+        const value = subcategory?.trim();
+        if (!value) continue;
+        const key = value.toLowerCase();
+        if (!map.has(key)) {
+          map.set(key, value);
+        }
+      }
+    }
+    return [...map.values()].sort((a, b) => a.localeCompare(b));
+  });
+  readonly hasSubcategories = computed(() => this.subcategories().length > 0);
+  readonly filteredProducts = computed(() => {
+    const selected = this.selectedSubcategory();
+    const products = this.products();
+    if (!selected) return products;
+
+    const selectedKey = selected.toLowerCase();
+    return products.filter((product) =>
+      (product.subcategories || []).some((subcategory) => subcategory?.trim().toLowerCase() === selectedKey),
+    );
+  });
+  readonly hasProducts = computed(() => this.filteredProducts().length > 0);
   readonly isLoading = computed(() => !this.menuService.data());
 
   constructor() {
@@ -74,6 +100,18 @@ export class CategoryComponent implements OnDestroy {
       const category = this.category();
       this.titleService.setTitle(category?.title);
     });
+
+    effect(() => {
+      const options = this.subcategories();
+      const selected = this.selectedSubcategory();
+      if (selected && !options.some((item) => item.toLowerCase() === selected.toLowerCase())) {
+        this.selectedSubcategory.set(null);
+      }
+    });
+  }
+
+  selectSubcategory(value: string | null) {
+    this.selectedSubcategory.set(value);
   }
 
   ngOnDestroy(): void {

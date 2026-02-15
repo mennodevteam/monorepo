@@ -265,6 +265,8 @@
     "limitationSection": "محدودیت",
     "limitationDescription": "مشخص کنید کاربر از این تعداد بیشتر نتواند به سبد خرید خود اضافه کند",
     "maxBasket": "حداکثر تعداد در سبد خرید",
+    "subcategories": "زیر‌دسته‌ها",
+    "subcategoriesPlaceholder": "زیر‌دسته را تایپ کنید و Enter بزنید",
     "slugDescription": "با ثبت کردن slug آدرس url منحصر به فردی برای این محصول ایجاد می‌شود. اگر خالی باشد، یک شناسه عددی یکتا استفاده می‌شود."
   },
   "dirtyFormDialog": {

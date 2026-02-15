@@ -44,6 +44,33 @@
   }
 }
 
+.subcategory-filter {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 8px 0;
+  background: var(--mat-sys-surface, #fff);
+}
+
+.subcategory-filter__button {
+  border: 1px solid var(--mat-sys-outline-variant, #d0d7de);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--mat-sys-on-surface, #1f1f1f);
+  padding: 6px 14px;
+  font: var(--mat-sys-label-large, 500 0.875rem/1.25rem var(--mat-sys-body-font, 'Roboto', sans-serif));
+  white-space: nowrap;
+}
+
+.subcategory-filter__button--active {
+  background: var(--mat-sys-primary, #005cbb);
+  border-color: var(--mat-sys-primary, #005cbb);
+  color: var(--mat-sys-on-primary, #fff);
+}
+
 .product-container {
   display: flex;
   flex-direction: column;

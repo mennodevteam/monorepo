@@ -1,7 +1,10 @@
 import { Component, effect, inject, signal, DestroyRef } from '@angular/core';
 import { CommonModule, PlatformLocation } from '@angular/common';
 import { SHARED } from '../../shared';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatChipsModule, MatChipInputEvent } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -19,7 +22,7 @@ import {
 } from '@angular/forms';
 import { MenuService } from '../menu.service';
 import { ActivatedRoute } from '@angular/router';
-import { Menu, Product, ProductCategory, ProductVariant } from '@menno/types';
+import { Menu, Product, ProductCategory } from '@menno/types';
 import { DialogService } from '../../core/services/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
 import { CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray, CdkDragHandle } from '@angular/cdk/drag-drop';
@@ -40,6 +43,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatAutocompleteModule,
+    MatChipsModule,
     MatListModule,
     MatCardModule,
     MatGridListModule,
@@ -67,7 +72,11 @@ export class ProductEditComponent implements FormComponent {
   form: FormGroup;
   variantsForm: FormArray;
   imagesForm: FormArray;
+  readonly subcategoryInputControl = new FormControl('', { nonNullable: true });
+  readonly subcategoryQuery = signal('');
+  readonly separatorKeysCodes = [ENTER, COMMA] as const;
   product = signal<Product | null>(null);
+  readonly allSubcategoryOptions = signal<string[]>([]);
 
   constructor() {
     effect(() => {
@@ -110,6 +119,7 @@ export class ProductEditComponent implements FormComponent {
         this.form = this.fb.group({
           title: [product?.title, Validators.required],
           description: [product?.description],
+          subcategories: [this.cleanSubcategories(product?.subcategories || [])],
           price: [product?.price, Validators.required],
           category: [category, Validators.required],
           slug: [
@@ -145,8 +155,39 @@ export class ProductEditComponent implements FormComponent {
               slugControl.updateValueAndValidity({ emitEvent: false });
             }
           });
+
+        this.subcategoryInputControl.valueChanges
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe((value) => this.subcategoryQuery.set(value ?? ''));
       }
     });
+
+    effect(() => {
+      const menu = this.menuService.data();
+      if (!menu?.categories) {
+        this.allSubcategoryOptions.set([]);
+        return;
+      }
+      const values: string[] = [];
+      for (const category of menu.categories as ProductCategory[]) {
+        for (const product of (category.products || []) as Product[]) {
+          values.push(...(product.subcategories || []));
+        }
+      }
+      this.allSubcategoryOptions.set(this.cleanSubcategories(values));
+    });
+  }
+
+  get subcategoriesControl() {
+    return this.form?.controls['subcategories'] as FormControl<string[]>;
+  }
+
+  get filteredSubcategoryOptions() {
+    const selected = new Set((this.subcategoriesControl?.value || []).map((item) => item.toLowerCase()));
+    const query = this.subcategoryQuery().trim().toLowerCase();
+    return this.allSubcategoryOptions()
+      .filter((item) => !selected.has(item.toLowerCase()))
+      .filter((item) => !query || item.toLowerCase().includes(query));
   }
 
   editVariant(variant?: AbstractControl) {
@@ -183,7 +224,7 @@ export class ProductEditComponent implements FormComponent {
     });
   }
 
-  moveVariants(event: CdkDragDrop<any>) {
+  moveVariants(event: CdkDragDrop<AbstractControl[]>) {
     moveItemInArray(this.variantsForm.controls, event.previousIndex, event.currentIndex);
     for (let i = 0; i < this.variantsForm.controls.length; i++) {
       const c = this.variantsForm.controls[i];
@@ -192,7 +233,7 @@ export class ProductEditComponent implements FormComponent {
     this.variantsForm.markAsDirty();
   }
 
-  moveImage(event: CdkDragDrop<any>) {
+  moveImage(event: CdkDragDrop<AbstractControl[]>) {
     moveItemInArray(this.imagesForm.controls, event.previousIndex, event.currentIndex);
     this.imagesForm.markAsDirty();
   }
@@ -234,6 +275,7 @@ export class ProductEditComponent implements FormComponent {
     if (this.productId) fv.id = this.productId;
     fv.category = { id: fv.category.id };
     fv.slug = this.buildFinalSlug(fv.slug) ?? null;
+    fv.subcategories = this.cleanSubcategories(fv.subcategories || []);
 
     for (let i = 0; i < fv.imageFiles?.length; i++) {
       const imageFile = fv.imageFiles[i];
@@ -255,6 +297,25 @@ export class ProductEditComponent implements FormComponent {
     this.menuService.saveProductMutation.mutate(fv);
     this.form.reset();
     this.location.back();
+  }
+
+  addSubcategoryFromInput(event: MatChipInputEvent) {
+    this.addSubcategory(event.value || '');
+    event.chipInput?.clear();
+    this.subcategoryInputControl.setValue('');
+  }
+
+  selectSubcategory(event: MatAutocompleteSelectedEvent) {
+    this.addSubcategory(event.option.value);
+    this.subcategoryInputControl.setValue('');
+  }
+
+  removeSubcategory(index: number) {
+    const current = [...(this.subcategoriesControl?.value || [])];
+    if (index < 0 || index >= current.length) return;
+    current.splice(index, 1);
+    this.subcategoriesControl.setValue(current);
+    this.subcategoriesControl.markAsDirty();
   }
 
   private sanitizeSlug(value: string) {
@@ -293,6 +354,35 @@ export class ProductEditComponent implements FormComponent {
     }
 
     return null;
+  }
+
+  private addSubcategory(value: string) {
+    const normalized = this.normalizeSubcategory(value);
+    if (!normalized) return;
+
+    const current = this.cleanSubcategories(this.subcategoriesControl?.value || []);
+    if (current.some((item) => item.toLowerCase() === normalized.toLowerCase())) return;
+
+    this.subcategoriesControl.setValue([...current, normalized]);
+    this.subcategoriesControl.markAsDirty();
+  }
+
+  private cleanSubcategories(values: string[]) {
+    const result: string[] = [];
+    const seen = new Set<string>();
+    for (const value of values) {
+      const normalized = this.normalizeSubcategory(value);
+      if (!normalized) continue;
+      const key = normalized.toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      result.push(normalized);
+    }
+    return result;
+  }
+
+  private normalizeSubcategory(value?: string | null) {
+    return value?.trim() || '';
   }
 
   canDeactivate() {

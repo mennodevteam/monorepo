@@ -10,9 +10,32 @@
       </section>
     }
 
+    @if (hasSubcategories()) {
+      <section class="subcategory-filter">
+        <button
+          type="button"
+          class="subcategory-filter__button"
+          [class.subcategory-filter__button--active]="selectedSubcategory() === null"
+          (click)="selectSubcategory(null)"
+        >
+          همه
+        </button>
+        @for (subcategory of subcategories(); track subcategory) {
+          <button
+            type="button"
+            class="subcategory-filter__button"
+            [class.subcategory-filter__button--active]="selectedSubcategory() === subcategory"
+            (click)="selectSubcategory(subcategory)"
+          >
+            {{ subcategory }}
+          </button>
+        }
+      </section>
+    }
+
     @if (hasProducts()) {
       <div class="product-container" [class.grid]="isGrid()">
-        @for (product of products(); track product.id) {
+        @for (product of filteredProducts(); track product.id) {
           <app-product-card
             [product]="product"
             [largeImage]="categoryType() === MenuViewType.CardLargeImage"

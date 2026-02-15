@@ -44,6 +44,32 @@
               <mat-label>{{ 'app.description' | translate }}</mat-label>
               <textarea matInput rows="3" formControlName="description"></textarea>
             </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'productEdit.subcategories' | translate }}</mat-label>
+              <mat-chip-grid #subcategoryChipGrid>
+                @for (subcategory of subcategoriesControl.value || []; track subcategory) {
+                  <mat-chip-row (removed)="removeSubcategory($index)">
+                    {{ subcategory }}
+                    <button matChipRemove>
+                      <i class="fa-solid fa-xmark"></i>
+                    </button>
+                  </mat-chip-row>
+                }
+                <input
+                  [formControl]="subcategoryInputControl"
+                  [matChipInputFor]="subcategoryChipGrid"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  (matChipInputTokenEnd)="addSubcategoryFromInput($event)"
+                  [matAutocomplete]="subcategoryAuto"
+                  placeholder="{{ 'productEdit.subcategoriesPlaceholder' | translate }}"
+                />
+              </mat-chip-grid>
+              <mat-autocomplete #subcategoryAuto="matAutocomplete" (optionSelected)="selectSubcategory($event)">
+                @for (option of filteredSubcategoryOptions; track option) {
+                  <mat-option [value]="option">{{ option }}</mat-option>
+                }
+              </mat-autocomplete>
+            </mat-form-field>
             @if (!variantsForm.controls.length) {
               <mat-form-field appearance="outline">
                 <mat-label>{{ 'app.price' | translate }}</mat-label>

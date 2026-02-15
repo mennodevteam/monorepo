@@ -26,6 +26,11 @@ export const ProductSchema = new EntitySchema<Product>({
       type: String,
       nullable: true,
     },
+    subcategories: {
+      type: String,
+      array: true,
+      default: [],
+    },
     stock: {
       type: Number,
       nullable: true,

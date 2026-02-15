@@ -11,6 +11,7 @@ export class Product {
   id: string;
   title: string;
   description?: string;
+  subcategories?: string[];
   price: number;
   status: Status;
   position?: number;
