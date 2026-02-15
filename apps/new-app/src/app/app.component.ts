@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { InitialParamsService } from './core';
+import { InitialParamsService, MenuService, ShopService } from './core';
 
 @Component({
   standalone: true,
@@ -12,4 +12,7 @@ import { InitialParamsService } from './core';
 export class AppComponent {
   title = 'new-app';
   initialParamsService = inject(InitialParamsService);
+  /** Injected at app root so shop and menu load in parallel once; pages use data when ready. */
+  private _shop = inject(ShopService);
+  private _menu = inject(MenuService);
 }

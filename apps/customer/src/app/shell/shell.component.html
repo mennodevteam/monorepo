@@ -6,7 +6,9 @@
     </div>
   }
   <main class="shell-content" [class.no-bottom-nav]="hideBottomNav()">
-    <router-outlet></router-outlet>
+    <div class="shell-content-inner">
+      <router-outlet></router-outlet>
+    </div>
   </main>
   <app-bottom-navigation
     [visible]="!hideBottomNav()"

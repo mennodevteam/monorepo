@@ -4,6 +4,12 @@
   height: 100vh;
   overflow: hidden;
   box-sizing: border-box;
+  width: 100%;
+  margin-inline: auto;
+
+  @media (min-width: 768px) {
+    max-width: 600px;
+  }
 }
 
 .chat-container {
@@ -91,6 +97,15 @@
   padding: 16px;
   padding-bottom: calc(16px + env(safe-area-inset-bottom));
   background: var(--mat-sys-surface);
+
+  @media (min-width: 768px) {
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+  }
 }
 
 .chat-form-field {

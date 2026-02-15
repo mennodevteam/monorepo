@@ -18,6 +18,13 @@ body {
   position: relative;
 }
 
+app-root {
+  display: block !important;
+  width: 100% !important;
+  min-height: 100% !important;
+}
+
+
 input,
 textarea {
   font-family: inherit;

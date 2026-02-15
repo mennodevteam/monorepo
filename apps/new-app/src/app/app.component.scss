@@ -1,0 +1,27 @@
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100%;
+}
+
+.app-container {
+  width: 100%;
+  min-height: 100%;
+  margin-inline: auto;
+  box-sizing: border-box;
+
+  @media (min-width: 768px) {
+    max-width: 600px;
+  }
+}
+
+.app-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.app-loading__content {
+  text-align: center;
+}
