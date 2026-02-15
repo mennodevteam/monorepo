@@ -21,7 +21,7 @@
     }
     <a mat-list-item routerLink="/orders" replaceUrl="true">
       <ng-icon [svg]="ordersIcon" size="24" matListItemIcon></ng-icon>
-      <span matListItemLine>سفارشات</span>
+      <span matListItemLine>سفارشات من</span>
       <div matListItemMeta>
         <ng-icon [svg]="chevronIcon" size="16"></ng-icon>
       </div>
@@ -29,26 +29,26 @@
     @if (!auth.isGuestUser) {
       <a mat-list-item routerLink="/addresses">
         <ng-icon [svg]="locationIcon" size="24" matListItemIcon></ng-icon>
-        <span matListItemLine>آدرس‌ها</span>
+        <span matListItemLine>آدرس‌های من</span>
         <div matListItemMeta>
           <ng-icon [svg]="chevronIcon" size="16"></ng-icon>
         </div>
       </a>
     }
-    <a mat-list-item>
+    <!-- <a mat-list-item>
       <ng-icon [svg]="infoIcon" size="24" matListItemIcon></ng-icon>
       <span matListItemLine>اطلاعات</span>
       <div matListItemMeta>
         <ng-icon [svg]="chevronIcon" size="16"></ng-icon>
       </div>
-    </a>
-    <a mat-list-item>
+    </a> -->
+    <!-- <a mat-list-item>
       <ng-icon [svg]="clubIcon" size="24" matListItemIcon></ng-icon>
       <span matListItemLine>باشگاه مشتریان</span>
       <div matListItemMeta>
         <ng-icon [svg]="chevronIcon" size="16"></ng-icon>
       </div>
-    </a>
+    </a> -->
     <a mat-list-item routerLink="/privacy-policy">
       <ng-icon [svg]="privacyIcon" size="24" matListItemIcon></ng-icon>
       <span matListItemLine>حریم خصوصی</span>

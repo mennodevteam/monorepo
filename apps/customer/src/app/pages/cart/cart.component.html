@@ -7,7 +7,7 @@
 <div class="page-container">
   @if (cart.orderItems().length) {
     <mat-list>
-      <div mat-subheader>تعداد {{ cart.totalQuantity() }} آیتم انتخاب شده</div>
+      <div mat-subheader>تعداد {{ cart.length() }} آیتم انتخاب شده</div>
       @for (item of cart.orderItems(); track $index) {
         <mat-list-item [class.three-line]="item.productVariant">
           <img matListItemAvatar appImageLoader [imageFile]="Product.mainImageFile(item?.product)" [alt]="item.product?.title" />
