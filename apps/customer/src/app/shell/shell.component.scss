@@ -33,21 +33,11 @@
   }
 }
 
-.loading-overlay {
-  position: absolute;
+.loading-bar {
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 60px; // Above bottom navigation
-  background-color: var(--mat-sys-surface-container);
-  opacity: 0.95;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   z-index: 100;
-
-  p {
-    font: var(--mat-sys-body-large);
-    color: var(--mat-sys-on-surface-variant);
-  }
+  direction: ltr;
 }

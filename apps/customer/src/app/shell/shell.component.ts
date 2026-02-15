@@ -12,12 +12,12 @@ import {
 
 import { BottomNavigationComponent } from '../shared/components/bottom-navigation/bottom-navigation.component';
 import { TopAppBarComponent } from '../shared/components/top-app-bar/top-app-bar.component';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [RouterModule, BottomNavigationComponent, TopAppBarComponent, MatProgressSpinnerModule],
+  imports: [RouterModule, BottomNavigationComponent, TopAppBarComponent, MatProgressBarModule],
   templateUrl: './shell.component.html',
   styleUrl: './shell.component.scss',
 })

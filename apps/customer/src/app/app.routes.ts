@@ -1,6 +1,8 @@
 import { Route } from '@angular/router';
 import { loginActivator } from './core/guards/login.guard';
 import { authRoutes } from './auth/auth.routes';
+import { HomeComponent } from './pages/home/home.component';
+import { CategoriesComponent } from './pages/categories/categories.component';
 
 export const appRoutes: Route[] = [
   {
@@ -48,13 +50,12 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'home',
-        loadComponent: () => import('./pages/home/home.component').then((m) => m.HomeComponent),
+        component: HomeComponent,
         data: { isRootPage: true },
       },
       {
         path: 'categories',
-        loadComponent: () =>
-          import('./pages/categories/categories.component').then((m) => m.CategoriesComponent),
+        component: CategoriesComponent,
         data: { isRootPage: true },
       },
       {

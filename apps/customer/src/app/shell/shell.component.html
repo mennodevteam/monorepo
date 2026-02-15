@@ -1,8 +1,8 @@
 <div class="shell-container">
   <app-top-app-bar class="shell-app-bar" [hideMetaAction]="hideMetaAction()"></app-top-app-bar>
   @if (loading()) {
-    <div class="loading-overlay">
-      <mat-spinner diameter="24"></mat-spinner>
+    <div class="loading-bar" dir="ltr">
+      <mat-progress-bar mode="indeterminate" color="primary"></mat-progress-bar>
     </div>
   }
   <main #scrollContainer class="shell-content" [class.no-bottom-nav]="hideBottomNav()">
