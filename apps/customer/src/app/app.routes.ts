@@ -51,7 +51,7 @@ export const appRoutes: Route[] = [
       {
         path: 'home',
         component: HomeComponent,
-        data: { isRootPage: true },
+        data: { isRootPage: true, preserveScrollOnBack: true },
       },
       {
         path: 'categories',
