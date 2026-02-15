@@ -83,6 +83,16 @@
   }
 }
 
+.info-list {
+  margin-bottom: 24px;
+  border-radius: 16px;
+  background-color: var(--mat-sys-surface-container-high);
+
+  .address-text {
+    white-space: pre-line;
+  }
+}
+
 .status-info {
   display: flex;
   justify-content: space-between;

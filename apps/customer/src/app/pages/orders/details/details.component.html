@@ -20,6 +20,32 @@
       </mat-card-content>
     </mat-card>
 
+    <mat-list class="info-list">
+      @if (order()?.createdAt) {
+        <mat-list-item>
+          <ng-icon name="saxTimerOutline" size="22" matListItemIcon></ng-icon>
+          <span matListItemTitle>زمان سفارش</span>
+          <span matListItemLine>{{ order()?.createdAt | pdate: true }}</span>
+        </mat-list-item>
+      }
+      @if (order()?.address) {
+        <mat-list-item>
+          <ng-icon name="saxLocationOutline" size="22" matListItemIcon></ng-icon>
+          <span matListItemTitle>آدرس</span>
+          <span matListItemLine class="address-text">{{ order()?.address?.description }}</span>
+          @if (order()?.address?.unit || order()?.address?.ring) {
+            <span matListItemLine>
+              {{ order()?.address?.unit ? 'واحد ' + order()?.address?.unit : '' }}
+              {{ order()?.address?.ring ? 'زنگ ' + order()?.address?.ring : '' }}
+            </span>
+          }
+          @if (order()?.address?.postalCode) {
+            <span matListItemLine>کد پستی: {{ order()?.address?.postalCode }}</span>
+          }
+        </mat-list-item>
+      }
+    </mat-list>
+
     <button
       mat-raised-button
       color="primary"

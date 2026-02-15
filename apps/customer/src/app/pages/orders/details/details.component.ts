@@ -21,7 +21,9 @@ import {
   saxVerifyOutline,
   saxCloseCircleOutline,
   saxMessage2Outline,
+  saxLocationOutline,
 } from '@ng-icons/iconsax/outline';
+import { PdatePipe } from '../../../shared/pipes/pdate.pipe';
 
 @Component({
   selector: 'app-order-details',
@@ -37,6 +39,7 @@ import {
     RouterModule,
     DecimalPipe,
     NgIcon,
+    PdatePipe,
   ],
   providers: [
     provideIcons({
@@ -47,6 +50,7 @@ import {
       saxVerifyOutline,
       saxCloseCircleOutline,
       saxMessage2Outline,
+      saxLocationOutline,
     }),
   ],
   templateUrl: './details.component.html',
