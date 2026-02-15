@@ -1,12 +1,10 @@
 <app-top-app-bar [hideMenu]="true" [sticky]="true" title="{{ 'chat.title' | translate }}" />
 <main
+  #scrollContainer
   p-md
-  max-center
   fxLayout="column"
   fxLayoutGap="16px"
-  class="background-background"
-  fxLayout="column"
-  fxLayoutGap="16px"
+  class="background-background chat-main"
   >
   @if (!query.data()) {
     <mat-spinner [diameter]="24" />
@@ -49,7 +47,7 @@
         </p>
 
         @if (chat.seen && chat.type === ChatType.Send) {
-          <i class="fa-solid fa-eye fa-sm outline-text"></i>
+          <i class="fa-solid fa-eye seen-indicator outline-text" aria-hidden="true"></i>
         }
       </mat-card-content>
     </mat-card>
@@ -68,7 +66,7 @@
     mat-icon-button
     class="tertiary-button"
     (click)="sendMutation.mutate()"
-    [disabled]="sendMutation.status() === 'pending' || !text()"
+    [disabled]="sendMutation.status() === 'pending' || !text() || !id"
     >
     <i class="fa-solid fa-paper-plane-top fa-flip-horizontal"></i>
   </button>

@@ -1,5 +1,5 @@
-import { Component, effect, inject, signal } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { Component, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { TopAppBarComponent } from '../../shared/components/top-app-bar/top-app-bar.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,8 +15,11 @@ import { HttpClient } from '@angular/common/http';
 import { Chat, ChatType, User } from '@menno/types';
 import { ActivatedRoute } from '@angular/router';
 import { ImageLoaderDirective } from '../../shared/directives/image-loader.directive';
+import { LinkifyDirective } from '../../shared/directives/linkify.directive';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
+import { PdatePipe } from '../../shared/pipes/pdate.pipe';
 import { NgIcon, provideIcons } from '@ng-icons/core';
+import { saxEyeBold } from '@ng-icons/iconsax/bold';
 import { saxMessage2Outline, saxSend1Outline } from '@ng-icons/iconsax/outline';
 
 @Component({
@@ -31,12 +34,13 @@ import { saxMessage2Outline, saxSend1Outline } from '@ng-icons/iconsax/outline';
     FormsModule,
     MatProgressSpinnerModule,
     MatButtonModule,
-    DatePipe,
+    PdatePipe,
     ImageLoaderDirective,
+    LinkifyDirective,
     EmptyStateComponent,
     NgIcon,
   ],
-  providers: [provideIcons({ saxMessage2Outline, saxSend1Outline })],
+  providers: [provideIcons({ saxEyeBold, saxMessage2Outline, saxSend1Outline })],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
 })
@@ -51,47 +55,68 @@ export class ChatComponent {
   ChatType = ChatType;
   User = User;
 
+  @ViewChild('scrollContainer') scrollContainer?: ElementRef<HTMLElement>;
+
   get id() {
     return this.route.snapshot.params['id'];
   }
 
   query = injectQuery(() => ({
     queryKey: ['chat', 'order', this.id],
-    queryFn: () => lastValueFrom(this.http.get<Chat[]>(`chat/order/${this.id}`)),
+    queryFn: async () => {
+      const orderId = this.id;
+      if (!orderId) return [];
+      const data = await lastValueFrom(this.http.get<Chat[]>(`chat/order/${orderId}`));
+      // Backend returns DESC (newest first); store chronological (oldest first) so first paint is correct
+      return [...data].reverse();
+    },
+    enabled: !!this.id,
     refetchInterval: 20000,
-    select: (data: Chat[]) => data.reverse(),
   }));
 
   orderQuery = injectQuery(() => ({
     queryKey: ['order', this.id],
     queryFn: () => lastValueFrom(this.ordersService.getById(this.id)),
+    enabled: !!this.id,
   }));
 
   sendMutation = injectMutation(() => ({
-    mutationFn: () =>
-      lastValueFrom(
-        this.http.post<Chat>(`chat`, {
-          text: this.text(),
-          shop: this.orderQuery.data()?.shop,
-          order: { id: this.id },
-        } as Chat),
-      ),
+    mutationFn: () => {
+      const orderId = this.id;
+      const order = this.orderQuery.data();
+      if (!orderId) return Promise.reject(new Error('Order id is required'));
+      const payload = {
+        text: this.text(),
+        shop: order?.shop?.id ? { id: order.shop.id } : undefined,
+        order: { id: orderId },
+      } as Chat;
+      return lastValueFrom(this.http.post<Chat>(`chat`, payload));
+    },
     onSuccess: (response) => {
+      const orderId = this.id;
       this.text.set('');
-      this.queryClient.invalidateQueries({ queryKey: ['chat'] });
-      this.queryClient.setQueryData(['chat', 'order', this.id], (oldData: Chat[]) => {
-        return [...oldData.reverse(), response];
-      });
+      if (orderId) {
+        const currentUser = this.auth.user();
+        const messageWithUser = { ...response, user: currentUser ?? response.user };
+        this.queryClient.setQueryData(['chat', 'order', orderId], (oldData: Chat[] | undefined) => {
+          const list = oldData ?? [];
+          return [...list, messageWithUser];
+        });
+      }
+      // Do not invalidate here to avoid refetch overwriting with stale/empty; setQueryData above is enough
     },
   }));
 
   seenMutation = injectMutation(() => ({
     mutationFn: (ids: string[]) => lastValueFrom(this.http.post<void>(`chat/seen`, ids)),
-    onSuccess: (response, ids) => {
-      this.queryClient.invalidateQueries({ queryKey: ['chat'] });
-      this.queryClient.setQueryData(['chat', 'order', this.id], (oldData: Chat[]) => {
-        return oldData.reverse().map((item) => (ids.includes(item.id) ? { ...item, seen: true } : item));
-      });
+    onSuccess: (_response, ids) => {
+      const orderId = this.id;
+      if (orderId) {
+        this.queryClient.setQueryData(['chat', 'order', orderId], (oldData: Chat[] | undefined) => {
+          const list = oldData ?? [];
+          return list.map((item) => (ids.includes(item.id) ? { ...item, seen: true } : item));
+        });
+      }
     },
   }));
 
@@ -99,19 +124,20 @@ export class ChatComponent {
     effect(() => {
       const chats = this.query.data();
       if (chats?.length) {
-        this.scrollEnd();
+        this.scrollToEnd(100);
 
         const notSeen = chats.filter((item) => item.type === ChatType.Receive && !item.seen);
         if (notSeen.length) this.seenMutation.mutate(notSeen.map((item) => item.id));
       }
     });
 
-    this.scrollEnd(400);
+    this.scrollToEnd(400);
   }
 
-  scrollEnd(timeout = 20) {
+  scrollToEnd(timeout = 20) {
     setTimeout(() => {
-      window.scrollTo({ top: 999999999 });
+      const el = this.scrollContainer?.nativeElement;
+      if (el) el.scrollTop = el.scrollHeight;
     }, timeout);
   }
 }

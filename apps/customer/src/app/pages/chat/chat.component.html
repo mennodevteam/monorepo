@@ -1,6 +1,6 @@
 <app-top-app-bar title="پیگیری سفارش" [sticky]="true" [hideMetaAction]="true"></app-top-app-bar>
 
-<div class="chat-container">
+<div #scrollContainer class="chat-container">
   @if (query.isPending()) {
     <div class="loading-shade">
       <mat-spinner diameter="24"></mat-spinner>
@@ -32,12 +32,12 @@
             {{ User.fullName(chat.user || auth.user()!) }}
           }
         </mat-card-title>
-        <mat-card-subtitle>{{ chat.createdAt | date: 'short' }}</mat-card-subtitle>
+        <mat-card-subtitle>{{ chat.createdAt | pdate: true }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <p>{{ chat.text }}</p>
+        <p [appLinkify]="chat.text">{{ chat.text }}</p>
         @if (chat.seen && chat.type === ChatType.Send) {
-          <span class="seen-indicator">✓</span>
+          <ng-icon name="saxEyeBold" class="seen-indicator" aria-hidden="true" />
         }
       </mat-card-content>
     </mat-card>
@@ -64,7 +64,7 @@
     type="button"
     class="chat-form-send"
     (click)="sendMutation.mutate()"
-    [disabled]="sendMutation.status() === 'pending' || !text()"
+    [disabled]="sendMutation.status() === 'pending' || !text() || !id"
   >
     @if (sendMutation.status() === 'pending') {
       <mat-spinner diameter="20" class="send-spinner"></mat-spinner>
