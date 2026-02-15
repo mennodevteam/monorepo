@@ -9,3 +9,13 @@
 .red {
   color: var(--mat-sys-error);
 }
+
+.group-edit-toolbar {
+  min-height: 48px;
+  background: var(--mat-sys-surface-container-high, #f3edf7);
+  border-radius: 8px;
+
+  .selection-count {
+    font-weight: 500;
+  }
+}

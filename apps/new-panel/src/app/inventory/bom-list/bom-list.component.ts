@@ -68,7 +68,7 @@ interface CategoryItem {
   styleUrl: './bom-list.component.scss',
 })
 export class BomListComponent {
-  displayedColumns: string[] = ['title', 'materials', 'cost'];
+  displayedColumns: string[] = ['select', 'title', 'materials', 'cost'];
   menuService = inject(MenuService);
   materialsService = inject(MaterialsService);
   dialogService = inject(DialogService);
@@ -95,6 +95,218 @@ export class BomListComponent {
     return all;
   });
   selectedCategory = signal<number | null>(null);
+
+  /** Group edit: selection key for an item (product + variant) */
+  itemKey(item: CategoryItem['items'][number]): string {
+    return `${item.product.id}-${item.variant?.id ?? 'base'}`;
+  }
+
+  selectedItemKeys = signal<Set<string>>(new Set());
+
+  hasSelection = computed(() => this.selectedItemKeys().size > 0);
+  selectedCount = computed(() => this.selectedItemKeys().size);
+
+  /** Selected items (from all categories) for group operations */
+  selectedItems = computed(() => {
+    const keys = this.selectedItemKeys();
+    const items: CategoryItem['items'][number][] = [];
+    for (const cat of this.categoryItems()) {
+      for (const item of cat.items) {
+        if (keys.has(this.itemKey(item))) items.push(item);
+      }
+    }
+    return items;
+  });
+
+  /** Materials and products that appear in at least one selected item (for Remove menu) */
+  materialsAndProductsInSelected = computed(() => {
+    const selected = this.selectedItems();
+    const materials: { material: Material }[] = [];
+    const seenMaterialIds = new Set<string>();
+    const products: { product: Product; variant?: ProductVariant }[] = [];
+    const seenProductKey = (p: Product, v?: ProductVariant) => `${p.id}-${v?.id ?? 'base'}`;
+    const seenProducts = new Set<string>();
+    for (const item of selected) {
+      for (const bom of item.boms) {
+        if (!seenMaterialIds.has(bom.material.id)) {
+          seenMaterialIds.add(bom.material.id);
+          materials.push({ material: bom.material });
+        }
+      }
+      for (const bop of item.bops) {
+        if (!bop.productSource) continue;
+        const src = { product: bop.productSource as Product, variant: bop.variantSource as ProductVariant | undefined };
+        const key = seenProductKey(src.product, src.variant);
+        if (!seenProducts.has(key)) {
+          seenProducts.add(key);
+          products.push(src);
+        }
+      }
+    }
+    return { materials, products };
+  });
+
+  /** Materials not in every selected item (for Add: add to those that don't have) */
+  materialsForGroupAdd = computed(() => {
+    const materials = this.materialsService.materialsQuery.data() || [];
+    const selected = this.selectedItems();
+    return materials.filter((material) =>
+      selected.some((item) => !item.boms.some((bom) => bom.material.id === material.id)),
+    );
+  });
+
+  /** Products that can be added to at least one selected item */
+  productsForGroupAdd = computed(() => {
+    const all = this.allProducts();
+    const selected = this.selectedItems();
+    const bops = this.materialsService.bopsQuery.data() || [];
+    return all.filter((item) =>
+      selected.some((sel) => {
+        if (sel.product?.id === item.product?.id && sel.variant?.id === item.variant?.id) return false;
+        const alreadyHas = bops.some(
+          (bop) =>
+            bop.product?.id === sel.product?.id &&
+            bop.variant?.id === sel.variant?.id &&
+            bop.productSource?.id === item.product?.id &&
+            bop.variantSource?.id === item.variant?.id,
+        );
+        return !alreadyHas;
+      }),
+    );
+  });
+
+  isItemSelected(item: CategoryItem['items'][number]): boolean {
+    return this.selectedItemKeys().has(this.itemKey(item));
+  }
+
+  toggleItemSelection(item: CategoryItem['items'][number]): void {
+    const set = new Set(this.selectedItemKeys());
+    const key = this.itemKey(item);
+    if (set.has(key)) set.delete(key);
+    else set.add(key);
+    this.selectedItemKeys.set(set);
+  }
+
+  isAllSelectedInCategory(categoryItem: CategoryItem): boolean {
+    if (!categoryItem.items.length) return false;
+    const keys = this.selectedItemKeys();
+    return categoryItem.items.every((item) => keys.has(this.itemKey(item)));
+  }
+
+  selectedCountInCategory(categoryItem: CategoryItem): number {
+    const keys = this.selectedItemKeys();
+    return categoryItem.items.filter((item) => keys.has(this.itemKey(item))).length;
+  }
+
+  toggleSelectAllInCategory(categoryItem: CategoryItem): void {
+    const set = new Set(this.selectedItemKeys());
+    const allSelected = this.isAllSelectedInCategory(categoryItem);
+    for (const item of categoryItem.items) {
+      const key = this.itemKey(item);
+      if (allSelected) set.delete(key);
+      else set.add(key);
+    }
+    this.selectedItemKeys.set(set);
+  }
+
+  clearSelection(): void {
+    this.selectedItemKeys.set(new Set());
+  }
+
+  /** Remove material from all selected items that have it */
+  groupRemoveMaterial(material: Material): void {
+    const selected = this.selectedItems();
+    for (const item of selected) {
+      const bom = item.boms.find((b) => b.material.id === material.id);
+      if (bom) this.materialsService.deleteBomMutation.mutate(bom.id);
+    }
+  }
+
+  /** Remove product from all selected items that have it */
+  groupRemoveProduct(product: Product, variant?: ProductVariant): void {
+    const selected = this.selectedItems();
+    const bops = this.materialsService.bopsQuery.data() || [];
+    for (const item of selected) {
+      const bop = bops.find(
+        (b) =>
+          b.product?.id === item.product?.id &&
+          b.variant?.id === item.variant?.id &&
+          b.productSource?.id === product.id &&
+          b.variantSource?.id === variant?.id,
+      );
+      if (bop) this.materialsService.deleteBopMutation.mutate(bop.id);
+    }
+  }
+
+  /** Add material to all selected items that don't have it */
+  groupAddMaterial(material: Material): void {
+    const fields: PromptFields = {
+      quantity: {
+        label: this.translate.instant('materials.quantity'),
+        type: 'number',
+        eng: true,
+        ltr: true,
+        control: new FormControl(1, [Validators.required, Validators.min(0)]),
+        hint: this.translate.instant('materials.units.' + material.unit),
+      },
+    };
+    this.dialogService.prompt(material.name, fields).then((result) => {
+      if (!result) return;
+      const selected = this.selectedItems();
+      const quantity = result.quantity as number;
+      for (const item of selected) {
+        if (!item.boms.some((b) => b.material.id === material.id)) {
+          const bomDto = {
+            product: { id: item.product.id } as Product,
+            variant: item.variant ? ({ id: item.variant.id } as ProductVariant) : undefined,
+            material, // full material so optimistic UI shows name
+            quantity,
+          } as BillOfMaterial;
+          this.materialsService.saveBomMutation.mutate(bomDto);
+        }
+      }
+    });
+  }
+
+  /** Add product to all selected items that don't have it */
+  groupAddProduct(product: Product, variant?: ProductVariant): void {
+    const fields: PromptFields = {
+      quantity: {
+        label: this.translate.instant('materials.quantity'),
+        type: 'number',
+        eng: true,
+        ltr: true,
+        control: new FormControl(1, [Validators.required, Validators.min(0)]),
+      },
+    };
+    let title = product.title;
+    if (variant) title += ` - ${variant.title}`;
+    this.dialogService.prompt(title, fields).then((result) => {
+      if (!result) return;
+      const selected = this.selectedItems();
+      const quantity = result.quantity as number;
+      const bops = this.materialsService.bopsQuery.data() || [];
+      for (const item of selected) {
+        const has = bops.some(
+          (bop) =>
+            bop.product?.id === item.product?.id &&
+            bop.variant?.id === item.variant?.id &&
+            bop.productSource?.id === product.id &&
+            bop.variantSource?.id === variant?.id,
+        );
+        if (!has) {
+          const bopDto = {
+            product: { id: item.product.id } as Product,
+            variant: item.variant ? ({ id: item.variant.id } as ProductVariant) : undefined,
+            productSource: product, // full product so optimistic UI shows title
+            variantSource: variant, // full variant so optimistic UI shows title
+            quantity,
+          } as BillOfProduct;
+          this.materialsService.saveBopMutation.mutate(bopDto);
+        }
+      }
+    });
+  }
 
   filteredMaterials = computed(() => {
     const materials = this.materialsService.materialsQuery.data() || [];

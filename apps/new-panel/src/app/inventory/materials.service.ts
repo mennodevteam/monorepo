@@ -116,31 +116,49 @@ export class MaterialsService {
 
   saveBomMutation = injectMutation(() => ({
     mutationFn: (data: Partial<BillOfMaterial>) =>
-      lastValueFrom(this.http.post<void>(`${this.baseUrl}/boms`, data)),
+      lastValueFrom(this.http.post<BillOfMaterial>(`${this.baseUrl}/boms`, data)),
     onMutate: (data) => {
       this.queryClient.cancelQueries({ queryKey: ['boms'] });
       const oldData = this.queryClient.getQueryData<BillOfMaterial[]>(['boms']);
+      const payload = data.id
+        ? data
+        : { ...data, id: `temp-bom-${Date.now()}-${Math.random().toString(36).slice(2, 9)}` };
       this.queryClient.setQueryData(['boms'], (old: BillOfMaterial[]) => {
-        if (data.id) {
-          return old.map((bom) => (bom.id === data.id ? { ...bom, ...(data as BillOfMaterial) } : bom));
-        } else {
-          return [...old, data as BillOfMaterial];
+        if (payload.id && !String(payload.id).startsWith('temp-')) {
+          return old.map((bom) => (bom.id === payload.id ? { ...bom, ...(payload as BillOfMaterial) } : bom));
         }
+        return [...old, payload as BillOfMaterial];
       });
       return oldData;
     },
     onError: (error, data, context) => {
-      this.queryClient.setQueryData(['bops'], context);
+      this.queryClient.setQueryData(['boms'], context);
       this.snack.open(this.translate.instant('errors.changeError'), '', { duration: 2000 });
     },
-    onSuccess: () => {
-      this.queryClient.invalidateQueries({ queryKey: ['bops'] });
+    onSuccess: (result: BillOfMaterial) => {
+      const productId = result.product?.id ?? (result as unknown as { product?: { id?: string } }).product?.id;
+      const variantId = result.variant?.id ?? (result as unknown as { variant?: { id?: string } }).variant?.id;
+      const materialId = result.material?.id ?? (result as unknown as { material?: { id?: string } }).material?.id;
+      this.queryClient.setQueryData(['boms'], (old: BillOfMaterial[]) => {
+        const idx = old.findIndex(
+          (bom) =>
+            String(bom.id).startsWith('temp-bom-') &&
+            bom.product?.id === productId &&
+            (bom.variant?.id ?? null) === (variantId ?? null) &&
+            bom.material?.id === materialId
+        );
+        if (idx < 0) return old;
+        return old.map((bom, i) => (i === idx ? result : bom));
+      });
     },
   }));
 
   deleteBomMutation = injectMutation(() => ({
-    mutationFn: (id: string) => lastValueFrom(this.http.delete<void>(`${this.baseUrl}/boms/${id}`)),
-    onMutate: (id) => {
+    mutationFn: (id: string) => {
+      if (!id || String(id).startsWith('temp-')) return Promise.resolve();
+      return lastValueFrom(this.http.delete<void>(`${this.baseUrl}/boms/${id}`));
+    },
+    onMutate: (id: string) => {
       this.queryClient.cancelQueries({ queryKey: ['boms'] });
       const oldData = this.queryClient.getQueryData<BillOfMaterial[]>(['boms']);
       this.queryClient.setQueryData(['boms'], (old: BillOfMaterial[]) => {
@@ -168,16 +186,18 @@ export class MaterialsService {
 
   saveBopMutation = injectMutation(() => ({
     mutationFn: (data: Partial<BillOfProduct>) =>
-      lastValueFrom(this.http.post<void>(`${this.baseUrl}/bops`, data)),
+      lastValueFrom(this.http.post<BillOfProduct>(`${this.baseUrl}/bops`, data)),
     onMutate: (data) => {
       this.queryClient.cancelQueries({ queryKey: ['bops'] });
       const oldData = this.queryClient.getQueryData<BillOfProduct[]>(['bops']);
+      const payload = data.id
+        ? data
+        : { ...data, id: `temp-bop-${Date.now()}-${Math.random().toString(36).slice(2, 9)}` };
       this.queryClient.setQueryData(['bops'], (old: BillOfProduct[]) => {
-        if (data.id) {
-          return old.map((bop) => (bop.id === data.id ? { ...bop, ...(data as BillOfProduct) } : bop));
-        } else {
-          return [...old, data as BillOfProduct];
+        if (payload.id && !String(payload.id).startsWith('temp-')) {
+          return old.map((bop) => (bop.id === payload.id ? { ...bop, ...(payload as BillOfProduct) } : bop));
         }
+        return [...old, payload as BillOfProduct];
       });
       return oldData;
     },
@@ -185,14 +205,32 @@ export class MaterialsService {
       this.queryClient.setQueryData(['bops'], context);
       this.snack.open(this.translate.instant('errors.changeError'), '', { duration: 2000 });
     },
-    onSuccess: () => {
-      this.queryClient.invalidateQueries({ queryKey: ['bops'] });
+    onSuccess: (result: BillOfProduct) => {
+      const productId = result.product?.id ?? (result as unknown as { product?: { id?: string } }).product?.id;
+      const variantId = result.variant?.id ?? (result as unknown as { variant?: { id?: string } }).variant?.id;
+      const psId = result.productSource?.id ?? (result as unknown as { productSource?: { id?: string } }).productSource?.id;
+      const vsId = result.variantSource?.id ?? (result as unknown as { variantSource?: { id?: string } }).variantSource?.id;
+      this.queryClient.setQueryData(['bops'], (old: BillOfProduct[]) => {
+        const idx = old.findIndex(
+          (bop) =>
+            String(bop.id).startsWith('temp-bop-') &&
+            bop.product?.id === productId &&
+            (bop.variant?.id ?? null) === (variantId ?? null) &&
+            bop.productSource?.id === psId &&
+            (bop.variantSource?.id ?? null) === (vsId ?? null)
+        );
+        if (idx < 0) return old;
+        return old.map((bop, i) => (i === idx ? result : bop));
+      });
     },
   }));
 
   deleteBopMutation = injectMutation(() => ({
-    mutationFn: (id: string) => lastValueFrom(this.http.delete<void>(`${this.baseUrl}/bops/${id}`)),
-    onMutate: (id) => {
+    mutationFn: (id: string) => {
+      if (!id || String(id).startsWith('temp-')) return Promise.resolve();
+      return lastValueFrom(this.http.delete<void>(`${this.baseUrl}/bops/${id}`));
+    },
+    onMutate: (id: string) => {
       this.queryClient.cancelQueries({ queryKey: ['bops'] });
       const oldData = this.queryClient.getQueryData<BillOfProduct[]>(['bops']);
       this.queryClient.setQueryData(['bops'], (old: BillOfProduct[]) => {

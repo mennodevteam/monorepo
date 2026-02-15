@@ -5,6 +5,7 @@
     "time": "ساعت",
     "type": "نوع",
     "all": "همه",
+    "none": "بدون مورد",
     "save": "ذخیره",
     "edit": "ویرایش",
     "yes": "بله",
@@ -837,7 +838,11 @@
     "category": "دسته‌بندی",
     "costNotSet": "قیمت مواد اولیه تنظیم نشده است",
     "product": "محصول",
-    "material": "ماده اولیه"
+    "material": "ماده اولیه",
+    "selectedCount": "{{count}} مورد انتخاب شده",
+    "groupRemove": "حذف ماده/محصول",
+    "groupAdd": "افزودن ماده/محصول",
+    "clearSelection": "پاک کردن انتخاب"
   },
   "pricing": {
     "products": "محصولات",
