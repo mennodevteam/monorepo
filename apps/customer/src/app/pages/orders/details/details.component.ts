@@ -12,9 +12,6 @@ import { injectQuery } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Chat, ChatType, OrderState } from '@menno/types';
-import { ImageLoaderDirective } from '../../../shared/directives/image-loader.directive';
-import { OrderStatePipe } from '../../../shared/pipes/order-state.pipe';
-import { PdatePipe } from '../../../shared/pipes/pdate.pipe';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   saxTimerOutline,
@@ -39,9 +36,6 @@ import {
     MatDividerModule,
     RouterModule,
     DecimalPipe,
-    ImageLoaderDirective,
-    OrderStatePipe,
-    PdatePipe,
     NgIcon,
   ],
   providers: [
@@ -64,10 +58,6 @@ export class OrderDetailsComponent {
   private readonly route = inject(ActivatedRoute);
 
   OrderState = OrderState;
-
-  shop = computed(() => {
-    return this.order()?.shop;
-  });
 
   orderQuery = injectQuery(() => ({
     queryKey: ['order', this.id],

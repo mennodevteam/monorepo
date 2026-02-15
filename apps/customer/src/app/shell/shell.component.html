@@ -1,5 +1,5 @@
 <div class="shell-container">
-  <app-top-app-bar class="shell-app-bar"></app-top-app-bar>
+  <app-top-app-bar class="shell-app-bar" [hideMetaAction]="hideMetaAction()"></app-top-app-bar>
   @if (loading()) {
     <div class="loading-overlay">
       <mat-spinner diameter="24"></mat-spinner>

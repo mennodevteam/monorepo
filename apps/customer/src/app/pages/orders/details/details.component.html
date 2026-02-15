@@ -4,22 +4,6 @@
       <mat-spinner diameter="24"></mat-spinner>
     </div>
   } @else if (order()) {
-    <header class="order-header">
-      @if (shop()) {
-        <img
-          appImageLoader
-          [imageFile]="shop()?.logoImage"
-          [appImageLoader]="shop()?.logo"
-          [alt]="shop()?.title"
-          class="shop-logo"
-        />
-        <div class="shop-info">
-          <h1>{{ shop()?.title }}</h1>
-          <time class="order-date">{{ order()?.createdAt | pdate: true }}</time>
-        </div>
-      }
-    </header>
-
     <mat-card appearance="outlined" class="status-card" [ngClass]="'status-' + order()?.state">
       <mat-card-content>
         <div class="status-content">
@@ -29,13 +13,25 @@
           <div class="status-texts">
             <div class="status-header">
               <span class="status-label">وضعیت سفارش:</span>
-              <span class="status-value">{{ order()?.state | orderState }}</span>
             </div>
             <p class="status-description">{{ stateDescription }}</p>
           </div>
         </div>
       </mat-card-content>
     </mat-card>
+
+    <button
+      mat-raised-button
+      color="primary"
+      routerLink="/chat/order/{{ id }}"
+      class="track-order-btn"
+      [matBadge]="notSeenChatCount()"
+      [matBadgeHidden]="notSeenChatCount() === 0"
+      matBadgeColor="warn"
+    >
+      <ng-icon name="saxMessage2Outline" size="20" middle></ng-icon>
+      &nbsp;پیگیری سفارش و ارسال پیام
+    </button>
 
     <mat-list class="items-list">
       <div matSubheader>اقلام سفارش</div>
@@ -61,22 +57,3 @@
   }
 </div>
 
-@if (order()) {
-  <div class="bottom-actions">
-    <button
-      mat-fab
-      extended
-      routerLink="/chat/order/{{ id }}"
-      class="chat-button"
-      [matBadge]="notSeenChatCount()"
-      [matBadgeHidden]="notSeenChatCount() === 0"
-      matBadgeColor="warn"
-    >
-      <ng-icon name="saxMessage2Outline" size="20px"></ng-icon>
-      &nbsp; پیگیری سفارش
-      @if (chatQuery.data()?.length) {
-        &nbsp;({{ chatQuery.data()?.length }})
-      }
-    </button>
-  </div>
-}

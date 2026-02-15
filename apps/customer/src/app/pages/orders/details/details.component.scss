@@ -46,7 +46,7 @@
 
   .status-content {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 16px;
   }
 
@@ -110,10 +110,10 @@
   font-size: 13px;
 }
 
-.chat-button {
+.track-order-btn {
   position: fixed;
-  bottom: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
+  bottom: calc(64px + 16px + env(safe-area-inset-bottom));
+  left: 16px;
+  z-index: 10;
 }
+

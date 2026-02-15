@@ -27,6 +27,7 @@ export class ShellComponent implements OnInit {
 
   loading = signal(false);
   hideBottomNav = signal(false);
+  hideMetaAction = signal(false);
 
   constructor() {
     const elem: HTMLElement | null = document.querySelector('#pre-load-data-container');
@@ -73,6 +74,7 @@ export class ShellComponent implements OnInit {
 
     let rootPage = false;
     let hideBottomNav: boolean | undefined = undefined;
+    let hideMetaAction: boolean | undefined = undefined;
 
     while (currentRoute) {
       if (!rootPage && currentRoute.snapshot.data['isRootPage'] === true) {
@@ -83,9 +85,14 @@ export class ShellComponent implements OnInit {
         hideBottomNav = currentRoute.snapshot.data['hideBottomNav'];
       }
 
+      if (hideMetaAction === undefined && currentRoute.snapshot.data['hideMetaAction'] !== undefined) {
+        hideMetaAction = currentRoute.snapshot.data['hideMetaAction'];
+      }
+
       currentRoute = currentRoute.parent;
     }
 
     this.hideBottomNav.set(hideBottomNav || false);
+    this.hideMetaAction.set(hideMetaAction || false);
   }
 }

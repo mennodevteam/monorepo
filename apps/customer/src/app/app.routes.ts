@@ -70,7 +70,7 @@ export const appRoutes: Route[] = [
       {
         path: 'orders/:id',
         loadComponent: () => import('./pages/orders/details/details.component').then((m) => m.OrderDetailsComponent),
-        data: { title: 'جزئیات سفارش' },
+        data: { title: 'جزئیات سفارش', hideMetaAction: true },
       },
       {
         path: 'main-menu',
