@@ -298,6 +298,17 @@ export class CartService {
     }
   }
 
+  restoreQuantity(items: { productId: string; variantId?: number; quantity: number }[]) {
+    if (!items.length) return;
+    this.quantity.set(
+      items.map((x) => ({
+        productId: x.productId,
+        variantId: x.variantId,
+        quantity: signal(x.quantity),
+      })),
+    );
+  }
+
   async setAddressDeliveryArea() {
     const address = this.address();
     if (address && address.latitude && address.longitude) {

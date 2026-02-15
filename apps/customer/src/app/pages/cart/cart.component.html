@@ -1,8 +1,13 @@
-<app-top-app-bar title="سبد خرید" [sticky]="true" [hideMetaAction]="true"></app-top-app-bar>
+<app-top-app-bar title="سبد خرید" [sticky]="true" [hideMetaAction]="true">
+  <button mat-icon-button (click)="clearCart()" title="خالی کردن سبد">
+    <ng-icon [svg]="trashIcon" size="22"></ng-icon>
+  </button>
+</app-top-app-bar>
 
 <div class="page-container">
   @if (cart.orderItems().length) {
     <mat-list>
+      <div mat-subheader>تعداد {{ cart.totalQuantity() }} آیتم انتخاب شده</div>
       @for (item of cart.orderItems(); track $index) {
         <mat-list-item [class.three-line]="item.productVariant">
           <img matListItemAvatar appImageLoader [imageFile]="Product.mainImageFile(item?.product)" [alt]="item.product?.title" />

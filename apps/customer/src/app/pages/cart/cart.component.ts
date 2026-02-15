@@ -13,6 +13,8 @@ import { EmptyStateComponent } from '../../shared/components/empty-state/empty-s
 import { Product } from '@menno/types';
 import { ImageLoaderDirective } from '../../shared/directives';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { saxTrashOutline } from '@ng-icons/iconsax/outline';
 
 @Component({
   selector: 'app-cart',
@@ -28,7 +30,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     EmptyStateComponent,
     DecimalPipe,
     ImageLoaderDirective,
+    NgIcon,
   ],
+  providers: [provideIcons({ saxTrashOutline })],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
 })
@@ -39,6 +43,18 @@ export class CartComponent {
   router = inject(Router);
   snack = inject(MatSnackBar);
   Product = Product;
+  trashIcon = saxTrashOutline;
+
+  clearCart() {
+    const snapshot = this.cart
+      .quantity()
+      .map((x) => ({ productId: x.productId, variantId: x.variantId, quantity: x.quantity() }));
+    this.cart.clear();
+    const ref = this.snack.open('سبد خرید خالی شد.', 'بازگردانی', { duration: 5000 });
+    ref.onAction().subscribe(() => {
+      this.cart.restoreQuantity(snapshot);
+    });
+  }
 
   proceedToCheckout() {
     if (this.shopService.isOrderingTemporaryDisabled) {
