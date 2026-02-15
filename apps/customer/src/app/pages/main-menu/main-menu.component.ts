@@ -19,6 +19,7 @@ import {
 } from '@ng-icons/iconsax/outline';
 import { AuthService } from '../../core/services/auth.service';
 import { MenuService } from '../../core/services/menu.service';
+import { PwaService } from '../../core/services/pwa.service';
 import { ShopService } from '../../core/services/shop.service';
 import { User } from '@menno/types';
 import { ImageLoaderDirective } from '../../shared/directives/image-loader.directive';
@@ -55,6 +56,7 @@ import { ImageLoaderDirective } from '../../shared/directives/image-loader.direc
 export class MainMenuComponent {
   auth = inject(AuthService);
   menuService = inject(MenuService);
+  pwa = inject(PwaService);
   shopService = inject(ShopService);
 
   readonly user = computed(() => this.auth.user());
@@ -95,10 +97,5 @@ export class MainMenuComponent {
     return 'share' in navigator;
   }
 
-  downloadApp() {
-    // TODO: Implement download app logic
-    // Can link to app store or show download dialog
-    alert('لینک دانلود اپلیکیشن به زودی اضافه خواهد شد.');
-  }
 }
 

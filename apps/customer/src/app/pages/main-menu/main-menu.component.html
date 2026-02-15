@@ -56,13 +56,15 @@
         <ng-icon [svg]="chevronIcon" size="16"></ng-icon>
       </div>
     </a>
-    <a mat-list-item (click)="downloadApp()">
-      <ng-icon [svg]="downloadIcon" size="24" matListItemIcon></ng-icon>
-      <span matListItemLine>دانلود اپلیکیشن</span>
-      <div matListItemMeta>
-        <ng-icon [svg]="chevronIcon" size="16"></ng-icon>
-      </div>
-    </a>
+    @if (!pwa.isStandalone && pwa.deferredPrompt) {
+      <a mat-list-item (click)="pwa.install()">
+        <ng-icon [svg]="downloadIcon" size="24" matListItemIcon></ng-icon>
+        <span matListItemLine>دانلود اپلیکیشن</span>
+        <div matListItemMeta>
+          <ng-icon [svg]="chevronIcon" size="16"></ng-icon>
+        </div>
+      </a>
+    }
     @if (canShare) {
       <a mat-list-item (click)="share()" >
         <ng-icon [svg]="shareIcon" size="24" matListItemIcon></ng-icon>
