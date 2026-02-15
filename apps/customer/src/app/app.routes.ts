@@ -60,6 +60,7 @@ export const appRoutes: Route[] = [
       {
         path: 'categories/:categoryId',
         loadComponent: () => import('./pages/category/category.component').then((m) => m.CategoryComponent),
+        data: { preserveScrollOnBack: true },
       },
       {
         path: 'orders',
@@ -80,7 +81,7 @@ export const appRoutes: Route[] = [
       {
         path: 'search',
         loadComponent: () => import('./pages/search/search.component').then((m) => m.SearchComponent),
-        data: { isRootPage: true },
+        data: { isRootPage: true, preserveScrollOnBack: true },
       },
       {
         path: 'categories/:categoryId/:id',

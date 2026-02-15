@@ -1,7 +1,8 @@
 <mat-toolbar class="search-toolbar">
   <input
-    type="text"
-    [(ngModel)]="searchQuery"
+    type="search"
+    [ngModel]="searchQuery()"
+    (ngModelChange)="onSearchQueryChange($event)"
     placeholder="جستجو در محصولات..."
     class="search-input"
     autofocus

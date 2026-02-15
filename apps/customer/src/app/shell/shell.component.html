@@ -5,7 +5,7 @@
       <mat-spinner diameter="24"></mat-spinner>
     </div>
   }
-  <main class="shell-content" [class.no-bottom-nav]="hideBottomNav()">
+  <main #scrollContainer class="shell-content" [class.no-bottom-nav]="hideBottomNav()">
     <div class="shell-content-inner">
       <router-outlet></router-outlet>
     </div>
