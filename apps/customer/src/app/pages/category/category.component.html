@@ -11,7 +11,7 @@
     }
 
     @if (hasSubcategories()) {
-      <section class="subcategory-filter">
+      <mat-toolbar class="subcategory-filter" role="toolbar">
         <button
           type="button"
           class="subcategory-filter__button"
@@ -30,7 +30,7 @@
             {{ subcategory }}
           </button>
         }
-      </section>
+      </mat-toolbar>
     }
 
     @if (hasProducts()) {

@@ -5,6 +5,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { MenuService } from '../../core/services/menu.service';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { ShopService } from '../../core/services/shop.service';
@@ -13,7 +14,7 @@ import { MenuViewType } from '@menno/types';
 
 @Component({
   selector: 'app-category',
-  imports: [MatProgressSpinner, ProductCardComponent, MatGridListModule],
+  imports: [MatProgressSpinner, ProductCardComponent, MatGridListModule, MatToolbarModule],
   templateUrl: './category.component.html',
   styleUrl: './category.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
