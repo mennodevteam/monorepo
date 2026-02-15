@@ -136,6 +136,12 @@
               }
             }
           }
+        })
+        .catch(() => {
+          const div = document.querySelector(`#pre-load-data-container`);
+          if (div) {
+            div.remove();
+          }
         });
     </script>
   </body>
