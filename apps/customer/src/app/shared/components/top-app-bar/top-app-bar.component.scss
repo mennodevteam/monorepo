@@ -21,4 +21,98 @@ mat-toolbar {
   .spacer {
     flex: 1;
   }
+
+  .cart-action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 !important;
+    border-radius: 999px;
+    background-color: transparent;
+    color: inherit;
+    box-shadow: none;
+    line-height: 1;
+    transition:
+      width 220ms cubic-bezier(0.2, 0, 0, 1),
+      padding 220ms cubic-bezier(0.2, 0, 0, 1),
+      gap 220ms cubic-bezier(0.2, 0, 0, 1),
+      background-color 180ms ease,
+      color 180ms ease,
+      box-shadow 180ms ease;
+    flex-shrink: 0;
+
+    &.cart-action-button-raised {
+      background-color: var(--mat-sys-primary);
+      color: var(--mat-sys-on-primary);
+      box-shadow: var(--mat-sys-level1);
+    }
+
+    &.cart-action-button-expanded {
+      justify-content: center;
+      width: 122px;
+      padding-inline: 12px;
+      gap: 6px;
+    }
+
+    .mdc-button__label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: inherit;
+      width: 100%;
+    }
+
+    ng-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      vertical-align: middle;
+    }
+
+    .checkout-label {
+      white-space: nowrap;
+      font: var(--mat-sys-label-large);
+    }
+  }
+}
+
+:host ::ng-deep .cart-action-button .mdc-button__label {
+  overflow: hidden;
+}
+
+.checkout-label-enter {
+  animation: checkout-label-enter 220ms cubic-bezier(0.2, 0, 0, 1) forwards;
+}
+
+.checkout-label-leave {
+  animation: checkout-label-leave 160ms cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+@keyframes checkout-label-enter {
+  from {
+    transform: translateX(6px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes checkout-label-leave {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(6px);
+    opacity: 0;
+  }
 }

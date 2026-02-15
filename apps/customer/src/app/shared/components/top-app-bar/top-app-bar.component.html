@@ -14,13 +14,23 @@
 
   <span class="spacer"></span>
   @if (!hideMetaAction()) {
-    <button mat-icon-button routerLink="/cart">
-      <ng-icon
-        [svg]="cartIcon"
-        [matBadge]="cart.length()"
-        matBadgeColor="warn"
-        [matBadgeHidden]="cart.length() === 0"
-      ></ng-icon>
+    <button
+      mat-button
+      class="cart-action-button"
+      [class.cart-action-button-raised]="cart.length() > 0"
+      [class.cart-action-button-expanded]="cart.length() > 0"
+      routerLink="/cart"
+      [matBadge]="cart.length()"
+      matBadgeColor="warn"
+      [matBadgeOverlap]="true"
+      [matBadgeHidden]="cart.length() === 0"
+    >
+      <ng-icon [svg]="cartIcon" size="22"></ng-icon>
+      @if (cart.length() > 0) {
+        <span class="checkout-label" animate.enter="checkout-label-enter" animate.leave="checkout-label-leave">
+          تکمیل خرید
+        </span>
+      }
     </button>
   }
 </mat-toolbar>
