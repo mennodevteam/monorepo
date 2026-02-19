@@ -30,7 +30,9 @@ export class FilesService {
           Key: key,
           Body: file.buffer,
         },
-        {},
+        {
+          tags: [{ Key: 'abcd', Value: '12' }],
+        },
         (err, data) => {
           if (err) reject(err);
           else resolve(data);
