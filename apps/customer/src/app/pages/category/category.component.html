@@ -42,6 +42,16 @@
           />
         }
       </div>
+      @if (nextCategory(); as nextCat) {
+        <div class="next-category-row">
+          <span class="next-category-row__line"></span>
+          <a mat-flat-button [routerLink]="nextCategoryLink()">
+            {{ nextCat.title }}
+            <ng-icon [svg]="chevronDownIcon" size="20" middle></ng-icon>
+          </a>
+          <span class="next-category-row__line"></span>
+        </div>
+      }
     } @else {
       <div class="state state--empty">هنوز محصولی برای این دسته‌بندی ثبت نشده است.</div>
     }

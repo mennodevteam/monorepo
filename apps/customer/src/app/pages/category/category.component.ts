@@ -4,24 +4,32 @@ import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { saxArrowDown2Outline } from '@ng-icons/iconsax/outline';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MenuService } from '../../core/services/menu.service';
+import { LinkService } from '../../core/services/link.service';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { ShopService } from '../../core/services/shop.service';
 import { TitleService } from '../../core/services/title.service';
-import { MenuViewType } from '@menno/types';
+import { MenuViewType, ProductCategory } from '@menno/types';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-category',
-  imports: [MatProgressSpinner, ProductCardComponent, MatGridListModule, MatToolbarModule],
+  imports: [MatProgressSpinner, MatButtonModule, NgIcon, ProductCardComponent, MatGridListModule, MatToolbarModule, RouterLink],
+  providers: [provideIcons({ saxArrowDown2Outline })],
   templateUrl: './category.component.html',
   styleUrl: './category.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryComponent implements OnDestroy {
   MenuViewType = MenuViewType;
+  readonly chevronDownIcon = saxArrowDown2Outline;
   private readonly menuService = inject(MenuService);
+  private readonly linkService = inject(LinkService);
   private readonly shopService = inject(ShopService);
   private readonly route = inject(ActivatedRoute);
   private readonly titleService = inject(TitleService);
@@ -95,6 +103,24 @@ export class CategoryComponent implements OnDestroy {
   });
   readonly hasProducts = computed(() => this.filteredProducts().length > 0);
   readonly isLoading = computed(() => !this.menuService.data());
+
+  /** Next category in the list, or first category if current is last. Only set when there are 2+ categories. */
+  readonly nextCategory = computed((): ProductCategory | undefined => {
+    const categories = this.menuService.data()?.categories ?? [];
+    const current = this.category();
+    if (!current || categories.length < 2) return undefined;
+
+    const index = categories.findIndex((c) => c.id === current.id);
+    if (index < 0) return undefined;
+
+    const nextIndex = index + 1;
+    return categories[nextIndex >= categories.length ? 0 : nextIndex];
+  });
+
+  readonly nextCategoryLink = computed(() => {
+    const cat = this.nextCategory();
+    return cat ? this.linkService.getCategoryLink(cat) : null;
+  });
 
   constructor() {
     effect(() => {

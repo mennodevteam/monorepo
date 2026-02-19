@@ -91,3 +91,16 @@
   }
 }
 
+.next-category-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+
+  &__line {
+    flex: 1;
+    height: 1px;
+    background: var(--mat-sys-outline-variant, #d0d7de);
+  }
+}
+
