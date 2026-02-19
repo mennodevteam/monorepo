@@ -20,27 +20,17 @@
   padding-bottom: calc(80px + env(safe-area-inset-bottom));
 }
 
-mat-list-item {
+.missed-products-hint {
+  margin: 0 16px 16px;
+  font: var(--mat-sys-body-small);
+  color: var(--mat-sys-on-surface-variant);
+}
 
-  img {
-    width: 48px;
-    height: 48px;
-    border-radius: var(--mat-sys-corner-small) !important;
-  }
-
-  &.three-line {
-    height: auto;
-    min-height: 72px;
-  }
-
-  s {
-    margin-inline-end: 8px;
-    opacity: 0.7;
-  }
-
-  .price-text {
-    transform: translateY(-8px);
-  }
+.missed-products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 16px;
 }
 
 .action-toolbar {

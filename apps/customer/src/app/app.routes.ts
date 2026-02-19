@@ -10,6 +10,13 @@ export const appRoutes: Route[] = [
     children: authRoutes,
   },
   {
+    path: 'cart/missed-products',
+    loadComponent: () =>
+      import('./pages/cart/missed-products/missed-products.component').then(
+        (m) => m.MissedProductsComponent
+      ),
+  },
+  {
     path: 'cart',
     loadComponent: () => import('./pages/cart/cart.component').then((m) => m.CartComponent),
   },

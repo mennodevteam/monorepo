@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { CartService } from '../../core/services/cart.service';
+import { MenuService } from '../../core/services/menu.service';
 import { ShopService } from '../../core/services/shop.service';
 import { AuthService } from '../../core/services/auth.service';
 import { MatListModule } from '@angular/material/list';
@@ -10,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule, Router } from '@angular/router';
 import { TopAppBarComponent } from '../../shared/components/top-app-bar/top-app-bar.component';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
-import { Product } from '@menno/types';
+import { Product, Menu } from '@menno/types';
 import { ImageLoaderDirective } from '../../shared/directives';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -38,12 +39,35 @@ import { saxTrashOutline } from '@ng-icons/iconsax/outline';
 })
 export class CartComponent {
   cart = inject(CartService);
+  menuService = inject(MenuService);
   shopService = inject(ShopService);
   auth = inject(AuthService);
   router = inject(Router);
   snack = inject(MatSnackBar);
   Product = Product;
   trashIcon = saxTrashOutline;
+
+  private getMissedProducts(): Product[] {
+    const menu = this.menuService.data();
+    const orderItems = this.cart.orderItems();
+    if (!menu || !orderItems.length) return [];
+
+    const cartProductIds = new Set(orderItems.map((i) => i.product?.id).filter(Boolean));
+    const missed = new Map<string, Product>();
+
+    for (const item of orderItems) {
+      const product = item.product;
+      if (!product?.relatedProductIds?.length) continue;
+
+      for (const relatedId of product.relatedProductIds) {
+        if (cartProductIds.has(relatedId)) continue;
+        const related = Menu.getProductById(menu, relatedId);
+        if (related) missed.set(related.id, related);
+      }
+    }
+
+    return Array.from(missed.values());
+  }
 
   clearCart() {
     const snapshot = this.cart
@@ -70,6 +94,13 @@ export class CartComponent {
       return;
     }
 
-    this.router.navigate(['/payment']);
+    const missedProducts = this.getMissedProducts();
+    if (missedProducts.length > 0) {
+      this.router.navigate(['/cart/missed-products'], {
+        skipLocationChange: true,
+      });
+    } else {
+      this.router.navigate(['/payment']);
+    }
   }
 }
