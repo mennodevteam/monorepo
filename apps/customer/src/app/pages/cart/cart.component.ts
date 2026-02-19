@@ -11,8 +11,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule, Router } from '@angular/router';
 import { TopAppBarComponent } from '../../shared/components/top-app-bar/top-app-bar.component';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
-import { Product, Menu } from '@menno/types';
+import { Product, Menu, StatAction } from '@menno/types';
 import { ImageLoaderDirective } from '../../shared/directives';
+import { MenuStatService } from '../../core/services/menu-stat.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { saxTrashOutline } from '@ng-icons/iconsax/outline';
@@ -40,12 +41,19 @@ import { saxTrashOutline } from '@ng-icons/iconsax/outline';
 export class CartComponent {
   cart = inject(CartService);
   menuService = inject(MenuService);
+  menuStat = inject(MenuStatService);
   shopService = inject(ShopService);
   auth = inject(AuthService);
   router = inject(Router);
   snack = inject(MatSnackBar);
   Product = Product;
   trashIcon = saxTrashOutline;
+
+  constructor() {
+    if (this.cart.length() > 0) {
+      this.menuStat.send(StatAction.ViewCart, { value: this.cart.total() });
+    }
+  }
 
   private getMissedProducts(): Product[] {
     const menu = this.menuService.data();

@@ -6,8 +6,9 @@ import { map } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatRippleModule } from '@angular/material/core';
-import { Product, ProductVariant, ProductCategory, Menu } from '@menno/types';
+import { Product, ProductVariant, ProductCategory, Menu, StatAction } from '@menno/types';
 import { MenuService } from '../../core/services/menu.service';
+import { MenuStatService } from '../../core/services/menu-stat.service';
 import { TitleService } from '../../core/services/title.service';
 import { ImageLoaderDirective } from '../../shared/directives/image-loader.directive';
 import { QuantitySelectorComponent } from '../../shared/components/quantity-selector/quantity-selector.component';
@@ -32,6 +33,7 @@ import { ProductCardComponent } from '../../shared/components/product-card/produ
 })
 export class ProductComponent implements OnDestroy {
   private readonly menuService = inject(MenuService);
+  private readonly menuStat = inject(MenuStatService);
   private readonly route = inject(ActivatedRoute);
   private readonly titleService = inject(TitleService);
 
@@ -127,6 +129,7 @@ export class ProductComponent implements OnDestroy {
   readonly activeImageIndex = signal(0);
   private readonly carousel = viewChild<ElementRef<HTMLElement>>('carousel');
   private intervalId: ReturnType<typeof setInterval> | null = null;
+  private lastClickProductId: string | null = null;
 
   ngOnDestroy(): void {
     this.titleService.clearTitle();
@@ -202,6 +205,10 @@ export class ProductComponent implements OnDestroy {
       const product = this.product();
       if (product) {
         this.titleService.setTitle(product.title);
+        if (this.lastClickProductId !== product.id) {
+          this.lastClickProductId = product.id;
+          this.menuStat.send(StatAction.ClickProduct, { productId: product.id });
+        }
       }
     });
 

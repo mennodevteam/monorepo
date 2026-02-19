@@ -4,6 +4,7 @@ import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { firstValueFrom } from 'rxjs';
 import { Menu, Product } from '@menno/types';
 import { resolveShopUsername } from '../functions';
+import { CampaignService } from './campaign.service';
 
 const MENU_QUERY_KEY = (username: string) => ['menu', username] as const;
 
@@ -13,7 +14,9 @@ const MENU_QUERY_KEY = (username: string) => ['menu', username] as const;
 export class MenuService {
   private readonly http = inject(HttpClient);
   private readonly queryClient = inject(QueryClient);
+  private readonly campaign = inject(CampaignService);
   private readonly username = resolveShopUsername();
+  private loadMenuStatSent = false;
 
   readonly menuQuery = injectQuery(() => ({
     queryKey: MENU_QUERY_KEY(this.username),
@@ -36,12 +39,19 @@ export class MenuService {
 
   readonly data = computed(() => this.menuQuery.data());
 
-  private fetchMenu(username: string) {
-    return firstValueFrom(
+  private async fetchMenu(username: string): Promise<Menu> {
+    const menu = await firstValueFrom(
       this.http.get<Menu>(`menus/${username}`, {
         headers: { skipJwt: 'true' },
       }),
     );
+    if (menu?.id && !this.loadMenuStatSent) {
+      this.loadMenuStatSent = true;
+      this.http
+        .get(`menuStats/loadMenu/${menu.id}`, { params: this.campaign.params })
+        .subscribe({ error: () => {} });
+    }
+    return menu;
   }
 
   getProductById(id: string): Product | null {
