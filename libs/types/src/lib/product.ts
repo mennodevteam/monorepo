@@ -28,6 +28,7 @@ export class Product {
   maxBasket?: number;
   thirdPartyId?: string;
   slug?: string;
+  relatedProductIds?: string[];
   _orderItem?: ProductItem;
   _changingStatus?: boolean;
   _priceLoading?: boolean;

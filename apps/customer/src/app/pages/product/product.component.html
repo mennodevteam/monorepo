@@ -85,4 +85,37 @@
       }
     </div>
   </div>
+
+  @if (relatedProducts().length > 0) {
+    <section class="related-products">
+      <h3 class="related-products__title">محصولات مرتبط</h3>
+      <div
+        class="related-products-container"
+        [class.related-products-stack]="!useRelatedMultiRowCarousel()"
+        [class.related-products-carousel]="useRelatedMultiRowCarousel()"
+      >
+        @if (useRelatedMultiRowCarousel()) {
+          <div class="related-products-carousel-wrapper">
+            @for (rowIndex of getRelatedProductsRowIndices(); track rowIndex) {
+              <div class="related-products-carousel-row">
+                @for (p of getRelatedProductsForRow(rowIndex); track p.id) {
+                  <div class="related-products-carousel-item">
+                    <app-product-card [product]="p" [largeImage]="false" [hideVariants]="true" />
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="related-products-stack-list">
+            @for (p of relatedProducts(); track p.id) {
+              <div class="related-products-stack-item">
+                <app-product-card [product]="p" [largeImage]="false" [hideVariants]="true" />
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </section>
+  }
 }

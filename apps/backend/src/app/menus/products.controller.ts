@@ -23,6 +23,41 @@ export class ProductsController {
   @Post()
   async save(@Body() dto: Product, @LoginUser() user: AuthPayload): Promise<Product> {
     const shop = await this.auth.getPanelUserShop(user);
+
+    const newRelatedIds = (dto.relatedProductIds ?? []).filter((id): id is string => !!id);
+    const currentProductId = dto.id;
+
+    if (currentProductId) {
+      const existing = await this.productsRepo.findOne({
+        where: { id: currentProductId },
+        select: ['id', 'relatedProductIds'],
+      });
+      const oldRelatedIds: string[] = (existing?.relatedProductIds ?? []) as string[];
+
+      const added = newRelatedIds.filter((id) => !oldRelatedIds.includes(id));
+      const removed = oldRelatedIds.filter((id) => !newRelatedIds.includes(id));
+
+      for (const relatedId of added) {
+        const other = await this.productsRepo.findOne({ where: { id: relatedId } });
+        if (other) {
+          const othersRelated = ((other.relatedProductIds ?? []) as string[]).filter(Boolean);
+          if (!othersRelated.includes(currentProductId)) {
+            other.relatedProductIds = [...othersRelated, currentProductId];
+            await this.productsRepo.save(other);
+          }
+        }
+      }
+
+      for (const relatedId of removed) {
+        const other = await this.productsRepo.findOne({ where: { id: relatedId } });
+        if (other) {
+          const othersRelated = ((other.relatedProductIds ?? []) as string[]).filter(Boolean);
+          other.relatedProductIds = othersRelated.filter((id) => id !== currentProductId);
+          await this.productsRepo.save(other);
+        }
+      }
+    }
+
     const res = await this.productsRepo.save(dto);
     await this.redis.updateMenu(shop.id);
     return res;

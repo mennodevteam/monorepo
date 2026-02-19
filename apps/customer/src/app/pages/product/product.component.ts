@@ -11,6 +11,7 @@ import { MenuService } from '../../core/services/menu.service';
 import { TitleService } from '../../core/services/title.service';
 import { ImageLoaderDirective } from '../../shared/directives/image-loader.directive';
 import { QuantitySelectorComponent } from '../../shared/components/quantity-selector/quantity-selector.component';
+import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 
 @Component({
   selector: 'app-product',
@@ -23,6 +24,7 @@ import { QuantitySelectorComponent } from '../../shared/components/quantity-sele
     ImageLoaderDirective,
     MatRippleModule,
     QuantitySelectorComponent,
+    ProductCardComponent,
   ],
   templateUrl: './product.component.html',
   styleUrl: './product.component.scss',
@@ -80,6 +82,30 @@ export class ProductComponent implements OnDestroy {
     const p = this.product();
     return this.hasDiscount() && p ? Product.realPrice(p) : null;
   });
+
+  readonly relatedProducts = computed(() => {
+    const p = this.product();
+    const menu = this.menuService.data();
+    if (!p?.relatedProductIds?.length || !menu) return [];
+    const products: Product[] = [];
+    for (const id of p.relatedProductIds) {
+      const product = Menu.getProductById(menu, id);
+      if (product) products.push(product);
+    }
+    return products;
+  });
+
+  readonly useRelatedMultiRowCarousel = computed(() => this.relatedProducts().length > 3);
+
+  getRelatedProductsRowIndices(): number[] {
+    return this.useRelatedMultiRowCarousel() ? [0, 1] : [0];
+  }
+
+  getRelatedProductsForRow(rowIndex: number): Product[] {
+    const all = this.relatedProducts();
+    const rows = this.useRelatedMultiRowCarousel() ? 2 : 1;
+    return all.filter((_, i) => i % rows === rowIndex);
+  }
 
   isImage(value: unknown): boolean {
     return typeof value === 'object' && value !== null && 'md' in value;

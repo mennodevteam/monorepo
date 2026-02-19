@@ -30,7 +30,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FilesService } from '../../core/services/files.service';
 import { FormComponent } from '../../core/guards/dirty-form-deactivator.guard';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { startWith } from 'rxjs';
 
 @Component({
   selector: 'app-product-edit',
@@ -77,6 +78,11 @@ export class ProductEditComponent implements FormComponent {
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   product = signal<Product | null>(null);
   readonly allSubcategoryOptions = signal<string[]>([]);
+  readonly relatedProductSearchControl = new FormControl('', { nonNullable: true });
+  readonly relatedProductSearchQuery = toSignal(
+    this.relatedProductSearchControl.valueChanges.pipe(startWith('')),
+    { initialValue: '' }
+  );
 
   constructor() {
     effect(() => {
@@ -135,6 +141,7 @@ export class ProductEditComponent implements FormComponent {
           variants: this.variantsForm,
           imageFiles: this.imagesForm,
           maxBasket: [product?.maxBasket],
+          relatedProductIds: [product?.relatedProductIds ?? []],
         });
 
         // Setup slug value changes handler
@@ -188,6 +195,71 @@ export class ProductEditComponent implements FormComponent {
     return this.allSubcategoryOptions()
       .filter((item) => !selected.has(item.toLowerCase()))
       .filter((item) => !query || item.toLowerCase().includes(query));
+  }
+
+  get relatedProductIdsControl() {
+    return this.form?.controls['relatedProductIds'] as FormControl<string[]>;
+  }
+
+  get filteredRelatedProducts(): { product: Product; category: { title: string } }[] {
+    const menu = this.menuService.data();
+    if (!menu?.categories || !this.form) return [];
+    const selectedIds = (this.relatedProductIdsControl?.value || []) as string[];
+    const currentProductId = this.product()?.id;
+    const searchQuery = (this.relatedProductSearchQuery() ?? '').trim().toLowerCase();
+    const result: { product: Product; category: { title: string } }[] = [];
+    for (const cat of menu.categories as ProductCategory[]) {
+      if (!cat.products) continue;
+      for (const p of cat.products as Product[]) {
+        if (p.id === currentProductId) continue;
+        if (selectedIds.includes(p.id)) continue;
+        if (searchQuery && !p.title.toLowerCase().includes(searchQuery)) continue;
+        result.push({ product: p, category: { title: cat.title } });
+      }
+    }
+    return result;
+  }
+
+  getRelatedProductById(id: string): Product | undefined {
+    const menu = this.menuService.data();
+    return menu ? (Menu.getProductById(menu, id) ?? undefined) : undefined;
+  }
+
+  getCategoryForProduct(productId: string): string | undefined {
+    const menu = this.menuService.data();
+    if (!menu?.categories) return undefined;
+    for (const cat of menu.categories as ProductCategory[]) {
+      if (cat.products?.some((p: Product) => p.id === productId)) return cat.title;
+    }
+    return undefined;
+  }
+
+  selectRelatedProduct(item: { product: Product; category: { title: string } }) {
+    const control = this.relatedProductIdsControl;
+    if (!control) return;
+    const current = (control.value || []) as string[];
+    if (!current.includes(item.product.id)) {
+      control.setValue([...current, item.product.id]);
+      control.markAsDirty();
+    }
+    this.relatedProductSearchControl.setValue('');
+  }
+
+  removeRelatedProduct(productId: string) {
+    const control = this.relatedProductIdsControl;
+    if (!control) return;
+    const current = (control.value || []) as string[];
+    control.setValue(current.filter((id) => id !== productId));
+    control.markAsDirty();
+  }
+
+  moveRelatedProduct(event: CdkDragDrop<string[]>) {
+    const control = this.relatedProductIdsControl;
+    if (!control) return;
+    const current = [...((control.value || []) as string[])];
+    moveItemInArray(current, event.previousIndex, event.currentIndex);
+    control.setValue(current);
+    control.markAsDirty();
   }
 
   editVariant(variant?: AbstractControl) {
@@ -276,6 +348,7 @@ export class ProductEditComponent implements FormComponent {
     fv.category = { id: fv.category.id };
     fv.slug = this.buildFinalSlug(fv.slug) ?? null;
     fv.subcategories = this.cleanSubcategories(fv.subcategories || []);
+    fv.relatedProductIds = (fv.relatedProductIds ?? []).filter((id: string) => !!id);
 
     for (let i = 0; i < fv.imageFiles?.length; i++) {
       const imageFile = fv.imageFiles[i];

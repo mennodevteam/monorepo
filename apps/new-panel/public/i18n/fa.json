@@ -267,7 +267,11 @@
     "maxBasket": "حداکثر تعداد در سبد خرید",
     "subcategories": "زیر‌دسته‌ها",
     "subcategoriesPlaceholder": "زیر‌دسته را تایپ کنید و Enter بزنید",
-    "slugDescription": "با ثبت کردن slug آدرس url منحصر به فردی برای این محصول ایجاد می‌شود. اگر خالی باشد، یک شناسه عددی یکتا استفاده می‌شود."
+    "slugDescription": "با ثبت کردن slug آدرس url منحصر به فردی برای این محصول ایجاد می‌شود. اگر خالی باشد، یک شناسه عددی یکتا استفاده می‌شود.",
+    "relatedProductsSection": "محصولات مرتبط",
+    "relatedProductsPlaceholder": "جستجو و انتخاب محصول",
+    "relatedProductsHint": "با افزودن محصولات اینجا، آن محصولات نیز این محصول را به عنوان مرتبط نمایش می‌دهند",
+    "noRelatedProducts": "هیچ محصول مرتبطی انتخاب نشده"
   },
   "dirtyFormDialog": {
     "title": "عدم ذخیره تغییرات",

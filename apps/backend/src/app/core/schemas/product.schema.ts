@@ -82,6 +82,11 @@ export const ProductSchema = new EntitySchema<Product>({
       array: true,
       default: [OrderType.Delivery, OrderType.DineIn, OrderType.Takeaway],
     },
+    relatedProductIds: {
+      type: 'simple-json',
+      nullable: true,
+      default: [],
+    },
   },
   checks: [
     {
