@@ -24,7 +24,7 @@ export class FilesService {
     formData.append('file', file);
     return this.http
       .post(`${API_PATH}/upload`, formData)
-      .pipe(map((x: any) => ({ key: x.key, url: x.location })))
+      .pipe(map((x: any) => ({ key: x.Key, url: x.Location })))
       .toPromise();
   }
 
