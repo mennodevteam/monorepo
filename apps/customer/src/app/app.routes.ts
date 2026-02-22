@@ -13,7 +13,7 @@ export const appRoutes: Route[] = [
     path: 'cart/missed-products',
     loadComponent: () =>
       import('./pages/cart/missed-products/missed-products.component').then(
-        (m) => m.MissedProductsComponent
+        (m) => m.UpsellProductsComponent
       ),
   },
   {

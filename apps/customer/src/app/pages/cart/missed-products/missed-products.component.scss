@@ -17,13 +17,46 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  padding-top: 8px;
   padding-bottom: calc(80px + env(safe-area-inset-bottom));
 }
 
-.missed-products-hint {
+.upsel-intro {
   margin: 0 16px 16px;
+  text-align: center;
+  transform: translateY(calc(42vh - 96px));
+  transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.upsel-intro--done {
+  transform: translateY(12px);
+}
+
+.upsel-title {
+  margin: 0;
+  font: var(--mat-sys-headline-small);
+}
+
+.upsel-description {
+  margin: 8px 0 0;
   font: var(--mat-sys-body-small);
   color: var(--mat-sys-on-surface-variant);
+}
+
+.typing-cursor {
+  opacity: 0;
+  margin-inline-start: 2px;
+}
+
+.typing-cursor--visible {
+  opacity: 1;
+  animation: typing-cursor-blink 900ms step-end infinite;
+}
+
+@keyframes typing-cursor-blink {
+  50% {
+    opacity: 0;
+  }
 }
 
 .missed-products-list {
@@ -31,6 +64,16 @@
   flex-direction: column;
   gap: 12px;
   padding: 0 16px;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity 450ms ease, transform 450ms ease;
+}
+
+.missed-products-list--visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .action-toolbar {
@@ -43,10 +86,14 @@
   height: calc(64px + env(safe-area-inset-bottom));
   padding-bottom: env(safe-area-inset-bottom);
   display: flex;
+  gap: 8px;
 
   button {
-    flex: 1;
     height: 48px;
+  }
+
+  .complete-button {
+    flex: 1;
   }
 
   @media (min-width: 768px) {

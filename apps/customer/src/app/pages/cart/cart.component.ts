@@ -103,7 +103,7 @@ export class CartComponent {
     }
 
     const missedProducts = this.getMissedProducts();
-    if (missedProducts.length > 0) {
+    if (missedProducts.length > 0 && !this.cart.upsellDismissed()) {
       this.router.navigate(['/cart/missed-products'], {
         skipLocationChange: true,
       });

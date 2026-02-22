@@ -1,20 +1,24 @@
-<app-top-app-bar title="چیزی جا ننداختی؟" [sticky]="true" [hideMetaAction]="true" [hideLeft]="true">
-  <button mat-stroked-button (click)="skip()">رد کردن</button>
-</app-top-app-bar>
-
 <div class="page-container">
-  <p class="missed-products-hint">
-    این محصولات با آیتم‌های سبد خرید شما مرتبط هستند.
-  </p>
+  <div class="upsel-intro" [class.upsel-intro--done]="isUpselIntroDone()">
+    <h2 class="upsel-title">
+      {{ typedTitle() }}
+      <span class="typing-cursor" [class.typing-cursor--visible]="isTitleTyping()">|</span>
+    </h2>
+    <p class="upsel-description">
+      {{ typedDescription() }}
+      <span class="typing-cursor" [class.typing-cursor--visible]="isDescriptionTyping()">|</span>
+    </p>
+  </div>
 
-  <div class="missed-products-list">
+  <div class="missed-products-list" [class.missed-products-list--visible]="isUpselIntroDone()">
     @for (product of missedProducts(); track product.id) {
       <app-product-card [product]="product" [largeImage]="false" [hideVariants]="false" />
     }
   </div>
 
   <mat-toolbar class="action-toolbar">
-    <button mat-raised-button (click)="proceedToCheckout()">
+    <button mat-stroked-button (click)="skip()">رد کردن</button>
+    <button mat-raised-button class="complete-button" (click)="proceedToCheckout()">
       تکمیل خرید
     </button>
   </mat-toolbar>

@@ -49,6 +49,7 @@ export class CartService {
   paymentType = signal<OrderPaymentType | undefined>(undefined);
   useWallet = signal<boolean>(false);
   quantity = signal<SignalProductItem[]>([]);
+  upsellDismissed = signal(false);
   note = signal<string | undefined>(undefined);
   address = signal<Address | undefined>(undefined);
   coupon = signal<DiscountCoupon | undefined>(undefined);
@@ -287,6 +288,7 @@ export class CartService {
 
   clear(deep?: boolean) {
     this.quantity.set([]);
+    this.upsellDismissed.set(false);
     this.note.set(undefined);
     this.address.set(undefined);
     this.table.set(undefined);
@@ -300,6 +302,7 @@ export class CartService {
 
   restoreQuantity(items: { productId: string; variantId?: number; quantity: number }[]) {
     if (!items.length) return;
+    this.upsellDismissed.set(false);
     this.quantity.set(
       items.map((x) => ({
         productId: x.productId,
@@ -307,6 +310,10 @@ export class CartService {
         quantity: signal(x.quantity),
       })),
     );
+  }
+
+  dismissUpsell() {
+    this.upsellDismissed.set(true);
   }
 
   async setAddressDeliveryArea() {
