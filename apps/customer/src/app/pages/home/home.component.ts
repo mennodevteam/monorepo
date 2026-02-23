@@ -19,5 +19,8 @@ export class HomeComponent {
 
   readonly sections = this.homeSectionService.data;
   readonly isLoading = computed(() => this.homeSectionService.homeSectionsQuery.isLoading());
+  readonly isFirstSectionBanner = computed(
+    () => this.sections()[0]?.type === HomeSectionType.Banner
+  );
   readonly HomeSectionType = HomeSectionType;
 }

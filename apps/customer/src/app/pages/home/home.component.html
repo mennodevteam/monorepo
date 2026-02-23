@@ -1,4 +1,4 @@
-<div class="page-container">
+<div class="page-container" [class.first-section-banner]="isFirstSectionBanner()">
   @if (isLoading()) {
     <div class="loading-state">
       <mat-spinner diameter="24"></mat-spinner>
