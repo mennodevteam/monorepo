@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -54,7 +54,7 @@ import { MatDividerModule } from '@angular/material/divider';
 export class BottomNavigationComponent {
   visible = input(true);
   navItems = [
-    { path: '/home', label: 'خانه', icon: saxHome2Outline, activeIcon: saxHome2Bold },
+    { path: '/', label: 'خانه', icon: saxHome2Outline, activeIcon: saxHome2Bold, exact: true },
     { path: '/categories', label: 'دسته‌بندی‌ها', icon: saxCategoryOutline, activeIcon: saxCategoryBold },
     { path: '/search', label: 'جستجو', icon: saxSearchNormal1Outline, activeIcon: saxSearchNormal1Bold },
     { path: '/orders', label: 'سفارشات', icon: saxBoxOutline, activeIcon: saxBoxBold },

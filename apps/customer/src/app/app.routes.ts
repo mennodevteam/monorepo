@@ -52,13 +52,13 @@ export const appRoutes: Route[] = [
     children: [
       {
         path: '',
-        redirectTo: 'home',
-        pathMatch: 'full',
+        component: HomeComponent,
+        data: { isRootPage: true, preserveScrollOnBack: true },
       },
       {
         path: 'home',
-        component: HomeComponent,
-        data: { isRootPage: true, preserveScrollOnBack: true },
+        redirectTo: '',
+        pathMatch: 'full',
       },
       {
         path: 'categories',

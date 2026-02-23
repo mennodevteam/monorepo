@@ -5,6 +5,7 @@
         mat-button
         [routerLink]="item.path"
         routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: item.exact || false }"
         #rla="routerLinkActive"
         class="nav-button"
       >

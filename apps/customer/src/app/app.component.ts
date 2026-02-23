@@ -106,6 +106,6 @@ export class AppComponent implements OnInit {
   }
 
   private isWelcomeRoute(path: string) {
-    return path === '/home' || path.startsWith('/categories');
+    return path === '/' || path === '/home' || path.startsWith('/categories');
   }
 }
