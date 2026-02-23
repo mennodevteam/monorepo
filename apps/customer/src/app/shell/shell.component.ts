@@ -39,6 +39,8 @@ export class ShellComponent implements OnInit {
         elem.style.opacity = '0';
         setTimeout(() => {
           elem.remove();
+          (window as any).__preloadRemoved = true;
+          window.dispatchEvent(new Event('preload-removed'));
         }, 320);
       };
 

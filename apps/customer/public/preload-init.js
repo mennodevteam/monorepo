@@ -92,7 +92,7 @@
           logo.style.display = 'none';
         };
 
-        div.replaceChildren(h1, logo);
+        div.replaceChildren(logo, h1);
 
         const showLogo = function () {
           cursor.style.display = 'none';

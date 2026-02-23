@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
 
   private welcomeTimerId: ReturnType<typeof setTimeout> | undefined;
   private hasShownWelcomePopup = false;
+  private pendingWelcomeAfterPreload = false;
 
   constructor() {
     effect(() => {
@@ -43,6 +44,19 @@ export class AppComponent implements OnInit {
       .subscribe(() => {
         this.tryShowWelcomePopup();
       });
+
+    const onPreloadRemoved = () => {
+      if (!this.pendingWelcomeAfterPreload || this.hasShownWelcomePopup) {
+        return;
+      }
+      this.pendingWelcomeAfterPreload = false;
+      if (this.isWelcomeRoute(this.currentPath())) {
+        this.openWelcomeDialog();
+      }
+    };
+    window.addEventListener('preload-removed', onPreloadRemoved);
+    this.destroyRef.onDestroy(() => window.removeEventListener('preload-removed', onPreloadRemoved));
+
     this.tryShowWelcomePopup();
   }
 
@@ -64,11 +78,27 @@ export class AppComponent implements OnInit {
         return;
       }
 
-      this.hasShownWelcomePopup = true;
-      this.dialog.open(WelcomeMessageDialogComponent, {
-        panelClass: 'visible-overflow',
-      });
+      if (this.isPreloadVisible()) {
+        this.pendingWelcomeAfterPreload = true;
+        return;
+      }
+
+      this.openWelcomeDialog();
     }, delayMs);
+  }
+
+  private openWelcomeDialog() {
+    if (this.hasShownWelcomePopup) {
+      return;
+    }
+    this.hasShownWelcomePopup = true;
+    this.dialog.open(WelcomeMessageDialogComponent, {
+      panelClass: 'visible-overflow',
+    });
+  }
+
+  private isPreloadVisible() {
+    return !!document.querySelector('#pre-load-data-container');
   }
 
   private currentPath() {
