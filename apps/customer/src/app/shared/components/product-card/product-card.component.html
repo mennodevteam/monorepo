@@ -16,7 +16,7 @@
     <div class="product-card__texts">
       <div class="product-card__title-row">
         <h3 class="product-card__title">{{ product().title }}</h3>
-        @if (hasAnyDiscount()) {
+        @if (!isUnavailable() && hasAnyDiscount()) {
           <span class="product-card__discount-chip">🔥 {{ discountBadge() }}٪ تخفیف</span>
         }
         @if (isUnavailable()) {

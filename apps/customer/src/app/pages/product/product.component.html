@@ -36,7 +36,7 @@
     <div class="product-header-row">
       <h1 class="product-title">{{ product.title }}</h1>
       <div class="product-badges">
-        @if (hasAnyDiscount()) {
+        @if (!isUnavailable() && hasAnyDiscount()) {
           <span class="product-discount-chip">🔥 {{ discountBadge() }}٪ تخفیف</span>
         }
         @if (isUnavailable()) {
