@@ -62,6 +62,11 @@ export class OtpComponent implements OnDestroy {
   }
 
   async setToken(ev?: Event) {
+    if (this.loading()) {
+      ev?.preventDefault?.();
+      return;
+    }
+
     const returnPath = this.route.snapshot.queryParams?.['returnPath'];
     const value = this.otp();
     if (value) {
