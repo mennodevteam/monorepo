@@ -35,12 +35,22 @@ export class ShellComponent implements OnInit {
   constructor() {
     const elem: HTMLElement | null = document.querySelector('#pre-load-data-container');
     if (elem) {
-      setTimeout(() => {
+      const removePreload = () => {
         elem.style.opacity = '0';
         setTimeout(() => {
           elem.remove();
         }, 320);
-      }, 500);
+      };
+
+      if ((window as any).__preloadAnimationDone) {
+        removePreload();
+      } else {
+        const onPreloadDone = () => {
+          window.removeEventListener('preload-animation-done', onPreloadDone);
+          removePreload();
+        };
+        window.addEventListener('preload-animation-done', onPreloadDone);
+      }
     }
   }
   
