@@ -2,7 +2,7 @@
 
 @if (cart.length() && addressesService.addresses()) {
   <main class="main-content">
-    @if (shopService.isPaymentRequired() && vpnQuery.data() === true) {
+    @if (shopService.isPaymentRequired() && vpnCheck.isVpnEnabled()) {
       <mat-card appearance="outlined" class="card-warn vpn-warning">
         <mat-card-header>
           <mat-card-subtitle class="mat-font-label-sm">⚠️&nbsp; ترجیحاً قبل از پرداخت، VPN خود را خاموش کنید.</mat-card-subtitle>

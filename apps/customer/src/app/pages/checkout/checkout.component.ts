@@ -1,18 +1,15 @@
 import { Component, computed, inject } from '@angular/core';
 import { PlatformLocation, DecimalPipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
-import { NgIcon, provideIcons } from '@ng-icons/core';
+import { provideIcons } from '@ng-icons/core';
 import { saxEditOutline, saxAddOutline } from '@ng-icons/iconsax/outline';
 import { saxLocationBold, saxBillBold, saxCardBold } from '@ng-icons/iconsax/bold';
 import { TranslateModule } from '@ngx-translate/core';
-import { injectQuery } from '@tanstack/angular-query-experimental';
-import { lastValueFrom } from 'rxjs';
 import { CartService } from '../../core/services/cart.service';
 import { ShopService } from '../../core/services/shop.service';
 import { AnalyticsService } from '../../core/services/analytics.service';
@@ -26,6 +23,7 @@ import { AddressesService } from '../../core/services/addresses.service';
 import { StatAction, OrderType } from '@menno/types';
 import { SectionComponent } from '../../shared/components/section/section.component';
 import { AddressCardComponent } from './components/address-card/address-card.component';
+import { VpnCheckService } from '../../core/services/vpn-check.service';
 
 @Component({
   selector: 'app-checkout',
@@ -38,7 +36,6 @@ import { AddressCardComponent } from './components/address-card/address-card.com
     MatButtonModule,
     MatDividerModule,
     MatCardModule,
-    NgIcon,
     TranslateModule,
     SectionComponent,
     DecimalPipe,
@@ -66,19 +63,13 @@ export class CheckoutComponent {
   location = inject(PlatformLocation);
   dialog = inject(MatDialog);
   addressesService = inject(AddressesService);
-  http = inject(HttpClient);
+  vpnCheck = inject(VpnCheckService);
   OrderType = OrderType;
   editIcon = saxEditOutline;
   addIcon = saxAddOutline;
   addressIcon = saxLocationBold;
   invoiceIcon = saxBillBold;
   paymentIcon = saxCardBold;
-
-  vpnQuery = injectQuery(() => ({
-    queryKey: ['vpn'],
-    queryFn: () => lastValueFrom(this.http.get<{ country_code: string }>('https://api.ipbase.com/v1/json/')),
-    select: (data: { country_code: string }) => data.country_code !== 'IR',
-  }));
   
   constructor() {
     if (this.cart.length() === 0) {

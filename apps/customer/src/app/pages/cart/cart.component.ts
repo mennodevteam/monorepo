@@ -17,6 +17,7 @@ import { MenuStatService } from '../../core/services/menu-stat.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { saxTrashOutline } from '@ng-icons/iconsax/outline';
+import { VpnCheckService } from '../../core/services/vpn-check.service';
 
 @Component({
   selector: 'app-cart',
@@ -46,6 +47,7 @@ export class CartComponent {
   auth = inject(AuthService);
   router = inject(Router);
   snack = inject(MatSnackBar);
+  vpnCheck = inject(VpnCheckService);
   Product = Product;
   trashIcon = saxTrashOutline;
 
