@@ -17,7 +17,10 @@
       <div class="product-card__title-row">
         <h3 class="product-card__title">{{ product().title }}</h3>
         @if (hasAnyDiscount()) {
-          <span class="product-card__discount-chip">{{ discountBadge() }} درصد تخفیف</span>
+          <span class="product-card__discount-chip">🔥 {{ discountBadge() }}٪ تخفیف</span>
+        }
+        @if (isUnavailable()) {
+          <span class="product-card__unavailable-chip">ناموجود</span>
         }
       </div>
 

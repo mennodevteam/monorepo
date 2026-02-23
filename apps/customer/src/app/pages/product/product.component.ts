@@ -80,6 +80,39 @@ export class ProductComponent implements OnDestroy {
     const p = this.product();
     return p ? Product.hasDiscount(p) : false;
   });
+  readonly hasAnyDiscount = computed(() => {
+    const p = this.product();
+    if (!p) return false;
+
+    const variants = p.variants ?? [];
+    if (variants.length) {
+      return variants.some((variant) => Product.hasDiscount(p, variant));
+    }
+    return Product.hasDiscount(p);
+  });
+  readonly discountBadge = computed(() => {
+    const p = this.product();
+    if (!p) return 0;
+
+    const variants = p.variants ?? [];
+    if (variants.length) {
+      const discountedVariants = variants.filter((variant) => Product.hasDiscount(p, variant));
+      if (!discountedVariants.length) return 0;
+
+      return Math.max(
+        ...discountedVariants.map((variant) =>
+          this.roundUpToFive(Product.percentageDiscount(p, variant, 1)),
+        ),
+      );
+    }
+
+    if (!Product.hasDiscount(p)) return 0;
+    return this.roundUpToFive(Product.percentageDiscount(p, undefined, 1));
+  });
+  readonly isUnavailable = computed(() => {
+    const p = this.product();
+    return p ? Product.isUnavailable(p) : false;
+  });
   readonly realPrice = computed(() => {
     const p = this.product();
     return this.hasDiscount() && p ? Product.realPrice(p) : null;
@@ -125,6 +158,11 @@ export class ProductComponent implements OnDestroy {
     const p = this.product();
     return this.variantHasDiscount(variant) && p ? Product.realPrice(p, variant) : null;
   };
+
+  private roundUpToFive(value: number) {
+    if (value <= 0) return 0;
+    return Math.ceil(value / 5) * 5;
+  }
 
   readonly activeImageIndex = signal(0);
   private readonly carousel = viewChild<ElementRef<HTMLElement>>('carousel');

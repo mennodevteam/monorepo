@@ -66,13 +66,7 @@ export class ProductCardComponent {
     if (!Product.hasDiscount(this.product())) return 0;
     return this.roundUpToFive(Product.percentageDiscount(this.product(), undefined, 1));
   });
-  readonly isFinished = computed(() => {
-    const variants = this.variants();
-    if (!variants.length) {
-      return Product.isFinished(this.product());
-    }
-    return variants.every((variant) => Product.isFinished(this.product(), variant));
-  });
+  readonly isUnavailable = computed(() => Product.isUnavailable(this.product()));
 
   readonly variantTotalPrice = (variant: ProductVariant) => Product.totalPrice(this.product(), variant);
   readonly variantHasDiscount = (variant: ProductVariant) => Product.hasDiscount(this.product(), variant);

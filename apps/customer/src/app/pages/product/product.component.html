@@ -33,6 +33,18 @@
   }
 
   <div class="product-content">
+    <div class="product-header-row">
+      <h1 class="product-title">{{ product.title }}</h1>
+      <div class="product-badges">
+        @if (hasAnyDiscount()) {
+          <span class="product-discount-chip">🔥 {{ discountBadge() }}٪ تخفیف</span>
+        }
+        @if (isUnavailable()) {
+          <span class="product-unavailable-chip">ناموجود</span>
+        }
+      </div>
+    </div>
+
     @if (product.description) {
       <p class="product-description" #description [class.expanded]="isExpanded()">
         {{ product.description }}

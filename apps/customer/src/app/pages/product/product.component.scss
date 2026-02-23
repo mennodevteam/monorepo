@@ -56,6 +56,52 @@
   padding: 0 16px;
 }
 
+.product-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.product-title {
+  margin: 0;
+  font: var(--mat-sys-title-large);
+  color: var(--mat-sys-on-surface);
+}
+
+.product-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.product-discount-chip,
+.product-unavailable-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  height: 22px;
+  padding: 0 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.product-discount-chip {
+  color: var(--status-warn);
+  background-color: color-mix(in srgb, var(--status-warn) 16%, transparent);
+}
+
+.product-unavailable-chip {
+  color: var(--mat-sys-outline);
+  background-color: color-mix(in srgb, var(--mat-sys-outline) 16%, transparent);
+}
+
 .product-description {
   font: var(--mat-sys-body-small);
   color: var(--mat-sys-outline);

@@ -95,6 +95,14 @@ export class Product {
     );
   }
 
+  static isUnavailable(product: Product) {
+    const variants = product.variants ?? [];
+    if (!variants.length) {
+      return Product.isFinished(product);
+    }
+    return variants.every((variant) => Product.isFinished(product, variant));
+  }
+
   static fixedDiscount(product: Product, productVariant?: ProductVariant) {
     const cost = Product.realPrice(product, productVariant) - Product.totalPrice(product, productVariant);
     if (cost > 0) return cost;

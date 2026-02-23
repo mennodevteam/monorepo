@@ -78,8 +78,24 @@
   font-size: 10px;
   line-height: 1;
   font-weight: 700;
-  color: var(--mat-sys-error);
-  background-color: color-mix(in srgb, var(--mat-sys-error) 14%, transparent);
+  color: var(--status-warn);
+  background-color: color-mix(in srgb, var(--status-warn) 16%, transparent);
+}
+
+.product-card__unavailable-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  height: 22px;
+  padding: 0 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--mat-sys-outline);
+  background-color: color-mix(in srgb, var(--mat-sys-outline) 16%, transparent);
 }
 
 .product-card__description {

@@ -198,6 +198,13 @@ export class CartService {
       });
       return;
     }
+    if (Product.isFinished(product, variant)) {
+      this.snack.open('این محصول دیگر موجود نیست', '', {
+        panelClass: 'warning',
+        duration: 2000,
+      });
+      return;
+    }
 
     const signalItem = this.getSignalItem(product.id, variant?.id);
     const item = signalItem ? this.getItem(signalItem) : undefined;
