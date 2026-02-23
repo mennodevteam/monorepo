@@ -1,0 +1,15 @@
+@if (shop()?.logoImage) {
+  <img
+    [appImageLoader]="shop()?.logo"
+    [imageFile]="shop()?.logoImage"
+    id="logo"
+    alt="{{ shop()?.title || 'Shop logo' }}"
+  />
+}
+<h3 mat-dialog-title>{{ welcomeMessage()?.title }}</h3>
+<div mat-dialog-content>
+  <p>{{ welcomeMessage()?.description }}</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>بستن</button>
+</div>

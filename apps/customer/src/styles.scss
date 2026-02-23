@@ -40,3 +40,7 @@ textarea {
 ng-icon[middle] {
   vertical-align: middle !important;
 }
+
+.visible-overflow.mat-mdc-dialog-panel .mat-mdc-dialog-surface {
+  overflow: visible !important;
+}
