@@ -6,8 +6,6 @@ import { DecimalPipe } from '@angular/common';
 import { Product, ProductVariant } from '@menno/types';
 import { ImageLoaderDirective } from '../../directives/image-loader.directive';
 import { MatRippleModule } from '@angular/material/core';
-import { saxStopCircleBold } from '@ng-icons/iconsax/bold';
-import { NgIcon, provideIcons } from '@ng-icons/core';
 import { QuantitySelectorComponent } from '../quantity-selector/quantity-selector.component';
 import { LinkService } from '../../../core/services/link.service';
 
@@ -19,20 +17,13 @@ import { LinkService } from '../../../core/services/link.service';
     DecimalPipe,
     ImageLoaderDirective,
     MatRippleModule,
-    NgIcon,
     QuantitySelectorComponent,
     RouterLinkWithHref,
   ],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
-  providers: [
-    provideIcons({
-      saxStopCircleBold,
-    }),
-  ],
 })
 export class ProductCardComponent {
-  readonly stopCircleIcon = saxStopCircleBold;
   readonly product = input.required<Product>();
   readonly largeImage = input(true);
   readonly hideVariants = input(false);
@@ -51,6 +42,29 @@ export class ProductCardComponent {
   readonly percentageDiscount = computed(() =>
     this.hasDiscount() ? Product.percentageDiscount(this.product()) : null,
   );
+  readonly hasAnyDiscount = computed(() => {
+    const variants = this.variants();
+    if (variants.length) {
+      return variants.some((variant) => Product.hasDiscount(this.product(), variant));
+    }
+    return Product.hasDiscount(this.product());
+  });
+  readonly discountBadge = computed(() => {
+    const variants = this.variants();
+    if (variants.length) {
+      const discountedVariants = variants.filter((variant) => Product.hasDiscount(this.product(), variant));
+      if (!discountedVariants.length) return 0;
+
+      return Math.max(
+        ...discountedVariants.map((variant) =>
+          this.roundUpToFive(Product.percentageDiscount(this.product(), variant, 1)),
+        ),
+      );
+    }
+
+    if (!Product.hasDiscount(this.product())) return 0;
+    return this.roundUpToFive(Product.percentageDiscount(this.product(), undefined, 1));
+  });
   readonly isFinished = computed(() => {
     const variants = this.variants();
     if (!variants.length) {
@@ -73,6 +87,11 @@ export class ProductCardComponent {
   private readonly linkService = inject(LinkService);
 
   readonly productLink = computed(() => this.linkService.getProductLink(this.product()));
+
+  private roundUpToFive(value: number) {
+    if (value <= 0) return 0;
+    return Math.ceil(value / 5) * 5;
+  }
 
   openProduct() {
     this.router.navigateByUrl(this.productLink());

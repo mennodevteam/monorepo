@@ -9,7 +9,12 @@
     />
 
     <div class="product-card__texts">
-      <h3 class="product-card__title">{{ product().title }}</h3>
+      <div class="product-card__title-row">
+        <h3 class="product-card__title">{{ product().title }}</h3>
+        @if (hasAnyDiscount()) {
+          <span class="product-card__discount-chip">{{ discountBadge() }} درصد تخفیف</span>
+        }
+      </div>
 
       @if (product().description) {
         <p class="product-card__description">{{ product().description }}</p>
