@@ -12,7 +12,7 @@
 
   <div class="missed-products-list" [class.missed-products-list--visible]="isUpselIntroDone()">
     @for (product of missedProducts(); track product.id) {
-      <app-product-card [product]="product" [largeImage]="false" [hideVariants]="false" />
+      <app-product-card [product]="product" [largeImage]="false" [hideVariants]="false" [designVariant]="'list'" />
     }
   </div>
 

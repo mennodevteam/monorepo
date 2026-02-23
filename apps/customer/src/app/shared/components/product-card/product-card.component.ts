@@ -27,6 +27,7 @@ export class ProductCardComponent {
   readonly product = input.required<Product>();
   readonly largeImage = input(true);
   readonly hideVariants = input(false);
+  readonly designVariant = input<'default' | 'list'>('default');
 
   readonly variants = computed(() => this.product().variants ?? []);
   readonly hasVariants = computed(() => this.variants().length > 0);

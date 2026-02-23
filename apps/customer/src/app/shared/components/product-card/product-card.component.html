@@ -1,4 +1,9 @@
-<mat-card class="product-card" appearance="outlined" [routerLink]="productLink()">
+<mat-card
+  class="product-card"
+  [class.product-card--list]="designVariant() === 'list'"
+  appearance="outlined"
+  [routerLink]="productLink()"
+>
   <mat-card-content class="product-card__content" [class.large-image]="!largeImage()">
     <img
       class="product-card__image"
