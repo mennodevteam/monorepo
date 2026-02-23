@@ -72,6 +72,7 @@
         h1.style.fontSize = '24px';
         h1.style.margin = '0';
         h1.style.textAlign = 'center';
+        h1.style.order = '1';
 
         const typedText = document.createElement('span');
         const cursor = document.createElement('span');
@@ -85,6 +86,7 @@
         logo.style.borderRadius = '24px';
         logo.style.width = '180px';
         logo.style.height = '180px';
+        logo.style.order = '0';
         logo.style.opacity = '0';
         logo.style.transform = 'translateY(8px)';
         logo.style.transition = 'opacity 260ms ease, transform 260ms ease';
