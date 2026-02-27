@@ -1,4 +1,4 @@
-<mat-toolbar [class.sticky]="sticky()">
+<mat-toolbar [class.sticky]="sticky()" [class.no-border]="hideBottomBorder()">
   @if (!hideLeft()) {
     @if (!isRootPage()) {
       <button mat-icon-button appGoBack>

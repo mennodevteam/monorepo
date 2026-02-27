@@ -2,6 +2,11 @@ mat-toolbar {
   display: flex;
   gap: 8px;
   background-color: var(--mat-sys-background);
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+
+  &.no-border {
+    border-bottom: 0;
+  }
 
   &.sticky {
     position: sticky;
@@ -115,4 +120,8 @@ mat-toolbar {
     transform: translateX(6px);
     opacity: 0;
   }
+}
+
+:host-context(body.category-has-subcategories) mat-toolbar {
+  border-bottom: 0;
 }

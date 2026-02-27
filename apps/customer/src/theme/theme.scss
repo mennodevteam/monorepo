@@ -26,6 +26,7 @@ html {
   --shop-surface-color: #ffffff;
   --shop-on-surface-color: #1a1a1a;
   --shop-surface-low-color: #f4f4f4;
+  --shop-outline-variant-color: #e2e5e9;
 
   --status-info: #1976d2;
   --status-info-container: #c9defa;
@@ -47,6 +48,7 @@ html {
   --mat-sys-surface: var(--shop-surface-color);
   --mat-sys-on-surface: var(--shop-on-surface-color);
   --mat-sys-surface-container-low: var(--shop-surface-low-color);
+  --mat-sys-outline-variant: var(--shop-outline-variant-color);
 
   @include mat.button-overrides(
     (
@@ -105,6 +107,7 @@ body.shop-dark {
   --shop-surface-color: #1a1a1a;
   --shop-on-surface-color: #f6f6f6;
   --shop-surface-low-color: #242424;
+  --shop-outline-variant-color: #3b3f45;
   --status-info-container: #12324d;
   --status-success-container: #123121;
   --status-error-container: #3a1c1c;

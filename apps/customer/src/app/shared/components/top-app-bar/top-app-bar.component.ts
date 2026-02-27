@@ -41,6 +41,7 @@ export class TopAppBarComponent implements OnInit {
   readonly sticky = input<boolean>(false);
   readonly hideMetaAction = input<boolean>(false);
   readonly hideLeft = input<boolean>(false);
+  readonly hideBottomBorder = input<boolean>(false);
 
   readonly isRootPage = signal<boolean>(true);
   readonly routeTitle = signal<string | undefined>(undefined); // Added routeTitle signal

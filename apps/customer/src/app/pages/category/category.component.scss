@@ -59,6 +59,8 @@
   overflow-y: hidden;
   padding: 8px 16px;
   background: #fff;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  box-shadow: none;
   box-sizing: border-box;
   margin-top: -16px;
 }

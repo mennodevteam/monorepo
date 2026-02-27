@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, effect, signal } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -33,6 +34,7 @@ export class CategoryComponent implements OnDestroy {
   private readonly shopService = inject(ShopService);
   private readonly route = inject(ActivatedRoute);
   private readonly titleService = inject(TitleService);
+  private readonly document = inject(DOCUMENT);
 
   private readonly categoryIdParam = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('categoryId'))),
@@ -135,6 +137,11 @@ export class CategoryComponent implements OnDestroy {
         this.selectedSubcategory.set(null);
       }
     });
+
+    effect(() => {
+      const hasSubcategories = this.hasSubcategories();
+      this.document.body.classList.toggle('category-has-subcategories', hasSubcategories);
+    });
   }
 
   selectSubcategory(value: string | null) {
@@ -143,5 +150,6 @@ export class CategoryComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.titleService.clearTitle();
+    this.document.body.classList.remove('category-has-subcategories');
   }
 }
