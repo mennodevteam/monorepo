@@ -62,8 +62,17 @@ export class BannerComponent implements OnDestroy {
     if (carouselEl) {
       const target = carouselEl.children[index] as HTMLElement;
       if (target) {
-        const padding = this.fullWidth() ? 0 : 16;
-        carouselEl.scrollTo({ left: target.offsetLeft - padding, behavior: 'smooth' });
+        const containerRect = carouselEl.getBoundingClientRect();
+        const targetRect = target.getBoundingClientRect();
+        const containerCenterX = containerRect.left + containerRect.width / 2;
+        const targetCenterX = targetRect.left + targetRect.width / 2;
+
+        // Move horizontally by center delta to avoid vertical page scrolling side effects.
+        const horizontalDelta = targetCenterX - containerCenterX;
+        carouselEl.scrollTo({
+          left: carouselEl.scrollLeft + horizontalDelta,
+          behavior: 'smooth',
+        });
       }
     }
   }
@@ -73,13 +82,15 @@ export class BannerComponent implements OnDestroy {
 
     const carouselEl = this.carousel()?.nativeElement;
     if (carouselEl) {
-      const centerX = carouselEl.scrollLeft + carouselEl.clientWidth / 2;
+      const containerRect = carouselEl.getBoundingClientRect();
+      const centerX = containerRect.left + containerRect.width / 2;
       let closestIndex = 0;
       let minDistance = Number.MAX_VALUE;
 
       Array.from(carouselEl.children).forEach((child, index) => {
         const childEl = child as HTMLElement;
-        const childCenterX = childEl.offsetLeft + childEl.offsetWidth / 2;
+        const childRect = childEl.getBoundingClientRect();
+        const childCenterX = childRect.left + childRect.width / 2;
         const distance = Math.abs(childCenterX - centerX);
 
         if (distance < minDistance) {
