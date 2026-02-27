@@ -5,10 +5,21 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDialog } from '@angular/material/dialog';
-import { provideIcons } from '@ng-icons/core';
-import { saxEditOutline, saxAddOutline } from '@ng-icons/iconsax/outline';
-import { saxLocationBold, saxBillBold, saxCardBold } from '@ng-icons/iconsax/bold';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import {
+  saxEditOutline,
+  saxAddOutline,
+} from '@ng-icons/iconsax/outline';
+import {
+  saxLocationBold,
+  saxBillBold,
+  saxCardBold,
+  saxDangerBold,
+  saxVerifyBold,
+  saxTruckFastBold,
+} from '@ng-icons/iconsax/bold';
 import { TranslateModule } from '@ngx-translate/core';
 import { CartService } from '../../core/services/cart.service';
 import { ShopService } from '../../core/services/shop.service';
@@ -36,6 +47,8 @@ import { VpnCheckService } from '../../core/services/vpn-check.service';
     MatButtonModule,
     MatDividerModule,
     MatCardModule,
+    MatProgressBarModule,
+    NgIcon,
     TranslateModule,
     SectionComponent,
     DecimalPipe,
@@ -45,6 +58,9 @@ import { VpnCheckService } from '../../core/services/vpn-check.service';
     provideIcons({
       saxEditOutline,
       saxAddOutline,
+      saxDangerBold,
+      saxVerifyBold,
+      saxTruckFastBold,
       saxLocationBold,
       saxBillBold,
       saxCardBold,
@@ -70,6 +86,10 @@ export class CheckoutComponent {
   addressIcon = saxLocationBold;
   invoiceIcon = saxBillBold;
   paymentIcon = saxCardBold;
+  statusWarnIcon = saxDangerBold;
+  statusSuccessIcon = saxVerifyBold;
+  statusInfoIcon = saxTruckFastBold;
+  Math = Math;
   
   constructor() {
     if (this.cart.length() === 0) {

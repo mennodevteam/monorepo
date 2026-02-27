@@ -1,5 +1,25 @@
 @use '@angular/material' as mat;
 
+.checkout-content {
+  padding-bottom: 148px !important;
+}
+
+#noticebar {
+  position: fixed;
+  bottom: 88px;
+  left: 0;
+  right: 0;
+  z-index: 101;
+  min-height: 44px;
+  height: auto;
+  padding-top: 6px;
+  padding-bottom: 6px;
+
+  app-alert-banner {
+    width: 100%;
+  }
+}
+
 #actionbar {
   position: fixed;
   bottom: 0;

@@ -1,58 +1,82 @@
 :host {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
 }
 
-#invoice-card {
-  margin: 0 -16px;
-  border-radius: 0;
-  background-color: var(--mat-sys-surface-container);
+.invoice-list {
+  margin: 0 -12px;
+  padding: 2px 0 0;
+  border-top: 1px dashed var(--mat-sys-outline-variant);
+  border-bottom: 1px dashed var(--mat-sys-outline-variant);
+  background-color: var(--mat-sys-surface-container-lowest);
+}
 
-  & >mat-card-content {
-    padding-inline: 0;
-    overflow: hidden;
+.invoice-row {
+  --mdc-list-list-item-one-line-container-height: 32px;
+  --mdc-list-list-item-two-line-container-height: 32px;
+  --mdc-list-list-item-three-line-container-height: 32px;
+  height: 32px !important;
+  min-height: 32px !important;
+  border-bottom: 1px dotted var(--mat-sys-outline-variant);
+}
 
-    mat-list.items-list {
-      padding: 0;
-    }
+.invoice-total-row {
+  --mdc-list-list-item-one-line-container-height: 40px;
+  --mdc-list-list-item-two-line-container-height: 40px;
+  height: 40px !important;
+  min-height: 40px !important;
+  border-top: 1px dashed var(--mat-sys-outline-variant);
+}
 
-    mat-list.total-list {
-      margin-top: 16px;
-    }
+span[matListItemTitle],
+span[matListItemMeta] {
+  font: var(--mat-sys-body-small);
+}
 
-    mat-divider {
-      position: relative;
-      border-top-style: dashed;
+.invoice-amount {
+  font-variant-numeric: tabular-nums;
+}
 
-      &::before {
-        content: '';
-        position: absolute;
-        top: -12px;
-        left: -12px;
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background-color: var(--mat-sys-background);
-      }
-      &::after {
-        content: '';
-        position: absolute;
-        top: -12px;
-        right: -12px;
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background-color: var(--mat-sys-background);
-      }
-    }
+.total-text {
+  font: var(--mat-sys-title-small);
+  font-weight: 900;
+}
+
+.coupon-container {
+  margin-top: 4px;
+}
+
+.coupon-add-button {
+  width: 100%;
+  height: 44px;
+  border-radius: 8px;
+  border-color: var(--mat-sys-outline-variant);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-label-large);
+}
+
+.coupon-applied {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 12px;
+  border-radius: 8px;
+  background-color: var(--mat-sys-surface-container-low);
+  border: 1px solid var(--mat-sys-outline-variant);
+
+  &__info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
-  .coupon-button-container {
-    padding: 8px 24px;
-    padding-bottom: 24px;
-    button {
-      width: -webkit-fill-available;
-    }
+  &__label {
+    font: var(--mat-sys-label-large);
+    color: var(--mat-sys-on-surface);
+  }
+
+  .text-success {
+    color: var(--mat-sys-primary);
   }
 }

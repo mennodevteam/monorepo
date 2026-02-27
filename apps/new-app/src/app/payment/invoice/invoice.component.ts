@@ -4,13 +4,13 @@ import { CartService } from '../../core/services/cart.service';
 import { COMMON } from '../../common';
 import { MatListModule } from '@angular/material/list';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { DiscountCouponModalComponent, AlertBannerComponent } from '../../common/components';
+import { DiscountCouponModalComponent } from '../../common/components';
 import { DELIVERY_COST_TITLE } from '@menno/types';
 
 @Component({
   selector: 'app-invoice',
   standalone: true,
-  imports: [COMMON, MatListModule, AlertBannerComponent],
+  imports: [COMMON, MatListModule],
   templateUrl: './invoice.component.html',
   styleUrl: './invoice.component.scss',
 })

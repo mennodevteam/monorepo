@@ -1,30 +1,20 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
-import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatCardModule } from '@angular/material/card';
-import { TranslateModule } from '@ngx-translate/core';
 import { CartService } from '../../../../core/services/cart.service';
 import { ClubService } from '../../../../core/services/club.service';
 import { AnalyticsService } from '../../../../core/services/analytics.service';
 import { OrderPaymentType } from '@menno/types';
 import { ShopService } from '../../../../core/services/shop.service';
-import { MatRippleModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-payment-methods',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
     MatListModule,
-    MatRadioModule,
     MatCheckboxModule,
-    MatCardModule,
-    TranslateModule,
-    MatRippleModule,
   ],
   templateUrl: './payment-methods.component.html',
   styleUrl: './payment-methods.component.scss',
@@ -49,6 +39,43 @@ export class PaymentMethodsComponent {
         this.selectedPaymentType = OrderPaymentType.Cash;
       }
       this.cart.paymentType.set(this.selectedPaymentType);
+    }
+
+    this.ensureSelectedPaymentTypeIsAvailable();
+  }
+
+  get hasOnlinePayment() {
+    return this.shopService.isPaymentAvailable();
+  }
+
+  get hasCashPayment() {
+    return !this.shopService.isPaymentRequired();
+  }
+
+  get availablePaymentMethodsCount() {
+    return Number(this.hasOnlinePayment) + Number(this.hasCashPayment);
+  }
+
+  get singlePaymentMethodDescription() {
+    if (this.hasOnlinePayment && !this.hasCashPayment) {
+      return 'پرداخت این سفارش فقط به صورت آنلاین امکان‌پذیر است.';
+    }
+
+    if (!this.hasOnlinePayment && this.hasCashPayment) {
+      return 'پرداخت این سفارش فقط به صورت نقدی امکان‌پذیر است.';
+    }
+
+    return '';
+  }
+
+  private ensureSelectedPaymentTypeIsAvailable() {
+    const onlineSelected = this.selectedPaymentType === OrderPaymentType.Online;
+    const cashSelected = this.selectedPaymentType === OrderPaymentType.Cash;
+
+    if (onlineSelected && !this.hasOnlinePayment && this.hasCashPayment) {
+      this.onPaymentTypeChange(OrderPaymentType.Cash);
+    } else if (cashSelected && !this.hasCashPayment && this.hasOnlinePayment) {
+      this.onPaymentTypeChange(OrderPaymentType.Online);
     }
   }
 

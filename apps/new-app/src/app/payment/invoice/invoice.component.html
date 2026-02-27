@@ -5,6 +5,7 @@
       <span>{{ cart.realSum() | menuCurrency }}</span>
     </div>
   </mat-list-item>
+
   @if (cart.sumDiscount()) {
     <mat-list-item>
       <span matListItemTitle>
@@ -17,6 +18,7 @@
       </div>
     </mat-list-item>
   }
+
   @for (item of cart.abstractItems(); track item.title) {
     <mat-list-item>
       <span matListItemTitle>
@@ -37,6 +39,7 @@
       </div>
     </mat-list-item>
   }
+
   @if (cart.totalDiscount()) {
     <mat-list-item>
       <span matListItemTitle class="secondary-text">
@@ -50,47 +53,12 @@
     </mat-list-item>
   }
 
-  @let minPriceForFree = cart.address()?.deliveryArea?.minPriceForFree;
-  @if (minPriceForFree && minPriceForFree > cart.sum()) {
-    @if (cart.sum() / minPriceForFree > 0.8) {
-      <app-alert-banner
-        type="info"
-        emoji="🎉"
-        [compact]="true"
-        title="{{
-          'cart.addressMinPriceForFreeInlineRemaining'
-            | translate: { value: cart.address()!.deliveryArea!.minPriceForFree! - cart.sum() | menuCurrency }
-        }}"
-      />
-    } @else {
-      <app-alert-banner
-        type="info"
-        [compact]="true"
-        title="{{
-          'cart.addressMinPriceForFreeInline' | translate: { value: minPriceForFree | menuCurrency }
-        }}"
-      />
-    }
-  }
-
   <mat-list-item>
     <span matListItemTitle>
       <b>
         {{ 'app.total' | translate }}
       </b>
     </span>
-    @if (
-      cart.address()?.deliveryArea?.minOrderPrice &&
-      cart.address()!.deliveryArea!.minOrderPrice! > cart.total()
-    ) {
-      <span matListItemLine class="error-text">
-        <i class="fa-solid fa-triangle-exclamation fa-xs"></i>
-        {{
-          'cart.addressMinPriceWarningInline'
-            | translate: { value: cart.address()?.deliveryArea?.minOrderPrice | menuCurrency }
-        }}
-      </span>
-    }
     <div matListItemMeta>
       <span>
         <b>

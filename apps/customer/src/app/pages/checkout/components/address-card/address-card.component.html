@@ -1,22 +1,18 @@
 @if (address(); as addressValue) {
-  <mat-card appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>
-        @if (addressValue.title) {
-          {{ addressValue.title }}:
-        } @else {
-          {{ addressValue.region?.title }}
-        }
-      </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p>{{ addressValue.description }}</p>
-      @if (addressValue.deliveryArea?.label) {
-        <p class="delivery-area-label">
-          {{ addressValue.deliveryArea?.label }}
-        </p>
+  <div class="address-summary">
+    <div class="address-title">
+      @if (addressValue.title) {
+        {{ addressValue.title }}
+      } @else {
+        {{ addressValue.region?.title }}
       }
-    </mat-card-content>
-  </mat-card>
+    </div>
+    <p class="address-description">{{ addressValue.description }}</p>
+    @if (addressValue.deliveryArea?.label) {
+      <span class="delivery-area-label">
+        {{ addressValue.deliveryArea?.label }}
+      </span>
+    }
+  </div>
 }
 

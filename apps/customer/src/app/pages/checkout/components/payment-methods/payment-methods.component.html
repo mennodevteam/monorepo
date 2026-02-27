@@ -1,36 +1,32 @@
 <section class="container">
-  @if (shopService.isPaymentAvailable()) {
-    <mat-card
-      appearance="outlined"
-      (click)="onPaymentTypeChange(OrderPaymentType.Online)"
-      matRipple
-      [class.selected]="selectedPaymentType === OrderPaymentType.Online"
-    >
-      <mat-card-content>
-        <mat-radio-button [checked]="selectedPaymentType === OrderPaymentType.Online">
+  @if (availablePaymentMethodsCount > 1) {
+    <mat-selection-list [multiple]="false" class="payment-list">
+      @if (hasOnlinePayment) {
+        <mat-list-option
+          [selected]="selectedPaymentType === OrderPaymentType.Online"
+          (click)="onPaymentTypeChange(OrderPaymentType.Online)"
+        >
           پرداخت آنلاین
-        </mat-radio-button>
-      </mat-card-content>
-    </mat-card>
-  }
+        </mat-list-option>
+      }
 
-  @if (!shopService.isPaymentRequired()) {
-    <mat-card
-      appearance="outlined"
-      (click)="onPaymentTypeChange(OrderPaymentType.Cash)"
-      matRipple
-      [class.selected]="selectedPaymentType === OrderPaymentType.Cash"
-    >
-      <mat-card-content>
-        <mat-radio-button [checked]="selectedPaymentType === OrderPaymentType.Cash">
+      @if (hasCashPayment) {
+        <mat-list-option
+          [selected]="selectedPaymentType === OrderPaymentType.Cash"
+          (click)="onPaymentTypeChange(OrderPaymentType.Cash)"
+        >
           پرداخت نقدی
-        </mat-radio-button>
-      </mat-card-content>
-    </mat-card>
+        </mat-list-option>
+      }
+    </mat-selection-list>
+  } @else if (availablePaymentMethodsCount === 1) {
+    <div class="payment-description">
+      {{ singlePaymentMethodDescription }}
+    </div>
   }
 
   @if (club.wallet?.charge) {
-    <mat-checkbox [checked]="cart.useWallet()" (change)="onWalletChange($event.checked)">
+    <mat-checkbox class="wallet-toggle" [checked]="cart.useWallet()" (change)="onWalletChange($event.checked)">
       استفاده از کیف پول
       <span class="mat-title-small" style="margin-right: 8px">{{ club.wallet?.charge | number }} تومان</span>
     </mat-checkbox>

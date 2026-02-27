@@ -1,106 +1,58 @@
-@let minOrderPrice = cart.address()?.deliveryArea?.minOrderPrice;
-@let minOrderPriceLimitation = minOrderPrice && minOrderPrice > cart.total();
-<mat-card appearance="filled" id="invoice-card">
-  <mat-card-content>
-    @if (!minOrderPriceLimitation) {
-      <div style="padding: 0 16px">
-        @let deliveryCost = cart.deliveryCost();
-        @if (deliveryCost) {
-          @let minPriceForFree = cart.address()?.deliveryArea?.minPriceForFree;
-          @if (minPriceForFree && minPriceForFree > cart.sum()) {
-            <mat-card appearance="outlined" class="card-info">
-              <mat-card-header>
-                <mat-card-subtitle> ارسال رایگان </mat-card-subtitle>
-              </mat-card-header>
-              <mat-card-content>
-                @if (cart.sum() / minPriceForFree > 0.8) {
-                  با اضافه کردن {{ minPriceForFree - cart.sum() | number }} تومان ارسال شما رایگان می‌شود.
-                } @else {
-                  ارسال رایگان برای سفارشات بالای {{ minPriceForFree | number }} تومان
-                }
-              </mat-card-content>
-            </mat-card>
-          }
-        } @else {
-          <mat-card appearance="outlined" class="card-success">
-            <mat-card-header>
-              <mat-card-subtitle>🎉 ارسال رایگان </mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content> هزینه ارسال برای شما رایگان است </mat-card-content>
-          </mat-card>
+<mat-list class="invoice-list">
+  <mat-list-item class="invoice-row">
+    <span matListItemTitle>مجموع اقلام ({{ cart.length() }})</span>
+    <span matListItemMeta class="invoice-amount">{{ cart.realSum() | number }} تومان</span>
+  </mat-list-item>
+
+  @if (cart.sumDiscount()) {
+    <mat-list-item class="invoice-row">
+      <span matListItemTitle>تخفیف</span>
+      <span matListItemMeta class="invoice-amount">{{ cart.sumDiscount() | number }} تومان</span>
+    </mat-list-item>
+  }
+
+  @for (item of cart.abstractItems(); track item.title) {
+    <mat-list-item class="invoice-row">
+      <span matListItemTitle>
+        {{ item.title }}
+        @if (item.title === DELIVERY_COST_TITLE && cart.address()?.deliveryArea?.label) {
+          - {{ cart.address()?.deliveryArea?.label }}
         }
+      </span>
+      <span matListItemMeta class="invoice-amount">{{ (item.price > 0 ? item.price : -item.price) | number }} تومان</span>
+    </mat-list-item>
+  }
+
+  @if (cart.totalDiscount()) {
+    <mat-list-item class="invoice-row">
+      <span matListItemTitle class="success-text">تخفیف نهایی</span>
+      <span matListItemMeta class="success-text invoice-amount">{{ cart.totalDiscount() | number }} تومان -</span>
+    </mat-list-item>
+  }
+
+  <mat-list-item class="invoice-total-row">
+    <span matListItemTitle class="total-text">جمع کل</span>
+    <span matListItemMeta>
+      <span class="total-text invoice-amount"> {{ cart.total() | number }} تومان </span>
+    </span>
+  </mat-list-item>
+</mat-list>
+
+<div class="coupon-container">
+  @if (cart.coupon()) {
+    <div class="coupon-applied">
+      <div class="coupon-applied__info">
+        <ng-icon [svg]="couponIcon" size="20" class="text-success"></ng-icon>
+        <span class="coupon-applied__label">کد تخفیف اعمال شد</span>
       </div>
-    }
-
-    <mat-list class="items-list">
-      <mat-list-item>
-        <span matListItemTitle>مجموع اقلام ({{ cart.length() }})</span>
-        <span matListItemMeta>{{ cart.realSum() | number }} تومان</span>
-      </mat-list-item>
-
-      @if (cart.sumDiscount()) {
-        <mat-list-item>
-          <span matListItemTitle>تخفیف</span>
-          <span matListItemMeta>{{ cart.sumDiscount() | number }} تومان</span>
-        </mat-list-item>
-      }
-
-      @for (item of cart.abstractItems(); track item.title) {
-        <mat-list-item>
-          <span matListItemTitle>
-            {{ item.title }}
-            @if (item.title === DELIVERY_COST_TITLE && cart.address()?.deliveryArea?.label) {
-              - {{ cart.address()?.deliveryArea?.label }}
-            }
-          </span>
-          <span matListItemMeta>{{ (item.price > 0 ? item.price : -item.price) | number }} تومان</span>
-        </mat-list-item>
-      }
-
-      @if (cart.totalDiscount()) {
-        <mat-list-item>
-          <span matListItemTitle class="success-text">تخفیف نهایی</span>
-          <span matListItemMeta class="success-text">{{ cart.totalDiscount() | number }} تومان -</span>
-        </mat-list-item>
-      }
-
-      <div class="coupon-button-container">
-        @if (cart.coupon()) {
-          <button mat-stroked-button color="warn" (click)="cart.coupon.set(undefined)">
-            <ng-icon [svg]="removeIcon" size="20" middle></ng-icon>
-            حذف کد تخفیف
-          </button>
-        } @else {
-          <button mat-stroked-button color="primary" (click)="addCoupon()">
-            <ng-icon [svg]="couponIcon" size="20" middle></ng-icon>
-            افزودن کد تخفیف
-          </button>
-        }
-      </div>
-    </mat-list>
-
-    <mat-divider></mat-divider>
-
-    <mat-list class="total-list">
-      <mat-list-item>
-        <span matListItemTitle class="mat-font-headline-sm">جمع کل</span>
-        <span matListItemMeta>
-          <span class="mat-font-headline-sm"> {{ cart.total() | number }} تومان </span>
-        </span>
-      </mat-list-item>
-    </mat-list>
-
-    @if (minOrderPriceLimitation) {
-      <div style="padding: 0 16px">
-        <mat-card appearance="outlined" class="card-warn">
-          <mat-card-header>
-            <mat-card-subtitle>🚨 حداقل سفارش </mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            حداقل مبلغ برای ثبت سفارش {{ minOrderPrice | number }} تومان است
-          </mat-card-content>
-        </mat-card>
-      </div>
-    }
-  </mat-card-content>
-</mat-card>
+      <button mat-icon-button color="warn" (click)="cart.coupon.set(undefined)">
+        <ng-icon [svg]="removeIcon" size="20"></ng-icon>
+      </button>
+    </div>
+  } @else {
+    <button mat-stroked-button class="coupon-add-button" (click)="addCoupon()">
+      <ng-icon [svg]="couponIcon" size="18" middle></ng-icon>
+      ثبت کد تخفیف
+    </button>
+  }
+</div>

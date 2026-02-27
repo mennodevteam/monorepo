@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { PlatformLocation } from '@angular/common';
 import { COMMON } from '../common';
 import { InvoiceComponent } from './invoice/invoice.component';
@@ -9,7 +9,7 @@ import { ClubService } from '../core/services/club.service';
 import { Router } from '@angular/router';
 import { AddressesService, MenuService, MenuStatService, ShopService } from '../core';
 import { MatListModule } from '@angular/material/list';
-import { Address, OrderType, StatAction } from '@menno/types';
+import { OrderType, StatAction } from '@menno/types';
 import { FormsModule } from '@angular/forms';
 import { AddressListComponent } from './address-list/address-list.component';
 import { AlertBannerComponent } from '../common/components/alert-banner/alert-banner.component';
@@ -69,6 +69,32 @@ export class PaymentComponent {
       return Math.max(0, this.cart.total() - useWallet);
     }
   });
+
+  minPriceForFree = computed(() => this.cart.address()?.deliveryArea?.minPriceForFree);
+  minOrderPrice = computed(() => this.cart.address()?.deliveryArea?.minOrderPrice);
+
+  showFreeDeliveryHint = computed(() => {
+    const minPriceForFree = this.minPriceForFree();
+    return !!(minPriceForFree && minPriceForFree > this.cart.sum());
+  });
+
+  showMinOrderWarning = computed(() => {
+    const minOrderPrice = this.minOrderPrice();
+    return !!(minOrderPrice && minOrderPrice > this.cart.total());
+  });
+
+  isCloseToFreeDelivery = computed(() => {
+    const minPriceForFree = this.minPriceForFree();
+    return !!(minPriceForFree && this.cart.sum() / minPriceForFree > 0.8);
+  });
+
+  freeDeliveryRemaining = computed(() => {
+    const minPriceForFree = this.minPriceForFree();
+    if (!minPriceForFree) return 0;
+    return Math.max(0, minPriceForFree - this.cart.sum());
+  });
+
+  showCheckoutNoticeBar = computed(() => this.showMinOrderWarning() || this.showFreeDeliveryHint());
 
   async submit() {
     // Track order placement attempt

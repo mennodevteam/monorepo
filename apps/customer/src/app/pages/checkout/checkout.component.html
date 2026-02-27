@@ -1,14 +1,15 @@
 <app-top-app-bar title="تکمیل سفارش" [sticky]="true" [hideMetaAction]="true"></app-top-app-bar>
 
 @if (cart.length() && addressesService.addresses()) {
+  @if (shopService.isPaymentRequired() && vpnCheck.isVpnEnabled()) {
+    <mat-card appearance="outlined" class="card-warn vpn-warning-banner">
+      <mat-card-header>
+        <mat-card-subtitle class="mat-font-label-sm">⚠️&nbsp; ترجیحاً قبل از پرداخت، VPN خود را خاموش کنید.</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+  }
+
   <main class="main-content">
-    @if (shopService.isPaymentRequired() && vpnCheck.isVpnEnabled()) {
-      <mat-card appearance="outlined" class="card-warn vpn-warning">
-        <mat-card-header>
-          <mat-card-subtitle class="mat-font-label-sm">⚠️&nbsp; ترجیحاً قبل از پرداخت، VPN خود را خاموش کنید.</mat-card-subtitle>
-        </mat-card-header>
-      </mat-card>
-    }
     <app-section
       title="آدرس تحویل"
       [icon]="addressIcon"
@@ -28,6 +29,50 @@
       <app-payment-methods></app-payment-methods>
     </app-section>
   </main>
+
+  @let minOrderPrice = cart.address()?.deliveryArea?.minOrderPrice;
+  @let minOrderPriceLimitation = minOrderPrice && minOrderPrice > cart.total();
+  @let deliveryCost = cart.deliveryCost();
+  @let minPriceForFree = cart.address()?.deliveryArea?.minPriceForFree;
+  @let showProgress = !!minOrderPriceLimitation || !!(deliveryCost && minPriceForFree && minPriceForFree > cart.sum());
+  @let minBasketProgress = minOrderPrice ? Math.min(100, (cart.total() / minOrderPrice) * 100) : 0;
+  @let freeBasketProgress = minPriceForFree ? Math.min(100, (cart.sum() / minPriceForFree) * 100) : 100;
+  @if (minOrderPriceLimitation || !deliveryCost || (deliveryCost && minPriceForFree && minPriceForFree > cart.sum())) {
+    <mat-toolbar class="status-toolbar" [class.status-toolbar--warn]="!!minOrderPriceLimitation" [class.status-toolbar--success]="!minOrderPriceLimitation">
+      <div class="status-toolbar__content">
+        <ng-icon
+          class="status-toolbar__icon"
+          [svg]="minOrderPriceLimitation ? statusWarnIcon : (!deliveryCost ? statusSuccessIcon : statusInfoIcon)"
+          size="18"
+        ></ng-icon>
+        <div class="status-toolbar__main">
+          @if (minOrderPriceLimitation) {
+            <span class="status-toolbar__message">حداقل مبلغ برای ثبت سفارش {{ minOrderPrice | number }} تومان است</span>
+          } @else if (!deliveryCost) {
+            <span class="status-toolbar__message">هزینه ارسال برای شما رایگان است</span>
+            @if (minPriceForFree) {
+              <span class="status-toolbar__description">هزینه ارسال برای سفارشات بالای {{ minPriceForFree | number }} تومان رایگان است.</span>
+            }
+          } @else if (minPriceForFree && minPriceForFree > cart.sum()) {
+            @if (cart.sum() / minPriceForFree > 0.8) {
+              <span class="status-toolbar__message">با اضافه کردن {{ minPriceForFree - cart.sum() | number }} تومان ارسال شما رایگان می‌شود.</span>
+            } @else {
+              <span class="status-toolbar__message">ارسال رایگان برای سفارشات بالای {{ minPriceForFree | number }} تومان</span>
+            }
+          }
+          @if (showProgress) {
+            <mat-progress-bar
+              class="status-progress"
+              [class.status-progress--warn]="!!minOrderPriceLimitation"
+              [class.status-progress--success]="!minOrderPriceLimitation"
+              mode="determinate"
+              [value]="minOrderPriceLimitation ? minBasketProgress : freeBasketProgress"
+            ></mat-progress-bar>
+          }
+        </div>
+      </div>
+    </mat-toolbar>
+  }
 
   <mat-toolbar class="action-toolbar">
     <button mat-raised-button (click)="submit()" [disabled]="cart.saving()">

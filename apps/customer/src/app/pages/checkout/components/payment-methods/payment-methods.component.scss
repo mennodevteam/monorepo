@@ -4,14 +4,29 @@
   gap: 8px;
 }
 
-mat-card {
-  cursor: pointer;
+.payment-list {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 
-  &.selected {
-    border-color: var(--mat-sys-on-background);
+  mat-list-option {
+    --mdc-list-list-item-one-line-container-height: 40px;
   }
 
-  mat-card-content {
-    padding: 8px;
+  mat-list-option + mat-list-option {
+    border-top: 1px solid color-mix(in srgb, var(--mat-sys-outline-variant) 45%, transparent);
   }
+}
+
+.wallet-toggle {
+  padding-inline: 2px;
+}
+
+.payment-description {
+  font: var(--mat-sys-body-small);
+  color: var(--mat-sys-outline);
+  padding: 2px 8px;
 }

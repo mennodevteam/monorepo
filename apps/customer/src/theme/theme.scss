@@ -76,6 +76,24 @@ html {
   );
 }
 
+.status-progress--warn {
+  @include mat.progress-bar-overrides(
+    (
+      active-indicator-color: var(--status-warn),
+      track-color: var(--status-warn-container),
+    )
+  );
+}
+
+.status-progress--success {
+  @include mat.progress-bar-overrides(
+    (
+      active-indicator-color: var(--status-success),
+      track-color: var(--status-success-container),
+    )
+  );
+}
+
 body.shop-light {
   color-scheme: light;
 }

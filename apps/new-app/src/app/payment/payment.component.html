@@ -1,6 +1,6 @@
 <app-top-app-bar title="{{ 'payment.title' | translate }}" [sticky]="true" [hideMenu]="true" />
 @if (cart.length()) {
-  <main fxLayout="column" fxLayoutGap="16" p-md max-center pb>
+  <main fxLayout="column" fxLayoutGap="16" p-md max-center pb class="checkout-content">
     @if (cart.isPaymentRequired && vpnQuery.data() === true) {
       <app-alert-banner type="error" title="{{ 'vpnError' | translate }}" [compact]="true" />
     }
@@ -14,6 +14,33 @@
 
     <app-payment-methods />
   </main>
+}
+
+@if (showCheckoutNoticeBar()) {
+  <mat-toolbar id="noticebar" class="background-background" p-md>
+    @if (showMinOrderWarning()) {
+      <app-alert-banner
+        type="warn"
+        [compact]="true"
+        [title]="'cart.addressMinPriceWarningInline' | translate: { value: minOrderPrice() | menuCurrency }"
+      />
+    } @else if (showFreeDeliveryHint()) {
+      @if (isCloseToFreeDelivery()) {
+        <app-alert-banner
+          type="info"
+          emoji="🎉"
+          [compact]="true"
+          [title]="'cart.addressMinPriceForFreeInlineRemaining' | translate: { value: freeDeliveryRemaining() | menuCurrency }"
+        />
+      } @else {
+        <app-alert-banner
+          type="info"
+          [compact]="true"
+          [title]="'cart.addressMinPriceForFreeInline' | translate: { value: minPriceForFree() | menuCurrency }"
+        />
+      }
+    }
+  </mat-toolbar>
 }
 
 <mat-toolbar fxLayout="row" fxLayoutAlign="center" id="actionbar" class="background-background" p-md>

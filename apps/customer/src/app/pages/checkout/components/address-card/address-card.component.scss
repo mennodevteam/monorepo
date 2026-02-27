@@ -1,7 +1,27 @@
-// Address card component styles
+.address-summary {
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 10px;
+  background-color: var(--mat-sys-surface-container-low);
+  padding: 10px 12px;
+}
+
+.address-title {
+  margin: 0;
+  font: var(--mat-sys-title-small);
+}
+
+.address-description {
+  margin: 6px 0 0;
+  font: var(--mat-sys-body-medium);
+  color: var(--mat-sys-on-surface-variant);
+}
 
 .delivery-area-label {
-  color: var(--mat-sys-primary);
-  font-size: 12px;
-  margin: 8px 0 0 0;
+  display: inline-block;
+  margin-top: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background-color: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+  font: var(--mat-sys-label-small);
 }
