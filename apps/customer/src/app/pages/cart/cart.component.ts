@@ -99,7 +99,7 @@ export class CartComponent {
       return;
     }
 
-    if (this.auth.isGuestUser && this.cart.isLoginRequired) {
+    if (this.auth.isGuestUser() && this.cart.isLoginRequired) {
       this.router.navigate(['/login'], { queryParams: { returnPath: '/payment' } });
       return;
     }

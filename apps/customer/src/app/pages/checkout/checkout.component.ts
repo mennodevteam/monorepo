@@ -80,16 +80,10 @@ export class CheckoutComponent {
   }
 
   openAddressDialog() {
-    const dialogRef = this.dialog.open(AddressSelectionDialogComponent, {
+    this.dialog.open(AddressSelectionDialogComponent, {
       width: '90%',
       maxWidth: '500px',
       disableClose: false,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.addressesService.load(); // Reload addresses
-      }
     });
   }
 

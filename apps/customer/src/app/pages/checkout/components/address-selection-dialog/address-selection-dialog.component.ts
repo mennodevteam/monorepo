@@ -151,15 +151,9 @@ export class AddressSelectionDialogComponent {
   }
 
   openAddAddressDialog() {
-    const dialogRef = this.dialog.open(AddressDialogComponent, {
+    this.dialog.open(AddressDialogComponent, {
       width: '400px',
       disableClose: true,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.addressesService.load(); // Reload addresses
-      }
     });
   }
 }

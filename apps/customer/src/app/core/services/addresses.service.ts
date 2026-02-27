@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { effect, Injectable, signal, inject } from '@angular/core';
+import { Injectable, computed, inject } from '@angular/core';
 import { Address } from '@menno/types';
+import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
+import { firstValueFrom } from 'rxjs';
 import { ShopService } from './shop.service';
 import { AuthService } from './auth.service';
 
@@ -8,50 +10,47 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class AddressesService {
-  private http = inject(HttpClient);
-  private shopService = inject(ShopService);
-  private auth = inject(AuthService);
+  private readonly http = inject(HttpClient);
+  private readonly queryClient = inject(QueryClient);
+  private readonly shopService = inject(ShopService);
+  private readonly auth = inject(AuthService);
 
-  addresses = signal<Address[] | undefined>(undefined);
+  readonly addressesQuery = injectQuery(() => ({
+    queryKey: ['addresses', this.auth.user()?.id],
+    queryFn: () =>
+      firstValueFrom(
+        this.http.get<Address[]>(`addresses`, {
+          params: {
+            shopId: this.shopService.data()?.id || '',
+          },
+        }),
+      ).then((addresses) => addresses.sort((a, b) => b.id - a.id)),
+    enabled: !this.auth.isGuestUser(),
+  }));
 
-  constructor() {
-    effect(() => {
-      if (this.auth.user()) {
-        this.load();
-      }
-    });
-  }
-
-  load() {
-    this.http
-      .get<Address[]>(`addresses`, {
-        params: {
-          shopId: this.shopService.data()?.id || '',
-        },
-      })
-      .subscribe((addresses) => {
-        addresses.sort((a, b) => b.id - a.id);
-        this.addresses.set(addresses);
-      });
-  }
+  readonly addresses = computed(() => this.addressesQuery.data());
 
   async save(dto: Address) {
+    const shopId = this.shopService.data()?.id || '';
+    const userId = this.auth.user()?.id || '';
     const address = await this.http
       .post<Address>(`addresses`, dto, {
         params: {
-          shopId: this.shopService.data()?.id || '',
+          shopId,
+          userId,
         },
       })
       .toPromise();
 
-    if (address)
-      this.addresses.update((prevList) => {
-        if (!prevList) prevList = [];
-        const existIndex = prevList?.findIndex((x) => x.id === address.id);
-        if (existIndex && existIndex > -1) prevList[existIndex] = address;
-        else prevList.unshift(address);
-        return [...prevList];
+    if (address && shopId && userId) {
+      this.queryClient.setQueryData<Address[]>(['addresses', userId], (prevList) => {
+        const nextList = prevList ? [...prevList] : [];
+        const existIndex = nextList.findIndex((x) => x.id === address.id);
+        if (existIndex > -1) nextList[existIndex] = address;
+        else nextList.unshift(address);
+        return nextList;
       });
+    }
     return address;
   }
 }

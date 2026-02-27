@@ -6,7 +6,7 @@ export const loginActivator: CanActivateFn = async (route: ActivatedRouteSnapsho
   const auth = inject(AuthService);
   const router = inject(Router);
   await auth.getResolver();
-  if (auth.isGuestUser) {
+  if (auth.isGuestUser()) {
     router.navigate(['/login'], { queryParams: { returnPath: state.url } });
     return false;
   }

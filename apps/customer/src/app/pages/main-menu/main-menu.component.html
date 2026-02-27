@@ -1,7 +1,7 @@
 <main style="padding: 16px; max-width: 600px; margin: 0 auto;">
   
   <mat-nav-list>
-    @if (auth.isGuestUser) {
+    @if (auth.isGuestUser()) {
       <a mat-list-item routerLink="/login">
         <ng-icon [svg]="profileIcon" size="24" matListItemIcon></ng-icon>
         <div matListItemTitle>ورود</div>
@@ -26,7 +26,7 @@
         <ng-icon [svg]="chevronIcon" size="16"></ng-icon>
       </div>
     </a>
-    @if (!auth.isGuestUser) {
+    @if (!auth.isGuestUser()) {
       <a mat-list-item routerLink="/addresses">
         <ng-icon [svg]="locationIcon" size="24" matListItemIcon></ng-icon>
         <span matListItemLine>آدرس‌های من</span>

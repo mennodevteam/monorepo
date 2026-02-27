@@ -34,31 +34,19 @@ export class AddressesComponent {
   }
 
   openAddAddressDialog() {
-    const dialogRef = this.dialog.open(AddressDialogComponent, {
+    this.dialog.open(AddressDialogComponent, {
       width: '90%',
       maxWidth: '500px',
       disableClose: true,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.addressesService.load();
-      }
     });
   }
 
   openEditAddressDialog(address: Address) {
-    const dialogRef = this.dialog.open(AddressDialogComponent, {
+    this.dialog.open(AddressDialogComponent, {
       width: '90%',
       maxWidth: '500px',
       disableClose: true,
       data: address,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.addressesService.load();
-      }
     });
   }
 }

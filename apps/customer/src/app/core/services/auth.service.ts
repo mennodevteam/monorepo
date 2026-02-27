@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, signal, inject } from '@angular/core';
+import { Injectable, computed, signal, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '@menno/types';
@@ -108,9 +108,7 @@ export class AuthService {
     }
   }
 
-  get isGuestUser() {
-    return !this.user()?.mobilePhone;
-  }
+  readonly isGuestUser = computed(() => !this.user()?.mobilePhone);
 
   // async openLoginPrompt(disableClose = false) {
   //   const complete = await this.bottomSheet
