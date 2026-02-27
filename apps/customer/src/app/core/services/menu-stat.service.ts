@@ -16,6 +16,11 @@ export class MenuStatService {
 
   async send(action: StatAction, params?: Pick<MenuStatDto, 'productId' | 'value'>) {
     try {
+      await this.auth.getResolver();
+      if (!this.auth.user()?.id) {
+        return;
+      }
+
       let queryParams: HttpParams = new HttpParams();
       const referrer = this.campaign.referrer;
       const campaign = this.campaign.campaign;

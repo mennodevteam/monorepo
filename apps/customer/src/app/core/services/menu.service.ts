@@ -5,6 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { Menu, Product } from '@menno/types';
 import { resolveShopUsername } from '../functions';
 import { CampaignService } from './campaign.service';
+import { AuthService } from './auth.service';
 
 const MENU_QUERY_KEY = (username: string) => ['menu', username] as const;
 
@@ -15,6 +16,7 @@ export class MenuService {
   private readonly http = inject(HttpClient);
   private readonly queryClient = inject(QueryClient);
   private readonly campaign = inject(CampaignService);
+  private readonly auth = inject(AuthService);
   private readonly username = resolveShopUsername();
   private loadMenuStatSent = false;
 
@@ -47,6 +49,10 @@ export class MenuService {
     );
     if (menu?.id && !this.loadMenuStatSent) {
       this.loadMenuStatSent = true;
+      await this.auth.getResolver();
+      if (!this.auth.user()?.id) {
+        return menu;
+      }
       this.http
         .get(`menuStats/loadMenu/${menu.id}`, { params: this.campaign.params })
         .subscribe({ error: () => {} });
