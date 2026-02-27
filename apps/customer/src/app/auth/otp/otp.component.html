@@ -9,7 +9,6 @@
       type="text"
       inputmode="numeric"
       [(ngModel)]="otp"
-      maxlength="4"
       class="otp-input"
       autocomplete="one-time-code"
       [disabled]="loading()"
@@ -18,6 +17,9 @@
   </mat-form-field>
 
   <div class="actions">
+    <button mat-flat-button color="primary" type="button" (click)="setToken()" [disabled]="loading() || !hasOtpValue()">
+      تایید کد
+    </button>
     <button matButton type="button" (click)="sendTokenAgain()" [disabled]="time() > 0 || loading()">
       @if (time() > 0) {
         ارسال مجدد در {{ time() }} ثانیه

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, signal, effect, inject, model } from '@angular/core';
+import { Component, OnDestroy, signal, inject, model } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
@@ -52,13 +52,6 @@ export class OtpComponent implements OnDestroy {
     this.phone = phone;
     this.resetTimer();
 
-    effect(() => {
-      const val = this.otp();
-      this.error.set(false);
-      if (val && val.length === 4) {
-        this.setToken();
-      }
-    });
   }
 
   async setToken(ev?: Event) {
@@ -68,7 +61,8 @@ export class OtpComponent implements OnDestroy {
     }
 
     const returnPath = this.route.snapshot.queryParams?.['returnPath'];
-    const value = this.otp();
+    const value = this.otp()?.trim();
+    this.error.set(false);
     if (value) {
       this.loading.set(true);
       const token = PersianNumberService.toEnglish(value.toString());
@@ -102,6 +96,11 @@ export class OtpComponent implements OnDestroy {
       }
     }
     ev?.preventDefault?.();
+  }
+
+  hasOtpValue() {
+    const value = this.otp();
+    return typeof value === 'string' && value.trim().length > 0;
   }
 
   resetTimer() {
