@@ -9,7 +9,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { Address, Region, State } from '@menno/types';
 import { AddressesService } from '../../../../core/services/addresses.service';
-import { REGIONS } from '../../../../../../../new-app/src/app/core/constants/regions';
+import { REGIONS } from '../../../../core/constants/regions';
 
 @Component({
   selector: 'app-address-dialog',
@@ -24,99 +24,8 @@ import { REGIONS } from '../../../../../../../new-app/src/app/core/constants/reg
     MatButtonModule,
     MatProgressSpinnerModule,
   ],
-  template: `
-    <h2 mat-dialog-title>{{ address ? 'ویرایش آدرس' : 'افزودن آدرس جدید' }}</h2>
-    <mat-dialog-content>
-      <form [formGroup]="form" class="address-form">
-        <mat-form-field appearance="outline">
-          <mat-label>استان</mat-label>
-          <mat-select
-            #regionStateElem
-            [value]="regionState()"
-            (valueChange)="regionState.set($event)"
-            required
-          >
-            @for (state of states; track state.title) {
-              <mat-option [value]="state">
-                {{ state.title }}
-              </mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>شهر/منطقه</mat-label>
-          <mat-select formControlName="region" required>
-            @for (region of regions(); track region.id) {
-              <mat-option [value]="region">
-                {{ region.title }}
-              </mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>آدرس دقیق</mat-label>
-          <textarea matInput formControlName="description" rows="3" required></textarea>
-        </mat-form-field>
-
-        <div class="row-fields">
-          <mat-form-field appearance="outline">
-            <mat-label>واحد</mat-label>
-            <input matInput formControlName="unit" type="text" required />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>زنگ</mat-label>
-            <input matInput formControlName="ring" type="text" required />
-          </mat-form-field>
-        </div>
-
-        <mat-form-field appearance="outline">
-          <mat-label>کد پستی</mat-label>
-          <input matInput formControlName="postalCode" type="text" />
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>عنوان آدرس</mat-label>
-          <input matInput formControlName="title" type="text" placeholder="مثال: خانه، محل کار" />
-        </mat-form-field>
-      </form>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close>انصراف</button>
-      <button mat-flat-button color="primary" [disabled]="form.invalid || loading()" (click)="save()">
-        @if (loading()) {
-          <mat-spinner diameter="16"></mat-spinner>
-        } @else {
-          {{ address ? 'ویرایش' : 'ثبت' }} آدرس
-        }
-      </button>
-    </mat-dialog-actions>
-  `,
-  styles: [
-    `
-      .address-form {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-        padding-top: 16px;
-      }
-
-      mat-form-field {
-        width: 100%;
-      }
-
-      .row-fields {
-        display: flex;
-        gap: 16px;
-      }
-
-      .row-fields mat-form-field {
-        flex: 1;
-      }
-    `,
-  ],
+  templateUrl: './address-dialog.component.html',
+  styleUrls: ['./address-dialog.component.scss'],
 })
 export class AddressDialogComponent implements AfterViewInit {
   dialogRef = inject(MatDialogRef<AddressDialogComponent>);

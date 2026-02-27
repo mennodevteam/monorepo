@@ -66,8 +66,8 @@ import { MatDialog } from '@angular/material/dialog';
       }
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-      <button mat-button (click)="openAddAddressDialog()">
-        <ng-icon [svg]="addIcon" size="20"></ng-icon>
+      <button mat-button (click)="openAddAddressDialog()" class="add-address-btn">
+        <ng-icon [svg]="addIcon" size="20" class="add-address-btn__icon"></ng-icon>
         افزودن آدرس جدید
       </button>
       <button mat-button mat-dialog-close>بستن</button>
@@ -93,6 +93,14 @@ import { MatDialog } from '@angular/material/dialog';
       .empty-icon {
         color: var(--mat-sys-outline-variant);
         opacity: 0.6;
+      }
+      .add-address-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .add-address-btn__icon {
+        display: inline-flex;
       }
     `,
   ],

@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { PlatformLocation, DecimalPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -30,6 +30,7 @@ import { TopAppBarComponent } from '../../shared/components/top-app-bar/top-app-
 import { InvoiceComponent } from './components/invoice/invoice.component';
 import { PaymentMethodsComponent } from './components/payment-methods/payment-methods.component';
 import { AddressSelectionDialogComponent } from './components/address-selection-dialog/address-selection-dialog.component';
+import { AddressDialogComponent } from './components/address-dialog/address-dialog.component';
 import { AddressesService } from '../../core/services/addresses.service';
 import { StatAction, OrderType } from '@menno/types';
 import { SectionComponent } from '../../shared/components/section/section.component';
@@ -90,6 +91,8 @@ export class CheckoutComponent {
   statusSuccessIcon = saxVerifyBold;
   statusInfoIcon = saxTruckFastBold;
   Math = Math;
+  hasAddresses = computed(() => (this.addressesService.addresses()?.length || 0) > 0);
+  private hasAutoOpenedAddressDialog = signal(false);
   
   constructor() {
     if (this.cart.length() === 0) {
@@ -97,14 +100,47 @@ export class CheckoutComponent {
     } else {
       this.menuStat.send(StatAction.ViewCheckout, { value: this.cart.total() });
     }
+
+    effect(() => {
+      const isAddressesLoaded = this.addressesService.addressesQuery.isSuccess();
+      const addresses = this.addressesService.addresses();
+
+      if (
+        !isAddressesLoaded ||
+        this.hasAutoOpenedAddressDialog() ||
+        !!this.cart.address() ||
+        !addresses ||
+        addresses.length > 0
+      ) {
+        return;
+      }
+
+      this.hasAutoOpenedAddressDialog.set(true);
+      this.openNewAddressDialog();
+    });
   }
 
-  openAddressDialog() {
+  openNewAddressDialog() {
+    this.dialog.open(AddressDialogComponent, {
+      width: '400px',
+      disableClose: true,
+    });
+  }
+
+  openAddressSelectionDialog() {
     this.dialog.open(AddressSelectionDialogComponent, {
       width: '90%',
       maxWidth: '500px',
       disableClose: false,
     });
+  }
+
+  openAddressAction() {
+    if (this.hasAddresses()) {
+      this.openAddressSelectionDialog();
+      return;
+    }
+    this.openNewAddressDialog();
   }
 
   total = computed(() => {

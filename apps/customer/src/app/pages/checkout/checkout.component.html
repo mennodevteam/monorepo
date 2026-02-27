@@ -13,8 +13,8 @@
     <app-section
       title="آدرس تحویل"
       [icon]="addressIcon"
-      seeMoreLabel="تغییر آدرس"
-      (seeMoreClick)="openAddressDialog()"
+      [seeMoreLabel]="hasAddresses() ? 'تغییر آدرس' : 'افزودن آدرس'"
+      (seeMoreClick)="openAddressAction()"
     >
       <app-address-card [address]="cart.address()"></app-address-card>
     </app-section>
@@ -37,7 +37,7 @@
   @let showProgress = !!minOrderPriceLimitation || !!(deliveryCost && minPriceForFree && minPriceForFree > cart.sum());
   @let minBasketProgress = minOrderPrice ? Math.min(100, (cart.total() / minOrderPrice) * 100) : 0;
   @let freeBasketProgress = minPriceForFree ? Math.min(100, (cart.sum() / minPriceForFree) * 100) : 100;
-  @if (minOrderPriceLimitation || !deliveryCost || (deliveryCost && minPriceForFree && minPriceForFree > cart.sum())) {
+  @if (cart.address() && (minOrderPriceLimitation || !deliveryCost || (deliveryCost && minPriceForFree && minPriceForFree > cart.sum()))) {
     <mat-toolbar class="status-toolbar" [class.status-toolbar--warn]="!!minOrderPriceLimitation" [class.status-toolbar--success]="!minOrderPriceLimitation">
       <div class="status-toolbar__content">
         <ng-icon
