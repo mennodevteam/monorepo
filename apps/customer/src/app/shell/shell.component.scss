@@ -4,6 +4,10 @@
   height: 100svh; // Use small viewport height to prevent address bar from hiding
   overflow: hidden;
   position: relative;
+
+  @media (min-width: 768px) {
+    background-color: var(--mat-sys-surface-container-low);
+  }
 }
 
 .shell-app-bar {
@@ -11,6 +15,12 @@
   top: 0;
   z-index: 5;
   display: block;
+  width: 100%;
+
+  @media (min-width: 768px) {
+    max-width: 600px;
+    margin-inline: auto;
+  }
 }
 
 .shell-content {
@@ -21,12 +31,18 @@
   &.no-bottom-nav {
     padding-bottom: env(safe-area-inset-bottom); // Still account for safe area even without bottom nav
   }
+
+  @media (min-width: 768px) {
+    background-color: transparent;
+  }
 }
 
 .shell-content-inner {
   width: 100%;
   margin-inline: auto;
   box-sizing: border-box;
+  background-color: var(--mat-sys-background);
+  min-height: 100%;
 
   @media (min-width: 768px) {
     max-width: 600px;

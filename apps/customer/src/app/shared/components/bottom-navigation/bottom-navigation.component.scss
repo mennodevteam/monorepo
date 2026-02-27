@@ -49,6 +49,12 @@
   box-shadow: none;
   border-top: 1px solid color-mix(in srgb, var(--mat-sys-outline-variant) 35%, transparent);
 
+  @media (min-width: 768px) {
+    width: 600px;
+    left: calc((100vw - 600px) / 2);
+    right: auto;
+  }
+
   .nav-button {
     flex: 1;
     padding: 8px 12px;
