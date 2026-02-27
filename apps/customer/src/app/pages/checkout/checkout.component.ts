@@ -32,7 +32,7 @@ import { PaymentMethodsComponent } from './components/payment-methods/payment-me
 import { AddressSelectionDialogComponent } from './components/address-selection-dialog/address-selection-dialog.component';
 import { AddressDialogComponent } from './components/address-dialog/address-dialog.component';
 import { AddressesService } from '../../core/services/addresses.service';
-import { StatAction, OrderType } from '@menno/types';
+import { StatAction, OrderPaymentType, OrderType } from '@menno/types';
 import { SectionComponent } from '../../shared/components/section/section.component';
 import { AddressCardComponent } from './components/address-card/address-card.component';
 import { VpnCheckService } from '../../core/services/vpn-check.service';
@@ -150,6 +150,12 @@ export class CheckoutComponent {
       return Math.max(0, this.cart.total() - useWallet);
     }
   });
+
+  isOnlinePaymentFlow = computed(
+    () =>
+      this.shopService.isPaymentRequired() ||
+      (this.shopService.isPaymentAvailable() && this.cart.paymentType() === OrderPaymentType.Online),
+  );
 
   async submit() {
     // Track order placement attempt

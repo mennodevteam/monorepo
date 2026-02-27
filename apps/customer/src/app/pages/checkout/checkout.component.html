@@ -79,7 +79,7 @@
       @if (cart.saving()) {
         <span>در حال ثبت...</span>
       } @else {
-        <span>ثبت سفارش ({{ total() | number }} تومان)</span>
+        <span>{{ isOnlinePaymentFlow() ? 'پرداخت سفارش' : 'ثبت سفارش' }} ({{ total() | number }} تومان)</span>
       }
     </button>
   </mat-toolbar>
