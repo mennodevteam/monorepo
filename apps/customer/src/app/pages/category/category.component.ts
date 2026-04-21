@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, effect, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, effect } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -16,11 +16,10 @@ import { ProductCardComponent } from '../../shared/components/product-card/produ
 import { ShopService } from '../../core/services/shop.service';
 import { TitleService } from '../../core/services/title.service';
 import { MenuViewType, ProductCategory } from '@menno/types';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-category',
-  imports: [MatProgressSpinner, MatButtonModule, NgIcon, ProductCardComponent, MatGridListModule, MatToolbarModule, RouterLink],
+  imports: [MatProgressSpinner, MatButtonModule, NgIcon, ProductCardComponent, MatGridListModule, MatToolbarModule],
   providers: [provideIcons({ saxArrowDown2Outline })],
   templateUrl: './category.component.html',
   styleUrl: './category.component.scss',
@@ -33,12 +32,17 @@ export class CategoryComponent implements OnDestroy {
   private readonly linkService = inject(LinkService);
   private readonly shopService = inject(ShopService);
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly titleService = inject(TitleService);
   private readonly document = inject(DOCUMENT);
 
   private readonly categoryIdParam = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('categoryId'))),
     { initialValue: this.route.snapshot.paramMap.get('categoryId') },
+  );
+  private readonly subcategoryQueryParam = toSignal(
+    this.route.queryParamMap.pipe(map((params) => params.get('subcategory'))),
+    { initialValue: this.route.snapshot.queryParamMap.get('subcategory') },
   );
 
   readonly categoryId = computed(() => {
@@ -76,7 +80,6 @@ export class CategoryComponent implements OnDestroy {
     () => this.categoryType() === MenuViewType.Card || this.categoryType() === MenuViewType.CardLargeImage,
   );
 
-  readonly selectedSubcategory = signal<string | null>(null);
   readonly products = computed(() => this.category()?.products ?? []);
   readonly subcategories = computed(() => {
     const map = new Map<string, string>();
@@ -93,6 +96,12 @@ export class CategoryComponent implements OnDestroy {
     return [...map.values()].sort((a, b) => a.localeCompare(b));
   });
   readonly hasSubcategories = computed(() => this.subcategories().length > 0);
+  readonly selectedSubcategory = computed(() => {
+    const queryValue = this.subcategoryQueryParam()?.trim();
+    if (!queryValue) return null;
+
+    return this.subcategories().find((item) => item.toLowerCase() === queryValue.toLowerCase()) ?? null;
+  });
   readonly filteredProducts = computed(() => {
     const selected = this.selectedSubcategory();
     const products = this.products();
@@ -131,11 +140,17 @@ export class CategoryComponent implements OnDestroy {
     });
 
     effect(() => {
+      const queryValue = this.subcategoryQueryParam()?.trim();
       const options = this.subcategories();
-      const selected = this.selectedSubcategory();
-      if (selected && !options.some((item) => item.toLowerCase() === selected.toLowerCase())) {
-        this.selectedSubcategory.set(null);
-      }
+      const hasMatch = queryValue ? options.some((item) => item.toLowerCase() === queryValue.toLowerCase()) : true;
+      if (hasMatch) return;
+
+      void this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { subcategory: null },
+        queryParamsHandling: 'merge',
+        replaceUrl: true,
+      });
     });
 
     effect(() => {
@@ -145,7 +160,19 @@ export class CategoryComponent implements OnDestroy {
   }
 
   selectSubcategory(value: string | null) {
-    this.selectedSubcategory.set(value);
+    void this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { subcategory: value },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
+  }
+
+  goToNextCategory() {
+    const link = this.nextCategoryLink();
+    if (!link) return;
+
+    void this.router.navigateByUrl(link, { replaceUrl: true });
   }
 
   ngOnDestroy(): void {
