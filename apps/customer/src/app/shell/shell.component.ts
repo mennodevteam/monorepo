@@ -32,30 +32,6 @@ export class ShellComponent implements OnInit {
   hideBottomNav = signal(false);
   hideMetaAction = signal(false);
 
-  constructor() {
-    const elem: HTMLElement | null = document.querySelector('#pre-load-data-container');
-    if (elem) {
-      const removePreload = () => {
-        elem.style.opacity = '0';
-        setTimeout(() => {
-          elem.remove();
-          (window as any).__preloadRemoved = true;
-          window.dispatchEvent(new Event('preload-removed'));
-        }, 320);
-      };
-
-      if ((window as any).__preloadAnimationDone) {
-        removePreload();
-      } else {
-        const onPreloadDone = () => {
-          window.removeEventListener('preload-animation-done', onPreloadDone);
-          removePreload();
-        };
-        window.addEventListener('preload-animation-done', onPreloadDone);
-      }
-    }
-  }
-  
   ngOnInit(): void {
     // Handle loading state
     this.router.events.subscribe((event) => {

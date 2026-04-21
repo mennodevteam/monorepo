@@ -13,13 +13,13 @@ import { CartService } from '../../../core/services/cart.service';
 })
 export class ThanksComponent implements OnDestroy {
   private readonly cart = inject(CartService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   value = signal(0);
   interval: any;
   id?: string;
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
   ) {
     this.cart.clear();
     const params = this.route.snapshot.params;

@@ -35,6 +35,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.setupPreloadRemoval();
     this.homeSectionService.prefetchHomeSections(resolveShopUsername());
     this.router.events
       .pipe(
@@ -58,6 +59,35 @@ export class AppComponent implements OnInit {
     this.destroyRef.onDestroy(() => window.removeEventListener('preload-removed', onPreloadRemoved));
 
     this.tryShowWelcomePopup();
+  }
+
+  private setupPreloadRemoval() {
+    const removePreload = () => {
+      const preloadElement = document.querySelector<HTMLElement>('#pre-load-data-container');
+      if (!preloadElement) {
+        return;
+      }
+
+      preloadElement.style.opacity = '0';
+      window.setTimeout(() => {
+        preloadElement.remove();
+        (window as any).__preloadRemoved = true;
+        window.dispatchEvent(new Event('preload-removed'));
+      }, 320);
+    };
+
+    if ((window as any).__preloadAnimationDone) {
+      removePreload();
+      return;
+    }
+
+    const onPreloadDone = () => {
+      window.removeEventListener('preload-animation-done', onPreloadDone);
+      removePreload();
+    };
+
+    window.addEventListener('preload-animation-done', onPreloadDone);
+    this.destroyRef.onDestroy(() => window.removeEventListener('preload-animation-done', onPreloadDone));
   }
 
   private tryShowWelcomePopup() {
