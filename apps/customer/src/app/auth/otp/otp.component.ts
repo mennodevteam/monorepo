@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MenuStatService } from '../../core/services/menu-stat.service';
 import { StatAction } from '@menno/types';
+import { WebOtpDirective } from '../../shared/directives';
 
 @Component({
   selector: 'app-otp',
@@ -25,6 +26,7 @@ import { StatAction } from '@menno/types';
     MatSnackBarModule,
     MatButtonModule,
     MatProgressSpinnerModule,
+    WebOtpDirective,
   ],
   templateUrl: './otp.component.html',
   styleUrl: './otp.component.scss',
@@ -100,6 +102,10 @@ export class OtpComponent implements OnDestroy {
       }
     }
     ev?.preventDefault?.();
+  }
+
+  onOtp(otp: string) {
+    this.otp.set(otp);
   }
 
   hasOtpValue() {

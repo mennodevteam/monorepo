@@ -3,6 +3,8 @@
   <h1>کد تایید</h1>
   <p>کد ارسال شده به شماره {{ phone }} را وارد کنید</p>
 
+  <input webOtp (newOtp)="onOtp($event)" style="display: none" />
+
   <mat-form-field appearance="outline">
     <input
       matInput
