@@ -7,7 +7,8 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { User } from '@menno/types';
+import { StatAction, User } from '@menno/types';
+import { MenuStatService } from '../../core/services/menu-stat.service';
 
 @Component({
   selector: 'app-register',
@@ -31,6 +32,7 @@ export class RegisterComponent {
 
   private auth = inject(AuthService);
   private location = inject(PlatformLocation);
+  private menuStat = inject(MenuStatService);
 
   constructor() {
     // Initialize from user data if available
@@ -56,6 +58,7 @@ export class RegisterComponent {
       try {
         this.loading.set(true);
         await this.auth.update(dto as User);
+        this.menuStat.send(StatAction.RegisterComplete);
       } catch (error) {
         // Handle error
       }

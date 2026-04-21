@@ -8,9 +8,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PersianNumberService } from '@menno/utils';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIcon, provideIcons } from '@ng-icons/core';
+import { provideIcons } from '@ng-icons/core';
 import { saxArrowRight1Outline } from '@ng-icons/iconsax/outline';
 import { TopAppBarComponent } from '../../shared/components/top-app-bar/top-app-bar.component';
+import { MenuStatService } from '../../core/services/menu-stat.service';
+import { StatAction } from '@menno/types';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +25,6 @@ import { TopAppBarComponent } from '../../shared/components/top-app-bar/top-app-
     FormsModule,
     MatProgressSpinnerModule,
     MatButtonModule,
-    NgIcon,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -41,6 +42,7 @@ export class LoginComponent {
   private auth = inject(AuthService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private menuStat = inject(MenuStatService);
 
   async sendToken(ev?: SubmitEvent) {
     const value = this.phone();
@@ -53,6 +55,7 @@ export class LoginComponent {
       state: { phone },
       queryParams: this.route.snapshot.queryParams,
     });
+    this.menuStat.send(StatAction.LoginSetPhone);
 
     ev?.preventDefault();
   }

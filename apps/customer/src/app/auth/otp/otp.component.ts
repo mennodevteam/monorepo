@@ -10,6 +10,8 @@ import { PersianNumberService } from '@menno/utils';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MenuStatService } from '../../core/services/menu-stat.service';
+import { StatAction } from '@menno/types';
 
 @Component({
   selector: 'app-otp',
@@ -39,6 +41,7 @@ export class OtpComponent implements OnDestroy {
   private auth = inject(AuthService);
   private router = inject(Router);
   private snack = inject(MatSnackBar);
+  private menuStat = inject(MenuStatService);
 
   constructor() {
     const phone = this.router.getCurrentNavigation()?.extras?.state?.['phone'];
@@ -68,6 +71,7 @@ export class OtpComponent implements OnDestroy {
       const token = PersianNumberService.toEnglish(value.toString());
       try {
         const user = await this.auth.loginWithToken(this.phone, token);
+        this.menuStat.send(StatAction.LoginComplete);
         if (user?.firstName) {
           window.history.go(-2);
           setTimeout(() => {

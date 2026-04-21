@@ -7,9 +7,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
-import { Address, Region, State } from '@menno/types';
+import { Address, Region, StatAction, State } from '@menno/types';
 import { AddressesService } from '../../../../core/services/addresses.service';
 import { REGIONS } from '../../../../core/constants/regions';
+import { MenuStatService } from '../../../../core/services/menu-stat.service';
 
 @Component({
   selector: 'app-address-dialog',
@@ -30,6 +31,7 @@ import { REGIONS } from '../../../../core/constants/regions';
 export class AddressDialogComponent implements AfterViewInit {
   dialogRef = inject(MatDialogRef<AddressDialogComponent>);
   addressesService = inject(AddressesService);
+  menuStat = inject(MenuStatService);
   data = inject<Address | undefined>(MAT_DIALOG_DATA, { optional: true });
 
   address?: Address;
@@ -92,6 +94,9 @@ export class AddressDialogComponent implements AfterViewInit {
       this.loading.set(true);
       try {
         await this.addressesService.save(this.dto);
+        if (!this.address) {
+          this.menuStat.send(StatAction.AddAddress);
+        }
         this.dialogRef.close(true);
       } catch (error) {
         console.error('Error saving address:', error);
