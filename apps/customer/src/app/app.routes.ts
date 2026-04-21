@@ -29,6 +29,11 @@ export const appRoutes: Route[] = [
     loadComponent: () => import('./pages/orders/thanks/thanks.component').then((m) => m.ThanksComponent),
   },
   {
+    path: 'complete/:id',
+    redirectTo: 'orders/thanks/:id',
+    pathMatch: 'full',
+  },
+  {
     path: 'chat/order/:id',
     loadComponent: () => import('./pages/chat/chat.component').then((m) => m.ChatComponent),
   },
@@ -80,6 +85,11 @@ export const appRoutes: Route[] = [
         path: 'orders/:id',
         loadComponent: () => import('./pages/orders/details/details.component').then((m) => m.OrderDetailsComponent),
         data: { title: 'جزئیات سفارش', hideMetaAction: true },
+      },
+      {
+        path: 'orders/details/:id',
+        redirectTo: 'orders/:id',
+        pathMatch: 'full',
       },
       {
         path: 'main-menu',
