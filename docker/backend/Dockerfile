@@ -2,8 +2,8 @@ FROM node:22-alpine AS deps
 
 WORKDIR /workspace
 
-# تنظیم میرور داخلی برای Yarn
-RUN yarn config set npmRegistryServer https://mirror-npm.runflare.com
+# تنظیم میرور داخلی برای Yarn (Yarn v1)
+RUN yarn config set registry https://repo.hmirror.ir/npm
 
 COPY package.json yarn.lock ./
 RUN yarn install
@@ -20,8 +20,8 @@ FROM node:22-alpine AS prod-deps
 
 WORKDIR /workspace
 
-# تنظیم مجدد میرور در این استیج برای نصب وابستگی‌های Production
-RUN yarn config set npmRegistryServer https://mirror-npm.runflare.com
+# تنظیم مجدد میرور در این استیج برای نصب وابستگی‌های Production (Yarn v1)
+RUN yarn config set registry https://repo.hmirror.ir/npm
 
 COPY --from=builder /workspace/dist/apps/backend/package.json ./package.json
 COPY --from=builder /workspace/yarn.lock ./yarn.lock
