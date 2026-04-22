@@ -16,10 +16,10 @@
         "tsConfig": "apps/backend/tsconfig.app.json",
         "assets": [
           "apps/backend/src/assets",
-          "apps/backend/src/package.json",
           "apps/backend/src/Dockerfile",
           "apps/backend/src/liara.json"
-        ]
+        ],
+        "generatePackageJson": true
       },
       "configurations": {
         "production": {
