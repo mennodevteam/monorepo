@@ -6,7 +6,7 @@ WORKDIR /workspace
 RUN yarn config set registry https://repo.hmirror.ir/npm
 
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+RUN yarn install
 
 FROM node:22-alpine AS builder
 
@@ -25,7 +25,7 @@ RUN yarn config set registry https://repo.hmirror.ir/npm
 
 COPY --from=builder /workspace/dist/apps/backend/package.json ./package.json
 COPY --from=builder /workspace/yarn.lock ./yarn.lock
-RUN yarn install --production --frozen-lockfile && yarn cache clean
+RUN yarn install --production && yarn cache clean
 
 FROM node:22-alpine AS runner
 
