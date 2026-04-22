@@ -33,7 +33,7 @@ COPY --from=builder /workspace/package.json ./package.json
 COPY --from=builder /workspace/yarn.lock ./yarn.lock
 RUN sed -i 's#https://registry.yarnpkg.com/#https://repo.hmirror.ir/npm/#g' yarn.lock
 RUN --mount=type=cache,target=/usr/local/share/.cache/yarn \
-    yarn install --production --registry https://repo.hmirror.ir/npm --network-concurrency 1 --mutex network && yarn cache clean
+    yarn install --production --registry https://repo.hmirror.ir/npm --network-concurrency 1 --mutex network
 
 FROM node:22-alpine AS runner
 
