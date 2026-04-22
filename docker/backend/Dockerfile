@@ -2,6 +2,10 @@ FROM node:22-alpine AS deps
 
 WORKDIR /workspace
 
+ARG NPM_REGISTRY=https://repo.hmirror.ir/npm/
+RUN npm config set registry "${NPM_REGISTRY}" \
+  && yarn config set registry "${NPM_REGISTRY}"
+
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
@@ -16,6 +20,10 @@ RUN yarn nx run backend:build:production
 FROM node:22-alpine AS prod-deps
 
 WORKDIR /workspace
+
+ARG NPM_REGISTRY=https://repo.hmirror.ir/npm/
+RUN npm config set registry "${NPM_REGISTRY}" \
+  && yarn config set registry "${NPM_REGISTRY}"
 
 COPY --from=builder /workspace/dist/apps/backend/package.json ./package.json
 COPY --from=builder /workspace/yarn.lock ./yarn.lock
