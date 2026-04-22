@@ -1,3 +1,4 @@
+## syntax=docker/dockerfile:1.7
 FROM node:22-alpine AS deps
 
 WORKDIR /workspace
@@ -8,7 +9,8 @@ ENV CYPRESS_INSTALL_BINARY=0
 
 COPY package.json yarn.lock ./
 RUN sed -i 's#https://registry.yarnpkg.com/#https://repo.hmirror.ir/npm/#g' yarn.lock
-RUN yarn install --registry https://repo.hmirror.ir/npm --network-concurrency 1 --mutex network
+RUN --mount=type=cache,target=/usr/local/share/.cache/yarn \
+    yarn install --registry https://repo.hmirror.ir/npm --network-concurrency 1 --mutex network
 
 FROM node:22-alpine AS builder
 
@@ -26,10 +28,12 @@ WORKDIR /workspace
 RUN yarn config set registry https://repo.hmirror.ir/npm
 ENV CYPRESS_INSTALL_BINARY=0
 
-COPY --from=builder /workspace/dist/apps/backend/package.json ./package.json
+# استفاده از package.json ریشه برای جلوگیری از جا ماندن وابستگی‌های runtime مثل pg
+COPY --from=builder /workspace/package.json ./package.json
 COPY --from=builder /workspace/yarn.lock ./yarn.lock
 RUN sed -i 's#https://registry.yarnpkg.com/#https://repo.hmirror.ir/npm/#g' yarn.lock
-RUN yarn install --production --registry https://repo.hmirror.ir/npm --network-concurrency 1 --mutex network && yarn cache clean
+RUN --mount=type=cache,target=/usr/local/share/.cache/yarn \
+    yarn install --production --registry https://repo.hmirror.ir/npm --network-concurrency 1 --mutex network && yarn cache clean
 
 FROM node:22-alpine AS runner
 
