@@ -4,6 +4,7 @@ WORKDIR /workspace
 
 # تنظیم میرور داخلی برای Yarn (Yarn v1)
 RUN yarn config set registry https://repo.hmirror.ir/npm
+ENV CYPRESS_INSTALL_BINARY=0
 
 COPY package.json yarn.lock ./
 RUN sed -i 's#https://registry.yarnpkg.com/#https://repo.hmirror.ir/npm/#g' yarn.lock
@@ -23,6 +24,7 @@ WORKDIR /workspace
 
 # تنظیم مجدد میرور در این استیج برای نصب وابستگی‌های Production (Yarn v1)
 RUN yarn config set registry https://repo.hmirror.ir/npm
+ENV CYPRESS_INSTALL_BINARY=0
 
 COPY --from=builder /workspace/dist/apps/backend/package.json ./package.json
 COPY --from=builder /workspace/yarn.lock ./yarn.lock
