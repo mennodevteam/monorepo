@@ -92,7 +92,7 @@ export class AddressesController {
         where: { id: shopId },
         relations: ['deliveryAreas.region', 'appConfig'],
       });
-      if (shop.appConfig?.deliveryType === DeliveryType.Standard && add.latitude && add.longitude)
+      if ((!shop.appConfig?.deliveryType || shop.appConfig?.deliveryType === DeliveryType.Standard) && add.latitude && add.longitude)
         add.deliveryArea = DeliveryArea.isInWitchArea(shop.deliveryAreas || [], [
           add.latitude,
           add.longitude,
