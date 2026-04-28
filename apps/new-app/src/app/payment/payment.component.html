@@ -20,7 +20,7 @@
   <mat-toolbar id="noticebar" class="background-background" p-md>
     @if (showMinOrderWarning()) {
       <app-alert-banner
-        type="warn"
+        type="warning"
         [compact]="true"
         [title]="'cart.addressMinPriceWarningInline' | translate: { value: minOrderPrice() | menuCurrency }"
       />

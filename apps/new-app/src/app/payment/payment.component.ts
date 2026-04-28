@@ -9,6 +9,7 @@ import { ClubService } from '../core/services/club.service';
 import { Router } from '@angular/router';
 import { AddressesService, MenuService, MenuStatService, ShopService } from '../core';
 import { MatListModule } from '@angular/material/list';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { OrderType, StatAction } from '@menno/types';
 import { FormsModule } from '@angular/forms';
 import { AddressListComponent } from './address-list/address-list.component';
@@ -27,6 +28,7 @@ import { AnalyticsService } from '../core/services/analytics.service';
     PaymentMethodsComponent,
     TopAppBarComponent,
     MatListModule,
+    MatToolbarModule,
     FormsModule,
     AddressListComponent,
     AlertBannerComponent,
