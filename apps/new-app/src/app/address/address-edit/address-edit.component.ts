@@ -162,6 +162,11 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
   get dto() {
     const dto: Address = this.addressForm.getRawValue();
     if (this.address) dto.id = this.address.id;
+    const coord = this.coordinate;
+    if (this.deliveryType() === DeliveryType.Standard && coord) {
+      dto.latitude = coord[0];
+      dto.longitude = coord[1];
+    }
     return dto;
   }
 
@@ -185,7 +190,7 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
     }
 
     const dto = this.dto;
-    if (this.deliveryArea) dto.deliveryArea;
+    if (this.deliveryArea) dto.deliveryArea = this.deliveryArea;
 
     const address = await this.addressesService.save(dto);
     if (address) {

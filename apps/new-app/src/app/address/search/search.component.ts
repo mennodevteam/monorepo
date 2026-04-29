@@ -64,7 +64,7 @@ export class SearchComponent {
 
   get coordinate() {
     const query = this.route.snapshot.queryParams;
-    if (query['lat'] && query['lng']) return [Number(query['lat']), query['lng']];
+    if (query['lat'] && query['lng']) return [Number(query['lat']), Number(query['lng'])];
     return;
   }
 
