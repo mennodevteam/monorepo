@@ -5,7 +5,7 @@ export const environment = {
   appBaseUrl: 'https://app.menno.pro',
   appDomain: 'app.menno.pro',
   systemHostNames: ['app.menno.pro'],
-  bucketUrl: 'https://menno.storage.iran.liara.space',
+  bucketUrl: 'https://file.menno.pro',
 };
 
 
