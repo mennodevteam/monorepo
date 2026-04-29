@@ -81,10 +81,10 @@ export class ShopsController {
       }
 
       if (shop) {
-        const logo = `https://${process.env.LIARA_BUCKET_NAME}.${process.env.LIARA_BUCKET_ENDPOINT}/${
+        const logo = `https://file.menno.pro/${
           shop.logoImage?.sm || shop.logo
         }`;
-        const fav = `https://${process.env.LIARA_BUCKET_NAME}.${process.env.LIARA_BUCKET_ENDPOINT}/${
+        const fav = `https://file.menno.pro/${
           shop.logoImage?.xxs || shop.logo
         }`;
         const title = shop.title;
