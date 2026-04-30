@@ -10,14 +10,14 @@ import {
   saxCategoryBold,
   saxSearchNormal1Bold,
   saxBoxBold,
-  saxProfile2userBold,
+  saxMenu1Bold,
 } from '@ng-icons/iconsax/bold';
 import {
   saxHome2Outline,
   saxCategoryOutline,
   saxSearchNormal1Outline,
   saxBoxOutline,
-  saxProfile2userOutline,
+  saxMenu1Outline,
 } from '@ng-icons/iconsax/outline';
 import { CommonModule } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
@@ -46,8 +46,8 @@ import { MatDividerModule } from '@angular/material/divider';
       saxSearchNormal1Outline,
       saxBoxBold,
       saxBoxOutline,
-      saxProfile2userBold,
-      saxProfile2userOutline,
+      saxMenu1Bold,
+      saxMenu1Outline,
     }),
   ],
 })
@@ -58,6 +58,6 @@ export class BottomNavigationComponent {
     { path: '/categories', label: 'دسته‌بندی‌ها', icon: saxCategoryOutline, activeIcon: saxCategoryBold },
     { path: '/search', label: 'جستجو', icon: saxSearchNormal1Outline, activeIcon: saxSearchNormal1Bold },
     { path: '/orders', label: 'سفارشات', icon: saxBoxOutline, activeIcon: saxBoxBold },
-    { path: '/main-menu', label: 'پروفایل', icon: saxProfile2userOutline, activeIcon: saxProfile2userBold },
+    { path: '/main-menu', label: 'منوی بیشتر', icon: saxMenu1Outline, activeIcon: saxMenu1Bold },
   ];
 }

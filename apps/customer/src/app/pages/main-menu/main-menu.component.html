@@ -1,5 +1,4 @@
-<main style="padding: 16px; max-width: 600px; margin: 0 auto;">
-  
+<main style="padding: 16px; max-width: 600px; margin: 0 auto">
   <mat-nav-list>
     @if (auth.isGuestUser()) {
       <a mat-list-item routerLink="/login">
@@ -66,7 +65,7 @@
       </a>
     }
     @if (canShare) {
-      <a mat-list-item (click)="share()" >
+      <a mat-list-item (click)="share()">
         <ng-icon [svg]="shareIcon" size="24" matListItemIcon></ng-icon>
         <span matListItemLine>اشتراک‌گذاری</span>
         <div matListItemMeta>
@@ -75,5 +74,30 @@
       </a>
     }
   </mat-nav-list>
-</main>
 
+  @if (contactLinks().length) {
+    <h3 class="contact-links-title">راه‌های ارتباطی</h3>
+    <mat-nav-list>
+      @for (item of contactLinks(); track $index) {
+        <a
+          mat-list-item
+          [href]="item.link"
+          target="_blank"
+          rel="noopener noreferrer"
+          [class.disabled]="!item.link"
+        >
+          <img
+            class="contact-link-icon"
+            [src]="contactLinkIconPath(item.type)"
+            [alt]="item.type"
+            matListItemAvatar
+          />
+          <span matListItemTitle>{{ contactLinkTitle(item) }}</span>
+          @if (item.value) {
+            <span matListItemMeta dir="ltr">{{ item.value }}</span>
+          }
+        </a>
+      }
+    </mat-nav-list>
+  }
+</main>

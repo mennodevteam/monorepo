@@ -1,5 +1,4 @@
 import { Component, inject, computed } from '@angular/core';
-import { TopAppBarComponent } from '../../shared/components/top-app-bar/top-app-bar.component';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
@@ -21,19 +20,16 @@ import { AuthService } from '../../core/services/auth.service';
 import { MenuService } from '../../core/services/menu.service';
 import { PwaService } from '../../core/services/pwa.service';
 import { ShopService } from '../../core/services/shop.service';
-import { User } from '@menno/types';
-import { ImageLoaderDirective } from '../../shared/directives/image-loader.directive';
+import { ShopContactLink, User } from '@menno/types';
 
 @Component({
   selector: 'app-main-menu',
   standalone: true,
   imports: [
-    TopAppBarComponent,
     MatListModule,
     MatButtonModule,
     RouterModule,
     CommonModule,
-    ImageLoaderDirective,
     NgIcon,
   ],
   templateUrl: './main-menu.component.html',
@@ -65,6 +61,7 @@ export class MainMenuComponent {
     if (!user) return '';
     return User.fullName(user);
   });
+  readonly contactLinks = computed(() => this.shopService.data()?.contactLinks || []);
 
   readonly profileIcon = saxProfile2userOutline;
   readonly ordersIcon = saxBoxOutline;
@@ -95,6 +92,23 @@ export class MainMenuComponent {
 
   get canShare() {
     return 'share' in navigator;
+  }
+
+  contactLinkIconPath(type: string): string {
+    const iconByType: Record<string, string> = {
+      bale: 'bale-logo.png',
+      telegram: 'telegram-logo.webp',
+      eitaa: 'eitaa-logo.png',
+      instagram: 'instagram-logo.webp',
+      phone: 'phone-logo.webp',
+      map: 'map-logo.webp',
+      whatsapp: 'whatsapp-logo.webp',
+    };
+    return `/icons/${iconByType[(type || '').toLowerCase()] || 'phone-logo.webp'}`;
+  }
+
+  contactLinkTitle(item: ShopContactLink): string {
+    return item.title || item.type;
   }
 
 }
