@@ -50,6 +50,14 @@ export interface WebScript {
   active?: boolean;
 }
 
+export interface ShopContactLink {
+  title: string;
+  value: string;
+  link: string;
+  type: string;
+  star: boolean;
+}
+
 export class Shop {
   id: string;
   title: string;
@@ -68,6 +76,7 @@ export class Shop {
   businessCategory?: BusinessCategory;
   customBusinessCategory?: string;
   phones: string[];
+  contactLinks: ShopContactLink[];
   images: string[];
   deliveryAreas?: DeliveryArea[];
   smsAccount?: SmsAccount;
