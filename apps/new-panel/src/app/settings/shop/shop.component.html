@@ -103,35 +103,79 @@
           </mat-card-header>
           <br />
           <mat-card-content fxLayout="column" fxLayoutGap="16px">
-            <mat-form-field>
-              <mat-label>{{ 'shop.phonesLabel' | translate }}</mat-label>
-              <mat-chip-grid #chipGrid>
-                @for (phone of form.controls['phones'].value; track phone) {
-                  <mat-chip-row
-                    (removed)="removePhone(phone)"
-                    >
-                    {{ phone }}
-                    <button matChipRemove>
-                      <i class="fa-regular fa-close"></i>
-                    </button>
-                  </mat-chip-row>
-                }
-                <input
-                  placeholder="{{ 'shop.phonesPlaceholder' | translate }}"
-                  [matChipInputFor]="chipGrid"
-                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                  [matChipInputAddOnBlur]="true"
-                  (matChipInputTokenEnd)="addPhone($event)"
-                  />
-              </mat-chip-grid>
-              <mat-hint>{{ 'shop.phonesHint' | translate }}</mat-hint>
-            </mat-form-field>
-            <div spacer></div>
-            <mat-form-field>
-              <mat-label>{{ 'shop.instagram' | translate }}</mat-label>
-              <input matInput formControlName="instagram" />
-              <mat-hint>{{ 'shop.instagramHint' | translate }}</mat-hint>
-            </mat-form-field>
+            <div formArrayName="contactLinks" fxLayout="column" fxLayoutGap="12px">
+              @for (contactLink of contactLinks.controls; track $index; let i = $index) {
+                <mat-card appearance="outlined" class="contact-link-card" [formGroupName]="i">
+                  <mat-card-content fxLayout="column" fxLayoutGap="12px">
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                      <strong>{{ 'shop.contactLinkItem' | translate }} {{ i + 1 }}</strong>
+                      <div fxLayout="row" fxLayoutGap="8px">
+                        <button
+                          mat-icon-button
+                          type="button"
+                          (click)="toggleContactLinkStar(i)"
+                          [matTooltip]="('shop.contactLinkStar' | translate)"
+                        >
+                          @if (contactLink.controls.star.value) {
+                            <i class="fa-solid fa-star"></i>
+                          } @else {
+                            <i class="fa-regular fa-star"></i>
+                          }
+                        </button>
+                        <button mat-icon-button type="button" [disabled]="i === 0" (click)="moveContactLink(i, -1)">
+                          <i class="fa-regular fa-arrow-up"></i>
+                        </button>
+                        <button
+                          mat-icon-button
+                          type="button"
+                          [disabled]="i === contactLinks.controls.length - 1"
+                          (click)="moveContactLink(i, 1)"
+                        >
+                          <i class="fa-regular fa-arrow-down"></i>
+                        </button>
+                        <button mat-icon-button type="button" (click)="removeContactLink(i)">
+                          <i class="fa-regular fa-trash"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <mat-form-field>
+                      <mat-label>{{ 'shop.contactLinkType' | translate }}</mat-label>
+                      <mat-select formControlName="type" (selectionChange)="onContactLinkTypeChange(i)">
+                        @for (type of contactLinkTypes; track type) {
+                          <mat-option [value]="type">{{ type }}</mat-option>
+                        }
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                      <mat-label>{{ 'shop.contactLinkTitle' | translate }}</mat-label>
+                      <input matInput formControlName="title" />
+                    </mat-form-field>
+                    <mat-form-field>
+                      <mat-label>{{ 'shop.contactLinkValue' | translate }}</mat-label>
+                      <input matInput formControlName="value" (input)="onContactLinkValueChange(i)" dir="ltr" lang="en" />
+                    </mat-form-field>
+                    <mat-form-field>
+                      <mat-label>{{ 'shop.contactLinkLink' | translate }}</mat-label>
+                      <input matInput formControlName="link" [placeholder]="contactLinkPlaceholder(i)" dir="ltr" lang="en" />
+                    </mat-form-field>
+                    <div>
+                      <button
+                        mat-stroked-button
+                        type="button"
+                        (click)="testContactLink(i)"
+                        [disabled]="!contactLink.controls.link.value"
+                      >
+                        <i class="fa-regular fa-up-right-from-square"></i>
+                        {{ 'shop.testContactLink' | translate }}
+                      </button>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              }
+            </div>
+            <button mat-stroked-button type="button" (click)="addContactLink()">
+              {{ 'shop.addContactLink' | translate }}
+            </button>
           </mat-card-content>
         </mat-card>
       </div>
