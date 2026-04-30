@@ -124,6 +124,10 @@ export const ShopSchema = new EntitySchema<Shop>({
       array: true,
       default: [],
     },
+    contactLinks: {
+      type: 'simple-json',
+      default: [],
+    },
     createdAt: {
       type: 'timestamptz',
       createDate: true,
