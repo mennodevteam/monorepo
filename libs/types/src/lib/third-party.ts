@@ -10,7 +10,7 @@ export enum ThirdPartyApp {
 
 export interface BaleBotStartConfig {
   message?: string;
-  /** Public HTTPS URL of an image shown with the welcome (sendPhoto). */
+  /** Full HTTPS URL of the welcome image (e.g. uploaded file on CDN); used with sendPhoto. */
   imageUrl?: string;
   /** Label for the single inline URL button (opens shop website). */
   buttonText?: string;
