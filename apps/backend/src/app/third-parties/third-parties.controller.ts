@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { HttpService } from '@nestjs/axios';
 import { RedisService } from '../core/redis.service';
+import { BaleBotsService } from './bale-bots.service';
 
 @Roles(UserRole.Panel)
 @Controller('thirdParties')
@@ -17,7 +18,8 @@ export class ThirdPartiesController {
     private http: HttpService,
     @InjectRepository(ThirdParty)
     private repo: Repository<ThirdParty>,
-    private redis: RedisService
+    private redis: RedisService,
+    private baleBots: BaleBotsService,
   ) {}
 
   @Post()
@@ -26,6 +28,7 @@ export class ThirdPartiesController {
     dto.shop = { id: shop.id } as Shop;
     const res = await this.repo.save(dto);
     this.redis.updateShop(shop.id);
+    await this.baleBots.reloadShopBots(shop.id);
     return res;
   }
 }
