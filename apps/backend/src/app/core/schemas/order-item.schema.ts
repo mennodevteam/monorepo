@@ -4,6 +4,16 @@ import { EntitySchema } from 'typeorm';
 export const OrderItemSchema = new EntitySchema<OrderItem>({
   name: 'OrderItem',
   target: OrderItem,
+  indices: [
+    {
+      name: 'idx_order_item_order',
+      columns: ['order'],
+    },
+    {
+      name: 'idx_order_item_order_deleted_at',
+      columns: ['order', 'deletedAt'],
+    },
+  ],
   columns: {
     id: {
       type: 'uuid',

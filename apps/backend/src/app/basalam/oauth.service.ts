@@ -62,7 +62,7 @@ export class OauthService {
 
   getAuthorizationHeader(shopId: string) {
     return this.getOauth(shopId).then((oauth) => ({
-      Authorization: `Bearer ${oauth.keys.accessToken}`,
+      Authorization: `Bearer ${(oauth.keys as any).accessToken}`,
     }));
   }
 }

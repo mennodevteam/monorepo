@@ -36,12 +36,10 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   Between,
-  FindManyOptions,
   FindOptionsWhere,
   In,
   IsNull,
   LessThanOrEqual,
-  MoreThan,
   MoreThanOrEqual,
   Not,
   Repository,
@@ -491,64 +489,102 @@ export class OrdersService {
     dto: FilterOrderDto,
     relations: string[] = ['items', 'mergeTo', 'mergeFrom', 'customer', 'creator', 'waiter'],
   ) {
-    const condition: FindOptionsWhere<Order> = {
-      mergeTo: null,
-    };
+    const idsQuery = this.ordersRepo
+      .createQueryBuilder('order')
+      .select('order.id', 'id')
+      .where('order.mergeToId IS NULL')
+      .orderBy('order.createdAt', 'DESC');
+
+    if (dto.withDeleted) idsQuery.withDeleted();
 
     if (dto.fromDate && dto.toDate) {
-      condition.createdAt = Between(dto.fromDate, dto.toDate);
+      idsQuery.andWhere('order.createdAt BETWEEN :fromDate AND :toDate', {
+        fromDate: dto.fromDate,
+        toDate: dto.toDate,
+      });
     } else if (dto.fromDate) {
-      condition.createdAt = MoreThanOrEqual(dto.fromDate);
+      idsQuery.andWhere('order.createdAt >= :fromDate', { fromDate: dto.fromDate });
     } else if (dto.toDate) {
-      condition.createdAt = LessThanOrEqual(dto.toDate);
+      idsQuery.andWhere('order.createdAt <= :toDate', { toDate: dto.toDate });
     }
 
     if (dto.updatedAt) {
-      condition.updatedAt = MoreThan(dto.updatedAt);
+      idsQuery.andWhere('order.updatedAt > :updatedAt', { updatedAt: dto.updatedAt });
     }
 
-    if (dto.shopId) condition.shop = { id: dto.shopId };
-    if (dto.states?.length) condition.state = In(dto.states);
-    if (dto.types?.length) condition.type = In(dto.types);
-    if (dto.paymentTypes?.length) condition.paymentType = In(dto.paymentTypes);
+    if (dto.shopId) idsQuery.andWhere('order.shopId = :shopId', { shopId: dto.shopId });
+    if (dto.states?.length) idsQuery.andWhere('order.state IN (:...states)', { states: dto.states });
+    if (dto.types?.length) idsQuery.andWhere('order.type IN (:...types)', { types: dto.types });
+    if (dto.paymentTypes?.length) {
+      idsQuery.andWhere('order.paymentType IN (:...paymentTypes)', { paymentTypes: dto.paymentTypes });
+    }
 
     if (dto.customerId === null) {
-      condition.customer = IsNull();
+      idsQuery.andWhere('order.customerId IS NULL');
     } else if (dto.customerId) {
-      condition.customer = { id: dto.customerId };
+      idsQuery.andWhere('order.customerId = :customerId', { customerId: dto.customerId });
     }
 
     if (dto.creatorId === null) {
-      condition.creator = IsNull();
+      idsQuery.andWhere('order.creatorId IS NULL');
     } else if (dto.creatorId) {
-      condition.creator = { id: dto.creatorId };
+      idsQuery.andWhere('order.creatorId = :creatorId', { creatorId: dto.creatorId });
     }
-    if (dto.waiterId === null) {
-      condition.waiter = IsNull();
-    } else if (dto.waiterId) {
-      condition.waiter = { id: dto.waiterId };
-    }
-    if (dto.isManual === true || dto.isManual === false) condition.isManual = dto.isManual;
 
-    const params: FindManyOptions<Order> = {
-      where: condition,
+    if (dto.waiterId === null) {
+      idsQuery.andWhere('order.waiterId IS NULL');
+    } else if (dto.waiterId) {
+      idsQuery.andWhere('order.waiterId = :waiterId', { waiterId: dto.waiterId });
+    }
+
+    if (dto.isManual === true || dto.isManual === false) {
+      idsQuery.andWhere('order.isManual = :isManual', { isManual: dto.isManual });
+    }
+
+    if (dto.skip !== undefined) idsQuery.skip(dto.skip);
+    if (dto.take !== undefined) idsQuery.take(dto.take);
+
+    if (dto.withCount) {
+      const idRows = await idsQuery.getRawMany<{ id: string }>();
+      const totalCount = await idsQuery.clone().skip(undefined).take(undefined).getCount();
+      const ids = idRows.map((row) => row.id);
+      if (!ids.length) return [[], totalCount];
+
+      const fetched = await this.ordersRepo.find({
+        where: { id: In(ids) },
+        order: { createdAt: 'DESC' },
+        relations,
+        withDeleted: dto.withDeleted,
+        select: {
+          mergeFrom: {
+            id: true,
+          },
+        },
+      });
+
+      const byId = new Map(fetched.map((order) => [order.id, order]));
+      const ordered = ids.map((id) => byId.get(id)).filter(Boolean) as Order[];
+      return [ordered, totalCount];
+    }
+
+    const idRows = await idsQuery.getRawMany<{ id: string }>();
+    const ids = idRows.map((row) => row.id);
+    if (!ids.length) return [];
+
+    const fetched = await this.ordersRepo.find({
+      where: { id: In(ids) },
       order: { createdAt: 'DESC' },
       relations,
+      withDeleted: dto.withDeleted,
       select: {
         mergeFrom: {
           id: true,
         },
       },
-      skip: dto.skip,
-      take: dto.take,
-      withDeleted: dto.withDeleted,
-    };
+    });
 
-    const orders = dto.withCount
-      ? await this.ordersRepo.findAndCount(params)
-      : await this.ordersRepo.find(params);
-
-    return orders;
+    const byId = new Map(fetched.map((order) => [order.id, order]));
+    return ids.map((id) => byId.get(id)).filter(Boolean) as Order[];
   }
 
   async manualSettlement(dto: ManualSettlementDto, user: AuthPayload): Promise<Order> {

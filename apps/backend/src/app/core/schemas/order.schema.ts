@@ -4,6 +4,36 @@ import { EntitySchema } from 'typeorm';
 export const OrderSchema = new EntitySchema<Order>({
   name: 'Order',
   target: Order,
+  indices: [
+    {
+      name: 'idx_order_shop_created_at',
+      columns: ['shop', 'createdAt'],
+    },
+    {
+      name: 'idx_order_shop_updated_at',
+      columns: ['shop', 'updatedAt'],
+    },
+    {
+      name: 'idx_order_shop_state_created_at',
+      columns: ['shop', 'state', 'createdAt'],
+    },
+    {
+      name: 'idx_order_shop_payment_type_created_at',
+      columns: ['shop', 'paymentType', 'createdAt'],
+    },
+    {
+      name: 'idx_order_shop_type_created_at',
+      columns: ['shop', 'type', 'createdAt'],
+    },
+    {
+      name: 'idx_order_shop_is_manual_created_at',
+      columns: ['shop', 'isManual', 'createdAt'],
+    },
+    {
+      name: 'idx_order_merge_to_created_at',
+      columns: ['mergeTo', 'createdAt'],
+    },
+  ],
   columns: {
     id: {
       type: 'uuid',
