@@ -10,6 +10,8 @@ interface BaleBotRuntime {
   token: string;
   interval?: NodeJS.Timeout;
   offset: number;
+  /** Prevents overlapping getUpdates polls (duplicate handling of the same update). */
+  pollInFlight: boolean;
 }
 
 interface BaleMessage {
@@ -84,6 +86,7 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
       shop,
       token,
       offset: 0,
+      pollInFlight: false,
     };
     this.runtimes.set(shop.id, runtime);
 
@@ -112,31 +115,33 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
 
   private async pollUpdates(shopId: string) {
     const runtime = this.runtimes.get(shopId);
-    if (!runtime) return;
+    if (!runtime || runtime.pollInFlight) return;
 
-    const result = await this.callBotApi<{ result?: BaleUpdate[] }>(runtime.token, 'getUpdates', {
-      timeout: 1,
-      offset: runtime.offset,
-    });
+    runtime.pollInFlight = true;
+    try {
+      const result = await this.callBotApi<{ result?: BaleUpdate[] }>(runtime.token, 'getUpdates', {
+        timeout: 1,
+        offset: runtime.offset,
+      });
 
-    const updates = result?.result ?? [];
-    for (const update of updates) {
-      runtime.offset = update.update_id + 1;
-      await this.handleUpdate(runtime, update);
+      const updates = result?.result ?? [];
+      for (const update of updates) {
+        runtime.offset = update.update_id + 1;
+        await this.handleUpdate(runtime, update);
+      }
+    } finally {
+      runtime.pollInFlight = false;
     }
   }
 
   private async handleUpdate(runtime: BaleBotRuntime, update: BaleUpdate) {
-    const text = update.message?.text?.trim();
     const chatId = update.message?.chat?.id;
-    if (!text || !chatId) return;
+    if (!chatId || !update.message) return;
 
-    if (text === '/start' || text.startsWith('/start ')) {
-      await this.sendStartMessage(runtime, chatId);
-    }
+    await this.sendWelcomeMessage(runtime, chatId);
   }
 
-  private async sendStartMessage(runtime: BaleBotRuntime, chatId: number) {
+  private async sendWelcomeMessage(runtime: BaleBotRuntime, chatId: number) {
     const appUrl = Shop.appLink(runtime.shop, process.env.APP_ORIGIN);
     const keys = runtime.shop.thirdParties?.find((item) => item.app === ThirdPartyApp.Bale)?.keys as BaleBotKeys;
 
@@ -146,16 +151,28 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
       keys?.start?.primaryButtonText ||
       'ورود به سایت';
 
-    await this.callBotApi(runtime.token, 'sendMessage', {
-      chat_id: chatId,
-      text: message,
-      reply_markup: {
-        inline_keyboard: [[{ text: buttonText, url: appUrl }]],
-      },
-    });
+    const imageUrl = keys?.start?.imageUrl?.trim();
+    const reply_markup = {
+      inline_keyboard: [[{ text: buttonText, url: appUrl }]],
+    };
+
+    if (imageUrl) {
+      await this.callBotApi(runtime.token, 'sendPhoto', {
+        chat_id: chatId,
+        photo: imageUrl,
+        caption: message,
+        reply_markup,
+      });
+    } else {
+      await this.callBotApi(runtime.token, 'sendMessage', {
+        chat_id: chatId,
+        text: message,
+        reply_markup,
+      });
+    }
   }
 
-  private async callBotApi<T = any>(token: string, method: string, data: Record<string, unknown>) {
+  private async callBotApi<T = unknown>(token: string, method: string, data: Record<string, unknown>) {
     const url = `${this.apiBaseUrl}/bot${token}/${method}`;
     const response = await firstValueFrom(this.http.post<T>(url, data));
     return response.data;

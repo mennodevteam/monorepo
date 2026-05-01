@@ -44,6 +44,7 @@ export class BaleComponent {
       token: new FormControl(this.thirdParty?.token, Validators.required),
       startMessage: new FormControl(keys.start?.message),
       buttonText: new FormControl(keys.start?.buttonText ?? keys.start?.primaryButtonText),
+      imageUrl: new FormControl(keys.start?.imageUrl),
     });
     this.thirdPartyForm.disable();
   }
@@ -60,10 +61,12 @@ export class BaleComponent {
       start: {
         message: fv.startMessage,
         buttonText: fv.buttonText,
+        imageUrl: fv.imageUrl?.trim() ?? '',
       },
     };
 
-    await this.http.post(`thirdParties`, dto).toPromise();
+    await this.http.post<ThirdParty>(`/thirdParties`, dto).toPromise();
+    await this.shopService.refetchShop();
     this.initForm();
   }
 }

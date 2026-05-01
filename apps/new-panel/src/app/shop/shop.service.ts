@@ -69,6 +69,11 @@ export class ShopService {
     enabled: !!this.auth.userSignal(),
   }));
 
+  /** Reload shop from API (e.g. after saving third-party config that mutates nested relations). */
+  async refetchShop(): Promise<void> {
+    await this.queryClient.refetchQueries({ queryKey: QUERY_KEY });
+  }
+
   data = computed(() => {
     return this.query.data();
   });
