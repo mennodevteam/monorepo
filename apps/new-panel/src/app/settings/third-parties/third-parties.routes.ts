@@ -5,6 +5,7 @@ import { AlopeykComponent } from './alopeyk/alopeyk.component';
 import { ZibalComponent } from './zibal/zibal.component';
 import { ZarinpalComponent } from './zarinpal/zarinpal.component';
 import { BasalamComponent } from './basalam/basalam.component';
+import { BaleComponent } from './bale/bale.component';
 
 export const thirdPartiesRoutes: Route[] = [
   {
@@ -30,5 +31,9 @@ export const thirdPartiesRoutes: Route[] = [
   {
     path: 'alopeyk',
     component: AlopeykComponent,
+  },
+  {
+    path: 'bale',
+    component: BaleComponent,
   },
 ];
