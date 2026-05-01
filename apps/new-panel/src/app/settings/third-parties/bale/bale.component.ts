@@ -7,12 +7,21 @@ import { SHARED } from '../../../shared';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { ShopService } from '../../../shop/shop.service';
 
 @Component({
   selector: 'app-bale',
-  imports: [SHARED, MatToolbarModule, MatCardModule, MatFormFieldModule, ReactiveFormsModule, MatListModule],
+  imports: [
+    SHARED,
+    MatToolbarModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatListModule,
+  ],
   templateUrl: './bale.component.html',
   styleUrl: './bale.component.scss',
 })
