@@ -10,7 +10,11 @@ export enum ThirdPartyApp {
 
 export interface BaleBotStartConfig {
   message?: string;
+  /** Label for the single inline URL button (opens shop website). */
+  buttonText?: string;
+  /** @deprecated use buttonText */
   primaryButtonText?: string;
+  /** @deprecated removed from UI; ignored if buttonText is set */
   secondaryButtonText?: string;
 }
 

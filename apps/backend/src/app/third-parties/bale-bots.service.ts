@@ -141,17 +141,16 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
     const keys = runtime.shop.thirdParties?.find((item) => item.app === ThirdPartyApp.Bale)?.keys as BaleBotKeys;
 
     const message = keys?.start?.message || `برای شروع سفارش از لینک زیر استفاده کنید:\n${appUrl}`;
-    const primaryButtonText = keys?.start?.primaryButtonText || 'ورود به اپلیکیشن';
-    const secondaryButtonText = keys?.start?.secondaryButtonText || 'باز کردن منو';
+    const buttonText =
+      keys?.start?.buttonText ||
+      keys?.start?.primaryButtonText ||
+      'ورود به سایت';
 
     await this.callBotApi(runtime.token, 'sendMessage', {
       chat_id: chatId,
       text: message,
       reply_markup: {
-        inline_keyboard: [
-          [{ text: primaryButtonText, url: appUrl }],
-          [{ text: secondaryButtonText, url: appUrl }],
-        ],
+        inline_keyboard: [[{ text: buttonText, url: appUrl }]],
       },
     });
   }

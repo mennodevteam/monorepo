@@ -27,8 +27,10 @@ class ApiInterceptor implements HttpInterceptor {
       }
     }
     if (!ignore) {
+      const baseUrl = environment.apiUrl.replace(/\/+$/, '');
+      const path = req.url.startsWith('/') ? req.url : `/${req.url}`;
       req = req.clone({
-        url: `${environment.apiUrl}${req.url}`,
+        url: `${baseUrl}${path}`,
       });
 
       const token =

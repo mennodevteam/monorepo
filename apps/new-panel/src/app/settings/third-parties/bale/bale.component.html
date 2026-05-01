@@ -1,81 +1,81 @@
-<main class="content-wrapper form-page-layout">
-  <mat-toolbar>
-    <button mat-icon-button goBack>
-      <i class="fa-regular fa-arrow-right"></i>
-    </button>
-    <h1>{{ 'thirdParties.bale.title' | translate }}</h1>
-  </mat-toolbar>
+@if (thirdPartyForm) {
+  <main p-md w-md>
+    <mat-toolbar>
+      <button mat-icon-button goBack>
+        <i class="fa-regular fa-arrow-right"></i>
+      </button>
+      <h1>{{ 'thirdParties.bale.title' | translate }}</h1>
+    </mat-toolbar>
 
-  <div class="static-col form-theme">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>{{ 'thirdParties.bale.title' | translate }}</mat-card-title>
-        <mat-card-subtitle>{{ 'thirdParties.bale.description' | translate }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-divider></mat-divider>
-      <mat-card-content>
-        <p>{{ 'thirdParties.bale.formDescription' | translate }}</p>
-        <form [formGroup]="thirdPartyForm">
-          <mat-form-field appearance="fill">
-            <mat-label>{{ 'thirdParties.bale.token' | translate }}</mat-label>
-            <input matInput formControlName="token" class="ltr eng" />
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label>{{ 'thirdParties.bale.startMessage' | translate }}</mat-label>
-            <textarea matInput formControlName="startMessage" rows="4"></textarea>
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label>{{ 'thirdParties.bale.primaryButtonText' | translate }}</mat-label>
-            <input matInput formControlName="primaryButtonText" />
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label>{{ 'thirdParties.bale.secondaryButtonText' | translate }}</mat-label>
-            <input matInput formControlName="secondaryButtonText" />
-          </mat-form-field>
-        </form>
-      </mat-card-content>
-      <mat-card-actions>
-        @if (thirdPartyForm.disabled) {
-          <button mat-stroked-button color="primary" (click)="thirdPartyForm.enable()">
-            {{ 'app.edit' | translate }}
-          </button>
-        }
-        @if (!thirdPartyForm.disabled) {
-          <button mat-flat-button color="accent" (click)="save()">
-            {{ 'app.save' | translate }}
-          </button>
-          <button mat-button (click)="initForm()">
-            {{ 'app.cancel' | translate }}
-          </button>
-        }
-      </mat-card-actions>
-    </mat-card>
-  </div>
+    <div class="static-col">
+      <mat-card class="form-theme" appearance="outlined">
+        <mat-card-header>
+          <img mat-card-avatar src="icons/bale-logo.png" alt="" />
+          <mat-card-title>{{ 'thirdParties.bale.title' | translate }}</mat-card-title>
+          <mat-card-subtitle>{{ 'thirdParties.bale.description' | translate }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-divider></mat-divider>
+        <mat-card-content>
+          <p>{{ 'thirdParties.bale.formDescription' | translate }}</p>
+          <form [formGroup]="thirdPartyForm">
+            <mat-form-field appearance="fill">
+              <mat-label>{{ 'thirdParties.bale.token' | translate }}</mat-label>
+              <input matInput formControlName="token" class="ltr eng" />
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>{{ 'thirdParties.bale.startMessage' | translate }}</mat-label>
+              <textarea matInput formControlName="startMessage" rows="4"></textarea>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>{{ 'thirdParties.bale.buttonText' | translate }}</mat-label>
+              <input matInput formControlName="buttonText" />
+              <mat-hint>{{ 'thirdParties.bale.buttonTextHint' | translate }}</mat-hint>
+            </mat-form-field>
+          </form>
+        </mat-card-content>
+        <mat-card-actions>
+          @if (thirdPartyForm.disabled) {
+            <button mat-stroked-button color="primary" (click)="thirdPartyForm.enable()">
+              {{ 'app.edit' | translate }}
+            </button>
+          }
+          @if (!thirdPartyForm.disabled) {
+            <button mat-flat-button color="accent" (click)="save()">
+              {{ 'app.save' | translate }}
+            </button>
+            <button mat-button (click)="initForm()">
+              {{ 'app.cancel' | translate }}
+            </button>
+          }
+        </mat-card-actions>
+      </mat-card>
+    </div>
 
-  <div class="flex-col">
-    <mat-card>
-      <mat-card-content>
-        @if (!thirdParty) {
-          <app-empty-state
-            icon="fa-triangle-exclamation"
-            text="{{ 'thirdParties.notConnectedDescription' | translate }}"
-          />
-        }
+    <div class="flex-col">
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          @if (!thirdParty) {
+            <app-empty-state
+              icon="fa-triangle-exclamation"
+              text="{{ 'thirdParties.notConnectedDescription' | translate }}"
+            />
+          }
 
-        @if (thirdParty) {
-          <mat-nav-list>
-            <a mat-list-item target="_blank" href="https://developers.bale.ai/">
-              <span matListItemTitle>{{ 'thirdParties.bale.docs' | translate }}</span>
-              <span matListItemLine>{{ 'thirdParties.bale.docsDescription' | translate }}</span>
-            </a>
-            <mat-divider></mat-divider>
-            <a mat-list-item target="_blank" href="https://bale.ai/">
-              <span matListItemTitle>{{ 'thirdParties.bale.site' | translate }}</span>
-              <span matListItemLine>{{ 'thirdParties.bale.siteDescription' | translate }}</span>
-            </a>
-          </mat-nav-list>
-        }
-      </mat-card-content>
-    </mat-card>
-  </div>
-</main>
+          @if (thirdParty) {
+            <mat-nav-list>
+              <a mat-list-item target="_blank" href="https://developers.bale.ai/">
+                <span matListItemTitle>{{ 'thirdParties.bale.docs' | translate }}</span>
+                <span matListItemLine>{{ 'thirdParties.bale.docsDescription' | translate }}</span>
+              </a>
+              <mat-divider></mat-divider>
+              <a mat-list-item target="_blank" href="https://bale.ai/">
+                <span matListItemTitle>{{ 'thirdParties.bale.site' | translate }}</span>
+                <span matListItemLine>{{ 'thirdParties.bale.siteDescription' | translate }}</span>
+              </a>
+            </mat-nav-list>
+          }
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </main>
+}

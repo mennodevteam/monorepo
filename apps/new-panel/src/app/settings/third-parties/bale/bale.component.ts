@@ -43,8 +43,7 @@ export class BaleComponent {
     this.thirdPartyForm = new FormGroup({
       token: new FormControl(this.thirdParty?.token, Validators.required),
       startMessage: new FormControl(keys.start?.message),
-      primaryButtonText: new FormControl(keys.start?.primaryButtonText),
-      secondaryButtonText: new FormControl(keys.start?.secondaryButtonText),
+      buttonText: new FormControl(keys.start?.buttonText ?? keys.start?.primaryButtonText),
     });
     this.thirdPartyForm.disable();
   }
@@ -60,8 +59,7 @@ export class BaleComponent {
     dto.keys = {
       start: {
         message: fv.startMessage,
-        primaryButtonText: fv.primaryButtonText,
-        secondaryButtonText: fv.secondaryButtonText,
+        buttonText: fv.buttonText,
       },
     };
 
