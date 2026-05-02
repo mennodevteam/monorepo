@@ -1,7 +1,28 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
   <head>
-    <script src="https://tapi.bale.ai/miniapp.js?3"></script>
+    <script>
+      (function () {
+        function shouldLoadBaleMiniAppSdk() {
+          try {
+            var href = (location.search || '') + (location.hash || '');
+            if (/tgWebApp|startapp=/i.test(href)) return true;
+            var ref = document.referrer || '';
+            if (/ble\.ir|bale\.ai|tapi\.bale\.ai|web\.bale/i.test(ref)) return true;
+            var ua = navigator.userAgent || '';
+            if (/Bale|Telegram/i.test(ua)) return true;
+          } catch (e) {}
+          return false;
+        }
+        function injectBaleSdk() {
+          var s = document.createElement('script');
+          s.src = 'https://tapi.bale.ai/miniapp.js?3';
+          s.async = false;
+          document.head.appendChild(s);
+        }
+        if (shouldLoadBaleMiniAppSdk()) injectBaleSdk();
+      })();
+    </script>
     <meta charset="utf-8" />
     <title>customer</title>
     <base href="/" />

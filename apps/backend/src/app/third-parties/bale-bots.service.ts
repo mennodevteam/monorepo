@@ -322,7 +322,7 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
     await this.sendPlainText(
       runtime,
       chatId,
-      'برای ادامه، شمارهٔ موبایلی که با آن در فروشگاه ثبت‌نام کرده‌اید را با دکمهٔ زیر ارسال کنید.',
+      'برای ادامه، شمارهٔ تماس خود را با دکمهٔ زیر ارسال کنید.',
       this.requestContactKeyboard(),
     );
   }
@@ -426,14 +426,25 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
   }
 
   private buildInlineKeyboard(buttonText: string, appUrl: string) {
-    if (!buttonText || !this.isValidHttpUrl(appUrl)) {
-      if (!this.isValidHttpUrl(appUrl)) {
+    const href = appUrl?.trim();
+    if (!buttonText || !this.isValidHttpUrl(href)) {
+      if (!this.isValidHttpUrl(href)) {
         this.logger.warn(`Bale inline button skipped: invalid appUrl "${appUrl}"`);
       }
       return undefined;
     }
+    // `url` opens in the system browser; `web_app` opens inside Bale as a mini app (see InlineKeyboardButton / WebAppInfo in Bale API).
+    try {
+      if (new URL(href).protocol === 'https:') {
+        return {
+          inline_keyboard: [[{ text: buttonText, web_app: { url: href } }]],
+        };
+      }
+    } catch {
+      return undefined;
+    }
     return {
-      inline_keyboard: [[{ text: buttonText, url: appUrl }]],
+      inline_keyboard: [[{ text: buttonText, url: href }]],
     };
   }
 
