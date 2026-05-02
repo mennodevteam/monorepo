@@ -31,7 +31,7 @@ export class OrderItemsSubscriber implements EntitySubscriberInterface<OrderItem
     if (!item) return;
     const row = item as OrderItem & { orderId?: string };
     const oid = row.order?.id ?? row.orderId;
-    if (oid) this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(oid);
+    if (oid) this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(oid, false);
   }
 
   listenTo() {

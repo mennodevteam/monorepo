@@ -191,7 +191,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     } catch (error) {}
 
     try {
-      if (resolvedId) this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(resolvedId);
+      if (resolvedId) this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(resolvedId, true);
     } catch (error) {}
   }
 
@@ -204,7 +204,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
       const orderId = event.entity?.id as string | undefined;
       if (orderId && !mennoOnly) {
         try {
-          this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(orderId);
+          this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(orderId, false);
         } catch (error) {}
       }
 
@@ -222,7 +222,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
   async afterSoftRemove(event: SoftRemoveEvent<Order>): Promise<any> {
     if (event.entity?.id) {
       try {
-        this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(event.entity.id);
+        this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(event.entity.id, false);
       } catch (error) {}
 
       const order = await this.ordersRepo.findOne({

@@ -42,7 +42,8 @@ const ORDER_STATE_LINE: Record<OrderState, string> = {
 /**
  * Uses env `MENNO_BALE_ORDERS_BOT_TOKEN` (Menno shared Bale bot) and `NEW_PANEL_BASE_URL` for the panel link button.
  * Per shop: only {@link MennoBaleOrderKeys.channelId} on {@link ThirdPartyApp.MennoBaleOrders}.
- * Message text is implicit Markdown on Bale (no parse_mode). Bold is used only for product titles, with a leading/trailing space around *…* per Bale rules; other user text uses {@link sanitizeUserText}.
+ * Message text is implicit Markdown on Bale (no parse_mode). Section headers use Bale bold (space around *…*). Lines use {@link sanitizeUserText} for user-supplied fragments.
+ * New Bale channel posts only when {@link scheduleSyncOrderChannelMessage} is called with {@code allowCreate} true (order insert). Otherwise only edits an existing card when {@link Order.mennoBaleChannelMessageId} is set.
  */
 @Injectable()
 export class MennoBaleOrderNotificationsService {
@@ -57,16 +58,19 @@ export class MennoBaleOrderNotificationsService {
     private readonly orderItemsRepo: Repository<OrderItem>,
   ) {}
 
-  /** Fire-and-forget after DB commit so items/state match the latest save. */
-  scheduleSyncOrderChannelMessage(orderId: string): void {
+  /**
+   * Fire-and-forget after DB commit so items/state match the latest save.
+   * @param allowCreate when true, may call Bale {@code sendMessage} if the order has no channel card yet (use on order insert only).
+   */
+  scheduleSyncOrderChannelMessage(orderId: string, allowCreate = true): void {
     setImmediate(() => {
-      void this.syncOrderChannelMessage(orderId).catch((err: unknown) => {
+      void this.syncOrderChannelMessage(orderId, allowCreate).catch((err: unknown) => {
         this.logger.warn(`Menno Bale orders sync failed order=${orderId}: ${(err as Error)?.message || err}`);
       });
     });
   }
 
-  async syncOrderChannelMessage(orderId: string): Promise<void> {
+  async syncOrderChannelMessage(orderId: string, allowCreate = true): Promise<void> {
     const order = await this.ordersRepo.findOne({
       where: { id: orderId },
       relations: ['shop', 'shop.thirdParties', 'customer', 'address', 'address.region'],
@@ -135,6 +139,10 @@ export class MennoBaleOrderNotificationsService {
       );
     }
 
+    if (!allowCreate) {
+      return;
+    }
+
     try {
       const body = await this.postBale(botToken, 'sendMessage', {
         chat_id: chatId,
@@ -156,45 +164,41 @@ export class MennoBaleOrderNotificationsService {
     }
   }
 
-  /** Visual separator after the total line (plain text, not Markdown). */
-  private static readonly BALE_ORDER_TOTAL_RULE =
-    '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
+  /** Bale bold: space before opening * and after closing * (see Bale Markdown rules). */
+  private baleBoldHeader(label: string): string {
+    return ` *${label}* `;
+  }
 
   /**
-   * Bale bold/italic need a space before the opener and after the closer (* or _). Only item titles use bold.
-   * Persian/Arabic digits in the whole message are normalized to English via {@link PersianNumberService.toEnglish}.
+   * Item lines are plain checklist-style (not bold). Headers bold. Digits normalized at the end.
    */
   private formatOrderMessage(order: Order): string {
     const parts: string[] = [];
 
     const items = (order.items || []).filter((i) => !i.isAbstract);
     const maxItemRows = 32;
-    parts.push('📋 اقلام');
+    parts.push(this.baleBoldHeader('📋 اقلام'));
     if (items.length) {
       const shown = items.length > maxItemRows ? items.slice(0, maxItemRows) : items;
       for (let i = 0; i < shown.length; i++) {
-        if (i > 0) parts.push('');
         const it = shown[i];
         const raw = (it.title || '—').replace(/\s+/g, ' ').trim();
         const maxTitle = 120;
         const short = raw.length > maxTitle ? `${raw.slice(0, maxTitle - 1)}…` : raw;
         const title = this.sanitizeUserText(short);
-        parts.push(` *${title}* `);
-        parts.push(`تعداد: ${String(it.quantity ?? 1)}`);
+        parts.push(`- [ ] ${title} | ${String(it.quantity ?? 1)} عدد`);
       }
       if (items.length > maxItemRows) {
-        parts.push('', `… (${items.length - maxItemRows} مورد دیگر)`);
+        parts.push(`- [ ] … (${items.length - maxItemRows} مورد دیگر)`);
       }
     } else {
       parts.push('—');
     }
 
-    parts.push('', `تعداد اقلام: ${items.length}`);
-    parts.push('', `💰 جمع: ${this.sanitizeUserText(PersianNumberService.withCommas(order.totalPrice))}`);
-    parts.push(MennoBaleOrderNotificationsService.BALE_ORDER_TOTAL_RULE);
+    parts.push(` *جمع کل:* ${this.sanitizeUserText(PersianNumberService.withCommas(order.totalPrice))}`);
 
     const c = order.customer;
-    parts.push('', '👤 مشتری');
+    parts.push('', this.baleBoldHeader('👤 مشتری'));
     if (c) {
       parts.push(this.sanitizeUserText(User.fullName(c) || '—'));
       parts.push(this.sanitizeUserText(c.mobilePhone || order.details?.customerPhone || '—'));
@@ -203,7 +207,7 @@ export class MennoBaleOrderNotificationsService {
       if (order.details?.customerPhone) parts.push(this.sanitizeUserText(order.details.customerPhone));
     }
 
-    parts.push('', '📍 آدرس');
+    parts.push('', this.baleBoldHeader('📍 آدرس'));
     const addr = order.address;
     if (addr) {
       const r = addr.region;
@@ -228,7 +232,7 @@ export class MennoBaleOrderNotificationsService {
     }
 
     if (order.note?.trim()) {
-      parts.push('', '📝 یادداشت', this.sanitizeUserText(order.note.trim()));
+      parts.push('', this.baleBoldHeader('📝 یادداشت'), this.sanitizeUserText(order.note.trim()));
     }
 
     const stateNum = Number(order.state) as OrderState;
