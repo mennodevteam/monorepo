@@ -211,12 +211,31 @@ export class MennoBaleOrderNotificationsService {
     const addr = order.address;
     if (addr) {
       const r = addr.region;
-      if (r?.state) parts.push(this.sanitizeUserText(`استان: ${r.state}`));
-      if (r?.title) parts.push(this.sanitizeUserText(`شهر/منطقه: ${r.title}`));
-      const line = [addr.description, addr.unit ? `واحد ${addr.unit}` : '', addr.ring ? `پلاک/زنگ ${addr.ring}` : '']
-        .filter(Boolean)
-        .join(' — ');
-      parts.push(line ? this.sanitizeUserText(line) : '—');
+      const regionLine = [r?.state, r?.title]
+        .map((s) => (typeof s === 'string' ? s.replace(/\s+/g, ' ').trim() : ''))
+        .filter((s) => s.length > 0)
+        .join('، ');
+
+      const streetParts: string[] = [];
+      if (addr.description?.trim()) streetParts.push(addr.description.replace(/\s+/g, ' ').trim());
+      if (addr.ring?.trim()) streetParts.push(`پلاک ${addr.ring.replace(/\s+/g, ' ').trim()}`);
+      if (addr.unit?.trim()) streetParts.push(`واحد ${addr.unit.replace(/\s+/g, ' ').trim()}`);
+      const streetLine = streetParts.join(' ');
+
+      const postal = addr.postalCode?.replace(/\s+/g, ' ').trim();
+      const chunks: string[] = [];
+      if (regionLine) chunks.push(regionLine);
+      if (streetLine) chunks.push(streetLine);
+      if (postal) chunks.push(`کدپستی: ${postal}`);
+
+      if (!chunks.length) {
+        parts.push('—');
+      } else {
+        for (let i = 0; i < chunks.length; i++) {
+          if (i > 0) parts.push('');
+          parts.push(this.sanitizeUserText(chunks[i]));
+        }
+      }
     } else {
       switch (order.type) {
         case OrderType.DineIn:
