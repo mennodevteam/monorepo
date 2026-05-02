@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {
   MennoBaleOrderKeys,
   Order,
+  OrderItem,
   OrderState,
   OrderType,
   ThirdPartyApp,
@@ -51,22 +52,42 @@ export class MennoBaleOrderNotificationsService {
     private readonly http: HttpService,
     @InjectRepository(Order)
     private readonly ordersRepo: Repository<Order>,
+    @InjectRepository(OrderItem)
+    private readonly orderItemsRepo: Repository<OrderItem>,
   ) {}
 
-  /** Fire-and-forget safe entry from subscribers. */
+  /** Fire-and-forget after DB commit so items/state match the latest save. */
   scheduleSyncOrderChannelMessage(orderId: string): void {
-    void this.syncOrderChannelMessage(orderId).catch((err: unknown) => {
-      this.logger.warn(`Menno Bale orders sync failed order=${orderId}: ${(err as Error)?.message || err}`);
+    setImmediate(() => {
+      void this.syncOrderChannelMessage(orderId).catch((err: unknown) => {
+        this.logger.warn(`Menno Bale orders sync failed order=${orderId}: ${(err as Error)?.message || err}`);
+      });
     });
   }
 
   async syncOrderChannelMessage(orderId: string): Promise<void> {
     const order = await this.ordersRepo.findOne({
       where: { id: orderId },
-      relations: ['shop', 'shop.thirdParties', 'items', 'customer', 'address', 'address.region'],
+      relations: ['shop', 'shop.thirdParties', 'customer', 'address', 'address.region'],
       withDeleted: true,
     });
     if (!order?.shop?.thirdParties?.length) return;
+
+    const itemRows = await this.orderItemsRepo.find({
+      where: { order: { id: orderId } },
+      order: { id: 'ASC' },
+    });
+    order.items = itemRows;
+
+    const latest = await this.ordersRepo.findOne({ where: { id: orderId }, withDeleted: true });
+    if (latest) {
+      order.state = latest.state;
+      order.totalPrice = latest.totalPrice;
+      order.note = latest.note;
+      order.deletedAt = latest.deletedAt;
+      order.details = latest.details;
+      order.type = latest.type;
+    }
 
     const party = order.shop.thirdParties.find((t) => t.app === ThirdPartyApp.MennoBaleOrders);
     const keys = party?.keys as MennoBaleOrderKeys | undefined;
@@ -135,64 +156,64 @@ export class MennoBaleOrderNotificationsService {
   }
 
   private formatOrderMessage(order: Order): string {
-    const lines: string[] = [];
+    const body: string[] = [];
 
     const items = (order.items || []).filter((i) => !i.isAbstract);
     if (items.length) {
-      lines.push('📋 اقلام:');
-      for (const it of items) {
-        const unit = it.quantity > 1 ? `${it.quantity} × ` : '';
-        lines.push(`• ${unit}${it.title}`);
-      }
+      body.push('📋 اقلام:');
+      items.forEach((it, idx) => {
+        body.push(`${idx + 1}. ${it.title || '—'}`);
+      });
     } else {
-      lines.push('📋 اقلام: —');
+      body.push('📋 اقلام: —');
     }
 
-    lines.push('', `💰 جمع: ${PersianNumberService.withCommas(order.totalPrice)}`);
+    body.push('', `💰 جمع: ${PersianNumberService.withCommas(order.totalPrice)}`);
 
     const c = order.customer;
-    lines.push('', '👤 مشتری:');
+    body.push('', '👤 مشتری:');
     if (c) {
-      lines.push(User.fullName(c) || '—');
-      lines.push(`📞 ${c.mobilePhone || order.details?.customerPhone || '—'}`);
+      body.push(User.fullName(c) || '—');
+      body.push(c.mobilePhone || order.details?.customerPhone || '—');
     } else {
-      lines.push('—');
-      if (order.details?.customerPhone) lines.push(`📞 ${order.details.customerPhone}`);
+      body.push('—');
+      if (order.details?.customerPhone) body.push(order.details.customerPhone);
     }
 
-    lines.push('', '📍 آدرس:');
+    body.push('', '📍 آدرس:');
     const addr = order.address;
     if (addr) {
       const r = addr.region;
-      if (r?.state) lines.push(`استان: ${r.state}`);
-      if (r?.title) lines.push(`شهر/منطقه: ${r.title}`);
+      if (r?.state) body.push(`استان: ${r.state}`);
+      if (r?.title) body.push(`شهر/منطقه: ${r.title}`);
       const parts = [addr.description, addr.unit ? `واحد ${addr.unit}` : '', addr.ring ? `پلاک/زنگ ${addr.ring}` : '']
         .filter(Boolean)
         .join(' — ');
-      if (parts) lines.push(parts);
-      else lines.push('—');
+      if (parts) body.push(parts);
+      else body.push('—');
     } else {
       switch (order.type) {
         case OrderType.DineIn:
-          lines.push(order.details?.table ? `میز: ${order.details.table}` : 'حضوری در مجموعه');
+          body.push(order.details?.table ? `میز: ${order.details.table}` : 'حضوری در مجموعه');
           break;
         default:
-          lines.push('—');
+          body.push('—');
       }
     }
 
     if (order.note?.trim()) {
-      lines.push('', `📝 ${order.note.trim()}`);
+      body.push('', `📝 ${order.note.trim()}`);
     }
 
-    lines.push('', '──────────');
-    if (order.deletedAt) {
-      lines.push('🗑️ حذف از پنل');
-    } else {
-      lines.push(ORDER_STATE_LINE[order.state] ?? `❔ ${ORDER_STATE_FA[order.state] ?? String(order.state)}`);
-    }
-
-    return this.truncate(lines.join('\n'), 4090);
+    const stateLine = order.deletedAt
+      ? '🗑️ حذف از پنل'
+      : ORDER_STATE_LINE[order.state] ?? `❔ ${ORDER_STATE_FA[order.state] ?? String(order.state)}`;
+    const footer = `\n\n──────────\n${stateLine}`;
+    const bodyText = body.join('\n');
+    const maxBody = Math.max(0, 4090 - footer.length);
+    const truncatedBody =
+      bodyText.length > maxBody ? bodyText.slice(0, Math.max(0, maxBody - 1)) + '…' : bodyText;
+    return truncatedBody + footer;
   }
 
   /** Inline URL button → new-panel order details (`/orders/details/:id`). */
@@ -236,11 +257,6 @@ export class MennoBaleOrderNotificationsService {
       return t;
     }
     return t;
-  }
-
-  private truncate(s: string, max: number): string {
-    if (!s || s.length <= max) return s;
-    return s.slice(0, max - 1) + '…';
   }
 
   private async postBale(token: string, method: string, data: Record<string, unknown>): Promise<unknown> {
