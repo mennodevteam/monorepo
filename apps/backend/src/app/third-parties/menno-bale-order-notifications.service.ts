@@ -95,8 +95,9 @@ export class MennoBaleOrderNotificationsService {
     const botToken = (process.env.MENNO_BALE_ORDERS_BOT_TOKEN || '').trim();
     if (!party || !channelId || !botToken) return;
 
-    const text = this.formatOrderMessage(order);
+    const text = this.formatOrderMessageHtml(order);
     const reply_markup = this.buildPanelOrderReplyMarkup(orderId);
+    const parsePayload = { parse_mode: 'HTML' as const };
     const chatId = this.parseChatId(channelId);
     if (chatId === undefined) {
       this.logger.warn(`Menno Bale orders: invalid channelId "${channelId}"`);
@@ -113,6 +114,7 @@ export class MennoBaleOrderNotificationsService {
           chat_id: chatId,
           message_id: msgId,
           text,
+          ...parsePayload,
           ...(reply_markup ? { reply_markup } : {}),
         });
         return;
@@ -138,6 +140,7 @@ export class MennoBaleOrderNotificationsService {
       const body = await this.postBale(botToken, 'sendMessage', {
         chat_id: chatId,
         text,
+        ...parsePayload,
         ...(reply_markup ? { reply_markup } : {}),
       }) as BaleTelegramResponse<{ message_id?: number }>;
       if (body?.ok === false) {
@@ -155,65 +158,99 @@ export class MennoBaleOrderNotificationsService {
     }
   }
 
-  private formatOrderMessage(order: Order): string {
-    const body: string[] = [];
+  /**
+   * Telegram/Bale HTML parse_mode: no real &lt;table&gt; support — use &lt;pre&gt; monospace grid.
+   * @see https://core.telegram.org/bots/api#html-style
+   */
+  private formatOrderMessageHtml(order: Order): string {
+    const parts: string[] = [];
 
     const items = (order.items || []).filter((i) => !i.isAbstract);
+    const maxItemRows = 32;
     if (items.length) {
-      body.push('📋 اقلام:');
-      items.forEach((it, idx) => {
-        body.push(`${idx + 1}. ${it.title || '—'}`);
-      });
+      const shown = items.length > maxItemRows ? items.slice(0, maxItemRows) : items;
+      const overflow = items.length > maxItemRows ? `\n… (${items.length - maxItemRows} مورد دیگر)` : '';
+      parts.push('<b>📋 اقلام</b>');
+      parts.push(`<pre>${this.buildItemsTablePre(shown)}${overflow}</pre>`);
     } else {
-      body.push('📋 اقلام: —');
+      parts.push('<b>📋 اقلام</b>\n—');
     }
 
-    body.push('', `💰 جمع: ${PersianNumberService.withCommas(order.totalPrice)}`);
+    parts.push(
+      '',
+      `<b>💰 جمع:</b> ${this.escapeHtml(PersianNumberService.withCommas(order.totalPrice))}`,
+    );
 
     const c = order.customer;
-    body.push('', '👤 مشتری:');
+    parts.push('', '<b>👤 مشتری</b>');
     if (c) {
-      body.push(User.fullName(c) || '—');
-      body.push(c.mobilePhone || order.details?.customerPhone || '—');
+      parts.push(this.escapeHtml(User.fullName(c) || '—'));
+      parts.push(this.escapeHtml(c.mobilePhone || order.details?.customerPhone || '—'));
     } else {
-      body.push('—');
-      if (order.details?.customerPhone) body.push(order.details.customerPhone);
+      parts.push('—');
+      if (order.details?.customerPhone) parts.push(this.escapeHtml(order.details.customerPhone));
     }
 
-    body.push('', '📍 آدرس:');
+    parts.push('', '<b>📍 آدرس</b>');
     const addr = order.address;
     if (addr) {
       const r = addr.region;
-      if (r?.state) body.push(`استان: ${r.state}`);
-      if (r?.title) body.push(`شهر/منطقه: ${r.title}`);
-      const parts = [addr.description, addr.unit ? `واحد ${addr.unit}` : '', addr.ring ? `پلاک/زنگ ${addr.ring}` : '']
+      if (r?.state) parts.push(this.escapeHtml(`استان: ${r.state}`));
+      if (r?.title) parts.push(this.escapeHtml(`شهر/منطقه: ${r.title}`));
+      const line = [addr.description, addr.unit ? `واحد ${addr.unit}` : '', addr.ring ? `پلاک/زنگ ${addr.ring}` : '']
         .filter(Boolean)
         .join(' — ');
-      if (parts) body.push(parts);
-      else body.push('—');
+      parts.push(line ? this.escapeHtml(line) : '—');
     } else {
       switch (order.type) {
         case OrderType.DineIn:
-          body.push(order.details?.table ? `میز: ${order.details.table}` : 'حضوری در مجموعه');
+          parts.push(
+            this.escapeHtml(
+              order.details?.table ? `میز: ${order.details.table}` : 'حضوری در مجموعه',
+            ),
+          );
           break;
         default:
-          body.push('—');
+          parts.push('—');
       }
     }
 
     if (order.note?.trim()) {
-      body.push('', `📝 ${order.note.trim()}`);
+      parts.push('', `<b>📝 یادداشت</b>\n${this.escapeHtml(order.note.trim())}`);
     }
 
+    const stateNum = Number(order.state) as OrderState;
     const stateLine = order.deletedAt
       ? '🗑️ حذف از پنل'
-      : ORDER_STATE_LINE[order.state] ?? `❔ ${ORDER_STATE_FA[order.state] ?? String(order.state)}`;
-    const footer = `\n\n──────────\n${stateLine}`;
-    const bodyText = body.join('\n');
-    const maxBody = Math.max(0, 4090 - footer.length);
-    const truncatedBody =
-      bodyText.length > maxBody ? bodyText.slice(0, Math.max(0, maxBody - 1)) + '…' : bodyText;
-    return truncatedBody + footer;
+      : ORDER_STATE_LINE[stateNum] ?? `❔ ${ORDER_STATE_FA[stateNum] ?? String(order.state)}`;
+    const footer = `\n\n<code>──────────</code>\n<b>${this.escapeHtml(stateLine)}</b>`;
+
+    const bodyHtml = parts.join('\n');
+    if (bodyHtml.length + footer.length > 4090) {
+      this.logger.warn(`Menno Bale order message too long order=${order.id}; truncating item rows only`);
+    }
+    return bodyHtml + footer;
+  }
+
+  private buildItemsTablePre(items: OrderItem[]): string {
+    const maxTitle = 36;
+    const rows: string[] = [];
+    rows.push('#  | محصول                              | تعداد', '---+------------------------------------+------');
+    for (let i = 0; i < items.length; i++) {
+      const it = items[i];
+      const raw = (it.title || '—').replace(/\s+/g, ' ').trim();
+      const short = raw.length > maxTitle ? `${raw.slice(0, maxTitle - 1)}…` : raw;
+      const title = this.escapeHtml(short);
+      const q = String(it.quantity ?? 1);
+      const n = String(i + 1).padStart(2, ' ');
+      rows.push(`${n} | ${title} | ${q}`);
+    }
+    return rows.join('\n');
+  }
+
+  private escapeHtml(s: string): string {
+    if (s == null || s === '') return '';
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
   /** Inline URL button → new-panel order details (`/orders/details/:id`). */

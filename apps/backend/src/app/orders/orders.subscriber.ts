@@ -204,11 +204,16 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
 
   async afterSoftRemove(event: SoftRemoveEvent<Order>): Promise<any> {
     if (event.entity?.id) {
+      try {
+        this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(event.entity.id);
+      } catch (error) {}
+
       const order = await this.ordersRepo.findOne({
         where: { id: event.entity.id },
         relations: ['items', 'items.product', 'items.productVariant', 'shop'],
+        withDeleted: true,
       });
-      this.materialConsumption(order, true);
+      if (order) this.materialConsumption(order, true);
     }
   }
 

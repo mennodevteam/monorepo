@@ -190,13 +190,14 @@ export class OrdersController {
     @LoginUser() user: AuthPayload,
   ): Promise<Order> {
     const order = await this.ordersRepo.findOne({ where: { id }, relations: ['waiter'] });
-    const update: Partial<Order> = {
-      state: Number(state),
-    };
-    if (!order.waiter) update.waiter = { id: user.id } as User;
-    await this.ordersRepo.update(order.id, update);
+    if (!order) throw new HttpException('order not found', HttpStatus.NOT_FOUND);
+    const nextState = Number(state);
+    if (Number.isNaN(nextState)) throw new HttpException('invalid state', HttpStatus.BAD_REQUEST);
+    order.state = nextState;
+    if (!order.waiter) order.waiter = { id: user.id } as User;
+    await this.ordersRepo.save(order);
     this.ordersService.checkAfterUpdateOrderMessage(id, OrderMessageEvent.OnChangeState);
-    return { ...order, ...update };
+    return (await this.ordersRepo.findOne({ where: { id }, relations: ['waiter'] })) ?? order;
   }
 
   @Roles(UserRole.Panel)
