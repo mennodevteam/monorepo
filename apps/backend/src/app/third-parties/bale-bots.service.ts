@@ -10,8 +10,9 @@ interface BaleBotRuntime {
   token: string;
   interval?: NodeJS.Timeout;
   offset: number;
-  /** Prevents overlapping getUpdates polls (duplicate handling of the same update). */
   pollInFlight: boolean;
+  /** When true, updates arrive via setWebhook POST; no getUpdates polling. */
+  useWebhook: boolean;
 }
 
 interface BaleMessage {
@@ -23,10 +24,17 @@ interface BaleChat {
 }
 
 interface BaleUpdate {
-  update_id: number;
+  update_id?: number;
+  updateId?: number;
   message?: BaleMessage & {
     chat: BaleChat;
   };
+}
+
+interface BaleTelegramResponse<T = unknown> {
+  ok?: boolean;
+  result?: T;
+  description?: string;
 }
 
 @Injectable()
@@ -60,7 +68,7 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
       const baleParty = shop.thirdParties?.find((item) => item.app === ThirdPartyApp.Bale && !!item.token);
       if (!baleParty?.token) continue;
 
-      this.startBotForShop(shop, baleParty.token);
+      await this.startBotForShop(shop, baleParty.token);
     }
 
     this.logger.log(`Bale bots initialized: ${this.runtimes.size}`);
@@ -78,23 +86,99 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
     const baleParty = shop.thirdParties?.find((item) => item.app === ThirdPartyApp.Bale && !!item.token);
     if (!baleParty?.token) return;
 
-    this.startBotForShop(shop, baleParty.token);
+    await this.startBotForShop(shop, baleParty.token);
   }
 
-  private startBotForShop(shop: Shop, token: string) {
+  /** Called by {@link BaleWebhookController} when Bale POSTs an update. */
+  async handleIncomingWebhook(shopId: string, body: unknown): Promise<void> {
+    const shop = await this.shopRepo.findOne({
+      where: { id: shopId },
+      relations: ['thirdParties'],
+    });
+    if (!shop) {
+      this.logger.warn(`Bale webhook: unknown shopId ${shopId}`);
+      return;
+    }
+    const baleParty = shop.thirdParties?.find((item) => item.app === ThirdPartyApp.Bale && !!item.token);
+    if (!baleParty?.token) return;
+
+    const runtime: BaleBotRuntime = {
+      shop,
+      token: baleParty.token,
+      offset: 0,
+      pollInFlight: false,
+      useWebhook: true,
+    };
+    await this.handleUpdate(runtime, body as BaleUpdate);
+  }
+
+  private async startBotForShop(shop: Shop, token: string) {
+    const webhookUrl = this.buildWebhookUrl(shop.id);
     const runtime: BaleBotRuntime = {
       shop,
       token,
       offset: 0,
       pollInFlight: false,
+      useWebhook: false,
     };
     this.runtimes.set(shop.id, runtime);
 
+    if (webhookUrl) {
+      try {
+        await this.invokeSetWebhook(token, webhookUrl);
+        runtime.useWebhook = true;
+        this.logger.log(`Bale setWebhook OK shop ${shop.id}`);
+        return;
+      } catch (e: unknown) {
+        this.logger.warn(`Bale setWebhook failed shop ${shop.id}, clearing webhook and using polling: ${(e as Error)?.message}`);
+        await this.invokeSetWebhook(token, '').catch(() => undefined);
+      }
+    } else {
+      await this.invokeSetWebhook(token, '').catch(() => undefined);
+    }
+
+    this.startPolling(runtime);
+  }
+
+  private startPolling(runtime: BaleBotRuntime) {
+    void this.pollUpdates(runtime.shop.id).catch((error) => {
+      this.logger.error(`Bale bot initial poll failed for shop ${runtime.shop.id}: ${error?.message || error}`);
+    });
+
     runtime.interval = setInterval(() => {
-      this.pollUpdates(shop.id).catch((error) => {
-        this.logger.error(`Bale bot poll failed for shop ${shop.id}: ${error?.message || error}`);
+      this.pollUpdates(runtime.shop.id).catch((error) => {
+        this.logger.error(`Bale bot poll failed for shop ${runtime.shop.id}: ${error?.message || error}`);
       });
     }, 2000);
+  }
+
+  /**
+   * Full HTTPS URL Bale will POST updates to: `{API_BASE_URL}/webhooks/bale/{shopId}?secret=...`.
+   * Uses `API_BASE_URL` (https, no trailing slash) and `BALE_WEBHOOK_SECRET` (query `secret`).
+   */
+  private buildWebhookUrl(shopId: string): string | undefined {
+    const base = (process.env.API_BASE_URL || '').trim().replace(/\/+$/, '');
+    const secret = (process.env.BALE_WEBHOOK_SECRET || '').trim();
+    if (!base.startsWith('https://')) {
+      if (base) {
+        this.logger.warn(
+          'Bale setWebhook needs API_BASE_URL with https://; using long polling until it is HTTPS',
+        );
+      }
+      return undefined;
+    }
+    if (!secret) {
+      this.logger.warn('BALE_WEBHOOK_SECRET is not set; Bale bots use long polling only');
+      return undefined;
+    }
+    return `${base}/webhooks/bale/${encodeURIComponent(shopId)}?secret=${encodeURIComponent(secret)}`;
+  }
+
+  private async invokeSetWebhook(token: string, url: string): Promise<void> {
+    const body = (await this.postBale(token, 'setWebhook', { url })) as BaleTelegramResponse<boolean>;
+    if (body?.ok === false) {
+      throw new Error(body.description || 'setWebhook failed');
+    }
   }
 
   private stopAllBots() {
@@ -110,28 +194,60 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
     if (runtime.interval) {
       clearInterval(runtime.interval);
     }
+    if (runtime.useWebhook) {
+      void this.invokeSetWebhook(runtime.token, '').catch(() => undefined);
+    }
     this.runtimes.delete(shopId);
   }
 
   private async pollUpdates(shopId: string) {
     const runtime = this.runtimes.get(shopId);
-    if (!runtime || runtime.pollInFlight) return;
+    if (!runtime || runtime.pollInFlight || runtime.useWebhook) return;
 
     runtime.pollInFlight = true;
     try {
-      const result = await this.callBotApi<{ result?: BaleUpdate[] }>(runtime.token, 'getUpdates', {
-        timeout: 1,
-        offset: runtime.offset,
-      });
+      let raw: unknown;
+      try {
+        raw = await this.postBale(runtime.token, 'getUpdates', {
+          timeout: 1,
+          offset: runtime.offset,
+        });
+      } catch (err: unknown) {
+        this.logger.error(`Bale getUpdates HTTP error shop ${shopId}: ${(err as Error)?.message || err}`);
+        return;
+      }
 
-      const updates = result?.result ?? [];
+      if (raw && typeof raw === 'object' && 'ok' in raw && (raw as BaleTelegramResponse).ok === false) {
+        this.logger.warn(
+          `Bale getUpdates for shop ${shopId}: ${(raw as BaleTelegramResponse).description || 'ok=false'}`,
+        );
+        return;
+      }
+
+      const updates = this.unwrapUpdates(raw);
+
       for (const update of updates) {
-        runtime.offset = update.update_id + 1;
-        await this.handleUpdate(runtime, update);
+        const updateId = update.update_id ?? update.updateId;
+        if (typeof updateId !== 'number') continue;
+        runtime.offset = updateId + 1;
+        try {
+          await this.handleUpdate(runtime, update);
+        } catch (error: unknown) {
+          this.logger.error(`Bale handle update ${updateId} shop ${shopId}: ${(error as Error)?.message || error}`);
+        }
       }
     } finally {
       runtime.pollInFlight = false;
     }
+  }
+
+  private unwrapUpdates(raw: unknown): BaleUpdate[] {
+    if (Array.isArray(raw)) return raw;
+    if (raw && typeof raw === 'object' && 'result' in raw) {
+      const r = (raw as BaleTelegramResponse<BaleUpdate[]>).result;
+      return Array.isArray(r) ? r : [];
+    }
+    return [];
   }
 
   private async handleUpdate(runtime: BaleBotRuntime, update: BaleUpdate) {
@@ -142,42 +258,97 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
   }
 
   private async sendWelcomeMessage(runtime: BaleBotRuntime, chatId: number) {
-    const appUrl = Shop.appLink(runtime.shop, process.env.APP_ORIGIN);
+    const origin = process.env.APP_ORIGIN || '';
+    const appUrl = Shop.appLink(runtime.shop, origin);
     const keys = runtime.shop.thirdParties?.find((item) => item.app === ThirdPartyApp.Bale)?.keys as BaleBotKeys;
 
     const baseMessage = keys?.start?.message || `برای شروع سفارش از لینک زیر استفاده کنید:\n${appUrl}`;
-    const buttonText =
+    const buttonText = (
       keys?.start?.buttonText ||
       keys?.start?.primaryButtonText ||
-      'ورود به سایت';
+      'ورود به سایت'
+    ).slice(0, 64);
 
     const imageUrl = keys?.start?.imageUrl?.trim();
-    const message =
+    let message =
       imageUrl && !baseMessage.includes(imageUrl) ? `${baseMessage}\n\n${imageUrl}`.trim() : baseMessage;
 
-    const reply_markup = {
-      inline_keyboard: [[{ text: buttonText, url: appUrl }]],
+    const reply_markup = this.buildInlineKeyboard(buttonText, appUrl);
+
+    const trySendText = async (text: string, markup?: typeof reply_markup) => {
+      await this.callBotApiExpectOk(runtime.token, 'sendMessage', {
+        chat_id: chatId,
+        text: this.truncate(text, 4096),
+        ...(markup ? { reply_markup: markup } : {}),
+      });
     };
 
-    if (imageUrl) {
-      await this.callBotApi(runtime.token, 'sendPhoto', {
-        chat_id: chatId,
-        photo: imageUrl,
-        caption: message,
-        reply_markup,
-      });
-    } else {
-      await this.callBotApi(runtime.token, 'sendMessage', {
-        chat_id: chatId,
-        text: message,
-        reply_markup,
-      });
+    try {
+      if (imageUrl) {
+        const caption = this.truncate(message, 1024);
+        try {
+          await this.callBotApiExpectOk(runtime.token, 'sendPhoto', {
+            chat_id: chatId,
+            photo: imageUrl,
+            caption,
+            ...(reply_markup ? { reply_markup } : {}),
+          });
+        } catch (photoErr: unknown) {
+          this.logger.warn(
+            `Bale sendPhoto failed shop ${runtime.shop.id}, fallback to text: ${(photoErr as Error)?.message}`,
+          );
+          message = this.truncate(`${message}\n\n(تصویر: ${imageUrl})`, 4096);
+          await trySendText(message, reply_markup);
+        }
+      } else {
+        await trySendText(message, reply_markup);
+      }
+    } catch (err: unknown) {
+      this.logger.warn(`Bale send with keyboard failed, retry plain text: ${(err as Error)?.message}`);
+      const fallback = this.truncate(`${message}\n\n${appUrl}`, 4096);
+      await trySendText(fallback, undefined);
     }
   }
 
-  private async callBotApi<T = unknown>(token: string, method: string, data: Record<string, unknown>) {
+  private buildInlineKeyboard(buttonText: string, appUrl: string) {
+    if (!buttonText || !this.isValidHttpUrl(appUrl)) {
+      if (!this.isValidHttpUrl(appUrl)) {
+        this.logger.warn(`Bale inline button skipped: invalid appUrl "${appUrl}"`);
+      }
+      return undefined;
+    }
+    return {
+      inline_keyboard: [[{ text: buttonText, url: appUrl }]],
+    };
+  }
+
+  private isValidHttpUrl(url: string): boolean {
+    const t = url?.trim();
+    if (!t) return false;
+    try {
+      const u = new URL(t);
+      return u.protocol === 'https:' || u.protocol === 'http:';
+    } catch {
+      return false;
+    }
+  }
+
+  private truncate(s: string, max: number): string {
+    if (!s || s.length <= max) return s;
+    return s.slice(0, max - 1) + '…';
+  }
+
+  private async postBale(token: string, method: string, data: Record<string, unknown>): Promise<unknown> {
     const url = `${this.apiBaseUrl}/bot${token}/${method}`;
-    const response = await firstValueFrom(this.http.post<T>(url, data));
+    const response = await firstValueFrom(this.http.post<unknown>(url, data));
     return response.data;
+  }
+
+  private async callBotApiExpectOk(token: string, method: string, data: Record<string, unknown>): Promise<void> {
+    const body = await this.postBale(token, method, data);
+    if (body && typeof body === 'object' && 'ok' in body && (body as BaleTelegramResponse).ok === false) {
+      const desc = (body as BaleTelegramResponse).description || 'Bale API error';
+      throw new Error(desc);
+    }
   }
 }
