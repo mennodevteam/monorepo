@@ -60,6 +60,11 @@ export class Order {
   seenAt?: Date;
   /** Bale channel message id for {@link ThirdPartyApp.MennoBaleOrders} live order card (edit on changes). */
   mennoBaleChannelMessageId?: number | null;
+  /**
+   * {@link MennoBaleOrderKeys.channelId} (trimmed) used when that message was posted.
+   * If third-party channel changes, we send a new message instead of editing with a stale id.
+   */
+  mennoBaleNotifyChannelId?: string | null;
 
   static sum(order: Order) {
     let sum = 0;

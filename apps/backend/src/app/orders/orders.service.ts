@@ -482,6 +482,7 @@ export class OrdersService {
     delete editedOrder.mergeFrom;
     delete editedOrder.reviews;
     editedOrder.mennoBaleChannelMessageId = order.mennoBaleChannelMessageId;
+    editedOrder.mennoBaleNotifyChannelId = order.mennoBaleNotifyChannelId;
     await this.orderItemsRepo.remove(order.items);
     return this.ordersRepo.save(editedOrder);
   }
@@ -659,6 +660,7 @@ export class OrdersService {
       totalPrice: order.totalPrice,
       details: { ...order.details, posPayed: dto.posPayed },
       mennoBaleChannelMessageId: order.mennoBaleChannelMessageId,
+      mennoBaleNotifyChannelId: order.mennoBaleNotifyChannelId,
     });
   }
 

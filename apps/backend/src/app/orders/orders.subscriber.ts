@@ -181,11 +181,11 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
   async afterUpdate(event: UpdateEvent<Order>): Promise<any> {
     try {
       const updated = event.updatedColumns?.map((c) => c.propertyName as string) ?? [];
-      if (updated.length === 1 && updated[0] === 'mennoBaleChannelMessageId') {
-        return;
-      }
+      const mennoOnly =
+        updated.length > 0 &&
+        updated.every((c) => c === 'mennoBaleChannelMessageId' || c === 'mennoBaleNotifyChannelId');
       const orderId = event.entity?.id as string | undefined;
-      if (orderId) {
+      if (orderId && !mennoOnly) {
         try {
           this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(orderId);
         } catch (error) {}

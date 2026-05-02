@@ -59,7 +59,6 @@ export class MennoBaleOrdersComponent {
     const dto = new ThirdParty();
     if (this.thirdParty) dto.id = this.thirdParty.id;
     dto.app = ThirdPartyApp.MennoBaleOrders;
-    dto.token = null;
     dto.keys = {
       channelId: fv.channelId?.trim(),
     };

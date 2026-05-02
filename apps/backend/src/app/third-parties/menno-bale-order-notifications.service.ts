@@ -83,8 +83,10 @@ export class MennoBaleOrderNotificationsService {
     }
 
     const msgId = order.mennoBaleChannelMessageId;
+    const channelMatches =
+      !order.mennoBaleNotifyChannelId || order.mennoBaleNotifyChannelId === channelId;
 
-    if (msgId != null && msgId > 0) {
+    if (msgId != null && msgId > 0 && channelMatches) {
       try {
         await this.callBotApi(botToken, 'editMessageText', {
           chat_id: chatId,
@@ -105,6 +107,10 @@ export class MennoBaleOrderNotificationsService {
         }
         this.logger.warn(`Menno Bale editMessageText lost message order=${orderId}, sending new: ${errText}`);
       }
+    } else if (msgId != null && msgId > 0 && !channelMatches) {
+      this.logger.log(
+        `Menno Bale orders: channel changed for shop order=${orderId}, posting new message instead of edit`,
+      );
     }
 
     try {
@@ -118,7 +124,10 @@ export class MennoBaleOrderNotificationsService {
       }
       const newId = body?.result?.message_id;
       if (typeof newId === 'number' && newId > 0) {
-        await this.ordersRepo.update(orderId, { mennoBaleChannelMessageId: newId });
+        await this.ordersRepo.update(orderId, {
+          mennoBaleChannelMessageId: newId,
+          mennoBaleNotifyChannelId: channelId,
+        });
       }
     } catch (e: unknown) {
       this.logger.warn(`Menno Bale sendMessage failed order=${orderId}: ${(e as Error)?.message || e}`);
