@@ -27,8 +27,10 @@ export class OrderItemsSubscriber implements EntitySubscriberInterface<OrderItem
     dataSource.subscribers.push(this);
   }
 
-  private scheduleMennoFromItem(item?: { order?: { id?: string } }) {
-    const oid = item?.order?.id;
+  private scheduleMennoFromItem(item?: OrderItem | null) {
+    if (!item) return;
+    const row = item as OrderItem & { orderId?: string };
+    const oid = row.order?.id ?? row.orderId;
     if (oid) this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(oid);
   }
 

@@ -78,6 +78,19 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     return Order;
   }
 
+  /**
+   * After INSERT, TypeORM may leave `entity.id` unset while still passing the generated PK in {@link InsertEvent.entityId}
+   * (single-column PKs become a plain string). Without this, Web Push / Menno Bale skip `order.id`.
+   */
+  private pickInsertPrimaryKey(event: InsertEvent<Order>): string | undefined {
+    const raw = event.entityId;
+    if (typeof raw === 'string') return raw;
+    if (raw && typeof raw === 'object' && 'id' in raw && typeof (raw as { id: unknown }).id === 'string') {
+      return (raw as { id: string }).id;
+    }
+    return undefined;
+  }
+
   async beforeInsert(event: InsertEvent<Order>) {
     const order = event.entity;
     const customer = order.customer ? await this.usersRepo.findOneBy({ id: order.customer.id }) : undefined;
@@ -105,6 +118,10 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
 
   async afterInsert(event: InsertEvent<Order>) {
     const order = event.entity;
+    const resolvedId = order.id || this.pickInsertPrimaryKey(event);
+    if (resolvedId && !order.id) {
+      Object.assign(order, { id: resolvedId });
+    }
 
     const shop = order.shop
       ? await this.shopsRepo.findOne({ where: { id: order.shop.id }, relations: ['club', 'smsAccount'] })
@@ -174,7 +191,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     } catch (error) {}
 
     try {
-      if (order.id) this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(order.id);
+      if (resolvedId) this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(resolvedId);
     } catch (error) {}
   }
 

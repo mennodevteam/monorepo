@@ -28,6 +28,14 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
   async afterInsert(event: InsertEvent<Order>) {
     try {
       const order = event.entity;
+      const rawId = event.entityId;
+      const generatedId =
+        typeof rawId === 'string'
+          ? rawId
+          : rawId && typeof rawId === 'object' && 'id' in rawId && typeof (rawId as { id: unknown }).id === 'string'
+            ? (rawId as { id: string }).id
+            : undefined;
+      if (generatedId && !order.id) Object.assign(order, { id: generatedId });
       if (order.paymentType) this.missionsService.checkFormMission(order);
     } catch (error) {
       // unhandled
