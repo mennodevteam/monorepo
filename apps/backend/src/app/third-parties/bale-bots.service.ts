@@ -387,8 +387,7 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
     ).slice(0, 64);
 
     const imageUrl = keys?.start?.imageUrl?.trim();
-    let message =
-      imageUrl && !baseMessage.includes(imageUrl) ? `${baseMessage}\n\n${imageUrl}`.trim() : baseMessage;
+    const message = baseMessage;
 
     const reply_markup = this.buildInlineKeyboard(buttonText, appUrl);
 
@@ -414,7 +413,6 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
           this.logger.warn(
             `Bale sendPhoto failed shop ${runtime.shop.id}, fallback to text: ${(photoErr as Error)?.message}`,
           );
-          message = this.truncate(`${message}\n\n(تصویر: ${imageUrl})`, 4096);
           await trySendText(message, reply_markup);
         }
       } else {

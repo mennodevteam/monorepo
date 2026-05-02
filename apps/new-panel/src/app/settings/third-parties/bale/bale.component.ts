@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BaleBotKeys, Image, ThirdParty, ThirdPartyApp } from '@menno/types';
+import { BaleBotKeys, ThirdParty, ThirdPartyApp } from '@menno/types';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { lastValueFrom } from 'rxjs';
@@ -73,12 +73,7 @@ export class BaleComponent {
         this.snack.open(this.t.instant('errors.changeError'), '', { duration: 3000 });
         return;
       }
-      const imageFile = await this.filesService.saveFileImage(saved.key, 'baleWelcome');
-      if (!imageFile) {
-        this.snack.open(this.t.instant('errors.changeError'), '', { duration: 3000 });
-        return;
-      }
-      const url = this.publicImageUrl(imageFile);
+      const url = (saved.url?.trim() || this.filesService.getFileUrl(saved.key)).trim();
       this.thirdPartyForm.patchValue({ imageUrl: url });
       this.thirdPartyForm.markAsDirty();
     } finally {
@@ -89,13 +84,6 @@ export class BaleComponent {
   clearWelcomeImage() {
     this.thirdPartyForm.patchValue({ imageUrl: '' });
     this.thirdPartyForm.markAsDirty();
-  }
-
-  private publicImageUrl(image: Image): string {
-    const origin = image?.origin?.trim();
-    if (!origin) return '';
-    if (origin.startsWith('http://') || origin.startsWith('https://')) return origin;
-    return this.filesService.getFileUrl(origin);
   }
 
   async save() {
