@@ -11,6 +11,7 @@ import { ClubsModule } from '../clubs/clubs.module';
 import { OrderItemsSubscriber } from './order-items.subscriber';
 import { RedisService } from '../core/redis.service';
 import { HttpModule } from '@nestjs/axios';
+import { ThirdPartiesModule } from '../third-parties/third-parties.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { HttpModule } from '@nestjs/axios';
     PrintersModule,
     ClubsModule,
     HttpModule,
+    ThirdPartiesModule,
   ],
   controllers: [OrdersController],
   providers: [OrdersService, RedisService, OrdersSubscriber, OrderItemsSubscriber],

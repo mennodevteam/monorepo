@@ -58,6 +58,8 @@ export class Order {
   updatedAt: Date;
   deletedAt: Date;
   seenAt?: Date;
+  /** Bale channel message id for {@link ThirdPartyApp.MennoBaleOrders} live order card (edit on changes). */
+  mennoBaleChannelMessageId?: number | null;
 
   static sum(order: Order) {
     let sum = 0;

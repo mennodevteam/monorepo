@@ -37,6 +37,7 @@ import { PrintersService } from '../printers/printers.service';
 import * as Sentry from '@sentry/node';
 import { RedisKey, RedisService } from '../core/redis.service';
 import { PersianNumberService } from '@menno/utils';
+import { MennoBaleOrderNotificationsService } from '../third-parties/menno-bale-order-notifications.service';
 
 @EventSubscriber()
 export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
@@ -68,6 +69,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     private printersService: PrintersService,
     private smsService: SmsService,
     private redis: RedisService,
+    private mennoBaleOrderNotifications: MennoBaleOrderNotificationsService,
   ) {
     dataSource.subscribers.push(this);
   }
@@ -170,10 +172,25 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     try {
       this.materialConsumption(order, false);
     } catch (error) {}
+
+    try {
+      if (order.id) this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(order.id);
+    } catch (error) {}
   }
 
   async afterUpdate(event: UpdateEvent<Order>): Promise<any> {
     try {
+      const updated = event.updatedColumns?.map((c) => c.propertyName as string) ?? [];
+      if (updated.length === 1 && updated[0] === 'mennoBaleChannelMessageId') {
+        return;
+      }
+      const orderId = event.entity?.id as string | undefined;
+      if (orderId) {
+        try {
+          this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(orderId);
+        } catch (error) {}
+      }
+
       const order = {
         ...(await this.ordersRepo.findOne({ where: { id: event.entity.id }, relations: ['shop'] })),
         ...event.entity,

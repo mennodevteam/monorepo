@@ -481,6 +481,7 @@ export class OrdersService {
     delete editedOrder.mergeTo;
     delete editedOrder.mergeFrom;
     delete editedOrder.reviews;
+    editedOrder.mennoBaleChannelMessageId = order.mennoBaleChannelMessageId;
     await this.orderItemsRepo.remove(order.items);
     return this.ordersRepo.save(editedOrder);
   }
@@ -657,6 +658,7 @@ export class OrdersService {
       items: order.items,
       totalPrice: order.totalPrice,
       details: { ...order.details, posPayed: dto.posPayed },
+      mennoBaleChannelMessageId: order.mennoBaleChannelMessageId,
     });
   }
 

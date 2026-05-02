@@ -26,6 +26,9 @@ export class ThirdPartiesController {
   async save(@Body() dto: Partial<ThirdParty>, @LoginUser() user: AuthPayload) {
     const shop = await this.auth.getPanelUserShop(user);
     dto.shop = { id: shop.id } as Shop;
+    if (dto.app === ThirdPartyApp.MennoBaleOrders) {
+      dto.token = null;
+    }
     const res = await this.repo.save(dto);
     this.redis.updateShop(shop.id);
     await this.baleBots.reloadShopBots(shop.id);

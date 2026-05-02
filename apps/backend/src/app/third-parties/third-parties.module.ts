@@ -6,11 +6,13 @@ import { HttpModule } from '@nestjs/axios';
 import { BaleBotsService } from './bale-bots.service';
 import { BaleWebhookController } from './bale-webhook.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Shop, User } from '@menno/types';
+import { Order, Shop, User } from '@menno/types';
+import { MennoBaleOrderNotificationsService } from './menno-bale-order-notifications.service';
 
 @Module({
-  imports: [CoreModule, AuthModule, HttpModule, TypeOrmModule.forFeature([Shop, User])],
+  imports: [CoreModule, AuthModule, HttpModule, TypeOrmModule.forFeature([Shop, User, Order])],
   controllers: [ThirdPartiesController, BaleWebhookController],
-  providers: [BaleBotsService],
+  providers: [BaleBotsService, MennoBaleOrderNotificationsService],
+  exports: [MennoBaleOrderNotificationsService],
 })
 export class ThirdPartiesModule {}

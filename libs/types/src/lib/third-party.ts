@@ -6,6 +6,8 @@ export enum ThirdPartyApp {
   Basalam = 'basalam',
   Clarity = 'clarity',
   Bale = 'bale',
+  /** Menno: post/update order summaries in a Bale channel via Bot API (distinct from {@link ThirdPartyApp.Bale} shop welcome bot). */
+  MennoBaleOrders = 'mennoBaleOrders',
 }
 
 export interface BaleBotStartConfig {
@@ -24,9 +26,18 @@ export interface BaleBotKeys {
   start?: BaleBotStartConfig;
 }
 
+/**
+ * Keys for {@link ThirdPartyApp.MennoBaleOrders}.
+ * Bot token and panel base URL come from server env; shops only store the channel id.
+ */
+export interface MennoBaleOrderKeys {
+  /** Bale channel id (e.g. `-1001234567890`). Menno bot (env) must be admin in the channel. */
+  channelId?: string;
+}
+
 export class ThirdParty {
   id: string;
-  keys: BaleBotKeys | Record<string, unknown>;
+  keys: BaleBotKeys | MennoBaleOrderKeys | Record<string, unknown>;
   app: ThirdPartyApp;
   token?: string;
   shop: Shop;

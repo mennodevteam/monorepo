@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { OrderItem, Product, ProductVariant } from '@menno/types';
 import { InjectRepository } from '@nestjs/typeorm';
+import { MennoBaleOrderNotificationsService } from '../third-parties/menno-bale-order-notifications.service';
 
 @EventSubscriber()
 export class OrderItemsSubscriber implements EntitySubscriberInterface<OrderItem> {
@@ -20,9 +21,15 @@ export class OrderItemsSubscriber implements EntitySubscriberInterface<OrderItem
     @InjectRepository(Product)
     private productsRepo: Repository<Product>,
     @InjectRepository(ProductVariant)
-    private productVariantsRepo: Repository<ProductVariant>
+    private productVariantsRepo: Repository<ProductVariant>,
+    private mennoBaleOrderNotifications: MennoBaleOrderNotificationsService,
   ) {
     dataSource.subscribers.push(this);
+  }
+
+  private scheduleMennoFromItem(item?: { order?: { id?: string } }) {
+    const oid = item?.order?.id;
+    if (oid) this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(oid);
   }
 
   listenTo() {
@@ -51,6 +58,11 @@ export class OrderItemsSubscriber implements EntitySubscriberInterface<OrderItem
     } catch (error) {
       // do nothing
     }
+    try {
+      this.scheduleMennoFromItem(event.entity);
+    } catch (error) {
+      // do nothing
+    }
   }
 
   async afterRemove(event: RemoveEvent<OrderItem>) {
@@ -67,6 +79,11 @@ export class OrderItemsSubscriber implements EntitySubscriberInterface<OrderItem
     } catch (error) {
       // do nothing
     }
+    try {
+      this.scheduleMennoFromItem(event.entity as OrderItem | undefined);
+    } catch (error) {
+      // do nothing
+    }
   }
 
   async afterSoftRemove(event: SoftRemoveEvent<OrderItem>) {
@@ -80,6 +97,11 @@ export class OrderItemsSubscriber implements EntitySubscriberInterface<OrderItem
       } else if (item.product && item.product.stock != undefined) {
         await this.productsRepo.increment({ id: item.product.id }, 'stock', item.quantity);
       }
+    } catch (error) {
+      // do nothing
+    }
+    try {
+      this.scheduleMennoFromItem(event.entity);
     } catch (error) {
       // do nothing
     }

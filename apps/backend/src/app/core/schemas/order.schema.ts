@@ -111,6 +111,10 @@ export const OrderSchema = new EntitySchema<Order>({
       type: 'timestamptz',
       nullable: true,
     },
+    mennoBaleChannelMessageId: {
+      type: Number,
+      nullable: true,
+    },
   },
   relations: {
     creator: {

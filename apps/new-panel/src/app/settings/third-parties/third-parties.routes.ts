@@ -6,6 +6,7 @@ import { ZibalComponent } from './zibal/zibal.component';
 import { ZarinpalComponent } from './zarinpal/zarinpal.component';
 import { BasalamComponent } from './basalam/basalam.component';
 import { BaleComponent } from './bale/bale.component';
+import { MennoBaleOrdersComponent } from './menno-bale-orders/menno-bale-orders.component';
 
 export const thirdPartiesRoutes: Route[] = [
   {
@@ -35,5 +36,9 @@ export const thirdPartiesRoutes: Route[] = [
   {
     path: 'bale',
     component: BaleComponent,
+  },
+  {
+    path: 'menno-bale-orders',
+    component: MennoBaleOrdersComponent,
   },
 ];
