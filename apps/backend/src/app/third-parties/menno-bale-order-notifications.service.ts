@@ -42,6 +42,7 @@ const ORDER_STATE_LINE: Record<OrderState, string> = {
 /**
  * Uses env `MENNO_BALE_ORDERS_BOT_TOKEN` (Menno shared Bale bot) and `NEW_PANEL_BASE_URL` for the panel link button.
  * Per shop: only {@link MennoBaleOrderKeys.channelId} on {@link ThirdPartyApp.MennoBaleOrders}.
+ * Message text is implicit Markdown on Bale (no parse_mode). Bold is used only for product titles, with a leading/trailing space around *…* per Bale rules; other user text uses {@link sanitizeUserText}.
  */
 @Injectable()
 export class MennoBaleOrderNotificationsService {
@@ -95,9 +96,8 @@ export class MennoBaleOrderNotificationsService {
     const botToken = (process.env.MENNO_BALE_ORDERS_BOT_TOKEN || '').trim();
     if (!party || !channelId || !botToken) return;
 
-    const text = this.formatOrderMessageHtml(order);
+    const text = this.formatOrderMessage(order);
     const reply_markup = this.buildPanelOrderReplyMarkup(orderId);
-    const parsePayload = { parse_mode: 'HTML' as const };
     const chatId = this.parseChatId(channelId);
     if (chatId === undefined) {
       this.logger.warn(`Menno Bale orders: invalid channelId "${channelId}"`);
@@ -114,7 +114,6 @@ export class MennoBaleOrderNotificationsService {
           chat_id: chatId,
           message_id: msgId,
           text,
-          ...parsePayload,
           ...(reply_markup ? { reply_markup } : {}),
         });
         return;
@@ -140,7 +139,6 @@ export class MennoBaleOrderNotificationsService {
       const body = await this.postBale(botToken, 'sendMessage', {
         chat_id: chatId,
         text,
-        ...parsePayload,
         ...(reply_markup ? { reply_markup } : {}),
       }) as BaleTelegramResponse<{ message_id?: number }>;
       if (body?.ok === false) {
@@ -158,54 +156,68 @@ export class MennoBaleOrderNotificationsService {
     }
   }
 
+  /** Visual separator after the total line (plain text, not Markdown). */
+  private static readonly BALE_ORDER_TOTAL_RULE =
+    '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
+
   /**
-   * Telegram/Bale HTML parse_mode: no real &lt;table&gt; support — use &lt;pre&gt; monospace grid.
-   * @see https://core.telegram.org/bots/api#html-style
+   * Bale bold/italic need a space before the opener and after the closer (* or _). Only item titles use bold.
+   * Persian/Arabic digits in the whole message are normalized to English via {@link PersianNumberService.toEnglish}.
    */
-  private formatOrderMessageHtml(order: Order): string {
+  private formatOrderMessage(order: Order): string {
     const parts: string[] = [];
 
     const items = (order.items || []).filter((i) => !i.isAbstract);
     const maxItemRows = 32;
+    parts.push('📋 اقلام');
     if (items.length) {
       const shown = items.length > maxItemRows ? items.slice(0, maxItemRows) : items;
-      const overflow = items.length > maxItemRows ? `\n… (${items.length - maxItemRows} مورد دیگر)` : '';
-      parts.push('<b>📋 اقلام</b>');
-      parts.push(`<pre>${this.buildItemsTablePre(shown)}${overflow}</pre>`);
-    } else {
-      parts.push('<b>📋 اقلام</b>\n—');
-    }
-
-    parts.push(
-      '',
-      `<b>💰 جمع:</b> ${this.escapeHtml(PersianNumberService.withCommas(order.totalPrice))}`,
-    );
-
-    const c = order.customer;
-    parts.push('', '<b>👤 مشتری</b>');
-    if (c) {
-      parts.push(this.escapeHtml(User.fullName(c) || '—'));
-      parts.push(this.escapeHtml(c.mobilePhone || order.details?.customerPhone || '—'));
+      for (let i = 0; i < shown.length; i++) {
+        if (i > 0) parts.push('');
+        const it = shown[i];
+        const raw = (it.title || '—').replace(/\s+/g, ' ').trim();
+        const maxTitle = 120;
+        const short = raw.length > maxTitle ? `${raw.slice(0, maxTitle - 1)}…` : raw;
+        const title = this.sanitizeUserText(short);
+        parts.push(` *${title}* `);
+        parts.push(`تعداد: ${String(it.quantity ?? 1)}`);
+      }
+      if (items.length > maxItemRows) {
+        parts.push('', `… (${items.length - maxItemRows} مورد دیگر)`);
+      }
     } else {
       parts.push('—');
-      if (order.details?.customerPhone) parts.push(this.escapeHtml(order.details.customerPhone));
     }
 
-    parts.push('', '<b>📍 آدرس</b>');
+    parts.push('', `تعداد اقلام: ${items.length}`);
+    parts.push('', `💰 جمع: ${this.sanitizeUserText(PersianNumberService.withCommas(order.totalPrice))}`);
+    parts.push(MennoBaleOrderNotificationsService.BALE_ORDER_TOTAL_RULE);
+
+    const c = order.customer;
+    parts.push('', '👤 مشتری');
+    if (c) {
+      parts.push(this.sanitizeUserText(User.fullName(c) || '—'));
+      parts.push(this.sanitizeUserText(c.mobilePhone || order.details?.customerPhone || '—'));
+    } else {
+      parts.push('—');
+      if (order.details?.customerPhone) parts.push(this.sanitizeUserText(order.details.customerPhone));
+    }
+
+    parts.push('', '📍 آدرس');
     const addr = order.address;
     if (addr) {
       const r = addr.region;
-      if (r?.state) parts.push(this.escapeHtml(`استان: ${r.state}`));
-      if (r?.title) parts.push(this.escapeHtml(`شهر/منطقه: ${r.title}`));
+      if (r?.state) parts.push(this.sanitizeUserText(`استان: ${r.state}`));
+      if (r?.title) parts.push(this.sanitizeUserText(`شهر/منطقه: ${r.title}`));
       const line = [addr.description, addr.unit ? `واحد ${addr.unit}` : '', addr.ring ? `پلاک/زنگ ${addr.ring}` : '']
         .filter(Boolean)
         .join(' — ');
-      parts.push(line ? this.escapeHtml(line) : '—');
+      parts.push(line ? this.sanitizeUserText(line) : '—');
     } else {
       switch (order.type) {
         case OrderType.DineIn:
           parts.push(
-            this.escapeHtml(
+            this.sanitizeUserText(
               order.details?.table ? `میز: ${order.details.table}` : 'حضوری در مجموعه',
             ),
           );
@@ -216,41 +228,34 @@ export class MennoBaleOrderNotificationsService {
     }
 
     if (order.note?.trim()) {
-      parts.push('', `<b>📝 یادداشت</b>\n${this.escapeHtml(order.note.trim())}`);
+      parts.push('', '📝 یادداشت', this.sanitizeUserText(order.note.trim()));
     }
 
     const stateNum = Number(order.state) as OrderState;
     const stateLine = order.deletedAt
       ? '🗑️ حذف از پنل'
       : ORDER_STATE_LINE[stateNum] ?? `❔ ${ORDER_STATE_FA[stateNum] ?? String(order.state)}`;
-    const footer = `\n\n<code>──────────</code>\n<b>${this.escapeHtml(stateLine)}</b>`;
+    const footer = `\n\n──────────\n${stateLine}`;
 
-    const bodyHtml = parts.join('\n');
-    if (bodyHtml.length + footer.length > 4090) {
-      this.logger.warn(`Menno Bale order message too long order=${order.id}; truncating item rows only`);
+    const body = parts.join('\n');
+    const full = body + footer;
+    if (full.length > 4090) {
+      this.logger.warn(`Menno Bale order message too long order=${order.id}`);
     }
-    return bodyHtml + footer;
+    return PersianNumberService.toEnglish(full);
   }
 
-  private buildItemsTablePre(items: OrderItem[]): string {
-    const maxTitle = 36;
-    const rows: string[] = [];
-    rows.push('#  | محصول                              | تعداد', '---+------------------------------------+------');
-    for (let i = 0; i < items.length; i++) {
-      const it = items[i];
-      const raw = (it.title || '—').replace(/\s+/g, ' ').trim();
-      const short = raw.length > maxTitle ? `${raw.slice(0, maxTitle - 1)}…` : raw;
-      const title = this.escapeHtml(short);
-      const q = String(it.quantity ?? 1);
-      const n = String(i + 1).padStart(2, ' ');
-      rows.push(`${n} | ${title} | ${q}`);
-    }
-    return rows.join('\n');
-  }
-
-  private escapeHtml(s: string): string {
+  /** Avoid breaking Bale’s implicit Markdown in product titles, addresses, names, etc. */
+  private sanitizeUserText(s: string): string {
     if (s == null || s === '') return '';
-    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return String(s)
+      .replace(/\\/g, '＼')
+      .replace(/\*/g, '٭')
+      .replace(/_/g, '＿')
+      .replace(/`/g, 'ʽ')
+      .replace(/\[/g, '［')
+      .replace(/\]/g, '］')
+      .replace(/~/g, '～');
   }
 
   /** Inline URL button → new-panel order details (`/orders/details/:id`). */
