@@ -1,7 +1,8 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BaleBotKeys, Shop, ThirdPartyApp } from '@menno/types';
+import { BaleBotKeys, Shop, ThirdPartyApp, User } from '@menno/types';
+import { PersianNumberService } from '@menno/utils';
 import { firstValueFrom } from 'rxjs';
 import { Repository } from 'typeorm';
 
@@ -15,8 +16,19 @@ interface BaleBotRuntime {
   useWebhook: boolean;
 }
 
+interface BaleFrom {
+  id: number;
+}
+
+interface BaleContact {
+  phone_number?: string;
+  user_id?: number;
+}
+
 interface BaleMessage {
   text?: string;
+  from?: BaleFrom;
+  contact?: BaleContact;
 }
 
 interface BaleChat {
@@ -47,6 +59,8 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
     private readonly http: HttpService,
     @InjectRepository(Shop)
     private readonly shopRepo: Repository<Shop>,
+    @InjectRepository(User)
+    private readonly usersRepo: Repository<User>,
   ) {}
 
   async onModuleInit() {
@@ -251,10 +265,113 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
   }
 
   private async handleUpdate(runtime: BaleBotRuntime, update: BaleUpdate) {
-    const chatId = update.message?.chat?.id;
-    if (!chatId || !update.message) return;
+    const msg = update.message;
+    if (!msg?.chat?.id) return;
+    const chatId = msg.chat.id;
+    const fromId = msg.from?.id;
+    if (fromId === undefined || fromId === null) return;
+    const baleIdStr = String(fromId);
 
-    await this.sendWelcomeMessage(runtime, chatId);
+    if (msg.contact?.phone_number) {
+      const contactUserId = msg.contact.user_id;
+      const ownContact =
+        contactUserId === undefined || contactUserId === null || Number(contactUserId) === Number(fromId);
+      if (!ownContact) {
+        await this.sendPlainText(
+          runtime,
+          chatId,
+          'لطفاً فقط شمارهٔ خودتان را با دکمهٔ «ارسال شماره تماس» بفرستید.',
+          this.requestContactKeyboard(),
+        );
+        return;
+      }
+      const phone = this.normalizeIranPhone(msg.contact.phone_number);
+      const user = await this.findAppUserByMobile(phone);
+      if (!user) {
+        await this.sendPlainText(
+          runtime,
+          chatId,
+          'کاربری با این شماره در سیستم ما ثبت نشده است. ابتدا در سایت یا اپ مشتری ثبت‌نام کنید، سپس دوباره شماره را ارسال کنید.',
+          this.requestContactKeyboard(),
+        );
+        return;
+      }
+      await this.usersRepo
+        .createQueryBuilder()
+        .update(User)
+        .set({ baleId: null })
+        .where('baleId = :bid', { bid: baleIdStr })
+        .andWhere('id != :uid', { uid: user.id })
+        .execute();
+      await this.usersRepo.update(user.id, { baleId: baleIdStr });
+      await this.callBotApiExpectOk(runtime.token, 'sendMessage', {
+        chat_id: chatId,
+        text: 'حساب شما به بازو متصل شد.',
+        reply_markup: { remove_keyboard: true },
+      });
+      await this.sendWelcomeMessage(runtime, chatId);
+      return;
+    }
+
+    const linked = await this.usersRepo.findOneBy({ baleId: baleIdStr });
+    if (linked) {
+      await this.sendWelcomeMessage(runtime, chatId);
+      return;
+    }
+
+    await this.sendPlainText(
+      runtime,
+      chatId,
+      'برای ادامه، شمارهٔ موبایلی که با آن در فروشگاه ثبت‌نام کرده‌اید را با دکمهٔ زیر ارسال کنید.',
+      this.requestContactKeyboard(),
+    );
+  }
+
+  private requestContactKeyboard() {
+    return {
+      keyboard: [[{ text: 'ارسال شماره تماس', request_contact: true }]],
+      resize_keyboard: true,
+      one_time_keyboard: true,
+    };
+  }
+
+  private async sendPlainText(
+    runtime: BaleBotRuntime,
+    chatId: number,
+    text: string,
+    reply_markup?: Record<string, unknown>,
+  ) {
+    await this.callBotApiExpectOk(runtime.token, 'sendMessage', {
+      chat_id: chatId,
+      text: this.truncate(text, 4096),
+      ...(reply_markup ? { reply_markup } : {}),
+    });
+  }
+
+  private normalizeIranPhone(raw: string): string {
+    let p = PersianNumberService.toEnglish(raw.trim()).replace(/[\s\-()]/g, '');
+    if (p.startsWith('00')) p = p.slice(2);
+    if (p.startsWith('+')) p = p.slice(1);
+    if (p.startsWith('0') && p.length >= 10) p = '98' + p.slice(1);
+    return p;
+  }
+
+  private async findAppUserByMobile(digits: string): Promise<User | null> {
+    if (!digits) return null;
+    const candidates = new Set<string>();
+    candidates.add(digits);
+    if (digits.startsWith('98') && digits.length > 2) {
+      candidates.add('0' + digits.slice(2));
+      candidates.add(digits.slice(2));
+    }
+    if (digits.startsWith('0')) {
+      candidates.add('98' + digits.slice(1));
+    }
+    for (const m of candidates) {
+      const u = await this.usersRepo.findOneBy({ mobilePhone: m });
+      if (u) return u;
+    }
+    return null;
   }
 
   private async sendWelcomeMessage(runtime: BaleBotRuntime, chatId: number) {

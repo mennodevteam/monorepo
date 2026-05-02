@@ -12,6 +12,8 @@ export class User {
   username: string;
   password: string;
   mobilePhone: string;
+  /** Bale messenger user id (from bot / mini app), for linking club account */
+  baleId?: string;
   email: string;
   avatar: string;
   firstName: string;

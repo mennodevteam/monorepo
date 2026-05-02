@@ -4,6 +4,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { Address, ChangePasswordDto, Region, ShopUser, User, UserRole } from '@menno/types';
 import { JwtService } from '@nestjs/jwt';
@@ -124,6 +125,14 @@ export class AuthService {
 
   async loginApp(user: User) {
     return this.login(user, UserRole.App, '90d');
+  }
+
+  async loginByBaleId(baleId: string): Promise<User> {
+    const id = baleId?.trim();
+    if (!id) throw new BadRequestException('baleId required');
+    const user = await this.usersRepo.findOneBy({ baleId: id });
+    if (!user) throw new NotFoundException('user not found');
+    return this.loginApp(user);
   }
 
   async sendToken(mobilePhone: string, validateTime = 70000, domain?: string) {

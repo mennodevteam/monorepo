@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, signal, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { lastValueFrom } from 'rxjs';
 import { User } from '@menno/types';
 import md5 from 'md5';
 import { Guid } from 'guid-typescript';
@@ -19,6 +20,26 @@ export class AuthService {
   }
 
   async init() {
+    const baleUserId = this.getBaleWebAppUserId();
+    if (baleUserId) {
+      try {
+        const loggedIn = await lastValueFrom(this.http.post<User>(`/auth/login/bale`, { baleId: baleUserId }));
+        if (loggedIn?.id && loggedIn.token) {
+          this.user.set(loggedIn);
+          this.saveLocal();
+          this._loading.complete();
+          try {
+            (window as unknown as { Bale?: { WebApp?: { ready?: () => void } } }).Bale?.WebApp?.ready?.();
+          } catch {
+            /* ignore */
+          }
+          return;
+        }
+      } catch {
+        /* not linked to Bale yet — fall through to guest / saved session */
+      }
+    }
+
     const _item = sessionStorage?.getItem('appLoginUser') || localStorage?.getItem('appLoginUser');
     if (_item) {
       try {
@@ -109,6 +130,18 @@ export class AuthService {
   }
 
   readonly isGuestUser = computed(() => !this.user()?.mobilePhone);
+
+  /** Bale mini app: `window.Bale.WebApp.initDataUnsafe.user.id` */
+  private getBaleWebAppUserId(): string | undefined {
+    try {
+      const w = window as unknown as { Bale?: { WebApp?: { initDataUnsafe?: { user?: { id?: number } } } } };
+      const id = w.Bale?.WebApp?.initDataUnsafe?.user?.id;
+      if (id !== undefined && id !== null) return String(id);
+    } catch {
+      /* ignore */
+    }
+    return undefined;
+  }
 
   // async openLoginPrompt(disableClose = false) {
   //   const complete = await this.bottomSheet

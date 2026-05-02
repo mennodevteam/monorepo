@@ -24,6 +24,11 @@ export const UserSchema = new EntitySchema<User>({
       unique: true,
       nullable: true,
     },
+    baleId: {
+      type: String,
+      unique: true,
+      nullable: true,
+    },
     email: {
       type: String,
       unique: true,

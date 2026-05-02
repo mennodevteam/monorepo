@@ -81,6 +81,12 @@ export class AuthController {
     return this.auth.loginAppV2(req.user);
   }
 
+  @Public()
+  @Post('login/bale')
+  async loginBale(@Body() body: { baleId?: string }) {
+    return this.auth.loginByBaleId(body?.baleId || '');
+  }
+
   @Roles(UserRole.App)
   @Put('edit')
   async editUser(@Body() dto: User, @LoginUser() user: AuthPayload) {
