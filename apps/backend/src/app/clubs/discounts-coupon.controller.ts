@@ -72,7 +72,7 @@ export class DiscountsCouponController {
         }
 
         if (coupon?.tag != undefined) {
-          if (!member || !member.tags.find((tag) => tag.id === coupon.tag.id)) break;
+          if (!member || !member.tags?.some((tag) => tag?.id === coupon.tag?.id)) break;
         }
 
         if (coupon?.maxUse) {

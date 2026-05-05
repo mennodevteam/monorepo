@@ -70,13 +70,15 @@ export class ChatController {
         .then((order) => {
           try {
             if (order.shop?.smsAccount && order.shop?.appConfig?.smsOnNewOrder) {
-              this.sms.send({
-                accountId: order.shop.smsAccount.id,
-                receptors: order.shop.appConfig.smsOnNewOrder,
-                messages: order.shop.appConfig.smsOnNewOrder.map(
-                  (item) => `یک پیام جدید از ${User.fullName(order.customer)}: ${chat.text}`,
-                ),
-              });
+              void this.sms
+                .send({
+                  accountId: order.shop.smsAccount.id,
+                  receptors: order.shop.appConfig.smsOnNewOrder,
+                  messages: order.shop.appConfig.smsOnNewOrder.map(
+                    (item) => `یک پیام جدید از ${User.fullName(order.customer)}: ${chat.text}`,
+                  ),
+                })
+                .catch(() => undefined);
             }
           } catch (error) {
             // do nothing

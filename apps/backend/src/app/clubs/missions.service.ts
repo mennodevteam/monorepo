@@ -43,6 +43,8 @@ export class MissionsService {
     //   relations: ['shop.club.smsAccount', 'customer'],
     // });
 
+    if (!order?.shop?.id || !order?.customer?.id) return;
+
     order.shop = await this.shopsRepo.findOne({
       where: { id: order.shop.id },
       relations: ['club', 'smsAccount'],
@@ -131,10 +133,12 @@ export class MissionsService {
         wallet,
       } as WalletLog, shop.id);
     } else if (mission.rewardType === MissionRewardType.DiscountCoupon && mission.rewardDetails) {
-      const coupon = mission.rewardDetails;
+      const template = mission.rewardDetails as DiscountCoupon;
+      const { id: _omitId, createdAt: _omitCreatedAt, ...couponRest } = template;
+      const coupon = this.discountCouponsRepo.create(couponRest as DiscountCoupon);
       coupon.user = member.user;
       const date = new Date();
-      date.setDate(date.getDate() + mission.durationInDays || 10);
+      date.setDate(date.getDate() + (mission.durationInDays || 10));
       coupon.startedAt = new Date();
       coupon.expiredAt = date;
       coupon.code = randomCharacters(6, 'abcdefghijklmnopqrstuvwxyz');
@@ -143,17 +147,19 @@ export class MissionsService {
       await this.discountCouponsRepo.save(coupon);
       if (shop.smsAccount) {
         setTimeout(() => {
-          this.smsService.send({
-            receptors: [member.user.mobilePhone],
-            accountId: shop.smsAccount.id,
-            messages: [
-              `${shop.title}\n${member.user.firstName} عزیز\nبا استفاده از کد تخفیف ${
-                coupon.code
-              } در سفارشات بعدی خود، از ${coupon.percentageDiscount || coupon.fixedDiscount} ${
-                coupon.percentageDiscount ? 'درصد' : 'تومان'
-              } تخفیف آن استفاده کنید.\nمهلت استفاده تا ${mission.durationInDays} روز دیگر.`,
-            ],
-          });
+          void this.smsService
+            .send({
+              receptors: [member.user.mobilePhone],
+              accountId: shop.smsAccount.id,
+              messages: [
+                `${shop.title}\n${member.user.firstName} عزیز\nبا استفاده از کد تخفیف ${
+                  coupon.code
+                } در سفارشات بعدی خود، از ${coupon.percentageDiscount || coupon.fixedDiscount} ${
+                  coupon.percentageDiscount ? 'درصد' : 'تومان'
+                } تخفیف آن استفاده کنید.\nمهلت استفاده تا ${mission.durationInDays} روز دیگر.`,
+              ],
+            })
+            .catch(() => undefined);
         }, 20000);
       }
     }

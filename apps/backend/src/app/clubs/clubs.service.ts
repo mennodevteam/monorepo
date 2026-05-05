@@ -241,7 +241,9 @@ export class ClubsService {
     }
 
     if (!members.length) return { data: [], totalCount: 0 };
-    const userIds = members.map((m) => m.user.id);
+    const userIds = members.map((m) => m.user?.id).filter((id): id is string => !!id);
+
+    if (!userIds.length) return { data: [], totalCount: 0 };
 
     // Get all orders for these users in this club
     const orders = await this.ordersRepo.find({
@@ -285,14 +287,16 @@ export class ClubsService {
           (dto.lastOrderToDate &&
             (!lastOrder || new Date(lastOrder.createdAt).valueOf() > new Date(dto.lastOrderToDate).valueOf()))
         ) {
-          filteredMembers = filteredMembers.filter((m) => m.user.id !== userId);
+          filteredMembers = filteredMembers.filter((m) => m.user?.id !== userId);
         }
       }
     }
 
     if (dto.minOrderCount != undefined || dto.maxOrderCount != undefined) {
       filteredMembers = filteredMembers.filter((m) => {
-        let userOrders = ordersByUser[m.user.id] || [];
+        const memberUserId = m.user?.id;
+        if (!memberUserId) return false;
+        let userOrders = ordersByUser[memberUserId] || [];
         if (dto.orderFromDate) {
           userOrders = userOrders.filter(
             (o) => new Date(o.createdAt).valueOf() >= new Date(dto.orderFromDate).valueOf(),
@@ -314,24 +318,29 @@ export class ClubsService {
     // Get last visit date for each user (MenuStat)
     let lastVisitMap: Record<string, Date | null> = {};
     if (menuId) {
-      const menuStats = await this.menuStatsRepo
-        .createQueryBuilder('stat')
-        .select(['stat.userId as userId', 'MAX(stat.createdAt) as lastVisitDate'])
-        .where('stat.menuId = :menuId', { menuId })
-        .andWhere('stat.action = :action', { action: StatAction.LoadMenu })
-        .andWhere('stat.userId IN (:...userIds)', { userIds: filteredMembers.map((m) => m.user.id) })
-        .groupBy('stat.userId')
-        .getRawMany();
+      const statUserIds = filteredMembers.map((m) => m.user?.id).filter((id): id is string => !!id);
+      if (statUserIds.length) {
+        const menuStats = await this.menuStatsRepo
+          .createQueryBuilder('stat')
+          .select(['stat.userId as userId', 'MAX(stat.createdAt) as lastVisitDate'])
+          .where('stat.menuId = :menuId', { menuId })
+          .andWhere('stat.action = :action', { action: StatAction.LoadMenu })
+          .andWhere('stat.userId IN (:...userIds)', { userIds: statUserIds })
+          .groupBy('stat.userId')
+          .getRawMany();
 
-      lastVisitMap = Object.fromEntries(
-        menuStats.map((s) => [s.userid, s.lastvisitdate ? new Date(s.lastvisitdate) : null]),
-      );
+        lastVisitMap = Object.fromEntries(
+          menuStats.map((s) => [s.userid, s.lastvisitdate ? new Date(s.lastvisitdate) : null]),
+        );
+      }
     }
 
     // Filter by lastVisitDate
     if (dto.lastVisitFromDate || dto.lastVisitToDate) {
       filteredMembers = filteredMembers.filter((m) => {
-        const lastVisit = lastVisitMap[m.user.id];
+        const memberUserId = m.user?.id;
+        if (!memberUserId) return false;
+        const lastVisit = lastVisitMap[memberUserId];
         if (
           dto.lastVisitFromDate &&
           (!lastVisit || lastVisit.valueOf() < new Date(dto.lastVisitFromDate).valueOf())
@@ -348,7 +357,8 @@ export class ClubsService {
 
     // Build response
     let response = filteredMembers.map((member) => {
-      const userOrders = ordersByUser[member.user.id] || [];
+      const memberUserId = member.user?.id;
+      const userOrders = memberUserId ? ordersByUser[memberUserId] || [] : [];
       const sortedOrders = userOrders.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
       return {
         member,
@@ -357,7 +367,7 @@ export class ClubsService {
         lastOrderTime: sortedOrders.length ? sortedOrders[sortedOrders.length - 1].createdAt : null,
         totalOrderCount: userOrders.length,
         totalOrderSum: userOrders.reduce((sum, o) => sum + (o.totalPrice || 0), 0),
-        lastVisitDate: lastVisitMap[member.user.id] || null,
+        lastVisitDate: memberUserId ? lastVisitMap[memberUserId] || null : null,
       };
     });
 
@@ -449,11 +459,13 @@ export class ClubsService {
         coupons = coupons.filter(
           (x) =>
             (!x.user || x.user?.id === dto.userId) &&
-            x.star <= member.star &&
+            (x.star == null || x.star <= member.star) &&
             (!x.code || x.user?.id === dto.userId) &&
-            (!x.tag || member.tags?.find((tag) => tag.id === x.tag.id)),
+            (!x.tag || member.tags?.some((tag) => tag?.id === x.tag?.id)),
         );
       }
+
+      if (!coupons.length) return coupons;
 
       const orders = await this.ordersRepo.find({
         where: { discountCoupon: In(coupons.map((x) => x.id)) },
@@ -461,14 +473,13 @@ export class ClubsService {
       });
 
       coupons = coupons.filter((c) => {
+        const couponOrders = orders.filter((x) => x.discountCoupon?.id === c.id);
         if (c.maxUse) {
-          const totalUse = orders.length;
+          const totalUse = couponOrders.length;
           if (totalUse >= c.maxUse) return false;
         }
         if (c.maxUsePerUser) {
-          const userUse = orders.filter(
-            (x) => x.customer.id === dto.userId && x.discountCoupon?.id === c.id,
-          ).length;
+          const userUse = couponOrders.filter((x) => x.customer?.id === dto.userId).length;
           if (userUse >= c.maxUsePerUser) return false;
         }
         return true;
@@ -571,11 +582,11 @@ export class ClubsService {
         }
 
         if (birthDateSmsDto.receptors.length) {
-          this.smsService.send(birthDateSmsDto);
+          void this.smsService.send(birthDateSmsDto).catch(() => undefined);
         }
 
         if (marriageDateSmsDto.receptors.length) {
-          this.smsService.send(marriageDateSmsDto);
+          void this.smsService.send(marriageDateSmsDto).catch(() => undefined);
         }
       }
     }

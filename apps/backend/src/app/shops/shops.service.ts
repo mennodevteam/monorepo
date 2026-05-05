@@ -209,7 +209,7 @@ export class ShopsService {
           )}`,
         ];
         newTemplateSmsToAdmin.receptors = process.env.ADMIN_PHONE_NUMBERS.split(',');
-        this.smsService.send(newTemplateSmsToAdmin);
+        void this.smsService.send(newTemplateSmsToAdmin).catch(() => undefined);
       } catch (error) {}
     }
 

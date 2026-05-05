@@ -307,11 +307,13 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
 
         if (order.customer) message += `\n\n${User.fullName(order.customer)}\n${order.customer.mobilePhone}`;
 
-        this.smsService.send({
-          accountId: shop.smsAccount.id,
-          messages: shopWithConfig.appConfig.smsOnNewOrder.map((x) => message),
-          receptors: shopWithConfig.appConfig.smsOnNewOrder,
-        });
+        void this.smsService
+          .send({
+            accountId: shop.smsAccount.id,
+            messages: shopWithConfig.appConfig.smsOnNewOrder.map((x) => message),
+            receptors: shopWithConfig.appConfig.smsOnNewOrder,
+          })
+          .catch(() => undefined);
       }
     }
   }

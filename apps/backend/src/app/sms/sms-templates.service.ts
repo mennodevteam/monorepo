@@ -24,7 +24,7 @@ export class SmsTemplatesService {
           `یک الگوی جدید برای ${shop.title}:\n\n${smsTemplate.message} \n\n${process.env.API_BASE_URL}/smsTemplates/verify/${savedTemplate.id}`,
         ];
         newTemplateSmsToAdmin.receptors = process.env.ADMIN_PHONE_NUMBERS.split(',');
-        this.smsService.send(newTemplateSmsToAdmin);
+        void this.smsService.send(newTemplateSmsToAdmin).catch(() => undefined);
       } catch (error) {}
     }
     return savedTemplate;

@@ -83,11 +83,19 @@ export class MembersController {
   ) {
     const shop = await this.auth.getPanelUserShop(user, ['club', 'menu', 'smsAccount']);
     const members = await this.clubService.filterMembersV2(dto.filter, shop);
-    this.smsService.send({
-      receptors: members.data.map((x) => x.member.user.mobilePhone),
-      messages: members.data.map((x) => dto.message.replace('@@@', User.fullName(x.member.user))),
-      accountId: shop.smsAccount.id,
-    });
+    const pairs = members.data
+      .map((row) => ({
+        phone: row.member.user?.mobilePhone,
+        message: dto.message.replace('@@@', User.fullName(row.member.user)),
+      }))
+      .filter((row): row is { phone: string; message: string } => !!row.phone);
+    void this.smsService
+      .send({
+        receptors: pairs.map((p) => p.phone),
+        messages: pairs.map((p) => p.message),
+        accountId: shop.smsAccount.id,
+      })
+      .catch(() => undefined);
   }
 
   @Post()

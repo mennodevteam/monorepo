@@ -22,14 +22,16 @@ export class WalletsService {
     const shop = await this.shopsRepo.findOne({ where: { id: shopId }, relations: ['smsAccount'] });
     wallet.charge += Number(dto.amount);
     await this.walletLogsRepo.save(dto);
-    if (wallet.member.user) {
+    if (wallet.member.user && shop.smsAccount) {
       const textContent = this.getMessageText(dto, shop, wallet);
       setTimeout(() => {
-        this.sms.send({
-          messages: [textContent],
-          receptors: [wallet.member.user.mobilePhone],
-          accountId: shop.smsAccount.id,
-        });
+        void this.sms
+          .send({
+            messages: [textContent],
+            receptors: [wallet.member.user.mobilePhone],
+            accountId: shop.smsAccount.id,
+          })
+          .catch(() => undefined);
       }, 20000);
     }
 

@@ -36,7 +36,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
             ? (rawId as { id: string }).id
             : undefined;
       if (generatedId && !order.id) Object.assign(order, { id: generatedId });
-      if (order.paymentType) this.missionsService.checkFormMission(order);
+      if (order.paymentType) void this.missionsService.checkFormMission(order).catch(() => undefined);
     } catch (error) {
       // unhandled
     }
@@ -44,11 +44,15 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
 
   async afterUpdate(event: UpdateEvent<Order>): Promise<any> {
     try {
+      const entityId = event.entity?.id;
+      if (!entityId) return;
+
       const order = {
-        ...(await this.ordersRepo.findOne({ where: { id: event.entity.id }, relations: ['shop', 'customer'] })),
+        ...(await this.ordersRepo.findOne({ where: { id: entityId }, relations: ['shop', 'customer'] })),
         ...event.entity,
       };
-      if (event.entity.paymentType) this.missionsService.checkFormMission(order);
+      if (event.entity.paymentType)
+        void this.missionsService.checkFormMission(order).catch(() => undefined);
     } catch (error) {
       // unhandled
     }
