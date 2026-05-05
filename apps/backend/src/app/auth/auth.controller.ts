@@ -90,8 +90,13 @@ export class AuthController {
   @Roles(UserRole.App)
   @Put('edit')
   async editUser(@Body() dto: User, @LoginUser() user: AuthPayload) {
-    dto.id = user.id;
-    return this.usersRepo.save(dto);
+    const existing = await this.usersRepo.findOneByOrFail({ id: user.id });
+    Object.assign(existing, dto);
+    existing.id = user.id;
+    delete (existing as { token?: string }).token;
+    delete (existing as { members?: unknown }).members;
+    delete (existing as { exp?: number }).exp;
+    return this.usersRepo.save(existing);
   }
 
   @Public()

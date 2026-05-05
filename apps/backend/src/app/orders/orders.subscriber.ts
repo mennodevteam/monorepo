@@ -108,10 +108,12 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
       });
 
       if (!member) {
-        this.membersRepo.save({
+        // Pass the loaded `User` entity, not `{ id }` only. Member.user has cascade update;
+        // a bare id reference can make TypeORM emit an empty User UPDATE (UpdateValuesMissingError).
+        await this.membersRepo.save({
           club: { id: shop.club.id },
-          user: { id: customer.id },
-        });
+          user: customer,
+        } as Member);
       }
     }
   }
