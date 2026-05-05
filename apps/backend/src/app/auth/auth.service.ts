@@ -177,16 +177,24 @@ export class AuthService {
   }
 
   async loginAppWithToken(userId: string, mobilePhone: string, token: string): Promise<User> {
-    console.log('login app with token', mobilePhone, token, this.mobilePhoneTokens[mobilePhone]);
-    if (this.mobilePhoneTokens[mobilePhone] === PersianNumberService.toEnglish(token)) {
-      delete this.mobilePhoneTokens[mobilePhone];
-      let user = await this.usersRepo.findOneBy({ mobilePhone });
+    const normalizedMobile = PersianNumberService.toEnglish(mobilePhone);
+    if (!normalizedMobile) {
+      throw new BadRequestException('mobile required');
+    }
+    console.log('login app with token', normalizedMobile, token, this.mobilePhoneTokens[normalizedMobile]);
+    if (this.mobilePhoneTokens[normalizedMobile] === PersianNumberService.toEnglish(token)) {
+      delete this.mobilePhoneTokens[normalizedMobile];
+      let user = await this.usersRepo.findOneBy({ mobilePhone: normalizedMobile });
       if (!user) {
-        await this.usersRepo.update(userId, {
-          mobilePhone,
-        });
-        user = await this.usersRepo.findOneBy({ mobilePhone });
+        const guest = await this.usersRepo.findOneBy({ id: userId });
+        if (!guest) throw new NotFoundException('user not found');
+        // TypeORM can throw UpdateValuesMissingError if `.update()` has no real column changes.
+        if (guest.mobilePhone !== normalizedMobile) {
+          await this.usersRepo.update(userId, { mobilePhone: normalizedMobile });
+        }
+        user = (await this.usersRepo.findOneBy({ mobilePhone: normalizedMobile })) ?? guest;
       }
+      if (!user) throw new NotFoundException('user not found');
       return this.loginApp(user);
     } else {
       throw new HttpException('code is not valid', HttpStatus.FORBIDDEN);
@@ -194,18 +202,25 @@ export class AuthService {
   }
 
   async loginAppWithTokenV2(userId: string, mobilePhone: string, token: string): Promise<string> {
-    console.log('login app with token v2', mobilePhone, token, this.mobilePhoneTokens[mobilePhone]);
+    const normalizedMobile = PersianNumberService.toEnglish(mobilePhone);
+    if (!normalizedMobile) {
+      throw new BadRequestException('mobile required');
+    }
+    console.log('login app with token v2', normalizedMobile, token, this.mobilePhoneTokens[normalizedMobile]);
     if (
-      this.mobilePhoneTokens[mobilePhone]?.toString() === PersianNumberService.toEnglish(token)?.toString()
+      this.mobilePhoneTokens[normalizedMobile]?.toString() === PersianNumberService.toEnglish(token)?.toString()
     ) {
-      delete this.mobilePhoneTokens[mobilePhone];
-      let user = await this.usersRepo.findOneBy({ mobilePhone });
+      delete this.mobilePhoneTokens[normalizedMobile];
+      let user = await this.usersRepo.findOneBy({ mobilePhone: normalizedMobile });
       if (!user) {
-        await this.usersRepo.update(userId, {
-          mobilePhone,
-        });
-        user = await this.usersRepo.findOneBy({ mobilePhone });
+        const guest = await this.usersRepo.findOneBy({ id: userId });
+        if (!guest) throw new NotFoundException('user not found');
+        if (guest.mobilePhone !== normalizedMobile) {
+          await this.usersRepo.update(userId, { mobilePhone: normalizedMobile });
+        }
+        user = (await this.usersRepo.findOneBy({ mobilePhone: normalizedMobile })) ?? guest;
       }
+      if (!user) throw new NotFoundException('user not found');
       return this.loginAppV2(user);
     } else {
       throw new HttpException('code is not valid', HttpStatus.FORBIDDEN);
