@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BaleBotKeys, Shop, ThirdPartyApp, User } from '@menno/types';
+import { BaleBotKeys, Club, Member, Shop, ThirdPartyApp, User } from '@menno/types';
 import { PersianNumberService } from '@menno/utils';
 import { firstValueFrom } from 'rxjs';
 import { Repository } from 'typeorm';
@@ -61,6 +61,8 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
     private readonly shopRepo: Repository<Shop>,
     @InjectRepository(User)
     private readonly usersRepo: Repository<User>,
+    @InjectRepository(Member)
+    private readonly membersRepo: Repository<Member>,
   ) {}
 
   async onModuleInit() {
@@ -304,6 +306,7 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
         .andWhere('id != :uid', { uid: user.id })
         .execute();
       await this.usersRepo.update(user.id, { baleId: baleIdStr });
+      await this.ensureMemberJoinedToShopClub(runtime.shop, user.id);
       await this.callBotApiExpectOk(runtime.token, 'sendMessage', {
         chat_id: chatId,
         text: 'حساب شما به بازو متصل شد.',
@@ -372,6 +375,30 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
       if (u) return u;
     }
     return null;
+  }
+
+  private async ensureMemberJoinedToShopClub(shop: Shop, userId: string): Promise<void> {
+    const clubId = shop.club?.id;
+    if (!clubId) return;
+
+    const existingMember = await this.membersRepo.findOne({
+      where: {
+        user: { id: userId },
+        club: { id: clubId },
+      },
+      withDeleted: true,
+    });
+    if (existingMember) {
+      if (existingMember.deletedAt) {
+        await this.membersRepo.restore(existingMember.id);
+      }
+      return;
+    }
+
+    const newMember = new Member();
+    newMember.club = <Club>{ id: clubId };
+    newMember.user = <User>{ id: userId };
+    await this.membersRepo.save(newMember);
   }
 
   private async sendWelcomeMessage(runtime: BaleBotRuntime, chatId: number) {
