@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BaleBotKeys, Club, Member, Shop, ThirdPartyApp, User } from '@menno/types';
+import { BaleBotKeys, Club, Member, Shop, ThirdPartyApp, User, UserRole } from '@menno/types';
 import { PersianNumberService } from '@menno/utils';
 import { firstValueFrom } from 'rxjs';
 import { Repository } from 'typeorm';
@@ -18,6 +18,9 @@ interface BaleBotRuntime {
 
 interface BaleFrom {
   id: number;
+  /** Bale profile display name as a single string (do not split with last_name). */
+  first_name?: string;
+  username?: string;
 }
 
 interface BaleContact {
@@ -288,15 +291,16 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
         return;
       }
       const phone = this.normalizeIranPhone(msg.contact.phone_number);
-      const user = await this.findAppUserByMobile(phone);
+      let user = await this.findAppUserByMobile(phone);
       if (!user) {
-        await this.sendPlainText(
-          runtime,
-          chatId,
-          'کاربری با این شماره در سیستم ما ثبت نشده است. ابتدا در سایت یا اپ مشتری ثبت‌نام کنید، سپس دوباره شماره را ارسال کنید.',
-          this.requestContactKeyboard(),
-        );
-        return;
+        const created = new User();
+        created.mobilePhone = phone;
+        created.role = UserRole.App;
+        const displayName = this.displayNameFromBale(msg.from);
+        if (displayName) {
+          created.firstName = displayName;
+        }
+        user = await this.usersRepo.save(created);
       }
       await this.usersRepo
         .createQueryBuilder()
@@ -305,7 +309,16 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
         .where('baleId = :bid', { bid: baleIdStr })
         .andWhere('id != :uid', { uid: user.id })
         .execute();
-      await this.usersRepo.update(user.id, { baleId: baleIdStr });
+      const userPatch: Partial<User> = { baleId: baleIdStr };
+      const hasStoredName =
+        (user.firstName && user.firstName.trim()) || (user.lastName && user.lastName.trim());
+      if (!hasStoredName) {
+        const fromBale = this.displayNameFromBale(msg.from);
+        if (fromBale) {
+          userPatch.firstName = fromBale;
+        }
+      }
+      await this.usersRepo.update(user.id, userPatch);
       await this.ensureMemberJoinedToShopClub(runtime.shop, user.id);
       await this.callBotApiExpectOk(runtime.token, 'sendMessage', {
         chat_id: chatId,
@@ -357,6 +370,14 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
     if (p.startsWith('+')) p = p.slice(1);
     if (p.startsWith('0') && p.length >= 10) p = '98' + p.slice(1);
     return p;
+  }
+
+  /** Single-line display name from Bale (`first_name` only, then username). */
+  private displayNameFromBale(from?: BaleFrom): string {
+    if (!from) return '';
+    const name = from.first_name?.trim();
+    if (name) return name;
+    return from.username?.trim() || '';
   }
 
   private async findAppUserByMobile(digits: string): Promise<User | null> {
