@@ -217,6 +217,7 @@ export class SmsService {
     const last5h = new Date(now.setHours(now.getHours() - 5));
     const allSms = await this.smsRepo.find({
       where: [{ createdAt: MoreThan(last5h) }, { sentAt: MoreThan(last5h) }],
+      relations: ['account'],
     });
 
     while (allSms.length) {
