@@ -368,7 +368,8 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
     let p = PersianNumberService.toEnglish(raw.trim()).replace(/[\s\-()]/g, '');
     if (p.startsWith('00')) p = p.slice(2);
     if (p.startsWith('+')) p = p.slice(1);
-    if (p.startsWith('0') && p.length >= 10) p = '98' + p.slice(1);
+    if (p.startsWith('98') && p.length > 2) p = '0' + p.slice(2);
+    if (/^9\d{9}$/.test(p)) p = '0' + p;
     return p;
   }
 
