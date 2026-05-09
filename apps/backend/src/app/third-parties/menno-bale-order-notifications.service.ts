@@ -176,20 +176,15 @@ export class MennoBaleOrderNotificationsService {
     const parts: string[] = [];
 
     const items = (order.items || []).filter((i) => !i.isAbstract);
-    const maxItemRows = 32;
     parts.push(this.baleBoldHeader('📋 اقلام'));
     if (items.length) {
-      const shown = items.length > maxItemRows ? items.slice(0, maxItemRows) : items;
-      for (let i = 0; i < shown.length; i++) {
-        const it = shown[i];
+      for (let i = 0; i < items.length; i++) {
+        const it = items[i];
         const raw = (it.title || '—').replace(/\s+/g, ' ').trim();
         const maxTitle = 120;
         const short = raw.length > maxTitle ? `${raw.slice(0, maxTitle - 1)}…` : raw;
         const title = this.sanitizeUserText(short);
         parts.push(`- [ ] ${title} | ${String(it.quantity ?? 1)} عدد`);
-      }
-      if (items.length > maxItemRows) {
-        parts.push(`- [ ] … (${items.length - maxItemRows} مورد دیگر)`);
       }
     } else {
       parts.push('—');
