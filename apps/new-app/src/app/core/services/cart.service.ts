@@ -189,7 +189,7 @@ export class CartService {
   plus(product: Product, variant?: ProductVariant) {
     const signalItem = this.getSignalItem(product.id, variant?.id);
     const item = signalItem ? this.getItem(signalItem) : undefined;
-    
+
     if (!OrderDto.isStockValidForAddOne(product, variant, item)) {
       this.snack.open(
         this.translate.instant('cart.stockLimit', { value: variant?.stock || product.stock }),
@@ -225,11 +225,11 @@ export class CartService {
       this.menuStat.send(StatAction.AddToCart, { productId: product.id });
     }
 
-    this.analytics.trackEvent('add_to_cart', { 
-      productId: product.id, 
+    this.analytics.trackEvent('add_to_cart', {
+      productId: product.id,
       variantId: variant?.id,
       productName: product.title,
-      quantity: 1
+      quantity: 1,
     });
   }
 
@@ -422,7 +422,8 @@ export class CartService {
     return (
       this.isPaymentRequired ||
       this.paymentType() === OrderPaymentType.Online ||
-      this.menuService.type() === OrderType.Delivery
+      this.menuService.type() === OrderType.Delivery ||
+      this.shopService.shop?.appConfig?.requiredRegister?.includes(this.menuService.type()!)
     );
   }
 }
