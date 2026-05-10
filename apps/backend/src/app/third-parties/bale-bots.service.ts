@@ -152,10 +152,23 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
         return;
       } catch (e: unknown) {
         this.logger.warn(`Bale setWebhook failed shop ${shop.id}, clearing webhook and using polling: ${(e as Error)?.message}`);
+        if ((e as any)?.response?.status === 401) {
+          this.logger.warn(`Bale token unauthorized for shop ${shop.id}. Stopping bot. Token: ${token}`);
+          this.stopBotByShopId(shop.id);
+          return;
+        }
         await this.invokeSetWebhook(token, '').catch(() => undefined);
       }
     } else {
-      await this.invokeSetWebhook(token, '').catch(() => undefined);
+      try {
+        await this.invokeSetWebhook(token, '');
+      } catch (e: unknown) {
+        if ((e as any)?.response?.status === 401) {
+          this.logger.warn(`Bale token unauthorized for shop ${shop.id}. Stopping bot. Token: ${token}`);
+          this.stopBotByShopId(shop.id);
+          return;
+        }
+      }
     }
 
     this.startPolling(runtime);
@@ -235,6 +248,10 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
         });
       } catch (err: unknown) {
         this.logger.error(`Bale getUpdates HTTP error shop ${shopId}: ${(err as Error)?.message || err}`);
+        if ((err as any)?.response?.status === 401) {
+          this.logger.warn(`Stopping Bale bot for shop ${shopId} due to 401 Unauthorized. Token: ${runtime.token}`);
+          this.stopBotByShopId(shopId);
+        }
         return;
       }
 
