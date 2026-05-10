@@ -84,7 +84,8 @@ export class AiChatbotService {
 
     messages.push({
       role: 'system',
-      content: `لطفاً اعداد را با استفاده از جداکننده هزارگان (سه رقم سه رقم) نمایش بده`,
+      content: `لطفاً اعداد را با استفاده از جداکننده هزارگان (سه رقم سه رقم) نمایش بده.
+هیچ‌وقت از کاربر شناسه (ID) یا ایندکس محصول نخواه! تو خودت باید ایندکس محصول مورد نظر کاربر را از لیستی که در سیستم به تو داده شده پیدا کنی و آن را به ابزار getProductPriceAndInfo بفرستی.`,
     });
 
     if (aiChatbot.introMessage) {
@@ -126,7 +127,7 @@ export class AiChatbotService {
       tools: {
         getProductPriceAndInfo: tool({
           description:
-            'برای دریافت قیمت و اطلاعات دقیق یک محصول، ایندکس (index) آن محصول را از لیست محصولات پیدا کن و به این تابع بده.',
+            'برای دریافت قیمت و اطلاعات دقیق یک محصول، ایندکس (index) آن محصول را از لیست محصولات در حافظه‌ات پیدا کن و به این تابع بده. به هیچ وجه از کاربر شناسه یا ایندکس نخواه.',
           parameters: z.object({
             productIndex: z.number().describe('ایندکس محصول (index) در لیست محصولات'),
           }),
@@ -136,6 +137,13 @@ export class AiChatbotService {
       messages,
       maxSteps: 5,
     });
+
+    // Logging for debugging the AI flow
+    console.log('--- AI Response Debug ---');
+    console.log('AI Text:', text);
+    console.log('Tool Calls:', JSON.stringify(toolCalls, null, 2));
+    console.log('Steps:', JSON.stringify(steps?.map(s => s.toolCalls), null, 2));
+    console.log('-------------------------');
 
     await this.aiChatMessageRepo.save({
       message: text,
