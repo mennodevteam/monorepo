@@ -1,4 +1,4 @@
-import { AiChat, AiChatbot, Menu, Product, Shop, User } from '@menno/types';
+import { AiChat, AiChatbot, AiChatMessage, Menu, Product, Shop, User } from '@menno/types';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -19,6 +19,8 @@ export class AiChatbotService {
     private userRepo: Repository<User>,
     @InjectRepository(AiChat)
     private aiChatRepo: Repository<AiChat>,
+    @InjectRepository(AiChatMessage)
+    private aiChatMessageRepo: Repository<AiChatMessage>,
     private redis: RedisService,
   ) {}
 
@@ -29,11 +31,23 @@ export class AiChatbotService {
     if (chatId) {
       chat = await this.aiChatRepo.findOne({ where: { id: chatId }, relations: ['messages'] });
     } else {
-      chat = await this.aiChatRepo.create({
-        shop: { id: shopId },
-        aiChatbot: { id: shop.aiChatbot.id },
-        user: { id: userId },
+      chat = await this.aiChatRepo.findOne({
+        where: { shop: { id: shopId }, user: { id: userId } },
+        relations: ['messages'],
+        order: { createdAt: 'DESC' }
       });
+      if (!chat) {
+        chat = this.aiChatRepo.create({
+          shop: { id: shopId },
+          aiChatbot: { id: shop.aiChatbot.id },
+          user: { id: userId },
+        });
+        chat = await this.aiChatRepo.save(chat);
+      }
+    }
+    
+    if (!chat.messages) {
+      chat.messages = [];
     }
 
     const messages: CoreMessage[] = [];
@@ -79,6 +93,12 @@ export class AiChatbotService {
       content: message,
     });
 
+    await this.aiChatMessageRepo.save({
+      message,
+      isFromUser: true,
+      aiChat: { id: chat.id },
+    });
+
     const { text, usage, toolCalls, toolResults, steps } = await generateText({
       model: createOpenAICompatible({
         baseURL: process.env.AI_BASE_URL,
@@ -97,6 +117,12 @@ export class AiChatbotService {
       },
       messages,
       maxSteps: 5,
+    });
+
+    await this.aiChatMessageRepo.save({
+      message: text,
+      isFromUser: false,
+      aiChat: { id: chat.id },
     });
 
     return text;

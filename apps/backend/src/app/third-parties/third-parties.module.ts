@@ -9,8 +9,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Member, Order, OrderItem, Shop, User } from '@menno/types';
 import { MennoBaleOrderNotificationsService } from './menno-bale-order-notifications.service';
 
+import { AiChatbotModule } from '../ai-chatbot/ai-chatbot.module';
+
 @Module({
-  imports: [CoreModule, AuthModule, HttpModule, TypeOrmModule.forFeature([Shop, User, Order, OrderItem, Member])],
+  imports: [CoreModule, AuthModule, HttpModule, TypeOrmModule.forFeature([Shop, User, Order, OrderItem, Member]), AiChatbotModule],
   controllers: [ThirdPartiesController, BaleWebhookController],
   providers: [BaleBotsService, MennoBaleOrderNotificationsService],
   exports: [MennoBaleOrderNotificationsService],

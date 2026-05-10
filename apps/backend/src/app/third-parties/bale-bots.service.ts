@@ -1,10 +1,11 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BaleBotKeys, Club, Member, Shop, ThirdPartyApp, User, UserRole } from '@menno/types';
+import { BaleBotKeys, Club, Member, Shop, ThirdPartyApp, User, UserRole, Status } from '@menno/types';
 import { PersianNumberService } from '@menno/utils';
 import { firstValueFrom } from 'rxjs';
 import { Repository } from 'typeorm';
+import { AiChatbotService } from '../ai-chatbot/ai-chatbot.service';
 
 interface BaleBotRuntime {
   shop: Shop;
@@ -66,6 +67,7 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
     private readonly usersRepo: Repository<User>,
     @InjectRepository(Member)
     private readonly membersRepo: Repository<Member>,
+    private readonly aiChatbotService: AiChatbotService,
   ) {}
 
   async onModuleInit() {
@@ -80,7 +82,7 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
     this.stopAllBots();
 
     const shops = await this.shopRepo.find({
-      relations: ['thirdParties'],
+      relations: ['thirdParties', 'aiChatbot'],
     });
 
     for (const shop of shops) {
@@ -98,7 +100,7 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
 
     const shop = await this.shopRepo.findOne({
       where: { id: shopId },
-      relations: ['thirdParties'],
+      relations: ['thirdParties', 'aiChatbot'],
     });
     if (!shop) return;
 
@@ -112,7 +114,7 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
   async handleIncomingWebhook(shopId: string, body: unknown): Promise<void> {
     const shop = await this.shopRepo.findOne({
       where: { id: shopId },
-      relations: ['thirdParties'],
+      relations: ['thirdParties', 'aiChatbot'],
     });
     if (!shop) {
       this.logger.warn(`Bale webhook: unknown shopId ${shopId}`);
@@ -331,6 +333,15 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
 
     const linked = await this.usersRepo.findOneBy({ baleId: baleIdStr });
     if (linked) {
+      if (runtime.shop.aiChatbot?.status === Status.Active) {
+        try {
+          const text = await this.aiChatbotService.chat(runtime.shop.id, linked.id, msg.text || '');
+          await this.sendPlainText(runtime, chatId, text);
+        } catch (error) {
+          this.logger.error(`AI Chatbot error for shop ${runtime.shop.id}: ${(error as Error)?.message}`);
+        }
+        return;
+      }
       await this.sendWelcomeMessage(runtime, chatId);
       return;
     }

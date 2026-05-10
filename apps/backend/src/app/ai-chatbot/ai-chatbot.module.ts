@@ -8,5 +8,6 @@ import { AiChatbotService } from './ai-chatbot.service';
   imports: [CoreModule, AuthModule],
   controllers: [AiChatbotController],
   providers: [AiChatbotService],
+  exports: [AiChatbotService],
 })
 export class AiChatbotModule {} 
