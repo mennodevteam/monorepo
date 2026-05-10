@@ -7,7 +7,7 @@ import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
 import { CoreMessage, generateText, tool } from 'ai';
 import { z } from 'zod';
 
-const MODEL = 'google/gemini-2.0-flash-001';
+const MODEL = process.env.AI_CHAT_MODEL;
 @Injectable()
 export class AiChatbotService {
   constructor(
@@ -34,7 +34,7 @@ export class AiChatbotService {
       chat = await this.aiChatRepo.findOne({
         where: { shop: { id: shopId }, user: { id: userId } },
         relations: ['messages'],
-        order: { createdAt: 'DESC' }
+        order: { createdAt: 'DESC' },
       });
       if (!chat) {
         chat = this.aiChatRepo.create({
@@ -45,7 +45,7 @@ export class AiChatbotService {
         chat = await this.aiChatRepo.save(chat);
       }
     }
-    
+
     if (!chat.messages) {
       chat.messages = [];
     }
