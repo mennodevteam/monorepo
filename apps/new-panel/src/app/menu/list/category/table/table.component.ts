@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MenuCost, Product, ProductCategory, ProductVariant, Status } from '@menno/types';
 import { SHARED } from '../../../../shared';
@@ -27,6 +27,20 @@ export class ProductTableComponent {
   snack = inject(MatSnackBar);
   readonly displayedColumns = COLS;
   Status = Status;
+
+  rows = computed(() => {
+    const products = this.category()?.products || [];
+    const tableRows: any[] = [];
+    products.forEach((product, i) => {
+      tableRows.push({ ...product, _isVariant: false, _index: i + 1 });
+      if (product.variants?.length) {
+        product.variants.forEach((variant) => {
+          tableRows.push({ ...variant, _isVariant: true, _parentProduct: product });
+        });
+      }
+    });
+    return tableRows;
+  });
 
   changeProductStatus(product: Product, status: Status) {
     this.menu.saveProductMutation.mutate({ id: product.id, status });

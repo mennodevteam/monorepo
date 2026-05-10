@@ -4,3 +4,40 @@
   border-radius: 8px;
   vertical-align: middle;
 }
+
+tr {
+  height: 56px;
+}
+
+tr.variant-row {
+  height: 40px;
+  
+  td {
+    border: none !important;
+  }
+
+  .mat-column-title {
+    color: var(--mat-sys-on-surface-variant);
+    font-size: 0.9rem;
+  }
+}
+
+// Separate products
+tr:not(.variant-row) td {
+  border-top: 1px solid var(--mat-sys-outline-variant) !important;
+  border-bottom: none !important;
+}
+
+tr:first-child td {
+  border-top: none !important;
+}
+
+.variant-line {
+  width: 14px;
+  height: 18px;
+  border-inline-start: 2px solid var(--mat-sys-outline-variant);
+  border-bottom: 2px solid var(--mat-sys-outline-variant);
+  margin-inline-start: 20px;
+  margin-top: -10px;
+  opacity: 0.3;
+}
