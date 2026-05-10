@@ -27,5 +27,8 @@ export class AiChatMessage {
   aiChat: AiChat;
   message: string;
   isFromUser: boolean;
+  promptTokens?: number;
+  completionTokens?: number;
+  totalTokens?: number;
   createdAt: Date;
 }

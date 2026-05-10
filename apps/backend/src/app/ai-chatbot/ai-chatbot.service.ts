@@ -36,6 +36,24 @@ export class AiChatbotService {
         relations: ['messages'],
         order: { createdAt: 'DESC' },
       });
+
+      if (chat) {
+        // Sort messages by creation date ascending
+        if (chat.messages) {
+          chat.messages.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+        }
+        
+        // Check if chat has expired (1 hour of inactivity)
+        const lastInteraction = chat.messages?.length > 0 
+          ? new Date(chat.messages[chat.messages.length - 1].createdAt).getTime()
+          : new Date(chat.createdAt).getTime();
+        const oneHourAgo = Date.now() - 60 * 60 * 1000;
+        
+        if (lastInteraction < oneHourAgo) {
+          chat = null; // Start a new session
+        }
+      }
+
       if (!chat) {
         chat = this.aiChatRepo.create({
           shop: { id: shopId },
@@ -108,11 +126,11 @@ export class AiChatbotService {
       tools: {
         getProductPriceAndInfo: tool({
           description:
-            'اگر کاربر قیمت محصولات پرسید یا اطلاعاتی بیشتری از محصولات را خواسته باشد از این تابع استفاده کن',
+            'برای دریافت قیمت و اطلاعات دقیق یک محصول، ایندکس (index) آن محصول را از لیست محصولات پیدا کن و به این تابع بده.',
           parameters: z.object({
-            id: z.string(),
+            productIndex: z.number().describe('ایندکس محصول (index) در لیست محصولات'),
           }),
-          execute: async ({ id }: { id: string }) => await this.getProductInfo(shopId, id),
+          execute: async ({ productIndex }) => await this.getProductInfo(shopId, productIndex),
         }),
       },
       messages,
@@ -122,6 +140,9 @@ export class AiChatbotService {
     await this.aiChatMessageRepo.save({
       message: text,
       isFromUser: false,
+      promptTokens: usage?.promptTokens,
+      completionTokens: usage?.completionTokens,
+      totalTokens: usage?.totalTokens,
       aiChat: { id: chat.id },
     });
 
@@ -152,17 +173,17 @@ export class AiChatbotService {
 
     const products = Menu.getProductList(menu);
     const info = `اطلاعات مجموعه: ${JSON.stringify(shopRedisData)}
-    محصولات:
-    ${products.map((x, index) => `[${index}]: ${x.title} - ${x.category.title}`).join('\n')}
+    لیست محصولات (شامل index هر محصول برای استفاده در ابزارها):
+    ${products.map((x, index) => `index: ${index}, name: ${x.title}, category: ${x.category.title}`).join('\n')}
     `;
     return info;
   }
 
-  private async getProductInfo(shopId: string, id: string) {
-    console.log('getProductInfo', shopId, id);
+  private async getProductInfo(shopId: string, productIndex: number) {
+    console.log('getProductInfo', shopId, productIndex);
     const menu = await this.getMenuInfo(shopId);
     const products = Menu.getProductList(menu);
-    const product = products[parseInt(id)];
+    const product = products[productIndex];
     if (product) {
       let result = `
       ${product.title} (دسته بندی: ${product.category.title})

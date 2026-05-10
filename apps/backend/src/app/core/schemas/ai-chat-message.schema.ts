@@ -17,6 +17,18 @@ export const AiChatMessageSchema = new EntitySchema<AiChatMessage>({
       type: Boolean,
       default: false,
     },
+    promptTokens: {
+      type: Number,
+      nullable: true,
+    },
+    completionTokens: {
+      type: Number,
+      nullable: true,
+    },
+    totalTokens: {
+      type: Number,
+      nullable: true,
+    },
     createdAt: {
       type: 'timestamptz',
       createDate: true,
