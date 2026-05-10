@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { S3 } from 'aws-sdk';
-import { awsConfig } from './aws.config';
+import { getLiaraS3ClientConfiguration } from './aws.config';
 import 'multer';
 import fetch from 'node-fetch';
 import { Image } from '@menno/types';
 
 @Injectable()
 export class FilesService {
-  private client = new S3(awsConfig);
+  private readonly client = new S3(getLiaraS3ClientConfiguration());
 
   async uploadFromUrl(link: string, name: string, path?: string) {
     const binary = await fetch(link);
