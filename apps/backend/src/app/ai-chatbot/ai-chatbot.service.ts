@@ -8,17 +8,13 @@ import { CoreMessage, generateText } from 'ai';
 
 const MODEL = process.env.AI_CHAT_MODEL;
 const DEFAULT_SYSTEM_PROMPT = `لطفاً اعداد را با استفاده از جداکننده هزارگان (سه رقم سه رقم) نمایش بده.
-تو به تمام لیست محصولات و قیمت‌هایشان دسترسی داری و نیازی به پرسیدن کد یا شناسه از کاربر نداری. مستقیماً جواب کاربر را بده.
 پاسخ را به صورت متن ساده و طبیعی برای کاربر بنویس، نه JSON.
-متن پیام‌های بله با Markdown قالب‌بندی می‌شود.
-برای برجسته/بولد نوشتن، متن را بین دو ستاره بگذار؛ مثل ** متن بولد **. حتماً قبل از ستاره اول و بعد از ستاره دوم یک فاصله باشد.
-برای کج/ایتالیک نوشتن، متن را بین دو زیرخط بگذار؛ مثل __ متن ایتالیک __. حتماً قبل از زیرخط اول و بعد از زیرخط دوم یک فاصله باشد.
+اگر کاربر جزئیات بیشتری از محصول خواست، او را به مشاهده محصول در سایت راهنمایی کن.
 فقط وقتی شماره محصول را در آرایه انتهای پاسخ قرار بده که کاربر مستقیم درباره همان محصول سوال کرده باشد یا برای پاسخ دادن لازم باشد جزئیات بیشتر/لینک سفارش همان محصول را بدهی.
-صرفاً به خاطر اینکه اسم محصولی در پاسخ آمده، آن محصول را پیشنهاد نده و شماره‌اش را در آرایه نگذار.
-در انتهای پاسخ، در یک خط جداگانه فقط آرایه شماره محصولات پیشنهادی را بنویس؛ مانند:
+صرفاً به خاطر اینکه اسم محصولی در پاسخ آمده، شماره‌اش را در آرایه نگذار.
+در خط آخر فقط آرایه شماره محصولات پیشنهادی را بنویس؛ مانند:
 [2,4]
-اگر محصولی پیشنهاد نمی‌دهی، در خط آخر فقط [] بنویس.
-هیچ متن دیگری بعد از این آرایه ننویس.`;
+اگر محصولی پیشنهاد نمی‌دهی، [] بنویس. هیچ متن دیگری بعد از این آرایه ننویس.`;
 const SYSTEM_PROMPT = (process.env.AI_CHAT_SYSTEM_PROMPT?.trim() || DEFAULT_SYSTEM_PROMPT).replace(
   /\\n/g,
   '\n',
@@ -33,9 +29,14 @@ type ParsedAiResponse = {
   productIds: string[];
 };
 
+type ProductRef = {
+  id: string;
+  title: string;
+};
+
 type ShopAiKnowledge = {
   info: string;
-  productIdsByIndex: string[];
+  productsByIndex: ProductRef[];
 };
 
 @Injectable()
@@ -71,7 +72,7 @@ export class AiChatbotService {
 
     const shopAiKnowledge = await this.getShopAiKnowledge(shopId);
     this.logger.log(
-      `[${traceId}] knowledge ready products=${shopAiKnowledge.productIdsByIndex.length} infoLen=${shopAiKnowledge.info.length}`,
+      `[${traceId}] knowledge ready products=${shopAiKnowledge.productsByIndex.length} infoLen=${shopAiKnowledge.info.length}`,
     );
 
     const messages = this.buildMessages(shopAiKnowledge.info, shop, chat.messages || [], message);
@@ -83,11 +84,12 @@ export class AiChatbotService {
 
     const parsedResponse = this.parsePlainTextResponse(text);
     const finalMessage = parsedResponse.text || FALLBACK_MESSAGE;
-    const productIds = this.resolveProductIds(parsedResponse.productIds, shopAiKnowledge.productIdsByIndex);
+    const products = this.resolveProducts(parsedResponse.productIds, shopAiKnowledge.productsByIndex);
+    const productIds = products.map((product) => product.id);
     this.logger.log(
       `[${traceId}] parsed textLen=${finalMessage.length} productRefs=${JSON.stringify(
         parsedResponse.productIds,
-      )} resolvedProductIds=${JSON.stringify(productIds)} finalText="${this.preview(finalMessage)}"`,
+      )} resolvedProducts=${JSON.stringify(products)} finalText="${this.preview(finalMessage)}"`,
     );
 
     await this.aiChatMessageRepo.save({
@@ -101,7 +103,7 @@ export class AiChatbotService {
     });
     this.logger.log(`[${traceId}] saved ai chat message chatId=${chat.id}`);
 
-    return { text: finalMessage, productIds };
+    return { text: finalMessage, productIds, products };
   }
 
   private async generateAiText(messages: CoreMessage[], traceId: string) {
@@ -262,19 +264,19 @@ export class AiChatbotService {
       .filter(Boolean);
   }
 
-  private resolveProductIds(productRefs: string[], productIdsByIndex: string[]): string[] {
-    const productIds = productRefs
+  private resolveProducts(productRefs: string[], productsByIndex: ProductRef[]): ProductRef[] {
+    const products = productRefs
       .map((ref) => {
         const productIndex = Number(ref);
-        if (Number.isInteger(productIndex) && productIndex >= 1 && productIndex <= productIdsByIndex.length) {
-          return productIdsByIndex[productIndex - 1];
+        if (Number.isInteger(productIndex) && productIndex >= 1 && productIndex <= productsByIndex.length) {
+          return productsByIndex[productIndex - 1];
         }
 
-        return productIdsByIndex.includes(ref) ? ref : undefined;
+        return productsByIndex.find((product) => product.id === ref);
       })
       .filter(Boolean);
 
-    return [...new Set(productIds)];
+    return [...new Map(products.map((product) => [product.id, product])).values()];
   }
 
   private async getShopAiKnowledge(shopId: string): Promise<ShopAiKnowledge> {
@@ -290,7 +292,7 @@ ${products
   .map((product, index) => this.formatProductKnowledge(product, index))
   .join('\n')}
 `;
-    return { info, productIdsByIndex: products.map((product) => product.id) };
+    return { info, productsByIndex: products.map((product) => ({ id: product.id, title: product.title })) };
   }
 
   private formatProductKnowledge(product: Product, index: number) {
@@ -298,8 +300,6 @@ ${products
       `- ${product.title} (شماره محصول: ${index + 1})`,
       `دسته: ${product.category?.title || 'بدون دسته'}`,
     ];
-
-    if (product.description) parts.push(`توضیحات: ${product.description}`);
 
     parts.push(
       product.variants?.length

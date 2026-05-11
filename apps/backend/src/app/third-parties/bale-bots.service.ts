@@ -386,8 +386,11 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
           reply_markup = { inline_keyboard: [] };
 
           result.productIds.forEach((pid) => {
+            const product = result.products?.find((item) => item.id === pid);
             const pUrl = Shop.productLink(runtime.shop, pid, origin);
-            reply_markup.inline_keyboard.push([{ text: 'مشاهده و سفارش محصول', web_app: { url: pUrl } }]);
+            reply_markup.inline_keyboard.push([
+              { text: this.truncate(product?.title || 'مشاهده و سفارش محصول', 64), web_app: { url: pUrl } },
+            ]);
           });
         }
         this.logger.log(`[${traceId}] reply markup=${reply_markup ? this.safeJson(reply_markup) : '-'}`);
