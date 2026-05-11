@@ -366,6 +366,7 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
       if (runtime.shop.aiChatbot?.status === Status.Active) {
         let result: Awaited<ReturnType<AiChatbotService['chat']>>;
         try {
+          await this.sendChatAction(runtime, chatId, traceId);
           this.logger.log(`[${traceId}] ai generation start`);
           result = await this.aiChatbotService.chat(runtime.shop.id, linked.id, msg.text || '', undefined, traceId);
           this.logger.log(
@@ -441,6 +442,19 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
       text: this.truncate(text, 4096),
       ...(reply_markup ? { reply_markup } : {}),
     });
+  }
+
+  private async sendChatAction(runtime: BaleBotRuntime, chatId: number, traceId: string) {
+    try {
+      this.logger.log(`[${traceId}] bale chat action start`);
+      await this.callBotApiExpectOk(runtime.token, 'sendChatAction', {
+        chat_id: chatId,
+        action: 'typing',
+      });
+      this.logger.log(`[${traceId}] bale chat action done`);
+    } catch (error) {
+      this.logger.warn(`[${traceId}] bale chat action failed: ${(error as Error)?.message || error}`);
+    }
   }
 
   private normalizeIranPhone(raw: string): string {
