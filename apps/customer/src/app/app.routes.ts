@@ -9,12 +9,11 @@ export const appRoutes: Route[] = [
     path: 'login',
     children: authRoutes,
   },
+
   {
     path: 'cart/missed-products',
     loadComponent: () =>
-      import('./pages/cart/missed-products/missed-products.component').then(
-        (m) => m.UpsellProductsComponent
-      ),
+      import('./pages/cart/missed-products/missed-products.component').then((m) => m.UpsellProductsComponent),
   },
   {
     path: 'cart',
@@ -83,7 +82,8 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'orders/:id',
-        loadComponent: () => import('./pages/orders/details/details.component').then((m) => m.OrderDetailsComponent),
+        loadComponent: () =>
+          import('./pages/orders/details/details.component').then((m) => m.OrderDetailsComponent),
         data: { title: 'جزئیات سفارش', hideMetaAction: true },
       },
       {
@@ -100,6 +100,11 @@ export const appRoutes: Route[] = [
         path: 'search',
         loadComponent: () => import('./pages/search/search.component').then((m) => m.SearchComponent),
         data: { isRootPage: true, preserveScrollOnBack: true },
+      },
+      {
+        path: 'menu/product/:id',
+        loadComponent: () => import('./pages/product/product.component').then((m) => m.ProductComponent),
+        data: { hideBottomNav: true },
       },
       {
         path: 'categories/:categoryId/:id',

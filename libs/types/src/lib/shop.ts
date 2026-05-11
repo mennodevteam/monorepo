@@ -147,6 +147,11 @@ export class Shop {
     return shop.domain ? `https://${shop.domain}` : `https://${shop.username}.${origin}`;
   }
 
+  static productLink(shop: Shop, productId: string, origin: string) {
+    const base = Shop.appLink(shop, origin).replace(/\/$/, '');
+    return `${base}/menu/product/${productId}`;
+  }
+
   static isPaymentAvailable(shop: Shop) {
     return shop.paymentGateway && !shop.appConfig?.disablePayment;
   }

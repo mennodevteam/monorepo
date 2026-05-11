@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RedisKey, RedisService } from '../core/redis.service';
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
-import { CoreMessage, generateText, tool } from 'ai';
+import { CoreMessage, generateObject } from 'ai';
 import { z } from 'zod';
 
 const MODEL = process.env.AI_CHAT_MODEL;
@@ -42,13 +42,14 @@ export class AiChatbotService {
         if (chat.messages) {
           chat.messages.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
         }
-        
+
         // Check if chat has expired (1 hour of inactivity)
-        const lastInteraction = chat.messages?.length > 0 
-          ? new Date(chat.messages[chat.messages.length - 1].createdAt).getTime()
-          : new Date(chat.createdAt).getTime();
+        const lastInteraction =
+          chat.messages?.length > 0
+            ? new Date(chat.messages[chat.messages.length - 1].createdAt).getTime()
+            : new Date(chat.createdAt).getTime();
         const oneHourAgo = Date.now() - 60 * 60 * 1000;
-        
+
         if (lastInteraction < oneHourAgo) {
           chat = null; // Start a new session
         }
@@ -107,22 +108,29 @@ export class AiChatbotService {
       content: message,
     });
 
-    const { text, usage } = await generateText({
+    const { object, usage } = await generateObject({
       model: createOpenAICompatible({
         baseURL: process.env.AI_BASE_URL,
         name: 'example',
         apiKey: process.env.AI_API_KEY,
       }).chatModel(MODEL),
       messages,
+      schema: z.object({
+        text: z.string().describe('متن پاسخی که قرار است به کاربر نمایش داده شود'),
+        productIds: z
+          .array(z.string())
+          .optional()
+          .describe('لیست کد محصولاتی (IDs) که در پیام به آن‌ها اشاره شده یا قصد داری به کاربر پیشنهاد دهی'),
+      }),
     });
 
     // Logging for debugging the AI flow
     console.log('--- AI Response Debug ---');
-    console.log('AI Text:', text);
+    console.log('AI Object:', JSON.stringify(object));
     console.log('Usage:', JSON.stringify(usage));
     console.log('-------------------------');
 
-    let finalMessage = text || 'متاسفانه در تولید پاسخ مشکلی پیش آمد. لطفاً دوباره تلاش کنید.';
+    const finalMessage = object.text || 'متاسفانه در تولید پاسخ مشکلی پیش آمد. لطفاً دوباره تلاش کنید.';
 
     await this.aiChatMessageRepo.save({
       userMessage: message,
@@ -134,38 +142,43 @@ export class AiChatbotService {
       aiChat: { id: chat.id },
     });
 
-    return finalMessage;
+    return { text: finalMessage, productIds: object.productIds || [] };
   }
 
   private async getShopAiKnowledge(shopId: string) {
     // Force cache update to ensure fresh data
-    let shopRedisData = await this.redis.updateShop(shopId);
-    let menuRedisData = await this.redis.updateMenu(shopId);
+    const shopRedisData = await this.redis.updateShop(shopId);
+    const menuRedisData = await this.redis.updateMenu(shopId);
     const menu: Menu = JSON.parse(menuRedisData);
     Menu.setRefsAndSort(menu, undefined, false, false);
 
     const products = Menu.getProductList(menu);
     const info = `اطلاعات مجموعه: ${shopRedisData}
 لیست کامل محصولات:
-${products.map((x) => {
-  let str = `- ${x.title} (کد محصول: ${x.id}) | دسته: ${x.category?.title || 'بدون دسته'}`;
-  if (x.description) str += ` | توضیحات: ${x.description}`;
-  if (x.variants?.length) {
-    str += ` | انواع: ` + x.variants.map(v => {
-      let vStr = `${v.title} (قیمت: ${Product.realPrice(x, v)})`;
-      if (Product.hasDiscount(x, v)) vStr += ` قیمت با تخفیف: ${Product.totalPrice(x, v)}`;
-      if (Product.isFinished(x, v)) vStr += ` [تمام شده]`;
-      return vStr;
-    }).join('، ');
-  } else {
-    str += ` | قیمت: ${Product.realPrice(x)}`;
-    if (Product.hasDiscount(x)) str += ` قیمت با تخفیف: ${Product.totalPrice(x)}`;
-    if (Product.isFinished(x)) str += ` [تمام شده]`;
-  }
-  return str;
-}).join('\n')}
+${products
+  .map((x) => {
+    let str = `- ${x.title} (کد محصول: ${x.id}) | دسته: ${x.category?.title || 'بدون دسته'}`;
+    if (x.description) str += ` | توضیحات: ${x.description}`;
+    if (x.variants?.length) {
+      str +=
+        ` | انواع: ` +
+        x.variants
+          .map((v) => {
+            let vStr = `${v.title} (قیمت: ${Product.realPrice(x, v)})`;
+            if (Product.hasDiscount(x, v)) vStr += ` قیمت با تخفیف: ${Product.totalPrice(x, v)}`;
+            if (Product.isFinished(x, v)) vStr += ` [تمام شده]`;
+            return vStr;
+          })
+          .join('، ');
+    } else {
+      str += ` | قیمت: ${Product.realPrice(x)}`;
+      if (Product.hasDiscount(x)) str += ` قیمت با تخفیف: ${Product.totalPrice(x)}`;
+      if (Product.isFinished(x)) str += ` [تمام شده]`;
+    }
+    return str;
+  })
+  .join('\n')}
 `;
     return info;
   }
-
 }

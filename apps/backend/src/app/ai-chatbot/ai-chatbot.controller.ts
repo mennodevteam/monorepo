@@ -43,8 +43,8 @@ export class AiChatbotController {
       throw new NotFoundException('AI chatbot not found');
     }
 
-    const text = await this.aiChatbotService.chat(shop.id, user.id, body.message, body.chatId);
-    return { message: text, isFromUser: false } as AiChatMessage;
+    const result = await this.aiChatbotService.chat(shop.id, user.id, body.message, body.chatId);
+    return { botMessage: result.text } as AiChatMessage;
   }
 
   @Get()

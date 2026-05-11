@@ -352,8 +352,19 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
     if (linked) {
       if (runtime.shop.aiChatbot?.status === Status.Active) {
         try {
-          const text = await this.aiChatbotService.chat(runtime.shop.id, linked.id, msg.text || '');
-          await this.sendPlainText(runtime, chatId, text);
+          const result = await this.aiChatbotService.chat(runtime.shop.id, linked.id, msg.text || '');
+          let reply_markup;
+          if (result.productIds?.length > 0) {
+            const origin = process.env.APP_ORIGIN || '';
+            reply_markup = { inline_keyboard: [] };
+            
+            result.productIds.forEach((pid) => {
+              const pUrl = Shop.productLink(runtime.shop, pid, origin);
+              reply_markup.inline_keyboard.push([{ text: 'مشاهده و سفارش محصول', web_app: { url: pUrl } }]);
+            });
+          }
+
+          await this.sendPlainText(runtime, chatId, result.text, reply_markup);
         } catch (error) {
           this.logger.error(`AI Chatbot error for shop ${runtime.shop.id}: ${(error as Error)?.message}`);
         }
