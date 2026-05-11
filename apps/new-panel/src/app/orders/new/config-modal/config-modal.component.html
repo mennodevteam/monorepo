@@ -69,6 +69,20 @@
           </mat-form-field>
 
         </div>
+
+        <!-- Attribution (referrer / campaign) -->
+        <div class="form-section">
+          <h3>{{ 'newOrder.config.attribution' | translate }}</h3>
+          <p>{{ 'newOrder.config.attributionDescription' | translate }}</p>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ 'newOrder.config.referrer' | translate }}</mat-label>
+            <input matInput type="url" formControlName="referrer" autocomplete="off" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ 'newOrder.config.campaign' | translate }}</mat-label>
+            <input matInput formControlName="campaign" autocomplete="off" />
+          </mat-form-field>
+        </div>
       </div>
     </mat-dialog-content>
 

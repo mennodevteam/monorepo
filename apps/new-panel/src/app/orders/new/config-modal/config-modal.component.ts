@@ -18,6 +18,8 @@ export interface OrderConfigData {
   useCurrentDateTime: boolean;
   excludeFromReport: boolean;
   extraCost: number;
+  referrer?: string;
+  campaign?: string;
 }
 
 @Component({
@@ -59,12 +61,14 @@ export class ConfigModalComponent {
       orderTimeHour: [initialDate.getHours(), Validators.required],
       excludeFromReport: [this.data?.excludeFromReport ?? false],
       extraCost: [this.data?.extraCost ?? 0, [Validators.required, Validators.min(0)]],
+      referrer: [this.data?.referrer ?? ''],
+      campaign: [this.data?.campaign ?? ''],
     });
 
     // Disable date/time pickers when use current date time is checked
     this.configForm.get('useCurrentDateTime')?.valueChanges.subscribe((useCurrent) => {
       const dateControl = this.configForm.get('orderDate');
-      const timeControl = this.configForm.get('orderTime');
+      const timeControl = this.configForm.get('orderTimeHour');
       if (useCurrent) {
         dateControl?.disable();
         timeControl?.disable();
@@ -77,7 +81,7 @@ export class ConfigModalComponent {
     // Set initial state
     if (this.configForm.get('useCurrentDateTime')?.value) {
       this.configForm.get('orderDate')?.disable();
-      this.configForm.get('orderTime')?.disable();
+      this.configForm.get('orderTimeHour')?.disable();
     }
   }
 
@@ -87,7 +91,7 @@ export class ConfigModalComponent {
 
   onSave(): void {
     if (this.configForm.valid) {
-      const formValue = this.configForm.value;
+      const formValue = this.configForm.getRawValue();
       let orderDateTime: Date;
 
       if (formValue.useCurrentDateTime) {
@@ -104,6 +108,8 @@ export class ConfigModalComponent {
         useCurrentDateTime: formValue.useCurrentDateTime,
         excludeFromReport: formValue.excludeFromReport,
         extraCost: formValue.extraCost,
+        referrer: (formValue.referrer as string)?.trim() || undefined,
+        campaign: (formValue.campaign as string)?.trim() || undefined,
       };
 
       this.configSaved.emit(config);

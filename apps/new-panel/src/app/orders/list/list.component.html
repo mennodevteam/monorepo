@@ -1,57 +1,67 @@
-<mat-toolbar class="content-toolbar">
+<mat-toolbar class="content-toolbar order-list-toolbar">
+  <div class="order-list-toolbar__filters">
+    <div class="order-list-toolbar__date-wrap">
+      <div class="order-list-toolbar__date-anchor" aria-hidden="true">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-date-range-input [rangePicker]="orderDateRangePicker">
+            <input
+              matStartDate
+              name="orderListFromDate"
+              [ngModel]="fromDate()"
+              (ngModelChange)="fromDate.set($event)"
+              tabindex="-1"
+            />
+            <input
+              matEndDate
+              name="orderListToDate"
+              [ngModel]="toDate()"
+              (ngModelChange)="toDate.set($event)"
+              tabindex="-1"
+            />
+          </mat-date-range-input>
+          <mat-date-range-picker #orderDateRangePicker></mat-date-range-picker>
+        </mat-form-field>
+      </div>
+      <button
+        mat-stroked-button
+        type="button"
+        class="order-list-toolbar__filter-btn"
+        (click)="orderDateRangePicker.open()"
+        matBadgeSize="small"
+        [matBadge]="1"
+        [matBadgeHidden]="!(fromDate() || toDate())"
+      >
+        <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+        <span>{{ 'order.list.dateRangeButton' | translate }}</span>
+      </button>
+    </div>
+    <button
+      mat-stroked-button
+      type="button"
+      class="order-list-toolbar__filter-btn"
+      (click)="openExtraFiltersDialog()"
+      matBadgeSize="small"
+      [matBadge]="extraFiltersBadgeCount()"
+      [matBadgeHidden]="extraFiltersBadgeCount() === 0"
+    >
+      <i class="fa-regular fa-sliders" aria-hidden="true"></i>
+      <span>{{ 'order.list.moreFilters' | translate }}</span>
+    </button>
+    @if (hasActiveFilters()) {
+      <button mat-stroked-button type="button" color="warn" class="order-list-toolbar__clear-all" (click)="clearAllFilters()">
+        <i class="fa-regular fa-circle-xmark" aria-hidden="true"></i>
+        <span>{{ 'order.list.clearAllFilters' | translate }}</span>
+      </button>
+    }
+  </div>
   <span fxFlex></span>
   <button mat-flat-button routerLink="../new">
     {{ 'newOrder.newTitle' | translate }}
   </button>
 </mat-toolbar>
-<main p-md>
-  <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start center">
-    <app-search-member-autocomplete (userSelect)="customerFilter.set($event?.user?.id)" />
-    <mat-form-field appearance="outline">
-      <mat-label>{{ 'app.dateRange' | translate }}</mat-label>
-      <mat-date-range-input [rangePicker]="picker">
-        <input matStartDate [(ngModel)]="fromDate" placeholder="{{ 'app.fromDate' | translate }}" />
-        <input matEndDate [(ngModel)]="toDate" placeholder="{{ 'app.toDate' | translate }}" />
-      </mat-date-range-input>
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-date-range-picker #picker></mat-date-range-picker>
-    </mat-form-field>
-    @if (fromDate() || toDate()) {
-      <button mat-icon-button (click)="fromDate.set(undefined); toDate.set(undefined)" id="clear-filter">
-        <i class="fa-regular fa-circle-xmark"></i>
-      </button>
-    }
-  </div>
-  <mat-toolbar style="overflow-x: auto">
-    <mat-chip-listbox [(ngModel)]="statesFilter" multiple>
-      <div fxLayout="row">
-        @if (statesFilter().length < DEFAULT_STATES.length) {
-          <mat-chip-option (click)="statesFilter.set(DEFAULT_STATES)">
-            {{ 'app.all' | translate }}
-          </mat-chip-option>
-        }
-        <mat-chip-option [value]="OrderState.Pending">
-          {{ 'order.state.' + OrderState.Pending | translate }}
-        </mat-chip-option>
-        <mat-chip-option [value]="OrderState.Processing">
-          {{ 'order.state.' + OrderState.Processing | translate }}
-        </mat-chip-option>
-        <mat-chip-option [value]="OrderState.Ready">
-          {{ 'order.state.' + OrderState.Ready | translate }}
-        </mat-chip-option>
-        <mat-chip-option [value]="OrderState.Shipping">
-          {{ 'order.state.' + OrderState.Shipping | translate }}
-        </mat-chip-option>
-        <mat-chip-option [value]="OrderState.Completed">
-          {{ 'order.state.' + OrderState.Completed | translate }}
-        </mat-chip-option>
-        <mat-chip-option [value]="OrderState.Canceled">
-          {{ 'order.state.' + OrderState.Canceled | translate }}
-        </mat-chip-option>
-      </div>
-    </mat-chip-listbox>
-  </mat-toolbar>
-  <mat-card appearance="outlined">
+
+<main p-md class="order-list-main">
+  <mat-card appearance="outlined" class="order-list-card">
     <mat-card-content>
       @if (isMobile()) {
         <app-order-card-view

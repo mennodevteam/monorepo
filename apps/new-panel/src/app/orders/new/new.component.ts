@@ -125,6 +125,8 @@ export class NewOrderComponent implements FormComponent {
       useCurrentDateTime: this.service.useCurrentDateTime(),
       excludeFromReport: this.service.excludeFromReport(),
       extraCost: this.service.extraCost(),
+      referrer: this.service.orderReferrer(),
+      campaign: this.service.orderCampaign(),
     };
 
     const dialogRef = this.matDialog.open(ConfigModalComponent, {

@@ -5,6 +5,7 @@ import {
   MANUAL_COST_TITLE,
   MANUAL_DISCOUNT_TITLE,
   Order,
+  OrderDetails,
   OrderDto,
   OrderState,
   OrderType,
@@ -41,6 +42,8 @@ export class NewOrdersService {
   useCurrentDateTime = signal<boolean>(true);
   excludeFromReport = signal<boolean>(false);
   extraCost = signal<number>(0);
+  orderReferrer = signal<string>('');
+  orderCampaign = signal<string>('');
 
   constructor() {
     effect(() => {
@@ -67,28 +70,38 @@ export class NewOrdersService {
           this.orderDateTime.set(order.createdAt);
           this.useCurrentDateTime.set(true);
         }
+        this.orderReferrer.set(order.details?.referrer ?? '');
+        this.orderCampaign.set(order.details?.campaign ?? '');
       }
     });
   }
 
-  dto = computed(
-    () =>
-      ({
-        id: this.order()?.id,
-        productItems: this.items(),
-        customerId: this.customer()?.id || null,
-        address: this.customer() && this.type() === OrderType.Delivery ? this.address() : null,
-        manualCost: this.manualCost(),
-        manualDiscount: this.manualDiscount(),
-        extraCosts: this.extraCost(),
-        excludeFromReports: this.excludeFromReport(),
-        isManual: this.order()?.isManual ?? true,
-        type: this.type(),
-        state: !this.order() ? OrderState.Pending : undefined,
-        seenAt: !this.order() ? new Date() : undefined,
-        date: this.useCurrentDateTime() ? undefined : this.orderDateTime(),
-      }) as OrderDto,
-  );
+  dto = computed(() => {
+    const details: OrderDetails = { ...(this.order()?.details || {}) };
+    const ref = this.orderReferrer().trim();
+    const camp = this.orderCampaign().trim();
+    if (ref) details.referrer = ref;
+    else delete details.referrer;
+    if (camp) details.campaign = camp;
+    else delete details.campaign;
+
+    return {
+      id: this.order()?.id,
+      productItems: this.items(),
+      customerId: this.customer()?.id || null,
+      address: this.customer() && this.type() === OrderType.Delivery ? this.address() : null,
+      manualCost: this.manualCost(),
+      manualDiscount: this.manualDiscount(),
+      extraCosts: this.extraCost(),
+      excludeFromReports: this.excludeFromReport(),
+      isManual: this.order()?.isManual ?? true,
+      type: this.type(),
+      state: !this.order() ? OrderState.Pending : undefined,
+      seenAt: !this.order() ? new Date() : undefined,
+      date: this.useCurrentDateTime() ? undefined : this.orderDateTime(),
+      details: Object.keys(details).length ? details : undefined,
+    } as OrderDto;
+  });
 
   productItems = computed(() => {
     const menu = this.menu.data();
@@ -172,6 +185,8 @@ export class NewOrdersService {
     this.useCurrentDateTime.set(true);
     this.excludeFromReport.set(false);
     this.extraCost.set(0);
+    this.orderReferrer.set('');
+    this.orderCampaign.set('');
   }
 
   updateConfig(config: {
@@ -179,11 +194,15 @@ export class NewOrdersService {
     useCurrentDateTime: boolean;
     excludeFromReport: boolean;
     extraCost: number;
+    referrer?: string;
+    campaign?: string;
   }) {
     this.orderDateTime.set(config.orderDateTime);
     this.useCurrentDateTime.set(config.useCurrentDateTime);
     this.excludeFromReport.set(config.excludeFromReport);
     this.extraCost.set(config.extraCost);
+    this.orderReferrer.set(config.referrer ?? '');
+    this.orderCampaign.set(config.campaign ?? '');
     this.dirty.set(true);
   }
 

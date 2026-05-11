@@ -22,6 +22,8 @@ const RESTAURANT_COLS = ['createdAt', 'type', 'customer', 'price', 'state', 'act
 const ALL_COLS = [
   'createdAt',
   'customer',
+  'referrer',
+  'campaign',
   'type',
   'price',
   'materialCost',
@@ -118,6 +120,8 @@ export class TableComponent {
     const textMap: { [key: string]: string } = {
       createdAt: this.translate.instant('app.date'),
       customer: this.translate.instant('order.customer'),
+      referrer: this.translate.instant('order.referrerColumn'),
+      campaign: this.translate.instant('order.campaignColumn'),
       type: this.translate.instant('app.type'),
       price: this.translate.instant('order.price'),
       state: this.translate.instant('app.status'),
@@ -181,6 +185,8 @@ export class TableComponent {
         switch (col) {
           case 'createdAt': return this.translate.instant('app.date');
           case 'customer': return this.translate.instant('order.customer');
+          case 'referrer': return this.translate.instant('order.referrerColumn');
+          case 'campaign': return this.translate.instant('order.campaignColumn');
           case 'type': return this.translate.instant('app.type');
           case 'price': return this.translate.instant('order.price');
           case 'state': return this.translate.instant('app.status');
@@ -206,6 +212,12 @@ export class TableComponent {
             break;
           case 'customer':
             value = order.customer ? User.fullName(order.customer) : '';
+            break;
+          case 'referrer':
+            value = order.details?.referrer || '';
+            break;
+          case 'campaign':
+            value = order.details?.campaign || '';
             break;
           case 'type':
             value = this.translate.instant('order.type.' + order.type);

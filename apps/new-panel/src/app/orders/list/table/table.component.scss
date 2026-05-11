@@ -17,3 +17,15 @@ tr.selectable-row:hover {
 tr.new {
   background-color: var(--mat-sys-error-container) !important;
 }
+
+.order-table-attr-cell {
+  max-width: 220px;
+  vertical-align: middle;
+}
+
+.table-cell-ellipsis {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

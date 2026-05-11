@@ -330,11 +330,26 @@
       "text": "اطلاع‌رسانی تغییر وضعیت به مشتری",
       "action": "ارسال پیامک"
     },
+    "referrerColumn": "ارجاع",
+    "campaignColumn": "کمپین",
     "deliveryArea": "ارسال",
     "printCustomer": "چاپ برای مشتری",
     "printShop": "چاپ برای {{value}}",
     "exportAI": "خروجی برای هوش مصنوعی (JSON)",
-    "noOrdersToExport": "هیچ سفارشی برای خروجی وجود ندارد"
+    "noOrdersToExport": "هیچ سفارشی برای خروجی وجود ندارد",
+    "list": {
+      "dateRangeButton": "بازهٔ زمانی",
+      "clearAllFilters": "پاک کردن فیلترها",
+      "moreFilters": "فیلترهای بیشتر",
+      "extraFiltersTitle": "فیلترهای بیشتر",
+      "extraFiltersHint": "مشتری، وضعیت سفارش، ارجاع و کمپین را اینجا تنظیم کنید.",
+      "statesLabel": "وضعیت سفارش",
+      "applyFilters": "اعمال",
+      "referrerFilter": "آدرس ارجاع‌دهنده (referrer)",
+      "referrerPlaceholder": "جستجو در referrer ذخیره‌شده در سفارش",
+      "campaignFilter": "کمپین (campaign)",
+      "campaignPlaceholder": "جستجو در campaign ذخیره‌شده در سفارش"
+    }
   },
   "address": {
     "postalCode": "کدپستی",
@@ -403,7 +418,11 @@
       "excludeFromReport": "از گزارشات حذف شود (عدم شمارش در داشبورد عملکرد فروش)",
       "extraCost": "هزینه مازاد",
       "extraCostDescription": "هزینه مازاد تاثیری روی قیمت نهایی سفارش ندارد فقط در محاسبه سود سفارش دخیل است و از آن کسر می‌شود",
-      "reportSettings": "تنظیمات گزارشات"
+      "reportSettings": "تنظیمات گزارشات",
+      "attribution": "ارجاع و کمپین",
+      "attributionDescription": "برای ردیابی منبع ترافیک یا کمپین تبلیغاتی (مثل آدرس ارجاع‌دهنده یا نام کمپین). در سایت مشتری این مقادیر به‌صورت خودکار از لینک پر می‌شوند.",
+      "referrer": "آدرس ارجاع‌دهنده (referrer)",
+      "campaign": "کمپین (campaign)"
     }
   },
   "settings": {

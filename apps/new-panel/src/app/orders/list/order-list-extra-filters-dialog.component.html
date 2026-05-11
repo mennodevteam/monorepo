@@ -1,0 +1,75 @@
+<h2 mat-dialog-title>{{ 'order.list.extraFiltersTitle' | translate }}</h2>
+
+<mat-dialog-content class="extra-filters-dialog__content">
+  <p class="extra-filters-dialog__hint">{{ 'order.list.extraFiltersHint' | translate }}</p>
+
+  <div class="extra-filters-dialog__grid">
+    <app-search-member-autocomplete
+      class="extra-filters-dialog__full"
+      (userSelect)="onMemberSelect($event)"
+    />
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'order.list.referrerFilter' | translate }}</mat-label>
+      <input
+        matInput
+        type="search"
+        name="referrer"
+        [(ngModel)]="referrer"
+        [placeholder]="'order.list.referrerPlaceholder' | translate"
+        autocomplete="off"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'order.list.campaignFilter' | translate }}</mat-label>
+      <input
+        matInput
+        type="search"
+        name="campaign"
+        [(ngModel)]="campaign"
+        [placeholder]="'order.list.campaignPlaceholder' | translate"
+        autocomplete="off"
+      />
+    </mat-form-field>
+
+  </div>
+
+  <div class="extra-filters-dialog__chips">
+    <div class="extra-filters-dialog__chips-header">
+      <span class="extra-filters-dialog__chips-label">{{ 'order.list.statesLabel' | translate }}</span>
+      @if (statesDifferFromDefault) {
+        <button mat-button type="button" color="primary" (click)="resetStatesFilter()">
+          {{ 'app.all' | translate }}
+        </button>
+      }
+    </div>
+    <mat-chip-listbox [(ngModel)]="statesFilter" name="states" multiple>
+      <div class="extra-filters-dialog__chips-inner">
+        <mat-chip-option [value]="OrderState.Pending">
+          {{ 'order.state.' + OrderState.Pending | translate }}
+        </mat-chip-option>
+        <mat-chip-option [value]="OrderState.Processing">
+          {{ 'order.state.' + OrderState.Processing | translate }}
+        </mat-chip-option>
+        <mat-chip-option [value]="OrderState.Ready">
+          {{ 'order.state.' + OrderState.Ready | translate }}
+        </mat-chip-option>
+        <mat-chip-option [value]="OrderState.Shipping">
+          {{ 'order.state.' + OrderState.Shipping | translate }}
+        </mat-chip-option>
+        <mat-chip-option [value]="OrderState.Completed">
+          {{ 'order.state.' + OrderState.Completed | translate }}
+        </mat-chip-option>
+        <mat-chip-option [value]="OrderState.Canceled">
+          {{ 'order.state.' + OrderState.Canceled | translate }}
+        </mat-chip-option>
+      </div>
+    </mat-chip-listbox>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancel()">{{ 'app.cancel' | translate }}</button>
+  <button mat-flat-button type="button" color="primary" (click)="apply()">{{ 'order.list.applyFilters' | translate }}</button>
+</mat-dialog-actions>

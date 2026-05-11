@@ -58,6 +58,9 @@ export class CartService {
   orderType = signal<OrderType>(OrderType.Delivery);
 
   private dto = computed(() => {
+    const details: OrderDto['details'] = { table: this.table() };
+    if (this.campaign.referrer) details.referrer = this.campaign.referrer;
+    if (this.campaign.campaign) details.campaign = this.campaign.campaign;
     return {
       productItems: this.productItems(),
       shopId: this.shopService.data()?.id,
@@ -67,7 +70,7 @@ export class CartService {
       note: this.note(),
       useWallet: this.useWallet(),
       discountCoupon: this.coupon(),
-      details: { table: this.table() },
+      details,
     } as OrderDto;
   });
 
