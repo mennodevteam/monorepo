@@ -9,7 +9,6 @@ export class AiChatbot {
   status: Status;
   style?: string;
   extraInfo?: string;
-  introMessage?: string;
   createdAt: Date;
 }
 

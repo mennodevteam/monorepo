@@ -6,8 +6,6 @@ import { Roles } from '../auth/roles.decorators';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 import { AuthService } from '../auth/auth.service';
-import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
-import { generateText } from 'ai';
 import { AiChatbotService } from './ai-chatbot.service';
 
 @Controller('ai-chatbot')
@@ -27,7 +25,7 @@ export class AiChatbotController {
 
   @Get('chat/:chatId')
   @Roles(UserRole.App, UserRole.Panel)
-  async getChat(@Param('chatId') chatId: number, @LoginUser() user: AuthPayload): Promise<AiChat> {
+  async getChat(@Param('chatId') chatId: number): Promise<AiChat> {
     return this.aiChatRepo.findOne({ where: { id: chatId }, relations: ['messages'] });
   }
 
@@ -36,7 +34,7 @@ export class AiChatbotController {
   async chat(
     @Body() body: { message: string; chatId?: number; shopId: string },
     @LoginUser() user: AuthPayload,
-  ): Promise<AiChatMessage> {
+  ): Promise<Pick<AiChatMessage, 'botMessage'> & { productIds: string[] }> {
     const shop = await this.shopRepo.findOne({ where: { id: body.shopId }, relations: ['aiChatbot'] });
 
     if (!shop.aiChatbot) {
@@ -44,7 +42,7 @@ export class AiChatbotController {
     }
 
     const result = await this.aiChatbotService.chat(shop.id, user.id, body.message, body.chatId);
-    return { botMessage: result.text } as AiChatMessage;
+    return { botMessage: result.text, productIds: result.productIds };
   }
 
   @Get()

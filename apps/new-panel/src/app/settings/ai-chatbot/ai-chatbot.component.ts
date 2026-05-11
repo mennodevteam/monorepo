@@ -46,7 +46,6 @@ export class AiChatbotComponent implements FormComponent {
     status: new FormControl<Status>(this.shop.data()?.aiChatbot?.status || Status.Inactive),
     style: new FormControl<string>(this.shop.data()?.aiChatbot?.style || ''),
     extraInfo: new FormControl<string>(this.shop.data()?.aiChatbot?.extraInfo || ''),
-    introMessage: new FormControl<string>(this.shop.data()?.aiChatbot?.introMessage || ''),
   });
 
   saveMutation = injectMutation(() => ({
