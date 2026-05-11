@@ -25,6 +25,7 @@ const SYSTEM_PROMPT = (process.env.AI_CHAT_SYSTEM_PROMPT?.trim() || DEFAULT_SYST
 );
 
 const CHAT_SESSION_TIMEOUT_MS = 60 * 60 * 1000;
+const MAX_HISTORY_MESSAGES = 10;
 const FALLBACK_MESSAGE = 'متاسفانه در تولید پاسخ مشکلی پیش آمد. لطفاً دوباره تلاش کنید.';
 
 type ParsedAiResponse = {
@@ -138,12 +139,13 @@ export class AiChatbotService {
     userMessage: string,
   ): CoreMessage[] {
     const messages: CoreMessage[] = [
-      { role: 'system', content: shopKnowledge },
-      { role: 'system', content: this.getChatbotConfigPrompt(shop) },
-      { role: 'system', content: SYSTEM_PROMPT },
+      {
+        role: 'system',
+        content: [shopKnowledge, this.getChatbotConfigPrompt(shop), SYSTEM_PROMPT].join('\n\n'),
+      },
     ];
 
-    history.forEach((message) => {
+    history.slice(-MAX_HISTORY_MESSAGES).forEach((message) => {
       if (message.userMessage) messages.push({ role: 'user', content: message.userMessage });
       if (message.botMessage) messages.push({ role: 'assistant', content: message.botMessage });
     });

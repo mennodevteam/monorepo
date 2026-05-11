@@ -543,6 +543,21 @@ export class OrdersService {
       idsQuery.andWhere('order.isManual = :isManual', { isManual: dto.isManual });
     }
 
+    const ref = dto.detailsReferrer?.trim();
+    if (ref) {
+      idsQuery.andWhere(
+        `order.details IS NOT NULL AND trim(order.details::text) <> '' AND (order.details::jsonb ->> 'referrer') ILIKE :detailsReferrer`,
+        { detailsReferrer: `${ref}` },
+      );
+    }
+    const camp = dto.detailsCampaign?.trim();
+    if (camp) {
+      idsQuery.andWhere(
+        `order.details IS NOT NULL AND trim(order.details::text) <> '' AND (order.details::jsonb ->> 'campaign') ILIKE :detailsCampaign`,
+        { detailsCampaign: `${camp}` },
+      );
+    }
+
     if (dto.skip !== undefined) idsQuery.skip(dto.skip);
     if (dto.take !== undefined) idsQuery.take(dto.take);
 
