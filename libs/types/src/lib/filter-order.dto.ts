@@ -19,4 +19,8 @@ export class FilterOrderDto {
   hasReview?: boolean;
   withDeleted?: boolean;
   updatedAt?: Date;
+  /** Case-insensitive substring match on `order.details.referrer` (JSON) */
+  detailsReferrer?: string;
+  /** Case-insensitive substring match on `order.details.campaign` (JSON) */
+  detailsCampaign?: string;
 }

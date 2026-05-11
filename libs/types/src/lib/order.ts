@@ -11,6 +11,10 @@ import { User } from './user';
 export interface OrderDetails {
   customerPhone?: string;
   table?: string;
+  /** External referrer URL (e.g. document.referrer), for attribution */
+  referrer?: string;
+  /** Campaign / UTM-style tag from query or session */
+  campaign?: string;
   posPayed?: number[];
   deletionReason?: string;
   currency?: string;
