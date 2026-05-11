@@ -10,12 +10,11 @@ export const AiChatMessageSchema = new EntitySchema<AiChatMessage>({
       primary: true,
       generated: true,
     },
-    message: {
+    userMessage: {
       type: String,
     },
-    isFromUser: {
-      type: Boolean,
-      default: false,
+    botMessage: {
+      type: String,
     },
     promptTokens: {
       type: Number,
@@ -27,6 +26,10 @@ export const AiChatMessageSchema = new EntitySchema<AiChatMessage>({
     },
     totalTokens: {
       type: Number,
+      nullable: true,
+    },
+    model: {
+      type: String,
       nullable: true,
     },
     createdAt: {

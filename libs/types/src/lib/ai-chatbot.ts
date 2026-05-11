@@ -25,10 +25,11 @@ export class AiChat {
 export class AiChatMessage {
   id: number;
   aiChat: AiChat;
-  message: string;
-  isFromUser: boolean;
+  userMessage: string;
+  botMessage: string;
   promptTokens?: number;
   completionTokens?: number;
   totalTokens?: number;
+  model?: string;
   createdAt: Date;
 }

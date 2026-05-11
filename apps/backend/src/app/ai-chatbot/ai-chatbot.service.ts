@@ -85,7 +85,7 @@ export class AiChatbotService {
     messages.push({
       role: 'system',
       content: `لطفاً اعداد را با استفاده از جداکننده هزارگان (سه رقم سه رقم) نمایش بده.
-هیچ‌وقت از کاربر شناسه (ID) یا ایندکس محصول نخواه! تو خودت باید ایندکس محصول مورد نظر کاربر را از لیستی که در سیستم به تو داده شده پیدا کنی و آن را به ابزار getProductPriceAndInfo بفرستی.`,
+تو به تمام لیست محصولات و قیمت‌هایشان دسترسی داری و نیازی به پرسیدن کد یا شناسه از کاربر نداری. مستقیماً جواب کاربر را بده.`,
     });
 
     if (aiChatbot.introMessage) {
@@ -96,15 +96,10 @@ export class AiChatbotService {
     }
 
     if (chat.messages?.length > 0) {
-      messages.push(
-        ...chat.messages.map(
-          (message) =>
-            ({
-              role: message.isFromUser ? 'user' : 'assistant',
-              content: message.message,
-            }) as CoreMessage,
-        ),
-      );
+      chat.messages.forEach((m) => {
+        if (m.userMessage) messages.push({ role: 'user', content: m.userMessage });
+        if (m.botMessage) messages.push({ role: 'assistant', content: m.botMessage });
+      });
     }
 
     messages.push({
@@ -112,138 +107,65 @@ export class AiChatbotService {
       content: message,
     });
 
-    await this.aiChatMessageRepo.save({
-      message,
-      isFromUser: true,
-      aiChat: { id: chat.id },
-    });
-
-    const { text, usage, toolCalls, toolResults, steps } = await generateText({
+    const { text, usage } = await generateText({
       model: createOpenAICompatible({
         baseURL: process.env.AI_BASE_URL,
         name: 'example',
         apiKey: process.env.AI_API_KEY,
       }).chatModel(MODEL),
-      tools: {
-        getProductPriceAndInfo: tool({
-          description:
-            'برای دریافت قیمت و اطلاعات دقیق یک محصول، ایندکس (index) آن محصول را از لیست محصولات در حافظه‌ات پیدا کن و به این تابع بده. به هیچ وجه از کاربر شناسه یا ایندکس نخواه.',
-          parameters: z.object({
-            productIndex: z.number().describe('ایندکس محصول (index) در لیست محصولات'),
-          }),
-          execute: async ({ productIndex }) => await this.getProductInfo(shopId, productIndex),
-        }),
-      },
       messages,
-      maxSteps: 5,
     });
 
     // Logging for debugging the AI flow
     console.log('--- AI Response Debug ---');
     console.log('AI Text:', text);
-    console.log('Tool Calls:', JSON.stringify(toolCalls, null, 2));
-    console.log('Steps:', JSON.stringify(steps?.map(s => s.toolCalls), null, 2));
+    console.log('Usage:', JSON.stringify(usage));
     console.log('-------------------------');
 
+    let finalMessage = text || 'متاسفانه در تولید پاسخ مشکلی پیش آمد. لطفاً دوباره تلاش کنید.';
+
     await this.aiChatMessageRepo.save({
-      message: text,
-      isFromUser: false,
+      userMessage: message,
+      botMessage: finalMessage,
       promptTokens: usage?.promptTokens,
       completionTokens: usage?.completionTokens,
       totalTokens: usage?.totalTokens,
+      model: MODEL,
       aiChat: { id: chat.id },
     });
 
-    return text;
+    return finalMessage;
   }
 
   private async getShopAiKnowledge(shopId: string) {
-    // const shop = await this.shopRepo.findOne({
-    //   where: { id: shopId },
-    //   relations: [
-    //     'aiChatbot',
-    //     'menu',
-    //     'menu.products',
-    //     'menu.products.productVariants',
-    //     'menu.products.productVariants',
-    //   ],
-    // });
-
-    const shopRedisKey = this.redis.key(RedisKey.Shop, shopId);
-    let shopRedisData = await this.redis.client.get(shopRedisKey);
-    if (!shopRedisData) shopRedisData = await this.redis.updateShop(shopId);
-
-    const menuRedisKey = this.redis.key(RedisKey.PanelMenu, shopId);
-    let menuRedisData = await this.redis.client.get(menuRedisKey);
-    if (!menuRedisData) menuRedisData = await this.redis.updateMenu(shopId);
+    // Force cache update to ensure fresh data
+    let shopRedisData = await this.redis.updateShop(shopId);
+    let menuRedisData = await this.redis.updateMenu(shopId);
     const menu: Menu = JSON.parse(menuRedisData);
     Menu.setRefsAndSort(menu, undefined, false, false);
 
     const products = Menu.getProductList(menu);
-    const info = `اطلاعات مجموعه: ${JSON.stringify(shopRedisData)}
-    لیست محصولات (شامل index هر محصول برای استفاده در ابزارها):
-    ${products.map((x, index) => `index: ${index}, name: ${x.title}, category: ${x.category.title}`).join('\n')}
-    `;
+    const info = `اطلاعات مجموعه: ${shopRedisData}
+لیست کامل محصولات:
+${products.map((x) => {
+  let str = `- ${x.title} (کد محصول: ${x.id}) | دسته: ${x.category?.title || 'بدون دسته'}`;
+  if (x.description) str += ` | توضیحات: ${x.description}`;
+  if (x.variants?.length) {
+    str += ` | انواع: ` + x.variants.map(v => {
+      let vStr = `${v.title} (قیمت: ${Product.realPrice(x, v)})`;
+      if (Product.hasDiscount(x, v)) vStr += ` قیمت با تخفیف: ${Product.totalPrice(x, v)}`;
+      if (Product.isFinished(x, v)) vStr += ` [تمام شده]`;
+      return vStr;
+    }).join('، ');
+  } else {
+    str += ` | قیمت: ${Product.realPrice(x)}`;
+    if (Product.hasDiscount(x)) str += ` قیمت با تخفیف: ${Product.totalPrice(x)}`;
+    if (Product.isFinished(x)) str += ` [تمام شده]`;
+  }
+  return str;
+}).join('\n')}
+`;
     return info;
   }
 
-  private async getProductInfo(shopId: string, productIndex: number) {
-    console.log('getProductInfo', shopId, productIndex);
-    const menu = await this.getMenuInfo(shopId);
-    const products = Menu.getProductList(menu);
-    const product = products[productIndex];
-    if (product) {
-      let result = `
-      ${product.title} (دسته بندی: ${product.category.title})
-      ${product.description}
-      `;
-      if (product.variants?.length) {
-        result += `
-        ${product.variants
-          .map((x) => {
-            let result = `-${x.title} (قیمت: ${Product.realPrice(product, x)})`;
-            if (Product.hasDiscount(product, x)) {
-              result += ` قیمت پس از تخفیف: ${Product.totalPrice(product, x)}`;
-            }
-            if (Product.isFinished(product, x)) {
-              result += ` وضعیت: تمام شده`;
-            }
-            return result;
-          })
-          .join('\n')}
-        `;
-      } else {
-        result += `
-        قیمت: ${Product.realPrice(product)}
-        `;
-        if (Product.hasDiscount(product)) {
-          result += `
-          قیمت پس از تخفیف: ${Product.totalPrice(product)}
-          `;
-          if (Product.isFinished(product)) {
-            result += ` وضعیت: تمام شده`;
-          }
-        }
-      }
-
-      return result;
-    }
-    return null;
-  }
-
-  private async getShopInfo(shopId: string) {
-    const shopRedisKey = this.redis.key(RedisKey.Shop, shopId);
-    let shopRedisData = await this.redis.client.get(shopRedisKey);
-    if (!shopRedisData) shopRedisData = await this.redis.updateShop(shopId);
-    return shopRedisData;
-  }
-
-  private async getMenuInfo(shopId: string) {
-    const menuRedisKey = this.redis.key(RedisKey.PanelMenu, shopId);
-    let menuRedisData = await this.redis.client.get(menuRedisKey);
-    if (!menuRedisData) menuRedisData = await this.redis.updateMenu(shopId);
-    const menu: Menu = JSON.parse(menuRedisData);
-    Menu.setRefsAndSort(menu, undefined, false, false);
-    return menu;
-  }
 }
