@@ -1,5 +1,5 @@
 import { AiChat, AiChatMessage, Menu, Product, ProductVariant, Shop } from '@menno/types';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RedisService } from '../core/redis.service';
@@ -40,6 +40,8 @@ type ShopAiKnowledge = {
 
 @Injectable()
 export class AiChatbotService {
+  private readonly logger = new Logger(AiChatbotService.name);
+
   constructor(
     @InjectRepository(Shop)
     private shopRepo: Repository<Shop>,
@@ -50,26 +52,43 @@ export class AiChatbotService {
     private redis: RedisService,
   ) {}
 
-  async chat(shopId: string, userId: string, message: string, chatId?: number) {
+  async chat(shopId: string, userId: string, message: string, chatId?: number, traceId = this.createTraceId()) {
+    this.logger.log(
+      `[${traceId}] start shopId=${shopId} userId=${userId} chatId=${chatId || '-'} model=${MODEL || '-'} input="${this.preview(
+        message,
+      )}"`,
+    );
+
     const shop = await this.shopRepo.findOne({ where: { id: shopId }, relations: ['aiChatbot'] });
+    this.logger.log(
+      `[${traceId}] shop loaded hasAiChatbot=${!!shop?.aiChatbot} status=${shop?.aiChatbot?.status || '-'} styleLen=${
+        shop?.aiChatbot?.style?.length || 0
+      } extraInfoLen=${shop?.aiChatbot?.extraInfo?.length || 0}`,
+    );
+
     const chat = await this.getOrCreateChat(shop, userId, chatId);
+    this.logger.log(`[${traceId}] chat ready id=${chat.id} historyRows=${chat.messages?.length || 0}`);
+
     const shopAiKnowledge = await this.getShopAiKnowledge(shopId);
+    this.logger.log(
+      `[${traceId}] knowledge ready products=${shopAiKnowledge.productIdsByIndex.length} infoLen=${shopAiKnowledge.info.length}`,
+    );
+
     const messages = this.buildMessages(shopAiKnowledge.info, shop, chat.messages || [], message);
+    this.logMessages(traceId, messages);
 
-    const { text, usage } = await generateText({
-      model: createOpenAICompatible({
-        baseURL: process.env.AI_BASE_URL,
-        name: 'example',
-        apiKey: process.env.AI_API_KEY,
-      }).chatModel(MODEL),
-      messages,
-    });
+    const { text, usage } = await this.generateAiText(messages, traceId);
 
-    this.logAiResponse(text, usage);
+    this.logAiResponse(traceId, text, usage);
 
     const parsedResponse = this.parsePlainTextResponse(text);
     const finalMessage = parsedResponse.text || FALLBACK_MESSAGE;
     const productIds = this.resolveProductIds(parsedResponse.productIds, shopAiKnowledge.productIdsByIndex);
+    this.logger.log(
+      `[${traceId}] parsed textLen=${finalMessage.length} productRefs=${JSON.stringify(
+        parsedResponse.productIds,
+      )} resolvedProductIds=${JSON.stringify(productIds)} finalText="${this.preview(finalMessage)}"`,
+    );
 
     await this.aiChatMessageRepo.save({
       userMessage: message,
@@ -80,8 +99,28 @@ export class AiChatbotService {
       model: MODEL,
       aiChat: { id: chat.id },
     });
+    this.logger.log(`[${traceId}] saved ai chat message chatId=${chat.id}`);
 
     return { text: finalMessage, productIds };
+  }
+
+  private async generateAiText(messages: CoreMessage[], traceId: string) {
+    try {
+      this.logger.log(
+        `[${traceId}] calling ai baseURL=${process.env.AI_BASE_URL || '-'} model=${MODEL || '-'} messages=${messages.length}`,
+      );
+      return await generateText({
+        model: createOpenAICompatible({
+          baseURL: process.env.AI_BASE_URL,
+          name: 'example',
+          apiKey: process.env.AI_API_KEY,
+        }).chatModel(MODEL),
+        messages,
+      });
+    } catch (error) {
+      this.logAiError(traceId, error);
+      throw error;
+    }
   }
 
   private async getOrCreateChat(shop: Shop, userId: string, chatId?: number): Promise<AiChat> {
@@ -161,11 +200,35 @@ export class AiChatbotService {
 اطلاعات اضافی: ${shop.aiChatbot.extraInfo || ''}`;
   }
 
-  private logAiResponse(text: string, usage: unknown) {
-    console.log('--- AI Response Debug ---');
-    console.log('AI Text:', text);
-    console.log('Usage:', JSON.stringify(usage));
-    console.log('-------------------------');
+  private logMessages(traceId: string, messages: CoreMessage[]) {
+    this.logger.log(
+      `[${traceId}] prompt messages=${JSON.stringify(
+        messages.map((message, index) => ({
+          index,
+          role: message.role,
+          length: typeof message.content === 'string' ? message.content.length : 0,
+          preview: typeof message.content === 'string' ? this.preview(message.content) : '[non-text content]',
+        })),
+      )}`,
+    );
+  }
+
+  private logAiResponse(traceId: string, text: string, usage: unknown) {
+    this.logger.log(`[${traceId}] ai response textLen=${text.length} text="${this.preview(text, 1500)}"`);
+    this.logger.log(`[${traceId}] ai usage=${this.safeJson(usage)}`);
+  }
+
+  private logAiError(traceId: string, error: unknown) {
+    const err = error as Error & {
+      cause?: unknown;
+      statusCode?: number;
+      responseBody?: unknown;
+    };
+
+    this.logger.error(`[${traceId}] ai error message=${err?.message || error}`);
+    if (err?.statusCode) this.logger.error(`[${traceId}] ai error status=${err.statusCode}`);
+    if (err?.responseBody) this.logger.error(`[${traceId}] ai error responseBody=${this.safeJson(err.responseBody)}`);
+    if (err?.cause) this.logger.error(`[${traceId}] ai error cause=${this.safeJson(err.cause)}`);
   }
 
   private parsePlainTextResponse(response: string): ParsedAiResponse {
@@ -259,5 +322,22 @@ ${products
     if (Product.hasDiscount(product)) parts.push(`قیمت با تخفیف: ${Product.totalPrice(product)}`);
     if (Product.isFinished(product)) parts.push('[تمام شده]');
     return parts.join(' ');
+  }
+
+  private createTraceId() {
+    return `ai-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+  }
+
+  private preview(value: string, max = 500) {
+    const normalized = (value || '').replace(/\s+/g, ' ').trim();
+    return normalized.length > max ? `${normalized.slice(0, max)}...` : normalized;
+  }
+
+  private safeJson(value: unknown) {
+    try {
+      return JSON.stringify(value);
+    } catch {
+      return String(value);
+    }
   }
 }

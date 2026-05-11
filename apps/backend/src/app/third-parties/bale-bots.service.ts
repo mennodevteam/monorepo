@@ -295,6 +295,13 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
     const fromId = msg.from?.id;
     if (fromId === undefined || fromId === null) return;
     const baleIdStr = String(fromId);
+    const traceId = this.createBaleTraceId(runtime.shop.id, chatId);
+
+    this.logger.log(
+      `[${traceId}] incoming update shopId=${runtime.shop.id} chatId=${chatId} fromId=${baleIdStr} hasText=${!!msg.text} text="${this.preview(
+        msg.text || '',
+      )}" hasContact=${!!msg.contact?.phone_number}`,
+    );
 
     if (msg.contact?.phone_number) {
       const contactUserId = msg.contact.user_id;
@@ -349,31 +356,61 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
     }
 
     const linked = await this.usersRepo.findOneBy({ baleId: baleIdStr });
+    this.logger.log(
+      `[${traceId}] linked user lookup baleId=${baleIdStr} linkedUserId=${linked?.id || '-'} aiStatus=${
+        runtime.shop.aiChatbot?.status || '-'
+      }`,
+    );
+
     if (linked) {
       if (runtime.shop.aiChatbot?.status === Status.Active) {
+        let result: Awaited<ReturnType<AiChatbotService['chat']>>;
         try {
-          const result = await this.aiChatbotService.chat(runtime.shop.id, linked.id, msg.text || '');
-          let reply_markup;
-          if (result.productIds?.length > 0) {
-            const origin = process.env.APP_ORIGIN || '';
-            reply_markup = { inline_keyboard: [] };
-            
-            result.productIds.forEach((pid) => {
-              const pUrl = Shop.productLink(runtime.shop, pid, origin);
-              reply_markup.inline_keyboard.push([{ text: 'مشاهده و سفارش محصول', web_app: { url: pUrl } }]);
-            });
-          }
-
-          await this.sendPlainText(runtime, chatId, result.text, reply_markup);
+          this.logger.log(`[${traceId}] ai generation start`);
+          result = await this.aiChatbotService.chat(runtime.shop.id, linked.id, msg.text || '', undefined, traceId);
+          this.logger.log(
+            `[${traceId}] ai generation done textLen=${result.text.length} productIds=${JSON.stringify(
+              result.productIds || [],
+            )} text="${this.preview(result.text, 1000)}"`,
+          );
         } catch (error) {
-          this.logger.error(`AI Chatbot error for shop ${runtime.shop.id}: ${(error as Error)?.message}`);
+          this.logger.error(`AI Chatbot generation error for shop ${runtime.shop.id}: ${(error as Error)?.message}`);
+          this.logger.error(`[${traceId}] ai generation failed error=${(error as Error)?.message || error}`);
+          await this.sendPlainText(runtime, chatId, 'متاسفانه در تولید پاسخ مشکلی پیش آمد. لطفاً دوباره تلاش کنید.');
+          return;
+        }
+
+        let reply_markup;
+        if (result.productIds?.length > 0) {
+          const origin = process.env.APP_ORIGIN || '';
+          reply_markup = { inline_keyboard: [] };
+
+          result.productIds.forEach((pid) => {
+            const pUrl = Shop.productLink(runtime.shop, pid, origin);
+            reply_markup.inline_keyboard.push([{ text: 'مشاهده و سفارش محصول', web_app: { url: pUrl } }]);
+          });
+        }
+        this.logger.log(`[${traceId}] reply markup=${reply_markup ? this.safeJson(reply_markup) : '-'}`);
+
+        try {
+          this.logger.log(`[${traceId}] bale send start textLen=${result.text.length}`);
+          await this.sendPlainText(runtime, chatId, result.text, reply_markup);
+          this.logger.log(`[${traceId}] bale send done`);
+        } catch (error) {
+          this.logger.error(`AI Chatbot send error for shop ${runtime.shop.id}: ${(error as Error)?.message}`);
+          this.logger.error(`[${traceId}] bale send failed error=${(error as Error)?.message || error}`);
+          this.logger.log(`[${traceId}] bale fallback send start strippedText="${this.preview(this.stripMarkdown(result.text), 1000)}"`);
+          await this.sendPlainText(runtime, chatId, this.stripMarkdown(result.text));
+          this.logger.log(`[${traceId}] bale fallback send done`);
         }
         return;
       }
+      this.logger.log(`[${traceId}] ai inactive, sending welcome message`);
       await this.sendWelcomeMessage(runtime, chatId);
       return;
     }
 
+    this.logger.log(`[${traceId}] user not linked, requesting contact`);
     await this.sendPlainText(
       runtime,
       chatId,
@@ -550,6 +587,27 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
   private truncate(s: string, max: number): string {
     if (!s || s.length <= max) return s;
     return s.slice(0, max - 1) + '…';
+  }
+
+  private stripMarkdown(text: string): string {
+    return text.replace(/[*_]/g, '');
+  }
+
+  private createBaleTraceId(shopId: string, chatId: number) {
+    return `bale-${shopId.slice(0, 8)}-${chatId}-${Date.now().toString(36)}`;
+  }
+
+  private preview(value: string, max = 500) {
+    const normalized = (value || '').replace(/\s+/g, ' ').trim();
+    return normalized.length > max ? `${normalized.slice(0, max)}...` : normalized;
+  }
+
+  private safeJson(value: unknown) {
+    try {
+      return JSON.stringify(value);
+    } catch {
+      return String(value);
+    }
   }
 
   private async postBale(token: string, method: string, data: Record<string, unknown>): Promise<unknown> {
