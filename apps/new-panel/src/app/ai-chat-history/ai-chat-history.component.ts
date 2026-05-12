@@ -81,7 +81,7 @@ export class AiChatHistoryComponent {
         }),
       ),
     initialPageParam: 1,
-    getNextPageParam: (last) => (last.hasMore ? last.page + 1 : undefined),
+    getNextPageParam: (last) => (last.hasMore ? Number(last.page) + 1 : undefined),
   }));
 
   readonly allChats = computed(() => {
@@ -90,7 +90,7 @@ export class AiChatHistoryComponent {
       return [] as PanelChat[];
     }
     const pages = d.pages as PanelChatsPageResponse[];
-    return pages.reduce<PanelChat[]>((acc, p) => acc.concat(p.items), []);
+    return pages.reduce<PanelChat[]>((acc, p) => acc.concat(p.items ?? []), []);
   });
 
   readonly groupedByDay = computed((): DayGroup[] => {

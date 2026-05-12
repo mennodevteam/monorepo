@@ -255,19 +255,43 @@ export class AiChatbotService {
       .where('shop.id = :shopId', { shopId })
       .groupBy('chat.id')
       .addGroupBy('chat.createdAt')
-      .orderBy('lastMessageAt', 'DESC')
+      .orderBy('COALESCE(MAX(msg.createdAt), chat.createdAt)', 'DESC')
       .offset(skip)
       .limit(limit)
       .getRawMany();
 
-    const chatIds = idRows.map((r) => Number((r as Record<string, unknown>).id)).filter((id) => Number.isFinite(id));
+    const chatIds = idRows
+      .map((row) => {
+        const r = row as Record<string, unknown>;
+        const raw = r.id ?? r.chat_id ?? r.chatId;
+        const n = Number(raw);
+        return Number.isFinite(n) ? n : NaN;
+      })
+      .filter((id) => Number.isFinite(id));
     if (chatIds.length === 0) {
+      if (total === 0) {
+        return {
+          items: [],
+          total,
+          page: p,
+          limit,
+          hasMore: false,
+        };
+      }
+      const chats = await this.aiChatRepo.find({
+        where: { shop: { id: shopId } },
+        relations: ['user', 'messages'],
+        order: { id: 'DESC' },
+        skip,
+        take: limit,
+      });
+      const items = chats.map((chat) => this.mapAiChatToPanelItem(chat, null));
       return {
-        items: [],
+        items,
         total,
         page: p,
         limit,
-        hasMore: false,
+        hasMore: skip + items.length < total,
       };
     }
 
@@ -282,44 +306,15 @@ export class AiChatbotService {
     const idToLastAt = new Map<number, Date>();
     for (const row of idRows) {
       const r = row as Record<string, unknown>;
-      const id = Number(r.id);
+      const rawId = r.id ?? r.chat_id ?? r.chatId;
+      const id = Number(rawId);
       const lastRaw = r.lastMessageAt ?? r.lastmessageat;
       if (Number.isFinite(id) && lastRaw != null) {
         idToLastAt.set(id, new Date(lastRaw as string | Date));
       }
     }
 
-    const items = chats.map((chat) => {
-      const messages = [...(chat.messages || [])].sort(
-        (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
-      );
-      const u = chat.user;
-      let customer: { userId: string; displayName: string; mobilePhone: string | null } | null = null;
-      if (u) {
-        const full = User.fullName(u)?.trim();
-        const displayName = full || u.mobilePhone?.trim() || u.username?.trim() || u.id;
-        customer = {
-          userId: u.id,
-          displayName,
-          mobilePhone: u.mobilePhone?.trim() || null,
-        };
-      }
-      return {
-        id: chat.id,
-        createdAt: chat.createdAt,
-        lastMessageAt: idToLastAt.get(chat.id) ?? chat.createdAt,
-        customer,
-        messages: messages.map((m) => ({
-          id: m.id,
-          createdAt: m.createdAt,
-          userMessage: m.userMessage,
-          botMessage: m.botMessage,
-          totalTokens: m.totalTokens,
-          promptTokens: m.promptTokens,
-          completionTokens: m.completionTokens,
-        })),
-      };
-    });
+    const items = chats.map((chat) => this.mapAiChatToPanelItem(chat, idToLastAt));
 
     return {
       items,
@@ -327,6 +322,61 @@ export class AiChatbotService {
       page: p,
       limit,
       hasMore: skip + items.length < total,
+    };
+  }
+
+  private mapAiChatToPanelItem(
+    chat: AiChat,
+    idToLastAt: Map<number, Date> | null,
+  ): {
+    id: number;
+    createdAt: Date;
+    lastMessageAt: Date;
+    customer: { userId: string; displayName: string; mobilePhone: string | null } | null;
+    messages: Array<{
+      id: number;
+      createdAt: Date;
+      userMessage: string;
+      botMessage: string;
+      totalTokens?: number | null;
+      promptTokens?: number | null;
+      completionTokens?: number | null;
+    }>;
+  } {
+    const messages = [...(chat.messages || [])].sort(
+      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+    );
+    const lastFromMap = idToLastAt?.get(chat.id);
+    let lastMessageAt = lastFromMap ?? new Date(chat.createdAt);
+    if (!lastFromMap && messages.length > 0) {
+      const lastMs = Math.max(...messages.map((m) => new Date(m.createdAt).getTime()));
+      lastMessageAt = new Date(lastMs);
+    }
+    const u = chat.user;
+    let customer: { userId: string; displayName: string; mobilePhone: string | null } | null = null;
+    if (u) {
+      const full = User.fullName(u)?.trim();
+      const displayName = full || u.mobilePhone?.trim() || u.username?.trim() || u.id;
+      customer = {
+        userId: u.id,
+        displayName,
+        mobilePhone: u.mobilePhone?.trim() || null,
+      };
+    }
+    return {
+      id: chat.id,
+      createdAt: chat.createdAt,
+      lastMessageAt,
+      customer,
+      messages: messages.map((m) => ({
+        id: m.id,
+        createdAt: m.createdAt,
+        userMessage: m.userMessage,
+        botMessage: m.botMessage,
+        totalTokens: m.totalTokens,
+        promptTokens: m.promptTokens,
+        completionTokens: m.completionTokens,
+      })),
     };
   }
 

@@ -7,6 +7,12 @@
 
   @if (chatsQuery.isPending()) {
     <p class="muted">{{ 'aiChatHistory.loading' | translate }}</p>
+  } @else if (chatsQuery.isError()) {
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <p class="warn">{{ 'aiChatHistory.loadError' | translate }}</p>
+      </mat-card-content>
+    </mat-card>
   } @else if (!allChats().length) {
     <mat-card appearance="outlined">
       <mat-card-content>

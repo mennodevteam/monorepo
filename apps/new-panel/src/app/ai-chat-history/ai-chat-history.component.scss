@@ -106,3 +106,9 @@
   margin-inline-end: 8px;
   vertical-align: middle;
 }
+
+.warn {
+  margin: 0;
+  font-size: 14px;
+  color: var(--mat-sys-error, #b3261e);
+}
