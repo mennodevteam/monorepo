@@ -37,8 +37,8 @@ const PRODUCT_SYSTEM_PROMPT = (process.env.AI_CHAT_SYSTEM_PROMPT?.trim() || DEFA
   '\n',
 );
 
-const CHAT_SESSION_TIMEOUT_MS = 60 * 60 * 1000;
-const MAX_HISTORY_MESSAGES = 10;
+const CHAT_SESSION_TIMEOUT_MS = 3 * 60 * 1000;
+const MAX_HISTORY_MESSAGES = 3;
 const FALLBACK_MESSAGE = 'متاسفانه در تولید پاسخ مشکلی پیش آمد. لطفاً دوباره تلاش کنید.';
 
 type ParsedAiResponse = {
