@@ -1,5 +1,5 @@
 @if (products().length > 0) {
-  <app-section [title]="title() || ''">
+  <app-section [title]="displayTitle()">
     @if (isCarousel()) {
       <div class="product-list-carousel-container" [class.multi-row]="carouselRows() > 1">
         @if (carouselRows() > 1) {

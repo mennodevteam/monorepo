@@ -25,6 +25,10 @@ export class ProductListComponent {
   readonly viewType = computed(() => this.config().viewType);
   readonly productIds = computed(() => this.config().productIds || []);
   readonly title = computed(() => this.config().title);
+  readonly displayTitle = computed(() => {
+    const t = this.title()?.trim();
+    return t ? t : 'محصولات';
+  });
   readonly gridCols = computed(() => this.config().gridCols || 3);
   readonly carouselRows = computed(() => this.config().carouselRows || 1);
 

@@ -3,7 +3,7 @@
     <div class="loading-state">
       <mat-spinner diameter="24"></mat-spinner>
     </div>
-  } @else if (sections().length > 0) {
+  } @else if (hasConfiguredSections()) {
     @for (section of sections(); track section.id; let i = $index) {
       @if (section.type === HomeSectionType.Banner) {
         <app-banner [section]="section" [isFirst]="i === 0" />
@@ -13,9 +13,58 @@
         <app-category-list [section]="section" />
       }
     }
+  } @else if (showFallbackLoading()) {
+    <div class="loading-state">
+      <mat-spinner diameter="24"></mat-spinner>
+    </div>
+  } @else if (showFallbackHome()) {
+    <div class="home-fallback">
+      @if (fallbackCategories().length > 0) {
+        <app-section
+          title="دسته‌بندی‌ها"
+          seeMoreLabel="مشاهده همه"
+          seeMoreRouterLink="/categories"
+        >
+          <div class="home-fallback__categories">
+            @for (category of fallbackCategories(); track category.id) {
+              <a [routerLink]="getCategoryLink(category)" class="home-fallback__category-chip">
+                @if (getCategoryImage(category); as img) {
+                  <span
+                    class="home-fallback__category-thumb"
+                    [imageFile]="img"
+                    imageSize="md"
+                    appImageLoader
+                  ></span>
+                }
+                <span class="home-fallback__category-label">{{ categoryDisplayName(category) }}</span>
+              </a>
+            }
+          </div>
+        </app-section>
+      }
+      @if (fallbackProducts().length > 0) {
+        <app-section title="برخی از محصولات">
+          <mat-grid-list cols="2" rowHeight="1:1" gutterSize="8" class="home-fallback__product-grid">
+            @for (product of fallbackProducts(); track product.id) {
+              <mat-grid-tile
+                [routerLink]="getProductLink(product)"
+                class="home-fallback__product-tile"
+                [imageFile]="getProductImage(product)"
+                [imageSize]="'md'"
+                appImageLoader
+              >
+                <mat-grid-tile-footer class="home-fallback__product-tile-footer">
+                  {{ productDisplayTitle(product) }}
+                </mat-grid-tile-footer>
+              </mat-grid-tile>
+            }
+          </mat-grid-list>
+        </app-section>
+      }
+    </div>
   } @else {
     <div class="empty-state">
-      <p>No content available</p>
+      <p>هنوز محتوایی برای صفحه اصلی تنظیم نشده و منویی در دسترس نیست.</p>
     </div>
   }
 </div>

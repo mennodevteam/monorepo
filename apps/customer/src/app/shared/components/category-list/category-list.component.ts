@@ -24,6 +24,10 @@ export class CategoryListComponent {
   readonly viewType = computed(() => this.config().viewType);
   readonly categoryIds = computed(() => this.config().categoryIds || []);
   readonly title = computed(() => this.config().title);
+  readonly displayTitle = computed(() => {
+    const t = this.title()?.trim();
+    return t ? t : 'دسته‌بندی‌ها';
+  });
   readonly gridCols = computed(() => this.config().gridCols || 3);
   readonly carouselRows = computed(() => this.config().carouselRows || 1);
   readonly showAll = computed(() => this.config().showAll || false);

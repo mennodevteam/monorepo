@@ -1,6 +1,6 @@
 @if (categories().length > 0) {
   <app-section
-    [title]="title() || ''"
+    [title]="displayTitle()"
     [seeMoreLabel]="seeMoreLabel()"
     [seeMoreRouterLink]="seeMoreRouterLink()"
   >
