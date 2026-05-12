@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -31,11 +32,17 @@ export class AiChatbotController {
     private aiChatbotService: AiChatbotService,
   ) {}
 
-  @Get('panel/recent-messages')
+  @Get('panel/chats')
   @Roles(UserRole.Panel)
-  async recentPanelMessages(@LoginUser() user: AuthPayload) {
+  async panelChats(
+    @LoginUser() user: AuthPayload,
+    @Query('page') pageStr?: string,
+    @Query('limit') limitStr?: string,
+  ) {
     const shop = await this.auth.getPanelUserShop(user);
-    return this.aiChatbotService.listRecentPanelMessages(shop.id);
+    const page = Math.max(Math.floor(Number(pageStr)) || 1, 1);
+    const limit = Math.floor(Number(limitStr)) || 20;
+    return this.aiChatbotService.listPanelChatsPaged(shop.id, page, limit);
   }
 
   @Get('chat/:chatId')

@@ -1,7 +1,7 @@
-import { AiChat, AiChatbot, AiChatMessage, Menu, Product, Shop } from '@menno/types';
+import { AiChat, AiChatbot, AiChatMessage, Menu, Product, ProductVariant, Shop, User } from '@menno/types';
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { RedisService } from '../core/redis.service';
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
 import { CoreMessage, generateText } from 'ai';
@@ -47,14 +47,19 @@ type ParsedAiResponse = {
   productIds: string[];
 };
 
-type ProductRef = {
+interface ProductKnowledgeItem {
+  index: number;
   id: string;
   title: string;
-};
+  price: number;
+  category: string;
+  finished: boolean;
+  discount: number;
+}
 
 type ShopAiKnowledge = {
   info: string;
-  productsByIndex: ProductRef[];
+  productsByIndex: ProductKnowledgeItem[];
 };
 
 type LightShopKnowledge = {
@@ -134,20 +139,20 @@ export class AiChatbotService {
     this.logger.log(`[${traceId}] needs products=${needsProducts} lightText="${this.preview(lightResult.text, 1000)}"`);
 
     let finalMessage = lightResult.text.trim() || FALLBACK_MESSAGE;
-    let products: ProductRef[] = [];
+    let products: ProductKnowledgeItem[] = [];
     let usage: AiUsage = lightResult.usage;
 
     if (needsProducts) {
-      const allProducts = Menu.getProductList(lightKnowledge.menu);
-      const selectorMessages = this.buildProductSelectorMessages(allProducts, chat.messages || [], message);
+      const allProductItems = this.buildProductKnowledgeItems(Menu.getProductList(lightKnowledge.menu));
+      const selectorMessages = this.buildProductSelectorMessages(allProductItems, chat.messages || [], message);
       this.logMessages(traceId, 'product-selector', selectorMessages);
 
-      this.logger.log(`[${traceId}] product selector ai start products=${allProducts.length}`);
+      this.logger.log(`[${traceId}] product selector ai start products=${allProductItems.length}`);
       const selectorResult = await this.generateAiText(selectorMessages, traceId, 'product-selector');
       this.logAiResponse(traceId, 'product-selector', selectorResult.text, selectorResult.usage);
 
       const selectedProductRefs = this.parseProductSelectionResponse(selectorResult.text);
-      const candidates = this.resolveProductEntities(selectedProductRefs, allProducts).slice(0, MAX_PRODUCT_CONTEXT);
+      const candidates = this.resolveProductItems(selectedProductRefs, allProductItems).slice(0, MAX_PRODUCT_CONTEXT);
       usage = this.mergeUsage(usage, selectorResult.usage);
       this.logger.log(
         `[${traceId}] product selector refs=${JSON.stringify(selectedProductRefs)} candidates count=${
@@ -208,41 +213,119 @@ export class AiChatbotService {
     return { text: finalMessage, productIds, products };
   }
 
-  async listRecentPanelMessages(
+  async listPanelChatsPaged(
     shopId: string,
-    limit = 50,
-  ): Promise<
-    {
+    page = 1,
+    pageSize = 20,
+  ): Promise<{
+    items: Array<{
       id: number;
       createdAt: Date;
-      userMessage: string;
-      botMessage: string;
-      totalTokens?: number | null;
-      promptTokens?: number | null;
-      completionTokens?: number | null;
-      chatId: number;
-    }[]
-  > {
-    const take = Math.min(Math.max(limit, 1), 100);
-    const rows = await this.aiChatMessageRepo
-      .createQueryBuilder('msg')
-      .innerJoinAndSelect('msg.aiChat', 'chat')
+      lastMessageAt: Date;
+      customer: { userId: string; displayName: string; mobilePhone: string | null } | null;
+      messages: Array<{
+        id: number;
+        createdAt: Date;
+        userMessage: string;
+        botMessage: string;
+        totalTokens?: number | null;
+        promptTokens?: number | null;
+        completionTokens?: number | null;
+      }>;
+    }>;
+    total: number;
+    page: number;
+    limit: number;
+    hasMore: boolean;
+  }> {
+    const limit = Math.min(Math.max(Number(pageSize) || 20, 1), 50);
+    const p = Math.max(Math.floor(Number(page)) || 1, 1);
+    const skip = (p - 1) * limit;
+
+    const total = await this.aiChatRepo.count({ where: { shop: { id: shopId } } });
+
+    const idRows = await this.aiChatRepo
+      .createQueryBuilder('chat')
+      .select('chat.id', 'id')
+      .addSelect('COALESCE(MAX(msg.createdAt), chat.createdAt)', 'lastMessageAt')
+      .leftJoin('chat.messages', 'msg')
       .innerJoin('chat.shop', 'shop')
       .where('shop.id = :shopId', { shopId })
-      .orderBy('msg.createdAt', 'DESC')
-      .take(take)
-      .getMany();
+      .groupBy('chat.id')
+      .addGroupBy('chat.createdAt')
+      .orderBy('lastMessageAt', 'DESC')
+      .offset(skip)
+      .limit(limit)
+      .getRawMany();
 
-    return rows.map((msg) => ({
-      id: msg.id,
-      createdAt: msg.createdAt,
-      userMessage: msg.userMessage,
-      botMessage: msg.botMessage,
-      totalTokens: msg.totalTokens,
-      promptTokens: msg.promptTokens,
-      completionTokens: msg.completionTokens,
-      chatId: msg.aiChat.id,
-    }));
+    const chatIds = idRows.map((r) => Number((r as Record<string, unknown>).id)).filter((id) => Number.isFinite(id));
+    if (chatIds.length === 0) {
+      return {
+        items: [],
+        total,
+        page: p,
+        limit,
+        hasMore: false,
+      };
+    }
+
+    const chats = await this.aiChatRepo.find({
+      where: { id: In(chatIds) },
+      relations: ['user', 'messages'],
+    });
+
+    const orderIndex = new Map(chatIds.map((id, i) => [id, i]));
+    chats.sort((a, b) => (orderIndex.get(a.id) ?? 0) - (orderIndex.get(b.id) ?? 0));
+
+    const idToLastAt = new Map<number, Date>();
+    for (const row of idRows) {
+      const r = row as Record<string, unknown>;
+      const id = Number(r.id);
+      const lastRaw = r.lastMessageAt ?? r.lastmessageat;
+      if (Number.isFinite(id) && lastRaw != null) {
+        idToLastAt.set(id, new Date(lastRaw as string | Date));
+      }
+    }
+
+    const items = chats.map((chat) => {
+      const messages = [...(chat.messages || [])].sort(
+        (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+      );
+      const u = chat.user;
+      let customer: { userId: string; displayName: string; mobilePhone: string | null } | null = null;
+      if (u) {
+        const full = User.fullName(u)?.trim();
+        const displayName = full || u.mobilePhone?.trim() || u.username?.trim() || u.id;
+        customer = {
+          userId: u.id,
+          displayName,
+          mobilePhone: u.mobilePhone?.trim() || null,
+        };
+      }
+      return {
+        id: chat.id,
+        createdAt: chat.createdAt,
+        lastMessageAt: idToLastAt.get(chat.id) ?? chat.createdAt,
+        customer,
+        messages: messages.map((m) => ({
+          id: m.id,
+          createdAt: m.createdAt,
+          userMessage: m.userMessage,
+          botMessage: m.botMessage,
+          totalTokens: m.totalTokens,
+          promptTokens: m.promptTokens,
+          completionTokens: m.completionTokens,
+        })),
+      };
+    });
+
+    return {
+      items,
+      total,
+      page: p,
+      limit,
+      hasMore: skip + items.length < total,
+    };
   }
 
   private async generateAiText(messages: CoreMessage[], traceId: string, stage: string) {
@@ -402,11 +485,11 @@ export class AiChatbotService {
   }
 
   private buildProductSelectorMessages(
-    products: Product[],
+    products: ProductKnowledgeItem[],
     history: AiChatMessage[],
     userMessage: string,
   ): CoreMessage[] {
-    const productList = products.map((product, index) => `${index + 1}. ${product.title}`).join('\n');
+    const productList = products.map((product) => `${product.index}. ${product.title}`).join('\n');
 
     const messages: CoreMessage[] = [
       {
@@ -432,7 +515,10 @@ ${productList}`,
     return this.parsePlainTextResponse(response).productIds;
   }
 
-  private resolveProductEntities(productRefs: string[], productsByIndex: Product[]): Product[] {
+  private resolveProductItems(
+    productRefs: string[],
+    productsByIndex: ProductKnowledgeItem[],
+  ): ProductKnowledgeItem[] {
     const products = productRefs
       .map((ref) => {
         const productIndex = Number(ref);
@@ -444,7 +530,7 @@ ${productList}`,
       })
       .filter(Boolean);
 
-    return [...new Map(products.map((product) => [product.id, product])).values()];
+    return products;
   }
 
   private parseProductIds(arrayText: string): string[] {
@@ -464,7 +550,7 @@ ${productList}`,
       .filter(Boolean);
   }
 
-  private resolveProducts(productRefs: string[], productsByIndex: ProductRef[]): ProductRef[] {
+  private resolveProducts(productRefs: string[], productsByIndex: ProductKnowledgeItem[]): ProductKnowledgeItem[] {
     const products = productRefs
       .map((ref) => {
         const productIndex = Number(ref);
@@ -496,7 +582,40 @@ ${categories}`;
     return { info, menu };
   }
 
-  private getProductKnowledgeForCandidates(products: Product[]): ShopAiKnowledge {
+  private buildProductKnowledgeItems(products: Product[]): ProductKnowledgeItem[] {
+    const items: ProductKnowledgeItem[] = [];
+
+    products.forEach((product) => {
+      if (product.variants?.length) {
+        product.variants.forEach((variant) => {
+          items.push(this.createProductKnowledgeItem(product, variant, items.length + 1));
+        });
+        return;
+      }
+
+      items.push(this.createProductKnowledgeItem(product, undefined, items.length + 1));
+    });
+
+    return items;
+  }
+
+  private createProductKnowledgeItem(
+    product: Product,
+    variant: ProductVariant | undefined,
+    index: number,
+  ): ProductKnowledgeItem {
+    return {
+      index,
+      id: product.id,
+      title: variant ? `${product.title} - ${variant.title}` : product.title,
+      price: Product.realPrice(product, variant),
+      category: product.category?.title || 'بدون دسته',
+      finished: Product.isFinished(product, variant),
+      discount: Product.fixedDiscount(product, variant),
+    };
+  }
+
+  private getProductKnowledgeForCandidates(products: ProductKnowledgeItem[]): ShopAiKnowledge {
     if (!products.length) {
       return {
         info: `محصول مرتبطی با پیام کاربر پیدا نشد. از کاربر بخواه سوالش را دقیق‌تر بپرسد.
@@ -507,27 +626,22 @@ ${categories}`;
     }
 
     const info = `لیست محصولات مرتبط:
-${products.map((product, index) => this.formatProductKnowledge(product, index)).join('\n')}`;
+${products.map((product, index) => this.formatProductKnowledge({ ...product, index: index + 1 })).join('\n')}`;
 
-    return { info, productsByIndex: products.map((product) => ({ id: product.id, title: product.title })) };
+    return { info, productsByIndex: products.map((product, index) => ({ ...product, index: index + 1 })) };
   }
 
-  private formatProductKnowledge(product: Product, index: number) {
+  private formatProductKnowledge(product: ProductKnowledgeItem) {
     const parts = [
-      `- ${product.title} (شماره محصول: ${index + 1})`,
-      `دسته: ${product.category?.title || 'بدون دسته'}`,
+      `- ${product.title} (شماره محصول: ${product.index})`,
+      `دسته: ${product.category}`,
+      `قیمت: ${product.price}`,
     ];
 
-    parts.push(this.formatProductPrice(product));
+    if (product.discount > 0) parts.push(`تخفیف: ${product.discount}`);
+    if (product.finished) parts.push('[تمام شده]');
 
     return parts.join(' | ');
-  }
-
-  private formatProductPrice(product: Product) {
-    const parts = [`قیمت: ${Product.realPrice(product)}`];
-    if (Product.hasDiscount(product)) parts.push(`قیمت با تخفیف: ${Product.totalPrice(product)}`);
-    if (Product.isFinished(product)) parts.push('[تمام شده]');
-    return parts.join(' ');
   }
 
   private createTraceId() {

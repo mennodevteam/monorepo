@@ -65,15 +65,6 @@
         <i matListItemIcon class="fa-duotone fa-house"></i>
         <span matListItemTitle>{{ 'nav.home' | translate }}</span>
       </a>
-      <a
-        mat-list-item
-        routerLinkActive="active-link"
-        routerLink="/ai-chat-history"
-        (click)="isSmallScreen() && isDrawerClose.set(true)"
-      >
-        <i matListItemIcon class="fa-duotone fa-comments"></i>
-        <span matListItemTitle>{{ 'nav.aiChatHistory' | translate }}</span>
-      </a>
       <mat-divider />
       <a
         mat-list-item

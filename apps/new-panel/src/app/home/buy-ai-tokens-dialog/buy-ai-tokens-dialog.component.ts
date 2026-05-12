@@ -2,15 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatCardModule } from '@angular/material/card';
-import { MatDividerModule } from '@angular/material/divider';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { formatTokenIntegerEn, kUnitsToTokens, PRESET_K_UNITS } from '../ai-tokens';
+import { kUnitsToTokens, PRESET_K_UNITS } from '../ai-tokens';
 
 export type BuyAiTokensDialogData = {
   pricePer1000Toman: number;
@@ -26,11 +23,8 @@ export type BuyAiTokensDialogData = {
     FormsModule,
     MatDialogModule,
     MatButtonModule,
-    MatButtonToggleModule,
-    MatCardModule,
-    MatDividerModule,
     MatFormFieldModule,
-    MatInputModule,
+    MatSelectModule,
     TranslateModule,
   ],
   templateUrl: './buy-ai-tokens-dialog.component.html',
@@ -42,34 +36,10 @@ export class BuyAiTokensDialogComponent {
 
   readonly presetK = [...PRESET_K_UNITS];
 
-  selectedChipK = 1000;
-  customKStr = '';
-
-  onPackChange(): void {
-    this.customKStr = '';
-  }
-
-  get effectiveKUnits(): number {
-    const t = this.customKStr.trim();
-    if (t !== '') {
-      const n = Number(t);
-      if (Number.isFinite(n) && n >= this.data.minPurchaseK) {
-        return Math.floor(n);
-      }
-    }
-    return this.selectedChipK;
-  }
-
-  get effectiveKUnitsEn(): string {
-    return this.effectiveKUnits.toLocaleString('en-US', { useGrouping: false });
-  }
-
-  get minPurchaseKEn(): string {
-    return this.data.minPurchaseK.toLocaleString('en-US', { useGrouping: false });
-  }
+  selectedK = 1000;
 
   get tokenAmount(): number {
-    return kUnitsToTokens(this.effectiveKUnits);
+    return kUnitsToTokens(this.selectedK);
   }
 
   get basePriceToman(): number {
@@ -81,11 +51,7 @@ export class BuyAiTokensDialogComponent {
   }
 
   get canPay(): boolean {
-    return this.data.pricePer1000Toman > 0 && this.effectiveKUnits >= this.data.minPurchaseK;
-  }
-
-  formatTokenCountEn(n: number): string {
-    return formatTokenIntegerEn(n);
+    return this.data.pricePer1000Toman > 0 && this.selectedK >= this.data.minPurchaseK;
   }
 
   cancel(): void {

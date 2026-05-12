@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaleBotKeys, Club, Member, Shop, ThirdPartyApp, User, UserRole, Status } from '@menno/types';
 import { PersianNumberService } from '@menno/utils';
@@ -303,6 +303,12 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
       )}" hasContact=${!!msg.contact?.phone_number}`,
     );
 
+    if (this.isStartCommand(msg.text)) {
+      this.logger.log(`[${traceId}] start command, sending configured welcome message`);
+      await this.sendWelcomeMessage(runtime, chatId);
+      return;
+    }
+
     if (msg.contact?.phone_number) {
       const contactUserId = msg.contact.user_id;
       const ownContact =
@@ -365,8 +371,8 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
     if (linked) {
       if (runtime.shop.aiChatbot?.status === Status.Active) {
         let result: Awaited<ReturnType<AiChatbotService['chat']>>;
+        const stopChatAction = this.startChatActionLoop(runtime, chatId, traceId);
         try {
-          await this.sendChatAction(runtime, chatId, traceId);
           this.logger.log(`[${traceId}] ai generation start`);
           result = await this.aiChatbotService.chat(runtime.shop.id, linked.id, msg.text || '', undefined, traceId);
           this.logger.log(
@@ -377,8 +383,15 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
         } catch (error) {
           this.logger.error(`AI Chatbot generation error for shop ${runtime.shop.id}: ${(error as Error)?.message}`);
           this.logger.error(`[${traceId}] ai generation failed error=${(error as Error)?.message || error}`);
+          if (this.isPaymentRequiredError(error)) {
+            this.logger.log(`[${traceId}] token/payment error, sending configured welcome message`);
+            await this.sendWelcomeMessage(runtime, chatId);
+            return;
+          }
           await this.sendPlainText(runtime, chatId, 'متاسفانه در تولید پاسخ مشکلی پیش آمد. لطفاً دوباره تلاش کنید.');
           return;
+        } finally {
+          stopChatAction();
         }
 
         let reply_markup;
@@ -431,6 +444,14 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
     };
   }
 
+  private isStartCommand(text?: string) {
+    return text?.trim().split(/\s+/)[0] === '/start';
+  }
+
+  private isPaymentRequiredError(error: unknown) {
+    return error instanceof HttpException && error.getStatus() === HttpStatus.PAYMENT_REQUIRED;
+  }
+
   private async sendPlainText(
     runtime: BaleBotRuntime,
     chatId: number,
@@ -455,6 +476,18 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
     } catch (error) {
       this.logger.warn(`[${traceId}] bale chat action failed: ${(error as Error)?.message || error}`);
     }
+  }
+
+  private startChatActionLoop(runtime: BaleBotRuntime, chatId: number, traceId: string) {
+    this.sendChatAction(runtime, chatId, traceId);
+    const interval = setInterval(() => {
+      this.sendChatAction(runtime, chatId, traceId);
+    }, 3500);
+
+    return () => {
+      clearInterval(interval);
+      this.logger.log(`[${traceId}] bale chat action stopped`);
+    };
   }
 
   private normalizeIranPhone(raw: string): string {

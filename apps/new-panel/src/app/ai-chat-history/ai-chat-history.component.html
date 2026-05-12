@@ -5,32 +5,84 @@
 <main p-md w-lg fxLayout="column" fxLayoutGap="16px">
   <p class="intro">{{ 'aiChatHistory.subtitle' | translate }}</p>
 
-  @if (messagesQuery.isPending()) {
+  @if (chatsQuery.isPending()) {
     <p class="muted">{{ 'aiChatHistory.loading' | translate }}</p>
-  } @else if (!messagesQuery.data()?.length) {
+  } @else if (!allChats().length) {
     <mat-card appearance="outlined">
       <mat-card-content>
         <p class="muted">{{ 'aiChatHistory.empty' | translate }}</p>
       </mat-card-content>
     </mat-card>
   } @else {
-    @for (row of messagesQuery.data(); track row.id) {
-      <mat-card appearance="outlined" class="msg-card">
-        <mat-card-content>
-          <div class="meta">
-            <span>{{ row.createdAt | pdate: true }}</span>
-            <span class="chat-id">{{ 'aiChatHistory.chatId' | translate }}: <span eng ltr>{{ row.chatId }}</span></span>
-            <span class="tokens"
-              >{{ 'aiChatHistory.tokensUsed' | translate }}:
-              <span eng ltr>{{ formatTokensK(row.totalTokens ?? null) }}</span></span
-            >
-          </div>
-          <p class="label">{{ 'aiChatHistory.userMessage' | translate }}</p>
-          <p class="body">{{ previewText(row.userMessage) }}</p>
-          <p class="label">{{ 'aiChatHistory.botMessage' | translate }}</p>
-          <p class="body muted-reply">{{ previewText(row.botMessage, 200) }}</p>
-        </mat-card-content>
-      </mat-card>
+    @for (group of groupedByDay(); track group.dateKey) {
+      <section class="day-section">
+        <h2 class="day-heading">{{ group.chats[0].lastMessageAt | pdate: false }}</h2>
+        <mat-accordion class="chat-accordion">
+          @for (chat of group.chats; track chat.id) {
+            <mat-expansion-panel class="chat-panel">
+              <mat-expansion-panel-header>
+                <mat-panel-title class="chat-title">
+                  @if (chat.customer) {
+                    <span>{{ chat.customer.displayName }}</span>
+                  } @else {
+                    <span class="muted-title">{{ 'aiChatHistory.unknownCustomer' | translate }}</span>
+                  }
+                </mat-panel-title>
+                <mat-panel-description class="chat-desc" fxHide.xs>
+                  <span eng ltr>#{{ chat.id }}</span>
+                  ·
+                  {{ 'aiChatHistory.messagesCount' | translate: { count: chat.messages.length } }}
+                  ·
+                  {{ chat.lastMessageAt | pdate: true }}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              @if (chat.customer && showPhoneLine(chat.customer)) {
+                <p class="phone-line">
+                  {{ 'aiChatHistory.phone' | translate }}:
+                  <span eng ltr>{{ chat.customer.mobilePhone }}</span>
+                </p>
+              }
+
+              <div class="thread">
+                @for (msg of chat.messages; track msg.id) {
+                  <div class="msg-block">
+                    <div class="msg-meta">
+                      <span>{{ msg.createdAt | pdate: true }}</span>
+                      <span class="tokens"
+                        >{{ 'aiChatHistory.tokensUsed' | translate }}:
+                        <span eng ltr>{{ formatTokensK(msg.totalTokens ?? null) }}</span></span
+                      >
+                    </div>
+                    <p class="label">{{ 'aiChatHistory.userMessage' | translate }}</p>
+                    <p class="body">{{ previewText(msg.userMessage) }}</p>
+                    <p class="label">{{ 'aiChatHistory.botMessage' | translate }}</p>
+                    <p class="body muted-reply">{{ previewText(msg.botMessage, 200) }}</p>
+                    @if (!$last) {
+                      <mat-divider class="msg-divider" />
+                    }
+                  </div>
+                }
+              </div>
+            </mat-expansion-panel>
+          }
+        </mat-accordion>
+      </section>
     }
+
+    <div class="load-more-wrap" fxLayout="row" fxLayoutAlign="center center">
+      @if (chatsQuery.hasNextPage()) {
+        <button mat-stroked-button type="button" color="primary" (click)="loadMore()" [disabled]="chatsQuery.isFetchingNextPage()">
+          @if (chatsQuery.isFetchingNextPage()) {
+            <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+              <mat-spinner diameter="20" />
+              <span>{{ 'aiChatHistory.loading' | translate }}</span>
+            </span>
+          } @else {
+            {{ 'aiChatHistory.loadMore' | translate }}
+          }
+        </button>
+      }
+    </div>
   }
 </main>
