@@ -1,0 +1,36 @@
+@let charge = shopService.data()?.smsAccount?.charge || 0;
+
+<mat-card appearance="outlined" class="sms-charge-card">
+  <mat-card-header>
+    <mat-card-title>
+      <i class="fa-solid fa-sms fa-xl"></i>
+      <span spacer-sm></span>
+      {{ 'home.wallet.title' | translate }}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="form-theme">
+    <mat-list>
+      <mat-list-item>
+        <span matListItemLine>
+          {{ 'home.plan.charge' | translate }}
+          <i class="fa-regular fa-circle-info" (click)="walletHelp()"></i>
+        </span>
+        <span matListItemMeta>
+          {{ charge | number: '1.0-0' | menuCurrency }}
+          @if (charge < 30000) {
+            <i
+              class="fa-solid fa-triangle-exclamation fa-large"
+              matTooltip="{{ 'home.plan.lowChargeTooltip' | translate }}"
+            ></i>
+          }
+        </span>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-actions>
+    <button mat-button type="button" (click)="chargeSmsAccount()">
+      {{ 'home.plan.charge' | translate }}
+    </button>
+  </mat-card-actions>
+</mat-card>

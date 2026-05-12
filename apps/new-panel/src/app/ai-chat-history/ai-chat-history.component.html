@@ -1,0 +1,36 @@
+<mat-toolbar class="content-toolbar">
+  <span>{{ 'aiChatHistory.title' | translate }}</span>
+</mat-toolbar>
+
+<main p-md w-lg fxLayout="column" fxLayoutGap="16px">
+  <p class="intro">{{ 'aiChatHistory.subtitle' | translate }}</p>
+
+  @if (messagesQuery.isPending()) {
+    <p class="muted">{{ 'aiChatHistory.loading' | translate }}</p>
+  } @else if (!messagesQuery.data()?.length) {
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <p class="muted">{{ 'aiChatHistory.empty' | translate }}</p>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    @for (row of messagesQuery.data(); track row.id) {
+      <mat-card appearance="outlined" class="msg-card">
+        <mat-card-content>
+          <div class="meta">
+            <span>{{ row.createdAt | pdate: true }}</span>
+            <span class="chat-id">{{ 'aiChatHistory.chatId' | translate }}: <span eng ltr>{{ row.chatId }}</span></span>
+            <span class="tokens"
+              >{{ 'aiChatHistory.tokensUsed' | translate }}:
+              <span eng ltr>{{ formatTokensK(row.totalTokens ?? null) }}</span></span
+            >
+          </div>
+          <p class="label">{{ 'aiChatHistory.userMessage' | translate }}</p>
+          <p class="body">{{ previewText(row.userMessage) }}</p>
+          <p class="label">{{ 'aiChatHistory.botMessage' | translate }}</p>
+          <p class="body muted-reply">{{ previewText(row.botMessage, 200) }}</p>
+        </mat-card-content>
+      </mat-card>
+    }
+  }
+</main>

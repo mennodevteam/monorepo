@@ -1,3 +1,7 @@
+.buy-dialog-root-card {
+  margin: 0;
+}
+
 .buy-dialog {
   display: flex;
   flex-direction: column;
@@ -27,7 +31,7 @@
 }
 
 .summary {
-  margin-top: 8px;
+  margin-top: 0;
   padding: 12px;
   border-radius: 8px;
   background: rgba(124, 58, 237, 0.06);

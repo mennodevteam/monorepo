@@ -206,7 +206,7 @@ export class PaymentsController {
 
     return this.getRedirectLink(
       defaultGateway.id,
-      basePrice * 1.09,
+      basePrice,
       {
         buyAiChatbotTokens: {
           aiChatbotId: shop.aiChatbot.id,

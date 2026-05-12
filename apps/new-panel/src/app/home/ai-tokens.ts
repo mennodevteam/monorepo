@@ -7,7 +7,15 @@ export function kUnitsToTokens(kUnits: number): number {
   return Math.floor(kUnits) * TOKENS_PER_K;
 }
 
-/** نمایش موجودی/حجم با پسوند K (برای مضارب ۱۰۰۰ توکن). */
+/** عدد صحیح توکن با ارقام لاتین (بدون جداکنندهٔ هزارگان). */
+export function formatTokenIntegerEn(tokens: number | null | undefined): string {
+  if (tokens == null || !Number.isFinite(tokens)) {
+    return '—';
+  }
+  return Math.trunc(tokens).toLocaleString('en-US', { useGrouping: false });
+}
+
+/** نمایش موجودی/حجم با پسوند K و ارقام لاتین. */
 export function formatTokensKLabel(tokens: number | null | undefined): string {
   if (tokens == null || !Number.isFinite(tokens)) {
     return '—';
@@ -17,8 +25,9 @@ export function formatTokensKLabel(tokens: number | null | undefined): string {
   }
   const k = tokens / TOKENS_PER_K;
   if (tokens % TOKENS_PER_K === 0) {
-    return `${Math.round(k)}K`;
+    return `${Math.round(k).toLocaleString('en-US', { useGrouping: false })}K`;
   }
   const rounded = Math.round(k * 10) / 10;
-  return `${String(rounded).replace(/\.0$/, '')}K`;
+  const text = rounded.toLocaleString('en-US', { useGrouping: false, maximumFractionDigits: 1, minimumFractionDigits: 0 });
+  return `${text.replace(/\.0$/, '')}K`;
 }

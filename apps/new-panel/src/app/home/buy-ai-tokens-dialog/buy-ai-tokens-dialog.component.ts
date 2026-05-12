@@ -3,18 +3,19 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { kUnitsToTokens, PRESET_K_UNITS } from '../ai-tokens';
+import { formatTokenIntegerEn, kUnitsToTokens, PRESET_K_UNITS } from '../ai-tokens';
 
 export type BuyAiTokensDialogData = {
   pricePer1000Toman: number;
   tokensPerK: number;
   minPurchaseK: number;
-  vatFactor: number;
 };
 
 @Component({
@@ -26,6 +27,8 @@ export type BuyAiTokensDialogData = {
     MatDialogModule,
     MatButtonModule,
     MatButtonToggleModule,
+    MatCardModule,
+    MatDividerModule,
     MatFormFieldModule,
     MatInputModule,
     TranslateModule,
@@ -57,6 +60,14 @@ export class BuyAiTokensDialogComponent {
     return this.selectedChipK;
   }
 
+  get effectiveKUnitsEn(): string {
+    return this.effectiveKUnits.toLocaleString('en-US', { useGrouping: false });
+  }
+
+  get minPurchaseKEn(): string {
+    return this.data.minPurchaseK.toLocaleString('en-US', { useGrouping: false });
+  }
+
   get tokenAmount(): number {
     return kUnitsToTokens(this.effectiveKUnits);
   }
@@ -66,15 +77,15 @@ export class BuyAiTokensDialogComponent {
   }
 
   get finalPriceToman(): number {
-    return Math.floor(this.basePriceToman * this.data.vatFactor);
-  }
-
-  get vatAmountToman(): number {
-    return Math.max(0, this.finalPriceToman - Math.floor(this.basePriceToman));
+    return Math.floor(this.basePriceToman);
   }
 
   get canPay(): boolean {
     return this.data.pricePer1000Toman > 0 && this.effectiveKUnits >= this.data.minPurchaseK;
+  }
+
+  formatTokenCountEn(n: number): string {
+    return formatTokenIntegerEn(n);
   }
 
   cancel(): void {

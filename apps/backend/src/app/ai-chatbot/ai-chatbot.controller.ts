@@ -66,14 +66,12 @@ export class AiChatbotController {
     pricePer1000Toman: number;
     tokensPerK: number;
     minPurchaseK: number;
-    vatFactor: number;
   } {
     const n = Number(process.env.AI_CHATBOT_TOKEN_PRICE_PER_1000 || 0);
     return {
       pricePer1000Toman: Number.isFinite(n) && n > 0 ? n : 0,
       tokensPerK: 1000,
       minPurchaseK: 1000,
-      vatFactor: 1.09,
     };
   }
 

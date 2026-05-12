@@ -1,7 +1,6 @@
 @let s = shop.data();
 @let bot = s?.aiChatbot;
 @let charge = bot?.tokenBalance ?? 0;
-@let history = chatHistoryQuery.data();
 
 <mat-card appearance="outlined" class="ai-intelligence-card">
   <mat-card-header>
@@ -16,48 +15,31 @@
     <mat-list>
       <mat-list-item>
         <span matListItemLine>{{ 'home.ai.tokenBalance' | translate }}</span>
-        <span matListItemMeta>{{ formatTokensK(charge) }}</span>
+        <span matListItemMeta><span eng ltr>{{ formatTokensK(charge) }}</span></span>
       </mat-list-item>
     </mat-list>
     @if (!bot) {
       <p class="hint-text">{{ 'home.ai.noChatbotYet' | translate }}</p>
     }
-
-    <mat-expansion-panel class="history-panel">
-      <mat-expansion-panel-header>
-        <mat-panel-title>{{ 'home.ai.chatHistoryTitle' | translate }}</mat-panel-title>
-      </mat-expansion-panel-header>
-      @if (chatHistoryQuery.isPending()) {
-        <p class="muted">{{ 'home.ai.chatHistoryLoading' | translate }}</p>
-      } @else if (!history?.length) {
-        <p class="muted">{{ 'home.ai.chatHistoryEmpty' | translate }}</p>
-      } @else {
-        <div class="history-scroll">
-          @for (row of history; track row.id) {
-            <div class="history-row">
-              <div class="history-meta">
-                <span>{{ row.createdAt | pdate: true }}</span>
-                <span class="history-tokens">
-                  {{ 'home.ai.tokensUsed' | translate }}: {{ formatTokensK(row.totalTokens ?? null) }}
-                </span>
-              </div>
-              <div class="history-msg">{{ previewText(row.userMessage) }}</div>
-            </div>
-          }
-        </div>
-      }
-    </mat-expansion-panel>
   </mat-card-content>
-  <mat-divider></mat-divider>
-  <mat-card-actions fxLayout="row wrap" fxLayoutGap="8px">
-    <button mat-button type="button" (click)="buyTokens()" [disabled]="!bot">
+  <mat-divider />
+  <mat-card-actions align="start" class="ai-card-primary-action">
+    <button mat-flat-button color="primary" type="button" class="full-width-action" (click)="buyTokens()" [disabled]="!bot">
       {{ 'home.ai.buyTokens' | translate }}
     </button>
-    <a mat-stroked-button color="primary" routerLink="/settings/third-parties/bale">
-      {{ 'home.ai.baleSetup' | translate }}
-    </a>
-    <a mat-stroked-button routerLink="/settings/ai-chatbot">
-      {{ 'home.ai.chatbotSettings' | translate }}
-    </a>
   </mat-card-actions>
+  <mat-divider />
+  <mat-card-content class="ai-links-wrap">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/ai-chat-history">
+        <span matListItemTitle>{{ 'home.ai.chatHistoryPage' | translate }}</span>
+      </a>
+      <a mat-list-item routerLink="/settings/third-parties/bale">
+        <span matListItemTitle>{{ 'home.ai.baleSetup' | translate }}</span>
+      </a>
+      <a mat-list-item routerLink="/settings/ai-chatbot">
+        <span matListItemTitle>{{ 'home.ai.chatbotSettings' | translate }}</span>
+      </a>
+    </mat-nav-list>
+  </mat-card-content>
 </mat-card>

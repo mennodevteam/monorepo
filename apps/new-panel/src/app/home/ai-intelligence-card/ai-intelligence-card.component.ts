@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -22,18 +21,6 @@ type AiTokenPricing = {
   pricePer1000Toman: number;
   tokensPerK: number;
   minPurchaseK: number;
-  vatFactor: number;
-};
-
-type AiPanelMessage = {
-  id: number;
-  createdAt: string;
-  userMessage: string;
-  botMessage: string;
-  totalTokens?: number | null;
-  promptTokens?: number | null;
-  completionTokens?: number | null;
-  chatId: number;
 };
 
 @Component({
@@ -46,7 +33,6 @@ type AiPanelMessage = {
     MatListModule,
     MatDividerModule,
     MatButtonModule,
-    MatExpansionModule,
   ],
   templateUrl: './ai-intelligence-card.component.html',
   styleUrl: './ai-intelligence-card.component.scss',
@@ -64,19 +50,8 @@ export class AiIntelligenceCardComponent {
     queryFn: () => lastValueFrom(this.http.get<AiTokenPricing>('/ai-chatbot/token-pricing')),
   }));
 
-  chatHistoryQuery = injectQuery(() => ({
-    queryKey: ['ai-chatbot-panel-messages', this.shop.data()?.id],
-    queryFn: () => lastValueFrom(this.http.get<AiPanelMessage[]>('/ai-chatbot/panel/recent-messages')),
-    enabled: !!this.shop.data()?.id,
-  }));
-
   formatTokensK(tokens: number | null | undefined): string {
     return formatTokensKLabel(tokens);
-  }
-
-  previewText(text: string, max = 72): string {
-    const s = (text || '').replace(/\s+/g, ' ').trim();
-    return s.length > max ? `${s.slice(0, max)}…` : s;
   }
 
   buyTokens(): void {
