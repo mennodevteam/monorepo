@@ -64,7 +64,7 @@ export class AiChatbotController {
     }
 
     const result = await this.aiChatbotService.chat(shop.id, user.id, body.message, body.chatId);
-    return { botMessage: result.text, productIds: result.productIds };
+    return { botMessage: result.text, productIds: result.products.map((product) => product.id) };
   }
 
   @Get('token-pricing')

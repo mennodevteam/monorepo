@@ -377,7 +377,7 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
           result = await this.aiChatbotService.chat(runtime.shop.id, linked.id, msg.text || '', undefined, traceId);
           this.logger.log(
             `[${traceId}] ai generation done textLen=${result.text.length} productIds=${JSON.stringify(
-              result.productIds || [],
+              result.products?.map((product) => product.id) || [],
             )} text="${this.preview(result.text, 1000)}"`,
           );
         } catch (error) {
@@ -395,15 +395,14 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
         }
 
         let reply_markup;
-        if (result.productIds?.length > 0) {
+        if (result.products?.length > 0) {
           const origin = process.env.APP_ORIGIN || '';
           reply_markup = { inline_keyboard: [] };
 
-          result.productIds.forEach((pid) => {
-            const product = result.products?.find((item) => item.id === pid);
-            const pUrl = Shop.productLink(runtime.shop, pid, origin);
+          result.products.forEach((product) => {
+            const pUrl = Shop.productLink(runtime.shop, product.id, origin);
             reply_markup.inline_keyboard.push([
-              { text: this.truncate(product?.title || 'مشاهده و سفارش محصول', 64), web_app: { url: pUrl } },
+              { text: this.truncate(product.title || 'مشاهده و سفارش محصول', 64), web_app: { url: pUrl } },
             ]);
           });
         }

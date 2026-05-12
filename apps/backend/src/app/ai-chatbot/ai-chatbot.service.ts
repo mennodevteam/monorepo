@@ -139,7 +139,8 @@ export class AiChatbotService {
     this.logger.log(`[${traceId}] needs products=${needsProducts} lightText="${this.preview(lightResult.text, 1000)}"`);
 
     let finalMessage = lightResult.text.trim() || FALLBACK_MESSAGE;
-    let products: ProductKnowledgeItem[] = [];
+    let productItems: ProductKnowledgeItem[] = [];
+    let products: Product[] = [];
     let usage: AiUsage = lightResult.usage;
 
     if (needsProducts) {
@@ -178,16 +179,17 @@ export class AiChatbotService {
 
       const parsedResponse = this.parsePlainTextResponse(productResult.text);
       finalMessage = parsedResponse.text || FALLBACK_MESSAGE;
-      products = this.resolveProducts(parsedResponse.productIds, productKnowledge.productsByIndex);
+      productItems = this.resolveProducts(parsedResponse.productIds, productKnowledge.productsByIndex);
+      products = this.resolveOriginalProducts(productItems, lightKnowledge.menu);
       usage = this.mergeUsage(usage, productResult.usage);
       this.logger.log(
         `[${traceId}] parsed textLen=${finalMessage.length} productRefs=${JSON.stringify(
           parsedResponse.productIds,
-        )} resolvedProducts=${JSON.stringify(products)} finalText="${this.preview(finalMessage)}"`,
+        )} resolvedProductItems=${JSON.stringify(productItems)} resolvedProductIds=${JSON.stringify(
+          products.map((product) => product.id),
+        )} finalText="${this.preview(finalMessage)}"`,
       );
     }
-
-    const productIds = products.map((product) => product.id);
 
     await this.aiChatMessageRepo.save({
       userMessage: message,
@@ -210,7 +212,7 @@ export class AiChatbotService {
       this.logger.log(`[${traceId}] decremented tokenBalance by=${tokensUsed} aiChatbotId=${shop.aiChatbot.id}`);
     }
 
-    return { text: finalMessage, productIds, products };
+    return { text: finalMessage, products };
   }
 
   async listPanelChatsPaged(
@@ -563,6 +565,12 @@ ${productList}`,
       .filter(Boolean);
 
     return [...new Map(products.map((product) => [product.id, product])).values()];
+  }
+
+  private resolveOriginalProducts(productItems: ProductKnowledgeItem[], menu: Menu): Product[] {
+    return productItems
+      .map((item) => Menu.getProductById(menu, item.id))
+      .filter(Boolean);
   }
 
   private async getLightShopKnowledge(shop: Shop): Promise<LightShopKnowledge> {
