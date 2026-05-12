@@ -1,6 +1,7 @@
 @let s = shop.data();
 @let bot = s?.aiChatbot;
 @let charge = bot?.tokenBalance ?? 0;
+@let history = chatHistoryQuery.data();
 
 <mat-card appearance="outlined" class="ai-intelligence-card">
   <mat-card-header>
@@ -15,12 +16,37 @@
     <mat-list>
       <mat-list-item>
         <span matListItemLine>{{ 'home.ai.tokenBalance' | translate }}</span>
-        <span matListItemMeta>{{ charge | number: '1.0-0' }}</span>
+        <span matListItemMeta>{{ formatTokensK(charge) }}</span>
       </mat-list-item>
     </mat-list>
     @if (!bot) {
       <p class="hint-text">{{ 'home.ai.noChatbotYet' | translate }}</p>
     }
+
+    <mat-expansion-panel class="history-panel">
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{ 'home.ai.chatHistoryTitle' | translate }}</mat-panel-title>
+      </mat-expansion-panel-header>
+      @if (chatHistoryQuery.isPending()) {
+        <p class="muted">{{ 'home.ai.chatHistoryLoading' | translate }}</p>
+      } @else if (!history?.length) {
+        <p class="muted">{{ 'home.ai.chatHistoryEmpty' | translate }}</p>
+      } @else {
+        <div class="history-scroll">
+          @for (row of history; track row.id) {
+            <div class="history-row">
+              <div class="history-meta">
+                <span>{{ row.createdAt | pdate: true }}</span>
+                <span class="history-tokens">
+                  {{ 'home.ai.tokensUsed' | translate }}: {{ formatTokensK(row.totalTokens ?? null) }}
+                </span>
+              </div>
+              <div class="history-msg">{{ previewText(row.userMessage) }}</div>
+            </div>
+          }
+        </div>
+      }
+    </mat-expansion-panel>
   </mat-card-content>
   <mat-divider></mat-divider>
   <mat-card-actions fxLayout="row wrap" fxLayoutGap="8px">

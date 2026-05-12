@@ -208,6 +208,43 @@ export class AiChatbotService {
     return { text: finalMessage, productIds, products };
   }
 
+  async listRecentPanelMessages(
+    shopId: string,
+    limit = 50,
+  ): Promise<
+    {
+      id: number;
+      createdAt: Date;
+      userMessage: string;
+      botMessage: string;
+      totalTokens?: number | null;
+      promptTokens?: number | null;
+      completionTokens?: number | null;
+      chatId: number;
+    }[]
+  > {
+    const take = Math.min(Math.max(limit, 1), 100);
+    const rows = await this.aiChatMessageRepo
+      .createQueryBuilder('msg')
+      .innerJoinAndSelect('msg.aiChat', 'chat')
+      .innerJoin('chat.shop', 'shop')
+      .where('shop.id = :shopId', { shopId })
+      .orderBy('msg.createdAt', 'DESC')
+      .take(take)
+      .getMany();
+
+    return rows.map((msg) => ({
+      id: msg.id,
+      createdAt: msg.createdAt,
+      userMessage: msg.userMessage,
+      botMessage: msg.botMessage,
+      totalTokens: msg.totalTokens,
+      promptTokens: msg.promptTokens,
+      completionTokens: msg.completionTokens,
+      chatId: msg.aiChat.id,
+    }));
+  }
+
   private async generateAiText(messages: CoreMessage[], traceId: string, stage: string) {
     try {
       this.logger.log(

@@ -31,6 +31,13 @@ export class AiChatbotController {
     private aiChatbotService: AiChatbotService,
   ) {}
 
+  @Get('panel/recent-messages')
+  @Roles(UserRole.Panel)
+  async recentPanelMessages(@LoginUser() user: AuthPayload) {
+    const shop = await this.auth.getPanelUserShop(user);
+    return this.aiChatbotService.listRecentPanelMessages(shop.id);
+  }
+
   @Get('chat/:chatId')
   @Roles(UserRole.App, UserRole.Panel)
   async getChat(@Param('chatId') chatId: number): Promise<AiChat> {
@@ -55,9 +62,19 @@ export class AiChatbotController {
 
   @Get('token-pricing')
   @Roles(UserRole.Panel)
-  getTokenPricing(): { pricePer1000Toman: number } {
+  getTokenPricing(): {
+    pricePer1000Toman: number;
+    tokensPerK: number;
+    minPurchaseK: number;
+    vatFactor: number;
+  } {
     const n = Number(process.env.AI_CHATBOT_TOKEN_PRICE_PER_1000 || 0);
-    return { pricePer1000Toman: Number.isFinite(n) && n > 0 ? n : 0 };
+    return {
+      pricePer1000Toman: Number.isFinite(n) && n > 0 ? n : 0,
+      tokensPerK: 1000,
+      minPurchaseK: 1000,
+      vatFactor: 1.09,
+    };
   }
 
   @Get()

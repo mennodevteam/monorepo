@@ -194,7 +194,8 @@ export class PaymentsController {
     const userData = await this.auth.getUserData(user);
 
     const tokenAmount = Math.floor(Number(tokenAmountParam));
-    if (!Number.isFinite(tokenAmount) || tokenAmount < 1000) {
+    const minPurchaseTokens = 1_000_000; // 1000K where 1K = 1000 tokens
+    if (!Number.isFinite(tokenAmount) || tokenAmount < minPurchaseTokens) {
       throw new HttpException('invalid token amount', HttpStatus.BAD_REQUEST);
     }
     const pricePer1000 = Number(process.env.AI_CHATBOT_TOKEN_PRICE_PER_1000 || 0);
