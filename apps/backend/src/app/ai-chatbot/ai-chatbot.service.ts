@@ -453,8 +453,6 @@ ${products.map((product, index) => this.formatProductKnowledge(product, index)).
       `دسته: ${product.category?.title || 'بدون دسته'}`,
     ];
 
-    if (product.description) parts.push(`توضیحات: ${product.description}`);
-
     parts.push(this.formatProductPrice(product));
 
     return parts.join(' | ');
