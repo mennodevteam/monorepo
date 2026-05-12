@@ -1,20 +1,21 @@
-import { AiChat, AiChatMessage, Menu, Product, ProductVariant, Shop } from '@menno/types';
+import { AiChat, AiChatMessage, Menu, Product, Shop } from '@menno/types';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RedisService } from '../core/redis.service';
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
 import { CoreMessage, generateText } from 'ai';
-import Fuse from 'fuse.js';
 
 const MODEL = process.env.AI_CHAT_MODEL;
 const PRODUCT_MARKER = process.env.AI_CHAT_PRODUCT_MARKER || '__NEED_PRODUCTS__';
 const MAX_PRODUCT_CONTEXT = Number(process.env.AI_CHAT_MAX_PRODUCT_CONTEXT || 12);
-const FUSE_THRESHOLD = Number(process.env.AI_CHAT_FUSE_THRESHOLD || 0.35);
 const DEFAULT_LIGHT_SYSTEM_PROMPT = `لطفاً اعداد را با استفاده از جداکننده هزارگان (سه رقم سه رقم) نمایش بده.
 پاسخ را به صورت متن ساده و طبیعی برای کاربر بنویس، نه JSON.
 اگر برای پاسخ دادن به اطلاعات محصولات، قیمت‌ها، موجودی، انواع محصول یا پیشنهاد محصول نیاز داری، فقط عبارت ${PRODUCT_MARKER} را برگردان و هیچ متن دیگری ننویس.
 اگر بدون دانش محصولات می‌توانی جواب بدهی، پاسخ را مستقیم و کوتاه بنویس.`;
+const DEFAULT_PRODUCT_SELECTOR_PROMPT = `از لیست محصولات، محصولاتی را انتخاب کن که به پیام کاربر مربوط هستند.
+فقط عنوان محصولات را می‌بینی؛ اگر محصول مرتبطی پیدا نکردی [] برگردان.
+خروجی فقط یک آرایه شماره محصول باشد؛ مثل [1,3]. هیچ متن دیگری ننویس.`;
 const DEFAULT_PRODUCT_SYSTEM_PROMPT = `لطفاً اعداد را با استفاده از جداکننده هزارگان (سه رقم سه رقم) نمایش بده.
 پاسخ را به صورت متن ساده و طبیعی برای کاربر بنویس، نه JSON.
 اگر کاربر جزئیات بیشتری از محصول خواست، او را به مشاهده محصول در سایت راهنمایی کن.
@@ -25,6 +26,9 @@ const DEFAULT_PRODUCT_SYSTEM_PROMPT = `لطفاً اعداد را با استف�
 اگر محصولی پیشنهاد نمی‌دهی، [] بنویس. هیچ متن دیگری بعد از این آرایه ننویس.`;
 const LIGHT_SYSTEM_PROMPT = (
   process.env.AI_CHAT_LIGHT_SYSTEM_PROMPT?.trim() || DEFAULT_LIGHT_SYSTEM_PROMPT
+).replace(/\\n/g, '\n');
+const PRODUCT_SELECTOR_PROMPT = (
+  process.env.AI_CHAT_PRODUCT_SELECTOR_PROMPT?.trim() || DEFAULT_PRODUCT_SELECTOR_PROMPT
 ).replace(/\\n/g, '\n');
 const PRODUCT_SYSTEM_PROMPT = (process.env.AI_CHAT_SYSTEM_PROMPT?.trim() || DEFAULT_PRODUCT_SYSTEM_PROMPT).replace(
   /\\n/g,
@@ -114,9 +118,21 @@ export class AiChatbotService {
     let usage: AiUsage = lightResult.usage;
 
     if (needsProducts) {
-      const candidates = this.searchProductCandidates(lightKnowledge.menu, message, chat.messages || []);
+      const allProducts = Menu.getProductList(lightKnowledge.menu);
+      const selectorMessages = this.buildProductSelectorMessages(allProducts, chat.messages || [], message);
+      this.logMessages(traceId, 'product-selector', selectorMessages);
+
+      this.logger.log(`[${traceId}] product selector ai start products=${allProducts.length}`);
+      const selectorResult = await this.generateAiText(selectorMessages, traceId, 'product-selector');
+      this.logAiResponse(traceId, 'product-selector', selectorResult.text, selectorResult.usage);
+
+      const selectedProductRefs = this.parseProductSelectionResponse(selectorResult.text);
+      const candidates = this.resolveProductEntities(selectedProductRefs, allProducts).slice(0, MAX_PRODUCT_CONTEXT);
+      usage = this.mergeUsage(usage, selectorResult.usage);
       this.logger.log(
-        `[${traceId}] fuse candidates count=${candidates.length} titles=${JSON.stringify(
+        `[${traceId}] product selector refs=${JSON.stringify(selectedProductRefs)} candidates count=${
+          candidates.length
+        } titles=${JSON.stringify(
           candidates.map((product) => product.title),
         )}`,
       );
@@ -138,7 +154,7 @@ export class AiChatbotService {
       const parsedResponse = this.parsePlainTextResponse(productResult.text);
       finalMessage = parsedResponse.text || FALLBACK_MESSAGE;
       products = this.resolveProducts(parsedResponse.productIds, productKnowledge.productsByIndex);
-      usage = this.mergeUsage(lightResult.usage, productResult.usage);
+      usage = this.mergeUsage(usage, productResult.usage);
       this.logger.log(
         `[${traceId}] parsed textLen=${finalMessage.length} productRefs=${JSON.stringify(
           parsedResponse.productIds,
@@ -318,48 +334,50 @@ export class AiChatbotService {
     return response.trim() === PRODUCT_MARKER;
   }
 
-  private searchProductCandidates(menu: Menu, userMessage: string, history: AiChatMessage[]): Product[] {
-    const products = Menu.getProductList(menu);
-    if (!products.length) return [];
+  private buildProductSelectorMessages(
+    products: Product[],
+    history: AiChatMessage[],
+    userMessage: string,
+  ): CoreMessage[] {
+    const productList = products.map((product, index) => `${index + 1}. ${product.title}`).join('\n');
 
-    const query = this.buildProductSearchQuery(userMessage, history);
-    if (!query) return [];
+    const messages: CoreMessage[] = [
+      {
+        role: 'system',
+        content: `${PRODUCT_SELECTOR_PROMPT}
 
-    const fuse = new Fuse(products, {
-      keys: [
-        { name: 'title', weight: 1 },
-        { name: 'category.title', weight: 0.6 },
-        { name: 'variants.title', weight: 0.5 },
-        { name: 'description', weight: 0.3 },
-      ],
-      threshold: FUSE_THRESHOLD,
-      ignoreLocation: true,
-      includeScore: true,
+لیست محصولات:
+${productList}`,
+      },
+    ];
+
+    history.slice(-MAX_HISTORY_MESSAGES).forEach((message) => {
+      if (message.userMessage) messages.push({ role: 'user', content: message.userMessage });
+      if (message.botMessage) messages.push({ role: 'assistant', content: message.botMessage });
     });
 
-    return fuse
-      .search(query)
-      .slice(0, MAX_PRODUCT_CONTEXT)
-      .map((result) => result.item);
+    messages.push({ role: 'user', content: userMessage });
+
+    return messages;
   }
 
-  private buildProductSearchQuery(userMessage: string, history: AiChatMessage[]) {
-    const previousUserMessages = history
-      .slice(-3)
-      .map((message) => message.userMessage)
+  private parseProductSelectionResponse(response: string): string[] {
+    return this.parsePlainTextResponse(response).productIds;
+  }
+
+  private resolveProductEntities(productRefs: string[], productsByIndex: Product[]): Product[] {
+    const products = productRefs
+      .map((ref) => {
+        const productIndex = Number(ref);
+        if (Number.isInteger(productIndex) && productIndex >= 1 && productIndex <= productsByIndex.length) {
+          return productsByIndex[productIndex - 1];
+        }
+
+        return productsByIndex.find((product) => product.id === ref);
+      })
       .filter(Boolean);
 
-    return this.normalizeSearchText([...previousUserMessages, userMessage].join(' '));
-  }
-
-  private normalizeSearchText(value: string) {
-    return (value || '')
-      .replace(/ي/g, 'ی')
-      .replace(/ك/g, 'ک')
-      .replace(/\u200c/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim()
-      .toLowerCase();
+    return [...new Map(products.map((product) => [product.id, product])).values()];
   }
 
   private parseProductIds(arrayText: string): string[] {
@@ -435,20 +453,9 @@ ${products.map((product, index) => this.formatProductKnowledge(product, index)).
 
     if (product.description) parts.push(`توضیحات: ${product.description}`);
 
-    parts.push(
-      product.variants?.length
-        ? `انواع: ${product.variants.map((variant) => this.formatVariantKnowledge(product, variant)).join('، ')}`
-        : this.formatProductPrice(product),
-    );
+    parts.push(this.formatProductPrice(product));
 
     return parts.join(' | ');
-  }
-
-  private formatVariantKnowledge(product: Product, variant: ProductVariant) {
-    const parts = [`${variant.title} (قیمت: ${Product.realPrice(product, variant)})`];
-    if (Product.hasDiscount(product, variant)) parts.push(`قیمت با تخفیف: ${Product.totalPrice(product, variant)}`);
-    if (Product.isFinished(product, variant)) parts.push('[تمام شده]');
-    return parts.join(' ');
   }
 
   private formatProductPrice(product: Product) {
