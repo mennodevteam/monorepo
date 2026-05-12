@@ -23,6 +23,10 @@ export const AiChatbotSchema = new EntitySchema<AiChatbot>({
       type: String,
       nullable: true,
     },
+    tokenBalance: {
+      type: Number,
+      default: 0,
+    },
     createdAt: {
       type: 'timestamptz',
       createDate: true,

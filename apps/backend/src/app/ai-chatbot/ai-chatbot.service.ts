@@ -1,5 +1,5 @@
-import { AiChat, AiChatMessage, Menu, Product, Shop } from '@menno/types';
-import { Injectable, Logger } from '@nestjs/common';
+import { AiChat, AiChatbot, AiChatMessage, Menu, Product, Shop } from '@menno/types';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RedisService } from '../core/redis.service';
@@ -40,6 +40,7 @@ const PRODUCT_SYSTEM_PROMPT = (process.env.AI_CHAT_SYSTEM_PROMPT?.trim() || DEFA
 const CHAT_SESSION_TIMEOUT_MS = 3 * 60 * 1000;
 const MAX_HISTORY_MESSAGES = 3;
 const FALLBACK_MESSAGE = 'متاسفانه در تولید پاسخ مشکلی پیش آمد. لطفاً دوباره تلاش کنید.';
+const MIN_TOKEN_BALANCE_TO_CHAT = Number(process.env.AI_CHATBOT_MIN_BALANCE_TO_CHAT || 100);
 
 type ParsedAiResponse = {
   text: string;
@@ -78,6 +79,8 @@ export class AiChatbotService {
     private aiChatRepo: Repository<AiChat>,
     @InjectRepository(AiChatMessage)
     private aiChatMessageRepo: Repository<AiChatMessage>,
+    @InjectRepository(AiChatbot)
+    private aiChatbotRepo: Repository<AiChatbot>,
     private redis: RedisService,
   ) {}
 
@@ -89,11 +92,26 @@ export class AiChatbotService {
     );
 
     const shop = await this.shopRepo.findOne({ where: { id: shopId }, relations: ['aiChatbot'] });
+    if (!shop) {
+      throw new HttpException('Shop not found', HttpStatus.NOT_FOUND);
+    }
     this.logger.log(
-      `[${traceId}] shop loaded hasAiChatbot=${!!shop?.aiChatbot} status=${shop?.aiChatbot?.status || '-'} styleLen=${
-        shop?.aiChatbot?.style?.length || 0
-      } extraInfoLen=${shop?.aiChatbot?.extraInfo?.length || 0}`,
+      `[${traceId}] shop loaded hasAiChatbot=${!!shop.aiChatbot} status=${shop.aiChatbot?.status || '-'} styleLen=${
+        shop.aiChatbot?.style?.length || 0
+      } extraInfoLen=${shop.aiChatbot?.extraInfo?.length || 0} tokenBalance=${shop.aiChatbot?.tokenBalance ?? '-'}`,
     );
+
+    if (!shop.aiChatbot) {
+      throw new HttpException('AI chatbot not found', HttpStatus.NOT_FOUND);
+    }
+
+    const tokenBalance = shop.aiChatbot.tokenBalance ?? 0;
+    if (tokenBalance < MIN_TOKEN_BALANCE_TO_CHAT) {
+      throw new HttpException(
+        'موجودی توکن چت‌بات کافی نیست. از بخش تنظیمات ربات هوشمند در پنل، توکن خریداری کنید.',
+        HttpStatus.PAYMENT_REQUIRED,
+      );
+    }
 
     const chat = await this.getOrCreateChat(shop, userId, chatId);
     this.logger.log(`[${traceId}] chat ready id=${chat.id} historyRows=${chat.messages?.length || 0}`);
@@ -176,6 +194,16 @@ export class AiChatbotService {
       aiChat: { id: chat.id },
     });
     this.logger.log(`[${traceId}] saved ai chat message chatId=${chat.id}`);
+
+    const tokensUsed =
+      usage?.totalTokens ??
+      (usage?.promptTokens != null || usage?.completionTokens != null
+        ? (usage?.promptTokens || 0) + (usage?.completionTokens || 0)
+        : 0);
+    if (tokensUsed > 0) {
+      await this.aiChatbotRepo.decrement({ id: shop.aiChatbot.id }, 'tokenBalance', tokensUsed);
+      this.logger.log(`[${traceId}] decremented tokenBalance by=${tokensUsed} aiChatbotId=${shop.aiChatbot.id}`);
+    }
 
     return { text: finalMessage, productIds, products };
   }

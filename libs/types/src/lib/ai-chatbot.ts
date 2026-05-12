@@ -9,6 +9,7 @@ export class AiChatbot {
   status: Status;
   style?: string;
   extraInfo?: string;
+  tokenBalance: number;
   createdAt: Date;
 }
 

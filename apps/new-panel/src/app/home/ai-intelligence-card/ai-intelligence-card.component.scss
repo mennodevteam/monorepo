@@ -1,0 +1,33 @@
+:host {
+  --ai-violet: #7c3aed;
+  --ai-violet-soft: #a78bfa;
+  display: block;
+}
+
+.ai-intelligence-card {
+  border-radius: 12px;
+  overflow: hidden;
+  border-color: rgba(167, 139, 250, 0.3) !important;
+  background: linear-gradient(
+    165deg,
+    rgba(250, 245, 255, 0.95) 0%,
+    rgba(255, 255, 255, 0.99) 45%,
+    rgba(245, 243, 255, 0.96) 100%
+  );
+  box-shadow:
+    0 1px 3px rgba(99, 102, 241, 0.06),
+    0 8px 28px rgba(167, 139, 250, 0.12),
+    0 20px 56px rgba(124, 58, 237, 0.1),
+    0 0 1px rgba(196, 181, 253, 0.35) inset;
+}
+
+.ai-intelligence-card mat-card-header mat-card-title i {
+  color: var(--ai-violet);
+  filter: drop-shadow(0 1px 3px rgba(124, 58, 237, 0.22));
+}
+
+.hint-text {
+  margin: 8px 0 0;
+  font-size: 13px;
+  opacity: 0.85;
+}

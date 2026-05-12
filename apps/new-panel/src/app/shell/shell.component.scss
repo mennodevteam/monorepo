@@ -63,6 +63,21 @@ mat-sidenav {
     .fa-caret-left {
       margin-inline-end: 8px;
     }
+
+    &.nav-ai-export {
+      i.mat-mdc-list-item-icon {
+        --fa-primary-color: #7c3aed;
+        --fa-secondary-color: #c4b5fd;
+        --fa-secondary-opacity: 0.75;
+        color: #7c3aed;
+      }
+
+      &.active-link i.mat-mdc-list-item-icon {
+        --fa-primary-color: #6d28d9;
+        --fa-secondary-color: #ddd6fe;
+        color: #6d28d9 !important;
+      }
+    }
   }
 }
 

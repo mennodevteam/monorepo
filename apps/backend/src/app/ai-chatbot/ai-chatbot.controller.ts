@@ -1,5 +1,13 @@
 import { AiChat, AiChatbot, AiChatMessage, Shop, User, UserRole } from '@menno/types';
-import { Body, Controller, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Roles } from '../auth/roles.decorators';
@@ -37,12 +45,19 @@ export class AiChatbotController {
   ): Promise<Pick<AiChatMessage, 'botMessage'> & { productIds: string[] }> {
     const shop = await this.shopRepo.findOne({ where: { id: body.shopId }, relations: ['aiChatbot'] });
 
-    if (!shop.aiChatbot) {
+    if (!shop?.aiChatbot) {
       throw new NotFoundException('AI chatbot not found');
     }
 
     const result = await this.aiChatbotService.chat(shop.id, user.id, body.message, body.chatId);
     return { botMessage: result.text, productIds: result.productIds };
+  }
+
+  @Get('token-pricing')
+  @Roles(UserRole.Panel)
+  getTokenPricing(): { pricePer1000Toman: number } {
+    const n = Number(process.env.AI_CHATBOT_TOKEN_PRICE_PER_1000 || 0);
+    return { pricePer1000Toman: Number.isFinite(n) && n > 0 ? n : 0 };
   }
 
   @Get()
@@ -62,19 +77,21 @@ export class AiChatbotController {
     // Get the shop associated with the panel user
     const shop = await this.auth.getPanelUserShop(user, ['aiChatbot', 'smsAccount']);
 
+    const { tokenBalance: _ignoredBalance, ...patch } = aiChatbot;
+
     // Find existing AI chatbot for the shop
     const existingAiChatbot = shop.aiChatbot;
 
     if (existingAiChatbot) {
       // Update existing AI chatbot
-      await this.aiChatbotRepo.update(existingAiChatbot.id, aiChatbot);
+      await this.aiChatbotRepo.update(existingAiChatbot.id, patch);
       return this.aiChatbotRepo.findOne({ where: { id: existingAiChatbot.id } });
     } else {
       // Create new AI chatbot
       const newAiChatbot = this.aiChatbotRepo.create({
-        ...aiChatbot,
+        ...patch,
         smsAccount: shop.smsAccount,
-        status: aiChatbot.status || 1, // Default status
+        status: patch.status || 1, // Default status
       });
 
       const savedAiChatbot = await this.aiChatbotRepo.save(newAiChatbot);

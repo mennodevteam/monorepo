@@ -7,6 +7,20 @@
 
 <form [formGroup]="form">
   <main p-md w-md fxLayout="column" fxLayoutGap="16px">
+    <mat-card appearance="outlined" class="hint-card">
+      <mat-card-content fxLayout="column" fxLayoutGap="12px">
+        <p>{{ 'aiChatbot.setupThirdPartyHint' | translate }}</p>
+        <div fxLayout="row wrap" fxLayoutGap="8px">
+          <a mat-stroked-button color="primary" routerLink="/settings/third-parties/bale">
+            {{ 'aiChatbot.goToThirdPartiesBale' | translate }}
+          </a>
+          <a mat-button routerLink="/settings/third-parties">
+            {{ 'settings.thirdParties' | translate }}
+          </a>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
     <!-- Status Section -->
     <mat-card appearance="outlined">
       <mat-card-content fxLayout="column">

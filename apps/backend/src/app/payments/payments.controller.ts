@@ -11,6 +11,7 @@ import {
   ShopPlugins,
   SmsAccount,
   StatAction,
+  AiChatbot,
   User,
   UserRole,
 } from '@menno/types';
@@ -60,6 +61,8 @@ export class PaymentsController {
     private redis: RedisService,
     @InjectRepository(MenuStat)
     private menuStatRepository: Repository<MenuStat>,
+    @InjectRepository(AiChatbot)
+    private aiChatbotRepository: Repository<AiChatbot>,
   ) {}
 
   @Roles(UserRole.App)
@@ -170,6 +173,46 @@ export class PaymentsController {
         },
       },
       `خرید ماژول روزانه مجموعه ${shop.title}`,
+      userData,
+      shop.id,
+      req.headers.origin,
+    );
+  }
+
+  @Roles(UserRole.Panel)
+  @Get('buyAiChatbotTokens/:tokenAmount')
+  async buyAiChatbotTokens(
+    @LoginUser() user: AuthPayload,
+    @Req() req: Request,
+    @Param('tokenAmount') tokenAmountParam: string,
+  ) {
+    const shop: Shop = await this.auth.getPanelUserShop(user, ['aiChatbot']);
+    if (!shop?.aiChatbot) {
+      throw new HttpException('no ai chatbot for shop', HttpStatus.NOT_FOUND);
+    }
+    const defaultGateway = await this.defaultGateway;
+    const userData = await this.auth.getUserData(user);
+
+    const tokenAmount = Math.floor(Number(tokenAmountParam));
+    if (!Number.isFinite(tokenAmount) || tokenAmount < 1000) {
+      throw new HttpException('invalid token amount', HttpStatus.BAD_REQUEST);
+    }
+    const pricePer1000 = Number(process.env.AI_CHATBOT_TOKEN_PRICE_PER_1000 || 0);
+    if (!Number.isFinite(pricePer1000) || pricePer1000 <= 0) {
+      throw new HttpException('AI chatbot token pricing is not configured', HttpStatus.BAD_REQUEST);
+    }
+    const basePrice = (tokenAmount / 1000) * pricePer1000;
+
+    return this.getRedirectLink(
+      defaultGateway.id,
+      basePrice * 1.09,
+      {
+        buyAiChatbotTokens: {
+          aiChatbotId: shop.aiChatbot.id,
+          tokenAmount,
+        },
+      },
+      `خرید توکن چت هوشمند مجموعه ${shop.title}`,
       userData,
       shop.id,
       req.headers.origin,
@@ -345,6 +388,14 @@ export class PaymentsController {
           { id: payment.details.chargeSmsAccount.smsAccountId },
           'charge',
           amount,
+        );
+        const redirectUrl = `${payment.appReturnUrl}`;
+        return res.redirect(redirectUrl);
+      } else if (payment.details.buyAiChatbotTokens) {
+        await this.aiChatbotRepository.increment(
+          { id: payment.details.buyAiChatbotTokens.aiChatbotId },
+          'tokenBalance',
+          payment.details.buyAiChatbotTokens.tokenAmount,
         );
         const redirectUrl = `${payment.appReturnUrl}`;
         return res.redirect(redirectUrl);
