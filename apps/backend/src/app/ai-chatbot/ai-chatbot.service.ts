@@ -5,9 +5,17 @@ import { Repository } from 'typeorm';
 import { RedisService } from '../core/redis.service';
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
 import { CoreMessage, generateText } from 'ai';
+import Fuse from 'fuse.js';
 
 const MODEL = process.env.AI_CHAT_MODEL;
-const DEFAULT_SYSTEM_PROMPT = `لطفاً اعداد را با استفاده از جداکننده هزارگان (سه رقم سه رقم) نمایش بده.
+const PRODUCT_MARKER = process.env.AI_CHAT_PRODUCT_MARKER || '__NEED_PRODUCTS__';
+const MAX_PRODUCT_CONTEXT = Number(process.env.AI_CHAT_MAX_PRODUCT_CONTEXT || 12);
+const FUSE_THRESHOLD = Number(process.env.AI_CHAT_FUSE_THRESHOLD || 0.35);
+const DEFAULT_LIGHT_SYSTEM_PROMPT = `لطفاً اعداد را با استفاده از جداکننده هزارگان (سه رقم سه رقم) نمایش بده.
+پاسخ را به صورت متن ساده و طبیعی برای کاربر بنویس، نه JSON.
+اگر برای پاسخ دادن به اطلاعات محصولات، قیمت‌ها، موجودی، انواع محصول یا پیشنهاد محصول نیاز داری، فقط عبارت ${PRODUCT_MARKER} را برگردان و هیچ متن دیگری ننویس.
+اگر بدون دانش محصولات می‌توانی جواب بدهی، پاسخ را مستقیم و کوتاه بنویس.`;
+const DEFAULT_PRODUCT_SYSTEM_PROMPT = `لطفاً اعداد را با استفاده از جداکننده هزارگان (سه رقم سه رقم) نمایش بده.
 پاسخ را به صورت متن ساده و طبیعی برای کاربر بنویس، نه JSON.
 اگر کاربر جزئیات بیشتری از محصول خواست، او را به مشاهده محصول در سایت راهنمایی کن.
 فقط وقتی شماره محصول را در آرایه انتهای پاسخ قرار بده که کاربر مستقیم درباره همان محصول سوال کرده باشد یا برای پاسخ دادن لازم باشد جزئیات بیشتر/لینک سفارش همان محصول را بدهی.
@@ -15,7 +23,10 @@ const DEFAULT_SYSTEM_PROMPT = `لطفاً اعداد را با استفاده ا
 در خط آخر فقط آرایه شماره محصولات پیشنهادی را بنویس؛ مانند:
 [2,4]
 اگر محصولی پیشنهاد نمی‌دهی، [] بنویس. هیچ متن دیگری بعد از این آرایه ننویس.`;
-const SYSTEM_PROMPT = (process.env.AI_CHAT_SYSTEM_PROMPT?.trim() || DEFAULT_SYSTEM_PROMPT).replace(
+const LIGHT_SYSTEM_PROMPT = (
+  process.env.AI_CHAT_LIGHT_SYSTEM_PROMPT?.trim() || DEFAULT_LIGHT_SYSTEM_PROMPT
+).replace(/\\n/g, '\n');
+const PRODUCT_SYSTEM_PROMPT = (process.env.AI_CHAT_SYSTEM_PROMPT?.trim() || DEFAULT_PRODUCT_SYSTEM_PROMPT).replace(
   /\\n/g,
   '\n',
 );
@@ -37,6 +48,17 @@ type ProductRef = {
 type ShopAiKnowledge = {
   info: string;
   productsByIndex: ProductRef[];
+};
+
+type LightShopKnowledge = {
+  info: string;
+  menu: Menu;
+};
+
+type AiUsage = {
+  promptTokens?: number;
+  completionTokens?: number;
+  totalTokens?: number;
 };
 
 @Injectable()
@@ -70,27 +92,61 @@ export class AiChatbotService {
     const chat = await this.getOrCreateChat(shop, userId, chatId);
     this.logger.log(`[${traceId}] chat ready id=${chat.id} historyRows=${chat.messages?.length || 0}`);
 
-    const shopAiKnowledge = await this.getShopAiKnowledge(shopId);
+    const lightKnowledge = await this.getLightShopKnowledge(shop);
     this.logger.log(
-      `[${traceId}] knowledge ready products=${shopAiKnowledge.productsByIndex.length} infoLen=${shopAiKnowledge.info.length}`,
+      `[${traceId}] light knowledge ready categories=${lightKnowledge.menu.categories?.length || 0} infoLen=${
+        lightKnowledge.info.length
+      }`,
     );
 
-    const messages = this.buildMessages(shopAiKnowledge.info, shop, chat.messages || [], message);
-    this.logMessages(traceId, messages);
+    const lightMessages = this.buildMessages(lightKnowledge.info, shop, chat.messages || [], message, LIGHT_SYSTEM_PROMPT);
+    this.logMessages(traceId, 'light', lightMessages);
 
-    const { text, usage } = await this.generateAiText(messages, traceId);
+    this.logger.log(`[${traceId}] light ai start`);
+    const lightResult = await this.generateAiText(lightMessages, traceId, 'light');
+    this.logAiResponse(traceId, 'light', lightResult.text, lightResult.usage);
 
-    this.logAiResponse(traceId, text, usage);
+    const needsProducts = this.needsProductKnowledge(lightResult.text);
+    this.logger.log(`[${traceId}] needs products=${needsProducts} lightText="${this.preview(lightResult.text, 1000)}"`);
 
-    const parsedResponse = this.parsePlainTextResponse(text);
-    const finalMessage = parsedResponse.text || FALLBACK_MESSAGE;
-    const products = this.resolveProducts(parsedResponse.productIds, shopAiKnowledge.productsByIndex);
+    let finalMessage = lightResult.text.trim() || FALLBACK_MESSAGE;
+    let products: ProductRef[] = [];
+    let usage: AiUsage = lightResult.usage;
+
+    if (needsProducts) {
+      const candidates = this.searchProductCandidates(lightKnowledge.menu, message, chat.messages || []);
+      this.logger.log(
+        `[${traceId}] fuse candidates count=${candidates.length} titles=${JSON.stringify(
+          candidates.map((product) => product.title),
+        )}`,
+      );
+
+      const productKnowledge = this.getProductKnowledgeForCandidates(candidates);
+      const productMessages = this.buildMessages(
+        productKnowledge.info,
+        shop,
+        chat.messages || [],
+        message,
+        PRODUCT_SYSTEM_PROMPT,
+      );
+      this.logMessages(traceId, 'product', productMessages);
+
+      this.logger.log(`[${traceId}] product ai start`);
+      const productResult = await this.generateAiText(productMessages, traceId, 'product');
+      this.logAiResponse(traceId, 'product', productResult.text, productResult.usage);
+
+      const parsedResponse = this.parsePlainTextResponse(productResult.text);
+      finalMessage = parsedResponse.text || FALLBACK_MESSAGE;
+      products = this.resolveProducts(parsedResponse.productIds, productKnowledge.productsByIndex);
+      usage = this.mergeUsage(lightResult.usage, productResult.usage);
+      this.logger.log(
+        `[${traceId}] parsed textLen=${finalMessage.length} productRefs=${JSON.stringify(
+          parsedResponse.productIds,
+        )} resolvedProducts=${JSON.stringify(products)} finalText="${this.preview(finalMessage)}"`,
+      );
+    }
+
     const productIds = products.map((product) => product.id);
-    this.logger.log(
-      `[${traceId}] parsed textLen=${finalMessage.length} productRefs=${JSON.stringify(
-        parsedResponse.productIds,
-      )} resolvedProducts=${JSON.stringify(products)} finalText="${this.preview(finalMessage)}"`,
-    );
 
     await this.aiChatMessageRepo.save({
       userMessage: message,
@@ -106,10 +162,12 @@ export class AiChatbotService {
     return { text: finalMessage, productIds, products };
   }
 
-  private async generateAiText(messages: CoreMessage[], traceId: string) {
+  private async generateAiText(messages: CoreMessage[], traceId: string, stage: string) {
     try {
       this.logger.log(
-        `[${traceId}] calling ai baseURL=${process.env.AI_BASE_URL || '-'} model=${MODEL || '-'} messages=${messages.length}`,
+        `[${traceId}] calling ${stage} ai baseURL=${process.env.AI_BASE_URL || '-'} model=${
+          MODEL || '-'
+        } messages=${messages.length}`,
       );
       return await generateText({
         model: createOpenAICompatible({
@@ -178,11 +236,12 @@ export class AiChatbotService {
     shop: Shop,
     history: AiChatMessage[],
     userMessage: string,
+    systemPrompt: string,
   ): CoreMessage[] {
     const messages: CoreMessage[] = [
       {
         role: 'system',
-        content: [shopKnowledge, this.getChatbotConfigPrompt(shop), SYSTEM_PROMPT].join('\n\n'),
+        content: [shopKnowledge, this.getChatbotConfigPrompt(shop), systemPrompt].join('\n\n'),
       },
     ];
 
@@ -202,9 +261,9 @@ export class AiChatbotService {
 اطلاعات اضافی: ${shop.aiChatbot.extraInfo || ''}`;
   }
 
-  private logMessages(traceId: string, messages: CoreMessage[]) {
+  private logMessages(traceId: string, stage: string, messages: CoreMessage[]) {
     this.logger.log(
-      `[${traceId}] prompt messages=${JSON.stringify(
+      `[${traceId}] ${stage} prompt messages=${JSON.stringify(
         messages.map((message, index) => ({
           index,
           role: message.role,
@@ -215,9 +274,9 @@ export class AiChatbotService {
     );
   }
 
-  private logAiResponse(traceId: string, text: string, usage: unknown) {
-    this.logger.log(`[${traceId}] ai response textLen=${text.length} text="${this.preview(text, 1500)}"`);
-    this.logger.log(`[${traceId}] ai usage=${this.safeJson(usage)}`);
+  private logAiResponse(traceId: string, stage: string, text: string, usage: unknown) {
+    this.logger.log(`[${traceId}] ${stage} ai response textLen=${text.length} text="${this.preview(text, 1500)}"`);
+    this.logger.log(`[${traceId}] ${stage} ai usage=${this.safeJson(usage)}`);
   }
 
   private logAiError(traceId: string, error: unknown) {
@@ -233,6 +292,14 @@ export class AiChatbotService {
     if (err?.cause) this.logger.error(`[${traceId}] ai error cause=${this.safeJson(err.cause)}`);
   }
 
+  private mergeUsage(first: AiUsage, second: AiUsage): AiUsage {
+    return {
+      promptTokens: (first?.promptTokens || 0) + (second?.promptTokens || 0),
+      completionTokens: (first?.completionTokens || 0) + (second?.completionTokens || 0),
+      totalTokens: (first?.totalTokens || 0) + (second?.totalTokens || 0),
+    };
+  }
+
   private parsePlainTextResponse(response: string): ParsedAiResponse {
     const trimmedResponse = response.trim();
     const arrayStart = trimmedResponse.lastIndexOf('[');
@@ -245,6 +312,54 @@ export class AiChatbotService {
       text: trimmedResponse.slice(0, arrayStart).trim(),
       productIds,
     };
+  }
+
+  private needsProductKnowledge(response: string) {
+    return response.trim() === PRODUCT_MARKER;
+  }
+
+  private searchProductCandidates(menu: Menu, userMessage: string, history: AiChatMessage[]): Product[] {
+    const products = Menu.getProductList(menu);
+    if (!products.length) return [];
+
+    const query = this.buildProductSearchQuery(userMessage, history);
+    if (!query) return [];
+
+    const fuse = new Fuse(products, {
+      keys: [
+        { name: 'title', weight: 1 },
+        { name: 'category.title', weight: 0.6 },
+        { name: 'variants.title', weight: 0.5 },
+        { name: 'description', weight: 0.3 },
+      ],
+      threshold: FUSE_THRESHOLD,
+      ignoreLocation: true,
+      includeScore: true,
+    });
+
+    return fuse
+      .search(query)
+      .slice(0, MAX_PRODUCT_CONTEXT)
+      .map((result) => result.item);
+  }
+
+  private buildProductSearchQuery(userMessage: string, history: AiChatMessage[]) {
+    const previousUserMessages = history
+      .slice(-3)
+      .map((message) => message.userMessage)
+      .filter(Boolean);
+
+    return this.normalizeSearchText([...previousUserMessages, userMessage].join(' '));
+  }
+
+  private normalizeSearchText(value: string) {
+    return (value || '')
+      .replace(/ي/g, 'ی')
+      .replace(/ك/g, 'ک')
+      .replace(/\u200c/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .toLowerCase();
   }
 
   private parseProductIds(arrayText: string): string[] {
@@ -279,19 +394,36 @@ export class AiChatbotService {
     return [...new Map(products.map((product) => [product.id, product])).values()];
   }
 
-  private async getShopAiKnowledge(shopId: string): Promise<ShopAiKnowledge> {
-    const shopRedisData = await this.redis.updateShop(shopId);
-    const menuRedisData = await this.redis.updateMenu(shopId);
+  private async getLightShopKnowledge(shop: Shop): Promise<LightShopKnowledge> {
+    const menuRedisData = await this.redis.updateMenu(shop.id);
     const menu: Menu = JSON.parse(menuRedisData);
     Menu.setRefsAndSort(menu, undefined, false, false);
 
-    const products = Menu.getProductList(menu);
-    const info = `اطلاعات مجموعه: ${shopRedisData}
-لیست کامل محصولات:
-${products
-  .map((product, index) => this.formatProductKnowledge(product, index))
-  .join('\n')}
-`;
+    const appUrl = Shop.appLink(shop, process.env.APP_ORIGIN || '');
+    const categories = menu.categories?.map((category) => `- ${category.title}`).join('\n') || '- دسته‌بندی ثبت نشده';
+    const info = `اطلاعات مجموعه:
+نام: ${shop.title || '-'}
+توضیحات: ${shop.description || '-'}
+آدرس سایت: ${appUrl}
+دسته‌بندی‌ها:
+${categories}`;
+
+    return { info, menu };
+  }
+
+  private getProductKnowledgeForCandidates(products: Product[]): ShopAiKnowledge {
+    if (!products.length) {
+      return {
+        info: `محصول مرتبطی با پیام کاربر پیدا نشد. از کاربر بخواه سوالش را دقیق‌تر بپرسد.
+لیست محصولات مرتبط:
+`,
+        productsByIndex: [],
+      };
+    }
+
+    const info = `لیست محصولات مرتبط:
+${products.map((product, index) => this.formatProductKnowledge(product, index)).join('\n')}`;
+
     return { info, productsByIndex: products.map((product) => ({ id: product.id, title: product.title })) };
   }
 
@@ -300,6 +432,8 @@ ${products
       `- ${product.title} (شماره محصول: ${index + 1})`,
       `دسته: ${product.category?.title || 'بدون دسته'}`,
     ];
+
+    if (product.description) parts.push(`توضیحات: ${product.description}`);
 
     parts.push(
       product.variants?.length
