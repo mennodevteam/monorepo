@@ -47,13 +47,14 @@
   </h1>
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container">
+  <!-- fixedTopGap matches mat.theme density -2 toolbar height (56px); if density changes, update this. -->
   <mat-sidenav
     #drawer
     class="sidenav"
     fixedInViewport
     [mode]="isSmallScreen() ? 'over' : 'side'"
     [opened]="!isDrawerClose()"
-    [fixedTopGap]="64"
+    [fixedTopGap]="56"
   >
     <mat-nav-list>
       <a
@@ -205,7 +206,7 @@
       </a>
       <a
         mat-list-item
-        class="nav-ai-export"
+        class="nav-ai"
         routerLinkActive="active-link"
         routerLink="/ai-export"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
@@ -259,6 +260,7 @@
         </a>
         <a
           mat-list-item
+          class="nav-ai"
           routerLinkActive="active-link"
           routerLink="/settings/ai-chatbot"
           (click)="isSmallScreen() && isDrawerClose.set(true)"

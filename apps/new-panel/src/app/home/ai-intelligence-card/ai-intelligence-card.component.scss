@@ -1,13 +1,11 @@
 :host {
-  --ai-violet: #7c3aed;
-  --ai-violet-soft: #a78bfa;
   display: block;
 }
 
 .ai-intelligence-card {
   border-radius: 12px;
   overflow: hidden;
-  border-color: rgba(167, 139, 250, 0.3) !important;
+  border-color: var(--np-ai-outline) !important;
   background: linear-gradient(
     165deg,
     rgba(250, 245, 255, 0.95) 0%,
@@ -22,15 +20,15 @@
 }
 
 .ai-intelligence-card mat-card-header mat-card-title i {
-  color: var(--ai-violet);
-  filter: drop-shadow(0 1px 3px rgba(124, 58, 237, 0.22));
+  color: var(--np-ai-accent-muted);
+  filter: drop-shadow(0 1px 3px color-mix(in srgb, var(--np-ai-accent) 22%, transparent));
 }
 
 .marketing-line {
   margin: 0 0 12px;
   font-size: 13px;
   line-height: 1.55;
-  color: #5b21b6;
+  color: color-mix(in srgb, var(--np-ai-accent) 82%, var(--mat-sys-on-surface));
   opacity: 0.95;
 }
 
