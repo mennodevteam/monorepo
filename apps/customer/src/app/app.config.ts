@@ -1,6 +1,7 @@
 import { ApplicationConfig, inject, provideAppInitializer, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
+import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { QueryClient, provideTanStackQuery } from '@tanstack/angular-query-experimental';
 import { appRoutes } from './app.routes';
@@ -10,12 +11,13 @@ import { ThemeService } from './core/services/theme.service';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZonelessChangeDetection(),
+    provideClientHydration(),
     provideAnimations(),
     provideRouter(
       appRoutes,
       withComponentInputBinding(),
     ),
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withFetch(), withInterceptorsFromDi()),
     provideTanStackQuery(
       new QueryClient({
         defaultOptions: {

@@ -28,41 +28,51 @@ const PERSON_PLACEHOLDER_DATA_URL =
   standalone: true,
 })
 export class ImageLoaderDirective implements AfterViewInit, OnDestroy {
-  private static readonly observer = new IntersectionObserver(
-    (entries, observer) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) {
-          continue;
-        }
+  private static observer: IntersectionObserver | null = null;
 
-        const target = entry.target as HTMLElement;
-        const src = target.getAttribute('data-image-src') ?? '';
-        const placeholder = target.getAttribute('data-image-placeholder') ?? DEFAULT_PLACEHOLDER_DATA_URL;
-        const fallback =
-          target.getAttribute('data-image-default-placeholder') ?? DEFAULT_PLACEHOLDER_DATA_URL;
+  private static getObserver(): IntersectionObserver | null {
+    if (typeof IntersectionObserver === 'undefined') {
+      return null;
+    }
+    if (!ImageLoaderDirective.observer) {
+      ImageLoaderDirective.observer = new IntersectionObserver(
+        (entries, observer) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) {
+              continue;
+            }
 
-        if (target.tagName.toLowerCase() === 'img') {
-          const img = target as HTMLImageElement;
-          img.src = placeholder;
-          img.onerror = () => {
-            img.onerror = null;
-            img.src = fallback;
-          };
+            const target = entry.target as HTMLElement;
+            const src = target.getAttribute('data-image-src') ?? '';
+            const placeholder = target.getAttribute('data-image-placeholder') ?? DEFAULT_PLACEHOLDER_DATA_URL;
+            const fallback =
+              target.getAttribute('data-image-default-placeholder') ?? DEFAULT_PLACEHOLDER_DATA_URL;
 
-          if (src) {
-            img.src = src;
+            if (target.tagName.toLowerCase() === 'img') {
+              const img = target as HTMLImageElement;
+              img.src = placeholder;
+              img.onerror = () => {
+                img.onerror = null;
+                img.src = fallback;
+              };
+
+              if (src) {
+                img.src = src;
+              }
+            } else {
+              target.style.background = `url('${src}'), url('${placeholder}'), url('${fallback}')`;
+              target.style.backgroundSize = 'cover';
+              target.style.backgroundPosition = 'center';
+            }
+
+            observer.unobserve(target);
           }
-        } else {
-          target.style.background = `url('${src}'), url('${placeholder}'), url('${fallback}')`;
-          target.style.backgroundSize = 'cover';
-          target.style.backgroundPosition = 'center';
-        }
-
-        observer.unobserve(target);
-      }
-    },
-    { rootMargin: '200px', threshold: 0.1 },
-  );
+        },
+        { rootMargin: '200px', threshold: 0.1 },
+      );
+    }
+    return ImageLoaderDirective.observer;
+  }
 
   private readonly element = inject(ElementRef<HTMLElement>);
   private readonly injector = inject(Injector);
@@ -82,7 +92,7 @@ export class ImageLoaderDirective implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.cleanupEffect?.destroy();
-    ImageLoaderDirective.observer.unobserve(this.element.nativeElement);
+    ImageLoaderDirective.getObserver()?.unobserve(this.element.nativeElement);
   }
 
   private setupEffect() {
@@ -107,7 +117,18 @@ export class ImageLoaderDirective implements AfterViewInit, OnDestroy {
           element.style.backgroundPosition = 'center';
         }
 
-        ImageLoaderDirective.observer.observe(element);
+        const observer = ImageLoaderDirective.getObserver();
+        if (observer) {
+          observer.observe(element);
+        } else if (source) {
+          if (element.tagName.toLowerCase() === 'img') {
+            (element as HTMLImageElement).src = source;
+          } else {
+            element.style.background = `url('${source}')`;
+            element.style.backgroundSize = 'cover';
+            element.style.backgroundPosition = 'center';
+          }
+        }
       }),
     );
   }

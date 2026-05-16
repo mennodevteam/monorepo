@@ -7,13 +7,17 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:browser",
+      "executor": "@angular-devkit/build-angular:application",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/customer",
         "index": "apps/customer/src/index.html",
-        "main": "apps/customer/src/main.ts",
-        "polyfills": ["zone.js"],
+        "browser": "apps/customer/src/main.ts",
+        "server": "apps/customer/src/main.server.ts",
+        "ssr": {
+          "entry": "apps/customer/server.ts"
+        },
+        "outputMode": "server",
         "tsConfig": "apps/customer/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
@@ -25,7 +29,8 @@
           }
         ],
         "styles": ["apps/customer/src/styles.scss"],
-        "scripts": []
+        "scripts": [],
+        "polyfills": ["zone.js"]
       },
       "configurations": {
         "production": {
@@ -60,7 +65,24 @@
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
       "options": {
-        "port": 4300
+        "port": 4300,
+        "buildTarget": "customer:build:development"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "customer:build:production"
+        },
+        "development": {
+          "buildTarget": "customer:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "serve-ssr": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "options": {
+        "port": 4300,
+        "buildTarget": "customer:build:development"
       },
       "configurations": {
         "production": {

@@ -15,6 +15,8 @@ import { LinkService } from '../../core/services/link.service';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { ShopService } from '../../core/services/shop.service';
 import { TitleService } from '../../core/services/title.service';
+import { SeoService } from '../../core/services/seo.service';
+import { buildCategoryPageSeo } from '../../core/seo/page-seo.builder';
 import { MenuViewType, ProductCategory } from '@menno/types';
 
 @Component({
@@ -34,6 +36,7 @@ export class CategoryComponent implements OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly titleService = inject(TitleService);
+  private readonly seoService = inject(SeoService);
   private readonly document = inject(DOCUMENT);
 
   private readonly categoryIdParam = toSignal(
@@ -136,7 +139,11 @@ export class CategoryComponent implements OnDestroy {
   constructor() {
     effect(() => {
       const category = this.category();
+      const shop = this.shopService.data();
       this.titleService.setTitle(category?.title);
+      if (category && shop) {
+        this.seoService.applyPageSeo(buildCategoryPageSeo(category, shop));
+      }
     });
 
     effect(() => {

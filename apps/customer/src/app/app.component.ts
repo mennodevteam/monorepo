@@ -4,7 +4,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
 import { HomeSectionService } from './core/services/home-section.service';
+import { MenuService } from './core/services/menu.service';
 import { ShopService } from './core/services/shop.service';
+import { ThemeService } from './core/services/theme.service';
+import { ThemeMode } from '@menno/types';
 import { resolveShopUsername } from './core/functions';
 import { WelcomeMessageDialogComponent } from './shared/components/welcome-message-dialog/welcome-message-dialog.component';
 
@@ -16,27 +19,39 @@ import { WelcomeMessageDialogComponent } from './shared/components/welcome-messa
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  title = 'customer';
   private readonly homeSectionService = inject(HomeSectionService);
+  private readonly menuService = inject(MenuService);
   private readonly shopService = inject(ShopService);
+  private readonly themeService = inject(ThemeService);
   private readonly router = inject(Router);
   private readonly dialog = inject(MatDialog);
   private readonly destroyRef = inject(DestroyRef);
 
   private welcomeTimerId: ReturnType<typeof setTimeout> | undefined;
   private hasShownWelcomePopup = false;
-  private pendingWelcomeAfterPreload = false;
 
   constructor() {
     effect(() => {
-      this.shopService.data();
+      const shop = this.shopService.data();
+      const themeColor = shop?.appConfig?.themeHex || shop?.appConfig?.theme?.primaryColor;
+      if (themeColor) {
+        this.themeService.setTheme({
+          mode: shop?.appConfig?.themeMode === ThemeMode.Dark ? 'dark' : 'light',
+          mainColor: themeColor,
+        });
+      }
       this.tryShowWelcomePopup();
     });
   }
 
   ngOnInit(): void {
-    this.setupPreloadRemoval();
-    this.homeSectionService.prefetchHomeSections(resolveShopUsername());
+    if (typeof window !== 'undefined') {
+      const username = resolveShopUsername();
+      void this.menuService.prefetchMenu(username);
+      void this.shopService.prefetchShop(username);
+      void this.homeSectionService.prefetchHomeSections(username);
+    }
+
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
@@ -46,48 +61,7 @@ export class AppComponent implements OnInit {
         this.tryShowWelcomePopup();
       });
 
-    const onPreloadRemoved = () => {
-      if (!this.pendingWelcomeAfterPreload || this.hasShownWelcomePopup) {
-        return;
-      }
-      this.pendingWelcomeAfterPreload = false;
-      if (this.isWelcomeRoute(this.currentPath())) {
-        this.openWelcomeDialog();
-      }
-    };
-    window.addEventListener('preload-removed', onPreloadRemoved);
-    this.destroyRef.onDestroy(() => window.removeEventListener('preload-removed', onPreloadRemoved));
-
     this.tryShowWelcomePopup();
-  }
-
-  private setupPreloadRemoval() {
-    const removePreload = () => {
-      const preloadElement = document.querySelector<HTMLElement>('#pre-load-data-container');
-      if (!preloadElement) {
-        return;
-      }
-
-      preloadElement.style.opacity = '0';
-      window.setTimeout(() => {
-        preloadElement.remove();
-        (window as any).__preloadRemoved = true;
-        window.dispatchEvent(new Event('preload-removed'));
-      }, 320);
-    };
-
-    if ((window as any).__preloadAnimationDone) {
-      removePreload();
-      return;
-    }
-
-    const onPreloadDone = () => {
-      window.removeEventListener('preload-animation-done', onPreloadDone);
-      removePreload();
-    };
-
-    window.addEventListener('preload-animation-done', onPreloadDone);
-    this.destroyRef.onDestroy(() => window.removeEventListener('preload-animation-done', onPreloadDone));
   }
 
   private tryShowWelcomePopup() {
@@ -108,11 +82,6 @@ export class AppComponent implements OnInit {
         return;
       }
 
-      if (this.isPreloadVisible()) {
-        this.pendingWelcomeAfterPreload = true;
-        return;
-      }
-
       this.openWelcomeDialog();
     }, delayMs);
   }
@@ -125,10 +94,6 @@ export class AppComponent implements OnInit {
     this.dialog.open(WelcomeMessageDialogComponent, {
       panelClass: 'visible-overflow',
     });
-  }
-
-  private isPreloadVisible() {
-    return !!document.querySelector('#pre-load-data-container');
   }
 
   private currentPath() {

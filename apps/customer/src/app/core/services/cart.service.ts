@@ -131,18 +131,23 @@ export class CartService {
   });
 
   constructor() {
-    const localQuantity = JSON.parse(localStorage.getItem(LOCAL_CART_QUANTITY_KEY) || 'null');
-    if (localQuantity?.items?.length && localQuantity.date > Date.now() - 1000 * 60 * 60 * 24) {
-      this.quantity.set(
-        localQuantity.items.map((x: { productId: string; variantId?: number; quantity: number }) => ({
-          productId: x.productId,
-          variantId: x.variantId,
-          quantity: signal(x.quantity),
-        })),
-      );
+    if (typeof localStorage !== 'undefined') {
+      const localQuantity = JSON.parse(localStorage.getItem(LOCAL_CART_QUANTITY_KEY) || 'null');
+      if (localQuantity?.items?.length && localQuantity.date > Date.now() - 1000 * 60 * 60 * 24) {
+        this.quantity.set(
+          localQuantity.items.map((x: { productId: string; variantId?: number; quantity: number }) => ({
+            productId: x.productId,
+            variantId: x.variantId,
+            quantity: signal(x.quantity),
+          })),
+        );
+      }
     }
 
     effect(() => {
+      if (typeof localStorage === 'undefined') {
+        return;
+      }
       const items = this.quantity();
       if (items.length) {
         localStorage.setItem(
@@ -176,14 +181,11 @@ export class CartService {
       }
     });
 
-    effect(
-      () => {
-        if (!this.address() && this.addressesService.addresses()?.length) {
-          this.address.set(this.addressesService.addresses()?.[0]);
-        }
-      },
-      { allowSignalWrites: true },
-    );
+    effect(() => {
+      if (!this.address() && this.addressesService.addresses()?.length) {
+        this.address.set(this.addressesService.addresses()?.[0]);
+      }
+    });
 
     effect(() => {
       const coupons = this.club.coupons();

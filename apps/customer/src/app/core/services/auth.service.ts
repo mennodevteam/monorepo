@@ -16,7 +16,11 @@ export class AuthService {
   user = signal<User | undefined>(undefined);
 
   constructor() {
-    this.init();
+    if (typeof window !== 'undefined') {
+      this.init();
+    } else {
+      this._loading.complete();
+    }
   }
 
   async init() {

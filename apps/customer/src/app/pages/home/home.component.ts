@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
 import { HomeSectionType, Menu, Product, ProductCategory } from '@menno/types';
 import { HomeSectionService } from '../../core/services/home-section.service';
 import { MenuService } from '../../core/services/menu.service';
@@ -13,6 +13,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { RouterLink } from '@angular/router';
 import { ImageLoaderDirective } from '../../shared/directives/image-loader.directive';
 import { resolveShopUsername } from '../../core/functions';
+import { ShopService } from '../../core/services/shop.service';
+import { SeoService } from '../../core/services/seo.service';
+import { buildHomePageSeo } from '../../core/seo/page-seo.builder';
 
 const FALLBACK_PRODUCT_COUNT = 20;
 
@@ -23,34 +26,21 @@ function menuFallbackCacheKey(shopUsername: string, menu: Menu): string {
   return `${shopUsername}:${menu.id ?? ''}`;
 }
 
-/** Fisher–Yates shuffle روی کپی آرایه، سپس حداکثر `count` عضو اول. */
-function shufflePick<T>(items: readonly T[], count: number): T[] {
-  const copy = [...items];
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  return copy.slice(0, Math.min(count, copy.length));
-}
-
 function productHasMainImage(product: Product): boolean {
   return !!Product.mainImageFile(product);
 }
 
-/** تا `count` محصول تصادفی؛ اول از دارای تصویر اصلی، بعد بقیه برای تکمیل سقف. */
-function shufflePickProductsPreferringImages(products: readonly Product[], count: number): Product[] {
-  const withImage = products.filter((p) => productHasMainImage(p));
-  const withoutImage = products.filter((p) => !productHasMainImage(p));
-  const picked = shufflePick(withImage, count);
-  if (picked.length >= count) return picked;
-  return [...picked, ...shufflePick(withoutImage, count - picked.length)];
-}
-
-function getStableFallbackProducts(menu: Menu, shopUsername: string): Product[] {
+/** Deterministic product pick for stable SSR hydration and SEO. */
+function pickFallbackProducts(menu: Menu, shopUsername: string): Product[] {
   const key = menuFallbackCacheKey(shopUsername, menu);
   if (!fallbackProductsPickCache || fallbackProductsPickCache.menuKey !== key) {
     const all = Menu.getProductList(menu);
-    const picked = shufflePickProductsPreferringImages(all, FALLBACK_PRODUCT_COUNT);
+    const withImage = all.filter((p) => productHasMainImage(p));
+    const withoutImage = all.filter((p) => !productHasMainImage(p));
+    const sorted = [...withImage, ...withoutImage].sort((a, b) =>
+      (a.title ?? a.id ?? '').localeCompare(b.title ?? b.id ?? '', 'fa'),
+    );
+    const picked = sorted.slice(0, FALLBACK_PRODUCT_COUNT);
     fallbackProductsPickCache = { menuKey: key, productIds: picked.map((p) => p.id) };
   }
   return fallbackProductsPickCache.productIds
@@ -80,8 +70,19 @@ export class HomeComponent {
   readonly homeSectionService = inject(HomeSectionService);
   private readonly menuService = inject(MenuService);
   private readonly linkService = inject(LinkService);
+  private readonly shopService = inject(ShopService);
+  private readonly seoService = inject(SeoService);
 
   readonly sections = this.homeSectionService.data;
+
+  constructor() {
+    effect(() => {
+      const shop = this.shopService.data();
+      if (shop) {
+        this.seoService.applyPageSeo(buildHomePageSeo(shop));
+      }
+    });
+  }
   readonly isLoading = computed(() => this.homeSectionService.homeSectionsQuery.isLoading());
   readonly menuLoading = computed(() => this.menuService.menuQuery.isLoading());
 
@@ -91,7 +92,7 @@ export class HomeComponent {
   readonly fallbackProducts = computed(() => {
     const menu = this.menuService.data();
     if (!menu) return [];
-    return getStableFallbackProducts(menu, this.shopUsername);
+    return pickFallbackProducts(menu, this.shopUsername);
   });
 
   /** Home sections loaded, no CMS sections, menu still loading */

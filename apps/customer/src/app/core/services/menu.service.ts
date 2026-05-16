@@ -1,11 +1,14 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, computed, inject } from '@angular/core';
+import { Injectable, REQUEST, computed, inject } from '@angular/core';
 import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { firstValueFrom } from 'rxjs';
 import { Menu, Product } from '@menno/types';
 import { resolveShopUsername } from '../functions';
+import { ensureMenuPrepared } from '../utils/prepare-menu';
 import { CampaignService } from './campaign.service';
 import { AuthService } from './auth.service';
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
 
 const MENU_QUERY_KEY = (username: string) => ['menu', username] as const;
 
@@ -17,19 +20,23 @@ export class MenuService {
   private readonly queryClient = inject(QueryClient);
   private readonly campaign = inject(CampaignService);
   private readonly auth = inject(AuthService);
-  private readonly username = resolveShopUsername();
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly request = inject(REQUEST, { optional: true }) as Request | null;
   private loadMenuStatSent = false;
+
+  private get username(): string {
+    const host = this.request?.headers?.get('host')?.split(':')[0];
+    return resolveShopUsername(
+      host ?? (typeof window !== 'undefined' ? window.location.hostname : undefined),
+    );
+  }
 
   readonly menuQuery = injectQuery(() => ({
     queryKey: MENU_QUERY_KEY(this.username),
     queryFn: () => this.fetchMenu(this.username),
     refetchOnWindowFocus: false,
-    select: (data: Menu) => {
-      if (data) {
-        Menu.setRefsAndSort(data, undefined, false, false);
-      }
-      return data;
-    },
+    structuralSharing: false,
+    select: (data: Menu) => (data ? ensureMenuPrepared(data) : data),
   }));
 
   prefetchMenu(username: string) {
@@ -47,7 +54,7 @@ export class MenuService {
         headers: { skipJwt: 'true' },
       }),
     );
-    if (menu?.id && !this.loadMenuStatSent) {
+    if (menu?.id && !this.loadMenuStatSent && isPlatformBrowser(this.platformId)) {
       this.loadMenuStatSent = true;
       await this.auth.getResolver();
       if (!this.auth.user()?.id) {

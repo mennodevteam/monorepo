@@ -1,4 +1,6 @@
 {
-  "platform": "static",
-  "app": "menno-customer"
+  "platform": "node",
+  "app": "menno-customer",
+  "port": 4300,
+  "start": "node dist/apps/customer/server/server.mjs"
 }

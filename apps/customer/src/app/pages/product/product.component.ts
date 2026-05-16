@@ -1,5 +1,5 @@
-import { Component, computed, effect, inject, OnDestroy, signal, viewChild, ElementRef } from '@angular/core';
-import { CommonModule, DecimalPipe } from '@angular/common';
+import { Component, computed, effect, inject, OnDestroy, PLATFORM_ID, signal, viewChild, ElementRef } from '@angular/core';
+import { CommonModule, DecimalPipe, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -10,6 +10,10 @@ import { Product, ProductVariant, ProductCategory, Menu, StatAction } from '@men
 import { MenuService } from '../../core/services/menu.service';
 import { MenuStatService } from '../../core/services/menu-stat.service';
 import { TitleService } from '../../core/services/title.service';
+import { SeoService } from '../../core/services/seo.service';
+import { ShopService } from '../../core/services/shop.service';
+import { buildProductPageSeo } from '../../core/seo/page-seo.builder';
+import { getProductPath } from '../../core/seo/seo-paths';
 import { ImageLoaderDirective } from '../../shared/directives/image-loader.directive';
 import { QuantitySelectorComponent } from '../../shared/components/quantity-selector/quantity-selector.component';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
@@ -36,6 +40,9 @@ export class ProductComponent implements OnDestroy {
   private readonly menuStat = inject(MenuStatService);
   private readonly route = inject(ActivatedRoute);
   private readonly titleService = inject(TitleService);
+  private readonly seoService = inject(SeoService);
+  private readonly shopService = inject(ShopService);
+  private readonly platformId = inject(PLATFORM_ID);
 
   private readonly productIdParam = toSignal(this.route.paramMap.pipe(map((params) => params.get('id'))), {
     initialValue: this.route.snapshot.paramMap.get('id'),
@@ -171,6 +178,7 @@ export class ProductComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.titleService.clearTitle();
+    this.seoService.clearProductStructuredData();
     this.stopAutoScroll();
   }
 
@@ -241,9 +249,16 @@ export class ProductComponent implements OnDestroy {
   constructor() {
     effect(() => {
       const product = this.product();
-      if (product) {
+      const shop = this.shopService.data();
+      if (product && shop) {
         this.titleService.setTitle(product.title);
-        if (this.lastClickProductId !== product.id) {
+        const productPath = getProductPath(product, product.category);
+        this.seoService.applyPageSeo(buildProductPageSeo(product, shop, productPath));
+        this.seoService.applyProductStructuredData(product, shop, productPath);
+        if (
+          isPlatformBrowser(this.platformId) &&
+          this.lastClickProductId !== product.id
+        ) {
           this.lastClickProductId = product.id;
           this.menuStat.send(StatAction.ClickProduct, { productId: product.id });
         }

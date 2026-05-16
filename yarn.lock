@@ -526,6 +526,14 @@
   dependencies:
     tslib "^2.3.0"
 
+"@angular/platform-server@21.0.0":
+  version "21.0.0"
+  resolved "https://registry.npmjs.org/@angular/platform-server/-/platform-server-21.0.0.tgz#702f033fdc3a999c7ac0e277eec8a9632efb1f2f"
+  integrity sha512-5IcmoftT2hLAbLfSoqGoCg0B1FLSk08xDoUdIyEUo1SmxNJMEEgU6WxhkPf6R7aoOlLAwYBoqGGP1Us1Z7rO7g==
+  dependencies:
+    tslib "^2.3.0"
+    xhr2 "^0.2.0"
+
 "@angular/router@21.0.0":
   version "21.0.0"
   resolved "https://registry.yarnpkg.com/@angular/router/-/router-21.0.0.tgz#d91e4ac17cd11be3d4f3bea23eb72d8d4463960a"
@@ -537,6 +545,13 @@
   version "21.0.0"
   resolved "https://registry.yarnpkg.com/@angular/service-worker/-/service-worker-21.0.0.tgz#746cfdb75202a393f98284837c36a95587bdd2c7"
   integrity sha512-ZsJyVBvMQ6c9Xbci3cbPPQUPf+ZptvPshvf4eM5I4r3tJc7xDudpKKUqFBgAzZIN/GY5EvzMwGplgIy7HpKh1w==
+  dependencies:
+    tslib "^2.3.0"
+
+"@angular/ssr@21.0.0":
+  version "21.0.0"
+  resolved "https://registry.npmjs.org/@angular/ssr/-/ssr-21.0.0.tgz#e088d8a095409a3cf3786e6467b87a12fc111d81"
+  integrity sha512-lzMzMdsAGy5OB7JsOfKK+SZQdxeOAWDg8sC/XcTUzY/BJu31Lz9kO2nuKmqcgr/aPOrD7Sc0F31u/NxGjeCdTw==
   dependencies:
     tslib "^2.3.0"
 
@@ -15591,6 +15606,11 @@ wsl-utils@^0.1.0:
   integrity sha512-h3Fbisa2nKGPxCpm89Hk33lBLsnaGBvctQopaBSOW/uIs6FTe1ATyAnKFJrzVs9vpGdsTe73WF3V4lIsk4Gacw==
   dependencies:
     is-wsl "^3.1.0"
+
+xhr2@^0.2.0:
+  version "0.2.1"
+  resolved "https://registry.npmjs.org/xhr2/-/xhr2-0.2.1.tgz#4e73adc4f9cfec9cbd2157f73efdce3a5f108a93"
+  integrity sha512-sID0rrVCqkVNUn8t6xuv9+6FViXjUVXq8H5rWOH2rz9fDNQEd4g0EA2XlcEdJXRz5BMEn4O1pJFdT+z4YHhoWw==
 
 xlsx@^0.18.5:
   version "0.18.5"

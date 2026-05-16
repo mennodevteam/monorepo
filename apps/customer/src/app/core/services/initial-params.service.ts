@@ -7,7 +7,9 @@ export class InitialParamsService {
   readonly params: URLSearchParams;
 
   constructor() {
-    this.params = new URLSearchParams(window.location.search);
+    this.params = new URLSearchParams(
+      typeof window !== 'undefined' ? window.location.search : '',
+    );
   }
 
   getValue(key: string) {

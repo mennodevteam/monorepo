@@ -1,6 +1,6 @@
 import { environment } from '../../../environments/environment';
 
-const FALLBACK_USERNAME = 'lime-golestan';
+const FALLBACK_USERNAME = 'maghzook';
 const FALLBACK_HOSTNAME = environment.appDomain;
 
 export const resolveShopUsername = (hostname?: string): string => {

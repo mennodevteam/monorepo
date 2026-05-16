@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, computed, effect, inject } from '@angular/core';
+import { Injectable, REQUEST, computed, effect, inject } from '@angular/core';
 import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { firstValueFrom } from 'rxjs';
 import { OrderType, Shop } from '@menno/types';
@@ -14,7 +14,14 @@ const SHOP_STORAGE_KEY = (username: string) => `shop/${username}`;
 export class ShopService {
   private readonly http = inject(HttpClient);
   private readonly queryClient = inject(QueryClient);
-  private readonly username = resolveShopUsername();
+  private readonly request = inject(REQUEST, { optional: true }) as Request | null;
+
+  private get username(): string {
+    const host = this.request?.headers?.get('host')?.split(':')[0];
+    return resolveShopUsername(
+      host ?? (typeof window !== 'undefined' ? window.location.hostname : undefined),
+    );
+  }
 
   readonly shopQuery = injectQuery(() => ({
     queryKey: SHOP_QUERY_KEY(this.username),

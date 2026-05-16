@@ -7,10 +7,14 @@ export class CampaignService {
   referrer?: string;
   campaign?: string;
   constructor() {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     const urlParams = new URLSearchParams(window.location.search);
     let campaign = urlParams.get('campaign') || null;
     let referrer = document.referrer || null;
-    if (referrer && referrer.search(location.origin) > -1) referrer = null;
+    if (referrer && referrer.search(window.location.origin) > -1) referrer = null;
 
     const storageCampaign = sessionStorage.getItem('campaign');
     if (!campaign && storageCampaign) campaign = storageCampaign;
