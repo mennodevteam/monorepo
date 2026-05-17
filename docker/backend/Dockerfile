@@ -4,11 +4,13 @@ FROM node:22-alpine AS deps
 WORKDIR /workspace
 
 # تنظیم میرور داخلی برای Yarn (Yarn v1)
+RUN apk add --no-cache python3 make g++  
 RUN yarn config set registry https://repo.hmirror.ir/npm
 ENV CYPRESS_INSTALL_BINARY=0
 
 COPY package.json yarn.lock ./
-RUN sed -i 's#https://registry.yarnpkg.com/#https://repo.hmirror.ir/npm/#g' yarn.lock
+RUN sed -i 's#https://registry.yarnpkg.com/#https://repo.hmirror.ir/npm/#g' yarn.lock && \  
+ sed -i 's#https://registry.npmjs.org/#https://repo.hmirror.ir/npm/#g' yarn.lock  
 RUN --mount=type=cache,target=/usr/local/share/.cache/yarn \
     yarn install --registry https://repo.hmirror.ir/npm --network-concurrency 1 --mutex network
 
