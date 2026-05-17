@@ -13,6 +13,9 @@ export enum RedisKey {
   Shop = 'shop',
 }
 
+const CUSTOMER_SSR_HTML_PREFIX = 'customer-ssr-html:';
+const CUSTOMER_SITEMAP_PREFIX = 'customer-sitemap:';
+
 @Injectable()
 export class RedisService {
   private readonly redisClient: Redis;
@@ -31,6 +34,54 @@ export class RedisService {
 
   key(key: RedisKey, id: string) {
     return `${key}-${id}`;
+  }
+
+  private customerCacheHosts(shop: Pick<Shop, 'username' | 'domain'>): string[] {
+    const hosts = new Set<string>();
+    const appOrigin = (process.env.APP_ORIGIN ?? 'menno.pro').split(':')[0].toLowerCase();
+
+    if (shop.domain) {
+      const domain = shop.domain.toLowerCase().replace(/^www\./, '');
+      hosts.add(domain);
+      hosts.add(`www.${domain}`);
+    }
+
+    if (shop.username) {
+      hosts.add(`${shop.username}.${appOrigin}`);
+      hosts.add(`${shop.username}.localhost`);
+    }
+
+    return [...hosts];
+  }
+
+  private async deleteKeysByPattern(pattern: string): Promise<void> {
+    let cursor = '0';
+    do {
+      const [nextCursor, keys] = await this.client.scan(cursor, 'MATCH', pattern, 'COUNT', 100);
+      cursor = nextCursor;
+      if (keys.length > 0) {
+        await this.client.del(...keys);
+      }
+    } while (cursor !== '0');
+  }
+
+  async clearCustomerSsrCache(shopId: string): Promise<void> {
+    try {
+      const shop = await this.shopsRepo.findOne({
+        where: { id: shopId },
+        select: ['id', 'username', 'domain'],
+      });
+      if (!shop) {
+        return;
+      }
+
+      for (const host of this.customerCacheHosts(shop)) {
+        await this.client.del(`${CUSTOMER_SITEMAP_PREFIX}${host}`);
+        await this.deleteKeysByPattern(`${CUSTOMER_SSR_HTML_PREFIX}${host}:*`);
+      }
+    } catch {
+      // Cache purge failures must not block shop/menu updates
+    }
   }
 
   async updateMenu(shopId: string) {
@@ -81,6 +132,8 @@ export class RedisService {
       }
     } catch (error) {
       return;
+    } finally {
+      await this.clearCustomerSsrCache(shopId);
     }
     return;
   }
@@ -120,6 +173,8 @@ export class RedisService {
       return JSON.stringify(shop);
     } catch (error) {
       return;
+    } finally {
+      await this.clearCustomerSsrCache(shopId);
     }
   }
 }
