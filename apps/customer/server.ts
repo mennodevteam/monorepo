@@ -1,10 +1,15 @@
-import 'zone.js/node';
 import '@angular/compiler';
-import { AngularNodeAppEngine, isMainModule, writeResponseToNodeResponse } from '@angular/ssr/node';
+import {
+  AngularNodeAppEngine,
+  createNodeRequestHandler,
+  isMainModule,
+  writeResponseToNodeResponse,
+} from '@angular/ssr/node';
 import express from 'express';
 import { Redis } from 'ioredis';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { getRequestHost } from './src/app/core/functions/request-host';
 import {
   generateSitemapXml,
   getSitemapCacheTtl,
@@ -17,6 +22,8 @@ const REDIS_URI = process.env['REDIS_URI'];
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+let redisClient: Redis | null | undefined;
 
 function isSsrRoute(pathname: string): boolean {
   if (pathname === '/' || pathname === '') {
@@ -31,27 +38,33 @@ function htmlCacheKey(host: string, pathname: string): string {
   return `customer-ssr-html:${host}:${pathname}`;
 }
 
-function createRedisClient(): Redis | null {
+function getRedis(): Redis | null {
+  if (redisClient !== undefined) {
+    return redisClient;
+  }
   if (!REDIS_URI) {
+    redisClient = null;
     return null;
   }
   try {
-    return new Redis(REDIS_URI, { maxRetriesPerRequest: 1, lazyConnect: true });
+    redisClient = new Redis(REDIS_URI, { maxRetriesPerRequest: 1, lazyConnect: true });
   } catch {
-    return null;
+    redisClient = null;
+  }
+  return redisClient;
+}
+
+async function ensureRedisConnected(redis: Redis): Promise<void> {
+  if (redis.status === 'wait') {
+    await redis.connect().catch(() => undefined);
   }
 }
 
-export async function createApp(): Promise<express.Express> {
+function createApp(): express.Express {
   const server = express();
   const distFolder = resolve(__dirname, '..');
   const browserDistFolder = join(distFolder, 'browser');
   const angularApp = new AngularNodeAppEngine();
-  const redis = createRedisClient();
-
-  if (redis) {
-    await redis.connect().catch(() => undefined);
-  }
 
   server.use(
     express.static(browserDistFolder, {
@@ -70,9 +83,11 @@ export async function createApp(): Promise<express.Express> {
   });
 
   server.get('/sitemap.xml', async (req, res) => {
-    const host = (req.headers.host ?? '').split(':')[0];
+    const host = getRequestHost(req) ?? '';
+    const redis = getRedis();
     try {
       if (redis) {
+        await ensureRedisConnected(redis);
         const cached = await redis.get(sitemapCacheKey(host));
         if (cached) {
           res.setHeader('Content-Type', 'application/xml; charset=utf-8');
@@ -105,11 +120,13 @@ export async function createApp(): Promise<express.Express> {
       return next();
     }
 
-    const host = (req.headers.host ?? '').split(':')[0];
+    const host = getRequestHost(req) ?? '';
     const pathname = req.url?.split('?')[0] || '/';
+    const redis = getRedis();
 
     if (redis && isSsrRoute(pathname)) {
       try {
+        await ensureRedisConnected(redis);
         const cached = await redis.get(htmlCacheKey(host, pathname));
         if (cached) {
           res.setHeader('Content-Type', 'text/html; charset=utf-8');
@@ -131,6 +148,7 @@ export async function createApp(): Promise<express.Express> {
       if (redis && isSsrRoute(pathname) && response.headers.get('content-type')?.includes('text/html')) {
         const html = await response.clone().text();
         try {
+          await ensureRedisConnected(redis);
           await redis.set(htmlCacheKey(host, pathname), html, 'EX', HTML_CACHE_TTL_SECONDS);
           res.setHeader('X-SSR-Cache', 'MISS');
         } catch {
@@ -147,9 +165,19 @@ export async function createApp(): Promise<express.Express> {
   return server;
 }
 
+const app = createApp();
+
+/**
+ * Request handler used by the Angular CLI dev-server and production Node deploy.
+ */
+export const reqHandler = createNodeRequestHandler(app);
+
 async function run(): Promise<void> {
   const port = Number(process.env['PORT'] ?? 4300);
-  const app = await createApp();
+  const redis = getRedis();
+  if (redis) {
+    await ensureRedisConnected(redis);
+  }
   app.listen(port, () => {
     console.log(`Customer SSR server listening on http://localhost:${port}`);
   });

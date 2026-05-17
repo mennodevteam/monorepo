@@ -12,6 +12,7 @@ import { QueryClient } from '@tanstack/angular-query-experimental';
 import { firstValueFrom } from 'rxjs';
 import { HomeSection, Menu, Shop } from '@menno/types';
 import { resolveShopUsername } from '../functions';
+import { getRequestHost } from '../functions/request-host';
 import { prepareMenuForApp } from '../utils/prepare-menu';
 import { serializeCircularForTransfer, serializeForTransfer } from '../utils/serialize-for-transfer';
 import { shopTransferKey, menuTransferKey } from '../transfer-state/shop-transfer.keys';
@@ -84,7 +85,7 @@ export function provideSsrDataTransfer() {
     const http = inject(HttpClient);
     const seo = inject(SeoService);
     const request = inject(REQUEST, { optional: true }) as Request | null;
-    const requestHost = request?.headers?.get('host')?.split(':')[0];
+    const requestHost = getRequestHost(request);
     const username = resolveShopUsername(
       requestHost ?? (typeof window !== 'undefined' ? window.location.hostname : undefined),
     );
@@ -98,20 +99,24 @@ export function provideSsrDataTransfer() {
         fetchShop(http, username),
         fetchMenu(http, username),
         fetchHomeSections(http, username),
-      ]).then(([shop, menu, homeSections]) => {
-        const menuForApp = prepareMenuForApp(menu);
+      ])
+        .then(([shop, menu, homeSections]) => {
+          const menuForApp = prepareMenuForApp(menu);
 
-        transferState.set(shopTransferKey(username), serializeForTransfer(shop));
-        transferState.set(menuTransferKey(username), serializeCircularForTransfer(menuForApp));
-        transferState.set(homeSectionsTransferKey(username), serializeForTransfer(homeSections));
-        transferState.set(SSR_PREFETCH_DONE, true);
+          transferState.set(shopTransferKey(username), serializeForTransfer(shop));
+          transferState.set(menuTransferKey(username), serializeCircularForTransfer(menuForApp));
+          transferState.set(homeSectionsTransferKey(username), serializeForTransfer(homeSections));
+          transferState.set(SSR_PREFETCH_DONE, true);
 
-        queryClient.setQueryData(SHOP_QUERY_KEY(username), shop);
-        queryClient.setQueryData(MENU_QUERY_KEY(username), menuForApp);
-        queryClient.setQueryData(HOME_SECTIONS_QUERY_KEY(username), homeSections);
+          queryClient.setQueryData(SHOP_QUERY_KEY(username), shop);
+          queryClient.setQueryData(MENU_QUERY_KEY(username), menuForApp);
+          queryClient.setQueryData(HOME_SECTIONS_QUERY_KEY(username), homeSections);
 
-        seo.applyShopDefaults(shop);
-      });
+          seo.applyShopDefaults(shop);
+        })
+        .catch((error) => {
+          console.error(`SSR prefetch failed for shop "${username}"`, error);
+        });
     }
 
     if (transferState.hasKey(SSR_PREFETCH_DONE)) {

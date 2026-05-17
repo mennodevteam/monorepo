@@ -1,5 +1,5 @@
 import { Menu } from '@menno/types';
-import { resolveShopUsername } from '../app/core/functions/resolve-shop-username';
+import { menuLookupQueries } from '../app/core/functions/resolve-shop-username';
 import { collectSitemapPaths } from '../app/core/seo/seo-paths';
 import { buildSitemapXml } from '../app/core/seo/sitemap';
 
@@ -17,26 +17,47 @@ export function getSitemapCacheTtl(): number {
 function requestBaseUrl(req: { protocol: string; get: (name: string) => string | undefined }): string {
   const forwardedProto = req.get('x-forwarded-proto');
   const protocol = forwardedProto?.split(',')[0]?.trim() || req.protocol || 'https';
-  const host = req.get('host');
+  const forwardedHost = req.get('x-forwarded-host');
+  const host = forwardedHost?.split(',')[0]?.trim() ?? req.get('host');
   return `${protocol}://${host}`;
 }
 
-async function fetchMenu(username: string): Promise<Menu | undefined> {
-  const response = await fetch(`${API_URL}/menus/${encodeURIComponent(username)}`, {
+async function fetchMenu(query: string): Promise<Menu | undefined> {
+  const response = await fetch(`${API_URL}/menus/${encodeURIComponent(query)}`, {
     headers: { skipJwt: 'true' },
   });
   if (!response.ok) {
     return undefined;
   }
-  return (await response.json()) as Menu;
+
+  const body = await response.text();
+  if (!body.trim()) {
+    return undefined;
+  }
+
+  try {
+    const menu = JSON.parse(body) as Menu;
+    return menu?.id ? menu : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+async function fetchMenuForHost(host: string): Promise<Menu | undefined> {
+  for (const query of menuLookupQueries(host)) {
+    const menu = await fetchMenu(query);
+    if (menu) {
+      return menu;
+    }
+  }
+  return undefined;
 }
 
 export async function generateSitemapXml(
   host: string,
   req: { protocol: string; get: (name: string) => string | undefined },
 ): Promise<string | null> {
-  const username = resolveShopUsername(host);
-  const menu = await fetchMenu(username);
+  const menu = await fetchMenuForHost(host);
   if (!menu) {
     return null;
   }

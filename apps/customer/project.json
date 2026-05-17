@@ -30,7 +30,7 @@
         ],
         "styles": ["apps/customer/src/styles.scss"],
         "scripts": [],
-        "polyfills": ["zone.js"]
+        "polyfills": []
       },
       "configurations": {
         "production": {
