@@ -1,4 +1,16 @@
-import { Component, input, computed, inject, signal, viewChild, ElementRef, effect, OnDestroy } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import {
+  Component,
+  PLATFORM_ID,
+  input,
+  computed,
+  inject,
+  signal,
+  viewChild,
+  ElementRef,
+  effect,
+  OnDestroy,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { HomeSection, BannerConfig, BannerAspectRatio, BannerLinkType } from '@menno/types';
 import { ImageLoaderDirective } from '../../directives/image-loader.directive';
@@ -16,6 +28,8 @@ export class BannerComponent implements OnDestroy {
   readonly section = input.required<HomeSection>();
   readonly isFirst = input<boolean>(false);
   private readonly linkService = inject(LinkService);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
 
   readonly config = computed(() => this.section().config as BannerConfig);
   readonly images = computed(() => this.config().images || []);
@@ -29,6 +43,9 @@ export class BannerComponent implements OnDestroy {
 
   constructor() {
     effect((onCleanup) => {
+      if (!this.isBrowser) {
+        return;
+      }
       this.startAutoScroll();
       onCleanup(() => this.stopAutoScroll());
     });
@@ -78,11 +95,19 @@ export class BannerComponent implements OnDestroy {
   }
 
   scrollToIndex(index: number) {
+    if (!this.isBrowser) {
+      this.activeImageIndex.set(index);
+      return;
+    }
+
     this.activeImageIndex.set(index);
     const carouselEl = this.carousel()?.nativeElement;
-    if (carouselEl) {
-      const target = carouselEl.children[index] as HTMLElement;
-      if (target) {
+    if (!carouselEl || typeof carouselEl.getBoundingClientRect !== 'function') {
+      return;
+    }
+
+    const target = carouselEl.children[index] as HTMLElement | undefined;
+    if (target && typeof target.getBoundingClientRect === 'function') {
         const containerRect = carouselEl.getBoundingClientRect();
         const targetRect = target.getBoundingClientRect();
         const containerCenterX = containerRect.left + containerRect.width / 2;
@@ -93,15 +118,18 @@ export class BannerComponent implements OnDestroy {
           left: carouselEl.scrollLeft + horizontalDelta,
           behavior: 'smooth',
         });
-      }
     }
   }
 
   onCarouselScroll() {
+    if (!this.isBrowser) {
+      return;
+    }
+
     this.stopAutoScroll();
 
     const carouselEl = this.carousel()?.nativeElement;
-    if (carouselEl) {
+    if (carouselEl && typeof carouselEl.getBoundingClientRect === 'function') {
       const containerRect = carouselEl.getBoundingClientRect();
       const centerX = containerRect.left + containerRect.width / 2;
       let closestIndex = 0;

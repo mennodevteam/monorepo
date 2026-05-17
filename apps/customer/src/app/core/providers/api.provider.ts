@@ -1,16 +1,20 @@
+import { isPlatformServer } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Injectable, Provider } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { Injectable, PLATFORM_ID, Provider, inject } from '@angular/core';
+import { getClientApiUrl, getServerApiUrl } from '../functions/server-api-url';
 
 const IGNORE_PATTERNS = [/^https?:\/\//, /\/i18n\//];
 
 @Injectable()
 class ApiInterceptor implements HttpInterceptor {
+  private readonly platformId = inject(PLATFORM_ID);
+
   intercept(request: HttpRequest<unknown>, next: HttpHandler) {
     const shouldIgnore = IGNORE_PATTERNS.some((pattern) => pattern.test(request.url));
 
     if (!shouldIgnore) {
-      request = request.clone({ url: `${environment.apiUrl}/${request.url}` });
+      const baseUrl = isPlatformServer(this.platformId) ? getServerApiUrl() : getClientApiUrl();
+      request = request.clone({ url: `${baseUrl}/${request.url}` });
 
       if (!request.headers.has('skipJwt')) {
         const persistedUser = sessionStorage.getItem('appLoginUser') ?? localStorage.getItem('appLoginUser');
@@ -42,4 +46,3 @@ export const apiInterceptorProvider: () => Provider = () => ({
   useClass: ApiInterceptor,
   multi: true,
 });
-

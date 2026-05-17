@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import {
   PLATFORM_ID,
   REQUEST,
@@ -8,46 +7,23 @@ import {
   provideAppInitializer,
 } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { QueryClient } from '@tanstack/angular-query-experimental';
-import { firstValueFrom } from 'rxjs';
 import { HomeSection, Menu, Shop } from '@menno/types';
-import { resolveShopUsername } from '../functions';
 import { getRequestHost } from '../functions/request-host';
+import { resolveShopUsername } from '../functions';
 import { prepareMenuForApp } from '../utils/prepare-menu';
 import { serializeCircularForTransfer, serializeForTransfer } from '../utils/serialize-for-transfer';
 import { shopTransferKey, menuTransferKey } from '../transfer-state/shop-transfer.keys';
 import { homeSectionsTransferKey } from '../transfer-state/home-sections-transfer.keys';
 import { SeoService } from '../services/seo.service';
+import { prefetchShopData } from './ssr-prefetch';
 
 const MENU_QUERY_KEY = (username: string) => ['menu', username] as const;
 const SHOP_QUERY_KEY = (username: string) => ['shop', username] as const;
 const HOME_SECTIONS_QUERY_KEY = (username: string) => ['homeSections', username] as const;
 
 const SSR_PREFETCH_DONE = makeStateKey<boolean>('ssrPrefetchDone');
-
-async function fetchShop(http: HttpClient, username: string): Promise<Shop> {
-  return firstValueFrom(
-    http.get<Shop>(`shops/${username}`, {
-      headers: { skipJwt: 'true' },
-    }),
-  );
-}
-
-async function fetchMenu(http: HttpClient, username: string): Promise<Menu> {
-  return firstValueFrom(
-    http.get<Menu>(`menus/${username}`, {
-      headers: { skipJwt: 'true' },
-    }),
-  );
-}
-
-async function fetchHomeSections(http: HttpClient, username: string): Promise<HomeSection[]> {
-  return firstValueFrom(
-    http.get<HomeSection[]>(`home-sections/${username}`, {
-      headers: { skipJwt: 'true' },
-    }),
-  );
-}
 
 function hydrateQueryCache(
   queryClient: QueryClient,
@@ -95,27 +71,35 @@ export function provideSsrDataTransfer() {
         return;
       }
 
-      return Promise.all([
-        fetchShop(http, username),
-        fetchMenu(http, username),
-        fetchHomeSections(http, username),
-      ])
-        .then(([shop, menu, homeSections]) => {
-          const menuForApp = prepareMenuForApp(menu);
+      return prefetchShopData(http, requestHost)
+        .then((result) => {
+          if (!result) {
+            console.warn(
+              `SSR prefetch skipped for host "${requestHost}" (set SSR_API_URL to your internal backend URL)`,
+            );
+            return;
+          }
 
-          transferState.set(shopTransferKey(username), serializeForTransfer(shop));
-          transferState.set(menuTransferKey(username), serializeCircularForTransfer(menuForApp));
-          transferState.set(homeSectionsTransferKey(username), serializeForTransfer(homeSections));
+          const { username: cacheUsername, shop, menu, homeSections } = result;
+
+          transferState.set(shopTransferKey(cacheUsername), serializeForTransfer(shop));
+          if (menu) {
+            const menuForApp = prepareMenuForApp(menu);
+            transferState.set(menuTransferKey(cacheUsername), serializeCircularForTransfer(menuForApp));
+            queryClient.setQueryData(MENU_QUERY_KEY(cacheUsername), menuForApp);
+          }
+          if (homeSections) {
+            transferState.set(homeSectionsTransferKey(cacheUsername), serializeForTransfer(homeSections));
+            queryClient.setQueryData(HOME_SECTIONS_QUERY_KEY(cacheUsername), homeSections);
+          }
           transferState.set(SSR_PREFETCH_DONE, true);
-
-          queryClient.setQueryData(SHOP_QUERY_KEY(username), shop);
-          queryClient.setQueryData(MENU_QUERY_KEY(username), menuForApp);
-          queryClient.setQueryData(HOME_SECTIONS_QUERY_KEY(username), homeSections);
+          queryClient.setQueryData(SHOP_QUERY_KEY(cacheUsername), shop);
 
           seo.applyShopDefaults(shop);
         })
         .catch((error) => {
-          console.error(`SSR prefetch failed for shop "${username}"`, error);
+          const message = error instanceof Error ? error.message : String(error);
+          console.warn(`SSR prefetch failed for host "${requestHost}": ${message}`);
         });
     }
 

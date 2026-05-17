@@ -28,7 +28,9 @@ ENV PORT=4300
 
 # Runtime env (set in orchestrator / Liara / K8s):
 #   REDIS_URI              — optional HTML + sitemap cache
-#   API_URL                — default https://api.menno.pro
+#   SSR_API_URL            — internal backend URL for SSR prefetch / sitemap / manifest
+#   API_URL                — alias of SSR_API_URL if SSR_API_URL is unset
+#                            (browser still uses https://api.menno.pro from the build)
 #   SSR_HTML_CACHE_TTL_SECONDS
 #   SITEMAP_CACHE_TTL_SECONDS
 #   SSR_SHOP_USERNAME      — optional dev/fallback shop on localhost

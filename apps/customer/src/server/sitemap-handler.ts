@@ -3,7 +3,7 @@ import { menuLookupQueries } from '../app/core/functions/resolve-shop-username';
 import { collectSitemapPaths } from '../app/core/seo/seo-paths';
 import { buildSitemapXml } from '../app/core/seo/sitemap';
 
-const API_URL = process.env['API_URL'] ?? 'https://api.menno.pro';
+import { getServerApiUrl } from '../app/core/functions/server-api-url';
 const SITEMAP_CACHE_TTL_SECONDS = Number(process.env['SITEMAP_CACHE_TTL_SECONDS'] ?? 3600);
 
 export function sitemapCacheKey(host: string): string {
@@ -23,7 +23,7 @@ function requestBaseUrl(req: { protocol: string; get: (name: string) => string |
 }
 
 async function fetchMenu(query: string): Promise<Menu | undefined> {
-  const response = await fetch(`${API_URL}/menus/${encodeURIComponent(query)}`, {
+  const response = await fetch(`${getServerApiUrl()}/menus/${encodeURIComponent(query)}`, {
     headers: { skipJwt: 'true' },
   });
   if (!response.ok) {

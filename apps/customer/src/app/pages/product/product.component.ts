@@ -183,6 +183,10 @@ export class ProductComponent implements OnDestroy {
   }
 
   private startAutoScroll() {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     this.stopAutoScroll();
     if (this.images().length <= 1) return;
 
@@ -212,6 +216,10 @@ export class ProductComponent implements OnDestroy {
   }
 
   onCarouselScroll() {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     this.stopAutoScroll();
 
     const carouselEl = this.carousel()?.nativeElement;
@@ -266,6 +274,9 @@ export class ProductComponent implements OnDestroy {
     });
 
     effect((onCleanup) => {
+      if (!isPlatformBrowser(this.platformId)) {
+        return;
+      }
       this.startAutoScroll();
       onCleanup(() => this.stopAutoScroll());
     });

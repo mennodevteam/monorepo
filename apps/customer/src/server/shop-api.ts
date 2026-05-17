@@ -1,10 +1,9 @@
 import { Shop } from '@menno/types';
 import { menuLookupQueries } from '../app/core/functions/resolve-shop-username';
-
-const API_URL = process.env['API_URL'] ?? 'https://api.menno.pro';
+import { getServerApiUrl } from '../app/core/functions/server-api-url';
 
 async function fetchShop(query: string): Promise<Shop | undefined> {
-  const response = await fetch(`${API_URL}/shops/${encodeURIComponent(query)}`, {
+  const response = await fetch(`${getServerApiUrl()}/shops/${encodeURIComponent(query)}`, {
     headers: { skipJwt: 'true' },
   });
   if (!response.ok) {
