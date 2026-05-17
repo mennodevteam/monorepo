@@ -111,6 +111,14 @@ export const appRoutes: Route[] = [
         loadComponent: () => import('./pages/product/product.component').then((m) => m.ProductComponent),
         data: { hideBottomNav: true },
       },
+      {
+        path: '**',
+        loadComponent: () => import('./pages/not-found/not-found.component').then((m) => m.NotFoundComponent),
+      },
     ],
+  },
+  {
+    path: '**',
+    loadComponent: () => import('./pages/not-found/not-found.component').then((m) => m.NotFoundComponent),
   },
 ];
