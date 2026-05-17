@@ -19,13 +19,22 @@ COPY --from=deps /workspace/node_modules ./node_modules
 COPY . .
 RUN yarn nx run customer:build:production
 
-FROM nginx:1.27-alpine AS runner
+FROM node:22-alpine AS runner
 
-WORKDIR /usr/share/nginx/html
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV PORT=4300
+
+# Runtime env (set in orchestrator / Liara / K8s):
+#   REDIS_URI              — optional HTML + sitemap cache
+#   API_URL                — default https://api.menno.pro
+#   SSR_HTML_CACHE_TTL_SECONDS
+#   SITEMAP_CACHE_TTL_SECONDS
+#   SSR_SHOP_USERNAME      — optional dev/fallback shop on localhost
 
 COPY --from=builder /workspace/dist/apps/customer ./
-COPY docker/spa-default.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+EXPOSE 4300
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["node", "server/server.mjs"]
