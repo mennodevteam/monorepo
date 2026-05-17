@@ -9,6 +9,8 @@ import { ShopService } from './core/services/shop.service';
 import { ThemeService } from './core/services/theme.service';
 import { ThemeMode } from '@menno/types';
 import { resolveShopUsername } from './core/functions';
+import { isCrawlablePathname } from './core/seo/crawlable-paths';
+import { SeoService } from './core/services/seo.service';
 import { WelcomeMessageDialogComponent } from './shared/components/welcome-message-dialog/welcome-message-dialog.component';
 
 @Component({
@@ -24,6 +26,7 @@ export class AppComponent implements OnInit {
   private readonly shopService = inject(ShopService);
   private readonly themeService = inject(ThemeService);
   private readonly router = inject(Router);
+  private readonly seo = inject(SeoService);
   private readonly dialog = inject(MatDialog);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -58,10 +61,18 @@ export class AppComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(() => {
+        this.updateRobotsMeta();
         this.tryShowWelcomePopup();
       });
 
+    this.updateRobotsMeta();
     this.tryShowWelcomePopup();
+  }
+
+  private updateRobotsMeta(): void {
+    if (!isCrawlablePathname(this.currentPath())) {
+      this.seo.setNoIndex();
+    }
   }
 
   private tryShowWelcomePopup() {

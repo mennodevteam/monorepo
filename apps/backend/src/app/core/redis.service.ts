@@ -77,6 +77,7 @@ export class RedisService {
 
       for (const host of this.customerCacheHosts(shop)) {
         await this.client.del(`${CUSTOMER_SITEMAP_PREFIX}${host}`);
+        await this.client.del(`customer-manifest:${host}`);
         await this.deleteKeysByPattern(`${CUSTOMER_SSR_HTML_PREFIX}${host}:*`);
       }
     } catch {

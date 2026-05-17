@@ -57,7 +57,7 @@ export const appRoutes: Route[] = [
       {
         path: '',
         component: HomeComponent,
-        data: { isRootPage: true, preserveScrollOnBack: true },
+        data: { isRootPage: true, preserveScrollOnBack: true, crawlable: true },
       },
       {
         path: 'home',
@@ -67,12 +67,12 @@ export const appRoutes: Route[] = [
       {
         path: 'categories',
         component: CategoriesComponent,
-        data: { isRootPage: true },
+        data: { isRootPage: true, crawlable: true },
       },
       {
         path: 'categories/:categoryId',
         loadComponent: () => import('./pages/category/category.component').then((m) => m.CategoryComponent),
-        data: { preserveScrollOnBack: true },
+        data: { preserveScrollOnBack: true, crawlable: true },
       },
       {
         path: 'orders',
@@ -104,12 +104,12 @@ export const appRoutes: Route[] = [
       {
         path: 'menu/product/:id',
         loadComponent: () => import('./pages/product/product.component').then((m) => m.ProductComponent),
-        data: { hideBottomNav: true },
+        data: { hideBottomNav: true, crawlable: true },
       },
       {
         path: 'categories/:categoryId/:id',
         loadComponent: () => import('./pages/product/product.component').then((m) => m.ProductComponent),
-        data: { hideBottomNav: true },
+        data: { hideBottomNav: true, crawlable: true },
       },
       {
         path: '**',

@@ -1,20 +1,22 @@
 import { Menu, Product, ProductCategory } from '@menno/types';
 
-export function getCategoryPath(category: ProductCategory): string {
-  if (category.slug) {
-    return `/categories/${category.slug}`;
-  }
-  return `/categories/${category.id}`;
+function pathSegment(slug: string | null | undefined, id: string | number): string {
+  const normalizedSlug = slug?.trim();
+  return normalizedSlug ? normalizedSlug : String(id);
 }
 
+/** Canonical / sitemap path for a category (slug when set, otherwise id). */
+export function getCategoryPath(category: ProductCategory): string {
+  return `/categories/${pathSegment(category.slug, category.id)}`;
+}
+
+/** Canonical / sitemap path for a product (slug when set, otherwise id). */
 export function getProductPath(product: Product, category?: ProductCategory | null): string {
   const categoryObj = category ?? product.category;
   if (!categoryObj) {
     return '/categories';
   }
-  const categoryPath = categoryObj.slug ? categoryObj.slug : String(categoryObj.id);
-  const productPath = product.slug ? product.slug : product.id;
-  return `/categories/${categoryPath}/${productPath}`;
+  return `/categories/${pathSegment(categoryObj.slug, categoryObj.id)}/${pathSegment(product.slug, product.id)}`;
 }
 
 export function collectSitemapPaths(menu: Menu | undefined): string[] {

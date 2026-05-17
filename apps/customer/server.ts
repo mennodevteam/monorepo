@@ -10,6 +10,13 @@ import { Redis } from 'ioredis';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { getRequestHost } from './src/app/core/functions/request-host';
+import { buildRobotsTxt } from './src/app/core/seo/crawlable-paths';
+import { resolveFaviconRedirectUrl } from './src/server/favicon-handler';
+import {
+  generateManifestJson,
+  getManifestCacheTtl,
+  manifestCacheKey,
+} from './src/server/manifest-handler';
 import {
   generateSitemapXml,
   getSitemapCacheTtl,
@@ -66,20 +73,63 @@ function createApp(): express.Express {
   const browserDistFolder = join(distFolder, 'browser');
   const angularApp = new AngularNodeAppEngine();
 
-  server.use(
-    express.static(browserDistFolder, {
-      maxAge: '1y',
-      index: false,
-    }),
-  );
-
   server.get('/robots.txt', (req, res) => {
     const forwardedProto = req.get('x-forwarded-proto');
     const protocol = forwardedProto?.split(',')[0]?.trim() || req.protocol || 'https';
-    const baseUrl = `${protocol}://${req.get('host')}`;
-    res
-      .type('text/plain')
-      .send(`User-agent: *\nAllow: /\nSitemap: ${baseUrl}/sitemap.xml\n`);
+    const host = getRequestHost(req) ?? req.get('host') ?? 'localhost';
+    const baseUrl = `${protocol}://${host}`;
+    res.type('text/plain').send(buildRobotsTxt(baseUrl));
+  });
+
+  server.get('/manifest.webmanifest', async (req, res) => {
+    const host = getRequestHost(req) ?? '';
+    const redis = getRedis();
+    try {
+      if (redis) {
+        await ensureRedisConnected(redis);
+        const cached = await redis.get(manifestCacheKey(host));
+        if (cached) {
+          res.setHeader('Content-Type', 'application/manifest+json; charset=utf-8');
+          res.setHeader('X-Manifest-Cache', 'HIT');
+          res.send(cached);
+          return;
+        }
+      }
+
+      const json = await generateManifestJson(host, req);
+      if (!json) {
+        res.status(404).type('text/plain').send('Shop not found');
+        return;
+      }
+
+      if (redis) {
+        await redis.set(manifestCacheKey(host), json, 'EX', getManifestCacheTtl()).catch(() => undefined);
+        res.setHeader('X-Manifest-Cache', 'MISS');
+      }
+
+      res.setHeader('Content-Type', 'application/manifest+json; charset=utf-8');
+      res.send(json);
+    } catch {
+      res.status(500).type('text/plain').send('Failed to generate manifest');
+    }
+  });
+
+  server.get('/favicon.ico', async (req, res) => {
+    const host = getRequestHost(req) ?? '';
+    try {
+      const faviconUrl = await resolveFaviconRedirectUrl(host);
+      if (faviconUrl) {
+        res.redirect(302, faviconUrl);
+        return;
+      }
+    } catch {
+      // fall through to default favicon
+    }
+    res.sendFile(join(browserDistFolder, 'favicon.ico'), (error) => {
+      if (error) {
+        res.status(404).end();
+      }
+    });
   });
 
   server.get('/sitemap.xml', async (req, res) => {
@@ -114,6 +164,13 @@ function createApp(): express.Express {
       res.status(500).type('text/plain').send('Failed to generate sitemap');
     }
   });
+
+  server.use(
+    express.static(browserDistFolder, {
+      maxAge: '1y',
+      index: false,
+    }),
+  );
 
   server.use(async (req, res, next) => {
     if (req.method !== 'GET' && req.method !== 'HEAD') {

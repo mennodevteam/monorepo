@@ -26,6 +26,7 @@ export class SeoService {
   }
 
   applyPageSeo(config: PageSeoConfig): void {
+    this.meta.updateTag({ name: 'robots', content: 'index, follow' });
     this.title.setTitle(config.title);
     this.meta.updateTag({ name: 'description', content: config.description });
     this.meta.updateTag({ property: 'og:title', content: config.title });
@@ -58,6 +59,10 @@ export class SeoService {
 
   clearProductStructuredData(): void {
     this.removeJsonLd(PRODUCT_JSON_LD_ID);
+  }
+
+  setNoIndex(): void {
+    this.meta.updateTag({ name: 'robots', content: 'noindex, nofollow' });
   }
 
   buildAbsoluteUrl(path: string): string {
