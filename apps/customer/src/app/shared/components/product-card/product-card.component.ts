@@ -1,5 +1,5 @@
 import { Component, computed, input, inject } from '@angular/core';
-import { Router, RouterLinkWithHref } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { DecimalPipe } from '@angular/common';
@@ -18,7 +18,7 @@ import { LinkService } from '../../../core/services/link.service';
     ImageLoaderDirective,
     MatRippleModule,
     QuantitySelectorComponent,
-    RouterLinkWithHref,
+    RouterLink,
   ],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
@@ -78,7 +78,6 @@ export class ProductCardComponent {
     this.variantHasDiscount(variant) ? Product.percentageDiscount(this.product(), variant) : null;
   readonly variantIsFinished = (variant: ProductVariant) => Product.isFinished(this.product(), variant);
 
-  private readonly router = inject(Router);
   private readonly linkService = inject(LinkService);
 
   readonly productLink = computed(() => this.linkService.getProductLink(this.product()));
@@ -86,9 +85,5 @@ export class ProductCardComponent {
   private roundUpToFive(value: number) {
     if (value <= 0) return 0;
     return Math.ceil(value / 5) * 5;
-  }
-
-  openProduct() {
-    this.router.navigateByUrl(this.productLink());
   }
 }

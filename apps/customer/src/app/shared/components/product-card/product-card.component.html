@@ -2,38 +2,37 @@
   class="product-card"
   [class.product-card--list]="designVariant() === 'list'"
   appearance="outlined"
-  [routerLink]="productLink()"
 >
-  <mat-card-content class="product-card__content" [class.large-image]="!largeImage()">
-    <img
-      class="product-card__image"
-      appImageLoader
-      [imageFile]="imageFile()"
-      [imageSize]="largeImage() ? 'md' : 'sm'"
-      [attr.alt]="product().title"
-    />
+  <a [routerLink]="productLink()" class="product-card__link">
+    <mat-card-content class="product-card__content" [class.large-image]="!largeImage()">
+      <img
+        class="product-card__image"
+        appImageLoader
+        [imageFile]="imageFile()"
+        [imageSize]="largeImage() ? 'md' : 'sm'"
+        [attr.alt]="product().title"
+      />
 
-    <div class="product-card__texts">
-      <div class="product-card__title-row">
-        <h3 class="product-card__title">{{ product().title }}</h3>
-        @if (!isUnavailable() && hasAnyDiscount()) {
-          <span class="product-card__discount-chip">🔥 {{ discountBadge() }}٪ تخفیف</span>
-        }
-        @if (isUnavailable()) {
-          <span class="product-card__unavailable-chip">ناموجود</span>
+      <div class="product-card__texts">
+        <div class="product-card__title-row">
+          <h3 class="product-card__title">{{ product().title }}</h3>
+          @if (!isUnavailable() && hasAnyDiscount()) {
+            <span class="product-card__discount-chip">🔥 {{ discountBadge() }}٪ تخفیف</span>
+          }
+          @if (isUnavailable()) {
+            <span class="product-card__unavailable-chip">ناموجود</span>
+          }
+        </div>
+        @if (product().description) {
+          <p class="product-card__description">{{ product().description }}</p>
         }
       </div>
-
-      @if (product().description) {
-        <p class="product-card__description">{{ product().description }}</p>
-      }
-    </div>
-  </mat-card-content>
+    </mat-card-content>
+  </a>
   @if (!hideVariants()) {
     @if (hasVariants()) {
       @for (variant of variants(); track variant.id) {
         <mat-card-actions class="product-card__price-actions">
-          <!-- <ng-icon class="product-card__variant-icon" [svg]="stopCircleIcon" /> -->
           <div class="product-card__variant-text">
             <span class="product-card__price-title">{{ variant.title }}</span>
             <span class="product-card__price">

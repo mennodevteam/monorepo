@@ -46,16 +46,16 @@
         <app-section title="برخی از محصولات">
           <mat-grid-list cols="2" rowHeight="1:1" gutterSize="8" class="home-fallback__product-grid">
             @for (product of fallbackProducts(); track product.id) {
-              <mat-grid-tile
-                [routerLink]="getProductLink(product)"
-                class="home-fallback__product-tile"
-                [imageFile]="getProductImage(product)"
-                [imageSize]="'md'"
-                appImageLoader
-              >
-                <mat-grid-tile-footer class="home-fallback__product-tile-footer">
-                  {{ productDisplayTitle(product) }}
-                </mat-grid-tile-footer>
+              <mat-grid-tile class="home-fallback__product-tile">
+                <a
+                  [routerLink]="getProductLink(product)"
+                  class="home-fallback__product-tile-link"
+                  [imageFile]="getProductImage(product)"
+                  [imageSize]="'md'"
+                  appImageLoader
+                >
+                  <span class="home-fallback__product-tile-footer">{{ productDisplayTitle(product) }}</span>
+                </a>
               </mat-grid-tile>
             }
           </mat-grid-list>

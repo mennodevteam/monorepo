@@ -3,6 +3,12 @@
   height: 100%;
 }
 
+.product-card__link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
 .product-card {
   display: flex;
   flex-direction: column;

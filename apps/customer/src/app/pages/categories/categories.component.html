@@ -9,19 +9,17 @@
     @if (hasCategories()) {
       <div class="categories-grid">
         @for (category of categories(); track category.id) {
-          <div class="category-item-container">
-            <a
-              [routerLink]="['/categories', category.id]"
+          <a [routerLink]="getCategoryLink(category)" class="category-item-container">
+            <span
               class="category-circle"
               [imageFile]="category.imageFile ?? undefined"
               [imageSize]="'md'"
               appImageLoader
-            >
-            </a>
-            <div class="category-item-title">
+            ></span>
+            <span class="category-item-title">
               {{ category.title }}
-            </div>
-          </div>
+            </span>
+          </a>
         }
       </div>
     } @else {

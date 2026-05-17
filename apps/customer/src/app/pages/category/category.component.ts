@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, effect } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -21,7 +21,15 @@ import { MenuViewType, ProductCategory } from '@menno/types';
 
 @Component({
   selector: 'app-category',
-  imports: [MatProgressSpinner, MatButtonModule, NgIcon, ProductCardComponent, MatGridListModule, MatToolbarModule],
+  imports: [
+    MatProgressSpinner,
+    MatButtonModule,
+    NgIcon,
+    ProductCardComponent,
+    MatGridListModule,
+    MatToolbarModule,
+    RouterLink,
+  ],
   providers: [provideIcons({ saxArrowDown2Outline })],
   templateUrl: './category.component.html',
   styleUrl: './category.component.scss',
@@ -173,13 +181,6 @@ export class CategoryComponent implements OnDestroy {
       queryParamsHandling: 'merge',
       replaceUrl: true,
     });
-  }
-
-  goToNextCategory() {
-    const link = this.nextCategoryLink();
-    if (!link) return;
-
-    void this.router.navigateByUrl(link, { replaceUrl: true });
   }
 
   ngOnDestroy(): void {

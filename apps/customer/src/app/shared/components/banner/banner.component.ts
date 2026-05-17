@@ -1,5 +1,5 @@
 import { Component, input, computed, inject, signal, viewChild, ElementRef, effect, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { HomeSection, BannerConfig, BannerAspectRatio, BannerLinkType } from '@menno/types';
 import { ImageLoaderDirective } from '../../directives/image-loader.directive';
 import { LinkService } from '../../../core/services/link.service';
@@ -8,14 +8,13 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-banner',
   standalone: true,
-  imports: [CommonModule, ImageLoaderDirective],
+  imports: [CommonModule, ImageLoaderDirective, RouterLink],
   templateUrl: './banner.component.html',
   styleUrl: './banner.component.scss',
 })
 export class BannerComponent implements OnDestroy {
   readonly section = input.required<HomeSection>();
   readonly isFirst = input<boolean>(false);
-  private readonly router = inject(Router);
   private readonly linkService = inject(LinkService);
 
   readonly config = computed(() => this.section().config as BannerConfig);
@@ -37,6 +36,28 @@ export class BannerComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.stopAutoScroll();
+  }
+
+  getBannerHref(index: number): string | null {
+    const link = this.links()[index];
+    if (!link) {
+      return null;
+    }
+
+    if (link.type === BannerLinkType.External && link.externalUrl) {
+      return link.externalUrl;
+    }
+    if (link.type === BannerLinkType.Category && link.categoryId) {
+      return this.linkService.getCategoryLink(link.categoryId);
+    }
+    if (link.type === BannerLinkType.Product && link.productId) {
+      return this.linkService.getProductLink(link.productId);
+    }
+    return null;
+  }
+
+  isExternalHref(href: string): boolean {
+    return href.startsWith('http://') || href.startsWith('https://');
   }
 
   private startAutoScroll() {
@@ -67,7 +88,6 @@ export class BannerComponent implements OnDestroy {
         const containerCenterX = containerRect.left + containerRect.width / 2;
         const targetCenterX = targetRect.left + targetRect.width / 2;
 
-        // Move horizontally by center delta to avoid vertical page scrolling side effects.
         const horizontalDelta = targetCenterX - containerCenterX;
         carouselEl.scrollTo({
           left: carouselEl.scrollLeft + horizontalDelta,
@@ -106,20 +126,4 @@ export class BannerComponent implements OnDestroy {
 
     this.startAutoScroll();
   }
-
-  handleImageClick(index: number) {
-    const link = this.links()[index];
-    if (!link) return;
-
-    if (link.type === BannerLinkType.External && link.externalUrl) {
-      window.open(link.externalUrl, '_blank');
-    } else if (link.type === BannerLinkType.Category && link.categoryId) {
-      const categoryLink = this.linkService.getCategoryLink(link.categoryId);
-      this.router.navigateByUrl(categoryLink);
-    } else if (link.type === BannerLinkType.Product && link.productId) {
-      const productLink = this.linkService.getProductLink(link.productId);
-      this.router.navigateByUrl(productLink);
-    }
-  }
 }
-

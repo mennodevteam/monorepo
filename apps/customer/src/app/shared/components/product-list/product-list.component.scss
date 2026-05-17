@@ -62,10 +62,21 @@
 
 .product-tile {
   border-radius: var(--mat-sys-corner-large);
-  cursor: pointer;
+}
+
+.product-tile-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+  border-radius: inherit;
 }
 
 .product-tile-footer {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
   font: var(--mat-sys-label-medium);
   text-shadow:
     0 1px 3px rgba(0, 0, 0, 0.2),

@@ -27,16 +27,16 @@
     } @else if (isGrid()) {
       <mat-grid-list [cols]="gridCols()" rowHeight="1:1" gutterSize="8">
         @for (product of products(); track product.id) {
-          <mat-grid-tile
-            [routerLink]="getProductLink(product)"
-            class="product-tile"
-            [imageFile]="getProductImage(product)"
-            [imageSize]="'md'"
-            appImageLoader
-          >
-            <mat-grid-tile-footer class="product-tile-footer">
-              {{ product.title }}
-            </mat-grid-tile-footer>
+          <mat-grid-tile class="product-tile">
+            <a
+              [routerLink]="getProductLink(product)"
+              class="product-tile-link"
+              [imageFile]="getProductImage(product)"
+              [imageSize]="'md'"
+              appImageLoader
+            >
+              <span class="product-tile-footer">{{ product.title }}</span>
+            </a>
           </mat-grid-tile>
         }
       </mat-grid-list>

@@ -3,6 +3,8 @@ import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@a
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { RouterLink } from '@angular/router';
+import { ProductCategory } from '@menno/types';
+import { LinkService } from '../../core/services/link.service';
 import { MenuService } from '../../core/services/menu.service';
 import { ShopService } from '../../core/services/shop.service';
 import { SeoService } from '../../core/services/seo.service';
@@ -19,12 +21,17 @@ import { ImageLoaderDirective } from '../../shared/directives';
 })
 export class CategoriesComponent {
   private readonly menuService = inject(MenuService);
+  private readonly linkService = inject(LinkService);
   private readonly shopService = inject(ShopService);
   private readonly seoService = inject(SeoService);
 
   readonly menuQuery = this.menuService.menuQuery;
   readonly categories = computed(() => this.menuService.data()?.categories ?? []);
   readonly hasCategories = computed(() => this.categories().length > 0);
+
+  getCategoryLink(category: ProductCategory): string {
+    return this.linkService.getCategoryLink(category);
+  }
 
   constructor() {
     effect(() => {
