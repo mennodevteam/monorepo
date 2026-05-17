@@ -110,6 +110,31 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
     await this.startBotForShop(shop, baleParty.token);
   }
 
+  /** Refresh in-memory shop (e.g. aiChatbot status) without restarting polling/webhook. */
+  async refreshShopRuntime(shopId: string) {
+    const runtime = this.runtimes.get(shopId);
+    if (!runtime) return;
+
+    const shop = await this.shopRepo.findOne({
+      where: { id: shopId },
+      relations: ['thirdParties', 'aiChatbot'],
+    });
+    if (!shop) {
+      this.stopBotByShopId(shopId);
+      return;
+    }
+
+    const baleParty = shop.thirdParties?.find((item) => item.app === ThirdPartyApp.Bale && !!item.token);
+    if (!baleParty?.token) {
+      this.stopBotByShopId(shopId);
+      return;
+    }
+
+    runtime.shop = shop;
+    runtime.token = baleParty.token;
+    this.logger.log(`Bale runtime refreshed for shop ${shopId}`);
+  }
+
   /** Called by {@link BaleWebhookController} when Bale POSTs an update. */
   async handleIncomingWebhook(shopId: string, body: unknown): Promise<void> {
     const shop = await this.shopRepo.findOne({

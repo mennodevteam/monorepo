@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { CoreModule } from '../core/core.module';
 import { ThirdPartiesController } from './third-parties.controller';
 import { AuthModule } from '../auth/auth.module';
@@ -12,9 +12,15 @@ import { MennoBaleOrderNotificationsService } from './menno-bale-order-notificat
 import { AiChatbotModule } from '../ai-chatbot/ai-chatbot.module';
 
 @Module({
-  imports: [CoreModule, AuthModule, HttpModule, TypeOrmModule.forFeature([Shop, User, Order, OrderItem, Member]), AiChatbotModule],
+  imports: [
+    CoreModule,
+    AuthModule,
+    HttpModule,
+    TypeOrmModule.forFeature([Shop, User, Order, OrderItem, Member]),
+    forwardRef(() => AiChatbotModule),
+  ],
   controllers: [ThirdPartiesController, BaleWebhookController],
   providers: [BaleBotsService, MennoBaleOrderNotificationsService],
-  exports: [MennoBaleOrderNotificationsService],
+  exports: [BaleBotsService, MennoBaleOrderNotificationsService],
 })
 export class ThirdPartiesModule {}

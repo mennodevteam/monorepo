@@ -3,11 +3,13 @@ import {
   Body,
   Controller,
   Get,
+  Inject,
   NotFoundException,
   Param,
   Post,
   Put,
   Query,
+  forwardRef,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -15,6 +17,8 @@ import { Roles } from '../auth/roles.decorators';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 import { AuthService } from '../auth/auth.service';
+import { RedisService } from '../core/redis.service';
+import { BaleBotsService } from '../third-parties/bale-bots.service';
 import { AiChatbotService } from './ai-chatbot.service';
 
 @Controller('ai-chatbot')
@@ -30,6 +34,9 @@ export class AiChatbotController {
     private aiChatRepo: Repository<AiChat>,
     private auth: AuthService,
     private aiChatbotService: AiChatbotService,
+    private redis: RedisService,
+    @Inject(forwardRef(() => BaleBotsService))
+    private baleBots: BaleBotsService,
   ) {}
 
   @Get('panel/chats')
@@ -104,24 +111,25 @@ export class AiChatbotController {
     // Find existing AI chatbot for the shop
     const existingAiChatbot = shop.aiChatbot;
 
+    let saved: AiChatbot;
+
     if (existingAiChatbot) {
-      // Update existing AI chatbot
       await this.aiChatbotRepo.update(existingAiChatbot.id, patch);
-      return this.aiChatbotRepo.findOne({ where: { id: existingAiChatbot.id } });
+      saved = await this.aiChatbotRepo.findOne({ where: { id: existingAiChatbot.id } });
     } else {
-      // Create new AI chatbot
       const newAiChatbot = this.aiChatbotRepo.create({
         ...patch,
         smsAccount: shop.smsAccount,
-        status: patch.status || 1, // Default status
+        status: patch.status || 1,
       });
 
-      const savedAiChatbot = await this.aiChatbotRepo.save(newAiChatbot);
-
-      // Update shop with the new AI chatbot
-      await this.shopRepo.update(shop.id, { aiChatbot: savedAiChatbot });
-
-      return savedAiChatbot;
+      saved = await this.aiChatbotRepo.save(newAiChatbot);
+      await this.shopRepo.update(shop.id, { aiChatbot: saved });
     }
+
+    void this.redis.updateShop(shop.id);
+    await this.baleBots.refreshShopRuntime(shop.id);
+
+    return saved;
   }
 }
