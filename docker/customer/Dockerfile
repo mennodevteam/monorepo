@@ -31,6 +31,7 @@ ENV PORT=4300
 #   SSR_API_URL            — internal backend URL for SSR prefetch / sitemap / manifest
 #   API_URL                — alias of SSR_API_URL if SSR_API_URL is unset
 #                            (browser still uses https://api.menno.pro from the build)
+#   SSR_LOG                — set to 0 to disable; verbose for extra http/hydrate logs
 #   SSR_HTML_CACHE_TTL_SECONDS
 #   SITEMAP_CACHE_TTL_SECONDS
 #   SSR_SHOP_USERNAME      — optional dev/fallback shop on localhost

@@ -22,6 +22,8 @@ import {
   getSitemapCacheTtl,
   sitemapCacheKey,
 } from './src/server/sitemap-handler';
+import { logSsrApiConfigOnce, ssrLog } from './src/app/core/functions/ssr-logger';
+import { getServerApiUrl, getServerApiUrlSource } from './src/app/core/functions/server-api-url';
 
 const SSR_ROUTE_PREFIXES = ['', '/categories'];
 const HTML_CACHE_TTL_SECONDS = Number(process.env['SSR_HTML_CACHE_TTL_SECONDS'] ?? 300);
@@ -50,12 +52,15 @@ function getRedis(): Redis | null {
     return redisClient;
   }
   if (!REDIS_URI) {
+    ssrLog.cacheSkip('redis', 'REDIS_URI not set');
     redisClient = null;
     return null;
   }
   try {
     redisClient = new Redis(REDIS_URI, { maxRetriesPerRequest: 1, lazyConnect: true });
+    ssrLog.info('redis client created');
   } catch {
+    ssrLog.warn('redis client failed', { reason: 'init error' });
     redisClient = null;
   }
   return redisClient;
@@ -83,33 +88,46 @@ function createApp(): express.Express {
 
   server.get('/manifest.webmanifest', async (req, res) => {
     const host = getRequestHost(req) ?? '';
+    const cacheKey = manifestCacheKey(host);
     const redis = getRedis();
     try {
       if (redis) {
         await ensureRedisConnected(redis);
-        const cached = await redis.get(manifestCacheKey(host));
+        const cached = await redis.get(cacheKey);
         if (cached) {
+          ssrLog.cacheHit('manifest', cacheKey, { host });
           res.setHeader('Content-Type', 'application/manifest+json; charset=utf-8');
           res.setHeader('X-Manifest-Cache', 'HIT');
           res.send(cached);
           return;
         }
+        ssrLog.cacheMiss('manifest', cacheKey, { host });
+      } else {
+        ssrLog.cacheSkip('manifest', 'redis unavailable', { host });
       }
 
+      ssrLog.info('manifest generate start', { host });
       const json = await generateManifestJson(host, req);
       if (!json) {
+        ssrLog.warn('manifest generate skip', { host, reason: 'shop not found' });
         res.status(404).type('text/plain').send('Shop not found');
         return;
       }
 
       if (redis) {
-        await redis.set(manifestCacheKey(host), json, 'EX', getManifestCacheTtl()).catch(() => undefined);
+        await redis.set(cacheKey, json, 'EX', getManifestCacheTtl()).catch(() => undefined);
+        ssrLog.cacheStore('manifest', cacheKey, getManifestCacheTtl(), { host });
         res.setHeader('X-Manifest-Cache', 'MISS');
       }
 
+      ssrLog.info('manifest generate done', { host });
       res.setHeader('Content-Type', 'application/manifest+json; charset=utf-8');
       res.send(json);
-    } catch {
+    } catch (error) {
+      ssrLog.warn('manifest generate error', {
+        host,
+        error: error instanceof Error ? error.message : String(error),
+      });
       res.status(500).type('text/plain').send('Failed to generate manifest');
     }
   });
@@ -117,13 +135,19 @@ function createApp(): express.Express {
   server.get('/favicon.ico', async (req, res) => {
     const host = getRequestHost(req) ?? '';
     try {
+      ssrLog.info('favicon resolve start', { host });
       const faviconUrl = await resolveFaviconRedirectUrl(host);
       if (faviconUrl) {
+        ssrLog.info('favicon redirect', { host, faviconUrl });
         res.redirect(302, faviconUrl);
         return;
       }
-    } catch {
-      // fall through to default favicon
+      ssrLog.debug('favicon fallback static', { host });
+    } catch (error) {
+      ssrLog.warn('favicon resolve error', {
+        host,
+        error: error instanceof Error ? error.message : String(error),
+      });
     }
     res.sendFile(join(browserDistFolder, 'favicon.ico'), (error) => {
       if (error) {
@@ -134,17 +158,22 @@ function createApp(): express.Express {
 
   server.get('/sitemap.xml', async (req, res) => {
     const host = getRequestHost(req) ?? '';
+    const cacheKey = sitemapCacheKey(host);
     const redis = getRedis();
     try {
       if (redis) {
         await ensureRedisConnected(redis);
-        const cached = await redis.get(sitemapCacheKey(host));
+        const cached = await redis.get(cacheKey);
         if (cached) {
+          ssrLog.cacheHit('sitemap', cacheKey, { host });
           res.setHeader('Content-Type', 'application/xml; charset=utf-8');
           res.setHeader('X-Sitemap-Cache', 'HIT');
           res.send(cached);
           return;
         }
+        ssrLog.cacheMiss('sitemap', cacheKey, { host });
+      } else {
+        ssrLog.cacheSkip('sitemap', 'redis unavailable', { host });
       }
 
       const xml = await generateSitemapXml(host, req);
@@ -154,13 +183,18 @@ function createApp(): express.Express {
       }
 
       if (redis) {
-        await redis.set(sitemapCacheKey(host), xml, 'EX', getSitemapCacheTtl()).catch(() => undefined);
+        await redis.set(cacheKey, xml, 'EX', getSitemapCacheTtl()).catch(() => undefined);
+        ssrLog.cacheStore('sitemap', cacheKey, getSitemapCacheTtl(), { host });
         res.setHeader('X-Sitemap-Cache', 'MISS');
       }
 
       res.setHeader('Content-Type', 'application/xml; charset=utf-8');
       res.send(xml);
-    } catch {
+    } catch (error) {
+      ssrLog.warn('sitemap error', {
+        host,
+        error: error instanceof Error ? error.message : String(error),
+      });
       res.status(500).type('text/plain').send('Failed to generate sitemap');
     }
   });
@@ -180,41 +214,74 @@ function createApp(): express.Express {
     const host = getRequestHost(req) ?? '';
     const pathname = req.url?.split('?')[0] || '/';
     const redis = getRedis();
+    const cacheKey = htmlCacheKey(host, pathname);
+    const ssrRoute = isSsrRoute(pathname);
 
-    if (redis && isSsrRoute(pathname)) {
+    if (redis && ssrRoute) {
       try {
         await ensureRedisConnected(redis);
-        const cached = await redis.get(htmlCacheKey(host, pathname));
+        const cached = await redis.get(cacheKey);
         if (cached) {
+          ssrLog.cacheHit('html', cacheKey, { host, pathname });
           res.setHeader('Content-Type', 'text/html; charset=utf-8');
           res.setHeader('X-SSR-Cache', 'HIT');
           res.send(cached);
           return;
         }
-      } catch {
-        // Continue without cache on Redis errors
+        ssrLog.cacheMiss('html', cacheKey, { host, pathname });
+      } catch (error) {
+        ssrLog.warn('html cache read error', {
+          host,
+          pathname,
+          error: error instanceof Error ? error.message : String(error),
+        });
       }
+    } else if (ssrRoute) {
+      ssrLog.cacheSkip('html', 'redis unavailable', { host, pathname });
+    }
+
+    const renderStarted = Date.now();
+    if (ssrRoute) {
+      ssrLog.renderStart(host, pathname);
     }
 
     try {
       const response = await angularApp.handle(req);
       if (!response) {
+        ssrLog.debug('render passthrough', { host, pathname });
         return next();
       }
 
-      if (redis && isSsrRoute(pathname) && response.headers.get('content-type')?.includes('text/html')) {
+      if (redis && ssrRoute && response.headers.get('content-type')?.includes('text/html')) {
         const html = await response.clone().text();
         try {
           await ensureRedisConnected(redis);
-          await redis.set(htmlCacheKey(host, pathname), html, 'EX', HTML_CACHE_TTL_SECONDS);
+          await redis.set(cacheKey, html, 'EX', HTML_CACHE_TTL_SECONDS);
+          ssrLog.cacheStore('html', cacheKey, HTML_CACHE_TTL_SECONDS, { host, pathname });
           res.setHeader('X-SSR-Cache', 'MISS');
-        } catch {
-          // Ignore cache write failures
+        } catch (error) {
+          ssrLog.warn('html cache write error', {
+            host,
+            pathname,
+            error: error instanceof Error ? error.message : String(error),
+          });
         }
+      }
+
+      if (ssrRoute) {
+        ssrLog.renderDone(host, pathname, Date.now() - renderStarted);
       }
 
       await writeResponseToNodeResponse(response, res);
     } catch (error) {
+      if (ssrRoute) {
+        ssrLog.warn('render error', {
+          host,
+          pathname,
+          durationMs: Date.now() - renderStarted,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
       next(error);
     }
   });
@@ -236,6 +303,14 @@ async function run(): Promise<void> {
     await ensureRedisConnected(redis);
   }
   app.listen(port, () => {
+    logSsrApiConfigOnce();
+    ssrLog.info('server listening', {
+      port,
+      redis: Boolean(redis),
+      htmlCacheTtlSeconds: HTML_CACHE_TTL_SECONDS,
+      apiUrl: getServerApiUrl(),
+      apiSource: getServerApiUrlSource(),
+    });
     console.log(`Customer SSR server listening on http://localhost:${port}`);
   });
 }

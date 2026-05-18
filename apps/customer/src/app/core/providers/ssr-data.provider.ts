@@ -12,6 +12,7 @@ import { QueryClient } from '@tanstack/angular-query-experimental';
 import { HomeSection, Menu, Shop } from '@menno/types';
 import { getRequestHost } from '../functions/request-host';
 import { resolveShopUsername } from '../functions';
+import { ssrLog } from '../functions/ssr-logger';
 import { prepareMenuForApp } from '../utils/prepare-menu';
 import { serializeCircularForTransfer, serializeForTransfer } from '../utils/serialize-for-transfer';
 import { shopTransferKey, menuTransferKey } from '../transfer-state/shop-transfer.keys';
@@ -68,14 +69,16 @@ export function provideSsrDataTransfer() {
 
     if (isPlatformServer(platformId)) {
       if (!requestHost) {
+        ssrLog.prefetchSkip('unknown', 'missing request host');
         return;
       }
 
       return prefetchShopData(http, requestHost)
         .then((result) => {
           if (!result) {
-            console.warn(
-              `SSR prefetch skipped for host "${requestHost}" (set SSR_API_URL to your internal backend URL)`,
+            ssrLog.prefetchSkip(
+              requestHost,
+              'set SSR_API_URL to your internal backend URL',
             );
             return;
           }
@@ -99,13 +102,19 @@ export function provideSsrDataTransfer() {
         })
         .catch((error) => {
           const message = error instanceof Error ? error.message : String(error);
-          console.warn(`SSR prefetch failed for host "${requestHost}": ${message}`);
+          ssrLog.warn('prefetch error', { host: requestHost, error: message });
         });
     }
 
     if (transferState.hasKey(SSR_PREFETCH_DONE)) {
+      const hydrated = {
+        shop: transferState.hasKey(shopTransferKey(username)),
+        menu: transferState.hasKey(menuTransferKey(username)),
+        homeSections: transferState.hasKey(homeSectionsTransferKey(username)),
+      };
       transferState.remove(SSR_PREFETCH_DONE);
       hydrateQueryCache(queryClient, transferState, username);
+      ssrLog.hydrate(username, hydrated);
       const shop = queryClient.getQueryData<Shop>(SHOP_QUERY_KEY(username));
       if (shop) {
         seo.applyShopDefaults(shop);
