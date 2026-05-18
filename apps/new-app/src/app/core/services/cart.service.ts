@@ -353,13 +353,6 @@ export class CartService {
       }
     }
 
-    if (
-      this.menuService.type() === OrderType.DineIn &&
-      this.shopService.shop.details?.tables?.length &&
-      !this.table()
-    )
-      return;
-
     const coupon = this.coupon();
     if (coupon) {
       if (coupon.minPrice && this.sum() < coupon.minPrice) {
