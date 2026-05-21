@@ -63,7 +63,7 @@ export class AiChatbotController {
   async chat(
     @Body() body: { message: string; chatId?: number; shopId: string },
     @LoginUser() user: AuthPayload,
-  ): Promise<Pick<AiChatMessage, 'botMessage'> & { productIds: string[] }> {
+  ): Promise<Pick<AiChatMessage, 'botMessage'> & { productIds: string[]; chatId: number }> {
     const shop = await this.shopRepo.findOne({ where: { id: body.shopId }, relations: ['aiChatbot'] });
 
     if (!shop?.aiChatbot) {
@@ -71,7 +71,11 @@ export class AiChatbotController {
     }
 
     const result = await this.aiChatbotService.chat(shop.id, user.id, body.message, body.chatId);
-    return { botMessage: result.text, productIds: result.products.map((product) => product.id) };
+    return {
+      botMessage: result.text,
+      productIds: result.products.map((product) => product.id),
+      chatId: result.chatId,
+    };
   }
 
   @Get('token-pricing')

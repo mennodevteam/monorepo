@@ -212,7 +212,7 @@ export class AiChatbotService {
       this.logger.log(`[${traceId}] decremented tokenBalance by=${tokensUsed} aiChatbotId=${shop.aiChatbot.id}`);
     }
 
-    return { text: finalMessage, products };
+    return { text: finalMessage, products, chatId: chat.id };
   }
 
   async listPanelChatsPaged(

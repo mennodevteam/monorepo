@@ -1,0 +1,14 @@
+<div fxLayout="column" fxLayoutGap="16" p-md>
+  <h3>{{ 'menu.selectDineInTable' | translate }}</h3>
+  <mat-divider />
+  <mat-nav-list>
+    @for (table of tables; track table.code) {
+      <a mat-list-item (click)="sheetRef.dismiss(table)">
+        <span matListItemTitle>{{ table.code }}</span>
+        @if (table.title) {
+          <span matListItemLine>{{ table.title }}</span>
+        }
+      </a>
+    }
+  </mat-nav-list>
+</div>

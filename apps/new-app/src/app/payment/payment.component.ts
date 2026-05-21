@@ -13,11 +13,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { OrderType, StatAction } from '@menno/types';
 import { FormsModule } from '@angular/forms';
 import { AddressListComponent } from './address-list/address-list.component';
-import { AlertBannerComponent } from '../common/components/alert-banner/alert-banner.component';
+import { AlertBannerComponent, ShopTablesBottomSheetComponent } from '../common/components';
 import { injectQuery } from '@tanstack/angular-query-experimental';
-import { lastValueFrom } from 'rxjs';
+import { firstValueFrom, lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { AnalyticsService } from '../core/services/analytics.service';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 @Component({
   selector: 'app-payment',
@@ -56,12 +57,27 @@ export class PaymentComponent {
     public menu: MenuService,
     private analytics: AnalyticsService,
     private menuStat: MenuStatService,
+    private bottomSheet: MatBottomSheet,
   ) {
     if (this.cart.length() === 0) {
       this.location.back();
     } else {
       this.menuStat.send(StatAction.ViewCheckout, { value: this.cart.total() });
+      if (this.cart.needsTableSelection()) {
+        void this.promptTableSelection();
+      }
     }
+  }
+
+  private async promptTableSelection() {
+    const table = await firstValueFrom(
+      this.bottomSheet.open(ShopTablesBottomSheetComponent).afterDismissed(),
+    );
+    if (table) {
+      this.cart.table.set(table.code);
+      return;
+    }
+    this.location.back();
   }
 
   total = computed(() => {

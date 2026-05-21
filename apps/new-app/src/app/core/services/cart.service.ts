@@ -98,6 +98,13 @@ export class CartService {
     return OrderDto.totalDiscount(this.dto(), this.menuService.menu());
   });
 
+  needsTableSelection = computed(
+    () =>
+      this.menuService.type() === OrderType.DineIn &&
+      !!this.shopService.shop?.details?.tables?.length &&
+      !this.table(),
+  );
+
   constructor(
     private menuService: MenuService,
     private shopService: ShopService,
@@ -168,6 +175,7 @@ export class CartService {
         ) {
           this.address.set(this.addressesService.addresses()?.[0]);
         } else if (this.menuService.type() !== OrderType.Delivery) this.address.set(undefined);
+        if (this.menuService.type() !== OrderType.DineIn) this.table.set(undefined);
       },
       { allowSignalWrites: true },
     );
@@ -330,6 +338,11 @@ export class CartService {
         panelClass: 'warning',
         duration: 4000,
       });
+      return;
+    }
+
+    if (this.needsTableSelection()) {
+      this.snack.open(this.translate.instant('menu.selectDineInTable'), '', { duration: 2000 });
       return;
     }
 

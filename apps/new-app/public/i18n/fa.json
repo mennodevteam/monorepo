@@ -98,6 +98,7 @@
     "redirectingToPayment": "در حال انتقال به درگاه پرداخت..."
   },
   "menu": {
+    "selectDineInTable": "لطفا میز خود را انتخاب کنید",
     "add": "افزودن",
     "searchPlaceholder": "جستجوی در {{value}}...",
     "otherProducts": "سایر {{value}}",

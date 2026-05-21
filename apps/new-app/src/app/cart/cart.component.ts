@@ -12,6 +12,9 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AnalyticsService } from '../core/services/analytics.service';
 import { StatAction } from '@menno/types';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { ShopTablesBottomSheetComponent } from '../common/components';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
@@ -37,6 +40,7 @@ export class CartComponent {
     private auth: AuthService,
     private analytics: AnalyticsService,
     private menuStat: MenuStatService,
+    private bottomSheet: MatBottomSheet,
   ) {
     this.noteControl = new FormControl(this.cart.note());
     this.noteControl.valueChanges.subscribe((value) => {
@@ -55,12 +59,14 @@ export class CartComponent {
     });
   }
 
-  submit() {
+  async submit() {
     // Track checkout attempt
     this.analytics.trackEvent('proceed_to_checkout', {
       itemCount: this.cart.length(),
       totalAmount: this.cart.total(),
     });
+
+    if (!(await this.ensureTableSelected())) return;
 
     if (this.auth.isGuestUser && this.cart.isLoginRequired) {
       // Track login requirement
@@ -76,5 +82,17 @@ export class CartComponent {
       });
       this.router.navigateByUrl('/payment');
     }
+  }
+
+  private async ensureTableSelected(): Promise<boolean> {
+    if (!this.cart.needsTableSelection()) return true;
+
+    const table = await firstValueFrom(
+      this.bottomSheet.open(ShopTablesBottomSheetComponent).afterDismissed(),
+    );
+    if (!table) return false;
+
+    this.cart.table.set(table.code);
+    return true;
   }
 }
