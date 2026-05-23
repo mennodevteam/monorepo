@@ -89,14 +89,18 @@ export function provideSsrDataTransfer() {
           if (menu) {
             const menuForApp = prepareMenuForApp(menu);
             transferState.set(menuTransferKey(cacheUsername), serializeCircularForTransfer(menuForApp));
-            queryClient.setQueryData(MENU_QUERY_KEY(cacheUsername), menuForApp);
+            queryClient.setQueryData(MENU_QUERY_KEY(cacheUsername), menuForApp, { updatedAt: Date.now() });
           }
           if (homeSections) {
             transferState.set(homeSectionsTransferKey(cacheUsername), serializeForTransfer(homeSections));
-            queryClient.setQueryData(HOME_SECTIONS_QUERY_KEY(cacheUsername), homeSections);
+            queryClient.setQueryData(HOME_SECTIONS_QUERY_KEY(cacheUsername), homeSections, {
+              updatedAt: Date.now(),
+            });
           }
           transferState.set(SSR_PREFETCH_DONE, true);
-          queryClient.setQueryData(SHOP_QUERY_KEY(cacheUsername), shop);
+          queryClient.setQueryData(SHOP_QUERY_KEY(cacheUsername), shop, {
+            updatedAt: Date.now(),
+          });
 
           seo.applyShopDefaults(shop);
         })

@@ -8,12 +8,15 @@ import {
   SoftRemoveEvent,
   UpdateEvent,
 } from 'typeorm';
+import { Logger } from '@nestjs/common';
 import { OrderItem, Product, ProductVariant } from '@menno/types';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MennoBaleOrderNotificationsService } from '../third-parties/menno-bale-order-notifications.service';
 
 @EventSubscriber()
 export class OrderItemsSubscriber implements EntitySubscriberInterface<OrderItem> {
+  private readonly logger = new Logger(OrderItemsSubscriber.name);
+
   constructor(
     dataSource: DataSource,
     @InjectRepository(OrderItem)
@@ -27,11 +30,16 @@ export class OrderItemsSubscriber implements EntitySubscriberInterface<OrderItem
     dataSource.subscribers.push(this);
   }
 
-  private scheduleMennoFromItem(item?: OrderItem | null) {
+  private scheduleMennoFromItem(item?: OrderItem | null, reason?: string) {
     if (!item) return;
     const row = item as OrderItem & { orderId?: string };
     const oid = row.order?.id ?? row.orderId;
-    if (oid) this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(oid, false);
+    if (oid) {
+      this.logger.debug(`Menno Bale from orderItem order=${oid} item=${row.id ?? '?'} reason=${reason ?? 'unknown'} allowCreate=false`);
+      this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(oid, false);
+    } else {
+      this.logger.debug(`Menno Bale from orderItem skip: no order id (reason=${reason ?? 'unknown'})`);
+    }
   }
 
   listenTo() {
@@ -61,7 +69,7 @@ export class OrderItemsSubscriber implements EntitySubscriberInterface<OrderItem
       // do nothing
     }
     try {
-      this.scheduleMennoFromItem(event.entity);
+      this.scheduleMennoFromItem(event.entity, 'afterInsert');
     } catch (error) {
       // do nothing
     }
@@ -82,7 +90,7 @@ export class OrderItemsSubscriber implements EntitySubscriberInterface<OrderItem
       // do nothing
     }
     try {
-      this.scheduleMennoFromItem(event.entity as OrderItem | undefined);
+      this.scheduleMennoFromItem(event.entity as OrderItem | undefined, 'afterRemove');
     } catch (error) {
       // do nothing
     }
@@ -103,7 +111,7 @@ export class OrderItemsSubscriber implements EntitySubscriberInterface<OrderItem
       // do nothing
     }
     try {
-      this.scheduleMennoFromItem(event.entity);
+      this.scheduleMennoFromItem(event.entity, 'afterSoftRemove');
     } catch (error) {
       // do nothing
     }

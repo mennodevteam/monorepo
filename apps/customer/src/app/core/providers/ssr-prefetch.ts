@@ -57,7 +57,7 @@ async function fetchMenu(http: HttpClient, query: string): Promise<Menu | undefi
     return undefined;
   } catch (error) {
     ssrLog.fetchFail(resource, error, { query });
-    throw error;
+    return undefined;
   }
 }
 
@@ -75,62 +75,113 @@ async function fetchHomeSections(http: HttpClient, query: string): Promise<HomeS
     return sections;
   } catch (error) {
     ssrLog.fetchFail(resource, error, { query });
-    throw error;
+    return undefined;
   }
 }
 
-/** Resolve shop by host (domain / username / code) and prefetch menu + home sections when possible. */
-export async function prefetchShopData(http: HttpClient, host: string): Promise<SsrPrefetchResult | null> {
-  logSsrApiConfigOnce();
-  ssrLog.prefetchStart(host, { queries: menuLookupQueries(host) });
-
-  let shop: Shop | undefined;
-  let apiQuery: string | undefined;
-
-  for (const query of menuLookupQueries(host)) {
-    try {
-      shop = await fetchShop(http, query);
-      if (shop) {
-        apiQuery = query;
-        ssrLog.info('shop resolved', { host, apiQuery });
-        break;
-      }
-    } catch {
-      ssrLog.debug('shop lookup try next', { host, query });
-    }
+/** First successful shop lookup across all host candidates (parallel). */
+async function resolveShopFromQueries(
+  http: HttpClient,
+  queries: string[],
+): Promise<{ shop: Shop; query: string } | null> {
+  if (!queries.length) {
+    return null;
   }
 
-  if (!shop || !apiQuery) {
+  if (queries.length === 1) {
+    const shop = await fetchShop(http, queries[0]);
+    return shop ? { shop, query: queries[0] } : null;
+  }
+
+  return new Promise((resolve) => {
+    let pending = queries.length;
+    let settled = false;
+
+    for (const query of queries) {
+      fetchShop(http, query)
+        .then((shop) => {
+          if (!settled && shop?.id) {
+            settled = true;
+            resolve({ shop, query });
+            return;
+          }
+          pending -= 1;
+          if (pending === 0 && !settled) {
+            resolve(null);
+          }
+        })
+        .catch(() => {
+          pending -= 1;
+          if (pending === 0 && !settled) {
+            resolve(null);
+          }
+        });
+    }
+  });
+}
+
+async function fetchMenuAndSections(
+  http: HttpClient,
+  query: string,
+): Promise<{ menu?: Menu; homeSections?: HomeSection[] }> {
+  const [menu, homeSections] = await Promise.all([
+    fetchMenu(http, query),
+    fetchHomeSections(http, query),
+  ]);
+  return { menu, homeSections };
+}
+
+/** Resolve shop by host and prefetch shop + menu + home sections in parallel. */
+export async function prefetchShopData(http: HttpClient, host: string): Promise<SsrPrefetchResult | null> {
+  logSsrApiConfigOnce();
+  const queries = menuLookupQueries(host);
+  const primaryQuery = queries[0];
+  if (!primaryQuery) {
+    ssrLog.prefetchSkip(host, 'no lookup queries');
+    return null;
+  }
+
+  const started = Date.now();
+  ssrLog.prefetchStart(host, { queries, parallel: true });
+
+  const shopPromise = resolveShopFromQueries(http, queries);
+  const primaryDataPromise = fetchMenuAndSections(http, primaryQuery);
+
+  const [shopMatch, primaryData] = await Promise.all([shopPromise, primaryDataPromise]);
+
+  if (!shopMatch) {
     ssrLog.prefetchSkip(host, 'shop not found');
     return null;
   }
 
+  const { shop, query: apiQuery } = shopMatch;
+  ssrLog.info('shop resolved', { host, apiQuery });
+
+  let menu = primaryData.menu;
+  let homeSections = primaryData.homeSections;
+
+  if (apiQuery !== primaryQuery) {
+    ssrLog.debug('refetch menu and home-sections for resolved query', { apiQuery, primaryQuery });
+    const resolvedData = await fetchMenuAndSections(http, apiQuery);
+    menu = resolvedData.menu;
+    homeSections = resolvedData.homeSections;
+  }
+
   const username = resolveShopUsername(host);
-  const [menuResult, sectionsResult] = await Promise.allSettled([
-    fetchMenu(http, apiQuery),
-    fetchHomeSections(http, apiQuery),
-  ]);
-
-  if (menuResult.status === 'rejected') {
-    ssrLog.warn('prefetch partial: menu failed', { host, apiQuery });
-  }
-  if (sectionsResult.status === 'rejected') {
-    ssrLog.warn('prefetch partial: home-sections failed', { host, apiQuery });
-  }
-
   const result: SsrPrefetchResult = {
     username,
     shop,
-    menu: menuResult.status === 'fulfilled' ? menuResult.value : undefined,
-    homeSections: sectionsResult.status === 'fulfilled' ? sectionsResult.value : undefined,
+    menu,
+    homeSections,
   };
 
   ssrLog.prefetchDone(host, {
     username,
     apiQuery,
     shopId: shop.id,
-    hasMenu: Boolean(result.menu),
-    homeSectionCount: result.homeSections?.length ?? 0,
+    hasMenu: Boolean(menu),
+    homeSectionCount: homeSections?.length ?? 0,
+    durationMs: Date.now() - started,
   });
 
   return result;

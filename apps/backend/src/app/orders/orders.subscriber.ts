@@ -19,6 +19,7 @@ import {
   BillOfProduct,
   Product,
 } from '@menno/types';
+import { Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   DataSource,
@@ -41,6 +42,8 @@ import { MennoBaleOrderNotificationsService } from '../third-parties/menno-bale-
 
 @EventSubscriber()
 export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
+  private readonly logger = new Logger(OrdersSubscriber.name);
+
   constructor(
     dataSource: DataSource,
     @InjectRepository(User)
@@ -193,8 +196,17 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     } catch (error) {}
 
     try {
-      if (resolvedId) this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(resolvedId, true);
-    } catch (error) {}
+      if (resolvedId) {
+        this.logger.debug(`Menno Bale afterInsert order=${resolvedId} qNumber=${order.qNumber} shop=${order.shop?.id}`);
+        this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(resolvedId, true);
+      } else {
+        this.logger.log(
+          `[Menno Bale] afterInsert skip: no order id (entity.id=${order.id ?? 'unset'} entityId=${JSON.stringify(event.entityId)})`,
+        );
+      }
+    } catch (error) {
+      this.logger.warn(`Menno Bale afterInsert schedule failed: ${(error as Error)?.message || error}`);
+    }
   }
 
   async afterUpdate(event: UpdateEvent<Order>): Promise<any> {
@@ -206,8 +218,15 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
       const orderId = event.entity?.id as string | undefined;
       if (orderId && !mennoOnly) {
         try {
+          this.logger.debug(
+            `Menno Bale afterUpdate order=${orderId} allowCreate=false updated=[${updated.join(',')}]`,
+          );
           this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(orderId, false);
-        } catch (error) {}
+        } catch (error) {
+          this.logger.warn(`Menno Bale afterUpdate schedule failed order=${orderId}: ${(error as Error)?.message || error}`);
+        }
+      } else if (orderId && mennoOnly) {
+        this.logger.debug(`Menno Bale afterUpdate skip order=${orderId}: mennoBale fields only`);
       }
 
       const order = {
@@ -224,8 +243,13 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
   async afterSoftRemove(event: SoftRemoveEvent<Order>): Promise<any> {
     if (event.entity?.id) {
       try {
+        this.logger.debug(`Menno Bale afterSoftRemove order=${event.entity.id} allowCreate=false`);
         this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(event.entity.id, false);
-      } catch (error) {}
+      } catch (error) {
+        this.logger.warn(
+          `Menno Bale afterSoftRemove schedule failed order=${event.entity.id}: ${(error as Error)?.message || error}`,
+        );
+      }
 
       const order = await this.ordersRepo.findOne({
         where: { id: event.entity.id },

@@ -1,5 +1,6 @@
+import { isPlatformServer } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, REQUEST, computed, effect, inject } from '@angular/core';
+import { Injectable, PLATFORM_ID, REQUEST, computed, effect, inject } from '@angular/core';
 import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { firstValueFrom } from 'rxjs';
 import { OrderType, Shop } from '@menno/types';
@@ -14,6 +15,7 @@ const SHOP_STORAGE_KEY = (username: string) => `shop/${username}`;
 export class ShopService {
   private readonly http = inject(HttpClient);
   private readonly queryClient = inject(QueryClient);
+  private readonly platformId = inject(PLATFORM_ID);
   private readonly request = inject(REQUEST, { optional: true }) as Request | null;
 
   private get username(): string {
@@ -27,6 +29,8 @@ export class ShopService {
     queryKey: SHOP_QUERY_KEY(this.username),
     queryFn: () => this.fetchShop(this.username),
     refetchOnWindowFocus: false,
+    /** SSR: use prefetch transfer-state only. Browser: refetch so shop edits show up. */
+    staleTime: isPlatformServer(this.platformId) ? Number.POSITIVE_INFINITY : 0,
     initialData: () => this.readShopFromStorage(this.username),
   }));
 

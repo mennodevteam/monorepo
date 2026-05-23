@@ -1,5 +1,6 @@
+import { isPlatformServer } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, REQUEST, computed, inject } from '@angular/core';
+import { Injectable, PLATFORM_ID, REQUEST, computed, inject } from '@angular/core';
 import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { firstValueFrom } from 'rxjs';
 import { HomeSection } from '@menno/types';
@@ -13,6 +14,7 @@ const HOME_SECTIONS_QUERY_KEY = (username: string) => ['homeSections', username]
 export class HomeSectionService {
   private readonly http = inject(HttpClient);
   private readonly queryClient = inject(QueryClient);
+  private readonly platformId = inject(PLATFORM_ID);
   private readonly request = inject(REQUEST, { optional: true }) as Request | null;
 
   private get username(): string {
@@ -26,6 +28,7 @@ export class HomeSectionService {
     queryKey: HOME_SECTIONS_QUERY_KEY(this.username),
     queryFn: () => this.fetchHomeSections(this.username),
     refetchOnWindowFocus: false,
+    staleTime: isPlatformServer(this.platformId) ? Number.POSITIVE_INFINITY : 0,
   }));
 
   readonly data = computed(() => this.homeSectionsQuery.data() || []);

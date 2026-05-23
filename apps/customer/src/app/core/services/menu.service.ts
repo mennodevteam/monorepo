@@ -7,7 +7,7 @@ import { resolveShopUsername } from '../functions';
 import { ensureMenuPrepared } from '../utils/prepare-menu';
 import { CampaignService } from './campaign.service';
 import { AuthService } from './auth.service';
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
 
 const MENU_QUERY_KEY = (username: string) => ['menu', username] as const;
@@ -37,6 +37,7 @@ export class MenuService {
     refetchOnWindowFocus: false,
     structuralSharing: false,
     select: (data: Menu) => (data ? ensureMenuPrepared(data) : data),
+    staleTime: isPlatformServer(this.platformId) ? Number.POSITIVE_INFINITY : 0,
   }));
 
   prefetchMenu(username: string) {
