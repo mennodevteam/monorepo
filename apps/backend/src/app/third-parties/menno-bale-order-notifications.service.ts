@@ -12,12 +12,15 @@ import {
 } from '@menno/types';
 import { PersianNumberService } from '@menno/utils';
 import { firstValueFrom } from 'rxjs';
-import { EntityManager, Repository } from 'typeorm';
+import { QueryRunner, Repository } from 'typeorm';
 
 export interface MennoBaleSyncContext {
-  /** Same transaction as the subscriber — sees the row before commit */
-  manager?: EntityManager;
   /** In-memory line items on insert (DB rows may not exist yet) */
+  items?: OrderItem[];
+}
+
+interface PendingMennoBaleSync {
+  allowCreate: boolean;
   items?: OrderItem[];
 }
 
@@ -62,6 +65,7 @@ const ORDER_STATE_LINE: Record<OrderState, string> = {
 export class MennoBaleOrderNotificationsService {
   private readonly logger = new Logger(MennoBaleOrderNotificationsService.name);
   private readonly apiBaseUrl = 'https://tapi.bale.ai';
+  private readonly pendingByRunner = new WeakMap<QueryRunner, Map<string, PendingMennoBaleSync>>();
 
   constructor(
     private readonly http: HttpService,
@@ -71,6 +75,52 @@ export class MennoBaleOrderNotificationsService {
     private readonly orderItemsRepo: Repository<OrderItem>,
   ) {}
 
+  /**
+   * From TypeORM subscribers: queue until {@link flushPendingSyncs} on commit.
+   * Avoids "Query runner already released" when sync runs async while the transaction is open.
+   */
+  scheduleSyncAfterCommit(
+    orderId: string,
+    allowCreate: boolean,
+    queryRunner: QueryRunner | undefined,
+    items?: OrderItem[],
+  ): void {
+    if (!orderId) return;
+
+    if (queryRunner?.isTransactionActive) {
+      let pending = this.pendingByRunner.get(queryRunner);
+      if (!pending) {
+        pending = new Map();
+        this.pendingByRunner.set(queryRunner, pending);
+      }
+      const prev = pending.get(orderId);
+      pending.set(orderId, {
+        allowCreate: prev?.allowCreate === true || allowCreate,
+        items: items?.length ? items : prev?.items,
+      });
+      this.logger.debug(`Menno Bale queued until commit order=${orderId} allowCreate=${allowCreate}`);
+      return;
+    }
+
+    void this.runSyncInBackground(orderId, allowCreate, items?.length ? { items } : undefined);
+  }
+
+  flushPendingSyncs(queryRunner: QueryRunner): void {
+    const pending = this.pendingByRunner.get(queryRunner);
+    if (!pending?.size) return;
+    this.pendingByRunner.delete(queryRunner);
+    for (const [orderId, { allowCreate, items }] of pending) {
+      this.logger.debug(`Menno Bale flush after commit order=${orderId} allowCreate=${allowCreate}`);
+      void this.runSyncInBackground(orderId, allowCreate, items?.length ? { items } : undefined);
+    }
+  }
+
+  private runSyncInBackground(orderId: string, allowCreate: boolean, ctx?: MennoBaleSyncContext): void {
+    void this.syncOrderChannelMessage(orderId, allowCreate, ctx).catch((error: unknown) => {
+      this.logger.warn(`Menno Bale sync failed order=${orderId}: ${(error as Error)?.message || error}`);
+    });
+  }
+
   async syncOrderChannelMessage(
     orderId: string,
     allowCreate = true,
@@ -78,10 +128,7 @@ export class MennoBaleOrderNotificationsService {
   ): Promise<MennoBaleSyncResult> {
     this.logger.debug(`Menno Bale sync start order=${orderId} allowCreate=${allowCreate}`);
 
-    const orders = ctx?.manager ? ctx.manager.getRepository(Order) : this.ordersRepo;
-    const orderItems = ctx?.manager ? ctx.manager.getRepository(OrderItem) : this.orderItemsRepo;
-
-    const order = await orders.findOne({
+    const order = await this.ordersRepo.findOne({
       where: { id: orderId },
       relations: ['shop', 'shop.thirdParties', 'customer', 'address', 'address.region'],
       withDeleted: true,
@@ -103,7 +150,7 @@ export class MennoBaleOrderNotificationsService {
       order.items = ctx.items;
       this.logger.debug(`Menno Bale sync order=${orderId}: using ${ctx.items.length} in-memory item(s)`);
     } else {
-      const itemRows = await orderItems.find({
+      const itemRows = await this.orderItemsRepo.find({
         where: { order: { id: orderId } },
         order: { id: 'ASC' },
       });
@@ -111,7 +158,7 @@ export class MennoBaleOrderNotificationsService {
       this.logger.debug(`Menno Bale sync order=${orderId}: loaded ${itemRows.length} item(s)`);
     }
 
-    const latest = await orders.findOne({ where: { id: orderId }, withDeleted: true });
+    const latest = await this.ordersRepo.findOne({ where: { id: orderId }, withDeleted: true });
     if (latest) {
       order.state = latest.state;
       order.totalPrice = latest.totalPrice;
@@ -207,7 +254,7 @@ export class MennoBaleOrderNotificationsService {
       }
       const newId = body?.result?.message_id;
       if (typeof newId === 'number' && newId > 0) {
-        await orders.update(orderId, {
+        await this.ordersRepo.update(orderId, {
           mennoBaleChannelMessageId: newId,
           mennoBaleNotifyChannelId: channelId,
         });

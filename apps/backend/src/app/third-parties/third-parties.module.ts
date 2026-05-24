@@ -8,6 +8,7 @@ import { BaleWebhookController } from './bale-webhook.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Member, Order, OrderItem, Shop, User } from '@menno/types';
 import { MennoBaleOrderNotificationsService } from './menno-bale-order-notifications.service';
+import { MennoBaleTransactionSubscriber } from './menno-bale-transaction.subscriber';
 import { AiChatbotModule } from '../ai-chatbot/ai-chatbot.module';
 
 @Module({
@@ -19,7 +20,7 @@ import { AiChatbotModule } from '../ai-chatbot/ai-chatbot.module';
     forwardRef(() => AiChatbotModule),
   ],
   controllers: [ThirdPartiesController, BaleWebhookController],
-  providers: [BaleBotsService, MennoBaleOrderNotificationsService],
+  providers: [BaleBotsService, MennoBaleOrderNotificationsService, MennoBaleTransactionSubscriber],
   exports: [BaleBotsService, MennoBaleOrderNotificationsService],
 })
 export class ThirdPartiesModule {}

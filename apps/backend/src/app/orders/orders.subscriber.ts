@@ -5,6 +5,7 @@ import {
   Member,
   NewSmsDto,
   Order,
+  OrderItem,
   OrderMessage,
   OrderMessageEvent,
   OrderPaymentType,
@@ -28,6 +29,7 @@ import {
   InsertEvent,
   IsNull,
   Not,
+  QueryRunner,
   Repository,
   SoftRemoveEvent,
   UpdateEvent,
@@ -38,10 +40,7 @@ import { PrintersService } from '../printers/printers.service';
 import * as Sentry from '@sentry/node';
 import { RedisKey, RedisService } from '../core/redis.service';
 import { PersianNumberService } from '@menno/utils';
-import {
-  MennoBaleOrderNotificationsService,
-  MennoBaleSyncContext,
-} from '../third-parties/menno-bale-order-notifications.service';
+import { MennoBaleOrderNotificationsService } from '../third-parties/menno-bale-order-notifications.service';
 
 @EventSubscriber()
 export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
@@ -88,11 +87,14 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
    * After INSERT, TypeORM may leave `entity.id` unset while still passing the generated PK in {@link InsertEvent.entityId}
    * (single-column PKs become a plain string). Without this, Web Push / Menno Bale skip `order.id`.
    */
-  /** Fire-and-forget Bale sync — does not block order save / transaction commit */
-  private syncMennoBaleInBackground(orderId: string, allowCreate: boolean, ctx?: MennoBaleSyncContext): void {
-    void this.mennoBaleOrderNotifications.syncOrderChannelMessage(orderId, allowCreate, ctx).catch((error) => {
-      this.logger.warn(`Menno Bale sync failed order=${orderId}: ${(error as Error)?.message || error}`);
-    });
+  /** Fire-and-forget after DB commit — does not block order save */
+  private syncMennoBaleInBackground(
+    orderId: string,
+    allowCreate: boolean,
+    queryRunner: QueryRunner | undefined,
+    items?: OrderItem[],
+  ): void {
+    this.mennoBaleOrderNotifications.scheduleSyncAfterCommit(orderId, allowCreate, queryRunner, items);
   }
 
   private pickInsertPrimaryKey(event: InsertEvent<Order>): string | undefined {
@@ -207,10 +209,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
 
     if (resolvedId) {
       this.logger.debug(`Menno Bale afterInsert order=${resolvedId} qNumber=${order.qNumber} shop=${order.shop?.id}`);
-      this.syncMennoBaleInBackground(resolvedId, true, {
-        manager: event.manager,
-        items: order.items,
-      });
+      this.syncMennoBaleInBackground(resolvedId, true, event.queryRunner, order.items);
     } else {
       this.logger.log(
         `[Menno Bale] afterInsert skip: no order id (entity.id=${order.id ?? 'unset'} entityId=${JSON.stringify(event.entityId)})`,
@@ -230,10 +229,12 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
           `Menno Bale afterUpdate order=${orderId} allowCreate=false updated=[${updated.join(',')}]`,
         );
         const entityItems = event.entity?.items;
-        this.syncMennoBaleInBackground(orderId, false, {
-          manager: event.manager,
-          items: Array.isArray(entityItems) && entityItems.length > 0 ? entityItems : undefined,
-        });
+        this.syncMennoBaleInBackground(
+          orderId,
+          false,
+          event.queryRunner,
+          Array.isArray(entityItems) && entityItems.length > 0 ? entityItems : undefined,
+        );
       } else if (orderId && mennoOnly) {
         this.logger.debug(`Menno Bale afterUpdate skip order=${orderId}: mennoBale fields only`);
       }
@@ -252,7 +253,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
   async afterSoftRemove(event: SoftRemoveEvent<Order>): Promise<any> {
     if (event.entity?.id) {
       this.logger.debug(`Menno Bale afterSoftRemove order=${event.entity.id} allowCreate=false`);
-      this.syncMennoBaleInBackground(event.entity.id, false, { manager: event.manager });
+      this.syncMennoBaleInBackground(event.entity.id, false, event.queryRunner);
 
       const order = await this.ordersRepo.findOne({
         where: { id: event.entity.id },
