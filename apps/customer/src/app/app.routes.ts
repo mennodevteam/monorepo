@@ -29,8 +29,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'complete/:id',
-    redirectTo: 'orders/thanks/:id',
-    pathMatch: 'full',
+    loadComponent: () => import('./pages/orders/thanks/thanks.component').then((m) => m.ThanksComponent),
   },
   {
     path: 'chat/order/:id',
@@ -88,8 +87,9 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'orders/details/:id',
-        redirectTo: 'orders/:id',
-        pathMatch: 'full',
+        loadComponent: () =>
+          import('./pages/orders/details/details.component').then((m) => m.OrderDetailsComponent),
+        data: { title: 'جزئیات سفارش', hideMetaAction: true },
       },
       {
         path: 'main-menu',
