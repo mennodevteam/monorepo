@@ -61,7 +61,7 @@
 
     <mat-list class="items-list">
       <div matSubheader>اقلام سفارش</div>
-      @for (item of order()?.items; track item.id) {
+      @for (item of sortedItems(); track item.id) {
         <mat-list-item class="order-item">
           <span matListItemTitle class="item-title">{{ item.title }}</span>
           @if (!item.isAbstract) {

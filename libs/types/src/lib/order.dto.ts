@@ -20,6 +20,8 @@ export type ProductItem = {
   productId: string;
   productVariantId?: number;
   quantity: number;
+  /** Order in which the user added this line (persisted on OrderItem.details). */
+  addIndex?: number;
 };
 export class OrderDto {
   id?: string;
@@ -54,7 +56,11 @@ export class OrderDto {
           const productVariant = item.productVariantId
             ? Menu.getProductVariantById(menu, item.productVariantId)
             : undefined;
-          if (product) return new OrderItem(product, item.quantity, productVariant || undefined);
+          if (product) {
+            const orderItem = new OrderItem(product, item.quantity, productVariant || undefined);
+            if (item.addIndex != null) orderItem.details = { addIndex: item.addIndex };
+            return orderItem;
+          }
           return null;
         })
         .filter((item) => item);

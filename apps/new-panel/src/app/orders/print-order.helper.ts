@@ -1,4 +1,4 @@
-import { Order, Shop, User } from '@menno/types';
+import { getOrderItemAddIndex, Order, Shop, sortOrderItemsByAddIndex, User } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../environments/environment';
 
@@ -28,8 +28,7 @@ export function printOrder(
   const address = order.address ? order.address.description : '';
   const logoUrl = shop.logo ? `${environment.bucketUrl}/${shop.logo}` : '';
 
-  let rowCounter = 0;
-  const itemsHtml = order.items
+  const itemsHtml = sortOrderItemsByAddIndex(order.items)
     .filter((item) => type === 'customer' || !item.isAbstract)
     .map((item) => {
       if (item.isAbstract) {
@@ -41,10 +40,9 @@ export function printOrder(
         </tr>
       `;
       } else {
-        rowCounter++;
         return `
         <tr>
-          <td>${rowCounter}</td>
+          <td>${getOrderItemAddIndex(item) ?? ''}</td>
           <td style="text-align: right;">${item.title}</td>
           <td>${item.quantity}</td>
           ${

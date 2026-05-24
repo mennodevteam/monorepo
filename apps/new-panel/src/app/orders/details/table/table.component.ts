@@ -1,6 +1,6 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Order } from '@menno/types';
+import { getOrderItemAddIndex, Order, sortOrderItemsByAddIndex } from '@menno/types';
 import { MatTableModule } from '@angular/material/table';
 import { SHARED } from '../../../shared';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -28,9 +28,11 @@ export class OrderItemTableComponent {
       : ['index', 'title', 'quantity', 'price', 'total'];
   });
   items = computed(() => {
-    return this.order()?.items || [];
-    // return order ? Order.productItems(order) : [];
+    const items = this.order()?.items;
+    return items ? sortOrderItemsByAddIndex(items) : [];
   });
+
+  getOrderItemAddIndex = getOrderItemAddIndex;
 
   private readonly breakpointObserver = inject(BreakpointObserver);
   isSmallScreen = signal(false);

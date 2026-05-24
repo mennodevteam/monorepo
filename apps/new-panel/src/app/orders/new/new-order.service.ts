@@ -54,11 +54,13 @@ export class NewOrdersService {
         if (order.address) this.address.set(order.address);
         const productItems = order.items
           .filter((x) => !x.isAbstract && x.product)
-          .map((x) => ({
+          .map((x, i) => ({
             productId: x.product!.id,
             productVariantId: x.productVariant?.id,
             quantity: x.quantity,
-          }));
+            addIndex: x.details?.addIndex ?? i + 1,
+          }))
+          .sort((a, b) => a.addIndex! - b.addIndex!);
         this.items.set(productItems);
         const manualCost = order.items.find((x) => x.title === MANUAL_COST_TITLE && x.isAbstract);
         if (manualCost) this.manualCost.set(manualCost.price);
@@ -140,7 +142,13 @@ export class NewOrdersService {
     this.items.update((items) => {
       const exist = items.find((x) => x.productId === product.id && x.productVariantId === variant?.id);
       if (exist) exist.quantity++;
-      else items.push({ productId: product.id, productVariantId: variant?.id, quantity: 1 });
+      else
+        items.push({
+          productId: product.id,
+          productVariantId: variant?.id,
+          quantity: 1,
+          addIndex: this.nextAddIndex(items),
+        });
       return [...items];
     });
   }
@@ -168,6 +176,11 @@ export class NewOrdersService {
       }
       return items;
     });
+  }
+
+  private nextAddIndex(items: ProductItem[]) {
+    if (!items.length) return 1;
+    return Math.max(...items.map((x) => x.addIndex ?? 0)) + 1;
   }
 
   clear() {

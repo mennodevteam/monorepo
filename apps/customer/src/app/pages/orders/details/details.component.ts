@@ -11,7 +11,7 @@ import { OrdersService } from '../../../core/services/orders.service';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Chat, ChatType, OrderState } from '@menno/types';
+import { Chat, ChatType, OrderState, sortOrderItemsByAddIndex } from '@menno/types';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   saxTimerOutline,
@@ -77,6 +77,11 @@ export class OrderDetailsComponent {
 
   order = computed(() => {
     return this.orderQuery.data();
+  });
+
+  sortedItems = computed(() => {
+    const items = this.order()?.items;
+    return items ? sortOrderItemsByAddIndex(items) : [];
   });
 
   notSeenChatCount = computed(() => {

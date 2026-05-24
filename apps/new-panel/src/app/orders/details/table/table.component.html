@@ -3,7 +3,7 @@
     <th mat-header-cell *matHeaderCellDef>{{ 'app.index' | translate }}</th>
     <td mat-cell *matCellDef="let item; let i = index">
       @if (!item.isAbstract) {
-        {{ i + 1 }}
+        {{ getOrderItemAddIndex(item) ?? i + 1 }}
       }
     </td>
   </ng-container>

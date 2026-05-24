@@ -27,7 +27,12 @@ import { MenuStatService } from './menu-stat.service';
 
 const LOCAL_CART_QUANTITY_KEY = 'cartQuantity';
 
-type SignalProductItem = { productId: string; variantId?: number; quantity: WritableSignal<number> };
+type SignalProductItem = {
+  productId: string;
+  variantId?: number;
+  quantity: WritableSignal<number>;
+  addIndex: number;
+};
 
 @Injectable({
   providedIn: 'root',
@@ -135,11 +140,14 @@ export class CartService {
       const localQuantity = JSON.parse(localStorage.getItem(LOCAL_CART_QUANTITY_KEY) || 'null');
       if (localQuantity?.items?.length && localQuantity.date > Date.now() - 1000 * 60 * 60 * 24) {
         this.quantity.set(
-          localQuantity.items.map((x: { productId: string; variantId?: number; quantity: number }) => ({
-            productId: x.productId,
-            variantId: x.variantId,
-            quantity: signal(x.quantity),
-          })),
+          localQuantity.items.map(
+            (x: { productId: string; variantId?: number; quantity: number; addIndex?: number }, i: number) => ({
+              productId: x.productId,
+              variantId: x.variantId,
+              quantity: signal(x.quantity),
+              addIndex: x.addIndex ?? i + 1,
+            }),
+          ),
         );
       }
     }
@@ -242,7 +250,12 @@ export class CartService {
     } else {
       this.quantity.update((items) => [
         ...items,
-        { productId: product.id, variantId: variant?.id, quantity: signal(1) },
+        {
+          productId: product.id,
+          variantId: variant?.id,
+          quantity: signal(1),
+          addIndex: this.nextAddIndex(items),
+        },
       ]);
 
       this.menuStat.send(StatAction.AddToCart, { productId: product.id });
@@ -295,7 +308,13 @@ export class CartService {
       productId: item.productId,
       productVariantId: item.variantId,
       quantity: item.quantity(),
+      addIndex: item.addIndex,
     } as ProductItem;
+  }
+
+  private nextAddIndex(items: SignalProductItem[]) {
+    if (!items.length) return 1;
+    return Math.max(...items.map((x) => x.addIndex)) + 1;
   }
 
   clear(deep?: boolean) {
@@ -312,14 +331,15 @@ export class CartService {
     }
   }
 
-  restoreQuantity(items: { productId: string; variantId?: number; quantity: number }[]) {
+  restoreQuantity(items: { productId: string; variantId?: number; quantity: number; addIndex?: number }[]) {
     if (!items.length) return;
     this.upsellDismissed.set(false);
     this.quantity.set(
-      items.map((x) => ({
+      items.map((x, i) => ({
         productId: x.productId,
         variantId: x.variantId,
         quantity: signal(x.quantity),
+        addIndex: x.addIndex ?? i + 1,
       })),
     );
   }
