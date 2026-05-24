@@ -197,9 +197,9 @@ export class OrdersController {
     if (!order) throw new HttpException('order not found', HttpStatus.NOT_FOUND);
 
     const result = await this.mennoBaleOrderNotifications.syncOrderChannelMessage(id, true);
-    if (!result.ok) {
+    if (result.ok === false) {
       throw new HttpException(
-        result.error || result.skipReason || 'Menno Bale sync failed',
+        result.error ?? result.skipReason ?? 'Menno Bale sync failed',
         HttpStatus.BAD_REQUEST,
       );
     }
