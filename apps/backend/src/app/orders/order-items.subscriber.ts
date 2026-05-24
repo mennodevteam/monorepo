@@ -6,17 +6,12 @@ import {
   RemoveEvent,
   Repository,
   SoftRemoveEvent,
-  UpdateEvent,
 } from 'typeorm';
-import { Logger } from '@nestjs/common';
 import { OrderItem, Product, ProductVariant } from '@menno/types';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MennoBaleOrderNotificationsService } from '../third-parties/menno-bale-order-notifications.service';
 
 @EventSubscriber()
 export class OrderItemsSubscriber implements EntitySubscriberInterface<OrderItem> {
-  private readonly logger = new Logger(OrderItemsSubscriber.name);
-
   constructor(
     dataSource: DataSource,
     @InjectRepository(OrderItem)
@@ -25,21 +20,8 @@ export class OrderItemsSubscriber implements EntitySubscriberInterface<OrderItem
     private productsRepo: Repository<Product>,
     @InjectRepository(ProductVariant)
     private productVariantsRepo: Repository<ProductVariant>,
-    private mennoBaleOrderNotifications: MennoBaleOrderNotificationsService,
   ) {
     dataSource.subscribers.push(this);
-  }
-
-  private scheduleMennoFromItem(item?: OrderItem | null, reason?: string) {
-    if (!item) return;
-    const row = item as OrderItem & { orderId?: string };
-    const oid = row.order?.id ?? row.orderId;
-    if (oid) {
-      this.logger.debug(`Menno Bale from orderItem order=${oid} item=${row.id ?? '?'} reason=${reason ?? 'unknown'} allowCreate=false`);
-      this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(oid, false);
-    } else {
-      this.logger.debug(`Menno Bale from orderItem skip: no order id (reason=${reason ?? 'unknown'})`);
-    }
   }
 
   listenTo() {
@@ -55,21 +37,16 @@ export class OrderItemsSubscriber implements EntitySubscriberInterface<OrderItem
         await this.productVariantsRepo.decrement(
           { id: productVariant.id },
           'stock',
-          Math.min(event.entity.quantity, productVariant.stock)
+          Math.min(event.entity.quantity, productVariant.stock),
         );
       } else if (event.entity.product) {
         const product = await this.productsRepo.findOneBy({ id: event.entity.product.id });
         await this.productsRepo.decrement(
           { id: product.id },
           'stock',
-          Math.min(event.entity.quantity, product.stock)
+          Math.min(event.entity.quantity, product.stock),
         );
       }
-    } catch (error) {
-      // do nothing
-    }
-    try {
-      this.scheduleMennoFromItem(event.entity, 'afterInsert');
     } catch (error) {
       // do nothing
     }
@@ -89,11 +66,6 @@ export class OrderItemsSubscriber implements EntitySubscriberInterface<OrderItem
     } catch (error) {
       // do nothing
     }
-    try {
-      this.scheduleMennoFromItem(event.entity as OrderItem | undefined, 'afterRemove');
-    } catch (error) {
-      // do nothing
-    }
   }
 
   async afterSoftRemove(event: SoftRemoveEvent<OrderItem>) {
@@ -107,11 +79,6 @@ export class OrderItemsSubscriber implements EntitySubscriberInterface<OrderItem
       } else if (item.product && item.product.stock != undefined) {
         await this.productsRepo.increment({ id: item.product.id }, 'stock', item.quantity);
       }
-    } catch (error) {
-      // do nothing
-    }
-    try {
-      this.scheduleMennoFromItem(event.entity, 'afterSoftRemove');
     } catch (error) {
       // do nothing
     }

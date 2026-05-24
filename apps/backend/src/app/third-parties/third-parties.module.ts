@@ -8,7 +8,6 @@ import { BaleWebhookController } from './bale-webhook.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Member, Order, OrderItem, Shop, User } from '@menno/types';
 import { MennoBaleOrderNotificationsService } from './menno-bale-order-notifications.service';
-
 import { AiChatbotModule } from '../ai-chatbot/ai-chatbot.module';
 
 @Module({

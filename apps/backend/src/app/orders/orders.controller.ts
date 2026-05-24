@@ -31,6 +31,7 @@ import { AuthPayload } from '../core/types/auth-payload';
 import { Roles } from '../auth/roles.decorators';
 import { OrdersService } from './orders.service';
 import { SmsService } from '../sms/sms.service';
+import { MennoBaleOrderNotificationsService } from '../third-parties/menno-bale-order-notifications.service';
 
 @Controller('orders')
 export class OrdersController {
@@ -42,6 +43,7 @@ export class OrdersController {
     private sms: SmsService,
     @InjectRepository(OrderItem)
     private orderItemsRepo: Repository<OrderItem>,
+    private mennoBaleOrderNotifications: MennoBaleOrderNotificationsService,
   ) {}
 
   @Post()
@@ -180,6 +182,46 @@ export class OrdersController {
     }
 
     return order;
+  }
+
+  @Post('panel/:id/syncMennoBale')
+  @Roles(UserRole.Panel)
+  async syncMennoBalePanel(@Param('id') id: string, @LoginUser() user: AuthPayload) {
+    const shop = await this.auth.getPanelUserShop(user);
+    if (!shop) throw new HttpException('no shop found', HttpStatus.NOT_FOUND);
+
+    const order = await this.ordersRepo.findOne({
+      where: { id, shop: { id: shop.id } },
+      withDeleted: true,
+    });
+    if (!order) throw new HttpException('order not found', HttpStatus.NOT_FOUND);
+
+    const result = await this.mennoBaleOrderNotifications.syncOrderChannelMessage(id, true);
+    if (!result.ok) {
+      throw new HttpException(
+        result.error || result.skipReason || 'Menno Bale sync failed',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const updated = await this.ordersRepo.findOne({
+      where: { id },
+      withDeleted: true,
+      relations: [
+        'items.product',
+        'items.productVariant',
+        'customer',
+        'waiter',
+        'creator',
+        'reviews',
+        'payment',
+        'address.deliveryArea',
+        'address.region',
+        'discountCoupon',
+      ],
+    });
+
+    return { action: result.action, order: updated };
   }
 
   @Roles(UserRole.Panel)

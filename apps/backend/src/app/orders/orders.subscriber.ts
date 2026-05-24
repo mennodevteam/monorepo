@@ -38,7 +38,10 @@ import { PrintersService } from '../printers/printers.service';
 import * as Sentry from '@sentry/node';
 import { RedisKey, RedisService } from '../core/redis.service';
 import { PersianNumberService } from '@menno/utils';
-import { MennoBaleOrderNotificationsService } from '../third-parties/menno-bale-order-notifications.service';
+import {
+  MennoBaleOrderNotificationsService,
+  MennoBaleSyncContext,
+} from '../third-parties/menno-bale-order-notifications.service';
 
 @EventSubscriber()
 export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
@@ -85,6 +88,13 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
    * After INSERT, TypeORM may leave `entity.id` unset while still passing the generated PK in {@link InsertEvent.entityId}
    * (single-column PKs become a plain string). Without this, Web Push / Menno Bale skip `order.id`.
    */
+  /** Fire-and-forget Bale sync — does not block order save / transaction commit */
+  private syncMennoBaleInBackground(orderId: string, allowCreate: boolean, ctx?: MennoBaleSyncContext): void {
+    void this.mennoBaleOrderNotifications.syncOrderChannelMessage(orderId, allowCreate, ctx).catch((error) => {
+      this.logger.warn(`Menno Bale sync failed order=${orderId}: ${(error as Error)?.message || error}`);
+    });
+  }
+
   private pickInsertPrimaryKey(event: InsertEvent<Order>): string | undefined {
     const raw = event.entityId;
     if (typeof raw === 'string') return raw;
@@ -195,17 +205,16 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
       this.materialConsumption(order, false);
     } catch (error) {}
 
-    try {
-      if (resolvedId) {
-        this.logger.debug(`Menno Bale afterInsert order=${resolvedId} qNumber=${order.qNumber} shop=${order.shop?.id}`);
-        this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(resolvedId, true);
-      } else {
-        this.logger.log(
-          `[Menno Bale] afterInsert skip: no order id (entity.id=${order.id ?? 'unset'} entityId=${JSON.stringify(event.entityId)})`,
-        );
-      }
-    } catch (error) {
-      this.logger.warn(`Menno Bale afterInsert schedule failed: ${(error as Error)?.message || error}`);
+    if (resolvedId) {
+      this.logger.debug(`Menno Bale afterInsert order=${resolvedId} qNumber=${order.qNumber} shop=${order.shop?.id}`);
+      this.syncMennoBaleInBackground(resolvedId, true, {
+        manager: event.manager,
+        items: order.items,
+      });
+    } else {
+      this.logger.log(
+        `[Menno Bale] afterInsert skip: no order id (entity.id=${order.id ?? 'unset'} entityId=${JSON.stringify(event.entityId)})`,
+      );
     }
   }
 
@@ -217,14 +226,14 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
         updated.every((c) => c === 'mennoBaleChannelMessageId' || c === 'mennoBaleNotifyChannelId');
       const orderId = event.entity?.id as string | undefined;
       if (orderId && !mennoOnly) {
-        try {
-          this.logger.debug(
-            `Menno Bale afterUpdate order=${orderId} allowCreate=false updated=[${updated.join(',')}]`,
-          );
-          this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(orderId, false);
-        } catch (error) {
-          this.logger.warn(`Menno Bale afterUpdate schedule failed order=${orderId}: ${(error as Error)?.message || error}`);
-        }
+        this.logger.debug(
+          `Menno Bale afterUpdate order=${orderId} allowCreate=false updated=[${updated.join(',')}]`,
+        );
+        const entityItems = event.entity?.items;
+        this.syncMennoBaleInBackground(orderId, false, {
+          manager: event.manager,
+          items: Array.isArray(entityItems) && entityItems.length > 0 ? entityItems : undefined,
+        });
       } else if (orderId && mennoOnly) {
         this.logger.debug(`Menno Bale afterUpdate skip order=${orderId}: mennoBale fields only`);
       }
@@ -242,14 +251,8 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
 
   async afterSoftRemove(event: SoftRemoveEvent<Order>): Promise<any> {
     if (event.entity?.id) {
-      try {
-        this.logger.debug(`Menno Bale afterSoftRemove order=${event.entity.id} allowCreate=false`);
-        this.mennoBaleOrderNotifications.scheduleSyncOrderChannelMessage(event.entity.id, false);
-      } catch (error) {
-        this.logger.warn(
-          `Menno Bale afterSoftRemove schedule failed order=${event.entity.id}: ${(error as Error)?.message || error}`,
-        );
-      }
+      this.logger.debug(`Menno Bale afterSoftRemove order=${event.entity.id} allowCreate=false`);
+      this.syncMennoBaleInBackground(event.entity.id, false, { manager: event.manager });
 
       const order = await this.ordersRepo.findOne({
         where: { id: event.entity.id },

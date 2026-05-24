@@ -372,6 +372,10 @@
     "deliveryArea": "ارسال",
     "printCustomer": "چاپ برای مشتری",
     "printShop": "چاپ برای {{value}}",
+    "syncMennoBale": "همگام‌سازی با کانال بله",
+    "syncMennoBaleEdited": "پیام کانال بله به‌روزرسانی شد",
+    "syncMennoBaleSent": "پیام جدید در کانال بله ارسال شد",
+    "syncMennoBaleFailed": "همگام‌سازی با بله ناموفق بود",
     "exportAI": "خروجی برای هوش مصنوعی (JSON)",
     "noOrdersToExport": "هیچ سفارشی برای خروجی وجود ندارد",
     "list": {

@@ -3,7 +3,6 @@ import { computed, inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
-  Menu,
   Order,
   OrderDto,
   OrderMessage,
@@ -14,6 +13,11 @@ import {
   Status,
   User,
 } from '@menno/types';
+
+export type MennoBalePanelSyncResponse = {
+  action: 'edited' | 'sent';
+  order: Order;
+};
 import { TranslateService } from '@ngx-translate/core';
 import {
   injectMutation,
@@ -141,6 +145,26 @@ export class OrdersService {
     },
     onError: (err, dto, context) => {
       this.snack.open(this.t.instant('errors.changeError'), '', { duration: 2000 });
+    },
+  }));
+
+  syncMennoBaleMutation = injectMutation(() => ({
+    mutationFn: (orderId: string) =>
+      lastValueFrom(
+        this.http.post<MennoBalePanelSyncResponse>(`/orders/panel/${orderId}/syncMennoBale`, {}),
+      ),
+    onMutate: () => {
+      this.snack.open(this.t.instant('app.saving'), '', { duration: 4000 });
+    },
+    onSuccess: (data, orderId) => {
+      const key = ['orderDetails', orderId] as const;
+      this.queryClient.setQueryData(key, data.order);
+      const msgKey =
+        data.action === 'sent' ? 'order.syncMennoBaleSent' : 'order.syncMennoBaleEdited';
+      this.snack.open(this.t.instant(msgKey), '', { duration: 2500 });
+    },
+    onError: () => {
+      this.snack.open(this.t.instant('order.syncMennoBaleFailed'), '', { duration: 3000 });
     },
   }));
 

@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Order, OrderState, OrderType, User } from '@menno/types';
+import { MennoBaleOrderKeys, Order, OrderState, OrderType, ThirdPartyApp, User } from '@menno/types';
 import { OrderItemTableComponent } from './table/table.component';
 import { OrderStateChipComponent } from '../state-chip/state-chip.component';
 import { OrdersService } from '../order.service';
@@ -67,6 +67,12 @@ export class OrderDetailsComponent {
     return this.query.data() || this.router.currentNavigation()?.extras?.state?.['order'];
   });
 
+  mennoBaleConfigured = computed(() => {
+    const party = this.shopService.data()?.thirdParties?.find((t) => t.app === ThirdPartyApp.MennoBaleOrders);
+    const keys = party?.keys as MennoBaleOrderKeys | undefined;
+    return !!keys?.channelId?.trim();
+  });
+
   constructor() {
     this.breakpointObserver.observe([Breakpoints.XSmall]).subscribe((result) => {
       this.isSmallScreen.set(result.matches);
@@ -101,5 +107,11 @@ export class OrderDetailsComponent {
 
   onShowCostChange(value: boolean) {
     this.showCost.set(value);
+  }
+
+  syncMennoBale() {
+    const id = this.orderId();
+    if (!id || this.ordersService.syncMennoBaleMutation.isPending()) return;
+    this.ordersService.syncMennoBaleMutation.mutate(id);
   }
 }

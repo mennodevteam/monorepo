@@ -12,7 +12,20 @@ import {
 } from '@menno/types';
 import { PersianNumberService } from '@menno/utils';
 import { firstValueFrom } from 'rxjs';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
+
+export interface MennoBaleSyncContext {
+  /** Same transaction as the subscriber — sees the row before commit */
+  manager?: EntityManager;
+  /** In-memory line items on insert (DB rows may not exist yet) */
+  items?: OrderItem[];
+}
+
+export type MennoBaleSyncAction = 'edited' | 'sent';
+
+export type MennoBaleSyncResult =
+  | { ok: true; action: MennoBaleSyncAction }
+  | { ok: false; skipReason?: string; error?: string };
 
 interface BaleTelegramResponse<T = unknown> {
   ok?: boolean;
@@ -43,7 +56,7 @@ const ORDER_STATE_LINE: Record<OrderState, string> = {
  * Uses env `MENNO_BALE_ORDERS_BOT_TOKEN` (Menno shared Bale bot) and `NEW_PANEL_BASE_URL` for the panel link button.
  * Per shop: only {@link MennoBaleOrderKeys.channelId} on {@link ThirdPartyApp.MennoBaleOrders}.
  * Message text is implicit Markdown on Bale (no parse_mode). Section headers use Bale bold (space around *…*). Lines use {@link sanitizeUserText} for user-supplied fragments.
- * New Bale channel posts only when {@link scheduleSyncOrderChannelMessage} is called with {@code allowCreate} true (order insert). Otherwise only edits an existing card when {@link Order.mennoBaleChannelMessageId} is set.
+ * New Bale channel posts only from {@code Order} {@code afterInsert} ({@code allowCreate} true). Updates use {@code afterUpdate} / item changes.
  */
 @Injectable()
 export class MennoBaleOrderNotificationsService {
@@ -58,48 +71,47 @@ export class MennoBaleOrderNotificationsService {
     private readonly orderItemsRepo: Repository<OrderItem>,
   ) {}
 
-  /**
-   * Fire-and-forget after DB commit so items/state match the latest save.
-   * @param allowCreate when true, may call Bale {@code sendMessage} if the order has no channel card yet (use on order insert only).
-   */
-  scheduleSyncOrderChannelMessage(orderId: string, allowCreate = true): void {
-    this.logger.debug(`Menno Bale schedule sync order=${orderId} allowCreate=${allowCreate}`);
-    setImmediate(() => {
-      void this.syncOrderChannelMessage(orderId, allowCreate).catch((err: unknown) => {
-        this.logger.warn(`Menno Bale orders sync failed order=${orderId}: ${(err as Error)?.message || err}`);
-      });
-    });
-  }
-
-  async syncOrderChannelMessage(orderId: string, allowCreate = true): Promise<void> {
+  async syncOrderChannelMessage(
+    orderId: string,
+    allowCreate = true,
+    ctx?: MennoBaleSyncContext,
+  ): Promise<MennoBaleSyncResult> {
     this.logger.debug(`Menno Bale sync start order=${orderId} allowCreate=${allowCreate}`);
 
-    const order = await this.ordersRepo.findOne({
+    const orders = ctx?.manager ? ctx.manager.getRepository(Order) : this.ordersRepo;
+    const orderItems = ctx?.manager ? ctx.manager.getRepository(OrderItem) : this.orderItemsRepo;
+
+    const order = await orders.findOne({
       where: { id: orderId },
       relations: ['shop', 'shop.thirdParties', 'customer', 'address', 'address.region'],
       withDeleted: true,
     });
     if (!order) {
       this.logger.log(`[Menno Bale] skip order=${orderId}: order not found`);
-      return;
+      return { ok: false, skipReason: 'order not found' };
     }
     if (!order.shop) {
       this.logger.log(`[Menno Bale] skip order=${orderId}: shop missing on order`);
-      return;
+      return { ok: false, skipReason: 'shop missing on order' };
     }
     if (!order.shop.thirdParties?.length) {
       this.logger.log(`[Menno Bale] skip order=${orderId} shop=${order.shop.id}: no thirdParties`);
-      return;
+      return { ok: false, skipReason: 'no thirdParties' };
     }
 
-    const itemRows = await this.orderItemsRepo.find({
-      where: { order: { id: orderId } },
-      order: { id: 'ASC' },
-    });
-    order.items = itemRows;
-    this.logger.debug(`Menno Bale sync order=${orderId}: loaded ${itemRows.length} item(s)`);
+    if (ctx?.items?.length) {
+      order.items = ctx.items;
+      this.logger.debug(`Menno Bale sync order=${orderId}: using ${ctx.items.length} in-memory item(s)`);
+    } else {
+      const itemRows = await orderItems.find({
+        where: { order: { id: orderId } },
+        order: { id: 'ASC' },
+      });
+      order.items = itemRows;
+      this.logger.debug(`Menno Bale sync order=${orderId}: loaded ${itemRows.length} item(s)`);
+    }
 
-    const latest = await this.ordersRepo.findOne({ where: { id: orderId }, withDeleted: true });
+    const latest = await orders.findOne({ where: { id: orderId }, withDeleted: true });
     if (latest) {
       order.state = latest.state;
       order.totalPrice = latest.totalPrice;
@@ -107,6 +119,8 @@ export class MennoBaleOrderNotificationsService {
       order.deletedAt = latest.deletedAt;
       order.details = latest.details;
       order.type = latest.type;
+      order.mennoBaleChannelMessageId = latest.mennoBaleChannelMessageId;
+      order.mennoBaleNotifyChannelId = latest.mennoBaleNotifyChannelId;
     }
 
     const party = order.shop.thirdParties.find((t) => t.app === ThirdPartyApp.MennoBaleOrders);
@@ -117,15 +131,15 @@ export class MennoBaleOrderNotificationsService {
       this.logger.log(
         `[Menno Bale] skip order=${orderId} shop=${order.shop.id}: mennoBaleOrders not configured (apps=${order.shop.thirdParties.map((t) => t.app).join(',')})`,
       );
-      return;
+      return { ok: false, skipReason: 'mennoBaleOrders not configured' };
     }
     if (!channelId) {
       this.logger.log(`[Menno Bale] skip order=${orderId} shop=${order.shop.id}: channelId empty`);
-      return;
+      return { ok: false, skipReason: 'channelId empty' };
     }
     if (!botToken) {
       this.logger.log(`[Menno Bale] skip order=${orderId}: MENNO_BALE_ORDERS_BOT_TOKEN not set`);
-      return;
+      return { ok: false, skipReason: 'MENNO_BALE_ORDERS_BOT_TOKEN not set' };
     }
 
     const text = this.formatOrderMessage(order);
@@ -133,7 +147,7 @@ export class MennoBaleOrderNotificationsService {
     const chatId = this.parseChatId(channelId);
     if (chatId === undefined) {
       this.logger.warn(`Menno Bale orders: invalid channelId "${channelId}" order=${orderId}`);
-      return;
+      return { ok: false, skipReason: 'invalid channelId' };
     }
 
     const msgId = order.mennoBaleChannelMessageId;
@@ -153,7 +167,7 @@ export class MennoBaleOrderNotificationsService {
           ...(reply_markup ? { reply_markup } : {}),
         });
         this.logger.debug(`Menno Bale sync order=${orderId}: editMessageText ok msgId=${msgId}`);
-        return;
+        return { ok: true, action: 'edited' };
       } catch (e: unknown) {
         const errText = String((e as Error)?.message || e);
         const canResend =
@@ -164,7 +178,7 @@ export class MennoBaleOrderNotificationsService {
           this.logger.warn(
             `Menno Bale editMessageText failed order=${orderId} allowCreate=${allowCreate}: ${errText}`,
           );
-          return;
+          return { ok: false, error: errText };
         }
         this.logger.warn(`Menno Bale editMessageText lost message order=${orderId}, sending new: ${errText}`);
       }
@@ -178,7 +192,7 @@ export class MennoBaleOrderNotificationsService {
       this.logger.log(
         `[Menno Bale] skip sendMessage order=${orderId}: allowCreate=false, no channel card yet (msgId=${msgId ?? 'none'})`,
       );
-      return;
+      return { ok: false, skipReason: 'no channel card yet' };
     }
 
     try {
@@ -193,18 +207,21 @@ export class MennoBaleOrderNotificationsService {
       }
       const newId = body?.result?.message_id;
       if (typeof newId === 'number' && newId > 0) {
-        await this.ordersRepo.update(orderId, {
+        await orders.update(orderId, {
           mennoBaleChannelMessageId: newId,
           mennoBaleNotifyChannelId: channelId,
         });
         this.logger.debug(`Menno Bale sync order=${orderId}: sendMessage ok saved msgId=${newId}`);
-      } else {
-        this.logger.log(
-          `[Menno Bale] sendMessage ok but no message_id order=${orderId} (ok=${body?.ok}) — card not saved`,
-        );
+        return { ok: true, action: 'sent' };
       }
+      this.logger.log(
+        `[Menno Bale] sendMessage ok but no message_id order=${orderId} (ok=${body?.ok}) — card not saved`,
+      );
+      return { ok: false, error: 'sendMessage returned no message_id' };
     } catch (e: unknown) {
-      this.logger.warn(`Menno Bale sendMessage failed order=${orderId}: ${(e as Error)?.message || e}`);
+      const errText = String((e as Error)?.message || e);
+      this.logger.warn(`Menno Bale sendMessage failed order=${orderId}: ${errText}`);
+      return { ok: false, error: errText };
     }
   }
 

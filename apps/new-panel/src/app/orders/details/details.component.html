@@ -6,6 +6,17 @@
     <h4 fxHide.lt-sm>{{ order()?.createdAt | pdate: true }}</h4>
     <span fxFlex></span>
     <app-order-state-chip [state]="order()?.state" (stateChange)="stateChange($event)" />
+    @if (mennoBaleConfigured()) {
+      <button
+        mat-icon-button
+        type="button"
+        (click)="syncMennoBale()"
+        [disabled]="ordersService.syncMennoBaleMutation.isPending()"
+        [matTooltip]="'order.syncMennoBale' | translate"
+      >
+        <img src="icons/bale-logo.png" alt="" width="22" height="22" />
+      </button>
+    }
     <button mat-icon-button routerLink="../../edit/{{ orderId() }}">
       <i class="fa-regular fa-edit"></i>
     </button>
