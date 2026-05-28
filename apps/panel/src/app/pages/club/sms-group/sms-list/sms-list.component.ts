@@ -4,6 +4,7 @@ import { SmsGroup, SmsStatus } from '@menno/types';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
+  standalone: false,
   selector: 'sms-list',
   templateUrl: './sms-list.component.html',
   styleUrls: ['./sms-list.component.scss'],

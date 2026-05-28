@@ -5,6 +5,7 @@ import { MenuService } from '../../core/services/menu.service';
 import { ShopService } from '../../core/services/shop.service';
 
 @Pipe({
+  standalone: false,
   name: 'shopTable',
 })
 export class TablePipe implements PipeTransform {

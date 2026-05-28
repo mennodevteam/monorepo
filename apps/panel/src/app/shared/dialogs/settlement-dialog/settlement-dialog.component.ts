@@ -19,6 +19,7 @@ import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import { MenuCurrencyPipe } from '../../pipes/menu-currency.pipe';
 
 @Component({
+  standalone: false,
   selector: 'app-settlement-dialog',
   templateUrl: './settlement-dialog.component.html',
   styleUrls: ['./settlement-dialog.component.scss'],

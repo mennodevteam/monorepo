@@ -3,6 +3,7 @@ import { ShopService } from '../../../core/services/shop.service';
 import { ShopTable } from '@menno/types';
 
 @Component({
+  standalone: false,
   selector: 'app-table-selector-dialog',
   templateUrl: './table-selector-dialog.component.html',
   styleUrls: ['./table-selector-dialog.component.scss'],

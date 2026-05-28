@@ -20,6 +20,7 @@ export class PromptField {
 export type PromptKeyFields = { [key: string]: PromptField };
 
 @Component({
+  standalone: false,
   selector: 'app-advanced-prompt-dialog',
   templateUrl: './advanced-prompt-dialog.component.html',
   styleUrls: ['./advanced-prompt-dialog.component.scss'],

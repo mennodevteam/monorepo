@@ -6,6 +6,7 @@ import { ClubService } from '../../../core/services/club.service';
 import { ImagePlaceholder } from '../../directives/image-loader.directive';
 
 @Component({
+  standalone: false,
   selector: 'app-member-select-dialog',
   templateUrl: './member-select-dialog.component.html',
   styleUrls: ['./member-select-dialog.component.scss']

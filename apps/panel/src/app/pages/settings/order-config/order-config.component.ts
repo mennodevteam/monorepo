@@ -11,6 +11,7 @@ import { PersianNumberService } from '@menno/utils';
 import { MenuService } from '../../../core/services/menu.service';
 
 @Component({
+  standalone: false,
   selector: 'order-config',
   templateUrl: './order-config.component.html',
   styleUrls: ['./order-config.component.scss'],

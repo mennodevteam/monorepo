@@ -8,6 +8,7 @@ import { SortDialogComponent } from '../../../../shared/dialogs/sort-dialog/sort
 import { AnalyticsService } from 'apps/panel/src/app/core/services/analytics.service';
 
 @Component({
+  standalone: false,
   selector: 'menu-category-container',
   templateUrl: './menu-category-container.component.html',
   styleUrls: ['./menu-category-container.component.scss'],

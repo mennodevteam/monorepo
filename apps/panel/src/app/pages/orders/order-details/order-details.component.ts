@@ -34,6 +34,7 @@ import {
 } from '../../../shared/dialogs/advanced-prompt-dialog/advanced-prompt-dialog.component';
 
 @Component({
+  standalone: false,
   selector: 'order-details',
   templateUrl: './order-details.component.html',
   styleUrls: ['./order-details.component.scss'],
@@ -293,7 +294,7 @@ export class OrderDetailsComponent implements OnDestroy {
 
   async addAlopeyk() {
     if (this.order && this.order?.type === OrderType.Delivery && this.order.address) {
-      const dest: [number, number] = [this.order.address.latitude, this.order.address.longitude];
+      const dest: [number, number] = [this.order.address.latitude || 0, this.order.address.longitude || 0];
       this.loading.alopeykDeliveryPrice = true;
       const price = await this.alopeyk.calcPrice(dest);
       this.loading.alopeykDeliveryPrice = false;

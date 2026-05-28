@@ -12,6 +12,7 @@ import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import { sortByCreatedAtDesc } from '@menno/utils';
 
 @Component({
+  standalone: false,
   selector: 'app-message-template-selector-dialog',
   templateUrl: './message-template-selector-dialog.component.html',
   styleUrls: ['./message-template-selector-dialog.component.scss'],

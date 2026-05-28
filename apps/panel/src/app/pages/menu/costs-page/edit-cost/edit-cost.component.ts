@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MenuService } from '../../../../core/services/menu.service';
 
 @Component({
+  standalone: false,
   selector: 'edit-cost',
   templateUrl: './edit-cost.component.html',
   styleUrls: ['./edit-cost.component.scss'],

@@ -7,6 +7,7 @@ import { environment } from '../../../../../environments/environment';
 import { PayService } from '../../../../core/services/pay.service';
 
 @Component({
+  standalone: false,
   selector: 'sizpay',
   templateUrl: './sizpay.component.html',
   styleUrls: ['./sizpay.component.scss'],

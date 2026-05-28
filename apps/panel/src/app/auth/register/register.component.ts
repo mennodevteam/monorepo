@@ -10,6 +10,7 @@ import { RegionsService } from '../../core/services/regions.service';
 import { AnalyticsService } from '../../core/services/analytics.service';
 
 @Component({
+  standalone: false,
   selector: 'register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],

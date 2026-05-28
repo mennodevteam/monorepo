@@ -18,6 +18,7 @@ const enum CSVCols {
 }
 
 @Component({
+  standalone: false,
   selector: 'menno-menu-page',
   templateUrl: './menu-page.component.html',
   styleUrls: ['./menu-page.component.scss'],

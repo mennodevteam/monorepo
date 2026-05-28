@@ -8,6 +8,7 @@ import { OrdersService } from '../../../core/services/orders.service';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 
 @Component({
+  standalone: false,
   selector: 'daily-orders',
   templateUrl: './daily-orders.component.html',
   styleUrl: './daily-orders.component.scss',

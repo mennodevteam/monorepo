@@ -3,6 +3,7 @@ import { ShopUser, ShopUserRole, User } from '@menno/types';
 import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
+  standalone: false,
   selector: 'app-user-management-table',
   templateUrl: './user-management-table.component.html',
   styleUrls: ['./user-management-table.component.scss'],

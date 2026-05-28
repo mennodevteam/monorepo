@@ -17,6 +17,7 @@ import { MessageTemplateSelectorDialogComponent } from '../../../shared/dialogs/
 import { Sort } from '@angular/material/sort';
 
 @Component({
+  standalone: false,
   selector: 'member-list',
   templateUrl: './member-list.component.html',
   styleUrls: ['./member-list.component.scss'],

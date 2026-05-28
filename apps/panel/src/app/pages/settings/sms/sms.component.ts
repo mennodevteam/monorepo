@@ -19,6 +19,7 @@ import { MessageTemplateService } from '../../../core/services/messageTemplate.s
 import { MessageTemplateSelectorDialogComponent } from '../../../shared/dialogs/message-template-selector-dialog/message-template-selector-dialog.component';
 
 @Component({
+  standalone: false,
   selector: 'sms',
   templateUrl: './sms.component.html',
   styleUrls: ['./sms.component.scss'],

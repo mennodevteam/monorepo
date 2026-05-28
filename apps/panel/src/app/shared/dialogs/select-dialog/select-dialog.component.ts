@@ -9,6 +9,7 @@ export type SelectItem = {
 };
 
 @Component({
+  standalone: false,
   selector: 'menno-select-dialog',
   templateUrl: './select-dialog.component.html',
   styleUrls: ['./select-dialog.component.scss'],

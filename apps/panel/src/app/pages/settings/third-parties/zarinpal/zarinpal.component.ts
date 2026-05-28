@@ -7,6 +7,7 @@ import { environment } from '../../../../../environments/environment';
 import { PayService } from '../../../../core/services/pay.service';
 
 @Component({
+  standalone: false,
   selector: 'zarinpal',
   templateUrl: './zarinpal.component.html',
   styleUrls: ['./zarinpal.component.scss'],

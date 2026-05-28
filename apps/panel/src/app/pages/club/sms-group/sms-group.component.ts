@@ -3,6 +3,7 @@ import { ClubService } from '../../../core/services/club.service';
 import { SmsGroup } from '@menno/types';
 
 @Component({
+  standalone: false,
   selector: 'sms-group',
   templateUrl: './sms-group.component.html',
   styleUrls: ['./sms-group.component.scss'],

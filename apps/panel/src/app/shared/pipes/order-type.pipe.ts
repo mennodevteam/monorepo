@@ -3,6 +3,7 @@ import { OrderType } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 
 @Pipe({
+  standalone: false,
   name: 'orderType',
 })
 export class OrderTypePipe implements PipeTransform {

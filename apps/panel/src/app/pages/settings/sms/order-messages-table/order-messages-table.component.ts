@@ -6,6 +6,7 @@ import { OrderMessage, SmsTemplate, Status } from '@menno/types';
 import { MessageTemplateSelectorDialogComponent } from '../../../../shared/dialogs/message-template-selector-dialog/message-template-selector-dialog.component';
 
 @Component({
+  standalone: false,
   selector: 'order-messages-table',
   templateUrl: './order-messages-table.component.html',
   styleUrls: ['./order-messages-table.component.scss'],

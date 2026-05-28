@@ -7,6 +7,7 @@ import { MemberTag, Mission, MissionConditionPeriod, MissionRewardType, Status }
 import { filter, take } from 'rxjs';
 
 @Component({
+  standalone: false,
   selector: 'app-mission-edit',
   templateUrl: './mission-edit.component.html',
   styleUrls: ['./mission-edit.component.scss'],

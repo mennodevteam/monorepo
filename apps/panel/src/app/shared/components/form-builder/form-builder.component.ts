@@ -22,6 +22,7 @@ export type Field = {
 };
 
 @Component({
+  standalone: false,
   selector: 'form-builder',
   templateUrl: './form-builder.component.html',
   styleUrls: ['./form-builder.component.scss'],

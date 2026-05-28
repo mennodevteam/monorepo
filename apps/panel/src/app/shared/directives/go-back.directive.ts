@@ -2,6 +2,7 @@ import { PlatformLocation } from '@angular/common';
 import { Directive, HostListener } from '@angular/core';
 
 @Directive({
+  standalone: false,
   selector: '[goBack]'
 })
 export class GoBackDirective {

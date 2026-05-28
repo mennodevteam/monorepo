@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { PersianNumberService } from '@menno/utils';
 
 @Pipe({
+  standalone: false,
   name: 'phone',
 })
 export class PhonePipe implements PipeTransform {

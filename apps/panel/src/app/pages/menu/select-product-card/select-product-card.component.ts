@@ -3,6 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MenuService } from '../../../core/services/menu.service';
 
 @Component({
+  standalone: false,
   selector: 'select-product-card',
   templateUrl: './select-product-card.component.html',
   styleUrls: ['./select-product-card.component.scss'],

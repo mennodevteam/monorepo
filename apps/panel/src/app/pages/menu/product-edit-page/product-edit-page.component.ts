@@ -22,6 +22,7 @@ import { PromptDialogComponent } from '../../../shared/dialogs/prompt-dialog/pro
 import { AnalyticsService } from '../../../core/services/analytics.service';
 
 @Component({
+  standalone: false,
   selector: 'product-edit-page',
   templateUrl: './product-edit-page.component.html',
   styleUrls: ['./product-edit-page.component.scss'],

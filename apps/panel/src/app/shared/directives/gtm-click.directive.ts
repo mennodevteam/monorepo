@@ -2,6 +2,7 @@ import { Directive, HostListener, Input } from '@angular/core';
 import { AnalyticsService } from '../../core/services/analytics.service';
 
 @Directive({
+  standalone: false,
   selector: '[gtmClick]',
 })
 export class GtmClickDirective {

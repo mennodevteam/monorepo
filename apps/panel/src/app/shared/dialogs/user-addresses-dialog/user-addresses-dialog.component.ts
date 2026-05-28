@@ -13,6 +13,7 @@ import { HttpClient } from '@angular/common/http';
   selector: 'user-addresses-dialog',
   templateUrl: './user-addresses-dialog.component.html',
   styleUrls: ['./user-addresses-dialog.component.scss'],
+  standalone: false,
 })
 export class UserAddressesDialogComponent {
   user: User;

@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { OrderItem } from '@menno/types';
 
 @Component({
+  standalone: false,
   selector: 'app-manual-discount-and-cost-dialog',
   templateUrl: './manual-discount-and-cost-dialog.component.html',
   styleUrls: ['./manual-discount-and-cost-dialog.component.scss'],

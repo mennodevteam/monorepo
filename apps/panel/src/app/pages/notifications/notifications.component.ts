@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LocalNotificationsService } from '../../core/services/local-notifications.service';
 
 @Component({
+  standalone: false,
   selector: 'app-notifications',
   templateUrl: './notifications.component.html',
   styleUrls: ['./notifications.component.scss']

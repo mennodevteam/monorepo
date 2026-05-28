@@ -5,6 +5,7 @@ import { AuthService } from './core/services/auth.service';
 import { AnalyticsService } from './core/services/analytics.service';
 
 @Component({
+  standalone: false,
   selector: 'menno-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],

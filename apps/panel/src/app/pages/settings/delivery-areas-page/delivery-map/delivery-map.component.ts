@@ -5,6 +5,7 @@ import * as L from 'leaflet';
 import { ShopService } from '../../../../core/services/shop.service';
 
 @Component({
+  standalone: false,
   selector: 'app-delivery-map',
   templateUrl: './delivery-map.component.html',
   styleUrls: ['./delivery-map.component.scss'],

@@ -7,6 +7,7 @@ import { DiscountCoupon, MemberTag, Status } from '@menno/types';
 import { filter, take } from 'rxjs';
 
 @Component({
+  standalone: false,
   selector: 'app-discount-coupons-edit',
   templateUrl: './discount-coupons-edit.component.html',
   styleUrls: ['./discount-coupons-edit.component.scss'],

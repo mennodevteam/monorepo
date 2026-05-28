@@ -13,6 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertDialogService } from '../../../core/services/alert-dialog.service';
 
 @Component({
+  standalone: false,
   selector: 'qr',
   templateUrl: './qr.component.html',
   styleUrls: ['./qr.component.scss'],

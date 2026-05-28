@@ -6,6 +6,7 @@ import { AlertDialogService } from '../../../core/services/alert-dialog.service'
 import { sortByCreatedAt, sortByCreatedAtDesc } from '@menno/utils';
 
 @Component({
+  standalone: false,
   selector: 'discount-coupons',
   templateUrl: './discount-coupons.component.html',
   styleUrls: ['./discount-coupons.component.scss'],

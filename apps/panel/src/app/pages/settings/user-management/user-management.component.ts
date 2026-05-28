@@ -12,6 +12,7 @@ import { AlertDialogComponent } from '../../../shared/dialogs/alert-dialog/alert
 import { AlertDialogService } from '../../../core/services/alert-dialog.service';
 
 @Component({
+  standalone: false,
   selector: 'app-user-management',
   templateUrl: './user-management.component.html',
   styleUrls: ['./user-management.component.scss'],

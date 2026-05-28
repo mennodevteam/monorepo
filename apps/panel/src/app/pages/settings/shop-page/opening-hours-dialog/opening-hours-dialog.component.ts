@@ -62,6 +62,7 @@ const _times48 = [
 ];
 
 @Component({
+  standalone: false,
   selector: 'app-opening-hours-dialog',
   templateUrl: './opening-hours-dialog.component.html',
   styleUrls: ['./opening-hours-dialog.component.scss'],

@@ -17,6 +17,7 @@ Chart.defaults.font.family = 'IRANSans';
 declare let persianDate: any;
 
 @Component({
+  standalone: false,
   selector: 'order-reports',
   templateUrl: './order-reports.component.html',
   styleUrls: ['./order-reports.component.scss'],

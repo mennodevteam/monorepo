@@ -8,6 +8,7 @@ import { AlertDialogComponent } from '../../../../shared/dialogs/alert-dialog/al
 import { Router } from '@angular/router';
 
 @Component({
+  standalone: false,
   selector: 'hami',
   templateUrl: './alopeyk.component.html',
   styleUrls: ['./alopeyk.component.scss'],

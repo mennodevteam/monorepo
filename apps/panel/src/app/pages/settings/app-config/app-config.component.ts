@@ -14,6 +14,7 @@ import { MenuService } from '../../../core/services/menu.service';
 import { AnalyticsService } from '../../../core/services/analytics.service';
 
 @Component({
+  standalone: false,
   selector: 'app-config',
   templateUrl: './app-config.component.html',
   styleUrls: ['./app-config.component.scss'],

@@ -10,6 +10,7 @@ import { ShopService } from '../../../core/services/shop.service';
 import { Router } from '@angular/router';
 
 @Component({
+  standalone: false,
   selector: 'app-delivery-areas-page',
   templateUrl: './delivery-areas-page.component.html',
   styleUrls: ['./delivery-areas-page.component.scss'],

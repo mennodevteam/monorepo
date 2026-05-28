@@ -21,6 +21,7 @@ import { bounceIn } from '../core/animations/bounce.animation';
 import { WalkthroughService } from '../core/services/walkthrough.service';
 
 @Component({
+  standalone: false,
   selector: 'menno-pages',
   templateUrl: './pages.component.html',
   styleUrls: ['./pages.component.scss'],

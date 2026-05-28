@@ -4,6 +4,7 @@ import { base64ToFile, ImageCroppedEvent } from 'ngx-image-cropper';
 import heic2any from 'heic2any';
 
 @Component({
+  standalone: false,
   selector: 'app-image-cropper-dialog',
   templateUrl: './image-cropper-dialog.component.html',
   styleUrls: ['./image-cropper-dialog.component.scss'],

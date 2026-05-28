@@ -5,7 +5,7 @@ import { ordersRoutes } from './orders.routes';
 import { SharedModule } from '../../shared/shared.module';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 import { OrderReportsComponent } from './order-reports/order-reports.component';
-import { NgChartsModule } from 'ng2-charts';
+import { BaseChartDirective } from 'ng2-charts';
 import { OrderTypePipe } from '../../shared/pipes/order-type.pipe';
 import { OrderStatePipe } from '../../shared/pipes/order-state.pipe';
 import { OrderPaymentPipe } from '../../shared/pipes/order-payment.pipe';
@@ -22,7 +22,7 @@ import { OrderListComponent } from './order-list/order-list.component';
     DailyOrdersComponent,
     OrderListComponent,
   ],
-  imports: [CommonModule, RouterModule.forChild(ordersRoutes), SharedModule, NgChartsModule],
+  imports: [CommonModule, RouterModule.forChild(ordersRoutes), SharedModule, BaseChartDirective],
   providers: [OrderTypePipe, OrderStatePipe, OrderPaymentPipe, MenuCurrencyPipe, DecimalPipe],
 })
 export class OrdersModule {}

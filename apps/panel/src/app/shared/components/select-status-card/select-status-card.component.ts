@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Status } from '@menno/types';
 
 @Component({
+  standalone: false,
   selector: 'select-status-card',
   templateUrl: './select-status-card.component.html',
   styleUrls: ['./select-status-card.component.scss'],

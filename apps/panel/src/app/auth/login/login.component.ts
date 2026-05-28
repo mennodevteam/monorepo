@@ -7,6 +7,7 @@ import { ApiError } from '../../core/api-error';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
+  standalone: false,
   selector: 'menno-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],

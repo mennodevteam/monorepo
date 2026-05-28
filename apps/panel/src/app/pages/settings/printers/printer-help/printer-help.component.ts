@@ -4,6 +4,7 @@ import { ShopService } from '../../../../core/services/shop.service';
 import { environment } from '../../../../../environments/environment';
 
 @Component({
+  standalone: false,
   selector: 'printer-help',
   templateUrl: './printer-help.component.html',
   styleUrls: ['./printer-help.component.scss'],

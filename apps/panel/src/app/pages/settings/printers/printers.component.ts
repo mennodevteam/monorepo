@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { PrinterService } from '../../../core/services/printer.service';
 
 @Component({
+  standalone: false,
   selector: 'printers',
   templateUrl: './printers.component.html',
   styleUrls: ['./printers.component.scss'],

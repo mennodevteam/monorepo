@@ -6,6 +6,7 @@ import { PrinterService } from '../../../../core/services/printer.service';
 import { AlertDialogComponent } from '../../../../shared/dialogs/alert-dialog/alert-dialog.component';
 
 @Component({
+  standalone: false,
   selector: 'printer-list',
   templateUrl: './printer-list.component.html',
   styleUrls: ['./printer-list.component.scss'],

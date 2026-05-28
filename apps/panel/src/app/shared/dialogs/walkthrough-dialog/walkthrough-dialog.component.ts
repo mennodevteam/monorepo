@@ -3,6 +3,7 @@ import { Component, inject, model } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
+  standalone: false,
   selector: 'walkthrough-dialog',
   templateUrl: './walkthrough-dialog.component.html',
   styleUrl: './walkthrough-dialog.component.scss',

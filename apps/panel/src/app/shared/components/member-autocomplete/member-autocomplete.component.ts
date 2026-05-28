@@ -7,6 +7,7 @@ import { ClubService } from '../../../core/services/club.service';
 import { PhonePipe } from '../../pipes/phone.pipe';
 
 @Component({
+  standalone: false,
   selector: 'member-autocomplete',
   templateUrl: './member-autocomplete.component.html',
   styleUrls: ['./member-autocomplete.component.scss'],

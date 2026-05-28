@@ -9,6 +9,7 @@ import { ShopService } from '../../../core/services/shop.service';
 import { UserAddressesDialogComponent } from '../../../shared/dialogs/user-addresses-dialog/user-addresses-dialog.component';
 
 @Component({
+  standalone: false,
   selector: 'left-section',
   templateUrl: './left-section.component.html',
   styleUrls: ['./left-section.component.scss'],

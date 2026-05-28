@@ -14,6 +14,7 @@ import { MessageTemplateSelectorDialogComponent } from '../../../../shared/dialo
 import { Sort } from '@angular/material/sort';
 
 @Component({
+  standalone: false,
   selector: 'clb-members-table',
   templateUrl: './members-table.component.html',
   styleUrls: ['./members-table.component.scss'],

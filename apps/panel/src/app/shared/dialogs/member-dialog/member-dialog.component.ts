@@ -11,6 +11,7 @@ import { MessageTemplateSelectorDialogComponent } from '../message-template-sele
 import { PromptDialogComponent } from '../prompt-dialog/prompt-dialog.component';
 
 @Component({
+  standalone: false,
   selector: 'app-member-dialog',
   templateUrl: './member-dialog.component.html',
   styleUrls: ['./member-dialog.component.scss'],

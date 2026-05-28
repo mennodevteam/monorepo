@@ -3,6 +3,7 @@ import { ThirdParty } from '@menno/types';
 import { ShopService } from '../../../core/services/shop.service';
 
 @Component({
+  standalone: false,
   selector: 'third-parties',
   templateUrl: './third-parties.component.html',
   styleUrls: ['./third-parties.component.scss'],

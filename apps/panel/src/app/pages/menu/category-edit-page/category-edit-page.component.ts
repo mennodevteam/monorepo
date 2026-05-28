@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { CATEGORY_ICONS } from './category-icons.constant';
 
 @Component({
+  standalone: false,
   selector: 'category-edit-page',
   templateUrl: './category-edit-page.component.html',
   styleUrls: ['./category-edit-page.component.scss'],

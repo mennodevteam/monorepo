@@ -6,6 +6,7 @@ import { sortByCreatedAtDesc } from '@menno/utils';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
+  standalone: false,
   selector: 'menno-mission-list',
   templateUrl: './mission-list.component.html',
   styleUrls: ['./mission-list.component.scss'],

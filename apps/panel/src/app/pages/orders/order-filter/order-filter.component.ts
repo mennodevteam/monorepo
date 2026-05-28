@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { OrdersService } from '../../../core/services/orders.service';
 
 @Component({
+  standalone: false,
   selector: 'order-filter',
   templateUrl: './order-filter.component.html',
   styleUrls: ['./order-filter.component.scss'],

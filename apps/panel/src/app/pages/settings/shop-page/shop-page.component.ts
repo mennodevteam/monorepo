@@ -18,6 +18,7 @@ import { OpeningHoursDialogComponent } from './opening-hours-dialog/opening-hour
 import { AnalyticsService } from '../../../core/services/analytics.service';
 
 @Component({
+  standalone: false,
   selector: 'shop-page',
   templateUrl: './shop-page.component.html',
   styleUrls: ['./shop-page.component.scss'],

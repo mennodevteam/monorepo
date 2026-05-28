@@ -5,6 +5,7 @@ import { ShopService } from '../../core/services/shop.service';
 import { DecimalPipe } from '@angular/common';
 
 @Pipe({
+  standalone: false,
   name: 'orderPayment',
 })
 export class OrderPaymentPipe implements PipeTransform {

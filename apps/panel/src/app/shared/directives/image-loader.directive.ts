@@ -8,6 +8,7 @@ export enum ImagePlaceholder {
 }
 
 @Directive({
+  standalone: false,
   selector: '[imageLoader]',
 })
 export class ImageLoaderDirective {

@@ -22,6 +22,7 @@ import { MenuCurrencyPipe } from './shared/pipes/menu-currency.pipe';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAngularQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { Chart } from 'chart.js';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 Chart.defaults.font.family = 'IRANSans';
 
@@ -59,6 +60,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 3000 } },
     MenuCurrencyPipe,
     provideAngularQuery(new QueryClient()),
+    provideCharts(withDefaultRegisterables()),
   ],
   bootstrap: [AppComponent],
 })

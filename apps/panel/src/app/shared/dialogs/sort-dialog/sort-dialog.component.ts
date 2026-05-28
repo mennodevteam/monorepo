@@ -6,6 +6,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   selector: 'sort-dialog',
   templateUrl: './sort-dialog.component.html',
   styleUrls: ['./sort-dialog.component.scss'],
+  standalone: false,
 })
 export class SortDialogComponent {
   items: { key: any; value: string }[];

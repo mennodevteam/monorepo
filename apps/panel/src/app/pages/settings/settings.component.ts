@@ -15,6 +15,7 @@ import { ApiError } from '../../core/api-error';
 import { HttpStatusCode } from '@angular/common/http';
 
 @Component({
+  standalone: false,
   selector: 'settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],

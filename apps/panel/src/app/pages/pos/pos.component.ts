@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PosService } from '../../core/services/pos.service';
 
 @Component({
+  standalone: false,
   selector: 'pos',
   templateUrl: './pos.component.html',
   styleUrls: ['./pos.component.scss'],

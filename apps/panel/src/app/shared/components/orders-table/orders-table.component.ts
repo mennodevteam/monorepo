@@ -23,6 +23,7 @@ import { MemberDialogComponent } from '../../dialogs/member-dialog/member-dialog
 import { ShopService } from '../../../core/services/shop.service';
 
 @Component({
+  standalone: false,
   selector: 'orders-table',
   templateUrl: './orders-table.component.html',
   styleUrls: ['./orders-table.component.scss'],

@@ -5,6 +5,7 @@ import { map, Observable, shareReplay } from 'rxjs';
 import { PosService } from '../../../core/services/pos.service';
 
 @Component({
+  standalone: false,
   selector: 'menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],

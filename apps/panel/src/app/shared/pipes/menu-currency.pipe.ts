@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MenuService } from '../../core/services/menu.service';
 
 @Pipe({
+  standalone: false,
   name: 'menuCurrency',
 })
 export class MenuCurrencyPipe implements PipeTransform {

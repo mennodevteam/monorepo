@@ -3,6 +3,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Directive({
+  standalone: false,
   selector: '[screen]',
 })
 export class ScreenDirective {

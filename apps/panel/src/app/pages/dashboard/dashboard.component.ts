@@ -6,6 +6,7 @@ import { ChartConfiguration } from 'chart.js';
 declare let persianDate: any;
 
 @Component({
+  standalone: false,
   selector: 'dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],

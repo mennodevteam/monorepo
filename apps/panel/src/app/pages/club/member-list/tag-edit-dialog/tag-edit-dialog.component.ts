@@ -9,6 +9,7 @@ const COLORS = [
 ]
 
 @Component({
+  standalone: false,
   selector: 'app-tag-edit-dialog',
   templateUrl: './tag-edit-dialog.component.html',
   styleUrls: ['./tag-edit-dialog.component.scss']

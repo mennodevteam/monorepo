@@ -16,6 +16,7 @@ import { CropperOptions } from 'ngx-image-cropper';
 import { FilesService } from 'apps/panel/src/app/core/services/files.service';
 
 @Component({
+  standalone: false,
   selector: 'products-table',
   templateUrl: './products-table.component.html',
   styleUrls: ['./products-table.component.scss'],

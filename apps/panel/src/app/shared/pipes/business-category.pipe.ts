@@ -3,6 +3,7 @@ import { BusinessCategory } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 
 @Pipe({
+  standalone: false,
   name: 'businessCategory',
 })
 export class businessCategoryPipe implements PipeTransform {

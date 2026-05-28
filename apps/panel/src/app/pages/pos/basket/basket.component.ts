@@ -10,6 +10,7 @@ import { ManualDiscountAndCostDialogComponent } from '../../../shared/dialogs/ma
 import { PromptDialogComponent } from '../../../shared/dialogs/prompt-dialog/prompt-dialog.component';
 
 @Component({
+  standalone: false,
   selector: 'basket',
   templateUrl: './basket.component.html',
   styleUrls: ['./basket.component.scss'],

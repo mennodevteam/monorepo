@@ -5,6 +5,7 @@ import { ShopService } from '../../../../core/services/shop.service';
 import { HamiService } from '../../../../core/services/hami.service';
 
 @Component({
+  standalone: false,
   selector: 'hami',
   templateUrl: './hami.component.html',
   styleUrls: ['./hami.component.scss'],
@@ -22,7 +23,7 @@ export class HamiComponent {
 
   initForm() {
     this.thirdPartyForm = new FormGroup({
-      apiPath: new FormControl(this.thirdParty?.keys?.apiPath, Validators.required),
+      apiPath: new FormControl((this.thirdParty?.keys as any)?.apiPath, Validators.required),
       token: new FormControl(this.thirdParty?.token, Validators.required),
     });
     this.thirdPartyForm.disable();

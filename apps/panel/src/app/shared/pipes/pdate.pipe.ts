@@ -3,6 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 declare let persianDate: any;
 
 @Pipe({
+  standalone: false,
   name: 'pdate'
 })
 export class PdatePipe implements PipeTransform {

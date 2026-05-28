@@ -151,7 +151,7 @@ export class HamiService {
   }
 
   makeRequest<T>(path: string, data?: any) {
-    const apiPath = this.thirdParty?.keys.apiPath;
+    const apiPath = (this.thirdParty?.keys as any)?.apiPath;
     const token = this.thirdParty?.token;
 
     return new Promise<T>(function (resolve, reject) {

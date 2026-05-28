@@ -8,6 +8,7 @@ import { AnalyticsService } from '../../../core/services/analytics.service';
   selector: 'menno-extend-plugins-modal',
   templateUrl: './extend-plugins-modal.component.html',
   styleUrls: ['./extend-plugins-modal.component.scss'],
+  standalone: false,
 })
 export class ExtendPluginsModalComponent {
   selected: number;

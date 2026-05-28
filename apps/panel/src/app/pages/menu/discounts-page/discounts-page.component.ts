@@ -5,6 +5,7 @@ import { AlertDialogService } from '../../../core/services/alert-dialog.service'
 import { MenuService } from '../../../core/services/menu.service';
 
 @Component({
+  standalone: false,
   selector: 'discounts-page',
   templateUrl: './discounts-page.component.html',
   styleUrls: ['./discounts-page.component.scss'],

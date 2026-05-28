@@ -15,6 +15,7 @@ import { environment } from 'apps/panel/src/environments/environment';
 import { AnalyticsService } from '../../core/services/analytics.service';
 
 @Component({
+  standalone: false,
   selector: 'home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],

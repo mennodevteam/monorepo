@@ -8,6 +8,7 @@ import { AuthService } from '../../../core/services/auth.service';
 const TAKE_COUNT = 20;
 
 @Component({
+  standalone: false,
   selector: 'order-list',
   templateUrl: './order-list.component.html',
   styleUrl: './order-list.component.scss',

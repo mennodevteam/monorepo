@@ -7,6 +7,7 @@ import { environment } from '../../../../../environments/environment';
 import { PayService } from '../../../../core/services/pay.service';
 
 @Component({
+  standalone: false,
   selector: 'zibal',
   templateUrl: './zibal.component.html',
   styleUrls: ['./zibal.component.scss'],
