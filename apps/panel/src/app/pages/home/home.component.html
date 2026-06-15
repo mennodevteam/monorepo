@@ -1,11 +1,21 @@
 <main class="content-wrapper">
-  <mat-card style="background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; border-radius: 8px;">
-    <mat-card-content style="display: flex; align-items: center; gap: 16px; font-size: 14px; line-height: 1.6; padding: 16px;">
-      <i class="fa-solid fa-triangle-exclamation fa-2xl" style="color: #e0a800;"></i>
+  <mat-card style="background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; border-radius: 8px">
+    <mat-card-content
+      style="display: flex; align-items: center; gap: 16px; font-size: 14px; line-height: 1.6; padding: 16px"
+    >
+      <i class="fa-solid fa-triangle-exclamation fa-2xl" style="color: #e0a800"></i>
       <div>
-        کاربر گرامی؛ با توجه به شرایط فعلی زیرساخت کشور، فعالیت مجموعه <strong>منو (menno.pro)</strong> متوقف شده است و پس از پایان اشتراک فعلی، امکان تمدید آن وجود نخواهد داشت.
-        جهت انتقال منوی خود، ما سرویس جایگزین <a href="https://shottt.io" target="_blank" style="color: #0056b3; font-weight: bold; text-decoration: underline;">shottt.io</a> را معرفی می‌کنیم و می‌توانیم اطلاعات منوی شما را به آنجا منتقل کنیم.
-        همچنین جهت دریافت راهنمایی می‌توانید به شماره <strong>09358185552</strong> در پیام‌رسان بله یا تلگرام پیام دهید.
+        کاربر گرامی؛ با توجه به شرایط فعلی زیرساخت کشور، فعالیت مجموعه <strong>منو (menno.pro)</strong> متوقف
+        شده است و پس از پایان اشتراک فعلی، امکان تمدید آن وجود نخواهد داشت. جهت انتقال منوی خود، ما سرویس
+        جایگزین
+        <a
+          href="https://shottt.ir"
+          target="_blank"
+          style="color: #0056b3; font-weight: bold; text-decoration: underline"
+          >shottt.io</a
+        >
+        را معرفی می‌کنیم و می‌توانیم اطلاعات منوی شما را به آنجا منتقل کنیم. همچنین جهت دریافت راهنمایی
+        می‌توانید به شماره <strong>09358185552</strong> در پیام‌رسان بله یا تلگرام پیام دهید.
       </div>
     </mat-card-content>
   </mat-card>
@@ -159,8 +169,8 @@
                 <span matListItemLine>{{ 'home.smsCount' | translate }}</span>
                 <span matListItemMeta>
                   {{
-                  'app.number'
-                  | translate: { value: (shop.smsAccount.charge / avgSmsCharge | number: '1.0-0') }
+                    'app.number'
+                      | translate: { value: (shop.smsAccount.charge / avgSmsCharge | number: '1.0-0') }
                   }}
                 </span>
               </mat-list-item>
@@ -237,31 +247,31 @@
           </mat-card-title>
           <mat-card-subtitle
             >{{ 'home.lastUpdate' | translate }}: {{ update.date | pdate: 'D MMMM YYYY' }}</mat-card-subtitle
-            >
-          </mat-card-header>
-          <mat-card-content>
-            <mat-list>
-              @for (item of update.items; track item) {
-                <mat-list-item>
-                  @if (item.type === 'feature') {
-                    <i matListItemIcon class="fa-solid fa-sparkles green fa-lg"></i>
-                  }
-                  @if (item.type === 'bug') {
-                    <i matListItemIcon class="fa-solid fa-square-check gray fa-lg"></i>
-                  }
-                  <h5 matListItemTitle>{{ item.title }}</h5>
-                  <mat-divider></mat-divider>
-                </mat-list-item>
-              }
-            </mat-list>
-          </mat-card-content>
-          <mat-divider></mat-divider>
-          <mat-card-actions>
-            <a mat-button color="primary" [href]="env.updateDocLink" target="_blank">
-              {{ 'home.updateMore' | translate }}
-            </a>
-          </mat-card-actions>
-        </mat-card>
-      </div>
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list>
+            @for (item of update.items; track item) {
+              <mat-list-item>
+                @if (item.type === 'feature') {
+                  <i matListItemIcon class="fa-solid fa-sparkles green fa-lg"></i>
+                }
+                @if (item.type === 'bug') {
+                  <i matListItemIcon class="fa-solid fa-square-check gray fa-lg"></i>
+                }
+                <h5 matListItemTitle>{{ item.title }}</h5>
+                <mat-divider></mat-divider>
+              </mat-list-item>
+            }
+          </mat-list>
+        </mat-card-content>
+        <mat-divider></mat-divider>
+        <mat-card-actions>
+          <a mat-button color="primary" [href]="env.updateDocLink" target="_blank">
+            {{ 'home.updateMore' | translate }}
+          </a>
+        </mat-card-actions>
+      </mat-card>
     </div>
-  </main>
+  </div>
+</main>

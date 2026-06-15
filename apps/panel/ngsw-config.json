@@ -2,7 +2,7 @@
   "appData": {
     "forceReload": true,
     "lazyReload": true,
-    "version": "14050317",
+    "version": "14050323",
     "changes": []
   },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
