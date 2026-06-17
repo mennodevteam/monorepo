@@ -1,9 +1,3 @@
----
-description: This rule captures the conventions we follow when integrating TanStack Query with Angular applications.
-scope: apps/customer/**
-globs: ["**/*.ts", "**/*.html"]
----
-
 # TanStack Query for Angular
 
 We rely on `@tanstack/angular-query-experimental` (Query v5) for managing server state in Angular. The package is still marked experimental, so we pin versions and follow the official guidance closely to avoid breaking changes.
@@ -27,7 +21,7 @@ We rely on `@tanstack/angular-query-experimental` (Query v5) for managing server
 - Keep `queryFn` pure: no shared mutable state, no direct DOM work, and surface rich domain types rather than `any`.
 - Defensively narrow errors (e.g. map backend error shapes) so templates can present actionable feedback.
 
-```ts
+```typescript
 const http = inject(HttpClient);
 
 const repoQuery = injectQuery(() => ({
@@ -80,4 +74,3 @@ const repoQuery = injectQuery(() => ({
 
 - Pin the dependency (`"@tanstack/angular-query-experimental": "^x.y.z"`) and avoid broad `^` bumps without a review of the changelog.
 - After upgrades, verify that new defaults (network mode, stale times, behaviours) align with application expectations before rolling forward.
-
