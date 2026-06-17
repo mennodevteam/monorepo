@@ -3,21 +3,24 @@ FROM node:22-alpine AS deps
 
 WORKDIR /workspace
 
-RUN yarn config set registry https://repo.hmirror.ir/npm
+RUN npm install -g pnpm@9 --registry=https://repo.hmirror.ir/npm
+RUN pnpm config set registry https://repo.hmirror.ir/npm
+RUN pnpm config set store-dir /root/.pnpm-store
 ENV CYPRESS_INSTALL_BINARY=0
 
-COPY package.json yarn.lock ./
-RUN sed -i 's#https://registry.yarnpkg.com/#https://repo.hmirror.ir/npm/#g' yarn.lock
-RUN --mount=type=cache,target=/usr/local/share/.cache/yarn \
-    yarn install --registry https://repo.hmirror.ir/npm --network-concurrency 1 --mutex network
+COPY package.json pnpm-lock.yaml ./
+RUN --mount=type=cache,target=/root/.pnpm-store \
+    pnpm install --frozen-lockfile
 
 FROM node:22-alpine AS builder
 
 WORKDIR /workspace
 
+RUN npm install -g pnpm@9 --registry=https://repo.hmirror.ir/npm
+
 COPY --from=deps /workspace/node_modules ./node_modules
 COPY . .
-RUN yarn nx run customer:build:production
+RUN pnpm nx run customer:build:production
 
 FROM node:22-alpine AS runner
 

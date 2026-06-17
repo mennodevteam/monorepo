@@ -5,6 +5,6 @@ WORKDIR /api
 COPY package.json .
 COPY dist/apps/backend src
 
-RUN yarn --prod
+RUN npm install -g pnpm@9 && pnpm install --prod
 
 CMD ["node", "src/main.js"]

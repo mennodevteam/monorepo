@@ -4,6 +4,6 @@ WORKDIR /api
 
 COPY . .
 
-RUN yarn --prod
+RUN npm install -g pnpm@9 && pnpm install --prod
 
 CMD ["node", "main.js"]

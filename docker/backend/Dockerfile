@@ -3,37 +3,41 @@ FROM node:22-alpine AS deps
 
 WORKDIR /workspace
 
-# تنظیم میرور داخلی برای Yarn (Yarn v1)
-RUN yarn config set registry https://repo.hmirror.ir/npm
+# تنظیم میرور داخلی برای pnpm
+RUN npm install -g pnpm@9 --registry=https://repo.hmirror.ir/npm
+RUN pnpm config set registry https://repo.hmirror.ir/npm
+RUN pnpm config set store-dir /root/.pnpm-store
 ENV CYPRESS_INSTALL_BINARY=0
 
-COPY package.json yarn.lock ./
-RUN sed -i 's#https://registry.yarnpkg.com/#https://repo.hmirror.ir/npm/#g' yarn.lock
-RUN --mount=type=cache,target=/usr/local/share/.cache/yarn \
-    yarn install --registry https://repo.hmirror.ir/npm --network-concurrency 1 --mutex network
+COPY package.json pnpm-lock.yaml ./
+RUN --mount=type=cache,target=/root/.pnpm-store \
+    pnpm install --frozen-lockfile
 
 FROM node:22-alpine AS builder
 
 WORKDIR /workspace
 
+RUN npm install -g pnpm@9 --registry=https://repo.hmirror.ir/npm
+
 COPY --from=deps /workspace/node_modules ./node_modules
 COPY . .
-RUN yarn nx run backend:build:production
+RUN pnpm nx run backend:build:production
 
 FROM node:22-alpine AS prod-deps
 
 WORKDIR /workspace
 
-# تنظیم مجدد میرور در این استیج برای نصب وابستگی‌های Production (Yarn v1)
-RUN yarn config set registry https://repo.hmirror.ir/npm
+# تنظیم مجدد میرور در این استیج برای نصب وابستگی‌های Production
+RUN npm install -g pnpm@9 --registry=https://repo.hmirror.ir/npm
+RUN pnpm config set registry https://repo.hmirror.ir/npm
+RUN pnpm config set store-dir /root/.pnpm-store
 ENV CYPRESS_INSTALL_BINARY=0
 
 # استفاده از package.json ریشه برای جلوگیری از جا ماندن وابستگی‌های runtime مثل pg
 COPY --from=builder /workspace/package.json ./package.json
-COPY --from=builder /workspace/yarn.lock ./yarn.lock
-RUN sed -i 's#https://registry.yarnpkg.com/#https://repo.hmirror.ir/npm/#g' yarn.lock
-RUN --mount=type=cache,target=/usr/local/share/.cache/yarn \
-    yarn install --production --registry https://repo.hmirror.ir/npm --network-concurrency 1 --mutex network
+COPY --from=builder /workspace/pnpm-lock.yaml ./pnpm-lock.yaml
+RUN --mount=type=cache,target=/root/.pnpm-store \
+    pnpm install --prod --frozen-lockfile
 
 FROM node:22-alpine AS runner
 
