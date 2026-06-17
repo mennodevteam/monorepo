@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منو | پلتفرم کاتالوگ دیجیتال و بازاریابی هوشمند فروشگاه‌های آنلاین</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="منو (Menno) پلتفرم کاتالوگ فروشگاهی آنلاین و سیستم وفادارسازی مشتریان. فروشگاه مستقیم خود را بسازید، سفارش بگیرید و با پنل پیامکی متصل خریداران را بازگردانید.">
+    <meta name="keywords" content="آنلاین شاپ, فروشگاه اینترنتی, کاتالوگ دیجیتال, پنل فروشگاهی, باشگاه مشتریان, بازاریابی پیامکی, منو, Menno">
+    <meta name="author" content="Menno Group">
+    
+    <!-- Estedad Font CDN (v1.fontapi.ir) & Outfit Font -->
+    <link href="https://v1.fontapi.ir/css/Estedad" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        /* Stark Monochrome Light Theme (Gen Z Inspired) */
+        :root {
+            --bg-color: #ffffff;
+            --surface-color: #ffffff;
+            --surface-hover: #fafafa;
+            --border-color: #e5e7eb;
+            --border-dark: #000000;
+            
+            --primary: #000000;
+            --primary-accent: #111111;
+            --primary-glow: rgba(0, 0, 0, 0.02);
+            --brand-yellow: #FFB300;
+            
+            --text-primary: #000000;
+            --text-secondary: #4b5563;
+            --text-muted: #9ca3af;
+            
+            --font-fa: 'Estedad', sans-serif;
+            --font-en: 'Outfit', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-fa);
+            font-weight: 300; /* Light weight by default */
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Ambient Glow (Very Subtle Grey/Yellow) */
+        .bg-glow-1 {
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 40vw;
+            height: 40vw;
+            background: radial-gradient(circle, rgba(255, 179, 0, 0.03) 0%, rgba(255,255,255,0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e5e7eb;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #000000;
+        }
+
+        /* Typography & Weight Defaults */
+        h1, h2, h3, h4, .btn, strong, .slider-val, .result-num, .logo-text, .metric-num {
+            font-weight: 400; /* Sleeek, light weight for headings */
+        }
+
+        .en-text {
+            font-family: var(--font-en);
+        }
+
+        /* Stark Buttons & Elements */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.8rem 2.2rem;
+            border-radius: 0.25rem; /* Stark boxy design */
+            text-decoration: none;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #ffffff;
+            border: 1px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: #ffffff;
+            color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: var(--text-primary);
+            border: 1px solid var(--border-dark);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .glass-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem; /* Clean boxy edges */
+            padding: 2.5rem;
+            transition: all 0.35s ease;
+        }
+
+        .glass-card:hover {
+            border-color: var(--border-dark);
+            background: var(--surface-hover);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Scroll-driven Reveal */
+        .reveal-item {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-item.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @supports ((animation-timeline: view()) and (animation-range: entry)) {
+            @media (prefers-reduced-motion: no-preference) {
+                .reveal-item {
+                    transition: none;
+                    opacity: 1;
+                    transform: none;
+                    animation-name: reveal-on-scroll;
+                    animation-fill-mode: both;
+                    animation-timeline: view();
+                    animation-range: entry 5% cover 30%;
+                }
+            }
+        }
+
+        @keyframes reveal-on-scroll {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Navigation Header */
+        header {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+
+        header.scrolled {
+            padding: 0.2rem 0;
+            background: #ffffff;
+            border-bottom-color: var(--border-dark);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 4rem;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            text-decoration: none;
+        }
+
+        .logo-text {
+            font-size: 1.35rem;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.25rem;
+            list-style: none;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Hero */
+        .hero {
+            padding-top: 10rem;
+            padding-bottom: 6rem;
+            position: relative;
+        }
+
+        .hero-layout {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        @media (max-width: 900px) {
+            .hero-layout {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 4rem;
+            }
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        @media (max-width: 900px) {
+            .hero-content {
+                align-items: center;
+            }
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #fafafa;
+            border: 1px solid var(--border-color);
+            padding: 0.35rem 1rem;
+            border-radius: 0.25rem;
+            color: var(--text-primary);
+            font-size: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            line-height: 1.25;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 600px) {
+            .hero-title {
+                font-size: 2.15rem;
+            }
+        }
+
+        .hero-desc {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            max-width: 480px;
+            margin-bottom: 2.25rem;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 1rem;
+        }
+
+        @media (max-width: 480px) {
+            .hero-ctas {
+                flex-direction: column;
+                width: 100%;
+            }
+            .hero-ctas .btn {
+                width: 100%;
+            }
+        }
+
+        /* Abstract Loop Visual (Monochrome & Yellow) */
+        .abstract-visual-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        .visual-circle-outer {
+            width: 240px;
+            height: 240px;
+            border: 1px dashed rgba(0, 0, 0, 0.12);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: spin 60s linear infinite;
+        }
+
+        .visual-circle-middle {
+            width: 170px;
+            height: 170px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: spin-reverse 40s linear infinite;
+        }
+
+        .visual-core {
+            width: 100px;
+            height: 100px;
+            background: #ffffff;
+            border: 1px solid var(--border-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: pulse-grow 4s ease-in-out infinite;
+        }
+
+        .visual-core i {
+            font-size: 2.25rem;
+            color: var(--primary);
+        }
+
+        .glow-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+        
+        .glow-dot-1 {
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--brand-yellow);
+        }
+
+        .glow-dot-2 {
+            bottom: 0;
+            left: 50%;
+            transform: translate(-50%, 50%);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes spin-reverse {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-360deg); }
+        }
+
+        @keyframes pulse-grow {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Comparison Section */
+        .comparison-section {
+            padding: 8rem 0;
+            background: #ffffff;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2.5rem;
+            margin-top: 3.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .comp-card {
+            border-radius: 0.5rem;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .comp-card-old {
+            background: #fafafa;
+        }
+
+        .comp-card-new {
+            background: #ffffff;
+            border: 1px solid var(--border-dark);
+        }
+
+        .comp-title {
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .comp-card-old .comp-title {
+            color: var(--text-secondary);
+        }
+
+        .comp-card-new .comp-title {
+            color: var(--text-primary);
+        }
+
+        .comp-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.15rem;
+        }
+
+        .comp-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+            line-height: 1.55;
+            color: var(--text-secondary);
+        }
+
+        .comp-card-new .comp-list li {
+            color: var(--text-primary);
+        }
+
+        .comp-card-old i {
+            color: #d1d5db;
+            font-size: 1.2rem;
+            margin-top: 0.1rem;
+            flex-shrink: 0;
+        }
+
+        .comp-card-new i {
+            color: var(--border-dark);
+            font-size: 1.2rem;
+            margin-top: 0.1rem;
+            flex-shrink: 0;
+        }
+
+        /* Metric spotlights */
+        .metrics-bar {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 5rem;
+            padding-top: 3rem;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            gap: 2rem;
+        }
+
+        @media (max-width: 600px) {
+            .metrics-bar {
+                flex-direction: column;
+                gap: 2.5rem;
+            }
+        }
+
+        .metric-block {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .metric-num {
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* E-commerce Features Section */
+        .features-section {
+            padding: 8rem 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-title {
+            font-size: 2.15rem;
+            margin-bottom: 1.25rem;
+            letter-spacing: -0.5px;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto;
+            font-size: 0.95rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .feature-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 0.25rem;
+            padding: 2.25rem;
+            text-align: right;
+            transition: all 0.25s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--border-dark);
+            background: #fcfcfc;
+        }
+
+        .feature-icon-wrapper {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.25rem;
+            background: #fafafa;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.6rem;
+            color: var(--text-primary);
+            transition: all 0.25s ease;
+        }
+
+        .feature-card:hover .feature-icon-wrapper {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+        }
+
+        .feature-title {
+            font-size: 1.15rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-desc {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Typographic ROI Calculator Section */
+        .calculator-section {
+            padding: 8rem 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .calc-wrapper {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 3.5rem;
+            align-items: center;
+        }
+
+        @media (max-width: 900px) {
+            .calc-wrapper {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+        }
+
+        .calc-sliders {
+            display: flex;
+            flex-direction: column;
+            gap: 2.25rem;
+        }
+
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .slider-title {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .slider-val {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+        }
+
+        .range-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: #e5e7eb;
+            outline: none;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            border: 1px solid #ffffff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            transition: transform 0.1s;
+        }
+
+        .range-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        .calc-results {
+            background: #fafafa;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 2.25rem;
+        }
+
+        .result-box {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .result-box:last-child {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .result-title {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .result-num-wrapper {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        .result-num {
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            transition: all 0.3s;
+        }
+
+        .result-num.highlighted {
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--brand-yellow);
+        }
+
+        .result-unit {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Lead Capture Form */
+        .contact-section {
+            padding: 8rem 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .contact-wrapper {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .contact-card {
+            border: 1px solid var(--border-dark);
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        .contact-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            letter-spacing: -0.5px;
+        }
+
+        .contact-desc {
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            max-width: 460px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 0.9rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+            text-align: right;
+        }
+
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .form-control {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            padding: 0.8rem 1rem;
+            border-radius: 0.25rem;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.25s ease;
+        }
+
+        .form-control::placeholder {
+            color: #9ca3af;
+        }
+
+        .form-control:focus {
+            border-color: var(--border-dark);
+        }
+
+        .submit-btn {
+            width: 100%;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 3.5rem 0;
+            background: #ffffff;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .footer-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        @media (max-width: 600px) {
+            .footer-wrapper {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            text-decoration: none;
+            color: var(--text-secondary);
+        }
+
+        .footer-logo .logo-text {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow-1"></div>
+
+    <!-- Navigation Header -->
+    <header id="main-header">
+        <div class="container nav-container">
+            <a href="#" class="logo-area" id="nav-logo">
+                <!-- Inline SVG Logo (Envelope M on yellow background) -->
+                <svg width="28" height="28" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius: 0.25rem; overflow: hidden; flex-shrink: 0;">
+                    <rect width="120" height="120" fill="#FFB300"/>
+                    <path d="M20 27L60 57L100 27V93.6667H20V27Z" fill="black"/>
+                </svg>
+                <div class="logo-text">منو<span>.</span></div>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="#comparison">چرا منو؟</a></li>
+                <li><a href="#features">امکانات فروشگاه</a></li>
+                <li><a href="#roi-calc">تخمین بازدهی</a></li>
+                <li><a href="#contact">مشاوره و دمو</a></li>
+            </ul>
+            
+            <a href="#contact" class="btn btn-secondary" style="padding: 0.45rem 1.25rem; font-size: 0.8rem; border-radius: 0.25rem;" id="header-cta-btn">دمو رایگان</a>
+        </div>
+    </header>
+
+    <!-- Minimalist Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-layout">
+            
+            <div class="hero-content">
+                <div class="hero-badge reveal-item">
+                    <i class="ph ph-lightning"></i>
+                    <span>بستر نوین فروش مستقیم آنلاین شاپ‌ها</span>
+                </div>
+                
+                <h1 class="hero-title reveal-item">
+                    یک لینک.<br>
+                    کاتالوگ دیجیتال شما.<br>
+                    فروش بی‌واسطه.
+                </h1>
+                
+                <p class="hero-desc reveal-item">
+                    منو (Menno) پلتفرم هوشمند فروش آنلاین بدون نیاز به طراحی سایت‌های پیچیده است. خریدار شما با یک کلیک محصولات را بررسی کرده و خرید می‌کند؛ اطلاعاتش ثبت شده و با سیستم پیامکی بازاریابی خودکار، خریدهای بعدی او رقم می‌خورد.
+                </p>
+                
+                <div class="hero-ctas reveal-item">
+                    <a href="#contact" class="btn btn-primary" id="hero-primary-cta">ساخت آنلاین‌شاپ تستی <i class="ph ph-arrow-left"></i></a>
+                    <a href="#comparison" class="btn btn-secondary" id="hero-secondary-cta">جریان کار منو</a>
+                </div>
+            </div>
+
+            <!-- Abstract Loop Visual -->
+            <div class="abstract-visual-container reveal-item" id="hero-abstract-visual">
+                <div class="visual-circle-outer">
+                    <div class="glow-dot glow-dot-1"></div>
+                    <div class="visual-circle-middle">
+                        <div class="glow-dot glow-dot-2"></div>
+                        <div class="visual-core">
+                            <i class="ph ph-arrows-clockwise"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section class="comparison-section" id="comparison">
+        <div class="container">
+            <div class="section-header reveal-item">
+                <span style="color: var(--text-secondary); font-weight: 400; font-size: 0.85rem; margin-bottom: 0.5rem; display: block; letter-spacing: 0.5px;">نگاه نو به بازاریابی و فروش مستقیم</span>
+                <h2 class="section-title">چرا آنلاین‌شاپ‌ها به منو مهاجرت می‌کنند؟</h2>
+                <p class="section-desc">پایان دادن به چت‌های طولانی در دایرکت و تلگرام؛ ثبت فاکتور و پرداخت آنلاین فروشگاه خود را خودکار کنید.</p>
+            </div>
+
+            <div class="comparison-grid">
+                
+                <!-- Yesterday -->
+                <div class="comp-card comp-card-old reveal-item">
+                    <div class="comp-title">
+                        <i class="ph ph-x-circle"></i>
+                        فروش سنتی در چت دایرکت (دیروز)
+                    </div>
+                    <ul class="comp-list">
+                        <li>
+                            <i class="ph ph-minus"></i>
+                            ساعت‌ها گفتگو در چت جهت ارسال مشخصات، موجودی و قیمت هر محصول
+                        </li>
+                        <li>
+                            <i class="ph ph-minus"></i>
+                            دریافت و بررسی دستی فیش‌های کارت‌به‌کارت و ریسک ارسال فیش‌های جعلی
+                        </li>
+                        <li>
+                            <i class="ph ph-minus"></i>
+                            یادداشت دستی آدرس و تلفن مشتری و خطای مکرر در ارسال مرسولات پستی
+                        </li>
+                        <li>
+                            <i class="ph ph-minus"></i>
+                            گم شدن شماره مشتریان در انتهای چت‌ها و عدم توانایی بازاریابی مجدد
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Today -->
+                <div class="comp-card comp-card-new reveal-item">
+                    <div class="comp-title">
+                        <i class="ph ph-check-circle"></i>
+                        فروش مدرن و خودکار با منو (امروز)
+                    </div>
+                    <ul class="comp-list">
+                        <li>
+                            <i class="ph ph-check"></i>
+                            قرار دادن یک لینک در بایو؛ نمایش دسته‌بندی‌شده کالا با فیلتر رنگ و سایز
+                        </li>
+                        <li>
+                            <i class="ph ph-check"></i>
+                            پرداخت آنلاین مستقیم و تایید تراکنش در سیستم بدون نیاز به فیش کارت‌به‌کارت
+                        </li>
+                        <li>
+                            <i class="ph ph-check"></i>
+                            ثبت سیستمی آدرس پستی، کدپستی و تلفن و خروجی اکسل جهت ارسال مرسولات
+                        </li>
+                        <li>
+                            <i class="ph ph-check"></i>
+                            ذخیره خودکار شماره خریدار در پنل مدیریت و ارسال خودکار پیامک وفادارسازی
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Spotlight numbers -->
+            <div class="metrics-bar reveal-item">
+                <div class="metric-block">
+                    <div class="metric-num">۳ برابر</div>
+                    <div class="metric-label">سرعت ثبت سفارش در فروشگاه</div>
+                </div>
+                <div class="metric-block">
+                    <div class="metric-num">+۱۸٪</div>
+                    <div class="metric-label">نرخ بازگشت مشتری با پیامک خودکار</div>
+                </div>
+                <div class="metric-block">
+                    <div class="metric-num">۰٪</div>
+                    <div class="metric-label">احتمال خطای انسانی در تحویل سفارش</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- General Core Features Highlight Grid -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="section-header reveal-item">
+                <span style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.5rem; display: block;">زیرساخت هوشمند و جامع آنلاین‌شاپ شما</span>
+                <h2 class="section-title">یکپارچگی کامل در مدیریت فروش</h2>
+                <p class="section-desc">پلتفرم منو ابزارهای کلیدی فروشگاه را در یک سیستم مونوکروم و سریع خلاصه می‌کند.</p>
+            </div>
+
+            <div class="features-grid">
+                
+                <!-- Feature 1: Ordering -->
+                <div class="glass-card feature-card reveal-item">
+                    <div class="feature-icon-wrapper">
+                        <i class="ph ph-shopping-cart-simple"></i>
+                    </div>
+                    <h3 class="feature-title">سفارش‌گیری سریع</h3>
+                    <p class="feature-desc">خریدار محصول مورد نظر را با جزئیات کامل و بدون نیاز به چت یا هماهنگی انتخاب کرده و به سبد خرید اضافه می‌کند.</p>
+                </div>
+
+                <!-- Feature 2: Online Payment -->
+                <div class="glass-card feature-card reveal-item">
+                    <div class="feature-icon-wrapper">
+                        <i class="ph ph-credit-card"></i>
+                    </div>
+                    <h3 class="feature-title">پرداخت آنلاین آنی</h3>
+                    <p class="feature-desc">اتصال به درگاه بانکی معتبر و تایید خودکار پرداخت‌ها؛ به معنای پایان بررسی فیش‌های فیک کارت‌به‌کارت.</p>
+                </div>
+
+                <!-- Feature 3: Inventory Management -->
+                <div class="glass-card feature-card reveal-item">
+                    <div class="feature-icon-wrapper">
+                        <i class="ph ph-package"></i>
+                    </div>
+                    <h3 class="feature-title">انبارداری و مدیریت کالا</h3>
+                    <p class="feature-desc">امکان تعریف نامحدود کالا، سایزبندی، رنگ‌بندی و کنترل خودکار و آنلاین موجودی انبار پس از هر تراکنش.</p>
+                </div>
+
+                <!-- Feature 4: Profit & Loss calculation -->
+                <div class="glass-card feature-card reveal-item">
+                    <div class="feature-icon-wrapper">
+                        <i class="ph ph-calculator"></i>
+                    </div>
+                    <h3 class="feature-title">محاسبه دقیق سود و زیان</h3>
+                    <p class="feature-desc">تحلیل اتوماتیک سود دریافتی از کالاها و گزارش‌های دقیق مالی روزانه، هفتگی و ماهانه فروشگاه شما.</p>
+                </div>
+
+                <!-- Feature 5: CRM / Customer relation -->
+                <div class="glass-card feature-card reveal-item" style="grid-column: span 1;">
+                    <div class="feature-icon-wrapper">
+                        <i class="ph ph-users-three"></i>
+                    </div>
+                    <h3 class="feature-title">ارتباط با مشتری (CRM)</h3>
+                    <p class="feature-desc">ثبت خودکار شماره‌های خریداران، دسته‌بندی هوشمند و پیامک‌های اتوماتیک جهت ترغیب خریدهای بعدی.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ROI Calculator Section -->
+    <section class="calculator-section" id="roi-calc">
+        <div class="container">
+            <div class="section-header reveal-item">
+                <span style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.5rem; display: block;">سود و بهره‌وری حاصل از مهاجرت به منو</span>
+                <h2 class="section-title">تخمین مستقیم رشد فروشگاه</h2>
+                <p class="section-desc">میزان فروش خود را مشخص کنید تا نتیجه واقعی انتقال به بستر خودکار منو را ارزیابی کنیم.</p>
+            </div>
+
+            <div class="glass-card calc-wrapper reveal-item">
+                <div class="calc-sliders">
+                    
+                    <!-- Slider 1: Daily Orders -->
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span class="slider-title">تعداد سفارش‌های روزانه فروشگاه</span>
+                            <span class="slider-val"><span id="orders-val">۳۰</span> سفارش</span>
+                        </div>
+                        <input type="range" min="5" max="300" value="30" class="range-slider" id="slider-orders">
+                    </div>
+
+                    <!-- Slider 2: Average Order Value -->
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span class="slider-title">میانگین فاکتور هر سفارش (سبد خرید)</span>
+                            <span class="slider-val"><span id="aov-val">۴۰۰,۰۰۰</span> تومان</span>
+                        </div>
+                        <input type="range" min="100000" max="5000000" step="50000" value="400000" class="range-slider" id="slider-aov">
+                    </div>
+
+                </div>
+
+                <div class="calc-results" id="calc-results-box">
+                    
+                    <!-- Result 1 -->
+                    <div class="result-box">
+                        <span class="result-title">رشد فروش ماهانه با بازاریابی پیامکی بازگشت مشتری</span>
+                        <div class="result-num-wrapper">
+                            <span class="result-num highlighted" id="revenue-growth-num">۶۴,۸۰۰,۰۰۰</span>
+                            <span class="result-unit">تومان</span>
+                        </div>
+                    </div>
+
+                    <!-- Result 2 -->
+                    <div class="result-box">
+                        <span class="result-title">صرفه‌جویی در زمان پاسخ‌دهی و ثبت دستی فاکتورها</span>
+                        <div class="result-num-wrapper">
+                            <span class="result-num" id="hours-saved-num">۱۵۰</span>
+                            <span class="result-unit">ساعت در ماه</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Consultation Request Form -->
+    <section class="contact-section" id="contact">
+        <div class="container contact-wrapper">
+            <div class="glass-card contact-card reveal-item">
+                <h2 class="contact-title">فروش هوشمند را از امروز آغاز کنید</h2>
+                <p class="contact-desc">اطلاعات خود را وارد کنید؛ کارشناسان ما به زودی جهت ایجاد دمو و انتقال محصولات فروشگاه شما با شما تماس می‌گیرند.</p>
+                
+                <form id="lead-form" onsubmit="handleFormSubmit(event)">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="name">نام و نام خانوادگی</label>
+                            <input type="text" id="name" required class="form-control" placeholder="مثلاً: آرش حسینی">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">شماره همراه</label>
+                            <input type="tel" id="phone" required class="form-control" placeholder="۰۹۱۲۳۴۵۶۷۸۹" style="direction: ltr; text-align: right;">
+                        </div>
+                        <div class="form-group">
+                            <label for="business">نام آنلاین‌شاپ / برند</label>
+                            <input type="text" id="business" required class="form-control" placeholder="مثلاً: گالری شیک">
+                        </div>
+                        <div class="form-group">
+                            <label for="city">شهر محل فعالیت</label>
+                            <input type="text" id="city" required class="form-control" placeholder="مثلاً: اصفهان">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary submit-btn" id="submit-btn">ثبت درخواست ساخت دمو رایگان</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-wrapper">
+            <a href="#" class="footer-logo">
+                <!-- Inline SVG Logo matching new-panel -->
+                <svg width="24" height="24" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius: 0.25rem; overflow: hidden; flex-shrink: 0; margin-left: 0.5rem;">
+                    <rect width="120" height="120" fill="#FFB300"/>
+                    <path d="M20 27L60 57L100 27V93.6667H20V27Z" fill="black"/>
+                </svg>
+                <div class="logo-text" style="font-size: 1.15rem;">منو<span>.</span></div>
+            </a>
+            <div>© ۱۴۰۵ کلیه حقوق برای پلتفرم فروشگاهی منو محفوظ است.</div>
+        </div>
+    </footer>
+
+    <!-- Scripting for Calculator, scroll transitions and submits -->
+    <script>
+        // Header scrolled styling
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 40) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // ROI Calculator elements
+        const sliderOrders = document.getElementById('slider-orders');
+        const sliderAOV = document.getElementById('slider-aov');
+        const ordersVal = document.getElementById('orders-val');
+        const aovVal = document.getElementById('aov-val');
+        
+        const revenueGrowthNum = document.getElementById('revenue-growth-num');
+        const hoursSavedNum = document.getElementById('hours-saved-num');
+
+        // Helper to convert English digits to Persian Unicode digits
+        function toPersianDigits(num) {
+            const id = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+            return num.toString().replace(/[0-9]/g, function (w) {
+                return id[+w];
+            });
+        }
+
+        // Helper to format currency
+        function formatMoney(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function calculateROI() {
+            const dailyOrders = parseInt(sliderOrders.value);
+            const aov = parseInt(sliderAOV.value);
+
+            // Update UI text Farsi format
+            ordersVal.textContent = toPersianDigits(dailyOrders);
+            aovVal.textContent = toPersianDigits(formatMoney(aov));
+
+            // E-commerce math:
+            // 1. Revenue growth via CRM message loop is calculated at ~18% increase of current sales
+            const monthlyRevenueGrowth = Math.round(dailyOrders * aov * 0.18 * 30);
+            // 2. Responding time saved: 10 mins (0.166 hrs) saved per order
+            const monthlyHoursSaved = Math.round(dailyOrders * 30 * (10 / 60));
+
+            // Update results
+            revenueGrowthNum.textContent = toPersianDigits(formatMoney(monthlyRevenueGrowth));
+            hoursSavedNum.textContent = toPersianDigits(monthlyHoursSaved);
+        }
+
+        // Sliders input
+        sliderOrders.addEventListener('input', calculateROI);
+        sliderAOV.addEventListener('input', calculateROI);
+
+        // Run initially
+        calculateROI();
+
+        // Scroll animations progressive fallback
+        if (!CSS.supports('(animation-timeline: view()) and (animation-range: entry)')) {
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                    }
+                });
+            }, {
+                threshold: 0.08,
+                rootMargin: '0px 0px -40px 0px'
+            });
+
+            document.querySelectorAll('.reveal-item').forEach(el => {
+                revealObserver.observe(el);
+            });
+        } else {
+            document.querySelectorAll('.reveal-item').forEach(el => {
+                el.classList.add('revealed');
+            });
+        }
+
+        // Handle Form Submit
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submit-btn');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'در حال ثبت درخواست مشاوره...';
+            submitBtn.style.opacity = '0.7';
+
+            setTimeout(() => {
+                submitBtn.textContent = 'درخواست شما با موفقیت ثبت شد! به زودی با شما تماس می‌گیریم.';
+                submitBtn.style.background = '#000000';
+                submitBtn.style.color = '#ffffff';
+                submitBtn.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+                
+                document.getElementById('lead-form').reset();
+            }, 1200);
+        }
+    </script>
+</body>
+</html>
