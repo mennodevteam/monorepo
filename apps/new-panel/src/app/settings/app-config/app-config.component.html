@@ -10,63 +10,21 @@
 
 <form [formGroup]="form">
   <main p-md w-md fxLayout="column" fxLayoutGap="16px">
-    <!-- Home Section -->
-    <mat-card appearance="outlined">
-      <mat-card-content fxLayout="row">
-        <div fxFlex fxLayout="column">
-          <h3>{{ 'appConfig.homeSection' | translate }}</h3>
-          <p>
-            {{ 'appConfig.homeDescription' | translate }}
-          </p>
-          <mat-radio-group formControlName="homePage" fxLayout="column">
-            <mat-radio-button [value]="HomePage.Menu">
-              {{ shopService.businessCategoryMenuTitle() }}
-            </mat-radio-button>
-            <mat-radio-button [value]="HomePage.Welcome">
-              {{ 'appConfig.homePageWelcome' | translate }}
-            </mat-radio-button>
-          </mat-radio-group>
-          @if (form.value?.homePage === HomePage.Welcome) {
-            <div style="padding: 24px">
-              {{ 'appConfig.homePageCover' | translate }}
-              <button mat-button type="button" (click)="uploadVerticalCover()">
-                <i class="fa-regular fa-upload"></i>
-                {{ 'app.upload' | translate }}
-              </button>
-              <br />
-              @let image = form.controls.shop.controls.verticalCoverImage.value;
-              @if (image?.base64) {
-                <img class="uploaded-photo" [src]="image.base64" />
-              } @else {
-                <img class="uploaded-photo" imageLoader [imageFile]="image" imageSize="sm" />
-              }
-            </div>
-          }
-        </div>
-        <div class="image-section" fxFlex="none">
-          @switch (form.value?.homePage) {
-            @case (HomePage.Welcome) {
-              <img src="images/screenshots/welcome.jpg" />
-            }
-            @default {
-              <img src="images/screenshots/menu.jpg" />
-            }
-          }
-        </div>
-      </mat-card-content>
-    </mat-card>
-
     <!-- Theme Section -->
     <mat-card appearance="outlined">
-      <mat-card-content fxLayout="row">
-        <div fxFlex fxLayout="column">
+      <mat-card-content>
+        <div fxLayout="column" fxLayoutGap="12px">
           <h3>{{ 'appConfig.themeSection' | translate }}</h3>
           <p>
             {{ 'appConfig.themeSectionDescription' | translate }}
           </p>
-          <input formControlName="themeHex" type="color" />
-          <h5>{{ 'appConfig.themeMode' | translate }}</h5>
-          <mat-radio-group formControlName="themeMode" fxLayout="column">
+          <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+            <input formControlName="themeHex" type="color" style="border: none; width: 48px; height: 48px; cursor: pointer; border-radius: 4px;" />
+            <span>{{ 'appConfig.theme' | translate }}</span>
+          </div>
+          
+          <h5 style="margin-top: 16px; margin-bottom: 8px;">{{ 'appConfig.themeMode' | translate }}</h5>
+          <mat-radio-group formControlName="themeMode" fxLayout="column" fxLayoutGap="8px">
             <mat-radio-button [value]="ThemeMode.Dark">
               {{ 'appConfig.themeModeDark' | translate }}
             </mat-radio-button>
@@ -74,79 +32,6 @@
               {{ 'appConfig.themeModeLight' | translate }}
             </mat-radio-button>
           </mat-radio-group>
-        </div>
-        <div class="image-section" fxFlex="none">
-          @if (form.value?.themeMode === ThemeMode.Light) {
-            <img style="border: 1px solid gray" src="images/screenshots/menu light.jpg" />
-          } @else {
-            <img src="images/screenshots/menu.jpg" />
-          }
-        </div>
-      </mat-card-content>
-    </mat-card>
-
-    <!-- Menu Section -->
-    <mat-card appearance="outlined">
-      <mat-card-content fxLayout="row">
-        <div fxFlex fxLayout="column">
-          <h3>{{ 'appConfig.menuSection' | translate }} {{ shopService.businessCategoryMenuTitle() }}</h3>
-          <mat-radio-group formControlName="menuViewType" fxLayout="column">
-            <mat-radio-button [value]="MenuViewType.Grid">{{
-              'appConfig.menuViewTypeGrid' | translate
-            }}</mat-radio-button>
-            <mat-radio-button [value]="MenuViewType.Card">{{
-              'appConfig.menuViewTypeCard' | translate
-            }}</mat-radio-button>
-            <mat-radio-button [value]="MenuViewType.Compact">{{
-              'appConfig.menuViewTypeCompact' | translate
-            }}</mat-radio-button>
-            <mat-radio-button [value]="MenuViewType.Carousel">{{
-              'appConfig.menuViewTypeCarousel' | translate
-            }}</mat-radio-button>
-          </mat-radio-group>
-        </div>
-
-        <div class="image-section" fxFlex="none">
-          @switch (form.value.menuViewType) {
-            @case (MenuViewType.Card) {
-              <img src="images/screenshots/card.jpg" />
-            }
-            @case (MenuViewType.Compact) {
-              <img src="images/screenshots/compact.jpg" />
-            }
-            @case (MenuViewType.Carousel) {
-              <img src="images/screenshots/menu.jpg" />
-            }
-            @default {
-              <img src="images/screenshots/menu.jpg" />
-            }
-          }
-        </div>
-      </mat-card-content>
-    </mat-card>
-
-    <!-- Horizontal Cover Section -->
-    <mat-card appearance="outlined">
-      <mat-card-content fxLayout="row">
-        <div fxFlex>
-          <h3>{{ 'appConfig.horizontalCover' | translate }}</h3>
-          <p>
-            {{ 'appConfig.horizontalCoverDescription' | translate }}
-          </p>
-          <button mat-button type="button" (click)="uploadCover()">
-            <i class="fa-regular fa-upload"></i>
-            {{ 'app.upload' | translate }}
-          </button>
-          <br />
-          @let image = form.controls.shop.controls.coverImage.value;
-          @if (image?.base64) {
-            <img class="uploaded-photo" [src]="image.base64" />
-          } @else {
-            <img class="uploaded-photo" imageLoader [imageFile]="image" imageSize="sm" />
-          }
-        </div>
-        <div class="image-section" fxFlex="none">
-          <img src="images/screenshots/welcome.jpg" />
         </div>
       </mat-card-content>
     </mat-card>

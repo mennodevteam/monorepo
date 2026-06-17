@@ -286,15 +286,7 @@
           <i matListItemIcon class="fa-duotone fa-message-smile"></i>
           <span matListItemTitle>{{ 'orderMessagesSetting.title' | translate }}</span>
         </a>
-        <a
-          mat-list-item
-          routerLinkActive="active-link"
-          routerLink="/settings/printers"
-          (click)="isSmallScreen() && isDrawerClose.set(true)"
-        >
-          <i matListItemIcon class="fa-duotone fa-print"></i>
-          <span matListItemTitle>{{ 'settings.printers' | translate }}</span>
-        </a>
+
         <a
           mat-list-item
           routerLinkActive="active-link"
@@ -313,23 +305,12 @@
           <i matListItemIcon class="fa-duotone fa-users"></i>
           <span matListItemTitle>{{ 'settings.users' | translate }}</span>
         </a>
-        <a
-          mat-list-item
-          routerLinkActive="active-link"
-          routerLink="/settings/qr"
-          (click)="isSmallScreen() && isDrawerClose.set(true)"
-        >
-          <i matListItemIcon class="fa-duotone fa-qrcode"></i>
-          <span matListItemTitle>{{ 'settings.qr' | translate }}</span>
-        </a>
+
         <a mat-list-item routerLinkActive="active-link" (click)="isSmallScreen() && isDrawerClose.set(true)">
           <i matListItemIcon class="fa-duotone fa-key"></i>
           <span matListItemTitle>{{ 'settings.changePassword' | translate }}</span>
         </a>
-        <a mat-list-item routerLinkActive="active-link" (click)="isSmallScreen() && isDrawerClose.set(true)">
-          <i matListItemIcon class="fa-duotone fa-credit-card"></i>
-          <span matListItemTitle>{{ 'settings.poses' | translate }}</span>
-        </a>
+
         <a
           mat-list-item
           routerLinkActive="active-link"
