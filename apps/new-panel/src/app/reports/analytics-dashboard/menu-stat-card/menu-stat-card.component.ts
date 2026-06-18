@@ -9,7 +9,7 @@ import { BaseChartDirective } from 'ng2-charts';
 import { Chart, ChartConfiguration } from 'chart.js';
 import { ShopService } from '../../../shop/shop.service';
 import { TranslateService } from '@ngx-translate/core';
-Chart.defaults.font.family = 'IRANSans';
+Chart.defaults.font.family = 'Estedad';
 
 @Component({
   selector: 'app-menu-stat-card',

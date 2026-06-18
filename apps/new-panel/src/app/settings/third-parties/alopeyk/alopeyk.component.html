@@ -1,72 +1,68 @@
-<main class="content-wrapper form-page-layout">
-  <mat-toolbar>
-    <button mat-icon-button goBack>
+<main p-md w-md fxLayout="column" fxLayoutGap="32px">
+  <mat-toolbar style="padding: 0; background: transparent;">
+    <button mat-icon-button goBack type="button">
       <i class="fa-regular fa-arrow-right"></i>
     </button>
-    <h1>{{ 'thirdParties.alopeyk.title' | translate }}</h1>
+    <h1 style="margin: 0; font-size: 1.35rem; font-weight: 600;">{{ 'thirdParties.alopeyk.title' | translate }}</h1>
   </mat-toolbar>
-  <div class="static-col form-theme">
-    <mat-card>
-      <mat-card-header>
-        <img src="assets/icons/alopeyk.png" mat-card-avatar />
-        <mat-card-title>{{ 'thirdParties.alopeyk.title' | translate }}</mat-card-title>
-        <mat-card-subtitle>{{ 'thirdParties.alopeyk.description' | translate }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-divider></mat-divider>
-      <mat-card-content>
-        <p>{{ 'thirdParties.alopeyk.formDescription' | translate }}</p>
-        <form [formGroup]="thirdPartyForm">
-          <mat-form-field appearance="fill">
-            <mat-label>{{ 'thirdParties.alopeyk.token' | translate }}</mat-label>
-            <input matInput formControlName="token" class="ltr eng" />
-          </mat-form-field>
-        </form>
-      </mat-card-content>
-      <mat-card-actions>
-        @if (thirdPartyForm.disabled) {
-          <button
-            mat-stroked-button
-            color="primary"
-            (click)="thirdPartyForm.enable()"
-            >
-            {{ 'app.edit' | translate }}
-          </button>
-        }
-        @if (!thirdPartyForm.disabled) {
-          <button mat-flat-button color="accent" (click)="save()">
-            {{ 'app.save' | translate }}
-          </button>
-          <button mat-button (click)="initForm()">
-            {{ 'app.cancel' | translate }}
-          </button>
-        }
-      </mat-card-actions>
-    </mat-card>
-  </div>
-  <div class="flex-col">
-    <mat-card
-      ><mat-card-content>
-      @if (!thirdParty) {
-        <app-empty-state
-          icon="fa-triangle-exclamation"
-          text="{{ 'thirdParties.notConnectedDescription' | translate }}"
-          />
-      }
 
-      @if (thirdParty) {
-        <mat-nav-list>
-          <a mat-list-item target="_blank" href="https://alopeyk.com/">
-            <span matListItemTitle>{{ 'thirdParties.alopeyk.site' | translate }}</span>
-            <span matListItemLine>{{ 'thirdParties.alopeyk.siteDescription' | translate }}</span>
-          </a>
-          <mat-divider></mat-divider>
-          <a mat-list-item target="_blank" href="https://app.alopeyk.com/">
-            <span matListItemTitle>{{ 'thirdParties.alopeyk.panel' | translate }}</span>
-            <span matListItemLine>{{ 'thirdParties.alopeyk.panelDescription' | translate }}</span>
-          </a>
-        </mat-nav-list>
+  <!-- Form Section -->
+  <div fxLayout="column" fxLayoutGap="12px">
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+      <img src="assets/icons/alopeyk.png" style="width: 32px; height: 32px; border-radius: 4px;" />
+      <div fxLayout="column">
+        <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">{{ 'thirdParties.alopeyk.title' | translate }}</h3>
+        <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'thirdParties.alopeyk.description' | translate }}</p>
+      </div>
+    </div>
+    <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'thirdParties.alopeyk.formDescription' | translate }}</p>
+    
+    <form [formGroup]="thirdPartyForm" fxLayout="column" fxLayoutGap="12px" style="margin-top: 8px;">
+      <mat-form-field>
+        <mat-label>{{ 'thirdParties.alopeyk.token' | translate }}</mat-label>
+        <input matInput formControlName="token" class="ltr eng" />
+      </mat-form-field>
+    </form>
+
+    <div fxLayout="row" fxLayoutGap="8px" style="margin-top: 8px;">
+      @if (thirdPartyForm.disabled) {
+        <button mat-stroked-button color="primary" (click)="thirdPartyForm.enable()" type="button">
+          {{ 'app.edit' | translate }}
+        </button>
       }
-    </mat-card-content>
-  </mat-card>
-</div>
+      @if (!thirdPartyForm.disabled) {
+        <button mat-flat-button color="accent" (click)="save()" type="button">
+          {{ 'app.save' | translate }}
+        </button>
+        <button mat-button (click)="initForm()" type="button">
+          {{ 'app.cancel' | translate }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Help Section -->
+  <div fxLayout="column" fxLayoutGap="12px">
+    <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">{{ 'app.help' | translate }}</h3>
+    
+    @if (!thirdParty) {
+      <app-empty-state
+        icon="fa-triangle-exclamation"
+        text="{{ 'thirdParties.notConnectedDescription' | translate }}"
+      />
+    }
+
+    @if (thirdParty) {
+      <mat-nav-list style="padding: 0;">
+        <a mat-list-item target="_blank" href="https://alopeyk.com/" style="height: auto; padding: 8px 0;">
+          <span matListItemTitle>{{ 'thirdParties.alopeyk.site' | translate }}</span>
+          <span matListItemLine>{{ 'thirdParties.alopeyk.siteDescription' | translate }}</span>
+        </a>
+        <a mat-list-item target="_blank" href="https://app.alopeyk.com/" style="height: auto; padding: 8px 0;">
+          <span matListItemTitle>{{ 'thirdParties.alopeyk.panel' | translate }}</span>
+          <span matListItemLine>{{ 'thirdParties.alopeyk.panelDescription' | translate }}</span>
+        </a>
+      </mat-nav-list>
+    }
+  </div>
 </main>

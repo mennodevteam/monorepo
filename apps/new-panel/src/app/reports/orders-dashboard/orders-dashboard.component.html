@@ -10,11 +10,11 @@
   </mat-form-field>
 </mat-toolbar>
 <main fxLayout="column" fxLayoutGap="16px" p-md>
-  <div fxLayout="row" fxLayoutGap="16px" fxLayout.lt-md="column">
-    <app-order-details fxFlex="300px" [fromDate]="validFromDate()" [toDate]="validToDate()" />
-    <app-top-products-card fxFlex [fromDate]="validFromDate()" [toDate]="validToDate()" />
+  <div fxLayout="column" fxLayoutGap="16px">
+    <app-order-details [fromDate]="validFromDate()" [toDate]="validToDate()" />
+    <app-top-products-card [fromDate]="validFromDate()" [toDate]="validToDate()" />
   </div>
-  <div fxLayout="row" fxLayoutGap="16px" fxLayout.lt-md="column">
-    <app-orders-per-day-chart fxFlex [fromDate]="validFromDate()" [toDate]="validToDate()" />
+  <div fxLayout="column" fxLayoutGap="16px">
+    <app-orders-per-day-chart [fromDate]="validFromDate()" [toDate]="validToDate()" />
   </div>
 </main>

@@ -6,19 +6,26 @@
 }
 
 tr {
-  height: 56px;
+  height: 44px !important;
+
+  td {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+  }
 }
 
 tr.variant-row {
-  height: 40px;
+  height: 32px !important;
   
   td {
     border: none !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
   }
 
   .mat-column-title {
     color: var(--mat-sys-on-surface-variant);
-    font-size: 0.9rem;
+    font-size: 0.8125rem !important;
   }
 }
 

@@ -6,46 +6,51 @@
 </mat-toolbar>
 
 <form [formGroup]="form">
-  <main p-md w-md fxLayout="column" fxLayoutGap="16px" class="np-ai-page">
-    <mat-card appearance="outlined" class="hint-card">
-      <mat-card-content fxLayout="column" fxLayoutGap="12px">
-        <p>{{ 'aiChatbot.setupThirdPartyHint' | translate }}</p>
-        <div fxLayout="row wrap" fxLayoutGap="8px">
-          <a mat-stroked-button color="primary" routerLink="/settings/third-parties/bale">
-            {{ 'aiChatbot.goToThirdPartiesBale' | translate }}
-          </a>
-          <a mat-button routerLink="/settings/third-parties">
-            {{ 'settings.thirdParties' | translate }}
-          </a>
-        </div>
-      </mat-card-content>
-    </mat-card>
+  <main p-md w-md fxLayout="column" fxLayoutGap="32px" class="np-ai-page">
+    <!-- Hint Section -->
+    <div style="background: var(--bg-card, #f9f9f9); border: 1px solid var(--border-color, #e0e0e0); border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+      <p style="margin: 0; font-size: 0.85rem; color: var(--text-primary);">{{ 'aiChatbot.setupThirdPartyHint' | translate }}</p>
+      <div fxLayout="row wrap" fxLayoutGap="8px">
+        <a mat-stroked-button color="primary" routerLink="/settings/third-parties/bale">
+          {{ 'aiChatbot.goToThirdPartiesBale' | translate }}
+        </a>
+        <a mat-button routerLink="/settings/third-parties">
+          {{ 'settings.thirdParties' | translate }}
+        </a>
+      </div>
+    </div>
 
     <!-- Status Section -->
-    <mat-card appearance="outlined">
-      <mat-card-content fxLayout="column">
-        <h3>{{ 'aiChatbot.statusSection' | translate }}</h3>
-        <p>{{ 'aiChatbot.statusDescription' | translate }}</p>
-        <mat-form-field appearance="outline">
-          <mat-label>{{ 'aiChatbot.status' | translate }}</mat-label>
-          <mat-select formControlName="status">
-            <mat-option [value]="Status.Active">
-              {{ 'aiChatbot.statusActive' | translate }}
-            </mat-option>
-            <mat-option [value]="Status.Inactive">
-              {{ 'aiChatbot.statusInactive' | translate }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </mat-card-content>
-    </mat-card>
+    <div fxLayout="column" fxLayoutGap="12px">
+      <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
+        {{ 'aiChatbot.statusSection' | translate }}
+      </h3>
+      <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">
+        {{ 'aiChatbot.statusDescription' | translate }}
+      </p>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'aiChatbot.status' | translate }}</mat-label>
+        <mat-select formControlName="status">
+          <mat-option [value]="Status.Active">
+            {{ 'aiChatbot.statusActive' | translate }}
+          </mat-option>
+          <mat-option [value]="Status.Inactive">
+            {{ 'aiChatbot.statusInactive' | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
     <!-- Configuration Section -->
-    <mat-card appearance="outlined">
-      <mat-card-content fxLayout="column" fxLayoutGap="16px">
-        <h3>{{ 'aiChatbot.configSection' | translate }}</h3>
-        <p>{{ 'aiChatbot.configDescription' | translate }}</p>
+    <div fxLayout="column" fxLayoutGap="12px">
+      <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
+        {{ 'aiChatbot.configSection' | translate }}
+      </h3>
+      <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">
+        {{ 'aiChatbot.configDescription' | translate }}
+      </p>
 
+      <div fxLayout="column" fxLayoutGap="12px">
         <mat-form-field appearance="outline">
           <mat-label>{{ 'aiChatbot.style' | translate }}</mat-label>
           <textarea
@@ -69,7 +74,7 @@
           </textarea>
           <mat-hint>{{ 'aiChatbot.extraInfoHint' | translate }}</mat-hint>
         </mat-form-field>
-      </mat-card-content>
-    </mat-card>
+      </div>
+    </div>
   </main>
 </form>

@@ -11,7 +11,7 @@ import { ShopService } from '../../../shop/shop.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-Chart.defaults.font.family = 'IRANSans';
+Chart.defaults.font.family = 'Estedad';
 
 @Component({
   selector: 'app-top-products-card',
@@ -72,7 +72,7 @@ export class TopProductsCardComponent {
         },
         ticks: {
           font: {
-            family: 'IRANSans',
+            family: 'Estedad',
           },
         },
       },
@@ -82,7 +82,7 @@ export class TopProductsCardComponent {
         },
         ticks: {
           font: {
-            family: 'IRANSans',
+            family: 'Estedad',
           },
           maxRotation: 0, // No rotation needed for horizontal bars
           minRotation: 0,

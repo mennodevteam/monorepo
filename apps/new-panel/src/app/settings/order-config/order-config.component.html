@@ -1,30 +1,30 @@
 <mat-toolbar class="content-toolbar" fxLayoutGap="8px">
-  <button mat-icon-button goBack>
+  <button mat-icon-button goBack type="button">
     <i class="fa-regular fa-arrow-right"></i>
   </button>
   <h1 fxFlex>{{ 'settings.orderConfig' | translate }}</h1>
-  <button mat-flat-button (click)="save()" [disabled]="!form.dirty">
+  <button mat-flat-button (click)="save()" [disabled]="!form.dirty" type="button">
     {{ 'app.save' | translate }}
   </button>
 </mat-toolbar>
 
 <form [formGroup]="form">
-  <main p-md w-md fxLayout="column" fxLayoutGap="16px">
+  <main p-md w-md fxLayout="column" fxLayoutGap="32px">
     <!-- Ordering Status Section -->
-    <mat-card appearance="outlined">
-      <mat-card-header fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%; margin-bottom: 16px;">
-        <mat-card-title style="margin: 0;">
+    <div fxLayout="column" fxLayoutGap="12px">
+      <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+        <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
           {{ 'appConfig.disableOrdering' | translate }}
-        </mat-card-title>
+        </h3>
         <mat-button-toggle-group formControlName="disableOrdering">
           <mat-button-toggle [value]="false">{{ 'app.active' | translate }}</mat-button-toggle>
           <mat-button-toggle [value]="true">{{ 'app.inactive' | translate }}</mat-button-toggle>
         </mat-button-toggle-group>
-      </mat-card-header>
+      </div>
       
-      <mat-card-content fxLayout="column" fxLayoutGap="16px">
+      <div fxLayout="column" fxLayoutGap="12px">
         @if (!form.controls['disableOrdering']?.value) {
-          <p>{{ 'appConfig.selectableOrderTypesDescription' | translate: { shop: shopService.businessCategoryTitle() } }}</p>
+          <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'appConfig.selectableOrderTypesDescription' | translate: { shop: shopService.businessCategoryTitle() } }}</p>
           <mat-form-field appearance="outline">
             <mat-label>{{ 'appConfig.selectableOrderTypes' | translate }}</mat-label>
             <mat-select formControlName="selectableOrderTypes" multiple>
@@ -42,23 +42,24 @@
             </mat-select>
           </mat-form-field>
         }
-      </mat-card-content>
-    </mat-card>
+      </div>
+    </div>
 
     <!-- Payment Status Section -->
     @if (shopService.data()?.paymentGateway) {
-      <mat-card appearance="outlined">
-        <mat-card-header fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%; margin-bottom: 16px;">
-          <mat-card-title style="margin: 0;">
+      <div fxLayout="column" fxLayoutGap="12px">
+        <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+          <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
             {{ 'appConfig.disablePayment' | translate }}
-          </mat-card-title>
+          </h3>
           <mat-button-toggle-group formControlName="disablePayment">
             <mat-button-toggle [value]="false">{{ 'app.active' | translate }}</mat-button-toggle>
             <mat-button-toggle [value]="true">{{ 'app.inactive' | translate }}</mat-button-toggle>
           </mat-button-toggle-group>
-        </mat-card-header>
-        @if (!form.controls['disablePayment']?.value) {
-          <mat-card-content fxLayout="column" fxLayoutGap="16px">
+        </div>
+        
+        <div fxLayout="column" fxLayoutGap="12px">
+          @if (!form.controls['disablePayment']?.value) {
             <mat-form-field appearance="outline">
               <mat-label>{{ 'appConfig.requiredPayment' | translate }}</mat-label>
               <mat-select formControlName="requiredPayment" multiple>
@@ -75,20 +76,19 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-          </mat-card-content>
-        }
-      </mat-card>
+          }
+        </div>
+      </div>
     }
 
     <!-- SMS Notification Section -->
-    <mat-card appearance="outlined">
-      <mat-card-header style="margin-bottom: 16px;">
-        <mat-card-title style="margin: 0;">
-          {{ 'appConfig.smsOnNewOrder' | translate }}
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content fxLayout="column" fxLayoutGap="16px">
-        <p>{{ 'appConfig.smsOnNewOrderDescription' | translate }}</p>
+    <div fxLayout="column" fxLayoutGap="12px">
+      <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
+        {{ 'appConfig.smsOnNewOrder' | translate }}
+      </h3>
+      <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'appConfig.smsOnNewOrderDescription' | translate }}</p>
+      
+      <div fxLayout="column" fxLayoutGap="12px">
         <mat-form-field appearance="outline">
           <mat-label>{{ 'appConfig.smsOnNewOrderLabel' | translate }}</mat-label>
           <mat-chip-grid #chipGridSms>
@@ -110,7 +110,7 @@
           </mat-chip-grid>
           <mat-hint>{{ 'appConfig.smsOnNewOrderHint' | translate }}</mat-hint>
         </mat-form-field>
-      </mat-card-content>
-    </mat-card>
+      </div>
+    </div>
   </main>
 </form>

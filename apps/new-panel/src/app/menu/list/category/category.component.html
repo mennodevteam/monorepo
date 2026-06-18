@@ -1,39 +1,29 @@
-<mat-card appearance="outlined" id="category_{{ category()?.id }}">
-  <mat-card-actions fxLayoutGap="8px">
-    <h3 fxFlex>
-      @if (category()?.faIcon) {
-        <i class="fa-regular fa-{{ category()?.faIcon }}"></i>
-      }
-      {{ category()?.title }}
-    </h3>
-    <!-- <app-menu-status-chip
-      title="{{ 'menu.category' | translate }}"
-      [status]="category()?.status"
-      (statusChange)="statusChange($event)"
-    /> -->
-  </mat-card-actions>
-  <mat-card-actions fxLayoutGap="8px">
-    <button mat-flat-button routerLink="../product" [queryParams]="{ categoryId: category()?.id }">
-      <i class="fa-regular fa-plus fa-sm"></i>
+<div class="category-header-row" fxLayout="row" fxLayoutAlign="space-between center" style="margin-bottom: 1.25rem; margin-top: 1rem;">
+  <h3 style="font-size: 1.1rem; font-weight: 500; color: #171717; margin: 0; font-family: 'Estedad', sans-serif;">
+    @if (category()?.faIcon) {
+      <i class="fa-regular fa-{{ category()?.faIcon }}" style="margin-inline-end: 8px;"></i>
+    }
+    {{ category()?.title }}
+  </h3>
+  
+  <div fxLayout="row" fxLayoutGap="8px">
+    <button mat-flat-button routerLink="../product" [queryParams]="{ categoryId: category()?.id }" style="height: 2.25rem !important; border-radius: 0.625rem !important; font-size: 0.8125rem !important;">
+      <i class="fa-regular fa-plus fa-sm" style="margin-inline-end: 4px;"></i>
       <span fxHide.xs>
         {{ 'menu.addProduct' | translate }}
       </span>
     </button>
-    <!-- <button mat-button (click)="categoryEditClick.emit(category())">
-      <i class="fa-regular fa-edit fa-sm"></i>
-      <span fxHide.xs>
-        {{ 'menu.editCategory' | translate }}
-      </span>
-    </button> -->
-    <button mat-button (click)="openSortItemsDialog()">
-      <i class="fa-regular fa-sort fa-sm"></i>
+    <button mat-button (click)="openSortItemsDialog()" style="height: 2.25rem !important; border-radius: 0.625rem !important; font-size: 0.8125rem !important; background-color: #f5f5f5;">
+      <i class="fa-regular fa-sort fa-sm" style="margin-inline-end: 4px;"></i>
       <span fxHide.xs>
         {{ 'menu.sortProducts' | translate: { value: '' } }}
       </span>
     </button>
-  </mat-card-actions>
-  <mat-divider />
-  <mat-card-content>
+  </div>
+</div>
+
+<mat-card appearance="outlined" id="category_{{ category()?.id }}" style="padding: 0 !important; overflow: hidden !important;">
+  <mat-card-content style="padding: 0 !important;">
     <app-product-table [category]="category()" />
   </mat-card-content>
 </mat-card>

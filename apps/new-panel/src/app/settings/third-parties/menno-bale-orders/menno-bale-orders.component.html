@@ -1,59 +1,57 @@
 @if (thirdPartyForm) {
-  <main p-md w-md>
-    <mat-toolbar>
-      <button mat-icon-button goBack>
+  <main p-md w-md fxLayout="column" fxLayoutGap="32px">
+    <mat-toolbar style="padding: 0; background: transparent;">
+      <button mat-icon-button goBack type="button">
         <i class="fa-regular fa-arrow-right"></i>
       </button>
-      <h1>{{ 'thirdParties.mennoBaleOrders.title' | translate }}</h1>
+      <h1 style="margin: 0; font-size: 1.35rem; font-weight: 600;">{{ 'thirdParties.mennoBaleOrders.title' | translate }}</h1>
     </mat-toolbar>
 
-    <div class="static-col">
-      <mat-card class="form-theme" appearance="outlined">
-        <mat-card-header>
-          <img mat-card-avatar src="icons/bale-logo.png" alt="" />
-          <mat-card-title>{{ 'thirdParties.mennoBaleOrders.title' | translate }}</mat-card-title>
-          <mat-card-subtitle>{{ 'thirdParties.mennoBaleOrders.description' | translate }}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-divider></mat-divider>
-        <mat-card-content>
-          <p>{{ 'thirdParties.mennoBaleOrders.formDescription' | translate }}</p>
-          <form [formGroup]="thirdPartyForm">
-            <mat-form-field appearance="fill">
-              <mat-label>{{ 'thirdParties.mennoBaleOrders.channelId' | translate }}</mat-label>
-              <input matInput formControlName="channelId" class="ltr eng" />
-              <mat-hint>{{ 'thirdParties.mennoBaleOrders.channelIdHint' | translate }}</mat-hint>
-            </mat-form-field>
-          </form>
-        </mat-card-content>
-        <mat-card-actions>
-          @if (thirdPartyForm.disabled) {
-            <button mat-stroked-button color="primary" (click)="thirdPartyForm.enable()">
-              {{ 'app.edit' | translate }}
-            </button>
-          }
-          @if (!thirdPartyForm.disabled) {
-            <button mat-flat-button color="accent" (click)="save()">
-              {{ 'app.save' | translate }}
-            </button>
-            <button mat-button (click)="initForm()">
-              {{ 'app.cancel' | translate }}
-            </button>
-          }
-        </mat-card-actions>
-      </mat-card>
+    <!-- Form Section -->
+    <div fxLayout="column" fxLayoutGap="12px">
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+        <img src="icons/bale-logo.png" style="width: 32px; height: 32px; border-radius: 4px;" alt="" />
+        <div fxLayout="column">
+          <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">{{ 'thirdParties.mennoBaleOrders.title' | translate }}</h3>
+          <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'thirdParties.mennoBaleOrders.description' | translate }}</p>
+        </div>
+      </div>
+      <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'thirdParties.mennoBaleOrders.formDescription' | translate }}</p>
+      
+      <form [formGroup]="thirdPartyForm" fxLayout="column" fxLayoutGap="12px" style="margin-top: 8px;">
+        <mat-form-field>
+          <mat-label>{{ 'thirdParties.mennoBaleOrders.channelId' | translate }}</mat-label>
+          <input matInput formControlName="channelId" class="ltr eng" />
+          <mat-hint>{{ 'thirdParties.mennoBaleOrders.channelIdHint' | translate }}</mat-hint>
+        </mat-form-field>
+      </form>
+
+      <div fxLayout="row" fxLayoutGap="8px" style="margin-top: 8px;">
+        @if (thirdPartyForm.disabled) {
+          <button mat-stroked-button color="primary" (click)="thirdPartyForm.enable()" type="button">
+            {{ 'app.edit' | translate }}
+          </button>
+        }
+        @if (!thirdPartyForm.disabled) {
+          <button mat-flat-button color="accent" (click)="save()" type="button">
+            {{ 'app.save' | translate }}
+          </button>
+          <button mat-button (click)="initForm()" type="button">
+            {{ 'app.cancel' | translate }}
+          </button>
+        }
+      </div>
     </div>
 
-    <div class="flex-col">
-      <mat-card appearance="outlined">
-        <mat-card-content>
-          <mat-nav-list>
-            <a mat-list-item target="_blank" href="https://docs.bale.ai/">
-              <span matListItemTitle>{{ 'thirdParties.mennoBaleOrders.docs' | translate }}</span>
-              <span matListItemLine>{{ 'thirdParties.mennoBaleOrders.docsDescription' | translate }}</span>
-            </a>
-          </mat-nav-list>
-        </mat-card-content>
-      </mat-card>
+    <!-- Help Docs Section -->
+    <div fxLayout="column" fxLayoutGap="12px">
+      <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">{{ 'app.help' | translate }}</h3>
+      <mat-nav-list style="padding: 0;">
+        <a mat-list-item target="_blank" href="https://docs.bale.ai/" style="height: auto; padding: 8px 0;">
+          <span matListItemTitle>{{ 'thirdParties.mennoBaleOrders.docs' | translate }}</span>
+          <span matListItemLine>{{ 'thirdParties.mennoBaleOrders.docsDescription' | translate }}</span>
+        </a>
+      </mat-nav-list>
     </div>
   </main>
 }

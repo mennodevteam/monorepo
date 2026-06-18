@@ -1,100 +1,108 @@
-#logo {
-  width: 40px;
-  vertical-align: middle;
-}
-
-#profile-button {
-  padding-inline-end: 4px;
-  padding-inline-start: 12px;
-  img {
-    border-radius: 50%;
-    width: 28px;
-    height: 28px;
-    vertical-align: middle;
-  }
-}
-
-h1 {
-  font-weight: 700 !important;
-  font-size: var(--mat-sys-title-large-size);
-  line-height: var(--mat-sys-title-large-line-height);
-  b {
-    transform: translateY(2px);
-  }
-}
-
-.mat-toolbar {
-  position: fixed;
-  top: 0;
-  z-index: 100;
-  height: var(--mat-toolbar-standard-height, 56px);
-}
-
+// Sidenav dimensions and alignments
 mat-sidenav {
-  width: 344px;
-  padding-inline-end: 64px;
+  width: 270px;
+  padding: 0 !important;
+  background-color: #ffffff !important;
+  border-left: 1px solid var(--border-color) !important;
+  border-radius: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100vh !important;
+
+  ::ng-deep .mat-drawer-inner-container {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+  }
 
   a.mat-mdc-list-item {
-    border-radius: 12px !important;
+    border-radius: 8px !important;
     margin-block: 1px;
+    height: 34px !important;
+    border-inline-start: 4px solid transparent !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+    &:hover {
+      background-color: var(--nav-item-hover) !important;
+      
+      .mat-mdc-list-item-title,
+      ng-icon {
+        color: #171717 !important;
+      }
+    }
 
     &.active-link {
-      background-color: var(--mat-sys-primary-container);
+      background-color: var(--nav-item-active-bg) !important;
+      color: var(--nav-item-active-color) !important;
+      border-inline-start: 4px solid var(--nav-item-active-color) !important;
+      border-radius: 8px !important;
+
       .mat-mdc-list-item-title,
-      i {
-        color: var(--mat-sys-primary) !important;
+      ng-icon {
+        color: var(--nav-item-active-color) !important;
       }
     }
 
     .mat-mdc-list-item-title {
-      font-size: var(--mat-sys-label-large-size);
-      line-height: var(--mat-sys-label-large-line-height);
+      font-size: 0.78rem !important;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: color 0.2s ease;
     }
 
-    i.mat-mdc-list-item-icon {
+    ng-icon[matListItemIcon] {
       text-align: center;
       line-height: 24px;
-      font-size: 20px;
+      font-size: 1.15rem !important;
+      color: var(--text-muted);
+      transition: color 0.2s ease;
     }
 
     .flip {
       transform: scaleX(-1);
     }
 
-    .fa-caret-down,
-    .fa-caret-left {
-      margin-inline-end: 8px;
-    }
-
     &.nav-ai {
-      i.mat-mdc-list-item-icon {
-        --fa-primary-color: var(--np-ai-accent-muted);
-        --fa-secondary-color: #c4b5fd;
-        --fa-secondary-opacity: 0.75;
-        color: var(--np-ai-accent-muted);
+      ng-icon[matListItemIcon] {
+        color: var(--np-ai-accent-muted) !important;
       }
 
-      &.active-link i.mat-mdc-list-item-icon {
-        --fa-primary-color: var(--np-ai-accent);
-        --fa-secondary-color: #ddd6fe;
+      &.active-link ng-icon[matListItemIcon] {
         color: var(--np-ai-accent) !important;
       }
     }
   }
 }
 
-.sticky-toolbar {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
+// Layout heights and container properties
 mat-sidenav-content {
-  margin-top: var(--mat-toolbar-standard-height, 56px);
+  margin-top: 0 !important;
+  background-color: #ffffff !important;
 }
 
 mat-sidenav-container,
 mat-sidenav-content {
   overflow: initial;
-  height: calc(100vh - var(--mat-toolbar-standard-height, 56px));
+  height: 100vh !important;
+  background-color: #ffffff !important;
+}
+
+// Profile and bell buttons inside sidebar header
+#profile-button {
+  &:hover {
+    background-color: var(--nav-item-hover) !important;
+    border-color: var(--text-muted) !important;
+  }
+}
+
+.btn-icon {
+  &:hover {
+    background-color: var(--nav-item-hover) !important;
+  }
+}
+
+// Sidenav Divider customization
+mat-divider {
+  margin-block: 4px !important;
+  border-top-color: var(--border-color) !important;
 }

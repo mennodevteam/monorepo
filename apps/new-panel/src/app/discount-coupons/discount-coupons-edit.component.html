@@ -26,14 +26,13 @@
     </button>
   </mat-toolbar>
 
-  <main p-md w-md fxLayout="column" fxLayout.gt-md="row" fxLayoutGap="24px">
-    <div fxLayout="column" fxLayoutGap="24px" fxFlex>
+  <main p-md w-md fxLayout="column" fxLayoutGap="24px">
+    <div fxLayout="column" fxLayoutGap="24px">
       <!-- Basic Information -->
-      <mat-card appearance="outlined">
-        <mat-card-content fxLayout="column" fxLayoutGap="24px">
-          <h3>{{ 'discountCoupons.basicInfo' | translate }}</h3>
-          <p class="mat-caption">{{ 'discountCoupons.basicInfoDescription' | translate }}</p>
-
+      <div fxLayout="column" fxLayoutGap="12px">
+        <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">{{ 'discountCoupons.basicInfo' | translate }}</h3>
+        <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'discountCoupons.basicInfoDescription' | translate }}</p>
+        <div fxLayout="column" fxLayoutGap="12px">
           <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
             <mat-label>{{ 'app.title' | translate }}</mat-label>
             <input matInput formControlName="title" required />
@@ -63,15 +62,14 @@
               <mat-error>{{ 'discountCoupons.code' | translate }} {{ 'app.required' | translate }}</mat-error>
             }
           </mat-form-field>
-        </mat-card-content>
-      </mat-card>
+        </div>
+      </div>
 
       <!-- Discount Details -->
-      <mat-card appearance="outlined">
-        <mat-card-content fxLayout="column" fxLayoutGap="24px">
-          <h3>{{ 'discountCoupons.discountDetails' | translate }}</h3>
-          <p class="mat-caption">{{ 'discountCoupons.discountDetailsDescription' | translate }}</p>
-
+      <div fxLayout="column" fxLayoutGap="12px">
+        <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">{{ 'discountCoupons.discountDetails' | translate }}</h3>
+        <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'discountCoupons.discountDetailsDescription' | translate }}</p>
+        <div fxLayout="column" fxLayoutGap="12px">
           <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start start">
             <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
               <mat-label>{{ 'discountCoupons.type' | translate }}</mat-label>
@@ -127,17 +125,16 @@
               </mat-form-field>
             }
           </div>
-        </mat-card-content>
-      </mat-card>
+        </div>
+      </div>
     </div>
 
-    <div fxLayout="column" fxLayoutGap="24px" fxFlex>
+    <div fxLayout="column" fxLayoutGap="24px">
       <!-- Date Range -->
-      <mat-card appearance="outlined">
-        <mat-card-content fxLayout="column" fxLayoutGap="24px">
-          <h3>{{ 'app.dateRange' | translate }}</h3>
-          <p class="mat-caption">{{ 'discountCoupons.dateRangeDescription' | translate }}</p>
-
+      <div fxLayout="column" fxLayoutGap="12px">
+        <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">{{ 'app.dateRange' | translate }}</h3>
+        <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'discountCoupons.dateRangeDescription' | translate }}</p>
+        <div fxLayout="column" fxLayoutGap="12px">
           <mat-form-field appearance="outline">
             <mat-label>{{ 'app.dateRange' | translate }}</mat-label>
             <mat-date-range-input [rangePicker]="dateRangePicker">
@@ -151,30 +148,29 @@
             <mat-datepicker-toggle matSuffix [for]="dateRangePicker"></mat-datepicker-toggle>
             <mat-date-range-picker #dateRangePicker></mat-date-range-picker>
           </mat-form-field>
-        </mat-card-content>
-      </mat-card>
+        </div>
+      </div>
 
       <!-- Usage Limits -->
-      <mat-card appearance="outlined">
-        <mat-card-content fxLayout="column" fxLayoutGap="24px">
-          <h3>{{ 'discountCoupons.usage' | translate }}</h3>
-          <p class="mat-caption">{{ 'discountCoupons.usageDescription' | translate }}</p>
-
-          <p class="mat-caption">{{ 'discountCoupons.maxUsePerUserDescription' | translate }}</p>
+      <div fxLayout="column" fxLayoutGap="12px">
+        <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">{{ 'discountCoupons.usage' | translate }}</h3>
+        <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'discountCoupons.usageDescription' | translate }}</p>
+        <div fxLayout="column" fxLayoutGap="12px">
+          <p style="font-size: 0.78rem; color: var(--text-secondary); margin: 0 0 4px 0;">{{ 'discountCoupons.maxUsePerUserDescription' | translate }}</p>
           <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
             <mat-label>{{ 'discountCoupons.maxUsePerUser' | translate }}</mat-label>
             <input matInput formControlName="maxUsePerUser" type="number" />
             <mat-hint>{{ 'discountCoupons.maxUseEmptyHint' | translate }}</mat-hint>
           </mat-form-field>
 
-          <p class="mat-caption">{{ 'discountCoupons.maxUseDescription' | translate }}</p>
+          <p style="font-size: 0.78rem; color: var(--text-secondary); margin: 12px 0 4px 0;">{{ 'discountCoupons.maxUseDescription' | translate }}</p>
           <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
             <mat-label>{{ 'discountCoupons.maxUse' | translate }}</mat-label>
             <input matInput formControlName="maxUse" type="number" />
             <mat-hint>{{ 'discountCoupons.maxUseEmptyHint' | translate }}</mat-hint>
           </mat-form-field>
-        </mat-card-content>
-      </mat-card>
+        </div>
+      </div>
     </div>
   </main>
 </form>

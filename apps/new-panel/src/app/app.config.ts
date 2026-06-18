@@ -9,6 +9,7 @@ import { paginatorIntlProvider } from './core/providers/mat-paginator-intl.provi
 import { provideTranslation } from './core/providers/translate-module.provider';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -31,5 +32,6 @@ export const appConfig: ApplicationConfig = {
     paginatorIntlProvider(),
     provideCharts(withDefaultRegisterables()),
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
   ],
 };

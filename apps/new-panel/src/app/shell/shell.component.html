@@ -1,89 +1,90 @@
-<mat-toolbar fxLayout="row" fxLayoutGap="8px">
-  <button mat-icon-button (click)="isDrawerClose.set(!isDrawerClose())">
-    <i class="fa-solid fa-bars"></i>
-  </button>
-  <span fxFlex></span>
-  <button
-    mat-icon-button
-    [matBadge]="notifications.data()?.length"
-    [matBadgeHidden]="!notifications.data()?.length"
-    [disabled]="!notifications.data()?.length"
-    matBadgePosition="before"
-    [matMenuTriggerFor]="notificationMenu"
-  >
-    <i class="fa-solid fa-bell"></i>
-  </button>
-  <mat-menu #notificationMenu="matMenu">
-    <mat-nav-list>
-      @for (notification of notifications.data(); track notification) {
-        <a
-          mat-list-item
-          routerLink="/orders/details/{{ (notification.order || notification.chat?.order)?.id }}"
-        >
-          @if (notification.order) {
-            <span matListItemTitle>{{ 'notifications.newOrder' | translate }}</span>
-          }
-          @if (notification.chat) {
-            <span matListItemTitle>{{ 'notifications.newMessage' | translate }}</span>
-          }
-          <span matListItemLine>{{ notification.date | pdate: true }}</span>
-        </a>
-        @if (!$last) {
-          <mat-divider />
-        }
-      }
-    </mat-nav-list>
-  </mat-menu>
-  <button mat-stroked-button id="profile-button" [matMenuTriggerFor]="userMenu">
-    {{ shop.data()?.title }}
-    <img imageLoader [imageFile]="shop.data()?.logoImage" placeholderImageSize="sm" />
-  </button>
-  <mat-menu #userMenu="matMenu">
-    <button mat-menu-item (click)="logout()">{{ 'shell.logout' | translate }}</button>
-  </mat-menu>
-  <h1 fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
-    <b fxHide.lt-sm>MENNO</b>
-    <img src="icons/logo.svg" id="logo" />
-  </h1>
-</mat-toolbar>
 <mat-sidenav-container class="sidenav-container">
-  <!-- fixedTopGap matches mat.theme density -2 toolbar height (56px); if density changes, update this. -->
+  <!-- Sidenav Navigation Drawer -->
   <mat-sidenav
     #drawer
     class="sidenav"
     fixedInViewport
     [mode]="isSmallScreen() ? 'over' : 'side'"
     [opened]="!isDrawerClose()"
-    [fixedTopGap]="56"
+    [fixedTopGap]="0"
   >
-    <mat-nav-list>
+    <!-- Sidenav Header -->
+    <div class="sidenav-header" style="display: flex; flex-direction: column; gap: 1rem; padding: 1.25rem 1rem; border-bottom: 1px solid var(--border-color); box-sizing: border-box; width: 100%;">
+      <!-- Row 1: Brand Logo + Notification Bell -->
+      <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+        <!-- Brand logo and name -->
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <img src="icons/logo.svg" alt="menno logo" style="height: 1.5rem; width: auto;" />
+          <span style="font-size: 1.15rem; font-weight: 700; color: #171717; letter-spacing: 0.05em;">منو</span>
+        </div>
+
+        <!-- Notification Bell -->
+        <button
+          mat-icon-button
+          [matBadge]="notifications.data()?.length"
+          [matBadgeHidden]="!notifications.data()?.length"
+          [disabled]="!notifications.data()?.length"
+          matBadgePosition="before"
+          [matMenuTriggerFor]="notificationMenu"
+          style="background-color: #f5f5f5; color: var(--text-primary); width: 2.25rem; height: 2.25rem; border-radius: 50% !important; border: none; display: inline-flex; align-items: center; justify-content: center; padding: 0; box-sizing: border-box;"
+        >
+          <ng-icon name="saxNotificationOutline" style="font-size: 1.15rem; color: var(--text-primary); display: flex; align-items: center; justify-content: center;"></ng-icon>
+        </button>
+        <mat-menu #notificationMenu="matMenu">
+          <mat-nav-list style="font-family: 'Estedad';">
+            @for (notification of notifications.data(); track notification) {
+              <a
+                mat-list-item
+                routerLink="/orders/details/{{ (notification.order || notification.chat?.order)?.id }}"
+              >
+                @if (notification.order) {
+                  <span matListItemTitle>{{ 'notifications.newOrder' | translate }}</span>
+                }
+                @if (notification.chat) {
+                  <span matListItemTitle>{{ 'notifications.newMessage' | translate }}</span>
+                }
+                <span matListItemLine>{{ notification.date | pdate: true }}</span>
+              </a>
+              @if (!$last) {
+                <mat-divider />
+              }
+            }
+          </mat-nav-list>
+        </mat-menu>
+      </div>
+    </div>
+
+    <!-- Sidenav Links Menu -->
+    <mat-nav-list style="padding: 1rem 8px; display: flex; flex-direction: column; gap: 2px;">
       <a
         mat-list-item
         routerLinkActive="active-link"
         routerLink="/home"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <i matListItemIcon class="fa-duotone fa-house"></i>
+        <ng-icon matListItemIcon name="saxHome2Outline"></ng-icon>
         <span matListItemTitle>{{ 'nav.home' | translate }}</span>
       </a>
       <mat-divider />
+      
       <a
         mat-list-item
         routerLinkActive="active-link"
         routerLink="/orders"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <i matListItemIcon class="fa-duotone fa-solid fa-receipt"></i>
+        <ng-icon matListItemIcon name="saxReceipt2Outline"></ng-icon>
         <span matListItemTitle>{{ 'nav.orderList' | translate }}</span>
       </a>
       <mat-divider />
+      
       <a
         mat-list-item
         routerLinkActive="active-link"
         routerLink="/menu/categories"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <i matListItemIcon class="fa-duotone fa-folder-tree flip"></i>
+        <ng-icon matListItemIcon name="saxCategoryOutline"></ng-icon>
         <span matListItemTitle>{{
           'nav.categories' | translate: { value: shop.businessCategoryMenuTitle() }
         }}</span>
@@ -94,19 +95,20 @@
         routerLink="/menu/list"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <i matListItemIcon class="fa-duotone fa-box"></i>
+        <ng-icon matListItemIcon name="saxBoxOutline"></ng-icon>
         <span matListItemTitle>{{
           'nav.products' | translate: { value: shop.businessCategoryMenuTitle() }
         }}</span>
       </a>
       <mat-divider />
+      
       <a
         mat-list-item
         routerLinkActive="active-link"
         routerLink="/inventory/materials"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <i matListItemIcon class="fa-duotone fa-warehouse-full"></i>
+        <ng-icon matListItemIcon name="saxArchiveOutline"></ng-icon>
         <span matListItemTitle>{{ 'nav.materials' | translate }}</span>
       </a>
       <a
@@ -115,7 +117,7 @@
         routerLink="/inventory/bom"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <i matListItemIcon class="fa-duotone fa-flask-vial"></i>
+        <ng-icon matListItemIcon name="saxGlassOutline"></ng-icon>
         <span matListItemTitle>{{ 'nav.bom' | translate: { value: shop.businessCategoryMenuTitle() } }}</span>
       </a>
       <a
@@ -124,17 +126,18 @@
         routerLink="/menu/availability"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <i matListItemIcon class="fa-duotone fa-shelves"></i>
+        <ng-icon matListItemIcon name="saxTaskSquareOutline"></ng-icon>
         <span matListItemTitle>{{ 'nav.productAvailability' | translate }}</span>
       </a>
       <mat-divider />
+      
       <a
         mat-list-item
         routerLinkActive="active-link"
         routerLink="/menu/costs"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <i matListItemIcon class="fa-duotone fa-badge-dollar"></i>
+        <ng-icon matListItemIcon name="saxDollarSquareOutline"></ng-icon>
         <span matListItemTitle>{{ 'nav.costs' | translate }}</span>
       </a>
       <a
@@ -143,19 +146,20 @@
         routerLink="/pricing"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <i matListItemIcon class="fa-duotone fa-calculator"></i>
+        <ng-icon matListItemIcon name="saxCalculatorOutline"></ng-icon>
         <span matListItemTitle>{{
           'nav.pricing' | translate: { value: shop.businessCategoryMenuTitle() }
         }}</span>
       </a>
       <mat-divider />
+      
       <a
         mat-list-item
         routerLinkActive="active-link"
         routerLink="/club/members"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <i matListItemIcon class="fa-duotone fa-user-group-crown"></i>
+        <ng-icon matListItemIcon name="saxPeopleOutline"></ng-icon>
         <span matListItemTitle>{{ 'nav.clubMembers' | translate }}</span>
       </a>
       <a
@@ -164,7 +168,7 @@
         routerLink="/coupons"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <i matListItemIcon class="fa-duotone fa-tags"></i>
+        <ng-icon matListItemIcon name="saxTagOutline"></ng-icon>
         <span matListItemTitle>{{ 'nav.discountCoupons' | translate }}</span>
       </a>
       <a
@@ -173,17 +177,18 @@
         routerLink="/missions"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <i matListItemIcon class="fa-duotone fa-bullseye-arrow"></i>
+        <ng-icon matListItemIcon name="saxAwardOutline"></ng-icon>
         <span matListItemTitle>{{ 'nav.missions' | translate }}</span>
       </a>
       <mat-divider />
+      
       <a
         mat-list-item
         routerLinkActive="active-link"
         routerLink="/reports/orders-dashboard"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <i matListItemIcon class="fa-duotone fa-chart-simple"></i>
+        <ng-icon matListItemIcon name="saxChart1Outline"></ng-icon>
         <span matListItemTitle>{{ 'nav.dashboard' | translate }}</span>
       </a>
       <a
@@ -192,7 +197,7 @@
         routerLink="/reports/analytics-dashboard"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <i matListItemIcon class="fa-duotone fa-chart-mixed"></i>
+        <ng-icon matListItemIcon name="saxChart2Outline"></ng-icon>
         <span matListItemTitle>{{ 'nav.analytics' | translate }}</span>
       </a>
       <a
@@ -201,7 +206,7 @@
         routerLink="/sms"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <i matListItemIcon class="fa-duotone fa-message-smile"></i>
+        <ng-icon matListItemIcon name="saxSmsOutline"></ng-icon>
         <span matListItemTitle>{{ 'nav.sms' | translate }}</span>
       </a>
       <a
@@ -211,7 +216,7 @@
         routerLink="/ai-export"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <i matListItemIcon class="fa-duotone fa-hexagon-nodes"></i>
+        <ng-icon matListItemIcon name="saxCpuOutline"></ng-icon>
         <span matListItemTitle>{{ 'nav.aiExport' | translate }}</span>
       </a>
       <a
@@ -220,141 +225,178 @@
         routerLink="/home-sections"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <i matListItemIcon class="fa-duotone fa-layer-group"></i>
+        <ng-icon matListItemIcon name="saxHierarchyOutline"></ng-icon>
         <span matListItemTitle>{{ 'nav.homeSections' | translate }}</span>
       </a>
       <mat-divider />
-      <a mat-list-item routerLinkActive="active-link" (click)="toggleSection('settings')">
-        <span matListItemTitle>
-          <i class="fa-duotone fa-caret-{{ collapse()['settings'] ? 'left' : 'down' }}"></i>
-          {{ 'nav.settings' | translate }}
-        </span>
+      
+      <!-- Settings collapsible menu -->
+      <a mat-list-item (click)="toggleSection('settings')">
+        <ng-icon matListItemIcon name="saxSetting2Outline"></ng-icon>
+        <span matListItemTitle>{{ 'nav.settings' | translate }}</span>
+        <ng-icon [name]="collapse()['settings'] ? 'saxArrowLeft2Outline' : 'saxArrowDown2Outline'" style="margin-inline-start: auto; font-size: 0.875rem; color: var(--text-muted);"></ng-icon>
       </a>
+      
       @if (!collapse()['settings']) {
         <a
           mat-list-item
+          style="padding-inline-start: 1.5rem;"
           routerLinkActive="active-link"
           routerLink="/settings/shop"
           (click)="isSmallScreen() && isDrawerClose.set(true)"
         >
-          <i matListItemIcon class="fa-duotone fa-store"></i>
+          <ng-icon matListItemIcon name="saxShopOutline"></ng-icon>
           <span matListItemTitle>{{ 'settings.shop' | translate }}</span>
         </a>
         <a
           mat-list-item
+          style="padding-inline-start: 1.5rem;"
           routerLinkActive="active-link"
           routerLink="/settings/app-config"
           (click)="isSmallScreen() && isDrawerClose.set(true)"
         >
-          <i matListItemIcon class="fa-duotone fa-palette"></i>
+          <ng-icon matListItemIcon name="saxColorfilterOutline"></ng-icon>
           <span matListItemTitle>{{ 'settings.appConfig' | translate }}</span>
         </a>
         <a
           mat-list-item
+          style="padding-inline-start: 1.5rem;"
           routerLinkActive="active-link"
           routerLink="/settings/order-config"
           (click)="isSmallScreen() && isDrawerClose.set(true)"
         >
-          <i matListItemIcon class="fa-duotone fa-receipt"></i>
+          <ng-icon matListItemIcon name="saxReceiptItemOutline"></ng-icon>
           <span matListItemTitle>{{ 'settings.orderConfig' | translate }}</span>
         </a>
         <a
           mat-list-item
           class="nav-ai"
+          style="padding-inline-start: 1.5rem;"
           routerLinkActive="active-link"
           routerLink="/settings/ai-chatbot"
           (click)="isSmallScreen() && isDrawerClose.set(true)"
         >
-          <i matListItemIcon class="fa-duotone fa-robot"></i>
+          <ng-icon matListItemIcon name="saxCpuOutline"></ng-icon>
           <span matListItemTitle>{{ 'settings.aiChatbot' | translate }}</span>
         </a>
         <a
           mat-list-item
+          style="padding-inline-start: 1.5rem;"
           routerLinkActive="active-link"
           routerLink="/settings/welcome-message"
           (click)="isSmallScreen() && isDrawerClose.set(true)"
         >
-          <i matListItemIcon class="fa-duotone fa-comment-dots"></i>
+          <ng-icon matListItemIcon name="saxSmsOutline"></ng-icon>
           <span matListItemTitle>{{ 'settings.welcomeMessage' | translate }}</span>
         </a>
         <a
           mat-list-item
+          style="padding-inline-start: 1.5rem;"
           routerLinkActive="active-link"
           routerLink="/settings/sms"
           (click)="isSmallScreen() && isDrawerClose.set(true)"
         >
-          <i matListItemIcon class="fa-duotone fa-message-smile"></i>
+          <ng-icon matListItemIcon name="saxSmsOutline"></ng-icon>
           <span matListItemTitle>{{ 'orderMessagesSetting.title' | translate }}</span>
         </a>
-
         <a
           mat-list-item
+          style="padding-inline-start: 1.5rem;"
           routerLinkActive="active-link"
           routerLink="/settings/delivery-area"
           (click)="isSmallScreen() && isDrawerClose.set(true)"
         >
-          <i matListItemIcon class="fa-duotone fa-map-location-dot"></i>
+          <ng-icon matListItemIcon name="saxMapOutline"></ng-icon>
           <span matListItemTitle>{{ 'settings.deliveryAreas' | translate }}</span>
         </a>
         <a
           mat-list-item
+          style="padding-inline-start: 1.5rem;"
           routerLinkActive="active-link"
           routerLink="/settings/users"
           (click)="isSmallScreen() && isDrawerClose.set(true)"
         >
-          <i matListItemIcon class="fa-duotone fa-users"></i>
+          <ng-icon matListItemIcon name="saxUserSquareOutline"></ng-icon>
           <span matListItemTitle>{{ 'settings.users' | translate }}</span>
         </a>
-
-        <a mat-list-item routerLinkActive="active-link" (click)="isSmallScreen() && isDrawerClose.set(true)">
-          <i matListItemIcon class="fa-duotone fa-key"></i>
+        <a 
+          mat-list-item 
+          style="padding-inline-start: 1.5rem;"
+          (click)="isSmallScreen() && isDrawerClose.set(true)"
+        >
+          <ng-icon matListItemIcon name="saxKeyOutline"></ng-icon>
           <span matListItemTitle>{{ 'settings.changePassword' | translate }}</span>
         </a>
-
         <a
           mat-list-item
+          style="padding-inline-start: 1.5rem;"
           routerLinkActive="active-link"
           routerLink="/settings/third-parties"
           (click)="isSmallScreen() && isDrawerClose.set(true)"
         >
-          <i matListItemIcon class="fa-duotone fa-puzzle-piece"></i>
+          <ng-icon matListItemIcon name="saxComponentOutline"></ng-icon>
           <span matListItemTitle>{{ 'settings.thirdParties' | translate }}</span>
         </a>
         <a
           mat-list-item
+          style="padding-inline-start: 1.5rem;"
           routerLinkActive="active-link"
           routerLink="/settings/web-scripts"
           (click)="isSmallScreen() && isDrawerClose.set(true)"
         >
-          <i matListItemIcon class="fa-duotone fa-code"></i>
+          <ng-icon matListItemIcon name="saxCodeOutline"></ng-icon>
           <span matListItemTitle>{{ 'settings.webScripts' | translate }}</span>
         </a>
       }
     </mat-nav-list>
-    <!-- @if (auth.user) {
-      <nav fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="32px">
-        <a mat-icon-button routerLink="/leads" matTooltip="مدیریت آیتم‌ها" matTooltipPosition="after">
-          <i class="fa-duotone fa-list"></i>
-        </a>
-        <a mat-icon-button routerLink="/orders" matTooltip="سفارشات" matTooltipPosition="after">
-          <i class="fa-duotone fa-receipt"></i>
-        </a>
-        <a mat-icon-button routerLink="/reports" matTooltip="کزارشات" matTooltipPosition="after">
-          <i class="fa-duotone fa-chart-simple"></i>
-        </a>
-        <span fxFlex></span>
-        <button mat-icon-button [mat-menu-trigger-for]="settingsMenu">
-          <i class="fa-duotone fa-gear"></i>
-        </button>
-        <mat-menu #settingsMenu="matMenu">
-          <button mat-menu-item routerLink="/settings/interaction-types">مدیریت وضعیت لیدها</button>
-          <button mat-menu-item routerLink="/settings/products">مدیریت محصولات</button>
-          <button mat-menu-item routerLink="/settings/users">مدیریت کابران</button>
-        </mat-menu>
-      </nav>
-    } -->
+
+    <!-- Shop Profile Footer (fixed at bottom of sidenav, outline-free) -->
+    <div
+      [matMenuTriggerFor]="userMenu"
+      style="margin-top: auto; padding: 1.25rem 1rem; border-top: 1px solid var(--border-color); display: flex; align-items: center; gap: 0.75rem; cursor: pointer; background-color: #ffffff; transition: background-color 0.2s; box-sizing: border-box; width: 100%;"
+      onmouseover="this.style.backgroundColor='var(--nav-item-hover)'"
+      onmouseout="this.style.backgroundColor='#ffffff'"
+    >
+      <div class="shop-avatar" style="width: 2.25rem; height: 2.25rem; border-radius: 0.5rem; background-color: #f5f5f5; color: var(--text-primary); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 0.9rem; flex-shrink: 0; overflow: hidden; border: 1px solid var(--border-color);">
+        @if (shop.data()?.logoImage) {
+          <img imageLoader [imageFile]="shop.data()?.logoImage" placeholderImageSize="sm" style="width: 100%; height: 100%; object-fit: cover;" />
+        } @else {
+          <ng-icon name="saxShopOutline" style="font-size: 1.15rem; color: var(--text-primary);"></ng-icon>
+        }
+      </div>
+      <div style="display: flex; flex-direction: column; overflow: hidden; flex: 1; text-align: right;">
+        <span style="font-weight: 500; font-size: 0.8125rem; color: var(--text-primary); white-space: nowrap; text-overflow: ellipsis; overflow: hidden; margin-bottom: 2px;">{{ shop.data()?.title }}</span>
+        <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 400; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
+          {{ auth.userSignal()?.firstName }} {{ auth.userSignal()?.lastName }}
+        </span>
+      </div>
+      <ng-icon name="saxArrowLeft2Outline" style="font-size: 0.8125rem; color: var(--text-muted); margin-inline-start: auto;"></ng-icon>
+    </div>
+
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item (click)="logout()" style="font-family: 'Estedad';">
+        <ng-icon name="saxLogoutOutline" style="margin-inline-end: 8px; vertical-align: middle; font-size: 1.1rem;"></ng-icon>
+        {{ 'shell.logout' | translate }}
+      </button>
+    </mat-menu>
   </mat-sidenav>
-  <mat-sidenav-content>
-    <router-outlet />
+
+  <!-- Workspace area -->
+  <mat-sidenav-content style="padding: 2.5rem; box-sizing: border-box; display: flex; flex-direction: column;">
+    <div class="workspace-wrapper" style="width: 100%; display: flex; flex-direction: column; flex: 1; align-items: center; justify-content: flex-start;">
+      <!-- Mobile Hamburger Toggle Header -->
+      @if (isSmallScreen()) {
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; background-color: var(--bg-primary); padding: 0.75rem 1rem; border-radius: 0.75rem; border: 1px solid var(--border-color); width: 100%; box-sizing: border-box;" [style.max-width]="isBigDataPage() ? '100%' : '75rem'">
+          <button class="btn-icon" (click)="isDrawerClose.set(!isDrawerClose())">
+            <ng-icon name="saxMenuOutline" size="20" style="color: var(--text-primary);"></ng-icon>
+          </button>
+          <span style="font-weight: 500; font-size: 0.875rem;">{{ shop.data()?.title }}</span>
+          <div style="width: 2.25rem;"></div> <!-- spacer -->
+        </div>
+      }
+      <div class="workspace-content" style="width: 100%; display: flex; flex-direction: column; flex: 1; box-sizing: border-box;" [style.max-width]="isBigDataPage() ? '100%' : '75rem'">
+        <router-outlet />
+      </div>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

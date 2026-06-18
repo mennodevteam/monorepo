@@ -1,6 +1,5 @@
 @use '../public/fonts/fontawesome/scss/fontawesome.scss';
 
-@use '../public/fonts/iransans/iransans.scss';
 @use '../public/fonts/fontawesome/scss/regular.scss';
 @use '../public/fonts/fontawesome/scss/brands.scss';
 @use '../public/fonts/fontawesome/scss/solid.scss';
@@ -19,58 +18,120 @@
   background-color: var(--mat-sys-error-container) !important;
 }
 
+@font-face {
+  font-family: 'Estedad';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('/fonts/estedad/estedad-arabic-300-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Estedad';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/estedad/estedad-arabic-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Estedad';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/estedad/estedad-arabic-500-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Estedad';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/estedad/estedad-arabic-700-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Estedad';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url('/fonts/estedad/estedad-arabic-900-normal.woff2') format('woff2');
+}
+
+:root {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #FFFFFF; /* Pure White Background */
+  --bg-card: #FFFFFF;
+  --text-primary: #171717;    /* neutral-900 */
+  --text-secondary: #525252;  /* neutral-600 */
+  --text-muted: #737373;      /* neutral-500 */
+  --text-inv: #FFFFFF;
+  --border-color: #E5E5E5;    /* zinc-200 */
+  --border-dark: #E4E4E7;     /* zinc-200 */
+  --nav-bg: rgba(255, 255, 255, 0.7);
+  --nav-item-bg: rgba(245, 245, 245, 0.5);
+  --nav-item-hover: rgba(245, 245, 245, 0.8);
+  --nav-item-color: #525252;
+  --nav-item-active-bg: #f5f5f5;
+  --nav-item-active-color: #171717;
+  --card-shadow: none;
+  --title-color: #0a0a0a;
+
+  // Overriding Angular Material variables globally to eliminate blue
+  --mat-sys-primary: #171717; // Stark Dark primary buttons
+  --mat-sys-on-primary: #ffffff;
+  --mat-sys-primary-container: #f5f5f5;
+  --mat-sys-on-primary-container: #171717;
+  --mat-sys-background: var(--bg-secondary);
+  --mat-sys-surface: var(--bg-card);
+  --mat-sys-surface-container: var(--bg-card);
+  --mat-sys-surface-container-lowest: var(--bg-primary);
+  --mat-sys-on-background: var(--text-primary);
+  --mat-sys-on-surface: var(--text-primary);
+  --mat-sys-on-surface-variant: var(--text-secondary);
+  --mat-sys-outline-variant: var(--border-color);
+  --mat-sys-outline: var(--border-dark);
+}
+
 html {
   @include mat.theme(
     (
       color: theme.$primary-palette,
-      typography: IRANSans,
+      typography: (
+        brand-family: 'Estedad',
+        plain-family: 'Estedad',
+      ),
       density: -2,
     )
   );
-
-  .dark-mode {
-    color-scheme: dark;
-  }
-}
-
-.secondary-theme {
-  @include mat.theme(
-    (
-      color: theme.$secondary-palette,
-      typography: IRANSans,
-      density: -2,
-    )
-  );
-}
-
-.tertiary-theme {
-  @include mat.theme(
-    (
-      color: theme.$tertiary-palette,
-      typography: IRANSans,
-      density: -2,
-    )
-  );
-}
-
-.warn-theme {
-  @include mat.theme(
-    (
-      color: mat.$red-palette,
-      typography: IRANSans,
-      density: -2,
-    )
-  );
+  direction: rtl;
 }
 
 body {
+  background-color: #ffffff !important;
+  color: var(--text-primary) !important;
+  font-family: 'Estedad', system-ui, -apple-system, sans-serif !important;
+  font-weight: 300;
+  line-height: 1.6;
   min-height: 100vh;
   margin: 0;
-  background-color: var(--mat-sys-background);
-  font-family: IRANSans, 'Helvetica Neue', sans-serif;
-  font-size: var(--mat-sys-body-medium-size);
-  line-height: var(--mat-sys-body-medium-line-height);
-  font-weight: var(--mat-sys-body-medium-weight);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+// Global Typography Enforcement
+body, html, button, input, select, textarea, .confirm-btn, .btn,
+.mat-mdc-button, .mat-mdc-card, .mat-mdc-table, .mat-typography,
+[matListItemTitle], [matListItemLine], .mat-mdc-tab-link, .mat-mdc-tab,
+.mat-mdc-dialog-title, .mat-mdc-dialog-content, .mat-mdc-form-field {
+  font-family: 'Estedad', system-ui, -apple-system, sans-serif !important;
+}
+
+// Global Link Colors Overrides (Eliminating Blue)
+a:not(.sidenav-link):not(.mat-mdc-list-item) {
+  color: #171717 !important;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    text-decoration: underline !important;
+  }
 }
 
 *[p-md] {
@@ -114,11 +175,29 @@ i.middle {
 }
 
 .content-toolbar {
-  position: sticky;
-  top: var(--mat-toolbar-standard-height, 56px);
-  z-index: 99;
-  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  position: relative !important;
+  background-color: transparent !important;
+  border-bottom: none !important;
+  height: auto !important;
+  min-height: 4rem !important;
+  padding-inline: 16px !important;
+  margin-block-end: 1.5rem !important;
+  box-shadow: none !important;
+  
+  h1, h2, h3, h4 {
+    font-size: 1.35rem !important;
+    font-weight: 600 !important;
+    color: #171717 !important;
+    margin: 0 !important;
+    font-family: 'Estedad', sans-serif !important;
+  }
 }
+
+// Align toolbar with centered content widths
+:has(main[w-xs]) .content-toolbar { max-width: 600px !important; margin-inline: auto !important; width: 100% !important; }
+:has(main[w-sm]) .content-toolbar { max-width: 960px !important; margin-inline: auto !important; width: 100% !important; }
+:has(main[w-md]) .content-toolbar { max-width: 1024px !important; margin-inline: auto !important; width: 100% !important; }
+:has(main[w-lg]) .content-toolbar { max-width: 1280px !important; margin-inline: auto !important; width: 100% !important; }
 
 .success-text {
   color: theme.$success-color;
@@ -139,118 +218,511 @@ i.middle {
   @include errorContainer();
 }
 
-//material override
+/* AI / ML features: subtle violet accent */
 :root {
-  /* AI / ML features: subtle violet accent (use .np-ai-* utilities; do not replace the whole theme) */
   --np-ai-accent: #6d28d9;
   --np-ai-accent-muted: #7c3aed;
-  --np-ai-outline: color-mix(in srgb, var(--np-ai-accent) 18%, var(--mat-sys-outline-variant));
-  --np-ai-surface-tint: color-mix(in srgb, var(--np-ai-accent) 5%, var(--mat-sys-surface-container-lowest));
-
-  @include mat.theme-overrides(
-    (
-      secondary: #ffb300,
-      on-secondary: #000000,
-      background: #f1f3f8,
-      /* ~6% smaller type scale than M3 default; keeps hierarchy, slightly denser UI */
-      body-large-size: 0.9375rem,
-      body-large-line-height: 1.375rem,
-      body-medium-size: 0.8125rem,
-      body-medium-line-height: 1.125rem,
-      body-small-size: 0.6875rem,
-      body-small-line-height: 1rem,
-      label-large-size: 0.8125rem,
-      label-large-line-height: 1.125rem,
-      label-medium-size: 0.6875rem,
-      label-medium-line-height: 1rem,
-      label-small-size: 0.625rem,
-      label-small-line-height: 0.9375rem,
-      title-large-size: 1.25rem,
-      title-large-line-height: 1.625rem,
-      title-medium-size: 0.9375rem,
-      title-medium-line-height: 1.375rem,
-      title-small-size: 0.8125rem,
-      title-small-line-height: 1.125rem,
-      headline-large-size: 1.875rem,
-      headline-large-line-height: 2.25rem,
-      headline-medium-size: 1.625rem,
-      headline-medium-line-height: 2rem,
-      headline-small-size: 1.375rem,
-      headline-small-line-height: 1.75rem,
-      display-large-size: 3.25rem,
-      display-large-line-height: 3.625rem,
-      display-medium-size: 2.625rem,
-      display-medium-line-height: 3rem,
-      display-small-size: 2.125rem,
-      display-small-line-height: 2.5rem,
-    )
-  );
-
-  .secondary-theme {
-    @include mat.theme-overrides(
-      (
-        primary: #ffb300,
-        on-primary: #000000,
-      )
-    );
-  }
-
-  @include mat.sidenav-overrides(
-    (
-      container-background-color: var(--mat-sys-background),
-    )
-  );
-
-  @include mat.toolbar-overrides(
-    (
-      container-background-color: var(--mat-sys-background),
-    )
-  );
-
-  @include mat.card-overrides(
-    (
-      outlined-outline-color: color-mix(in srgb, var(--mat-sys-outline-variant) 78%, transparent),
-      outlined-container-color: var(--mat-sys-surface-container-lowest),
-      outlined-container-shape: 14px,
-    )
-  );
-
-  @include mat.button-overrides(
-    (
-      filled-horizontal-padding: 18px,
-      outlined-horizontal-padding: 18px,
-      tonal-horizontal-padding: 18px,
-      protected-horizontal-padding: 18px,
-    )
-  );
-
-  @include mat.table-overrides(
-    (
-      row-item-outline-color: var(--mat-sys-outline-variant),
-      background-color: transparent,
-    )
-  );
-
-  @include mat.menu-overrides(
-    (
-      container-color: var(--mat-sys-surface-container-lowest),
-    )
-  );
-
-  @include mat.paginator-overrides(
-    (
-      container-background-color: transparent,
-    )
-  );
-
-  @include mat.divider-overrides(
-    (
-      color: var(--mat-sys-outline-variant),
-    )
-  );
+  --np-ai-outline: color-mix(in srgb, var(--np-ai-accent) 18%, var(--border-color));
+  --np-ai-surface-tint: color-mix(in srgb, var(--np-ai-accent) 5%, var(--bg-primary));
 }
 
-/* AI-focused screens: parent gets class; keep Material components, only a light violet atmosphere */
+// Global Angular Material Drawer Backgrounds Overrides (Pure White Layout)
+.mat-drawer-container, .mat-sidenav-container {
+  background-color: #ffffff !important;
+}
+
+.mat-drawer-content, .mat-sidenav-content {
+  background-color: #ffffff !important;
+}
+
+.mat-drawer, mat-sidenav {
+  background-color: #ffffff !important;
+  border-left: 1px solid var(--border-color) !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+// Global Button Overrides
+.btn {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-primary {
+  background-color: #171717;
+  color: #FFFFFF;
+}
+
+.btn-primary:hover, .btn-primary:active {
+  background-color: #262626;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: #f5f5f5;
+  color: #404040;
+}
+
+.btn-secondary:hover, .btn-secondary:active {
+  background-color: #e5e5e5;
+  color: #171717;
+}
+
+.btn-danger {
+  background-color: #ffe4e6;
+  color: #9f1239;
+}
+
+.btn-danger:hover, .btn-danger:active {
+  background-color: #fecdd3;
+  color: #881337;
+}
+
+.btn-icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.625rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: #f5f5f5;
+  color: #525252;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+  background: #e5e5e5;
+  color: #171717;
+}
+
+.btn-icon-danger {
+  background: #ffe4e6;
+  color: #e11d48;
+}
+
+.btn-icon-danger:hover {
+  background: #fecdd3;
+  color: #be123c;
+}
+
+// Map Material Buttons to Design System Button styles
+.mat-mdc-button, .mat-mdc-outlined-button, .mat-mdc-raised-button, .mat-mdc-unelevated-button {
+  border-radius: 0.75rem !important;
+  font-size: 0.8125rem !important;
+  font-weight: 500 !important;
+  min-height: 2.5rem !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+// Global Cards Overrides (White card with thin border, no shadow)
+.mat-mdc-card, .admin-card {
+  background: #FFFFFF !important;
+  border-radius: 1rem !important; /* 16px radius looks more premium than 24px */
+  border: 1px solid var(--border-color) !important;
+  padding: 0 !important; /* Card itself has 0 padding */
+  box-shadow: none !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important; /* Ensure contents respect rounded corners */
+
+  .mat-mdc-card-header {
+    padding: 1rem 1rem 0.5rem 1rem !important;
+    margin: 0 !important;
+  }
+
+  .mat-mdc-card-content {
+    padding: 1rem !important;
+    margin: 0 !important;
+    font-size: 0.8125rem !important;
+    
+    .mat-mdc-list-item-title, .mat-line, [matListItemTitle] {
+      font-size: 0.8125rem !important;
+      font-weight: 400 !important;
+    }
+    
+    .mat-mdc-list-item-line, [matListItemLine] {
+      font-size: 0.78rem !important;
+      color: var(--text-secondary) !important;
+      font-weight: 300 !important;
+    }
+
+    .mat-mdc-list-item-meta, [matListItemMeta] {
+      font-size: 0.8125rem !important;
+      font-weight: 500 !important;
+    }
+  }
+
+  .mat-mdc-card-actions {
+    padding: 0.5rem 1rem 1.25rem 1rem !important;
+    margin: 0 !important;
+  }
+
+  .mat-mdc-card-title, .mat-card-title {
+    font-size: 0.95rem !important;
+    font-weight: 500 !important; /* Page header is 600, card header is 500 */
+    color: #171717 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+
+    i[class*="fa-"], ng-icon {
+      font-size: 1.15rem !important;
+      line-height: 1 !important;
+      vertical-align: middle !important;
+    }
+  }
+}
+
+// Underline text buttons inside card actions and table cells
+.mat-mdc-card-actions button.mat-mdc-button,
+.mat-mdc-card-actions a.mat-mdc-button,
+td.mat-mdc-cell button.mat-mdc-button,
+td.mat-mdc-cell a.mat-mdc-button,
+.mat-mdc-table button.mat-mdc-button,
+.mat-mdc-table a.mat-mdc-button {
+  text-decoration: underline !important;
+  text-underline-offset: 4px;
+  
+  &:hover {
+    text-decoration: underline !important;
+  }
+}
+
+// Inner offsets to prevent double padding/spacing when elements coexist
+.mat-mdc-card:has(.mat-mdc-card-header) .mat-mdc-card-content {
+  padding-top: 0 !important;
+}
+
+.mat-mdc-card:has(.mat-mdc-card-content) .mat-mdc-card-actions {
+  padding-top: 0.5rem !important;
+}
+
+// Cards containing tables or custom wrappers
+.mat-mdc-card:has(table) .mat-mdc-card-content,
+.mat-mdc-card:has(.mat-mdc-table) .mat-mdc-card-content,
+.mat-mdc-card:has(.invoices-table-container) .mat-mdc-card-content {
+  padding: 0 !important;
+  
+  .invoices-table-container {
+    margin-top: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+  }
+
+  table, .mat-mdc-table {
+    width: 100% !important;
+  }
+}
+
+.bank-details-card {
+  background: #171717 !important;
+  color: #ffffff !important;
+  padding: 1.25rem !important;
+  border-radius: 0.75rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
+  position: relative !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid #262626 !important;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-chip {
+  width: 2rem;
+  height: 1.5rem;
+  background: linear-gradient(135deg, #cbd5e1, #64748b);
+  border-radius: 0.25rem;
+}
+
+.card-bank-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+.card-number-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-number {
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-family: monospace;
+  letter-spacing: 0.08em;
+  direction: ltr;
+}
+
+.card-holder-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 0.75rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.15);
+  padding-top: 0.75rem;
+}
+
+.card-holder-name {
+  font-weight: 600;
+  font-size: 0.8rem;
+  opacity: 0.95;
+}
+
+.card-fee-badge {
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.375rem;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+// Global Tables Overrides
+.mat-mdc-table, .invoices-table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  background-color: transparent !important;
+}
+
+.mat-mdc-header-row, tr:has(th) {
+  background-color: #fafafa !important;
+}
+
+th.mat-mdc-header-cell, th {
+  color: var(--text-secondary) !important;
+  font-weight: 600 !important;
+  font-size: 0.8125rem !important;
+  padding: 0.875rem 1rem !important;
+  border-bottom: 2px solid var(--border-color) !important;
+  text-align: right !important;
+}
+
+td.mat-mdc-cell, td {
+  padding: 0.875rem 1rem !important;
+  font-size: 0.8125rem !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  vertical-align: middle !important;
+  color: var(--text-primary) !important;
+}
+
+tr.mat-mdc-row:hover td, tr:hover td {
+  background-color: #fafafa !important;
+}
+
+tr.mat-mdc-row:last-child td, tr:last-child td {
+  border-bottom: none !important;
+}
+
+.invoices-table-container {
+  width: 100%;
+  overflow-x: auto;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  box-shadow: none;
+  margin-top: 1.5rem;
+}
+
+// Status Badges & Chips
+.status-badge {
+  font-size: 0.6875rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.status-badge-available, .badge-status.active {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.status-badge-unavailable, .badge-status.blocked {
+  background-color: #ffedd5;
+  color: #c2410c;
+}
+
+.status-badge-inactive {
+  background-color: #f5f5f5;
+  color: #737373;
+}
+
+.status-selector-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.status-pills {
+  display: flex;
+  background-color: #f5f5f5;
+  border-radius: 0.75rem;
+  padding: 0.25rem;
+  gap: 0.25rem;
+  width: 100%;
+  box-sizing: border-box;
+  direction: rtl;
+}
+
+.status-pill-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #737373;
+  background: transparent;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.status-pill-btn:hover {
+  color: #171717;
+}
+
+.status-pill-btn.active[data-status="available"] {
+  background-color: #dcfce7;
+  color: #15803d;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.status-pill-btn.active[data-status="unavailable"] {
+  background-color: #ffedd5;
+  color: #c2410c;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.status-pill-btn.active[data-status="inactive"] {
+  background-color: #e5e5e5;
+  color: #404040;
+  border: 1px solid #d4d4d4;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.status-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+}
+
+.dot-available { background-color: #22c55e; }
+.dot-unavailable { background-color: #f97316; }
+.dot-inactive { background-color: #a3a3a3; }
+
+// Custom Dialog Modals styling
+.custom-confirm-dialog {
+  border: none;
+  padding: 0;
+  background: transparent;
+  max-width: 24rem;
+  width: calc(100% - 2.5rem);
+  border-radius: 1.25rem;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+  margin: auto;
+  outline: none;
+}
+
+.custom-confirm-dialog::backdrop {
+  background-color: rgba(24, 24, 27, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.confirm-dialog-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-dark);
+  border-radius: 1.25rem;
+  padding: 1.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.25rem;
+  direction: rtl;
+}
+
+.confirm-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.75rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.confirm-btn-secondary {
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-dark);
+}
+
+.confirm-btn-danger {
+  background-color: #e11d48;
+  color: #ffffff;
+}
+
+.confirm-btn-danger:hover {
+  background-color: #be123c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.2);
+}
+
+// Micro-animations
+button, a {
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  opacity: 0;
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.1s;
+}
+
 .np-ai-page mat-card.mat-mdc-card-outlined {
   border-color: var(--np-ai-outline);
   background: var(--np-ai-surface-tint);
@@ -278,12 +750,73 @@ i.middle {
   }
 }
 
-.mdc-icon-button {
-  i {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.1rem;
+.mdc-icon-button, .mat-mdc-icon-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+
+  i, ng-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: static !important;
+    transform: none !important;
+    font-size: 1.15rem !important;
+    line-height: 1 !important;
   }
 }
+
+// Global FontAwesome Icons Override to load Thin/Light weights
+.fa-regular,
+.fa-solid,
+.fa-light,
+.fa-thin,
+i[class*="fa-"] {
+  font-family: 'Font Awesome 6 Pro', 'Font Awesome 6 Free', sans-serif !important;
+  font-weight: 300 !important; /* Forces FontAwesome to render the thin, light outline style */
+}
+
+// Style Angular Material Form Fields with smooth light gray background
+.mat-mdc-text-field-wrapper {
+  background-color: #f5f5f5 !important;
+  border-radius: 8px !important;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.mat-mdc-form-field.mat-focused .mat-mdc-text-field-wrapper {
+  background-color: #ffffff !important;
+}
+
+// Ensure the inner native controls transition nicely too
+.mat-mdc-form-field-input-control {
+  transition: background-color 0.2s ease !important;
+}
+
+// Styling native inputs/textareas to also have smooth light gray, turning white on focus
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="search"],
+textarea,
+select {
+  &:not(.mat-mdc-form-field-input-control) {
+    background-color: #f5f5f5 !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    padding: 0.625rem 0.875rem !important;
+    font-size: 0.875rem !important;
+    color: var(--text-primary) !important;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+    outline: none !important;
+
+    &:focus {
+      background-color: #ffffff !important;
+      border-color: #171717 !important;
+      box-shadow: 0 0 0 2px rgba(23, 23, 23, 0.05) !important;
+    }
+  }
+}
+

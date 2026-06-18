@@ -1,106 +1,106 @@
 @if (thirdPartyForm) {
-  <main p-md w-md>
-    <mat-toolbar>
-      <button mat-icon-button goBack>
+  <main p-md w-md fxLayout="column" fxLayoutGap="32px">
+    <mat-toolbar style="padding: 0; background: transparent;">
+      <button mat-icon-button goBack type="button">
         <i class="fa-regular fa-arrow-right"></i>
       </button>
-      <h1>{{ 'thirdParties.bale.title' | translate }}</h1>
+      <h1 style="margin: 0; font-size: 1.35rem; font-weight: 600;">{{ 'thirdParties.bale.title' | translate }}</h1>
     </mat-toolbar>
 
-    <div class="static-col">
-      <mat-card class="form-theme" appearance="outlined">
-        <mat-card-header>
-          <img mat-card-avatar src="icons/bale-logo.png" alt="" />
-          <mat-card-title>{{ 'thirdParties.bale.title' | translate }}</mat-card-title>
-          <mat-card-subtitle>{{ 'thirdParties.bale.description' | translate }}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-divider></mat-divider>
-        <mat-card-content>
-          <section class="welcome-image-block">
-            <h3 class="welcome-image-title">{{ 'thirdParties.bale.welcomeImage' | translate }}</h3>
-            <p class="welcome-image-desc">{{ 'thirdParties.bale.welcomeImageHint' | translate }}</p>
-            @if (thirdPartyForm.value.imageUrl) {
-              <img class="welcome-banner-preview" [src]="thirdPartyForm.value.imageUrl" alt="" />
-            } @else {
-              <div class="welcome-banner-empty">
-                {{ 'thirdParties.bale.welcomeImageEmpty' | translate }}
-              </div>
-            }
-            @if (!thirdPartyForm.disabled) {
-              <div class="welcome-image-actions">
-                <button mat-stroked-button type="button" (click)="uploadWelcomeImage()">
-                  <i class="fa-regular fa-upload"></i>
-                  {{ 'thirdParties.bale.welcomeImageUpload' | translate }}
-                </button>
-                @if (thirdPartyForm.value.imageUrl) {
-                  <button mat-button type="button" color="warn" (click)="clearWelcomeImage()">
-                    {{ 'thirdParties.bale.welcomeImageRemove' | translate }}
-                  </button>
-                }
-              </div>
-            }
-          </section>
+    <!-- Configuration Form Section -->
+    <div fxLayout="column" fxLayoutGap="12px">
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+        <img src="icons/bale-logo.png" style="width: 32px; height: 32px; border-radius: 4px;" alt="" />
+        <div fxLayout="column">
+          <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">{{ 'thirdParties.bale.title' | translate }}</h3>
+          <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'thirdParties.bale.description' | translate }}</p>
+        </div>
+      </div>
 
-          <p>{{ 'thirdParties.bale.formDescription' | translate }}</p>
-          <form [formGroup]="thirdPartyForm">
-            <mat-form-field appearance="fill">
-              <mat-label>{{ 'thirdParties.bale.token' | translate }}</mat-label>
-              <input matInput formControlName="token" class="ltr eng" />
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-              <mat-label>{{ 'thirdParties.bale.startMessage' | translate }}</mat-label>
-              <textarea matInput formControlName="startMessage" rows="4"></textarea>
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-              <mat-label>{{ 'thirdParties.bale.buttonText' | translate }}</mat-label>
-              <input matInput formControlName="buttonText" />
-              <mat-hint>{{ 'thirdParties.bale.buttonTextHint' | translate }}</mat-hint>
-            </mat-form-field>
-          </form>
-        </mat-card-content>
-        <mat-card-actions>
-          @if (thirdPartyForm.disabled) {
-            <button mat-stroked-button color="primary" (click)="thirdPartyForm.enable()">
-              {{ 'app.edit' | translate }}
+      <!-- Welcome Image Subsection -->
+      <div fxLayout="column" fxLayoutGap="12px" style="margin-top: 12px;">
+        <h4 style="font-size: 0.95rem; font-weight: 500; margin: 0;">{{ 'thirdParties.bale.welcomeImage' | translate }}</h4>
+        <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'thirdParties.bale.welcomeImageHint' | translate }}</p>
+        @if (thirdPartyForm.value.imageUrl) {
+          <img [src]="thirdPartyForm.value.imageUrl" style="max-height: 200px; max-width: 100%; border-radius: 8px; object-fit: contain; align-self: start;" alt="" />
+        } @else {
+          <div style="background: var(--bg-card, #fafafa); border: 1px dashed var(--border-color, #ccc); border-radius: 8px; padding: 24px; text-align: center; font-size: 0.8rem; color: var(--text-muted);">
+            {{ 'thirdParties.bale.welcomeImageEmpty' | translate }}
+          </div>
+        }
+        @if (!thirdPartyForm.disabled) {
+          <div fxLayout="row" fxLayoutGap="8px" style="margin-top: 4px;">
+            <button mat-stroked-button type="button" (click)="uploadWelcomeImage()">
+              <i class="fa-regular fa-upload"></i>
+              &nbsp;{{ 'thirdParties.bale.welcomeImageUpload' | translate }}
             </button>
-          }
-          @if (!thirdPartyForm.disabled) {
-            <button mat-flat-button color="accent" (click)="save()">
-              {{ 'app.save' | translate }}
-            </button>
-            <button mat-button (click)="initForm()">
-              {{ 'app.cancel' | translate }}
-            </button>
-          }
-        </mat-card-actions>
-      </mat-card>
+            @if (thirdPartyForm.value.imageUrl) {
+              <button mat-button type="button" color="warn" (click)="clearWelcomeImage()">
+                {{ 'thirdParties.bale.welcomeImageRemove' | translate }}
+              </button>
+            }
+          </div>
+        }
+      </div>
+
+      <p style="font-size: 0.78rem; color: var(--text-muted); margin: 12px 0 0 0;">{{ 'thirdParties.bale.formDescription' | translate }}</p>
+      
+      <form [formGroup]="thirdPartyForm" fxLayout="column" fxLayoutGap="12px" style="margin-top: 8px;">
+        <mat-form-field>
+          <mat-label>{{ 'thirdParties.bale.token' | translate }}</mat-label>
+          <input matInput formControlName="token" class="ltr eng" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ 'thirdParties.bale.startMessage' | translate }}</mat-label>
+          <textarea matInput formControlName="startMessage" rows="4"></textarea>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ 'thirdParties.bale.buttonText' | translate }}</mat-label>
+          <input matInput formControlName="buttonText" />
+          <mat-hint>{{ 'thirdParties.bale.buttonTextHint' | translate }}</mat-hint>
+        </mat-form-field>
+      </form>
+
+      <div fxLayout="row" fxLayoutGap="8px" style="margin-top: 12px;">
+        @if (thirdPartyForm.disabled) {
+          <button mat-stroked-button color="primary" (click)="thirdPartyForm.enable()" type="button">
+            {{ 'app.edit' | translate }}
+          </button>
+        }
+        @if (!thirdPartyForm.disabled) {
+          <button mat-flat-button color="accent" (click)="save()" type="button">
+            {{ 'app.save' | translate }}
+          </button>
+          <button mat-button (click)="initForm()" type="button">
+            {{ 'app.cancel' | translate }}
+          </button>
+        }
+      </div>
     </div>
 
-    <div class="flex-col">
-      <mat-card appearance="outlined">
-        <mat-card-content>
-          @if (!thirdParty) {
-            <app-empty-state
-              icon="fa-triangle-exclamation"
-              text="{{ 'thirdParties.notConnectedDescription' | translate }}"
-            />
-          }
+    <!-- Info Section -->
+    <div fxLayout="column" fxLayoutGap="12px">
+      <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">{{ 'app.help' | translate }}</h3>
+      
+      @if (!thirdParty) {
+        <app-empty-state
+          icon="fa-triangle-exclamation"
+          text="{{ 'thirdParties.notConnectedDescription' | translate }}"
+        />
+      }
 
-          @if (thirdParty) {
-            <mat-nav-list>
-              <a mat-list-item target="_blank" href="https://developers.bale.ai/">
-                <span matListItemTitle>{{ 'thirdParties.bale.docs' | translate }}</span>
-                <span matListItemLine>{{ 'thirdParties.bale.docsDescription' | translate }}</span>
-              </a>
-              <mat-divider></mat-divider>
-              <a mat-list-item target="_blank" href="https://bale.ai/">
-                <span matListItemTitle>{{ 'thirdParties.bale.site' | translate }}</span>
-                <span matListItemLine>{{ 'thirdParties.bale.siteDescription' | translate }}</span>
-              </a>
-            </mat-nav-list>
-          }
-        </mat-card-content>
-      </mat-card>
+      @if (thirdParty) {
+        <mat-nav-list style="padding: 0;">
+          <a mat-list-item target="_blank" href="https://developers.bale.ai/" style="height: auto; padding: 8px 0;">
+            <span matListItemTitle>{{ 'thirdParties.bale.docs' | translate }}</span>
+            <span matListItemLine>{{ 'thirdParties.bale.docsDescription' | translate }}</span>
+          </a>
+          <a mat-list-item target="_blank" href="https://bale.ai/" style="height: auto; padding: 8px 0;">
+            <span matListItemTitle>{{ 'thirdParties.bale.site' | translate }}</span>
+            <span matListItemLine>{{ 'thirdParties.bale.siteDescription' | translate }}</span>
+          </a>
+        </mat-nav-list>
+      }
     </div>
   </main>
 }

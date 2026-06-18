@@ -9,31 +9,29 @@
 </mat-toolbar>
 
 <form [formGroup]="form">
-  <main p-md w-md fxLayout="column" fxLayoutGap="16px">
+  <main p-md w-md fxLayout="column" fxLayoutGap="32px">
     <!-- Theme Section -->
-    <mat-card appearance="outlined">
-      <mat-card-content>
-        <div fxLayout="column" fxLayoutGap="12px">
-          <h3>{{ 'appConfig.themeSection' | translate }}</h3>
-          <p>
-            {{ 'appConfig.themeSectionDescription' | translate }}
-          </p>
-          <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
-            <input formControlName="themeHex" type="color" style="border: none; width: 48px; height: 48px; cursor: pointer; border-radius: 4px;" />
-            <span>{{ 'appConfig.theme' | translate }}</span>
-          </div>
-          
-          <h5 style="margin-top: 16px; margin-bottom: 8px;">{{ 'appConfig.themeMode' | translate }}</h5>
-          <mat-radio-group formControlName="themeMode" fxLayout="column" fxLayoutGap="8px">
-            <mat-radio-button [value]="ThemeMode.Dark">
-              {{ 'appConfig.themeModeDark' | translate }}
-            </mat-radio-button>
-            <mat-radio-button [value]="ThemeMode.Light">
-              {{ 'appConfig.themeModeLight' | translate }}
-            </mat-radio-button>
-          </mat-radio-group>
-        </div>
-      </mat-card-content>
-    </mat-card>
+    <div fxLayout="column" fxLayoutGap="12px">
+      <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
+        {{ 'appConfig.themeSection' | translate }}
+      </h3>
+      <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">
+        {{ 'appConfig.themeSectionDescription' | translate }}
+      </p>
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+        <input formControlName="themeHex" type="color" style="border: none; width: 48px; height: 48px; cursor: pointer; border-radius: 4px;" />
+        <span>{{ 'appConfig.theme' | translate }}</span>
+      </div>
+      
+      <h5 style="margin-top: 16px; margin-bottom: 8px;">{{ 'appConfig.themeMode' | translate }}</h5>
+      <mat-radio-group formControlName="themeMode" fxLayout="column" fxLayoutGap="8px">
+        <mat-radio-button [value]="ThemeMode.Dark">
+          {{ 'appConfig.themeModeDark' | translate }}
+        </mat-radio-button>
+        <mat-radio-button [value]="ThemeMode.Light">
+          {{ 'appConfig.themeModeLight' | translate }}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
   </main>
 </form>

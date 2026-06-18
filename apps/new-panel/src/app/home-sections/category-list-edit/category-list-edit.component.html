@@ -18,9 +18,10 @@
     </button>
   </mat-toolbar>
 
-  <main p-md w-md fxLayout="column" fxLayoutGap="24px">
-    <mat-card appearance="outlined">
-      <mat-card-content fxLayout="column" fxLayoutGap="24px">
+  <main p-md w-md fxLayout="column" fxLayoutGap="32px">
+    <!-- Configuration Section -->
+    <div fxLayout="column" fxLayoutGap="12px">
+      <div fxLayout="column" fxLayoutGap="12px">
         <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
           <mat-label>{{ 'app.title' | translate }}</mat-label>
           <input matInput formControlName="title" />
@@ -58,18 +59,21 @@
           </mat-form-field>
         }
 
-        <mat-checkbox formControlName="showAll">
-          {{ 'homeSections.showMore' | translate }}
-        </mat-checkbox>
-      </mat-card-content>
-    </mat-card>
+        <div style="margin: 4px 0 12px 0;">
+          <mat-checkbox formControlName="showAll">
+            {{ 'homeSections.showMore' | translate }}
+          </mat-checkbox>
+        </div>
+      </div>
+    </div>
 
-    <mat-card appearance="outlined">
-      <mat-card-header>
-        <mat-card-title>{{ 'homeSections.categories' | translate }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content fxLayout="column" fxLayoutGap="24px">
-        <br />
+    <!-- Categories Section -->
+    <div fxLayout="column" fxLayoutGap="12px">
+      <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
+        {{ 'homeSections.categories' | translate }}
+      </h3>
+      
+      <div fxLayout="column" fxLayoutGap="12px">
         <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
           <mat-label>{{ 'homeSections.selectCategories' | translate }}</mat-label>
           <input
@@ -93,13 +97,13 @@
         </mat-form-field>
 
         @if (form.controls.categoryIds.value.length > 0) {
-          <mat-list cdkDropList (cdkDropListDropped)="moveCategory($event)" class="category-list">
+          <mat-list cdkDropList (cdkDropListDropped)="moveCategory($event)" class="category-list" style="padding: 0;">
             @for (categoryId of form.controls.categoryIds.value; track categoryId; let i = $index) {
               @if (getCategoryById(categoryId)) {
-                <mat-list-item cdkDrag>
+                <mat-list-item cdkDrag style="height: 38px;">
                   <i matListItemIcon class="fa-solid fa-grip-vertical" cdkDragHandle></i>
                   <span matListItemTitle>{{ getCategoryById(categoryId)?.title }}</span>
-                  <button mat-icon-button matListItemMeta (click)="removeCategory(categoryId)">
+                  <button mat-icon-button type="button" matListItemMeta (click)="removeCategory(categoryId)">
                     <i class="fa-regular fa-trash-alt"></i>
                   </button>
                 </mat-list-item>
@@ -109,8 +113,7 @@
         } @else {
           <app-empty-state icon="layer-group" [text]="'homeSections.noCategoriesSelected' | translate" />
         }
-      </mat-card-content>
-    </mat-card>
+      </div>
+    </div>
   </main>
 </form>
-

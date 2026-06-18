@@ -5,14 +5,14 @@
 </mat-toolbar>
 @let shop = shopService.data();
 @if (shop) {
-  <main p-md w-lg fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="24px">
-    <div fxLayout="column" fxLayoutGap="24px" fxFlex>
+  <main p-md w-lg fxLayout="column" fxLayoutGap="24px">
+    <div fxLayout="column" fxLayoutGap="24px">
       <app-shop-info-card></app-shop-info-card>
       @if (auth.hasAccess(UserAction.Reports)) {
         <app-order-total />
       }
     </div>
-    <div fxLayout="column" fxLayoutGap="24px" fxFlex>
+    <div fxLayout="column" fxLayoutGap="24px">
       <app-plan-card></app-plan-card>
       <app-wallet-card></app-wallet-card>
       <app-ai-intelligence-card></app-ai-intelligence-card>

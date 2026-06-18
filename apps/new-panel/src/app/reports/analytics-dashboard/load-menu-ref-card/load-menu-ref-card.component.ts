@@ -10,7 +10,7 @@ import { Chart, ChartConfiguration } from 'chart.js';
 import { ShopService } from '../../../shop/shop.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatMenuModule } from '@angular/material/menu';
-Chart.defaults.font.family = 'IRANSans';
+Chart.defaults.font.family = 'Estedad';
 
 @Component({
   selector: 'app-load-menu-ref-card',

@@ -1,85 +1,81 @@
 @if (gatewayForm) {
-  <main class="content-wrapper form-page-layout">
-    <mat-toolbar>
-      <button mat-icon-button goBack>
+  <main p-md w-md fxLayout="column" fxLayoutGap="32px">
+    <mat-toolbar style="padding: 0; background: transparent;">
+      <button mat-icon-button goBack type="button">
         <i class="fa-regular fa-arrow-right"></i>
       </button>
-      <h1>{{ 'thirdParties.sizpay.title' | translate }}</h1>
+      <h1 style="margin: 0; font-size: 1.35rem; font-weight: 600;">{{ 'thirdParties.sizpay.title' | translate }}</h1>
     </mat-toolbar>
-    <div class="static-col">
-      <mat-card class="form-theme">
-        <mat-card-header>
-          <img src="assets/images/sizpay.png" mat-card-avatar />
-          <mat-card-title>{{ 'thirdParties.sizpay.title' | translate }}</mat-card-title>
-          <mat-card-subtitle>{{ 'thirdParties.sizpay.description' | translate }}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-divider></mat-divider>
-        <mat-card-content>
-          <p>
-            {{ 'thirdParties.sizpay.formDescription' | translate }}
-          </p>
-          <form [formGroup]="gatewayForm">
-            <mat-form-field appearance="fill">
-              <mat-label>{{ 'thirdParties.sizpay.merchantId' | translate }}</mat-label>
-              <input matInput formControlName="merchantId" class="ltr eng" />
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-              <mat-label>{{ 'thirdParties.sizpay.terminalId' | translate }}</mat-label>
-              <input matInput formControlName="terminalId" class="ltr eng" />
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-              <mat-label>{{ 'thirdParties.sizpay.username' | translate }}</mat-label>
-              <input matInput type="password" formControlName="username" class="ltr eng" />
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-              <mat-label>{{ 'thirdParties.sizpay.password' | translate }}</mat-label>
-              <input matInput type="password" formControlName="password" class="ltr eng" />
-            </mat-form-field>
-          </form>
-        </mat-card-content>
-        <mat-card-actions>
-          @if (gatewayForm.disabled) {
-            <button mat-stroked-button color="primary" (click)="gatewayForm.enable()">
-              {{ 'app.edit' | translate }}
-            </button>
-            @if (gateway) {
-              <button mat-button (click)="test()">
-                {{ 'thirdParties.sizpay.test' | translate }}
-              </button>
-            }
-          }
-          @if (!gatewayForm.disabled) {
-            <button mat-flat-button color="accent" (click)="save()">
-              {{ 'app.save' | translate }}
-            </button>
-            <button mat-button (click)="initForm()">
-              {{ 'app.cancel' | translate }}
+
+    <!-- Form Section -->
+    <div fxLayout="column" fxLayoutGap="12px">
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+        <img src="assets/images/sizpay.png" style="width: 32px; height: 32px; border-radius: 4px;" />
+        <div fxLayout="column">
+          <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">{{ 'thirdParties.sizpay.title' | translate }}</h3>
+          <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'thirdParties.sizpay.description' | translate }}</p>
+        </div>
+      </div>
+      <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'thirdParties.sizpay.formDescription' | translate }}</p>
+      
+      <form [formGroup]="gatewayForm" fxLayout="column" fxLayoutGap="12px" style="margin-top: 8px;">
+        <mat-form-field>
+          <mat-label>{{ 'thirdParties.sizpay.merchantId' | translate }}</mat-label>
+          <input matInput formControlName="merchantId" class="ltr eng" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ 'thirdParties.sizpay.terminalId' | translate }}</mat-label>
+          <input matInput formControlName="terminalId" class="ltr eng" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ 'thirdParties.sizpay.username' | translate }}</mat-label>
+          <input matInput type="password" formControlName="username" class="ltr eng" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ 'thirdParties.sizpay.password' | translate }}</mat-label>
+          <input matInput type="password" formControlName="password" class="ltr eng" />
+        </mat-form-field>
+      </form>
+
+      <div fxLayout="row" fxLayoutGap="8px" style="margin-top: 8px;">
+        @if (gatewayForm.disabled) {
+          <button mat-stroked-button color="primary" (click)="gatewayForm.enable()" type="button">
+            {{ 'app.edit' | translate }}
+          </button>
+          @if (gateway) {
+            <button mat-button (click)="test()" type="button">
+              {{ 'thirdParties.sizpay.test' | translate }}
             </button>
           }
-        </mat-card-actions>
-      </mat-card>
+        }
+        @if (!gatewayForm.disabled) {
+          <button mat-flat-button color="accent" (click)="save()" type="button">
+            {{ 'app.save' | translate }}
+          </button>
+          <button mat-button (click)="initForm()" type="button">
+            {{ 'app.cancel' | translate }}
+          </button>
+        }
+      </div>
     </div>
-    <div class="flex-col">
-      <mat-card>
-        <mat-card-content>
-          <mat-nav-list>
-            <a mat-list-item>
-              <span matListItemTitle>{{ 'thirdParties.sizpay.register' | translate }}</span>
-              <span matListItemLine>{{ 'thirdParties.sizpay.registerDescription' | translate }}</span>
-            </a>
-            <mat-divider></mat-divider>
-            <a mat-list-item href="https://www.sizpay.ir/" target="_blank">
-              <span matListItemTitle>{{ 'thirdParties.sizpay.site' | translate }}</span>
-              <span matListItemLine>{{ 'thirdParties.sizpay.siteDescription' | translate }}</span>
-            </a>
-            <mat-divider></mat-divider>
-            <a mat-list-item href="https://merchant.sizpay.ir/" target="_blank">
-              <span matListItemTitle>{{ 'thirdParties.sizpay.portal' | translate }}</span>
-              <span matListItemLine>{{ 'thirdParties.sizpay.portalDescription' | translate }}</span>
-            </a>
-          </mat-nav-list>
-        </mat-card-content>
-      </mat-card>
+
+    <!-- Help Section -->
+    <div fxLayout="column" fxLayoutGap="12px">
+      <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">{{ 'app.help' | translate }}</h3>
+      <mat-nav-list style="padding: 0;">
+        <a mat-list-item style="height: auto; padding: 8px 0;">
+          <span matListItemTitle>{{ 'thirdParties.sizpay.register' | translate }}</span>
+          <span matListItemLine>{{ 'thirdParties.sizpay.registerDescription' | translate }}</span>
+        </a>
+        <a mat-list-item href="https://www.sizpay.ir/" target="_blank" style="height: auto; padding: 8px 0;">
+          <span matListItemTitle>{{ 'thirdParties.sizpay.site' | translate }}</span>
+          <span matListItemLine>{{ 'thirdParties.sizpay.siteDescription' | translate }}</span>
+        </a>
+        <a mat-list-item href="https://merchant.sizpay.ir/" target="_blank" style="height: auto; padding: 8px 0;">
+          <span matListItemTitle>{{ 'thirdParties.sizpay.portal' | translate }}</span>
+          <span matListItemLine>{{ 'thirdParties.sizpay.portalDescription' | translate }}</span>
+        </a>
+      </mat-nav-list>
     </div>
   </main>
 }

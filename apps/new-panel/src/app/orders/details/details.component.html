@@ -37,8 +37,8 @@
   }
 </mat-toolbar>
 @if (order()) {
-  <main p-md w-lg fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="24px">
-    <div fxFlex.gt-sm>
+  <main p-md w-lg fxLayout="column" fxLayoutGap="24px">
+    <div>
       <mat-card appearance="outlined">
         <mat-card-content>
           <app-order-item-table [order]="order()" [showCost]="showCost()" />
@@ -53,7 +53,7 @@
         </mat-card-actions>
       </mat-card>
     </div>
-    <div fxFlex.gt-sm="400px" fxLayout="column" fxLayoutGap="24px">
+    <div fxLayout="column" fxLayoutGap="24px">
       <mat-card appearance="outlined">
         <mat-card-header>
           <mat-card-title>

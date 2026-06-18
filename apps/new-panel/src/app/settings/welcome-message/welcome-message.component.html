@@ -6,16 +6,22 @@
 </mat-toolbar>
 
 <form [formGroup]="form">
-  <main p-md w-md fxLayout="column" fxLayoutGap="16px">
+  <main p-md w-md fxLayout="column" fxLayoutGap="32px">
     <!-- Welcome Message Section -->
-    <mat-card appearance="outlined">
-      <mat-card-content fxLayout="column" fxLayoutGap="16px">
-        <h3>{{ 'welcomeMessage.titleSection' | translate }}</h3>
-        <p>{{ 'welcomeMessage.titleDescription' | translate }}</p>
+    <div fxLayout="column" fxLayoutGap="12px">
+      <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
+        {{ 'welcomeMessage.titleSection' | translate }}
+      </h3>
+      <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">
+        {{ 'welcomeMessage.titleDescription' | translate }}
+      </p>
 
-        <mat-checkbox formControlName="enabled">
-          {{ 'welcomeMessage.enabled' | translate }}
-        </mat-checkbox>
+      <div fxLayout="column" fxLayoutGap="12px">
+        <div style="margin: 4px 0 12px 0;">
+          <mat-checkbox formControlName="enabled">
+            {{ 'welcomeMessage.enabled' | translate }}
+          </mat-checkbox>
+        </div>
 
         <mat-form-field appearance="outline">
           <mat-label>{{ 'welcomeMessage.title' | translate }}</mat-label>
@@ -24,7 +30,7 @@
             formControlName="title"
             placeholder="{{ 'welcomeMessage.titlePlaceholder' | translate }}"
             [disabled]="!form.get('enabled')?.value"
-            />
+          />
           @if (form.get('title')?.hasError('required')) {
             <mat-error>
               {{ 'app.required' | translate }}
@@ -40,7 +46,7 @@
             formControlName="description"
             placeholder="{{ 'welcomeMessage.descriptionPlaceholder' | translate }}"
             [disabled]="!form.get('enabled')?.value"
-            >
+          >
           </textarea>
           @if (form.get('description')?.hasError('required')) {
             <mat-error>
@@ -59,7 +65,7 @@
             [disabled]="!form.get('enabled')?.value"
             eng
             ltr
-            />
+          />
           <mat-hint>{{ 'welcomeMessage.delayHint' | translate }}</mat-hint>
           @if (form.get('delayInSeconds')?.hasError('min')) {
             <mat-error>
@@ -67,7 +73,7 @@
             </mat-error>
           }
         </mat-form-field>
-      </mat-card-content>
-    </mat-card>
+      </div>
+    </div>
   </main>
 </form>

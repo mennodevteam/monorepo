@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import {
   AbstractControl,
   FormArray,
@@ -53,6 +54,7 @@ import { startWith } from 'rxjs';
     CdkDrag,
     MatTooltipModule,
     CdkDragHandle,
+    MatCheckboxModule,
   ],
   templateUrl: './product-edit.component.html',
   styleUrl: './product-edit.component.scss',
@@ -122,12 +124,14 @@ export class ProductEditComponent implements FormComponent {
           this.imagesForm = this.fb.array([]);
         }
 
+        const hasInitVariants = !!(product?.variants && product.variants.length > 0);
         this.form = this.fb.group({
           title: [product?.title, Validators.required],
           description: [product?.description],
           subcategories: [this.cleanSubcategories(product?.subcategories || [])],
-          price: [product?.price, Validators.required],
+          price: [product?.price ?? '', hasInitVariants ? [] : [Validators.required]],
           category: [category, Validators.required],
+          hasVariants: [hasInitVariants],
           slug: [
             product?.slug ?? '',
             {
@@ -153,6 +157,20 @@ export class ProductEditComponent implements FormComponent {
             slugControl.setValue(sanitized, { emitEvent: false });
           }
         });
+
+        // Setup dynamic validators for price based on hasVariants checkbox
+        this.form.controls['hasVariants'].valueChanges
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe((hasVariants) => {
+            const priceCtrl = this.form.controls['price'];
+            if (hasVariants) {
+              priceCtrl.clearValidators();
+            } else {
+              priceCtrl.setValidators(Validators.required);
+            }
+            priceCtrl.updateValueAndValidity();
+            this.form.markAsDirty();
+          });
 
         // Re-validate slug when category changes
         this.form.controls['category'].valueChanges
@@ -341,9 +359,19 @@ export class ProductEditComponent implements FormComponent {
   }
 
   async submit() {
-    if (!this.form.controls['price'].value) this.form.controls['price'].setValue(0);
+    const hasVariants = this.form.controls['hasVariants'].value;
+    if (hasVariants) {
+      this.form.controls['price'].setValue(0);
+    } else {
+      if (!this.form.controls['price'].value) this.form.controls['price'].setValue(0);
+    }
     if (this.form.invalid) return;
     const fv = this.form.getRawValue();
+    if (hasVariants) {
+      fv.price = 0;
+    } else {
+      fv.variants = [];
+    }
     if (this.productId) fv.id = this.productId;
     fv.category = { id: fv.category.id };
     fv.slug = this.buildFinalSlug(fv.slug) ?? null;

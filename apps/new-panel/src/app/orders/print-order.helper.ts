@@ -68,12 +68,24 @@ export function printOrder(
         <base href="${window.location.origin}/">
         <style>
           @font-face {
-            font-family: 'IRANSans';
+            font-family: 'Estedad';
             font-style: normal;
-            font-weight: normal;
-            src: url('fonts/iransans/woff2/IRANSansWeb(FaNum).woff2') format('woff2');
+            font-weight: 300;
+            src: url('fonts/estedad/estedad-arabic-300-normal.woff2') format('woff2');
           }
-          body { font-family: 'IRANSans', sans-serif; padding: 40px; direction: rtl; font-size: ${type === 'shop' ? '16px' : '12px'}; }
+          @font-face {
+            font-family: 'Estedad';
+            font-style: normal;
+            font-weight: 400;
+            src: url('fonts/estedad/estedad-arabic-400-normal.woff2') format('woff2');
+          }
+          @font-face {
+            font-family: 'Estedad';
+            font-style: normal;
+            font-weight: 700;
+            src: url('fonts/estedad/estedad-arabic-700-normal.woff2') format('woff2');
+          }
+          body { font-family: 'Estedad', system-ui, -apple-system, sans-serif; padding: 40px; direction: rtl; font-size: ${type === 'shop' ? '16px' : '12px'}; }
           table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: ${type === 'shop' ? '14px' : '11px'}; }
           th, td { border: 1px solid #ddd; padding: 4px; text-align: center; }
           th { background-color: #f2f2f2; }
