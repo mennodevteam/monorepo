@@ -1,5 +1,8 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
   <mat-toolbar class="content-toolbar">
+    <button mat-icon-button goBack type="button">
+      <i class="fa-regular fa-arrow-right"></i>
+    </button>
     <h2>{{'settings.shop' | translate}}</h2>
     <span fxFlex></span>
     <button mat-flat-button [disabled]="!form.dirty" type="submit">

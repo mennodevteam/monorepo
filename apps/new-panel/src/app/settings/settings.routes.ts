@@ -12,6 +12,7 @@ import { WelcomeMessageComponent } from './welcome-message/welcome-message.compo
 import { UserManagementComponent } from './user-management/user-management.component';
 import { WebScriptsComponent } from './web-scripts/web-scripts.component';
 import { DeveloperApiComponent } from './developer-api/developer-api.component';
+import { SettingsHomeComponent } from './settings-home/settings-home.component';
 
 export const settingsRoutes: Route[] = [
   {
@@ -29,7 +30,7 @@ export const settingsRoutes: Route[] = [
       { path: 'users', component: UserManagementComponent },
       { path: 'web-scripts', component: WebScriptsComponent },
       { path: 'developer-api', component: DeveloperApiComponent },
-      { path: '', redirectTo: 'shop', pathMatch: 'full' },
+      { path: '', component: SettingsHomeComponent, pathMatch: 'full' },
     ],
   },
 ];

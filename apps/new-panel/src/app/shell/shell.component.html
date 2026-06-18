@@ -14,8 +14,8 @@
       <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
         <!-- Brand logo and name -->
         <div style="display: flex; align-items: center; gap: 0.5rem;">
-          <img src="icons/logo.svg" alt="menno logo" style="height: 1.5rem; width: auto;" />
-          <span style="font-size: 1.15rem; font-weight: 700; color: #171717; letter-spacing: 0.05em;">منو</span>
+          <img src="icons/logo.svg" alt="shottt logo" style="height: 1.5rem; width: auto;" />
+          <span style="font-size: 1.15rem; font-weight: 700; color: #171717; letter-spacing: 0.05em;">شات</span>
         </div>
 
         <!-- Notification Bell -->
@@ -62,7 +62,9 @@
         routerLink="/home"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <ng-icon matListItemIcon name="saxHome2Outline"></ng-icon>
+        <div matListItemIcon class="np-icon-badge sm blue">
+          <ng-icon name="saxHome2Outline"></ng-icon>
+        </div>
         <span matListItemTitle>{{ 'nav.home' | translate }}</span>
       </a>
       <mat-divider />
@@ -73,7 +75,9 @@
         routerLink="/orders"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <ng-icon matListItemIcon name="saxReceipt2Outline"></ng-icon>
+        <div matListItemIcon class="np-icon-badge sm green">
+          <ng-icon name="saxReceipt2Outline"></ng-icon>
+        </div>
         <span matListItemTitle>{{ 'nav.orderList' | translate }}</span>
       </a>
       <mat-divider />
@@ -84,7 +88,9 @@
         routerLink="/menu/categories"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <ng-icon matListItemIcon name="saxCategoryOutline"></ng-icon>
+        <div matListItemIcon class="np-icon-badge sm purple">
+          <ng-icon name="saxCategoryOutline"></ng-icon>
+        </div>
         <span matListItemTitle>{{
           'nav.categories' | translate: { value: shop.businessCategoryMenuTitle() }
         }}</span>
@@ -95,7 +101,9 @@
         routerLink="/menu/list"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <ng-icon matListItemIcon name="saxBoxOutline"></ng-icon>
+        <div matListItemIcon class="np-icon-badge sm blue">
+          <ng-icon name="saxBoxOutline"></ng-icon>
+        </div>
         <span matListItemTitle>{{
           'nav.products' | translate: { value: shop.businessCategoryMenuTitle() }
         }}</span>
@@ -108,7 +116,9 @@
         routerLink="/inventory/materials"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <ng-icon matListItemIcon name="saxArchiveOutline"></ng-icon>
+        <div matListItemIcon class="np-icon-badge sm teal">
+          <ng-icon name="saxArchiveOutline"></ng-icon>
+        </div>
         <span matListItemTitle>{{ 'nav.materials' | translate }}</span>
       </a>
       <a
@@ -117,7 +127,9 @@
         routerLink="/inventory/bom"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <ng-icon matListItemIcon name="saxGlassOutline"></ng-icon>
+        <div matListItemIcon class="np-icon-badge sm cyan">
+          <ng-icon name="saxGlassOutline"></ng-icon>
+        </div>
         <span matListItemTitle>{{ 'nav.bom' | translate: { value: shop.businessCategoryMenuTitle() } }}</span>
       </a>
       <a
@@ -126,7 +138,9 @@
         routerLink="/menu/availability"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <ng-icon matListItemIcon name="saxTaskSquareOutline"></ng-icon>
+        <div matListItemIcon class="np-icon-badge sm orange">
+          <ng-icon name="saxTaskSquareOutline"></ng-icon>
+        </div>
         <span matListItemTitle>{{ 'nav.productAvailability' | translate }}</span>
       </a>
       <mat-divider />
@@ -137,7 +151,9 @@
         routerLink="/menu/costs"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <ng-icon matListItemIcon name="saxDollarSquareOutline"></ng-icon>
+        <div matListItemIcon class="np-icon-badge sm pink">
+          <ng-icon name="saxDollarSquareOutline"></ng-icon>
+        </div>
         <span matListItemTitle>{{ 'nav.costs' | translate }}</span>
       </a>
       <a
@@ -146,7 +162,9 @@
         routerLink="/pricing"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <ng-icon matListItemIcon name="saxCalculatorOutline"></ng-icon>
+        <div matListItemIcon class="np-icon-badge sm sky">
+          <ng-icon name="saxCalculatorOutline"></ng-icon>
+        </div>
         <span matListItemTitle>{{
           'nav.pricing' | translate: { value: shop.businessCategoryMenuTitle() }
         }}</span>
@@ -159,7 +177,9 @@
         routerLink="/club/members"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <ng-icon matListItemIcon name="saxPeopleOutline"></ng-icon>
+        <div matListItemIcon class="np-icon-badge sm blue">
+          <ng-icon name="saxPeopleOutline"></ng-icon>
+        </div>
         <span matListItemTitle>{{ 'nav.clubMembers' | translate }}</span>
       </a>
       <a
@@ -168,7 +188,9 @@
         routerLink="/coupons"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <ng-icon matListItemIcon name="saxTagOutline"></ng-icon>
+        <div matListItemIcon class="np-icon-badge sm pink">
+          <ng-icon name="saxTagOutline"></ng-icon>
+        </div>
         <span matListItemTitle>{{ 'nav.discountCoupons' | translate }}</span>
       </a>
       <a
@@ -177,7 +199,9 @@
         routerLink="/missions"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <ng-icon matListItemIcon name="saxAwardOutline"></ng-icon>
+        <div matListItemIcon class="np-icon-badge sm purple">
+          <ng-icon name="saxAwardOutline"></ng-icon>
+        </div>
         <span matListItemTitle>{{ 'nav.missions' | translate }}</span>
       </a>
       <mat-divider />
@@ -188,7 +212,9 @@
         routerLink="/reports/orders-dashboard"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <ng-icon matListItemIcon name="saxChart1Outline"></ng-icon>
+        <div matListItemIcon class="np-icon-badge sm green">
+          <ng-icon name="saxChart1Outline"></ng-icon>
+        </div>
         <span matListItemTitle>{{ 'nav.dashboard' | translate }}</span>
       </a>
       <a
@@ -197,7 +223,9 @@
         routerLink="/reports/analytics-dashboard"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <ng-icon matListItemIcon name="saxChart2Outline"></ng-icon>
+        <div matListItemIcon class="np-icon-badge sm sky">
+          <ng-icon name="saxChart2Outline"></ng-icon>
+        </div>
         <span matListItemTitle>{{ 'nav.analytics' | translate }}</span>
       </a>
       <a
@@ -206,7 +234,9 @@
         routerLink="/sms"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <ng-icon matListItemIcon name="saxSmsOutline"></ng-icon>
+        <div matListItemIcon class="np-icon-badge sm gray">
+          <ng-icon name="saxSmsOutline"></ng-icon>
+        </div>
         <span matListItemTitle>{{ 'nav.sms' | translate }}</span>
       </a>
       <a
@@ -216,7 +246,9 @@
         routerLink="/ai-export"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <ng-icon matListItemIcon name="saxCpuOutline"></ng-icon>
+        <div matListItemIcon class="np-icon-badge sm ai">
+          <ng-icon name="saxCpuOutline"></ng-icon>
+        </div>
         <span matListItemTitle>{{ 'nav.aiExport' | translate }}</span>
       </a>
       <a
@@ -225,139 +257,25 @@
         routerLink="/home-sections"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <ng-icon matListItemIcon name="saxHierarchyOutline"></ng-icon>
+        <div matListItemIcon class="np-icon-badge sm teal">
+          <ng-icon name="saxHierarchyOutline"></ng-icon>
+        </div>
         <span matListItemTitle>{{ 'nav.homeSections' | translate }}</span>
       </a>
       <mat-divider />
       
-      <!-- Settings collapsible menu -->
-      <a mat-list-item (click)="toggleSection('settings')">
-        <ng-icon matListItemIcon name="saxSetting2Outline"></ng-icon>
+      <!-- Settings Link -->
+      <a
+        mat-list-item
+        routerLinkActive="active-link"
+        routerLink="/settings"
+        (click)="isSmallScreen() && isDrawerClose.set(true)"
+      >
+        <div matListItemIcon class="np-icon-badge sm gray">
+          <ng-icon name="saxSetting2Outline"></ng-icon>
+        </div>
         <span matListItemTitle>{{ 'nav.settings' | translate }}</span>
-        <ng-icon [name]="collapse()['settings'] ? 'saxArrowLeft2Outline' : 'saxArrowDown2Outline'" style="margin-inline-start: auto; font-size: 0.875rem; color: var(--text-muted);"></ng-icon>
       </a>
-      
-      @if (!collapse()['settings']) {
-        <a
-          mat-list-item
-          style="padding-inline-start: 1.5rem;"
-          routerLinkActive="active-link"
-          routerLink="/settings/shop"
-          (click)="isSmallScreen() && isDrawerClose.set(true)"
-        >
-          <ng-icon matListItemIcon name="saxShopOutline"></ng-icon>
-          <span matListItemTitle>{{ 'settings.shop' | translate }}</span>
-        </a>
-        <a
-          mat-list-item
-          style="padding-inline-start: 1.5rem;"
-          routerLinkActive="active-link"
-          routerLink="/settings/app-config"
-          (click)="isSmallScreen() && isDrawerClose.set(true)"
-        >
-          <ng-icon matListItemIcon name="saxColorfilterOutline"></ng-icon>
-          <span matListItemTitle>{{ 'settings.appConfig' | translate }}</span>
-        </a>
-        <a
-          mat-list-item
-          style="padding-inline-start: 1.5rem;"
-          routerLinkActive="active-link"
-          routerLink="/settings/order-config"
-          (click)="isSmallScreen() && isDrawerClose.set(true)"
-        >
-          <ng-icon matListItemIcon name="saxReceiptItemOutline"></ng-icon>
-          <span matListItemTitle>{{ 'settings.orderConfig' | translate }}</span>
-        </a>
-        <a
-          mat-list-item
-          class="nav-ai"
-          style="padding-inline-start: 1.5rem;"
-          routerLinkActive="active-link"
-          routerLink="/settings/ai-chatbot"
-          (click)="isSmallScreen() && isDrawerClose.set(true)"
-        >
-          <ng-icon matListItemIcon name="saxCpuOutline"></ng-icon>
-          <span matListItemTitle>{{ 'settings.aiChatbot' | translate }}</span>
-        </a>
-        <a
-          mat-list-item
-          style="padding-inline-start: 1.5rem;"
-          routerLinkActive="active-link"
-          routerLink="/settings/welcome-message"
-          (click)="isSmallScreen() && isDrawerClose.set(true)"
-        >
-          <ng-icon matListItemIcon name="saxSmsOutline"></ng-icon>
-          <span matListItemTitle>{{ 'settings.welcomeMessage' | translate }}</span>
-        </a>
-        <a
-          mat-list-item
-          style="padding-inline-start: 1.5rem;"
-          routerLinkActive="active-link"
-          routerLink="/settings/sms"
-          (click)="isSmallScreen() && isDrawerClose.set(true)"
-        >
-          <ng-icon matListItemIcon name="saxSmsOutline"></ng-icon>
-          <span matListItemTitle>{{ 'orderMessagesSetting.title' | translate }}</span>
-        </a>
-        <a
-          mat-list-item
-          style="padding-inline-start: 1.5rem;"
-          routerLinkActive="active-link"
-          routerLink="/settings/delivery-area"
-          (click)="isSmallScreen() && isDrawerClose.set(true)"
-        >
-          <ng-icon matListItemIcon name="saxMapOutline"></ng-icon>
-          <span matListItemTitle>{{ 'settings.deliveryAreas' | translate }}</span>
-        </a>
-        <a
-          mat-list-item
-          style="padding-inline-start: 1.5rem;"
-          routerLinkActive="active-link"
-          routerLink="/settings/users"
-          (click)="isSmallScreen() && isDrawerClose.set(true)"
-        >
-          <ng-icon matListItemIcon name="saxUserSquareOutline"></ng-icon>
-          <span matListItemTitle>{{ 'settings.users' | translate }}</span>
-        </a>
-        <a 
-          mat-list-item 
-          style="padding-inline-start: 1.5rem;"
-          (click)="isSmallScreen() && isDrawerClose.set(true)"
-        >
-          <ng-icon matListItemIcon name="saxKeyOutline"></ng-icon>
-          <span matListItemTitle>{{ 'settings.changePassword' | translate }}</span>
-        </a>
-        <a
-          mat-list-item
-          style="padding-inline-start: 1.5rem;"
-          routerLinkActive="active-link"
-          routerLink="/settings/third-parties"
-          (click)="isSmallScreen() && isDrawerClose.set(true)"
-        >
-          <ng-icon matListItemIcon name="saxComponentOutline"></ng-icon>
-          <span matListItemTitle>{{ 'settings.thirdParties' | translate }}</span>
-        </a>
-        <a
-          mat-list-item
-          style="padding-inline-start: 1.5rem;"
-          routerLinkActive="active-link"
-          routerLink="/settings/web-scripts"
-          (click)="isSmallScreen() && isDrawerClose.set(true)"
-        >
-          <ng-icon matListItemIcon name="saxCodeOutline"></ng-icon>
-          <span matListItemTitle>{{ 'settings.webScripts' | translate }}</span>
-        </a>
-        <a
-          mat-list-item
-          style="padding-inline-start: 1.5rem;"
-          routerLinkActive="active-link"
-          routerLink="/settings/developer-api"
-          (click)="isSmallScreen() && isDrawerClose.set(true)"
-        >
-          <ng-icon matListItemIcon name="saxCodeOutline"></ng-icon>
-          <span matListItemTitle>{{ 'settings.developerApi' | translate }}</span>
-        </a>
-      }
     </mat-nav-list>
 
     <!-- Shop Profile Footer (fixed at bottom of sidenav, outline-free) -->

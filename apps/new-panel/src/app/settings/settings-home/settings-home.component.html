@@ -1,0 +1,45 @@
+<mat-toolbar class="content-toolbar">
+  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+    <ng-icon name="saxSetting2Outline" style="font-size: 1.5rem; color: var(--text-primary); margin-inline-end: 8px;"></ng-icon>
+    <h1>{{ 'settings.pageTitle' | translate }}</h1>
+  </div>
+</mat-toolbar>
+
+<main p-md w-md class="animate-slide-up">
+  <mat-card appearance="outlined" class="settings-list-card">
+    <mat-card-content class="no-padding">
+      <mat-nav-list class="settings-nav-list">
+        @for (item of settingsItems; track item.route; let last = $last) {
+          <a
+            mat-list-item
+            [routerLink]="['/settings', item.route]"
+            class="settings-list-item"
+            [class.ai-item]="item.isAi"
+          >
+            <!-- Start Icon -->
+            <div matListItemAvatar class="np-icon-badge lg" [ngClass]="item.colorClass">
+              <ng-icon [name]="item.icon"></ng-icon>
+            </div>
+
+            <!-- Title & Subtitle -->
+            <div matListItemTitle class="title-wrapper">
+              <span class="item-title">{{ item.title | translate }}</span>
+              @if (item.isAi) {
+                <span class="ai-badge">هوش مصنوعی</span>
+              }
+            </div>
+            <span matListItemLine class="item-subtitle">{{ item.subtitle }}</span>
+
+            <!-- End Arrow / Meta -->
+            <div matListItemMeta class="arrow-wrapper">
+              <ng-icon name="saxArrowLeft2Outline" size="16" class="nav-arrow"></ng-icon>
+            </div>
+          </a>
+          @if (!last) {
+            <mat-divider></mat-divider>
+          }
+        }
+      </mat-nav-list>
+    </mat-card-content>
+  </mat-card>
+</main>

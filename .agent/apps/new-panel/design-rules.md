@@ -19,6 +19,8 @@ This file applies to the Angular app **`apps/new-panel`**. When you add or chang
 - **Typography Scale**: The global M3 type scale is slightly **smaller than default** (`mat.theme-overrides` in `styles.scss`). Prefer Material text styles (`mat-body-*`, card titles, form fields) so new screens inherit the scale; avoid hardcoded `px` font sizes unless necessary.
 - **Compact but readable**: default page padding uses `[p-md]` (global). Form and configuration screens use `32px` vertical gaps, while other dashboard/list screens prefer tighter **vertical** spacing with `fxLayoutGap` in the **16px** range.
 - **RTL**: the app is RTL-first; use logical properties (`padding-inline`, `margin-inline`, `border-inline-start`) when you add custom CSS.
+- **Icon Badges (`np-icon-badge`)**: Use this utility class for structured, soft color-accented icon wrappers/backgrounds in lists, settings, and navigation lists. Size variations are `.sm` (28px) and `.lg` (44px), with the default being 38px. Color variations include `.blue`, `.pink`, `.green`, `.purple`, `.orange`, `.teal`, `.sky`, `.cyan`, `.gray`, and `.ai`. When placed inside an active route link (`a.active-link`), the badge styles invert automatically.
+
 
 ## AI / ML features (distinct, subtle violet)
 

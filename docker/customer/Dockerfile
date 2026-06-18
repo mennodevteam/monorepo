@@ -1,5 +1,5 @@
 ## syntax=docker/dockerfile:1.7
-FROM node:22-alpine AS deps
+FROM node:24-alpine AS deps
 
 WORKDIR /workspace
 
@@ -12,7 +12,7 @@ COPY package.json pnpm-lock.yaml ./
 RUN --mount=type=cache,target=/root/.pnpm-store \
     pnpm install --frozen-lockfile
 
-FROM node:22-alpine AS builder
+FROM node:24-alpine AS builder
 
 WORKDIR /workspace
 
@@ -22,7 +22,7 @@ COPY --from=deps /workspace/node_modules ./node_modules
 COPY . .
 RUN pnpm nx run customer:build:production
 
-FROM node:22-alpine AS runner
+FROM node:24-alpine AS runner
 
 WORKDIR /app
 

@@ -4,7 +4,9 @@ import { RequiredScopes } from '../auth/scopes.decorator';
 import { RequestShop } from './shop.decorator';
 import { Shop, Product, Order, FilterOrderDto } from '@menno/types';
 import { ShopIntegrationService } from './shop-integration.service';
+import { Public } from '../auth/public.decorator';
 
+@Public()
 @Controller('api/v1/shop-integration')
 export class ShopIntegrationController {
   constructor(private readonly integrationService: ShopIntegrationService) {}

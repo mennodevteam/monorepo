@@ -2,5 +2,8 @@
   "platform": "node",
   "app": "menno-customer",
   "port": 4300,
-  "start": "node dist/apps/customer/server/server.mjs"
+  "start": "node dist/apps/customer/server/server.mjs",
+  "node": {
+    "version": "24"
+  }
 }
