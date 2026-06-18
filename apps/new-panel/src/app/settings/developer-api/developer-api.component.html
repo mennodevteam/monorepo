@@ -65,42 +65,34 @@
 
   <!-- Newly Generated Key Warning Card -->
   @if (newGeneratedKey()) {
-    <mat-card style="border: 2px dashed #ff9800; background-color: #fff8e1;">
-      <mat-card-header>
-        <mat-card-title style="color: #ff9800; font-weight: 500; font-size: 1rem;">
-          <i class="fa-regular fa-warning" style="margin-inline-end: 8px;"></i>
-          کلید دسترسی با موفقیت ساخته شد!
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content style="padding-top: 12px;">
-        <p style="margin: 0 0 16px 0; font-size: 0.8125rem; color: var(--text-primary); line-height: 1.6;">
-          کلید زیر را کپی کرده و در جایی امن ذخیره کنید. این کلید برای امنیت حساب شما <strong>دیگر نمایش داده نخواهد شد.</strong>
-        </p>
-        
-        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px" style="direction: ltr; margin-bottom: 16px;">
-          <input
-            matInput
-            readonly
-            [value]="newGeneratedKey()"
-            style="font-family: monospace; font-size: 0.875rem; font-weight: 600; background: #fff; padding: 12px; border-radius: 4px; border: 1px solid #ffb74d; flex: 1; color: #e65100;"
-          />
-          <button
-            mat-flat-button
-            color="primary"
-            [copyClipboard]="newGeneratedKey() || ''"
-            (copied)="copyToClipboardSuccess()"
-            style="font-family: 'Estedad'; height: 44px;"
-          >
-            <i class="fa-regular fa-copy" style="margin-inline-end: 4px;"></i>
-            کپی کلید
-          </button>
-        </div>
+    <app-alert type="warning" title="کلید دسترسی با موفقیت ساخته شد!" icon="fa-warning">
+      <p style="margin: 0 0 16px 0; font-size: 0.8125rem; color: var(--text-primary); line-height: 1.6;">
+        کلید زیر را کپی کرده و در جایی امن ذخیره کنید. این کلید برای امنیت حساب شما <strong>دیگر نمایش داده نخواهد شد.</strong>
+      </p>
+      
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px" style="direction: ltr; margin-bottom: 16px;">
+        <input
+          matInput
+          readonly
+          [value]="newGeneratedKey()"
+          style="font-family: monospace; font-size: 0.875rem; font-weight: 600; background: #fff; padding: 12px; border-radius: 8px; border: 1px solid var(--alert-border-color); flex: 1; color: #e65100;"
+        />
+        <button
+          mat-flat-button
+          color="primary"
+          [copyClipboard]="newGeneratedKey() || ''"
+          (copied)="copyToClipboardSuccess()"
+          style="font-family: 'Estedad'; height: 44px;"
+        >
+          <i class="fa-regular fa-copy" style="margin-inline-end: 4px;"></i>
+          کپی کلید
+        </button>
+      </div>
 
-        <div fxLayout="row" fxLayoutAlign="end center">
-          <button mat-button (click)="closeGeneratedKeyPanel()">متوجه شدم، بستن این بخش</button>
-        </div>
-      </mat-card-content>
-    </mat-card>
+      <div fxLayout="row" fxLayoutAlign="end center">
+        <button mat-button (click)="closeGeneratedKeyPanel()">متوجه شدم، بستن این بخش</button>
+      </div>
+    </app-alert>
   }
 
   <!-- Active Keys Card -->

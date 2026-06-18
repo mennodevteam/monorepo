@@ -1,6 +1,5 @@
 <mat-toolbar class="content-toolbar">
   <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
-    <ng-icon name="saxSetting2Outline" style="font-size: 1.5rem; color: var(--text-primary); margin-inline-end: 8px;"></ng-icon>
     <h1>{{ 'settings.pageTitle' | translate }}</h1>
   </div>
 </mat-toolbar>
@@ -29,11 +28,6 @@
               }
             </div>
             <span matListItemLine class="item-subtitle">{{ item.subtitle }}</span>
-
-            <!-- End Arrow / Meta -->
-            <div matListItemMeta class="arrow-wrapper">
-              <ng-icon name="saxArrowLeft2Outline" size="16" class="nav-arrow"></ng-icon>
-            </div>
           </a>
           @if (!last) {
             <mat-divider></mat-divider>

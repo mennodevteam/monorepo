@@ -16,11 +16,9 @@
       </mat-list-item>
     </mat-list>
     @if (remainingDays() < 8) {
-      <mat-card class="warning-card" [class.error]="remainingDays() <= 0" appearance="outlined">
-        <mat-card-content>{{
-          (remainingDays() <= 0 ? 'home.plan.expiredWarning' : 'home.plan.expireWarning') | translate
-        }}</mat-card-content>
-      </mat-card>
+      <app-alert [type]="remainingDays() <= 0 ? 'error' : 'warning'">
+        {{ (remainingDays() <= 0 ? 'home.plan.expiredWarning' : 'home.plan.expireWarning') | translate }}
+      </app-alert>
     }
   </mat-card-content>
   <mat-divider></mat-divider>

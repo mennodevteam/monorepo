@@ -1,3 +1,4 @@
+import { AlertComponent } from './components/alert/alert.component';
 import { DataLoadingComponent } from './components/data-loading/data-loading.component';
 import { EmptyStateComponent } from './components/empty-state/empty-state.component';
 import { CopyClipboardDirective } from './directives/copy-clipboard.directive';
@@ -28,4 +29,8 @@ export const SHARED = [
 
   DataLoadingComponent,
   EmptyStateComponent,
+  AlertComponent,
 ];
+
+export { AlertComponent };
+

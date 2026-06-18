@@ -37,8 +37,7 @@ mat-sidenav {
       border-inline-start: 4px solid var(--nav-item-active-color) !important;
       border-radius: 8px !important;
 
-      .mat-mdc-list-item-title,
-      ng-icon {
+      .mat-mdc-list-item-title {
         color: var(--nav-item-active-color) !important;
       }
     }

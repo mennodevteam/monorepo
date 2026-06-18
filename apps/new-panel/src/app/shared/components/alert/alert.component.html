@@ -1,0 +1,26 @@
+@if (!isDismissed()) {
+  <div [class]="'alert-container ' + type()">
+    <div class="alert-body">
+      @if (icon() !== 'none') {
+        <div class="alert-icon-wrapper">
+          <i [class]="'alert-icon fa-regular ' + (icon() || getDefaultIcon())"></i>
+        </div>
+      }
+      
+      <div class="alert-content-wrapper">
+        @if (title()) {
+          <h5 class="alert-title">{{ title() }}</h5>
+        }
+        <div class="alert-content">
+          <ng-content></ng-content>
+        </div>
+      </div>
+    </div>
+
+    @if (dismissible()) {
+      <button type="button" class="alert-close-btn" (click)="dismiss()" aria-label="بستن">
+        <i class="fa-regular fa-xmark"></i>
+      </button>
+    }
+  </div>
+}
