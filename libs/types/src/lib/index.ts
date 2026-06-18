@@ -85,3 +85,4 @@ export * from './web-push-notification.dto';
 export * from './web-push-subscription';
 export * from './windows-local-notification';
 export * from './inventory';
+export * from './shop-api-key';

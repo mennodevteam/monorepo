@@ -1,0 +1,27 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+table {
+  background: transparent;
+  border-collapse: collapse;
+}
+
+tr.mat-mdc-row:hover {
+  background-color: var(--nav-item-hover);
+}
+
+.mat-mdc-table {
+  background-color: transparent;
+}
+
+.mat-mdc-header-cell {
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.mat-mdc-cell {
+  border-bottom: 1px solid var(--border-color);
+}

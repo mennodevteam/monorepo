@@ -193,7 +193,8 @@
     "bom": "مواد اولیه {{value}}",
     "sms": "گزارش پیامک‌های ارسالی",
     "aiExport": "خروجی داده برای هوش مصنوعی",
-    "homeSections": "بخش‌های صفحه اصلی"
+    "homeSections": "بخش‌های صفحه اصلی",
+    "developerApi": "تنظیمات API و هوش مصنوعی"
   },
   "aiChatHistory": {
     "title": "تاریخچهٔ چت هوشمند",
@@ -481,7 +482,8 @@
     "users": "مدیریت کاربران",
     "aiChatbot": "ربات هوشمند چت",
     "welcomeMessage": "پیام خوشامدگویی",
-    "webScripts": "اسکریپت‌های وب"
+    "webScripts": "اسکریپت‌های وب",
+    "developerApi": "تنظیمات API و هوش مصنوعی"
   },
   "webScripts": {
     "title": "مدیریت اسکریپت‌های وب",

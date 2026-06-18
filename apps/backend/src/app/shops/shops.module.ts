@@ -11,6 +11,7 @@ import { ShopUsersController } from './shop-users.controller';
 import { ClubsModule } from '../clubs/clubs.module';
 import { ShopGroupsController } from './shop-groups.controller';
 import { MenusModule } from '../menus/menus.module';
+import { ShopApiKeysController } from './shop-api-keys.controller';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { MenusModule } from '../menus/menus.module';
     FilesModule,
     MenusModule,
   ],
-  controllers: [ShopsController, ShopUsersController, ShopGroupsController],
+  controllers: [ShopsController, ShopUsersController, ShopGroupsController, ShopApiKeysController],
   providers: [ShopsService],
   exports: [ShopsService],
 })

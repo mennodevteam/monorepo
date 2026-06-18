@@ -11,6 +11,7 @@ import { DeliveryAreaComponent } from './delivery-area/delivery-area.component';
 import { WelcomeMessageComponent } from './welcome-message/welcome-message.component';
 import { UserManagementComponent } from './user-management/user-management.component';
 import { WebScriptsComponent } from './web-scripts/web-scripts.component';
+import { DeveloperApiComponent } from './developer-api/developer-api.component';
 
 export const settingsRoutes: Route[] = [
   {
@@ -27,6 +28,7 @@ export const settingsRoutes: Route[] = [
       { path: 'delivery-area', component: DeliveryAreaComponent },
       { path: 'users', component: UserManagementComponent },
       { path: 'web-scripts', component: WebScriptsComponent },
+      { path: 'developer-api', component: DeveloperApiComponent },
       { path: '', redirectTo: 'shop', pathMatch: 'full' },
     ],
   },

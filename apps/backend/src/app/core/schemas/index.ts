@@ -51,3 +51,5 @@ export * from './inventory-transaction.schema';
 export * from './material.schema';
 export * from './bill-of-material.schema';
 export * from './bill-of-product.schema';
+export * from './shop-api-key.schema';
+
