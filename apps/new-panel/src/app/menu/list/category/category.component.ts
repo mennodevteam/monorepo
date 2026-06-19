@@ -10,6 +10,7 @@ import { MenuService } from '../../menu.service';
 import { SortDialogComponent } from '../../../shared/dialogs/sort-dialog/sort-dialog.component';
 import { DialogService } from '../../../core/services/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
+import { mapFaIcon } from '../../../shared/utils/icon-mapper';
 
 @Component({
   selector: 'app-menu-category',
@@ -43,5 +44,9 @@ export class MenuCategoryComponent {
               categoryId: category.id,
             });
         });
+  }
+
+  getCategoryIcon(iconName: string | undefined): string {
+    return mapFaIcon(iconName);
   }
 }

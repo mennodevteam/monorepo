@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
   <mat-toolbar class="content-toolbar" fxLayout="row" fxLayoutGap="8px">
     <button mat-icon-button goBack type="button">
-      <i class="fa-regular fa-arrow-right"></i>
+      <ng-icon name="saxArrowRight3Bold"></ng-icon>
     </button>
     <h2 fxFlex>
       @if (cost()) {
@@ -17,13 +17,13 @@
       {{ 'app.save' | translate }}
     </button>
   </mat-toolbar>
-  <main p-md w-md fxLayout="column" fxLayoutGap="24px">
-    <div fxLayout="column" fxLayoutGap="24px">
+  <main p-md w-md class="np-form-container">
+    <div class="np-form-container" style="gap: 24px !important;">
       <!-- Type Section -->
-      <div fxLayout="column" fxLayoutGap="12px">
-        <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">{{ 'menuCost.type' | translate }}</h3>
-        <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'menuCost.typeDescription' | translate }}</p>
-        <div fxLayout="column" fxLayoutGap="12px">
+      <div class="np-form-section">
+        <h3 class="np-section-title">{{ 'menuCost.type' | translate }}</h3>
+        <p class="np-section-desc">{{ 'menuCost.typeDescription' | translate }}</p>
+        <div class="np-form-inputs">
           <mat-button-toggle-group [(ngModel)]="costFactor" [ngModelOptions]="{ standalone: true }">
             <mat-button-toggle fxFlex [value]="-1">
               {{ 'menuCost.discountToggle' | translate }}
@@ -33,7 +33,7 @@
             </mat-button-toggle>
           </mat-button-toggle-group>
 
-          <span>
+          <span style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 8px;">
             @if (costFactor() === 1) {
               {{ 'menuCost.costHint' | translate }}
             } @else {
@@ -49,10 +49,10 @@
       </div>
 
       <!-- Amount Section -->
-      <div fxLayout="column" fxLayoutGap="12px">
-        <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">{{ 'menuCost.amount' | translate }}</h3>
-        <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'menuCost.amountDescription' | translate }}</p>
-        <div fxLayout="column" fxLayoutGap="12px">
+      <div class="np-form-section">
+        <h3 class="np-section-title">{{ 'menuCost.amount' | translate }}</h3>
+        <p class="np-section-desc">{{ 'menuCost.amountDescription' | translate }}</p>
+        <div class="np-form-inputs">
           <mat-button-toggle-group [(ngModel)]="costType" [ngModelOptions]="{ standalone: true }">
             <mat-button-toggle fxFlex value="percentage">
               {{ 'menuCost.percentageType' | translate }}
@@ -79,17 +79,17 @@
       </div>
     </div>
 
-    <div fxLayout="column" fxLayoutGap="24px">
+    <div class="np-form-container" style="gap: 24px !important;">
       <!-- Scope Section -->
-      <div fxLayout="column" fxLayoutGap="12px">
-        <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">{{ 'menuCost.scope' | translate }}</h3>
-        <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'menuCost.scopeDescription' | translate }}</p>
-        <div fxLayout="column" fxLayoutGap="12px">
+      <div class="np-form-section">
+        <h3 class="np-section-title">{{ 'menuCost.scope' | translate }}</h3>
+        <p class="np-section-desc">{{ 'menuCost.scopeDescription' | translate }}</p>
+        <div class="np-form-inputs">
           <mat-radio-group
             [(ngModel)]="scopeType"
             [ngModelOptions]="{ standalone: true }"
-            fxLayout="column"
-            fxLayoutGap="8px"
+            class="np-form-inputs"
+            style="gap: 8px !important;"
           >
             <mat-radio-button value="all">{{ 'menuCost.scopeAll' | translate }}</mat-radio-button>
             <mat-radio-button value="categories">{{
@@ -127,10 +127,10 @@
       </div>
 
       <!-- Display Section -->
-      <div fxLayout="column" fxLayoutGap="12px">
-        <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">{{ 'menuCost.display' | translate }}</h3>
-        <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'menuCost.displayDescription' | translate }}</p>
-        <div fxLayout="column" fxLayoutGap="12px">
+      <div class="np-form-section">
+        <h3 class="np-section-title">{{ 'menuCost.display' | translate }}</h3>
+        <p class="np-section-desc">{{ 'menuCost.displayDescription' | translate }}</p>
+        <div class="np-form-inputs">
           <mat-button-toggle-group formControlName="showOnItem">
             <mat-button-toggle fxFlex [value]="true">
               {{ 'menuCost.showOnItem' | translate }}

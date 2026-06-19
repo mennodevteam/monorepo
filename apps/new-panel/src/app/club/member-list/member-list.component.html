@@ -14,7 +14,7 @@
       @if (selectedMembersLength) {
         {{ 'members.selectedMembers' | translate: { value: selectedMembersLength | number } }}
         <button mat-button (click)="onSelectAll(false)">
-          <i class="fa-solid fa-xmark-circle"></i>
+          <ng-icon name="saxCloseCircleOutline"></ng-icon>
           {{ 'members.deselectAll' | translate }}
         </button>
       } @else {
@@ -31,7 +31,7 @@
           (click)="sendMessage()"
           matTooltip="{{ 'members.filterTooltip' | translate: { value: totalCount | number } }}"
         >
-          <i class="fa-regular fa-message"></i>
+          <ng-icon name="saxMessageOutline"></ng-icon>
           {{ 'members.sendSms' | translate }}
         </button>
         <button
@@ -39,7 +39,7 @@
           (click)="chargeWallet()"
           matTooltip="{{ 'members.filterTooltip' | translate: { value: totalCount | number } }}"
         >
-          <i class="fa-regular fa-wallet"></i>
+          <ng-icon name="saxWalletOutline"></ng-icon>
           {{ 'members.chargeWallet' | translate }}
         </button>
       }
@@ -50,7 +50,7 @@
           @if (filterDto().query) {
             <mat-chip (click)="removeFilter('query')">
               {{ 'members.query' | translate }}: {{ filterDto().query }}
-              <i class="fa-solid fa-xmark-circle"></i>
+              <ng-icon name="saxCloseCircleOutline"></ng-icon>
             </mat-chip>
           }
           @if (filterDto().joinedAtFromDate || filterDto().joinedAtToDate) {
@@ -65,7 +65,7 @@
               @if (filterDto().joinedAtToDate) {
                 <span>{{ filterDto().joinedAtToDate | pdate }}</span>
               }
-              <i class="fa-solid fa-xmark-circle"></i>
+              <ng-icon name="saxCloseCircleOutline"></ng-icon>
             </mat-chip>
           }
           @if (filterDto().lastVisitFromDate || filterDto().lastVisitToDate) {
@@ -80,7 +80,7 @@
               @if (filterDto().lastVisitToDate) {
                 <span>{{ filterDto().lastVisitToDate | pdate }}</span>
               }
-              <i class="fa-solid fa-xmark-circle"></i>
+              <ng-icon name="saxCloseCircleOutline"></ng-icon>
             </mat-chip>
           }
           @if (filterDto().firstOrderFromDate || filterDto().firstOrderToDate) {
@@ -95,7 +95,7 @@
               @if (filterDto().firstOrderToDate) {
                 <span>{{ filterDto().firstOrderToDate | pdate }}</span>
               }
-              <i class="fa-solid fa-xmark-circle"></i>
+              <ng-icon name="saxCloseCircleOutline"></ng-icon>
             </mat-chip>
           }
           @if (filterDto().lastOrderFromDate || filterDto().lastOrderToDate) {
@@ -110,7 +110,7 @@
               @if (filterDto().lastOrderToDate) {
                 <span>{{ filterDto().lastOrderToDate | pdate }}</span>
               }
-              <i class="fa-solid fa-xmark-circle"></i>
+              <ng-icon name="saxCloseCircleOutline"></ng-icon>
             </mat-chip>
           }
           @if (
@@ -122,14 +122,14 @@
             <mat-chip (click)="removeFilter('orderCount')">
               {{ 'members.orderCountBasedFilter' | translate }}: {{ filterDto().orderFromDate | pdate }} -
               {{ filterDto().orderToDate | pdate }}
-              <i class="fa-solid fa-xmark-circle"></i>
+              <ng-icon name="saxCloseCircleOutline"></ng-icon>
             </mat-chip>
           }
           @let toStar = filterDto().toStar;
           @if (filterDto().fromStar || (toStar && toStar < 5)) {
             <mat-chip (click)="removeFilter('star')">
               {{ 'members.starRange' | translate }}: {{ filterDto().fromStar }} - {{ toStar }}
-              <i class="fa-solid fa-xmark-circle"></i>
+              <ng-icon name="saxCloseCircleOutline"></ng-icon>
             </mat-chip>
           }
         </mat-chip-set>

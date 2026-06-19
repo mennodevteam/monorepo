@@ -2,13 +2,14 @@
 @if (thirdParty()) {
   <app-basalam-products-table />
 } @else {
+  <mat-toolbar class="content-toolbar">
+    <button mat-icon-button goBack>
+      <ng-icon name="saxArrowRight3Bold"></ng-icon>
+    </button>
+    <h1 flex>{{ 'thirdParties.basalam.title' | translate }}</h1>
+  </mat-toolbar>
+
   <main p-md w-xs>
-    <mat-toolbar>
-      <button mat-icon-button goBack>
-        <i class="fa-regular fa-arrow-right"></i>
-      </button>
-      <h1 flex>{{ 'thirdParties.basalam.title' | translate }}</h1>
-    </mat-toolbar>
     <mat-card appearance="outlined">
       <mat-card-content fxLayout="column" fxLayoutAlign="center center">
         <img src="images/basalam.jpg" class="logo" />

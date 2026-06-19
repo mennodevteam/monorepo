@@ -1,11 +1,12 @@
 @if (thirdPartyForm) {
+  <mat-toolbar class="content-toolbar">
+    <button mat-icon-button goBack type="button">
+      <ng-icon name="saxArrowRight3Bold"></ng-icon>
+    </button>
+    <h1>{{ 'thirdParties.mennoBaleOrders.title' | translate }}</h1>
+  </mat-toolbar>
+
   <main p-md w-md fxLayout="column" fxLayoutGap="32px">
-    <mat-toolbar style="padding: 0; background: transparent;">
-      <button mat-icon-button goBack type="button">
-        <i class="fa-regular fa-arrow-right"></i>
-      </button>
-      <h1 style="margin: 0; font-size: 1.35rem; font-weight: 600;">{{ 'thirdParties.mennoBaleOrders.title' | translate }}</h1>
-    </mat-toolbar>
 
     <!-- Form Section -->
     <div fxLayout="column" fxLayoutGap="12px">

@@ -31,7 +31,7 @@
         [matBadge]="1"
         [matBadgeHidden]="!(fromDate() || toDate())"
       >
-        <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+        <ng-icon name="saxCalendarOutline" aria-hidden="true"></ng-icon>
         <span>{{ 'order.list.dateRangeButton' | translate }}</span>
       </button>
     </div>
@@ -44,12 +44,12 @@
       [matBadge]="extraFiltersBadgeCount()"
       [matBadgeHidden]="extraFiltersBadgeCount() === 0"
     >
-      <i class="fa-regular fa-sliders" aria-hidden="true"></i>
+      <ng-icon name="saxSetting5Outline" aria-hidden="true"></ng-icon>
       <span>{{ 'order.list.moreFilters' | translate }}</span>
     </button>
     @if (hasActiveFilters()) {
       <button mat-stroked-button type="button" color="warn" class="order-list-toolbar__clear-all" (click)="clearAllFilters()">
-        <i class="fa-regular fa-circle-xmark" aria-hidden="true"></i>
+        <ng-icon name="saxCloseCircleOutline" aria-hidden="true"></ng-icon>
         <span>{{ 'order.list.clearAllFilters' | translate }}</span>
       </button>
     }
@@ -63,17 +63,24 @@
 <main p-md class="order-list-main">
   <mat-card appearance="outlined" class="order-list-card">
     <mat-card-content>
-      @if (isMobile()) {
-        <app-order-card-view
-          [orders]="query.data()?.[0] || []"
-          (stateChange)="stateChange($event.order, $event.state)"
+      @if (query.data() && query.data()![0]?.length === 0) {
+        <app-empty-state
+          [text]="'order.list.emptyState' | translate"
+          icon="file-invoice"
         />
       } @else {
-        <app-order-table
-          [orders]="query.data()?.[0] || []"
-          (stateChange)="stateChange($event.order, $event.state)"
-          (delete)="delete($event)"
-        />
+        @if (isMobile()) {
+          <app-order-card-view
+            [orders]="query.data()?.[0] || []"
+            (stateChange)="stateChange($event.order, $event.state)"
+          />
+        } @else {
+          <app-order-table
+            [orders]="query.data()?.[0] || []"
+            (stateChange)="stateChange($event.order, $event.state)"
+            (delete)="delete($event)"
+          />
+        }
       }
       @if (!query.data()) {
         <app-data-loading />

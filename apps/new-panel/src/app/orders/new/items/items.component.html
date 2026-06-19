@@ -62,13 +62,13 @@
       @if (!item.isAbstract) {
         <div fxLayout="row" fxLayoutAlign="start center">
           <button mat-icon-button (click)="service.add(item.product, item.productVariant)">
-            <i class="fa-regular fa-plus-circle"></i>
+            <ng-icon name="saxAddCircleOutline"></ng-icon>
           </button>
           <span>
             {{ 'app.number' | translate: { value: item.quantity } }}
           </span>
           <button mat-icon-button (click)="service.minus(item.product, item.productVariant)">
-            <i class="fa-regular fa-minus-circle"></i>
+            <ng-icon name="saxMinusCircleOutline"></ng-icon>
           </button>
         </div>
       }
@@ -90,7 +90,7 @@
           mat-icon-button
           (click)="service.remove(item.product, item.productVariant)"
         >
-          <i class="fa-regular fa-trash-alt"></i>
+          <ng-icon name="saxTrashOutline"></ng-icon>
         </button>
       }
     </td>

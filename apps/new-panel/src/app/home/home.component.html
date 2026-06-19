@@ -5,7 +5,37 @@
 </mat-toolbar>
 @let shop = shopService.data();
 @if (shop) {
-  <main p-md w-lg fxLayout="column" fxLayoutGap="24px">
+  <main p-md w-lg class="np-form-container">
+    <!-- Payment Gateway Warning Banner -->
+    @if (!shop.paymentGateway) {
+      <mat-card class="promo-card orange">
+        <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+          <div class="np-icon-badge"><ng-icon name="saxDangerOutline"></ng-icon></div>
+          <div fxFlex>
+            <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
+              <p style="margin: 0 0 6px 0;">درگاه پرداخت آنلاین شما فعال نیست. برای شروع پذیرش پرداخت‌های آنلاین از مشتریان، لطفاً تنظیمات درگاه بانکی خود را تکمیل کنید.</p>
+              <p style="margin: 0;">برای اتصال حساب بانکی و راه‌اندازی درگاه پرداخت آنلاین، می‌توانید به بخش <a routerLink="/settings/third-parties">تنظیمات درگاه بانکی</a> مراجعه کنید.</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+
+    <!-- Menu Onboarding Banner -->
+    @if (!menuService.loading() && menuService.categories()?.length === 0) {
+      <mat-card class="promo-card blue">
+        <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+          <div class="np-icon-badge"><ng-icon name="saxInfoCircleOutline"></ng-icon></div>
+          <div fxFlex>
+            <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
+              <p style="margin: 0 0 6px 0;">هنوز هیچ دسته‌بندی یا محصولی در منوی دیجیتال خود ثبت نکرده‌اید. همین حالا اولین دسته‌بندی را ایجاد کرده و منو را بسازید.</p>
+              <p style="margin: 0;">برای ایجاد دسته‌بندی‌ها و اضافه کردن محصولات خود به منو، به بخش <a routerLink="/menu/list">مدیریت منو و محصولات</a> بروید.</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+
     <div fxLayout="column" fxLayoutGap="24px">
       <app-shop-info-card></app-shop-info-card>
       @if (auth.hasAccess(UserAction.Reports)) {

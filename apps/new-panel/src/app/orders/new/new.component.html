@@ -1,6 +1,6 @@
 <mat-toolbar class="content-toolbar" fxLayoutGap="8px">
   <button mat-icon-button goBack>
-    <i class="fa-regular fa-arrow-right"></i>
+    <ng-icon name="saxArrowRight3Bold"></ng-icon>
   </button>
   <h3 fxFlex>
     @if (orderId()) {
@@ -10,7 +10,7 @@
     }
   </h3>
   <button mat-icon-button (click)="openConfigModal()" matTooltip="{{ 'newOrder.config.title' | translate }}">
-    <i class="fa-regular fa-cog"></i>
+    <ng-icon name="saxSetting2Outline"></ng-icon>
   </button>
   <button mat-flat-button tabindex="-1" (click)="save()" [disabled]="!service.dirty() || saving()">
     {{ 'app.save' | translate }}
@@ -27,11 +27,11 @@
           </mat-card-content>
           <mat-card-actions>
             <button mat-button (click)="setManualDiscount()">
-              <i class="fa-regular fa-badge-percent"></i>
+              <ng-icon name="saxDiscountShapeOutline"></ng-icon>
               {{ 'newOrder.manualDiscount' | translate }}
             </button>
             <button mat-button (click)="setManualCost()">
-              <i class="fa-regular fa-circle-dollar"></i>
+              <ng-icon name="saxDiscountShapeOutline"></ng-icon>
               {{ 'newOrder.manualCost' | translate }}
             </button>
           </mat-card-actions>

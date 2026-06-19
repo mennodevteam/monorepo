@@ -10,6 +10,8 @@ import { AiIntelligenceCardComponent } from './ai-intelligence-card/ai-intellige
 import { OrderTotalComponent } from './order-total/order-total.component';
 import { AuthService } from '../auth/auth.service';
 import { UserAction } from '@menno/types';
+import { MenuService } from '../menu/menu.service';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +24,7 @@ import { UserAction } from '@menno/types';
     WalletCardComponent,
     AiIntelligenceCardComponent,
     OrderTotalComponent,
+    MatCardModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -29,5 +32,6 @@ import { UserAction } from '@menno/types';
 export class HomeComponent {
   readonly shopService = inject(ShopService);
   readonly auth = inject(AuthService);
+  readonly menuService = inject(MenuService);
   readonly UserAction = UserAction;
 }

@@ -1,13 +1,13 @@
 <mat-chip [ngClass]="'status_' + status()" [matMenuTriggerFor]="menu" [disabled]="disabled()">
   @switch (status()) {
     @case (Status.Active) {
-      <i class="fa-regular fa-check-circle middle"></i>
+      <ng-icon name="saxTickCircleOutline"></ng-icon>
     }
     @case (Status.Inactive) {
-      <i class="fa-regular fa-xmark-circle middle"></i>
+      <ng-icon name="saxCloseCircleOutline"></ng-icon>
     }
     @case (Status.Blocked) {
-      <i class="fa-regular fa-ban middle"></i>
+      <ng-icon name="saxForbiddenOutline"></ng-icon>
     }
   }
   @if (title()) {
@@ -17,7 +17,7 @@
 </mat-chip>
 <mat-menu #menu="matMenu">
   <button mat-menu-item (click)="statusChange.emit(Status.Active)" [disabled]="status() === Status.Active">
-    <i class="fa-regular fa-check-circle middle"></i>
+    <ng-icon name="saxTickCircleOutline"></ng-icon>
     {{ 'menu.status.' + Status.Active | translate }}
   </button>
   <button
@@ -25,7 +25,7 @@
     (click)="statusChange.emit(Status.Inactive)"
     [disabled]="status() === Status.Inactive"
   >
-    <i class="fa-regular fa-xmark-circle middle"></i>
+    <ng-icon name="saxCloseCircleOutline"></ng-icon>
     {{ 'menu.status.' + Status.Inactive | translate }}
   </button>
   @if (!justActiveInActive()) {
@@ -34,7 +34,7 @@
       (click)="statusChange.emit(Status.Blocked)"
       [disabled]="status() === Status.Blocked"
     >
-      <i class="fa-regular fa-ban middle"></i>
+      <ng-icon name="saxForbiddenOutline"></ng-icon>
       {{ 'menu.status.' + Status.Blocked | translate }}
     </button>
   }

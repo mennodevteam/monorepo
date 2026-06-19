@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
   <mat-toolbar class="content-toolbar" fxLayout="row" fxLayoutGap="8px">
     <button mat-icon-button goBack type="button">
-      <i class="fa-regular fa-arrow-right"></i>
+      <ng-icon name="saxArrowRight3Bold"></ng-icon>
     </button>
     <h2 fxFlex>
       @if (section()) {
@@ -18,10 +18,10 @@
     </button>
   </mat-toolbar>
 
-  <main p-md w-md fxLayout="column" fxLayoutGap="32px">
+  <main p-md w-md class="np-form-container">
     <!-- Config Section -->
-    <div fxLayout="column" fxLayoutGap="12px">
-      <div fxLayout="column" fxLayoutGap="12px">
+    <div class="np-form-section">
+      <div class="np-form-inputs">
         <mat-form-field appearance="outline">
           <mat-label>{{ 'homeSections.aspectRatio' | translate }}</mat-label>
           <mat-select formControlName="aspectRatio">
@@ -43,7 +43,7 @@
           </mat-select>
         </mat-form-field>
 
-        <div style="margin: 4px 0 12px 0;">
+        <div class="np-form-toggle-wrapper">
           <mat-checkbox formControlName="fullWidth">
             {{ 'homeSections.fullWidth' | translate }}
           </mat-checkbox>
@@ -52,102 +52,104 @@
     </div>
 
     <!-- Images Section -->
-    <div fxLayout="column" fxLayoutGap="12px">
-      <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
+    <div class="np-form-section">
+      <h3 class="np-section-title">
         {{ 'homeSections.images' | translate }}
       </h3>
-      <div fxLayout="column" fxLayoutGap="12px">
+      <div class="np-form-inputs">
         @if (dataSource.data.length === 0) {
           <app-empty-state icon="image" [text]="'homeSections.noImages' | translate" />
         } @else {
-          <table mat-table [dataSource]="dataSource" cdkDropList (cdkDropListDropped)="moveImage($event)" class="banner-table">
-            <ng-container matColumnDef="image">
-              <th mat-header-cell *matHeaderCellDef>{{ 'homeSections.image' | translate }}</th>
-              <td mat-cell *matCellDef="let index">
-                <div class="image-cell">
-                  <div cdkDragHandle class="drag-handle">
-                    <i class="fa-solid fa-grip-vertical"></i>
+          <div class="invoices-table-container">
+            <table mat-table [dataSource]="dataSource" cdkDropList (cdkDropListDropped)="moveImage($event)" class="np-table">
+              <ng-container matColumnDef="image">
+                <th mat-header-cell *matHeaderCellDef>{{ 'homeSections.image' | translate }}</th>
+                <td mat-cell *matCellDef="let index">
+                  <div class="image-cell" style="display: flex; align-items: center; gap: 8px;">
+                    <div cdkDragHandle class="drag-handle" style="cursor: move; opacity: 0.5;">
+                      <ng-icon name="saxRowVerticalOutline"></ng-icon>
+                    </div>
+                    @if (getBase64Image(index)) {
+                      <img [src]="getBase64Image(index)!" class="banner-thumbnail" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;" />
+                    } @else if (getImageForDisplay(index)) {
+                      <img imageLoader [imageFile]="getImageForDisplay(index)!" imageSize="sm" class="banner-thumbnail" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;" />
+                    }
                   </div>
-                  @if (getBase64Image(index)) {
-                    <img [src]="getBase64Image(index)!" class="banner-thumbnail" />
-                  } @else if (getImageForDisplay(index)) {
-                    <img imageLoader [imageFile]="getImageForDisplay(index)!" imageSize="sm" class="banner-thumbnail" />
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="linkType">
+                <th mat-header-cell *matHeaderCellDef>{{ 'homeSections.linkType' | translate }}</th>
+                <td mat-cell *matCellDef="let index">
+                  @if (linksForm.at(index); as linkFormGroup) {
+                    <div [formGroup]="linkFormGroup">
+                      <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+                        <mat-select formControlName="type">
+                          <mat-option [value]="BannerLinkType.External">{{ 'homeSections.linkTypeExternal' | translate }}</mat-option>
+                          <mat-option [value]="BannerLinkType.Category">{{ 'homeSections.linkTypeCategory' | translate }}</mat-option>
+                          <mat-option [value]="BannerLinkType.Product">{{ 'homeSections.linkTypeProduct' | translate }}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
                   }
-                </div>
-              </td>
-            </ng-container>
+                </td>
+              </ng-container>
 
-            <ng-container matColumnDef="linkType">
-              <th mat-header-cell *matHeaderCellDef>{{ 'homeSections.linkType' | translate }}</th>
-              <td mat-cell *matCellDef="let index">
-                @if (linksForm.at(index); as linkFormGroup) {
-                  <div [formGroup]="linkFormGroup">
-                    <mat-form-field appearance="outline" class="link-type-field">
-                      <mat-select formControlName="type">
-                        <mat-option [value]="BannerLinkType.External">{{ 'homeSections.linkTypeExternal' | translate }}</mat-option>
-                        <mat-option [value]="BannerLinkType.Category">{{ 'homeSections.linkTypeCategory' | translate }}</mat-option>
-                        <mat-option [value]="BannerLinkType.Product">{{ 'homeSections.linkTypeProduct' | translate }}</mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                }
-              </td>
-            </ng-container>
+              <ng-container matColumnDef="linkValue">
+                <th mat-header-cell *matHeaderCellDef>{{ 'homeSections.link' | translate }}</th>
+                <td mat-cell *matCellDef="let index">
+                  @if (linksForm.at(index); as linkFormGroup) {
+                    <div [formGroup]="linkFormGroup">
+                      @if (linkFormGroup.get('type')?.value === BannerLinkType.External) {
+                        <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+                          <mat-label>{{ 'homeSections.externalUrl' | translate }}</mat-label>
+                          <input matInput ltr eng formControlName="externalUrl" placeholder="https://..." />
+                        </mat-form-field>
+                      }
+                      @if (linkFormGroup.get('type')?.value === BannerLinkType.Category) {
+                        <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+                          <mat-label>{{ 'homeSections.category' | translate }}</mat-label>
+                          <mat-select formControlName="categoryId">
+                            <mat-option [value]="null">{{ 'app.none' | translate }}</mat-option>
+                            @for (category of allCategories(); track category.id) {
+                              <mat-option [value]="category.id">{{ category.title }}</mat-option>
+                            }
+                          </mat-select>
+                        </mat-form-field>
+                      }
+                      @if (linkFormGroup.get('type')?.value === BannerLinkType.Product) {
+                        <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+                          <mat-label>{{ 'homeSections.product' | translate }}</mat-label>
+                          <mat-select formControlName="productId">
+                            <mat-option [value]="null">{{ 'app.none' | translate }}</mat-option>
+                            @for (item of allProducts(); track item.product.id) {
+                              <mat-option [value]="item.product.id">{{ item.category.title }} - {{ item.product.title }}</mat-option>
+                            }
+                          </mat-select>
+                        </mat-form-field>
+                      }
+                    </div>
+                  }
+                </td>
+              </ng-container>
 
-            <ng-container matColumnDef="linkValue">
-              <th mat-header-cell *matHeaderCellDef>{{ 'homeSections.link' | translate }}</th>
-              <td mat-cell *matCellDef="let index">
-                @if (linksForm.at(index); as linkFormGroup) {
-                  <div [formGroup]="linkFormGroup">
-                    @if (linkFormGroup.get('type')?.value === BannerLinkType.External) {
-                      <mat-form-field appearance="outline" class="link-field">
-                        <mat-label>{{ 'homeSections.externalUrl' | translate }}</mat-label>
-                        <input matInput ltr eng formControlName="externalUrl" placeholder="https://..." />
-                      </mat-form-field>
-                    }
-                    @if (linkFormGroup.get('type')?.value === BannerLinkType.Category) {
-                      <mat-form-field appearance="outline" class="link-field">
-                        <mat-label>{{ 'homeSections.category' | translate }}</mat-label>
-                        <mat-select formControlName="categoryId">
-                          <mat-option [value]="null">{{ 'app.none' | translate }}</mat-option>
-                          @for (category of allCategories(); track category.id) {
-                            <mat-option [value]="category.id">{{ category.title }}</mat-option>
-                          }
-                        </mat-select>
-                      </mat-form-field>
-                    }
-                    @if (linkFormGroup.get('type')?.value === BannerLinkType.Product) {
-                      <mat-form-field appearance="outline" class="link-field">
-                        <mat-label>{{ 'homeSections.product' | translate }}</mat-label>
-                        <mat-select formControlName="productId">
-                          <mat-option [value]="null">{{ 'app.none' | translate }}</mat-option>
-                          @for (item of allProducts(); track item.product.id) {
-                            <mat-option [value]="item.product.id">{{ item.category.title }} - {{ item.product.title }}</mat-option>
-                          }
-                        </mat-select>
-                      </mat-form-field>
-                    }
-                  </div>
-                }
-              </td>
-            </ng-container>
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef class="col-actions-sm" style="text-align: center !important;">{{ 'app.actions' | translate }}</th>
+                <td mat-cell *matCellDef="let index" style="text-align: center !important;">
+                  <button mat-icon-button type="button" (click)="deleteImage(index)" color="warn">
+                    <ng-icon name="saxTrashOutline"></ng-icon>
+                  </button>
+                </td>
+              </ng-container>
 
-            <ng-container matColumnDef="actions">
-              <th mat-header-cell *matHeaderCellDef>{{ 'app.actions' | translate }}</th>
-              <td mat-cell *matCellDef="let index">
-                <button mat-icon-button type="button" (click)="deleteImage(index)" color="warn">
-                  <i class="fa-regular fa-trash-alt"></i>
-                </button>
-              </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns" cdkDrag></tr>
-          </table>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns" cdkDrag></tr>
+            </table>
+          </div>
         }
-        <div style="align-self: start;">
+        <div class="np-action-btn-wrapper">
           <button mat-button type="button" (click)="addImage()">
-            <i class="fa-regular fa-circle-plus"></i>
+            <ng-icon name="saxAddCircleOutline"></ng-icon>
             {{ 'app.add' | translate }}
           </button>
         </div>

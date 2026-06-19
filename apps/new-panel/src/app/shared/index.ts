@@ -12,6 +12,7 @@ import { BusinessCategoryPipe } from './pipes/business-category.pipe';
 import { MenuCurrencyPipe } from './pipes/menu-currency.pipe';
 import { PdatePipe } from './pipes/pdate.pipe';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
+import { NgIcon } from '@ng-icons/core';
 
 export const SHARED = [
   SHARED_MODULES,
@@ -30,6 +31,7 @@ export const SHARED = [
   DataLoadingComponent,
   EmptyStateComponent,
   AlertComponent,
+  NgIcon,
 ];
 
 export { AlertComponent };

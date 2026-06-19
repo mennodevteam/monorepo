@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
   <mat-toolbar class="content-toolbar" fxLayout="row" fxLayoutGap="8px">
     <button mat-icon-button goBack type="button">
-      <i class="fa-regular fa-arrow-right"></i>
+      <ng-icon name="saxArrowRight3Bold"></ng-icon>
     </button>
     <h2 fxFlex>
       @if (section()) {
@@ -18,10 +18,10 @@
     </button>
   </mat-toolbar>
 
-  <main p-md w-md fxLayout="column" fxLayoutGap="32px">
+  <main p-md w-md class="np-form-container">
     <!-- Config Section -->
-    <div fxLayout="column" fxLayoutGap="12px">
-      <div fxLayout="column" fxLayoutGap="12px">
+    <div class="np-form-section">
+      <div class="np-form-inputs">
         <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
           <mat-label>{{ 'app.title' | translate }}</mat-label>
           <input matInput formControlName="title" />
@@ -59,12 +59,12 @@
     </div>
 
     <!-- Products Section -->
-    <div fxLayout="column" fxLayoutGap="12px">
-      <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
+    <div class="np-form-section">
+      <h3 class="np-section-title">
         {{ 'homeSections.products' | translate }}
       </h3>
-      <div fxLayout="column" fxLayoutGap="12px">
-        <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
+      <div class="np-form-inputs">
+        <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
           <mat-label>{{ 'homeSections.selectProducts' | translate }}</mat-label>
           <input
             matInput
@@ -90,20 +90,26 @@
         </mat-form-field>
 
         @if (form.controls.productIds.value.length > 0) {
-          <mat-list cdkDropList (cdkDropListDropped)="moveProduct($event)" class="product-list" style="padding: 0;">
+          <div cdkDropList (cdkDropListDropped)="moveProduct($event)" class="np-drag-list">
             @for (productId of form.controls.productIds.value; track productId; let i = $index) {
               @if (getProductById(productId)) {
-                <mat-list-item cdkDrag style="height: 38px;">
-                  <i matListItemIcon class="fa-solid fa-grip-vertical" cdkDragHandle></i>
-                  <span matListItemTitle>{{ getProductById(productId)?.title }}</span>
-                  <span matListItemLine>{{ getCategoryForProduct(productId) }}</span>
-                  <button mat-icon-button type="button" matListItemMeta (click)="removeProduct(productId)">
-                    <i class="fa-regular fa-trash-alt"></i>
+                <div cdkDrag class="np-drag-item" style="justify-content: space-between;">
+                  <div style="display: flex; align-items: center;">
+                    <div class="np-drag-handle" cdkDragHandle>
+                      <ng-icon name="saxRowVerticalOutline"></ng-icon>
+                    </div>
+                    <div>
+                      <span style="font-weight: 500;">{{ getProductById(productId)?.title }}</span>
+                      <span class="np-section-desc" style="margin: 0 8px 0 0; display: inline-block;">({{ getCategoryForProduct(productId) }})</span>
+                    </div>
+                  </div>
+                  <button mat-icon-button type="button" (click)="removeProduct(productId)">
+                    <ng-icon name="saxTrashOutline"></ng-icon>
                   </button>
-                </mat-list-item>
+                </div>
               }
             }
-          </mat-list>
+          </div>
         } @else {
           <app-empty-state icon="box" [text]="'homeSections.noProductsSelected' | translate" />
         }

@@ -7,13 +7,13 @@
     <mat-button-toggle [value]="type">
       @switch (type) {
         @case (OrderType.DineIn) {
-          <i class="fa-solid middle fa-mug-hot"></i>
+          <ng-icon name="saxCoffeeOutline"></ng-icon>
         }
         @case (OrderType.Delivery) {
-          <i class="fa-solid middle fa-truck-fast"></i>
+          <ng-icon name="saxTruckFastOutline"></ng-icon>
         }
         @case (OrderType.Takeaway) {
-          <i class="fa-solid middle fa-cart-shopping"></i>
+          <ng-icon name="saxShoppingCartOutline"></ng-icon>
         }
       }
       {{ 'order.type.' + type | translate }}

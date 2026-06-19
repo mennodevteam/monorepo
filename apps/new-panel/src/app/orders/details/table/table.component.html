@@ -1,65 +1,67 @@
-<table mat-table [dataSource]="items()">
-  <ng-container matColumnDef="index">
-    <th mat-header-cell *matHeaderCellDef>{{ 'app.index' | translate }}</th>
-    <td mat-cell *matCellDef="let item; let i = index">
-      @if (!item.isAbstract) {
-        {{ getOrderItemAddIndex(item) ?? i + 1 }}
-      }
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="title">
-    <th mat-header-cell *matHeaderCellDef>{{ 'app.title' | translate }}</th>
-    <td mat-cell *matCellDef="let item">
-      {{ item.title }}
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="price">
-    <th mat-header-cell *matHeaderCellDef>{{ 'app.fee' | translate }}</th>
-    <td mat-cell *matCellDef="let item">
-      @if (!item.isAbstract || isSmallScreen()) {
-        {{ item.price | number }}
-      }
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="quantity">
-    <th mat-header-cell *matHeaderCellDef>{{ 'app.count' | translate }}</th>
-    <td mat-cell *matCellDef="let item">
-      @if (!item.isAbstract) {
-        @if (isSmallScreen()) {
-          {{item.quantity}}
-        } @else {
-          {{ 'app.number' | translate: { value: item.quantity } }}
+<div class="invoices-table-container">
+  <table mat-table [dataSource]="items()" class="np-table">
+    <ng-container matColumnDef="index">
+      <th mat-header-cell *matHeaderCellDef>{{ 'app.index' | translate }}</th>
+      <td mat-cell *matCellDef="let item; let i = index">
+        @if (!item.isAbstract) {
+          {{ getOrderItemAddIndex(item) ?? i + 1 }}
         }
-      }
-    </td>
-  </ng-container>
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="materialCost">
-    <th mat-header-cell *matHeaderCellDef>{{ 'order.materialCost' | translate }}</th>
-    <td mat-cell *matCellDef="let item">
-      @if (!item.isAbstract) {
-        @if (item.materialCost) {
-          {{ item.materialCost | number : '1.0-0' | menuCurrency }}
-        } @else {
-          <button mat-button (click)="setMaterialCost(item.id)">
-            <i class="fa-solid fa-question"></i>
-            {{ 'app.unknown' | translate }}
-          </button>
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef>{{ 'app.title' | translate }}</th>
+      <td mat-cell *matCellDef="let item">
+        {{ item.title }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef>{{ 'app.fee' | translate }}</th>
+      <td mat-cell *matCellDef="let item">
+        @if (!item.isAbstract || isSmallScreen()) {
+          {{ item.price | number }}
         }
-      }
-    </td>
-  </ng-container>
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="total">
-    <th mat-header-cell *matHeaderCellDef>{{ 'app.sum' | translate }}</th>
-    <td mat-cell *matCellDef="let item">
-      {{ item.quantity * item.price | number | menuCurrency }}
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="quantity">
+      <th mat-header-cell *matHeaderCellDef>{{ 'app.count' | translate }}</th>
+      <td mat-cell *matCellDef="let item">
+        @if (!item.isAbstract) {
+          @if (isSmallScreen()) {
+            {{item.quantity}}
+          } @else {
+            {{ 'app.number' | translate: { value: item.quantity } }}
+          }
+        }
+      </td>
+    </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
-</table>
+    <ng-container matColumnDef="materialCost">
+      <th mat-header-cell *matHeaderCellDef>{{ 'order.materialCost' | translate }}</th>
+      <td mat-cell *matCellDef="let item">
+        @if (!item.isAbstract) {
+          @if (item.materialCost) {
+            {{ item.materialCost | number : '1.0-0' | menuCurrency }}
+          } @else {
+            <button mat-button (click)="setMaterialCost(item.id)">
+              <ng-icon name="saxInfoCircleOutline"></ng-icon>
+              {{ 'app.unknown' | translate }}
+            </button>
+          }
+        }
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="total">
+      <th mat-header-cell *matHeaderCellDef>{{ 'app.sum' | translate }}</th>
+      <td mat-cell *matCellDef="let item">
+        {{ item.quantity * item.price | number | menuCurrency }}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
+  </table>
+</div>

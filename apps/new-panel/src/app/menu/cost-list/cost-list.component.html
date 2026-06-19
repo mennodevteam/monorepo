@@ -3,16 +3,30 @@
   <h1 fxFlex>{{ 'nav.costs' | translate }}</h1>
   @if (!isEmpty) {
     <button mat-flat-button routerLink="edit">
-      <i class="fa-regular fa-plus"></i>
+      <ng-icon name="saxAddOutline"></ng-icon>
       {{ 'menuCost.add' | translate }}
     </button>
   }
 </mat-toolbar>
 <main p-md>
+  <!-- Educational Promo Banner -->
+  <mat-card class="promo-card blue">
+    <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+      <div class="np-icon-badge"><ng-icon name="saxInfoCircleOutline"></ng-icon></div>
+      <div fxFlex>
+        <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
+          <p style="margin: 0 0 6px 0;">در این بخش می‌توانید هزینه‌های اضافی مانند بسته‌بندی، مالیات بر ارزش افزوده یا حق سرویس را به صورت مبلغ ثابت یا درصدی تعریف کنید تا به فاکتور سفارش مشتریان افزوده شود.</p>
+          <p style="margin: 0;">برای تعریف تخفیف‌های زمان‌دار و کدهای تخفیف به جای افزایش هزینه فاکتور، می‌توانید از بخش <a routerLink="/coupons">کدهای تخفیف</a> استفاده کنید.</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
   @if (!isEmpty) {
     <mat-card appearance="outlined">
       <mat-card-content>
-        <table mat-table [dataSource]="menuService.data()?.costs || []">
+        <div class="invoices-table-container">
+          <table mat-table [dataSource]="menuService.data()?.costs || []" class="np-table">
           <ng-container matColumnDef="index">
             <th mat-header-cell *matHeaderCellDef>{{ 'app.index' | translate }}</th>
             <td mat-cell *matCellDef="let cost; let i = index" style="width: 72px">
@@ -55,10 +69,10 @@
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let cost" style="width: 128px">
               <button mat-icon-button routerLink="edit" [queryParams]="{ id: cost.id }">
-                <i class="fa-regular fa-edit fa-xs"></i>
+                <ng-icon name="saxEditOutline"></ng-icon>
               </button>
               <button mat-icon-button (click)="deleteCost(cost)">
-                <i class="fa-regular fa-trash-alt fa-xs"></i>
+                <ng-icon name="saxTrashOutline"></ng-icon>
               </button>
             </td>
           </ng-container>
@@ -66,8 +80,9 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
-      </mat-card-content>
-    </mat-card>
+      </div>
+    </mat-card-content>
+  </mat-card>
   } @else {
     <app-empty-state
       icon="badge-dollar"

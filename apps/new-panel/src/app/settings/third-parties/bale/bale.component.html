@@ -1,11 +1,12 @@
 @if (thirdPartyForm) {
+  <mat-toolbar class="content-toolbar">
+    <button mat-icon-button goBack type="button">
+      <ng-icon name="saxArrowRight3Bold"></ng-icon>
+    </button>
+    <h1>{{ 'thirdParties.bale.title' | translate }}</h1>
+  </mat-toolbar>
+
   <main p-md w-md fxLayout="column" fxLayoutGap="32px">
-    <mat-toolbar style="padding: 0; background: transparent;">
-      <button mat-icon-button goBack type="button">
-        <i class="fa-regular fa-arrow-right"></i>
-      </button>
-      <h1 style="margin: 0; font-size: 1.35rem; font-weight: 600;">{{ 'thirdParties.bale.title' | translate }}</h1>
-    </mat-toolbar>
 
     <!-- Configuration Form Section -->
     <div fxLayout="column" fxLayoutGap="12px">
@@ -31,7 +32,7 @@
         @if (!thirdPartyForm.disabled) {
           <div fxLayout="row" fxLayoutGap="8px" style="margin-top: 4px;">
             <button mat-stroked-button type="button" (click)="uploadWelcomeImage()">
-              <i class="fa-regular fa-upload"></i>
+              <ng-icon name="saxExportOutline"></ng-icon>
               &nbsp;{{ 'thirdParties.bale.welcomeImageUpload' | translate }}
             </button>
             @if (thirdPartyForm.value.imageUrl) {

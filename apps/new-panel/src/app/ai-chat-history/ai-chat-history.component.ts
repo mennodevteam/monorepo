@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
@@ -12,6 +12,7 @@ import { lastValueFrom } from 'rxjs';
 
 import { SHARED } from '../shared';
 import { formatTokensKLabel } from '../home/ai-tokens';
+import { DialogService } from '../core/services/dialog.service';
 
 const PAGE_SIZE = 15;
 
@@ -69,8 +70,22 @@ type DayGroup = {
   templateUrl: './ai-chat-history.component.html',
   styleUrl: './ai-chat-history.component.scss',
 })
-export class AiChatHistoryComponent {
+export class AiChatHistoryComponent implements OnInit {
   private readonly http = inject(HttpClient);
+  private readonly dialog = inject(DialogService);
+
+  ngOnInit() {
+    const onboardingSeen = localStorage.getItem('menno_onboarding_ai_chat_history');
+    if (!onboardingSeen) {
+      this.dialog.alert(
+        'راهنمای تاریخچه گفتگوی هوش مصنوعی',
+        'در این صفحه می‌توانید تمام گفتگوهایی که مشتریان با ربات دستیار هوش مصنوعی فروشگاه داشته‌اند را مشاهده کنید. این تاریخچه به شما کمک می‌کند متوجه نیازهای کاربران، سوالات متداول و بازخوردهای آن‌ها شوید.',
+        { config: { data: { hideCancel: true, okText: 'متوجه شدم' } } }
+      ).then(() => {
+        localStorage.setItem('menno_onboarding_ai_chat_history', 'true');
+      });
+    }
+  }
 
   readonly chatsQuery = injectInfiniteQuery(() => ({
     queryKey: ['ai-chatbot-panel-chats'],

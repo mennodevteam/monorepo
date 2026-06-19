@@ -15,7 +15,8 @@ mat-sidenav {
     height: 100% !important;
   }
 
-  a.mat-mdc-list-item {
+  a.mat-mdc-list-item,
+  button.mat-mdc-list-item {
     border-radius: 8px !important;
     margin-block: 1px;
     height: 34px !important;
@@ -68,6 +69,25 @@ mat-sidenav {
 
       &.active-link ng-icon[matListItemIcon] {
         color: var(--np-ai-accent) !important;
+      }
+    }
+  }
+
+  .sub-nav-list {
+    margin-inline-start: 16px;
+    border-inline-start: 1px solid var(--border-color);
+    padding-inline-start: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-block: 4px;
+
+    a.mat-mdc-list-item {
+      height: 32px !important;
+
+      .mat-mdc-list-item-title {
+        font-size: 0.75rem !important;
+        font-weight: 400 !important;
       }
     }
   }

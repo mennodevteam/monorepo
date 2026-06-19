@@ -17,17 +17,17 @@
       <div>
         @switch (order.type) {
           @case (OrderType.DineIn) {
-            <i class="fa-solid fa-mug-hot"></i>
+            <ng-icon name="saxCoffeeOutline"></ng-icon>
           }
           @case (OrderType.Delivery) {
             @if (order.address?.deliveryArea?.isPost) {
-              <i class="fa-solid fa-truck-fast"></i>
+              <ng-icon name="saxTruckFastOutline"></ng-icon>
             } @else {
-              <i class="fa-solid fa-moped"></i>
+              <ng-icon name="saxTruckOutline"></ng-icon>
             }
           }
           @case (OrderType.Takeaway) {
-            <i class="fa-solid fa-cart-shopping"></i>
+            <ng-icon name="saxShoppingCartOutline"></ng-icon>
           }
         }
         @if (order.address?.region) {
@@ -41,7 +41,7 @@
         <span [class.success-text]="order.paymentType">
           {{ order.totalPrice | number | menuCurrency }}
           @if (order.paymentType) {
-            <i class="fa-solid fa-check"></i>
+            <ng-icon name="saxTickCircleOutline"></ng-icon>
           }
         </span>
       </div>
@@ -54,10 +54,10 @@
       />
       <span fxFlex></span>
       <button mat-icon-button routerLink="/orders/edit/{{ order.id }}" stopPropagation>
-        <i class="fa-regular fa-edit"></i>
+        <ng-icon name="saxEditOutline"></ng-icon>
       </button>
       <button mat-icon-button stopPropagation>
-        <i class="fa-regular fa-trash-alt"></i>
+        <ng-icon name="saxTrashOutline"></ng-icon>
       </button>
     </mat-card-actions>
   </mat-card>

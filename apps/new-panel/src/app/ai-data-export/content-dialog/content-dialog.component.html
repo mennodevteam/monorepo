@@ -14,11 +14,11 @@
 </mat-dialog-content>
 <mat-dialog-actions fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="end center">
   <button mat-stroked-button (click)="copyToClipboard()">
-    <i class="fa-regular fa-copy"></i>
+    <ng-icon name="saxCopyOutline"></ng-icon>
     {{ 'aiExport.copy' | translate }}
   </button>
   <button mat-stroked-button (click)="download()">
-    <i class="fa-regular fa-download"></i>
+    <ng-icon name="saxDocumentDownloadOutline"></ng-icon>
     {{ 'aiExport.download' | translate }}
   </button>
   <button mat-button matDialogClose>{{ 'app.cancel' | translate }}</button>

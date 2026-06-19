@@ -1,7 +1,7 @@
 <mat-card appearance="outlined" class="address-card">
   <mat-card-header>
     <mat-card-title>
-      <i class="fa-solid fa-location-dot middle"></i>
+      <ng-icon name="saxLocationOutline"></ng-icon>
       {{ 'newOrder.addressTitle' | translate }}
     </mat-card-title>
   </mat-card-header>
@@ -41,7 +41,7 @@
   </mat-card-content>
   <mat-card-actions>
     <button mat-button (click)="addAddress()">
-      <i class="fa-regular fa-plus-circle"></i>
+      <ng-icon name="saxAddCircleOutline"></ng-icon>
       {{ 'addressDialog.newTitle' | translate }}
     </button>
   </mat-card-actions>

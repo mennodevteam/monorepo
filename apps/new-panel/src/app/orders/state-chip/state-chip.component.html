@@ -1,22 +1,22 @@
 <mat-chip [ngClass]="'state_' + state()" [matMenuTriggerFor]="menu" [disabled]="disabled()">
   @switch (state()) {
     @case (OrderState.Pending) {
-      <i class="fa-regular fa-hourglass-half middle"></i>
+      <ng-icon name="saxTimerOutline"></ng-icon>
     }
     @case (OrderState.Processing) {
-      <i class="fa-regular fa-box-open middle"></i>
+      <ng-icon name="saxBoxOutline"></ng-icon>
     }
     @case (OrderState.Completed) {
-      <i class="fa-regular fa-check-circle middle"></i>
+      <ng-icon name="saxTickCircleOutline"></ng-icon>
     }
     @case (OrderState.Ready) {
-      <i class="fa-regular fa-box-check middle"></i>
+      <ng-icon name="saxBoxTickOutline"></ng-icon>
     }
     @case (OrderState.Shipping) {
-      <i class="fa-regular fa-truck-fast middle"></i>
+      <ng-icon name="saxTruckFastOutline"></ng-icon>
     }
     @case (OrderState.Canceled) {
-      <i class="fa-regular fa-xmark-circle middle"></i>
+      <ng-icon name="saxCloseCircleOutline"></ng-icon>
     }
   }
   {{ 'order.state.' + state() | translate }}
@@ -27,13 +27,13 @@
       mat-menu-item
       (click)="stateChange.emit(OrderState.Processing)"
       >
-      <i class="fa-regular fa-box-open middle"></i>
+      <ng-icon name="saxBoxOutline"></ng-icon>
       {{ 'order.state.' + OrderState.Processing | translate }}
     </button>
   }
   @if (state() !== OrderState.Ready) {
     <button mat-menu-item (click)="stateChange.emit(OrderState.Ready)">
-      <i class="fa-regular fa-box-check middle"></i>
+      <ng-icon name="saxBoxTickOutline"></ng-icon>
       {{ 'order.state.' + OrderState.Ready | translate }}
     </button>
   }
@@ -42,7 +42,7 @@
       mat-menu-item
       (click)="stateChange.emit(OrderState.Shipping)"
       >
-      <i class="fa-regular fa-truck-fast middle"></i>
+      <ng-icon name="saxTruckFastOutline"></ng-icon>
       {{ 'order.state.' + OrderState.Shipping | translate }}
     </button>
   }
@@ -51,7 +51,7 @@
       mat-menu-item
       (click)="stateChange.emit(OrderState.Completed)"
       >
-      <i class="fa-regular fa-check-circle middle"></i>
+      <ng-icon name="saxTickCircleOutline"></ng-icon>
       {{ 'order.state.' + OrderState.Completed | translate }}
     </button>
   }
@@ -61,7 +61,7 @@
       mat-menu-item
       (click)="stateChange.emit(OrderState.Canceled)"
       >
-      <i class="fa-regular fa-xmark-circle middle"></i>
+      <ng-icon name="saxCloseCircleOutline"></ng-icon>
       {{ 'order.state.' + OrderState.Canceled | translate }}
     </button>
   }

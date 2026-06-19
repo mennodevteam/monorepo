@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
   <mat-toolbar class="content-toolbar" fxLayout="row" fxLayoutGap="8px">
     <button mat-icon-button goBack type="button">
-      <i class="fa-regular fa-arrow-right"></i>
+      <ng-icon name="saxArrowRight3Bold"></ng-icon>
     </button>
     <h2 fxFlex>
       @if (category()) {
@@ -18,14 +18,14 @@
     </button>
   </mat-toolbar>
 
-  <main p-md w-md fxLayout="column" fxLayoutGap="24px">
-    <div fxLayout="column" fxLayoutGap="24px">
+  <main p-md w-md class="np-form-container">
+    <div class="np-form-container" style="gap: 24px !important;">
       <!-- Basic Details -->
-      <div fxLayout="column" fxLayoutGap="12px">
-        <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
+      <div class="np-form-section">
+        <h3 class="np-section-title">
           {{ 'categoryDialog.editTitle' | translate: { value: '' } }}
         </h3>
-        <div fxLayout="column" fxLayoutGap="24px">
+        <div class="np-form-inputs" style="gap: 24px !important;">
           <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
             <mat-label>{{ 'app.title' | translate }}</mat-label>
             <input matInput formControlName="title" required />
@@ -40,7 +40,7 @@
               ltr
               eng
               />
-            <i matIconSuffix class="fa-regular mat-icon fa-{{ form.controls.faIcon.value }}"></i>
+            <ng-icon matSuffix [name]="getCategoryIcon(form.controls.faIcon.value || undefined)" class="mat-icon"></ng-icon>
             <mat-hint>
               {{ 'categoryDialog.iconHint' | translate }}
               <a href="https://fontawesome.com/" target="_blank">fontawesome</a>
@@ -66,16 +66,14 @@
       </div>
 
       <!-- Slug Details -->
-      <div fxLayout="column" fxLayoutGap="12px">
-        <div fxLayout="column" fxLayoutGap="4px">
-          <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
-            {{ 'categoryDialog.slugCardTitle' | translate }}
-          </h3>
-          <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">
-            {{ 'categoryDialog.slugDescription' | translate }}
-          </p>
-        </div>
-        <div fxLayout="column" fxLayoutGap="12px">
+      <div class="np-form-section">
+        <h3 class="np-section-title">
+          {{ 'categoryDialog.slugCardTitle' | translate }}
+        </h3>
+        <p class="np-section-desc">
+          {{ 'categoryDialog.slugDescription' | translate }}
+        </p>
+        <div class="np-form-inputs">
           <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
             <mat-label>{{ 'categoryDialog.slug' | translate }}</mat-label>
             <input matInput formControlName="slug" placeholder="my-category" ltr eng />
@@ -98,34 +96,32 @@
       </div>
     </div>
 
-    <div fxLayout="column" fxLayoutGap="12px">
+    <div class="np-form-section">
       <!-- Image Section -->
-      <div fxLayout="column" fxLayoutGap="4px">
-        <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
-          {{ 'categoryDialog.imageTitle' | translate }}
-        </h3>
-        <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">
-          {{ 'categoryDialog.imageSubtitle' | translate }}
-        </p>
-      </div>
-      <div fxLayout="column" fxLayoutGap="12px">
+      <h3 class="np-section-title">
+        {{ 'categoryDialog.imageTitle' | translate }}
+      </h3>
+      <p class="np-section-desc">
+        {{ 'categoryDialog.imageSubtitle' | translate }}
+      </p>
+      <div class="np-form-inputs">
         @if (form.controls.imageFile.value) {
-          <div class="image-preview" style="max-height: 200px; max-width: 200px; border-radius: 8px; overflow: hidden; position: relative;">
-            <button mat-mini-fab class="remove-button" type="button" (click)="removeImage()" style="position: absolute; top: 8px; right: 8px; z-index: 2;">
-              <i class="fa-regular fa-trash-alt"></i>
+          <div class="np-image-preview-container">
+            <button mat-mini-fab class="np-image-preview-remove" type="button" (click)="removeImage()">
+              <ng-icon name="saxTrashOutline"></ng-icon>
             </button>
             @if (isBase64ImageFile(form.controls.imageFile.value)) {
-              <img [src]="form.controls.imageFile.value.base64" alt="category image" style="width: 100%; height: auto; object-fit: cover;" />
+              <img class="np-image-preview-img" [src]="form.controls.imageFile.value.base64" alt="category image" />
             } @else {
-              <img imageLoader [imageFile]="form.controls.imageFile.value" imageSize="sm" alt="category image" style="width: 100%; height: auto; object-fit: cover;" />
+              <img class="np-image-preview-img" imageLoader [imageFile]="form.controls.imageFile.value" imageSize="sm" alt="category image" />
             }
           </div>
         } @else {
           <app-empty-state icon="image" [text]="'categoryDialog.noImage' | translate" />
         }
-        <div style="align-self: start; margin-top: 4px;">
+        <div class="np-action-btn-wrapper">
           <button mat-button type="button" (click)="addImage()">
-            <i class="fa-regular fa-circle-plus"></i>
+            <ng-icon name="saxAddCircleOutline"></ng-icon>
             {{ form.controls.imageFile.value ? ('categoryDialog.changeImage' | translate) : ('app.add' | translate) }}
           </button>
         </div>

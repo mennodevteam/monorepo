@@ -1,15 +1,16 @@
 
+<mat-toolbar class="content-toolbar">
+  <button mat-icon-button goBack type="button">
+    <ng-icon name="saxArrowRight3Bold"></ng-icon>
+  </button>
+  <h3 fxFlex>{{ 'orderMessagesSetting.title' | translate }}</h3>
+  <button mat-flat-button (click)="editDialog()">
+    <ng-icon name="saxAddOutline"></ng-icon>
+    {{ 'app.add' | translate }}
+  </button>
+</mat-toolbar>
+
 <main p-md w-md>
-  <mat-toolbar>
-    <button mat-icon-button goBack type="button">
-      <i class="fa-regular fa-arrow-right"></i>
-    </button>
-    <h3 fxFlex>{{ 'orderMessagesSetting.title' | translate }}</h3>
-    <button mat-flat-button (click)="editDialog()">
-      <i class="fa-regular fa-plus"></i>
-      {{ 'app.add' | translate }}
-    </button>
-  </mat-toolbar>
   <mat-card appearance="outlined">
     <mat-card-content>
       @if (query.data()) {

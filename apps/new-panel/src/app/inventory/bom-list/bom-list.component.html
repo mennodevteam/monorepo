@@ -5,6 +5,19 @@
   @if (materialsService.bomsQuery.isLoading() || materialsService.bopsQuery.isLoading()) {
     <app-data-loading />
   } @else {
+    <!-- Educational Promo Banner -->
+    <mat-card class="promo-card blue">
+      <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+        <div class="np-icon-badge"><ng-icon name="saxInfoCircleOutline"></ng-icon></div>
+        <div fxFlex>
+          <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
+            <p style="margin: 0 0 6px 0;">با تعیین مواد اولیه برای هر محصول، قیمت تمام‌شده و درصد سود ناخالص آن محصول به صورت خودکار بر اساس قیمت روز مواد اولیه انبار محاسبه می‌شود. این محاسبات به شما کمک می‌کند حاشیه سود خود را بهتر مدیریت کنید.</p>
+            <p style="margin: 0;">برای تعریف و به‌روزرسانی قیمت مواد اولیه، به بخش <a routerLink="/inventory/materials">مدیریت مواد اولیه و انبار</a> مراجعه کنید.</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
     <mat-toolbar fxLayoutGap="24px">
       <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
         <mat-label>{{ 'app.search' | translate }}</mat-label>
@@ -31,19 +44,19 @@
       <mat-toolbar class="group-edit-toolbar" fxLayoutGap="16px">
         <span class="selection-count">{{ 'bom.selectedCount' | translate: { count: selectedCount() } }}</span>
         <button mat-button [matMenuTriggerFor]="removeMenu" [disabled]="materialsAndProductsInSelected().materials.length === 0 && materialsAndProductsInSelected().products.length === 0">
-          <i class="fa-regular fa-trash-can"></i>
+          <ng-icon name="saxTrashOutline"></ng-icon>
           {{ 'bom.groupRemove' | translate }}
         </button>
         <mat-menu #removeMenu="matMenu">
           @for (entry of materialsAndProductsInSelected().materials; track entry.material.id) {
             <button mat-menu-item (click)="groupRemoveMaterial(entry.material)">
-              <i class="fas fa-flask fa-xs"></i>
+              <ng-icon name="saxGlassOutline"></ng-icon>
               {{ entry.material.name }}
             </button>
           }
           @for (entry of materialsAndProductsInSelected().products; track entry.product.id + '-' + (entry.variant?.id ?? 'base')) {
             <button mat-menu-item (click)="groupRemoveProduct(entry.product, entry.variant)">
-              <i class="fas fa-box fa-xs"></i>
+              <ng-icon name="saxBoxOutline"></ng-icon>
               {{ entry.product.title }}
               @if (entry.variant) {
                 - {{ entry.variant.title }}
@@ -52,12 +65,12 @@
           }
         </mat-menu>
         <button mat-button [matMenuTriggerFor]="addMenu">
-          <i class="fa-regular fa-plus"></i>
+          <ng-icon name="saxAddOutline"></ng-icon>
           {{ 'bom.groupAdd' | translate }}
         </button>
         <mat-menu #addMenu="matMenu">
           <button mat-menu-item [matMenuTriggerFor]="addMaterialSubmenu">
-            <i class="fas fa-flask fa-xs"></i>
+            <ng-icon name="saxGlassOutline"></ng-icon>
             {{ 'bom.material' | translate }}
           </button>
           <mat-menu #addMaterialSubmenu="matMenu">
@@ -71,7 +84,7 @@
             }
           </mat-menu>
           <button mat-menu-item [matMenuTriggerFor]="addProductSubmenu">
-            <i class="fas fa-box fa-xs"></i>
+            <ng-icon name="saxBoxOutline"></ng-icon>
             {{ 'bom.product' | translate }}
           </button>
           <mat-menu #addProductSubmenu="matMenu">
@@ -90,7 +103,7 @@
         </mat-menu>
         <span fxFlex></span>
         <button mat-button (click)="clearSelection()">
-          <i class="fa-regular fa-xmark"></i>
+          <ng-icon name="saxCloseCircleOutline"></ng-icon>
           {{ 'bom.clearSelection' | translate }}
         </button>
       </mat-toolbar>
@@ -100,7 +113,8 @@
       <h2>{{ categoryItem.category.title }}</h2>
       <mat-card appearance="outlined">
         <mat-card-content>
-          <table mat-table [dataSource]="categoryItem.items">
+          <div class="invoices-table-container">
+            <table mat-table [dataSource]="categoryItem.items" class="np-table">
             <!-- Checkbox Column -->
             <ng-container matColumnDef="select">
               <th mat-header-cell *matHeaderCellDef style="width: 48px">
@@ -141,21 +155,21 @@
                         [matMenuTriggerFor]="menu"
                         [matTooltip]="bom.material.cost ? null : ('bom.costNotSet' | translate)"
                       >
-                        <i class="fas fa-flask fa-xs"></i>
+                        <ng-icon name="saxGlassOutline"></ng-icon>
                         {{ bom.material.name }}
                         (<span eng>{{ bom.quantity | number }}</span
                         >{{ 'materials.units.' + bom.material.unit | translate }})
                         @if (!bom.material.cost) {
-                          <i class="fa-solid fa-square-exclamation fa-xs red"></i>
+                          <ng-icon name="saxDangerOutline" class="red"></ng-icon>
                         }
                       </mat-chip>
                       <mat-menu #menu="matMenu">
                         <button mat-menu-item (click)="editBom(bom)">
-                          <i class="fa-regular fa-pen-to-square"></i>
+                          <ng-icon name="saxEditOutline"></ng-icon>
                           {{ 'app.edit' | translate }}
                         </button>
                         <button mat-menu-item (click)="removeBom(bom)">
-                          <i class="fa-regular fa-trash-can"></i>
+                          <ng-icon name="saxTrashOutline"></ng-icon>
                           {{ 'app.remove' | translate }}
                         </button>
                       </mat-menu>
@@ -165,17 +179,17 @@
                         (bop.productSource?.title || '') +
                         (bop.variantSource?.title ? ` - ${bop.variantSource.title}` : '');
                       <mat-chip [matMenuTriggerFor]="menu">
-                        <i class="fas fa-box fa-xs"></i>
+                        <ng-icon name="saxBoxOutline"></ng-icon>
                         {{ title }}
                         <span eng>({{ bop.quantity | number }})</span>
                       </mat-chip>
                       <mat-menu #menu="matMenu">
                         <button mat-menu-item (click)="editBop(bop)">
-                          <i class="fa-regular fa-pen-to-square"></i>
+                          <ng-icon name="saxEditOutline"></ng-icon>
                           {{ 'app.edit' | translate }}
                         </button>
                         <button mat-menu-item (click)="removeBop(bop)">
-                          <i class="fa-regular fa-trash-can"></i>
+                          <ng-icon name="saxTrashOutline"></ng-icon>
                           {{ 'app.remove' | translate }}
                         </button>
                       </mat-menu>
@@ -218,19 +232,19 @@
                       </mat-autocomplete>
                     </form>
                     <button mat-icon-button (click)="editableItem.set(null)">
-                      <i class="fa-regular fa-xmark"></i>
+                      <ng-icon name="saxCloseCircleOutline"></ng-icon>
                     </button>
                   } @else {
                     <button mat-icon-button [matMenuTriggerFor]="menu">
-                      <i class="fa-regular fa-plus"></i>
+                      <ng-icon name="saxAddOutline"></ng-icon>
                     </button>
                     <mat-menu #menu="matMenu">
                       <button mat-menu-item (click)="setEditableItem(item, 'material')">
-                        <i class="fa-regular fa-plus"></i>
+                        <ng-icon name="saxAddOutline"></ng-icon>
                         {{ 'bom.material' | translate }}
                       </button>
                       <button mat-menu-item (click)="setEditableItem(item, 'product')">
-                        <i class="fa-regular fa-plus"></i>
+                        <ng-icon name="saxAddOutline"></ng-icon>
                         {{ 'bom.product' | translate }}
                       </button>
                     </mat-menu>
@@ -245,7 +259,7 @@
                 @if (item.cost !== null) {
                   <span eng>{{ item.cost | number: '1.0-0' | menuCurrency }}</span>
                 } @else {
-                  <i class="fa-regular fa-question"></i>
+                  <ng-icon name="saxInfoCircleOutline"></ng-icon>
                 }
               </td>
             </ng-container>
@@ -268,7 +282,7 @@
                     <span eng ltr> ({{ percentage | number: '1.0-0' }}%) </span>
                   </span>
                 } @else {
-                  <i class="fa-regular fa-question"></i>
+                  <ng-icon name="saxInfoCircleOutline"></ng-icon>
                 }
               </td>
             </ng-container>
@@ -276,8 +290,16 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
           </table>
+        </div>
         </mat-card-content>
       </mat-card>
+    }
+
+    @if (categoryItems().length === 0) {
+      <app-empty-state
+        [text]="'bom.empty' | translate"
+        icon="calculator"
+      />
     }
   }
 </main>

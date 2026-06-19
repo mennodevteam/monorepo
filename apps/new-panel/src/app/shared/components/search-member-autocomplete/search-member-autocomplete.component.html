@@ -11,7 +11,7 @@
     <i matIconSuffix class="fa-regular fa-spinner-third fa-spin"></i>
   } @else if (selectedMember()) {
     <button mat-icon-button matSuffix (click)="selectedMember.set(null); searchControl.setValue('')">
-      <i class="fa-solid fa-xmark-circle"></i>
+      <ng-icon name="saxCloseCircleOutline"></ng-icon>
     </button>
   }
   <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="select($event)" autoActiveFirstOption>
@@ -24,7 +24,7 @@
       }
       @if (!query.isLoading()) {
         <mat-option (onSelectionChange)="addMember()">
-          <i class="fa-regular fa-plus-circle"></i>
+          <ng-icon name="saxAddCircleOutline"></ng-icon>
           {{ 'addMemberDialog.newTitle' | translate }}
         </mat-option>
       }

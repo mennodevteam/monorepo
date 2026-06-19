@@ -17,6 +17,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DialogService } from '../../core/services/dialog.service';
 import { FilesService } from '../../core/services/files.service';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
+import { mapFaIcon } from '../../shared/utils/icon-mapper';
 
 type CategoryImageValue = (Image & { file?: File }) | { base64: string; file: File } | null;
 
@@ -222,5 +223,9 @@ export class CategoryEditComponent implements FormComponent {
     );
 
     return duplicate ? { slugNotUnique: { title: duplicate.title } } : null;
+  }
+
+  getCategoryIcon(iconName: string | null | undefined): string {
+    return mapFaIcon(iconName || undefined);
   }
 }

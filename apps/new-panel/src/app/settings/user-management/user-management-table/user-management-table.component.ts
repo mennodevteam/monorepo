@@ -7,6 +7,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { NgIcon } from '@ng-icons/core';
 
 const IMPORTS = [
   TranslateModule,
@@ -15,6 +16,7 @@ const IMPORTS = [
   MatChipsModule,
   MatButtonModule,
   MatIconModule,
+  NgIcon,
 ];
 
 @Component({

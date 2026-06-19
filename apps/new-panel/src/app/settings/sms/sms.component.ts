@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 
 import { SHARED } from '../../shared';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -21,13 +21,27 @@ import { SmsService } from '../../core/services/sms.service';
   templateUrl: './sms.component.html',
   styleUrl: './sms.component.scss',
 })
-export class AutoSmsSettingComponent {
+export class AutoSmsSettingComponent implements OnInit {
   private readonly http = inject(HttpClient);
   private readonly snack = inject(MatSnackBar);
   private readonly sms = inject(SmsService);
   private readonly queryClient = injectQueryClient();
   private readonly t = inject(TranslateService);
   private readonly dialog = inject(DialogService);
+
+  ngOnInit() {
+    const onboardingSeen = localStorage.getItem('menno_onboarding_auto_sms');
+    if (!onboardingSeen) {
+      this.dialog.alert(
+        'راهنمای پیامک‌های خودکار سفارش',
+        'در این بخش می‌توانید پیامک‌های خودکار زمان‌بندی شده برای رخدادهای مختلف سفارش (مانند ثبت، ویرایش، تغییر وضعیت و پرداخت) تعریف کنید تا روند سفارش‌دهی به صورت خودکار به مشتریان اطلاع‌رسانی شود.',
+        { config: { data: { hideCancel: true, okText: 'متوجه شدم' } } }
+      ).then(() => {
+        localStorage.setItem('menno_onboarding_auto_sms', 'true');
+      });
+    }
+  }
+
   query = injectQuery(() => ({
     queryKey: ['orderMessages'],
     queryFn: () => lastValueFrom(this.http.get<OrderMessage[]>('/orderMessages')),

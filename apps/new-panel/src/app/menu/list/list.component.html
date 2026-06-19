@@ -3,6 +3,21 @@
 </mat-toolbar>
 @let cats = menuService.categories();
 @if (cats && cats.length > 0) {
+  <!-- Connection Promo Card -->
+  <div p-md style="padding-bottom: 0;">
+    <mat-card class="promo-card blue">
+      <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+        <div class="np-icon-badge"><i class="fa-regular fa-circle-info"></i></div>
+        <div fxFlex>
+          <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
+            <p style="margin: 0 0 6px 0;">در این بخش می‌توانید محصولات خود را تعریف و دسته‌بندی کنید. برای ویرایش اطلاعات و تصاویر محصولات از جدول زیر استفاده کنید.</p>
+            <p style="margin: 0;">همچنین با تعیین فرمول ساخت (مواد اولیه) برای محصولات، سود و زیان دقیق هر محصول محاسبه می‌شود و بر مبنای آن می‌توانید در بخش <a routerLink="/pricing">قیمت‌گذاری محصولات</a> قیمت محصولات را ویرایش کنید.</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
   <nav mat-tab-nav-bar [tabPanel]="tabPanel" mat-stretch-tabs="false">
     @for (cat of cats; track cat.id) {
       <a mat-tab-link (click)="setTab(cat)" [active]="selectedCategoryId() === cat.id">
@@ -11,7 +26,7 @@
     }
   </nav>
   <mat-tab-nav-panel #tabPanel>
-    <main p-md>
+    <main p-md class="np-form-container">
       <app-menu-category [category]="category()" />
     </main>
   </mat-tab-nav-panel>

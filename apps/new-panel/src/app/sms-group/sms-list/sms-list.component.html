@@ -1,6 +1,6 @@
 <mat-toolbar class="content-toolbar">
   <button mat-icon-button goBack>
-    <i class="fas fa-arrow-right"></i>
+    <ng-icon name="saxArrowRight3Bold"></ng-icon>
   </button>
   <h1 fxFlex>
     {{ 'smsList.pageTitle' | translate }}
@@ -48,13 +48,13 @@
               </th>
               <td mat-cell *matCellDef="let sms">
                 @if (sms.status === SmsStatus.Failed) {
-                  <i class="fas fa-times-circle status-icon failed"></i>
+                  <ng-icon name="saxCloseCircleOutline" class="status-icon failed"></ng-icon>
                 } @else if (sms.status === SmsStatus.InQueue) {
-                  <i class="fas fa-clock status-icon in-queue"></i>
+                  <ng-icon name="saxClockOutline" class="status-icon in-queue"></ng-icon>
                 } @else if (sms.status === SmsStatus.Sent) {
-                  <i class="fas fa-check-circle status-icon sent"></i>
+                  <ng-icon name="saxTickCircleOutline" class="status-icon sent"></ng-icon>
                 } @else if (sms.status === SmsStatus.Scheduled) {
-                  <i class="fas fa-clock status-icon scheduled"></i>
+                  <ng-icon name="saxClockOutline" class="status-icon scheduled"></ng-icon>
                 }
                 {{ sms.statusDescription }}
               </td>

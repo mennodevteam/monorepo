@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
   <mat-toolbar class="content-toolbar" fxLayout="row" fxLayoutGap="8px">
     <button mat-icon-button goBack type="button">
-      <i class="fa-regular fa-arrow-right"></i>
+      <ng-icon name="saxArrowRight3Bold"></ng-icon>
     </button>
     <h2 fxFlex>
       @if (section()) {
@@ -18,10 +18,10 @@
     </button>
   </mat-toolbar>
 
-  <main p-md w-md fxLayout="column" fxLayoutGap="32px">
+  <main p-md w-md class="np-form-container">
     <!-- Configuration Section -->
-    <div fxLayout="column" fxLayoutGap="12px">
-      <div fxLayout="column" fxLayoutGap="12px">
+    <div class="np-form-section">
+      <div class="np-form-inputs">
         <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
           <mat-label>{{ 'app.title' | translate }}</mat-label>
           <input matInput formControlName="title" />
@@ -59,7 +59,7 @@
           </mat-form-field>
         }
 
-        <div style="margin: 4px 0 12px 0;">
+        <div class="np-form-toggle-wrapper">
           <mat-checkbox formControlName="showAll">
             {{ 'homeSections.showMore' | translate }}
           </mat-checkbox>
@@ -68,13 +68,13 @@
     </div>
 
     <!-- Categories Section -->
-    <div fxLayout="column" fxLayoutGap="12px">
-      <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
+    <div class="np-form-section">
+      <h3 class="np-section-title">
         {{ 'homeSections.categories' | translate }}
       </h3>
       
-      <div fxLayout="column" fxLayoutGap="12px">
-        <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
+      <div class="np-form-inputs">
+        <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
           <mat-label>{{ 'homeSections.selectCategories' | translate }}</mat-label>
           <input
             matInput
@@ -97,19 +97,23 @@
         </mat-form-field>
 
         @if (form.controls.categoryIds.value.length > 0) {
-          <mat-list cdkDropList (cdkDropListDropped)="moveCategory($event)" class="category-list" style="padding: 0;">
+          <div cdkDropList (cdkDropListDropped)="moveCategory($event)" class="np-drag-list">
             @for (categoryId of form.controls.categoryIds.value; track categoryId; let i = $index) {
               @if (getCategoryById(categoryId)) {
-                <mat-list-item cdkDrag style="height: 38px;">
-                  <i matListItemIcon class="fa-solid fa-grip-vertical" cdkDragHandle></i>
-                  <span matListItemTitle>{{ getCategoryById(categoryId)?.title }}</span>
-                  <button mat-icon-button type="button" matListItemMeta (click)="removeCategory(categoryId)">
-                    <i class="fa-regular fa-trash-alt"></i>
+                <div cdkDrag class="np-drag-item" style="justify-content: space-between;">
+                  <div style="display: flex; align-items: center;">
+                    <div class="np-drag-handle" cdkDragHandle>
+                      <ng-icon name="saxRowVerticalOutline"></ng-icon>
+                    </div>
+                    <span>{{ getCategoryById(categoryId)?.title }}</span>
+                  </div>
+                  <button mat-icon-button type="button" (click)="removeCategory(categoryId)">
+                    <ng-icon name="saxTrashOutline"></ng-icon>
                   </button>
-                </mat-list-item>
+                </div>
               }
             }
-          </mat-list>
+          </div>
         } @else {
           <app-empty-state icon="layer-group" [text]="'homeSections.noCategoriesSelected' | translate" />
         }

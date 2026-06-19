@@ -2,7 +2,7 @@
   <form [formGroup]="form">
     <mat-toolbar class="content-toolbar" fxLayout="row" fxLayoutGap="8px">
       <button mat-icon-button goBack type="button">
-        <i class="fa-regular fa-arrow-right"></i>
+        <ng-icon name="saxArrowRight3Bold"></ng-icon>
       </button>
       <h2 fxFlex>
         @if (product()) {
@@ -19,13 +19,13 @@
       </button>
     </mat-toolbar>
     
-    <main p-md w-md fxLayout="column" fxLayoutGap="32px">
+    <main p-md w-md class="np-form-container">
       <!-- Base Section -->
-      <div fxLayout="column" fxLayoutGap="12px">
-        <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
+      <div class="np-form-section">
+        <h3 class="np-section-title">
           {{ 'productEdit.baseSection' | translate }}
         </h3>
-        <div fxLayout="column" fxLayoutGap="12px">
+        <div class="np-form-inputs">
           <mat-form-field appearance="outline">
             <mat-label>{{ 'app.title' | translate }}</mat-label>
             <input matInput formControlName="title" />
@@ -49,7 +49,7 @@
                 <mat-chip-row (removed)="removeSubcategory($index)">
                   {{ subcategory }}
                   <button matChipRemove>
-                    <i class="fa-solid fa-xmark"></i>
+                    <ng-icon name="saxCloseCircleOutline"></ng-icon>
                   </button>
                 </mat-chip-row>
               }
@@ -69,10 +69,10 @@
             </mat-autocomplete>
           </mat-form-field>
 
-          <div style="margin: 4px 0 12px 0;">
-            <mat-checkbox formControlName="hasVariants">
+          <div class="np-form-toggle-wrapper">
+            <mat-slide-toggle formControlName="hasVariants">
               {{ 'productEdit.hasVariants' | translate }}
-            </mat-checkbox>
+            </mat-slide-toggle>
           </div>
 
           @if (!form.value.hasVariants) {
@@ -84,8 +84,8 @@
           }
 
           @if (form.value.hasVariants) {
-            <div fxLayout="column" fxLayoutGap="8px" style="margin-top: 8px; margin-bottom: 8px;">
-              <span style="font-size: 0.85rem; font-weight: 500; color: #424242;">
+            <div class="np-form-section" style="margin-top: 8px; margin-bottom: 8px; gap: 8px !important;">
+              <span class="np-sub-section-title">
                 {{ 'productEdit.variantSection' | translate: { value: '' } }}
               </span>
               
@@ -93,20 +93,20 @@
                 @for (variant of variantsForm.controls; track $index) {
                   <div class="variant-item-card" cdkDrag (click)="editVariant(variant)">
                     <div class="variant-drag-handle" cdkDragHandle (click)="$event.stopPropagation()">
-                      <i class="fa-solid fa-grip-vertical"></i>
+                      <ng-icon name="saxRowVerticalOutline"></ng-icon>
                     </div>
                     <div class="variant-info">
                       <span class="variant-title">{{ variant.value.title }}</span>
                       <span class="variant-price">{{ variant.value.price | number | menuCurrency }}</span>
                     </div>
                     <button type="button" class="variant-delete-btn" (click)="deleteVariant($index); $event.stopPropagation()">
-                      <i class="fa-regular fa-trash-alt"></i>
+                      <ng-icon name="saxTrashOutline"></ng-icon>
                     </button>
                   </div>
                 }
                 
                 <div class="add-variant-box" (click)="editVariant()">
-                  <i class="fa-regular fa-plus"></i>
+                  <ng-icon name="saxAddOutline"></ng-icon>
                   <span>{{ 'app.add' | translate }}</span>
                 </div>
               </div>
@@ -116,11 +116,11 @@
       </div>
 
       <!-- Photo Section -->
-      <div fxLayout="column" fxLayoutGap="12px">
-        <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
+      <div class="np-form-section">
+        <h3 class="np-section-title">
           {{ 'productEdit.photoSection' | translate }}
         </h3>
-        <div fxLayout="column" fxLayoutGap="12px">
+        <div class="np-form-inputs">
           <div class="image-list-container" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="moveImage($event)">
             @for (imageControl of imagesForm.controls; track imageControl.value; let i = $index) {
               <div class="image-thumbnail-container" cdkDrag>
@@ -133,7 +133,7 @@
                   
                   <div class="image-actions-overlay">
                     <button mat-icon-button type="button" class="action-btn delete" (click)="deleteImage(i)">
-                      <i class="fa-regular fa-trash-alt"></i>
+                      <ng-icon name="saxTrashOutline"></ng-icon>
                     </button>
                     @if (i > 0) {
                       <button
@@ -143,7 +143,7 @@
                         matTooltip="{{ 'productEdit.mainImage' | translate }}"
                         (click)="setMainImage(i)"
                       >
-                        <i class="fa-regular fa-star"></i>
+                        <ng-icon name="saxStarOutline"></ng-icon>
                       </button>
                     } @else if (imagesForm.controls.length > 1) {
                       <span class="main-badge">{{ 'productEdit.mainImage' | translate }}</span>
@@ -154,7 +154,7 @@
             }
             
             <div class="add-image-box" (click)="addImage()">
-              <i class="fa-regular fa-plus"></i>
+              <ng-icon name="saxAddOutline"></ng-icon>
               <span>{{ 'app.add' | translate }}</span>
             </div>
           </div>
@@ -162,11 +162,11 @@
       </div>
 
       <!-- Related Products Section -->
-      <div fxLayout="column" fxLayoutGap="12px">
-        <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
+      <div class="np-form-section">
+        <h3 class="np-section-title">
           {{ 'productEdit.relatedProductsSection' | translate }}
         </h3>
-        <div fxLayout="column" fxLayoutGap="12px">
+        <div class="np-form-inputs">
           <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
             <mat-label>{{ 'productEdit.relatedProductsSection' | translate }}</mat-label>
             <mat-chip-grid #relatedChipGrid cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="moveRelatedProduct($event)">
@@ -174,12 +174,12 @@
                 @if (getRelatedProductById(productId)) {
                   <mat-chip-row cdkDrag [removable]="true" (removed)="removeRelatedProduct(productId)">
                     <span style="display: flex; align-items: center; gap: 4px;">
-                      <i class="fa-solid fa-grip-vertical drag-handle" cdkDragHandle style="cursor: move; opacity: 0.5; margin-right: 4px;"></i>
+                      <ng-icon name="saxRowVerticalOutline" class="drag-handle" cdkDragHandle style="cursor: move; opacity: 0.5; margin-right: 4px;"></ng-icon>
                       {{ getRelatedProductById(productId)?.title }}
                       <span style="opacity: 0.7; font-size: 0.8em; margin-right: 4px;">({{ getCategoryForProduct(productId) }})</span>
                     </span>
                     <button matChipRemove>
-                      <i class="fa-solid fa-xmark"></i>
+                      <ng-icon name="saxCloseCircleOutline"></ng-icon>
                     </button>
                   </mat-chip-row>
                 }
@@ -211,16 +211,14 @@
       </div>
 
       <!-- Limitation Section -->
-      <div fxLayout="column" fxLayoutGap="12px">
-        <div fxLayout="column" fxLayoutGap="4px">
-          <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
-            {{ 'productEdit.limitationSection' | translate }}
-          </h3>
-          <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">
-            {{ 'productEdit.limitationDescription' | translate }}
-          </p>
-        </div>
-        <div fxLayout="column" fxLayoutGap="12px">
+      <div class="np-form-section">
+        <h3 class="np-section-title">
+          {{ 'productEdit.limitationSection' | translate }}
+        </h3>
+        <p class="np-section-desc">
+          {{ 'productEdit.limitationDescription' | translate }}
+        </p>
+        <div class="np-form-inputs">
           <mat-form-field appearance="outline">
             <mat-label>{{ 'productEdit.maxBasket' | translate }}</mat-label>
             <input matInput formControlName="maxBasket" type="number" />
@@ -229,16 +227,14 @@
       </div>
 
       <!-- SEO Section -->
-      <div fxLayout="column" fxLayoutGap="12px">
-        <div fxLayout="column" fxLayoutGap="4px">
-          <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
-            {{ 'categoryDialog.slugCardTitle' | translate }}
-          </h3>
-          <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">
-            {{ 'productEdit.slugDescription' | translate }}
-          </p>
-        </div>
-        <div fxLayout="column" fxLayoutGap="12px">
+      <div class="np-form-section">
+        <h3 class="np-section-title">
+          {{ 'categoryDialog.slugCardTitle' | translate }}
+        </h3>
+        <p class="np-section-desc">
+          {{ 'productEdit.slugDescription' | translate }}
+        </p>
+        <div class="np-form-inputs">
           <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
             <mat-label>{{ 'categoryDialog.slug' | translate }}</mat-label>
             <input matInput formControlName="slug" placeholder="my-product" ltr eng />

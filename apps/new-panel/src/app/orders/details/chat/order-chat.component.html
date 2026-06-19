@@ -1,7 +1,7 @@
 <mat-card appearance="outlined" id="container">
   <mat-card-header>
     <mat-card-title>
-      <i class="fa-regular fa-message-lines fa-lg"></i>
+      <ng-icon name="saxMessageOutline"></ng-icon>
       {{ 'chat.title' | translate }}
       @if (query.data()?.length) {
         ({{ query.data()?.length }})
@@ -11,7 +11,7 @@
   <mat-card-actions>
     <button mat-button (click)="sendMessage()">
       {{ 'chat.send' | translate }}
-      <i class="fa-solid fa-paper-plane-top fa-flip-horizontal"></i>
+      <ng-icon name="saxSendOutline" class="fa-flip-horizontal"></ng-icon>
     </button>
   </mat-card-actions>
   <mat-divider />
@@ -40,12 +40,12 @@
           </p>
 
           @if (chat.seen && chat.type === ChatType.Receive) {
-            <i class="fa-solid fa-eye fa-sm outline-text"></i>
+            <ng-icon name="saxEyeOutline" class="fa-sm outline-text"></ng-icon>
           }
 
           @if (chat.type === ChatType.Receive) {
             <button mat-icon-button class="edit-btn" (click)="editMessage(chat)">
-              <i class="fa-regular fa-pen-to-square"></i>
+              <ng-icon name="saxEditOutline"></ng-icon>
             </button>
           }
         </mat-card-content>

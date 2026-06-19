@@ -24,7 +24,7 @@
         ltr
         eng
       />
-      <i matIconSuffix class="fa-regular mat-icon fa-{{ form.controls.faIcon.value }}"></i>
+      <ng-icon matSuffix [name]="getCategoryIcon(form.controls.faIcon.value)" class="mat-icon"></ng-icon>
       <mat-hint>
         {{ 'categoryDialog.iconHint' | translate }}
         <a href="https://fontawesome.com/" target="_blank">fontawesome</a>

@@ -1,6 +1,6 @@
 <div fxLayout="column" fxLayoutAlign="center center" p-md fxLayoutGap="16px" w-xs class="container">
   @if (icon()) {
-    <i class="icon fa-duotone fa-{{ icon() }}"></i>
+    <ng-icon [name]="getIconName(icon())" class="icon"></ng-icon>
   }
   @if (typeof text() === 'string') {
     <p>{{ text() }}</p>
@@ -14,7 +14,7 @@
   @if (action()) {
     <button mat-flat-button color="primary" (click)="actionClick.emit()">
       @if (action()?.icon) {
-        <i class="fa-regular fa-{{ action()?.icon }}"></i>
+        <ng-icon [name]="getIconName(action()?.icon)" style="margin-inline-end: 4px; vertical-align: middle;"></ng-icon>
       }
       {{ action()?.label }}
     </button>

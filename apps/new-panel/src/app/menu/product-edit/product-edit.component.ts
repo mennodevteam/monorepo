@@ -11,7 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {
   AbstractControl,
   FormArray,
@@ -54,7 +54,7 @@ import { startWith } from 'rxjs';
     CdkDrag,
     MatTooltipModule,
     CdkDragHandle,
-    MatCheckboxModule,
+    MatSlideToggleModule,
   ],
   templateUrl: './product-edit.component.html',
   styleUrl: './product-edit.component.scss',

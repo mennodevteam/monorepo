@@ -117,7 +117,7 @@ export class ShellComponent {
   
   isSmallScreen = signal(false);
   isDrawerClose = signal(false);
-  collapse = signal<{ [key: string]: boolean }>({ settings: true });
+  collapse = signal<{ [key: string]: boolean }>({ settings: true, ai: true });
 
   isBigDataPage(): boolean {
     const url = this.router.url;

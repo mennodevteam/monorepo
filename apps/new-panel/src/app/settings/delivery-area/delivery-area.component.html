@@ -1,10 +1,10 @@
 <mat-toolbar class="content-toolbar" fxLayoutGap="8px">
   <button mat-icon-button goBack>
-    <i class="fa-regular fa-arrow-right"></i>
+    <ng-icon name="saxArrowRight3Bold"></ng-icon>
   </button>
   <h1 fxFlex>{{ 'deliveryArea.pageTitle' | translate }}</h1>
   <button mat-button (click)="onAddNewArea()">
-    <i class="fa-solid fa-plus"></i>
+    <ng-icon name="saxAddOutline"></ng-icon>
     {{ 'deliveryArea.addNewArea' | translate }}
   </button>
   <button
@@ -12,7 +12,7 @@
     (click)="openDeliveryTypeDialog()"
     [matTooltip]="'deliveryTypeDialog.title' | translate"
   >
-    <i class="fa-solid fa-gear"></i>
+    <ng-icon name="saxSetting2Outline"></ng-icon>
   </button>
 </mat-toolbar>
 

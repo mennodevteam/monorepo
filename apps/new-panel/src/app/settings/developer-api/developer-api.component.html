@@ -1,21 +1,21 @@
 <mat-toolbar class="content-toolbar">
   <button mat-icon-button goBack type="button">
-    <i class="fa-regular fa-arrow-right"></i>
+    <ng-icon name="saxArrowRight3Bold"></ng-icon>
   </button>
   <h2>{{ 'settings.developerApi' | translate }}</h2>
   <span fxFlex></span>
   <button mat-flat-button color="primary" (click)="generateNewKey()">
-    <i class="fa-regular fa-plus"></i>
+    <ng-icon name="saxAddOutline"></ng-icon>
     ساخت کلید دسترسی جدید
   </button>
 </mat-toolbar>
 
-<main p-md w-md class="np-ai-page" style="display: flex; flex-direction: column; gap: 32px;">
+<main p-md w-md class="np-ai-page np-form-container">
   <!-- Introduction & Gemini Integration Card -->
   <mat-card appearance="outlined">
     <mat-card-header>
-      <mat-card-title style="color: var(--np-ai-accent); font-weight: 500;">
-        <i class="fa-regular fa-sparkles" style="margin-inline-end: 8px;"></i>
+      <mat-card-title class="np-sub-section-title" style="color: var(--np-ai-accent) !important;">
+        <ng-icon name="saxMagicpenOutline" style="margin-inline-end: 8px;"></ng-icon>
         اتصال به هوش مصنوعی (Gemini Spark)
       </mat-card-title>
       <mat-card-subtitle>
@@ -23,13 +23,13 @@
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content style="padding-top: 16px;">
-      <p style="line-height: 1.8; color: var(--text-secondary); font-size: 0.875rem;">
+      <p style="line-height: 1.8; color: var(--text-secondary); font-size: 0.8125rem;">
         شما می‌توانید با استفاده از پروتکل OpenAPI و کلیدهای دسترسی (API Keys)، مجموعه‌ای از ابزارها و هوش مصنوعی‌ها مانند <strong>Gemini Spark</strong> را به فروشگاه خود متصل کنید. پس از اتصال، هوش مصنوعی می‌تواند طبق دسترسی‌های مشخص شده، اطلاعات سفارش‌ها، منو و گزارش‌های فروش را بخواند یا ویرایش کند.
       </p>
 
       <div style="margin-top: 24px; padding: 16px; background-color: var(--bg-secondary); border-radius: 8px; border: 1px solid var(--border-color);">
-        <h4 style="margin: 0 0 12px 0; font-weight: 500; font-size: 0.875rem;">آدرس مشخصات API (OpenAPI Specification URL)</h4>
-        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px" style="direction: ltr;">
+        <h4 style="margin: 0 0 12px 0; font-weight: 500; font-size: 0.8125rem; color: var(--text-primary);">آدرس مشخصات API (OpenAPI Specification URL)</h4>
+        <div class="np-form-row" style="direction: ltr; align-items: center !important;">
           <input
             matInput
             readonly
@@ -40,9 +40,9 @@
             mat-stroked-button
             [copyClipboard]="openApiUrl"
             (copied)="copyToClipboardSuccess()"
-            style="font-family: 'Estedad'; font-size: 0.8125rem; height: 36px;"
+            style="font-family: 'Estedad'; font-size: 0.8125rem; height: 36px; flex: 0 0 auto !important; min-width: auto !important;"
           >
-            <i class="fa-regular fa-copy" style="margin-inline-end: 4px;"></i>
+            <ng-icon name="saxCopyOutline" style="margin-inline-end: 4px;"></ng-icon>
             کپی لینک
           </button>
         </div>
@@ -52,8 +52,8 @@
       </div>
 
       <div style="margin-top: 20px;">
-        <h4 style="margin: 0 0 8px 0; font-weight: 500; font-size: 0.875rem;">مراحل راه‌اندازی در پنل هوش مصنوعی:</h4>
-        <ol style="margin: 0; padding-inline-start: 20px; line-height: 1.8; color: var(--text-secondary); font-size: 0.8125rem;">
+        <h4 style="margin: 0 0 8px 0; font-weight: 500; font-size: 0.8125rem; color: var(--text-primary);">مراحل راه‌اندازی در پنل هوش مصنوعی:</h4>
+        <ol style="margin: 0; padding-inline-start: 20px; line-height: 1.8; color: var(--text-secondary); font-size: 0.78rem;">
           <li>ابتدا یک کلید دسترسی (API Key) جدید با دسترسی‌های مورد نیاز در انتهای همین صفحه بسازید.</li>
           <li>لینک مشخصات OpenAPI بالا را در بخش پیکربندی هوش مصنوعی وارد کنید.</li>
           <li>نوع احراز هویت (Authentication) را روی <strong>API Key</strong> و در هدر (Header) با نام <strong>X-Shop-API-Key</strong> تنظیم کنید.</li>
@@ -70,7 +70,7 @@
         کلید زیر را کپی کرده و در جایی امن ذخیره کنید. این کلید برای امنیت حساب شما <strong>دیگر نمایش داده نخواهد شد.</strong>
       </p>
       
-      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px" style="direction: ltr; margin-bottom: 16px;">
+      <div class="np-form-row" style="direction: ltr; margin-bottom: 16px; align-items: center !important;">
         <input
           matInput
           readonly
@@ -82,9 +82,9 @@
           color="primary"
           [copyClipboard]="newGeneratedKey() || ''"
           (copied)="copyToClipboardSuccess()"
-          style="font-family: 'Estedad'; height: 44px;"
+          style="font-family: 'Estedad'; height: 44px; flex: 0 0 auto !important; min-width: auto !important;"
         >
-          <i class="fa-regular fa-copy" style="margin-inline-end: 4px;"></i>
+          <ng-icon name="saxCopyOutline" style="margin-inline-end: 4px;"></ng-icon>
           کپی کلید
         </button>
       </div>
@@ -117,13 +117,13 @@
           (actionClick)="generateNewKey()"
         />
       } @else {
-        <div style="overflow-x: auto;">
-          <table mat-table [dataSource]="apiKeys()" style="width: 100%; direction: rtl;">
+        <div class="invoices-table-container">
+          <table mat-table [dataSource]="apiKeys()" class="np-table" style="direction: rtl;">
             
             <!-- Description Column -->
             <ng-container matColumnDef="description">
-              <th mat-header-cell *matHeaderCellDef style="text-align: right; font-weight: 600; padding: 12px 8px;">توضیحات کلید</th>
-              <td mat-cell *matCellDef="let key" style="text-align: right; padding: 12px 8px;">
+              <th mat-header-cell *matHeaderCellDef>توضیحات کلید</th>
+              <td mat-cell *matCellDef="let key">
                 <div style="font-weight: 500; color: var(--text-primary);">{{ key.description }}</div>
                 <div style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace; direction: ltr; text-align: right; margin-top: 4px;">{{ key.keyHint }}</div>
               </td>
@@ -131,8 +131,8 @@
 
             <!-- Scopes Column -->
             <ng-container matColumnDef="scopes">
-              <th mat-header-cell *matHeaderCellDef style="text-align: right; font-weight: 600; padding: 12px 8px;">دسترسی‌ها</th>
-              <td mat-cell *matCellDef="let key" style="text-align: right; padding: 12px 8px;">
+              <th mat-header-cell *matHeaderCellDef>دسترسی‌ها</th>
+              <td mat-cell *matCellDef="let key">
                 <mat-chip-listbox aria-label="Permissions" style="display: inline-flex; flex-wrap: wrap; gap: 4px;">
                   @for (scope of key.scopes; track scope) {
                     <mat-chip-option
@@ -150,16 +150,16 @@
 
             <!-- Created At Column -->
             <ng-container matColumnDef="createdAt">
-              <th mat-header-cell *matHeaderCellDef style="text-align: right; font-weight: 600; padding: 12px 8px;">تاریخ ساخت</th>
-              <td mat-cell *matCellDef="let key" style="text-align: right; padding: 12px 8px; font-size: 0.8125rem; color: var(--text-secondary);">
+              <th mat-header-cell *matHeaderCellDef>تاریخ ساخت</th>
+              <td mat-cell *matCellDef="let key" style="font-size: 0.8125rem; color: var(--text-secondary);">
                 {{ key.createdAt | pdate: true }}
               </td>
             </ng-container>
 
             <!-- Last Used Column -->
             <ng-container matColumnDef="lastUsedAt">
-              <th mat-header-cell *matHeaderCellDef style="text-align: right; font-weight: 600; padding: 12px 8px;">آخرین استفاده</th>
-              <td mat-cell *matCellDef="let key" style="text-align: right; padding: 12px 8px; font-size: 0.8125rem; color: var(--text-secondary);">
+              <th mat-header-cell *matHeaderCellDef>آخرین استفاده</th>
+              <td mat-cell *matCellDef="let key" style="font-size: 0.8125rem; color: var(--text-secondary);">
                 @if (key.lastUsedAt) {
                   {{ key.lastUsedAt | pdate: true }}
                 } @else {
@@ -170,15 +170,15 @@
 
             <!-- Actions Column -->
             <ng-container matColumnDef="actions">
-              <th mat-header-cell *matHeaderCellDef style="text-align: center; font-weight: 600; padding: 12px 8px; width: 60px;">عملیات</th>
-              <td mat-cell *matCellDef="let key" style="text-align: center; padding: 12px 8px;">
+              <th mat-header-cell *matHeaderCellDef class="col-actions-sm" style="text-align: center !important;">عملیات</th>
+              <td mat-cell *matCellDef="let key" style="text-align: center !important;">
                 <button
                   mat-icon-button
                   color="warn"
                   (click)="deleteKey(key)"
                   matTooltip="حذف کلید (غیرفعال کردن)"
                 >
-                  <i class="fa-regular fa-trash"></i>
+                  <ng-icon name="saxTrashOutline"></ng-icon>
                 </button>
               </td>
             </ng-container>

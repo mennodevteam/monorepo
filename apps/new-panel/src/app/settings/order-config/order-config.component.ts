@@ -8,7 +8,7 @@ import { PersianNumberService } from '@menno/utils';
 import { SHARED } from '../../shared';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { FormComponent } from '../../core/guards/dirty-form-deactivator.guard';
@@ -23,7 +23,7 @@ import { FormComponent } from '../../core/guards/dirty-form-deactivator.guard';
     MatCardModule,
     MatToolbarModule,
     ReactiveFormsModule,
-    MatButtonToggleModule,
+    MatSlideToggleModule,
     MatSelectModule,
     MatInputModule,
     MatChipsModule,

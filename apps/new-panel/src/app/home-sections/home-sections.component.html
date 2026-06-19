@@ -1,11 +1,11 @@
 <mat-toolbar class="content-toolbar" fxLayout="row" fxLayoutGap="8px">
   <h1 fxFlex>{{ 'homeSections.title' | translate }}</h1>
   <button mat-stroked-button (click)="openSortDialog()">
-    <i class="fa-regular fa-sort"></i>
+    <ng-icon name="saxSortOutline"></ng-icon>
     {{ 'app.sort' | translate }}
   </button>
   <button mat-stroked-button [matMenuTriggerFor]="addMenu">
-    <i class="fa-regular fa-plus"></i>
+    <ng-icon name="saxAddOutline"></ng-icon>
     {{ 'app.add' | translate }}
   </button>
   <mat-menu #addMenu="matMenu">
@@ -23,61 +23,59 @@
 
 <main p-md>
   @if (sections().length > 0) {
-    <mat-card appearance="outlined">
-      <mat-card-content>
-        <table mat-table [dataSource]="sections()">
-          <ng-container matColumnDef="index">
-            <th mat-header-cell *matHeaderCellDef>{{ 'app.index' | translate }}</th>
-            <td mat-cell *matCellDef="let section; let i = index" style="width: 72px">
-              <span eng>{{ i + 1 }}</span>
-            </td>
-          </ng-container>
+    <div class="invoices-table-container">
+      <table mat-table [dataSource]="sections()" class="np-table">
+        <ng-container matColumnDef="index">
+          <th mat-header-cell *matHeaderCellDef class="col-index">{{ 'app.index' | translate }}</th>
+          <td mat-cell *matCellDef="let section; let i = index">
+            <span eng>{{ i + 1 }}</span>
+          </td>
+        </ng-container>
 
-          <ng-container matColumnDef="type">
-            <th mat-header-cell *matHeaderCellDef>{{ 'homeSections.type' | translate }}</th>
-            <td mat-cell *matCellDef="let section">
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>{{ 'homeSections.type' | translate }}</th>
+          <td mat-cell *matCellDef="let section">
+            {{ getSectionTitle(section) }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>{{ 'homeSections.title' | translate }}</th>
+          <td mat-cell *matCellDef="let section">
+            @if (section.type === HomeSectionType.ProductList || section.type === HomeSectionType.CategoryList) {
               {{ getSectionTitle(section) }}
-            </td>
-          </ng-container>
+            } @else {
+              -
+            }
+          </td>
+        </ng-container>
 
-          <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef>{{ 'homeSections.title' | translate }}</th>
-            <td mat-cell *matCellDef="let section">
-              @if (section.type === HomeSectionType.ProductList || section.type === HomeSectionType.CategoryList) {
-                {{ getSectionTitle(section) }}
-              } @else {
-                -
-              }
-            </td>
-          </ng-container>
+        <ng-container matColumnDef="visible">
+          <th mat-header-cell *matHeaderCellDef>{{ 'homeSections.visible' | translate }}</th>
+          <td mat-cell *matCellDef="let section">
+            <mat-slide-toggle
+              [checked]="section.isVisible"
+              (change)="toggleVisibility(section)"
+            ></mat-slide-toggle>
+          </td>
+        </ng-container>
 
-          <ng-container matColumnDef="visible">
-            <th mat-header-cell *matHeaderCellDef>{{ 'homeSections.visible' | translate }}</th>
-            <td mat-cell *matCellDef="let section">
-              <mat-slide-toggle
-                [checked]="section.isVisible"
-                (change)="toggleVisibility(section)"
-              ></mat-slide-toggle>
-            </td>
-          </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="col-actions-sm"></th>
+          <td mat-cell *matCellDef="let section">
+            <button mat-icon-button (click)="editSection(section)">
+              <ng-icon name="saxEditOutline"></ng-icon>
+            </button>
+            <button mat-icon-button (click)="deleteSection(section)">
+              <ng-icon name="saxTrashOutline"></ng-icon>
+            </button>
+          </td>
+        </ng-container>
 
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let section" style="width: 128px">
-              <button mat-icon-button (click)="editSection(section)">
-                <i class="fa-regular fa-edit fa-xs"></i>
-              </button>
-              <button mat-icon-button (click)="deleteSection(section)">
-                <i class="fa-regular fa-trash-alt fa-xs"></i>
-              </button>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        </table>
-      </mat-card-content>
-    </mat-card>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
   } @else {
     <app-empty-state
       icon="layer-group"

@@ -1,6 +1,6 @@
 <mat-toolbar class="content-toolbar" fxLayoutGap="8px">
   <button mat-icon-button goBack type="button">
-    <i class="fa-regular fa-arrow-right"></i>
+    <ng-icon name="saxArrowRight3Bold"></ng-icon>
   </button>
   <h1 fxFlex>{{ 'settings.welcomeMessage' | translate }}</h1>
   <button mat-flat-button (click)="save()" [disabled]="!form.dirty || saveMutation.isPending()">
@@ -9,21 +9,21 @@
 </mat-toolbar>
 
 <form [formGroup]="form">
-  <main p-md w-md fxLayout="column" fxLayoutGap="32px">
+  <main p-md w-md class="np-form-container">
     <!-- Welcome Message Section -->
-    <div fxLayout="column" fxLayoutGap="12px">
-      <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
+    <div class="np-form-section">
+      <h3 class="np-section-title">
         {{ 'welcomeMessage.titleSection' | translate }}
       </h3>
-      <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">
+      <p class="np-section-desc">
         {{ 'welcomeMessage.titleDescription' | translate }}
       </p>
 
-      <div fxLayout="column" fxLayoutGap="12px">
-        <div style="margin: 4px 0 12px 0;">
-          <mat-checkbox formControlName="enabled">
+      <div class="np-form-inputs">
+        <div class="np-form-toggle-wrapper">
+          <mat-slide-toggle formControlName="enabled">
             {{ 'welcomeMessage.enabled' | translate }}
-          </mat-checkbox>
+          </mat-slide-toggle>
         </div>
 
         <mat-form-field appearance="outline">

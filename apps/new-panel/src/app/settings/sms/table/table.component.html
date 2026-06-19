@@ -32,13 +32,13 @@
       <mat-chip class="status_{{ message.status }}" [matMenuTriggerFor]="menu">
         @switch (message.status) {
           @case (Status.Active) {
-            <i class="fa-regular fa-check-circle middle"></i>
+            <ng-icon name="saxTickCircleOutline"></ng-icon>
           }
           @case (Status.Inactive) {
-            <i class="fa-regular fa-xmark-circle middle"></i>
+            <ng-icon name="saxCloseCircleOutline"></ng-icon>
           }
           @case (Status.Active) {
-            <i class="fa-regular fa-check middle"></i>
+            <ng-icon name="saxTickCircleOutline"></ng-icon>
           }
         }
         {{ 'orderMessagesSetting.status.' + message.status | translate }}
@@ -50,7 +50,7 @@
           (click)="statusChange.emit({ message, status: Status.Active })"
           [disabled]="message.status === Status.Active"
         >
-          <i class="fa-regular fa-check-circle middle"></i>
+          <ng-icon name="saxTickCircleOutline"></ng-icon>
           {{ 'orderMessagesSetting.status.' + Status.Active | translate }}
         </button>
         <button
@@ -58,7 +58,7 @@
           (click)="statusChange.emit({ message, status: Status.Pending })"
           [disabled]="message.status === Status.Pending"
         >
-          <i class="fa-regular fa-check middle"></i>
+          <ng-icon name="saxTickCircleOutline"></ng-icon>
           {{ 'orderMessagesSetting.status.' + Status.Pending | translate }}
         </button>
         <button
@@ -66,7 +66,7 @@
           (click)="statusChange.emit({ message, status: Status.Inactive })"
           [disabled]="message.status === Status.Inactive"
         >
-          <i class="fa-regular fa-xmark-circle middle"></i>
+          <ng-icon name="saxCloseCircleOutline"></ng-icon>
           {{ 'orderMessagesSetting.status.' + Status.Inactive | translate }}
         </button>
       </mat-menu>
@@ -77,10 +77,10 @@
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let message" style="width: 128px">
       <button mat-icon-button (click)="editClick.emit(message)">
-        <i class="fa-regular fa-edit"></i>
+        <ng-icon name="saxEditOutline"></ng-icon>
       </button>
       <button mat-icon-button>
-        <i class="fa-regular fa-trash-alt"></i>
+        <ng-icon name="saxTrashOutline"></ng-icon>
       </button>
     </td>
   </ng-container>

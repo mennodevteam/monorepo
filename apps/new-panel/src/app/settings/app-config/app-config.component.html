@@ -1,6 +1,6 @@
 <mat-toolbar class="content-toolbar" fxLayoutGap="8px">
   <button mat-icon-button goBack type="button">
-    <i class="fa-regular fa-arrow-right"></i>
+    <ng-icon name="saxArrowRight3Bold"></ng-icon>
   </button>
   <h1 fxFlex>{{ 'settings.appConfig' | translate }}</h1>
   <button mat-stroked-button (click)="openApp()">
@@ -12,22 +12,22 @@
 </mat-toolbar>
 
 <form [formGroup]="form">
-  <main p-md w-md fxLayout="column" fxLayoutGap="32px">
+  <main p-md w-md class="np-form-container">
     <!-- Theme Section -->
-    <div fxLayout="column" fxLayoutGap="12px">
-      <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
+    <div class="np-form-section">
+      <h3 class="np-section-title">
         {{ 'appConfig.themeSection' | translate }}
       </h3>
-      <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">
+      <p class="np-section-desc">
         {{ 'appConfig.themeSectionDescription' | translate }}
       </p>
-      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
-        <input formControlName="themeHex" type="color" style="border: none; width: 48px; height: 48px; cursor: pointer; border-radius: 4px;" />
+      <div class="np-form-row" style="align-items: center !important; gap: 16px !important;">
+        <input formControlName="themeHex" type="color" class="np-color-input" style="flex: 0 0 auto !important; min-width: auto !important;" />
         <span>{{ 'appConfig.theme' | translate }}</span>
       </div>
       
-      <h5 style="margin-top: 16px; margin-bottom: 8px;">{{ 'appConfig.themeMode' | translate }}</h5>
-      <mat-radio-group formControlName="themeMode" fxLayout="column" fxLayoutGap="8px">
+      <h5 class="np-sub-section-title" style="margin-top: 16px !important; margin-bottom: 8px !important;">{{ 'appConfig.themeMode' | translate }}</h5>
+      <mat-radio-group formControlName="themeMode" class="np-form-inputs" style="gap: 8px !important;">
         <mat-radio-button [value]="ThemeMode.Dark">
           {{ 'appConfig.themeModeDark' | translate }}
         </mat-radio-button>

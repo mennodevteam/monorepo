@@ -100,29 +100,29 @@ export class ShopService {
     const category = this.data()?.businessCategory || BusinessCategory.Cafe;
     switch (category) {
       case BusinessCategory.Cafe:
-        return 'mug-hot';
+        return 'saxCoffeeOutline';
       case BusinessCategory.Restaurant:
-        return 'utensils';
+        return 'saxCupOutline';
       case BusinessCategory.CafeRestaurant:
-        return 'mug-hot';
+        return 'saxCoffeeOutline';
       case BusinessCategory.Protein:
-        return 'dumbbell';
+        return 'saxActivityOutline';
       case BusinessCategory.Confectionary:
-        return 'cookie';
+        return 'saxCakeOutline';
       case BusinessCategory.GameCafe:
-        return 'gamepad';
+        return 'saxGameOutline';
       case BusinessCategory.JuiceAndIceCream:
-        return 'ice-cream';
+        return 'saxCupOutline';
       case BusinessCategory.Herbal:
-        return 'leaf';
+        return 'saxAwardOutline';
       case BusinessCategory.Nuts:
-        return 'seedling';
+        return 'saxAwardOutline';
       case BusinessCategory.Fruits:
-        return 'apple-whole';
+        return 'saxCupOutline';
       case BusinessCategory.Other:
-        return 'store';
+        return 'saxShopOutline';
       default:
-        return 'store';
+        return 'saxShopOutline';
     }
   });
 

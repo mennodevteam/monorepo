@@ -1,11 +1,3 @@
-@use '../public/fonts/fontawesome/scss/fontawesome.scss';
-
-@use '../public/fonts/fontawesome/scss/regular.scss';
-@use '../public/fonts/fontawesome/scss/brands.scss';
-@use '../public/fonts/fontawesome/scss/solid.scss';
-@use '../public/fonts/fontawesome/scss/light.scss';
-@use '../public/fonts/fontawesome/scss/thin.scss';
-@use '../public/fonts/fontawesome/scss/duotone.scss';
 @use '@angular/material' as mat;
 @use 'theme' as theme;
 
@@ -767,15 +759,7 @@ button, a {
   }
 }
 
-// Global FontAwesome Icons Override to load Thin/Light weights
-.fa-regular,
-.fa-solid,
-.fa-light,
-.fa-thin,
-i[class*="fa-"] {
-  font-family: 'Font Awesome 6 Pro', 'Font Awesome 6 Free', sans-serif !important;
-  font-weight: 300 !important; /* Forces FontAwesome to render the thin, light outline style */
-}
+
 
 // Style Angular Material Form Fields with smooth light gray background
 .mat-mdc-text-field-wrapper {
@@ -875,5 +859,221 @@ select {
   &.cyan { background-color: #ecfeff !important; color: #0891b2 !important; }
   &.ai { background-color: color-mix(in srgb, var(--np-ai-accent) 15%, transparent) !important; color: var(--np-ai-accent) !important; }
 }
+
+/* ==========================================================================
+   Design System Layout and Typography Classes
+   ========================================================================== */
+.np-section-title {
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+  color: var(--text-primary) !important;
+  margin: 0 0 4px 0 !important;
+}
+
+.np-section-desc {
+  font-size: 0.78rem !important;
+  font-weight: 300 !important;
+  color: var(--text-secondary) !important;
+  margin: 0 0 12px 0 !important;
+}
+
+.np-sub-section-title {
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+  color: var(--text-secondary) !important;
+}
+
+.np-form-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 32px !important;
+}
+
+.np-form-section {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+}
+
+.np-form-inputs {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+}
+
+.np-form-row {
+  display: flex !important;
+  flex-flow: row wrap !important;
+  gap: 16px !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+
+  > * {
+    flex: 1 1 0% !important;
+    min-width: 200px !important;
+  }
+}
+
+.np-form-toggle-wrapper {
+  margin: 8px 0 16px 0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.np-action-btn-wrapper {
+  margin-top: 8px !important;
+  align-self: flex-start !important;
+}
+
+.np-drag-list {
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+
+.np-drag-item {
+  display: flex !important;
+  align-items: center !important;
+  padding: 8px 12px !important;
+  background: #ffffff !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 8px !important;
+}
+
+.np-drag-handle {
+  cursor: grab !important;
+  opacity: 0.5 !important;
+  margin-inline-end: 8px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.np-image-preview-container {
+  max-height: 200px !important;
+  max-width: 200px !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  position: relative !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.np-image-preview-remove {
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  z-index: 2 !important;
+}
+
+.np-image-preview-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.np-color-input {
+  border: none !important;
+  width: 48px !important;
+  height: 48px !important;
+  cursor: pointer !important;
+  border-radius: 8px !important;
+  outline: none !important;
+  background: transparent !important;
+}
+
+.col-index {
+  width: 72px !important;
+}
+
+.col-actions-sm {
+  width: 128px !important;
+}
+
+.col-actions-md {
+  width: 148px !important;
+}
+
+.col-amount {
+  width: 180px !important;
+}
+
+.np-table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+}
+
+.np-hide-mobile {
+  @media (max-width: 768px) {
+    display: none !important;
+  }
+}
+
+.np-hide-desktop {
+  @media (min-width: 769px) {
+    display: none !important;
+  }
+}
+
+/* Onboarding, promo and alerts integration */
+.promo-card {
+  border-color: var(--mat-sys-outline-variant) !important;
+  background-color: var(--mat-sys-surface-container-lowest) !important;
+  margin-bottom: 24px !important;
+  border-radius: 12px !important;
+  border-right: 4px solid var(--mat-sys-primary) !important;
+  
+  .np-icon-badge {
+    align-self: center !important;
+  }
+
+  &.blue {
+    border-right: 4px solid #2563eb !important;
+    .np-icon-badge { background-color: #eff6ff !important; color: #2563eb !important; }
+  }
+  &.orange {
+    border-right: 4px solid #ea580c !important;
+    .np-icon-badge { background-color: #fff7ed !important; color: #ea580c !important; }
+  }
+  &.green {
+    border-right: 4px solid #16a34a !important;
+    .np-icon-badge { background-color: #f0fdf4 !important; color: #16a34a !important; }
+  }
+  &.violet {
+    border-right: 4px solid #9333ea !important;
+    .np-icon-badge { background-color: #faf5ff !important; color: #9333ea !important; }
+  }
+  &.ai {
+    border-right: 4px solid var(--np-ai-accent) !important;
+    .np-icon-badge { background-color: color-mix(in srgb, var(--np-ai-accent) 15%, transparent) !important; color: var(--np-ai-accent) !important; }
+  }
+  a {
+    color: var(--mat-sys-primary) !important;
+    text-decoration: underline !important;
+    text-underline-offset: 4px;
+    font-weight: 500;
+    
+    &:hover {
+      opacity: 0.8;
+      text-decoration: underline !important;
+    }
+  }
+}
+
+// Spacing adjustments for pages with a promo banner directly at the top
+.content-toolbar:has(+ main > .promo-card:first-child),
+.content-toolbar:has(+ div > .promo-card:first-child),
+.content-toolbar:has(+ main > :first-child.promo-card),
+.content-toolbar:has(+ div > :first-child.promo-card) {
+  margin-block-end: 8px !important;
+}
+
+main[p-md]:has(> .promo-card:first-child),
+div[p-md]:has(> .promo-card:first-child),
+main[p-md]:has(> :first-child.promo-card),
+div[p-md]:has(> :first-child.promo-card) {
+  padding-top: 0 !important;
+}
+
 
 

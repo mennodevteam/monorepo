@@ -11,20 +11,20 @@
   <mat-card-content>
     <mat-nav-list>
       <a mat-list-item [href]="shopService.appLink()" target="_blank">
-        <i matListItemIcon class="fa-solid fa-link"></i>
+        <ng-icon name="saxLinkOutline" matListItemIcon></ng-icon>
         <span matListItemTitle>{{ 'home.shopInfo.appLink' | translate }}</span>
         <span matListItemMeta>{{ shopService.appLink() }}</span>
       </a>
       <a mat-list-item>
-        <i matListItemIcon class="fa-solid fa-sms"></i>
+        <ng-icon name="saxMessageOutline" matListItemIcon></ng-icon>
         <span matListItemTitle>{{ 'home.shopInfo.sendAppLink' | translate }}</span>
       </a>
       <a mat-list-item [routerLink]="['/settings/app-config']">
-        <i matListItemIcon class="fa-solid fa-palette"></i>
+        <ng-icon name="saxColorfilterOutline" matListItemIcon></ng-icon>
         <span matListItemTitle>{{ 'home.shopInfo.designConfig' | translate }}</span>
       </a>
       <a mat-list-item>
-        <i matListItemIcon class="fa-solid fa-gear"></i>
+        <ng-icon name="saxSetting2Outline" matListItemIcon></ng-icon>
         <span matListItemTitle>{{ 'home.shopInfo.orderConfig' | translate }}</span>
       </a>
     </mat-nav-list>

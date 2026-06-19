@@ -1,6 +1,6 @@
 <mat-toolbar class="content-toolbar" fxLayoutGap="8px">
   <button mat-icon-button goBack>
-    <i class="fa-regular fa-arrow-right"></i>
+    <ng-icon name="saxArrowRight3Bold"></ng-icon>
   </button>
   @if (order()) {
     <h4 fxHide.lt-sm>{{ order()?.createdAt | pdate: true }}</h4>
@@ -18,10 +18,10 @@
       </button>
     }
     <button mat-icon-button routerLink="../../edit/{{ orderId() }}">
-      <i class="fa-regular fa-edit"></i>
+      <ng-icon name="saxEditOutline"></ng-icon>
     </button>
     <button mat-icon-button [matMenuTriggerFor]="printMenu">
-      <i class="fa-regular fa-print"></i>
+      <ng-icon name="saxPrinterOutline"></ng-icon>
     </button>
     <mat-menu #printMenu="matMenu">
       <button mat-menu-item (click)="printOrder('customer')">
@@ -32,7 +32,7 @@
       </button>
     </mat-menu>
     <button mat-icon-button>
-      <i class="fa-regular fa-trash-alt"></i>
+      <ng-icon name="saxTrashOutline"></ng-icon>
     </button>
   }
 </mat-toolbar>
@@ -57,7 +57,7 @@
       <mat-card appearance="outlined">
         <mat-card-header>
           <mat-card-title>
-            <i class="fa-solid fa-user middle"></i>
+            <ng-icon name="saxUserOutline"></ng-icon>
             {{ 'order.customer' | translate }}
           </mat-card-title>
         </mat-card-header>
@@ -75,17 +75,17 @@
           <mat-card-title>
             @switch (order()?.type) {
               @case (OrderType.DineIn) {
-                <i class="fa-solid middle fa-mug-hot"></i>
+                <ng-icon name="saxCoffeeOutline"></ng-icon>
               }
               @case (OrderType.Delivery) {
                 @if (order()?.address?.deliveryArea?.isPost) {
-                  <i class="fa-solid middle fa-truck-fast"></i>
+                  <ng-icon name="saxTruckFastOutline"></ng-icon>
                 } @else {
-                  <i class="fa-solid middle fa-moped"></i>
+                  <ng-icon name="saxTruckOutline"></ng-icon>
                 }
               }
               @case (OrderType.Takeaway) {
-                <i class="fa-solid middle fa-cart-shopping"></i>
+                <ng-icon name="saxShoppingCartOutline"></ng-icon>
               }
             }
             {{ 'order.type.' + order()?.type | translate }}

@@ -1,15 +1,12 @@
 @let isProfitEstimate =
   query.data() && query.data().avgOrdersHaveMaterialCost > 0 && query.data().avgOrdersHaveMaterialCost < 1;
 <ng-template #profitEstimateIcon>
-  <i
-    class="fas fa-exclamation-triangle text-warning"
-    [matTooltip]="
+  <ng-icon name="saxDangerOutline" class="text-warning" [matTooltip]="
       'dashboard.profitEstimateTooltip'
         | translate: { percentage: query.data().avgOrdersHaveMaterialCost * 100 | number: '1.0-0' }
     "
     matTooltipPosition="above"
-    style="font-size: 12px; margin-right: 4px"
-  ></i>
+    style="font-size: 12px; margin-right: 4px"></ng-icon>
 </ng-template>
 <mat-card appearance="outlined">
   <mat-card-header>

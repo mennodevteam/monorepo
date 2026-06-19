@@ -174,7 +174,7 @@
   "nav": {
     "home": "خانه",
     "products": "مدیریت {{value}}",
-    "productAvailability": "موجودی محصولات",
+    "productAvailability": "وضعیت موجودی محصولات",
     "categories": "دسته‌بندی‌ {{value}}",
     "costs": "هزینه‌های اضافی و تخفیف",
     "pricing": "قیمت‌گذاری {{value}}",
@@ -189,12 +189,15 @@
     "reports": "گزارشات",
     "dashboard": "داشبورد عملکرد فروش",
     "analytics": "آنالیتیکس",
-    "materials": "انبار مواد اولیه",
-    "bom": "مواد اولیه {{value}}",
+    "materials": "مواد اولیه",
+    "bom": "فرمول ساخت {{value}}",
     "sms": "گزارش پیامک‌های ارسالی",
-    "aiExport": "خروجی داده برای هوش مصنوعی",
-    "homeSections": "بخش‌های صفحه اصلی",
-    "developerApi": "تنظیمات API و هوش مصنوعی"
+    "aiSection": "هوش مصنوعی",
+    "aiChatHistory": "تاریخچه گفتگو",
+    "aiExport": "خروجی داده",
+    "aiChatbot": "تنظیمات چت‌بات",
+    "developerApi": "تنظیمات کلید API",
+    "homeSections": "بخش‌های صفحه اصلی"
   },
   "aiChatHistory": {
     "title": "تاریخچهٔ چت هوشمند",
@@ -274,7 +277,7 @@
       "title": "کپی محصول",
       "categoryLabel": "دسته‌بندی مقصد"
     },
-    "productAvailability": "موجودی محصولات",
+    "productAvailability": "وضعیت موجودی محصولات",
     "availability": "موجودی",
     "maxAvailability": "حداکثر موجودی",
     "minOrder": "حداقل سفارش",
@@ -391,7 +394,8 @@
       "referrerFilter": "آدرس ارجاع‌دهنده (referrer)",
       "referrerPlaceholder": "جستجو در referrer ذخیره‌شده در سفارش",
       "campaignFilter": "کمپین (campaign)",
-      "campaignPlaceholder": "جستجو در campaign ذخیره‌شده در سفارش"
+      "campaignPlaceholder": "جستجو در campaign ذخیره‌شده در سفارش",
+      "emptyState": "هیچ سفارشی در این بازه زمانی یافت نشد."
     }
   },
   "address": {
@@ -714,7 +718,35 @@
     "menuViewTypeCard": "به صورت کارتی",
     "menuViewTypeGrid": "به صورت گرید",
     "menuViewTypeCarousel": "کاروسل",
-    "openApp": "مشاهده سایت"
+    "openApp": "مشاهده سایت",
+    "orderingSection": "محدودیت سفارش‌گیری",
+    "disablePayment": "غیرفعال کردن پرداخت آنلاین",
+    "disableOrdering": "غیرفعال کردن سفارش‌گیری",
+    "orderingTypes": "امکان ثبت سفارش برای انواع زیر",
+    "orderingTypesDescription": "به صورت جزئی تر میتوانید فقط برخی از انواع سفارشات را فعال کنید",
+    "disableOrderingText": "نمایش علت غیرفعالی به کاربر",
+    "disableOrderingOnClose": "غیرفعال کردن سفارش‌گیری خارج تایم کاری",
+    "selectableOrderTypes": "انواع سفارش قابل انتخاب",
+    "selectableOrderTypesDescription": "{{shop}} شما از چه نوع سفارش‌هایی پشتیبانی می‌کند؟ مشتری می‌تواند در هنگام ثبت سفارش نوع سفارش خود را انخاب کند.",
+    "registering": "اعتبارسنجی شماره تلفن مشتری",
+    "requiredRegisterDescription": "می‌توانید قبل از ثبت سفارش به صورت کامل شماره تلفن همراه مشتری را اعتبارسنجی کنید و از صحت آن مطمئن باشید.",
+    "requiredRegister": "لزوم ثبت اعتبارسنجی قبل از ثبت سفارش",
+    "requiredPayment": "لزوم پرداخت آنلاین قبل از ثبت سفارش",
+    "ding": "امکان دینگ داخل مجموعه",
+    "dingsLabel": "آیتم‌های دینگ (اختیاری)",
+    "dingsPlaceholder": "مثلا: زیر سگاری لطفا...",
+    "dingsHint": "با enter آیتم‌ها را از هم جدا کنید",
+    "smsOnNewOrder": "sms سفارش جدید",
+    "smsOnNewOrderDescription": "بعد از دریافت سفارش جدید، یک پیامک اطلاع‌رسانی به شماره تلفن همراه ارسال خواهد شد.",
+    "smsOnNewOrderLabel": "شماره تلفن همراه برای ارسال پیامک",
+    "smsOnNewOrderPlaceholder": "مثلا: 09123333333",
+    "smsOnNewOrderHint": "با enter شماره تلفن‌ها را از هم جدا کنید"
+  },
+  "orderType": {
+    "dineIn": "داخل مجموعه",
+    "delivery": "ارسال با پیک",
+    "post": "ارسال با پست",
+    "takeaway": "مراجعه حضوری"
   },
   "addMemberDialog": {
     "editTitle": "ویرایش عضو",
@@ -947,7 +979,8 @@
     "selectedCount": "{{count}} مورد انتخاب شده",
     "groupRemove": "حذف ماده/محصول",
     "groupAdd": "افزودن ماده/محصول",
-    "clearSelection": "پاک کردن انتخاب"
+    "clearSelection": "پاک کردن انتخاب",
+    "empty": "هیچ فرمول ساختی تعریف نشده است."
   },
   "pricing": {
     "products": "محصولات",

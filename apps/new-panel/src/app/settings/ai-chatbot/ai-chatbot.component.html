@@ -1,6 +1,6 @@
 <mat-toolbar class="content-toolbar" fxLayoutGap="8px">
   <button mat-icon-button goBack type="button">
-    <i class="fa-regular fa-arrow-right"></i>
+    <ng-icon name="saxArrowRight3Bold"></ng-icon>
   </button>
   <h1 fxFlex>{{ 'settings.aiChatbot' | translate }}</h1>
   <button mat-flat-button (click)="save()" [disabled]="!form.dirty || saveMutation.isPending()">
@@ -9,51 +9,45 @@
 </mat-toolbar>
 
 <form [formGroup]="form">
-  <main p-md w-md fxLayout="column" fxLayoutGap="32px" class="np-ai-page">
+  <main p-md w-md class="np-form-container np-ai-page">
     <!-- Hint Section -->
-    <div style="background: var(--bg-card, #f9f9f9); border: 1px solid var(--border-color, #e0e0e0); border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 12px;">
-      <p style="margin: 0; font-size: 0.85rem; color: var(--text-primary);">{{ 'aiChatbot.setupThirdPartyHint' | translate }}</p>
-      <div fxLayout="row wrap" fxLayoutGap="8px">
-        <a mat-stroked-button color="primary" routerLink="/settings/third-parties/bale">
-          {{ 'aiChatbot.goToThirdPartiesBale' | translate }}
-        </a>
-        <a mat-button routerLink="/settings/third-parties">
-          {{ 'settings.thirdParties' | translate }}
-        </a>
+    <mat-card class="promo-card blue">
+      <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+        <div class="np-icon-badge"><ng-icon name="saxInfoCircleOutline"></ng-icon></div>
+        <div fxFlex>
+          <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
+            <p style="margin: 0 0 6px 0;">{{ 'aiChatbot.setupThirdPartyHint' | translate }}</p>
+            <p style="margin: 0;">برای تنظیم توکن بله و اتصال هوش مصنوعی به پیام‌رسان بله، می‌توانید به بخش <a routerLink="/settings/third-parties/bale">{{ 'aiChatbot.goToThirdPartiesBale' | translate }}</a> مراجعه کنید.</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Status Section -->
+    <div class="np-form-section">
+      <div class="np-form-toggle-wrapper" style="justify-content: space-between; width: 100%;">
+        <div>
+          <h3 class="np-section-title" style="margin: 0 !important;">
+            {{ 'aiChatbot.statusSection' | translate }}
+          </h3>
+          <p class="np-section-desc" style="margin: 0 !important;">
+            {{ 'aiChatbot.statusDescription' | translate }}
+          </p>
+        </div>
+        <mat-slide-toggle formControlName="active"></mat-slide-toggle>
       </div>
     </div>
 
-    <!-- Status Section -->
-    <div fxLayout="column" fxLayoutGap="12px">
-      <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
-        {{ 'aiChatbot.statusSection' | translate }}
-      </h3>
-      <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">
-        {{ 'aiChatbot.statusDescription' | translate }}
-      </p>
-      <mat-form-field appearance="outline">
-        <mat-label>{{ 'aiChatbot.status' | translate }}</mat-label>
-        <mat-select formControlName="status">
-          <mat-option [value]="Status.Active">
-            {{ 'aiChatbot.statusActive' | translate }}
-          </mat-option>
-          <mat-option [value]="Status.Inactive">
-            {{ 'aiChatbot.statusInactive' | translate }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-
     <!-- Configuration Section -->
-    <div fxLayout="column" fxLayoutGap="12px">
-      <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
+    <div class="np-form-section">
+      <h3 class="np-section-title">
         {{ 'aiChatbot.configSection' | translate }}
       </h3>
-      <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">
+      <p class="np-section-desc">
         {{ 'aiChatbot.configDescription' | translate }}
       </p>
 
-      <div fxLayout="column" fxLayoutGap="12px">
+      <div class="np-form-inputs">
         <mat-form-field appearance="outline">
           <mat-label>{{ 'aiChatbot.style' | translate }}</mat-label>
           <textarea

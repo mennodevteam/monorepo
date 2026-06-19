@@ -52,7 +52,7 @@
           <!-- Failed Column -->
           <ng-container matColumnDef="failed">
             <th mat-header-cell *matHeaderCellDef matTooltip="{{ 'smsList.status.failed' | translate }}">
-              <i class="fas fa-times-circle status-icon failed"></i>
+              <ng-icon name="saxCloseCircleOutline" class="status-icon failed"></ng-icon>
             </th>
             <td mat-cell *matCellDef="let group" width="64px" eng>{{ group.statusCount[0] | number }}</td>
           </ng-container>
@@ -60,7 +60,7 @@
           <!-- In Queue Column -->
           <ng-container matColumnDef="inQueue">
             <th mat-header-cell *matHeaderCellDef matTooltip="{{ 'smsList.status.inQueue' | translate }}">
-              <i class="fas fa-clock status-icon in-queue"></i>
+              <ng-icon name="saxClockOutline" class="status-icon in-queue"></ng-icon>
             </th>
             <td mat-cell *matCellDef="let group" width="64px" eng>{{ group.statusCount[1] | number }}</td>
           </ng-container>
@@ -68,7 +68,7 @@
           <!-- Sent Column -->
           <ng-container matColumnDef="sent">
             <th mat-header-cell *matHeaderCellDef matTooltip="{{ 'smsList.status.sent' | translate }}">
-              <i class="fas fa-check-circle status-icon sent"></i>
+              <ng-icon name="saxTickCircleOutline" class="status-icon sent"></ng-icon>
             </th>
             <td mat-cell *matCellDef="let group" width="64px" eng>{{ group.statusCount[2] | number }}</td>
           </ng-container>
@@ -76,7 +76,7 @@
           <!-- Scheduled Column -->
           <ng-container matColumnDef="scheduled">
             <th mat-header-cell *matHeaderCellDef matTooltip="{{ 'smsList.status.scheduled' | translate }}">
-              <i class="fas fa-calendar-alt status-icon scheduled"></i>
+              <ng-icon name="saxCalendarOutline" class="status-icon scheduled"></ng-icon>
             </th>
             <td mat-cell *matCellDef="let group" width="64px" eng>{{ group.statusCount[3] | number }}</td>
           </ng-container>

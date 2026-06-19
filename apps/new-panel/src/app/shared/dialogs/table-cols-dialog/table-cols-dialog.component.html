@@ -4,15 +4,15 @@
   <mat-list cdkDropList (cdkDropListDropped)="drop($event)">
     @for (item of data; track $index) {
       <mat-list-item cdkDrag>
-        <i matListItemIcon class="fa-solid fa-grip-vertical"></i>
+        <ng-icon name="saxRowVerticalOutline" matListItemIcon></ng-icon>
         <span matListItemTitle>
           {{ item.text }}
         </span>
         <button mat-icon-button matListItemMeta (click)="item.visible = !item.visible">
           @if (item.visible) {
-            <i class="fa-solid fa-eye"></i>
+            <ng-icon name="saxEyeOutline"></ng-icon>
           } @else {
-            <i class="fa-solid fa-eye-slash"></i>
+            <ng-icon name="saxEyeSlashOutline"></ng-icon>
           }
         </button>
       </mat-list-item>

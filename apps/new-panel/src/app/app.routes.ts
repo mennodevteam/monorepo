@@ -21,6 +21,7 @@ import { userActionsGuard } from './core/guards/user-actions.guard';
 import { UserAction } from '@menno/types';
 import { AiDataExportComponent } from './ai-data-export/ai-data-export.component';
 import { AiChatHistoryComponent } from './ai-chat-history/ai-chat-history.component';
+import { AiHubComponent } from './ai-hub/ai-hub.component';
 import { homeSectionsRoutes } from './home-sections/home-sections.routes';
 
 export const appRoutes: Route[] = [
@@ -38,6 +39,7 @@ export const appRoutes: Route[] = [
         canActivate: [authGuard, shopDataActivator, menuDataActivator],
         children: [
           { path: 'home', component: HomeComponent },
+          { path: 'ai', component: AiHubComponent },
           { path: 'ai-chat-history', component: AiChatHistoryComponent },
           {
             path: 'reports',

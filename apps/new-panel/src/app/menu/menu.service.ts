@@ -43,6 +43,7 @@ export class MenuService {
   });
 
   categories = computed(() => this.data()?.categories);
+  loading = computed(() => this.query.isPending());
 
   private createBaseMutation<T, D>(config: {
     mutationFn: (dto: D) => Promise<T>;

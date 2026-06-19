@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
@@ -36,7 +36,7 @@ import { ShopApiKey } from '@menno/types';
   templateUrl: './developer-api.component.html',
   styleUrl: './developer-api.component.scss',
 })
-export class DeveloperApiComponent {
+export class DeveloperApiComponent implements OnInit {
   private readonly http = inject(HttpClient);
   private readonly dialog = inject(DialogService);
   private readonly translate = inject(TranslateService);
@@ -45,6 +45,19 @@ export class DeveloperApiComponent {
 
   readonly openApiUrl = `${window.location.origin}/api/v1/shop-integration/openapi.json`;
   readonly newGeneratedKey = signal<string | null>(null);
+
+  ngOnInit() {
+    const onboardingSeen = localStorage.getItem('menno_onboarding_developer_api');
+    if (!onboardingSeen) {
+      this.dialog.alert(
+        'راهنمای بخش کلیدهای دسترسی (API)',
+        'در این بخش می‌توانید کلیدهای دسترسی (API Keys) مختلفی برای اتصال ربات‌ها و ابزارهای هوش مصنوعی مانند Gemini Spark بسازید. پس از ساخت کلید، آن را کپی کرده و به همراه آدرس OpenAPI به هوش مصنوعی مورد نظر ارائه دهید تا بتواند با سیستم شما ارتباط برقرار کند.',
+        { config: { data: { hideCancel: true, okText: 'متوجه شدم' } } }
+      ).then(() => {
+        localStorage.setItem('menno_onboarding_developer_api', 'true');
+      });
+    }
+  }
 
   private readonly keysQuery = injectQuery(() => ({
     queryKey: ['shopApiKeys'],

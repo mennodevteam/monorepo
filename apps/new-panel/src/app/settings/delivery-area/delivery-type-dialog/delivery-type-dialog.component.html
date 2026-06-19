@@ -12,10 +12,10 @@
     >
       <mat-card-header>
         <mat-card-title>
-          <i class="fa-solid fa-motorcycle"></i>
+          <ng-icon name="saxTruckOutline"></ng-icon>
           {{ 'deliveryTypeDialog.standard.title' | translate }}
           @if (selectedType() === DeliveryType.Standard) {
-            <i class="fa-solid fa-circle-check success-text"></i>
+            <ng-icon name="saxTickCircleOutline" class="success-text"></ng-icon>
           }
         </mat-card-title>
       </mat-card-header>
@@ -32,10 +32,10 @@
     >
       <mat-card-header>
         <mat-card-title>
-          <i class="fa-solid fa-box"></i>
+          <ng-icon name="saxBoxOutline"></ng-icon>
           {{ 'deliveryTypeDialog.post.title' | translate }}
           @if (selectedType() === DeliveryType.Post) {
-            <i class="fa-solid fa-circle-check success-text"></i>
+            <ng-icon name="saxTickCircleOutline" class="success-text"></ng-icon>
           }
         </mat-card-title>
       </mat-card-header>

@@ -45,7 +45,7 @@ export class AiChatbotComponent implements FormComponent {
   Status = Status;
 
   form = new FormGroup({
-    status: new FormControl<Status>(this.shop.data()?.aiChatbot?.status || Status.Inactive),
+    active: new FormControl<boolean>(this.shop.data()?.aiChatbot?.status === Status.Active),
     style: new FormControl<string>(this.shop.data()?.aiChatbot?.style || ''),
     extraInfo: new FormControl<string>(this.shop.data()?.aiChatbot?.extraInfo || ''),
   });
@@ -65,8 +65,13 @@ export class AiChatbotComponent implements FormComponent {
 
   async save() {
     if (this.form.valid && this.form.dirty) {
-      const formValue = this.form.getRawValue() as Partial<AiChatbot>;
-      this.saveMutation.mutate(formValue);
+      const { active, style, extraInfo } = this.form.getRawValue();
+      const payload: Partial<AiChatbot> = {
+        status: active ? Status.Active : Status.Inactive,
+        style: style || '',
+        extraInfo: extraInfo || '',
+      };
+      this.saveMutation.mutate(payload);
     }
   }
 

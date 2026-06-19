@@ -92,7 +92,7 @@
         routerLink="/home"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <div matListItemIcon class="np-icon-badge sm blue">
+        <div matListItemIcon class="np-icon-badge sm gray">
           <ng-icon name="saxHome2Outline"></ng-icon>
         </div>
         <span matListItemTitle>{{ 'nav.home' | translate }}</span>
@@ -131,7 +131,7 @@
         routerLink="/menu/list"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <div matListItemIcon class="np-icon-badge sm blue">
+        <div matListItemIcon class="np-icon-badge sm purple">
           <ng-icon name="saxBoxOutline"></ng-icon>
         </div>
         <span matListItemTitle>{{
@@ -157,7 +157,7 @@
         routerLink="/inventory/bom"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <div matListItemIcon class="np-icon-badge sm cyan">
+        <div matListItemIcon class="np-icon-badge sm teal">
           <ng-icon name="saxGlassOutline"></ng-icon>
         </div>
         <span matListItemTitle>{{ 'nav.bom' | translate: { value: shop.businessCategoryMenuTitle() } }}</span>
@@ -168,7 +168,7 @@
         routerLink="/menu/availability"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <div matListItemIcon class="np-icon-badge sm orange">
+        <div matListItemIcon class="np-icon-badge sm teal">
           <ng-icon name="saxTaskSquareOutline"></ng-icon>
         </div>
         <span matListItemTitle>{{ 'nav.productAvailability' | translate }}</span>
@@ -192,7 +192,7 @@
         routerLink="/pricing"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <div matListItemIcon class="np-icon-badge sm sky">
+        <div matListItemIcon class="np-icon-badge sm pink">
           <ng-icon name="saxCalculatorOutline"></ng-icon>
         </div>
         <span matListItemTitle>{{
@@ -207,7 +207,7 @@
         routerLink="/club/members"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <div matListItemIcon class="np-icon-badge sm blue">
+        <div matListItemIcon class="np-icon-badge sm orange">
           <ng-icon name="saxPeopleOutline"></ng-icon>
         </div>
         <span matListItemTitle>{{ 'nav.clubMembers' | translate }}</span>
@@ -218,7 +218,7 @@
         routerLink="/coupons"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <div matListItemIcon class="np-icon-badge sm pink">
+        <div matListItemIcon class="np-icon-badge sm orange">
           <ng-icon name="saxTagOutline"></ng-icon>
         </div>
         <span matListItemTitle>{{ 'nav.discountCoupons' | translate }}</span>
@@ -229,7 +229,7 @@
         routerLink="/missions"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <div matListItemIcon class="np-icon-badge sm purple">
+        <div matListItemIcon class="np-icon-badge sm orange">
           <ng-icon name="saxAwardOutline"></ng-icon>
         </div>
         <span matListItemTitle>{{ 'nav.missions' | translate }}</span>
@@ -253,7 +253,7 @@
         routerLink="/reports/analytics-dashboard"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <div matListItemIcon class="np-icon-badge sm sky">
+        <div matListItemIcon class="np-icon-badge sm green">
           <ng-icon name="saxChart2Outline"></ng-icon>
         </div>
         <span matListItemTitle>{{ 'nav.analytics' | translate }}</span>
@@ -264,22 +264,21 @@
         routerLink="/sms"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <div matListItemIcon class="np-icon-badge sm gray">
+        <div matListItemIcon class="np-icon-badge sm blue">
           <ng-icon name="saxSmsOutline"></ng-icon>
         </div>
         <span matListItemTitle>{{ 'nav.sms' | translate }}</span>
       </a>
       <a
         mat-list-item
-        class="nav-ai"
         routerLinkActive="active-link"
-        routerLink="/ai-export"
+        routerLink="/ai"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
         <div matListItemIcon class="np-icon-badge sm ai">
           <ng-icon name="saxCpuOutline"></ng-icon>
         </div>
-        <span matListItemTitle>{{ 'nav.aiExport' | translate }}</span>
+        <span matListItemTitle>{{ 'nav.aiSection' | translate }}</span>
       </a>
       <a
         mat-list-item
@@ -287,7 +286,7 @@
         routerLink="/home-sections"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
-        <div matListItemIcon class="np-icon-badge sm teal">
+        <div matListItemIcon class="np-icon-badge sm gray">
           <ng-icon name="saxHierarchyOutline"></ng-icon>
         </div>
         <span matListItemTitle>{{ 'nav.homeSections' | translate }}</span>

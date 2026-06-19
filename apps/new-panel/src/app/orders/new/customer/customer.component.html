@@ -2,7 +2,7 @@
   @let customer = service.customer();
   <mat-card-header>
     <mat-card-title>
-      <i class="fa-solid fa-user middle"></i>
+      <ng-icon name="saxUserOutline"></ng-icon>
       {{ 'order.customer' | translate }}
     </mat-card-title>
   </mat-card-header>
@@ -17,11 +17,11 @@
   @if (customer) {
     <mat-card-actions>
       <button mat-button (click)="editMember()">
-        <i class="fa-regular fa-edit-alt"></i>
+        <ng-icon name="saxEditOutline"></ng-icon>
         {{ 'app.edit' | translate }}
       </button>
       <button mat-button class="warn-theme" (click)="clearMember()">
-        <i class="fa-regular fa-xmark-circle"></i>
+        <ng-icon name="saxCloseCircleOutline"></ng-icon>
         {{ 'app.remove' | translate }}
       </button>
     </mat-card-actions>

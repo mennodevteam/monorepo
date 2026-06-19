@@ -7,7 +7,7 @@
     <mat-card appearance="outlined">
       <mat-card-header>
         <mat-card-title>
-          <i class="fa-duotone fa-receipt"></i>
+          <ng-icon name="saxReceipt2Outline"></ng-icon>
           {{ 'aiExport.ordersTitle' | translate }}
         </mat-card-title>
         <mat-card-subtitle>{{ 'aiExport.ordersDescription' | translate }}</mat-card-subtitle>
@@ -25,7 +25,7 @@
           @if (exportingOrdersJSON()) {
             <mat-spinner diameter="20"></mat-spinner>
           } @else {
-            <i class="fa-regular fa-file-code"></i>
+            <ng-icon name="saxDocumentCodeOutline"></ng-icon>
           }
           {{ 'aiExport.downloadJSON' | translate }}
         </button>
@@ -37,7 +37,7 @@
           @if (exportingOrdersTOON()) {
             <mat-spinner diameter="20"></mat-spinner>
           } @else {
-            <i class="fa-regular fa-file-lines"></i>
+            <ng-icon name="saxDocumentTextOutline"></ng-icon>
           }
           {{ 'aiExport.downloadTOON' | translate }}
         </button>
@@ -48,7 +48,7 @@
     <mat-card appearance="outlined">
       <mat-card-header>
         <mat-card-title>
-          <i class="fa-duotone fa-box"></i>
+          <ng-icon name="saxBoxOutline"></ng-icon>
           {{ 'aiExport.menuTitle' | translate }}
         </mat-card-title>
         <mat-card-subtitle>{{ 'aiExport.menuDescription' | translate }}</mat-card-subtitle>
@@ -66,7 +66,7 @@
           @if (exportingMenuJSON()) {
             <mat-spinner diameter="20"></mat-spinner>
           } @else {
-            <i class="fa-regular fa-file-code"></i>
+            <ng-icon name="saxDocumentCodeOutline"></ng-icon>
           }
           {{ 'aiExport.downloadJSON' | translate }}
         </button>
@@ -78,7 +78,7 @@
           @if (exportingMenuTOON()) {
             <mat-spinner diameter="20"></mat-spinner>
           } @else {
-            <i class="fa-regular fa-file-lines"></i>
+            <ng-icon name="saxDocumentTextOutline"></ng-icon>
           }
           {{ 'aiExport.downloadTOON' | translate }}
         </button>

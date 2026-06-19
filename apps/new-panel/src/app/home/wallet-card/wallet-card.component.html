@@ -3,7 +3,7 @@
 <mat-card appearance="outlined" class="sms-charge-card">
   <mat-card-header>
     <mat-card-title>
-      <i class="fa-solid fa-sms fa-xl"></i>
+      <ng-icon name="saxMessageOutline"></ng-icon>
       <span spacer-sm></span>
       {{ 'home.wallet.title' | translate }}
     </mat-card-title>
@@ -13,15 +13,12 @@
       <mat-list-item>
         <span matListItemLine>
           {{ 'home.plan.charge' | translate }}
-          <i class="fa-regular fa-circle-info" (click)="walletHelp()"></i>
+          <ng-icon name="saxInfoCircleOutline" (click)="walletHelp()"></ng-icon>
         </span>
         <span matListItemMeta>
           {{ charge | number: '1.0-0' | menuCurrency }}
           @if (charge < 30000) {
-            <i
-              class="fa-solid fa-triangle-exclamation fa-large"
-              matTooltip="{{ 'home.plan.lowChargeTooltip' | translate }}"
-            ></i>
+            <ng-icon name="saxDangerOutline" class="fa-large" matTooltip="{{ 'home.plan.lowChargeTooltip' | translate }}"></ng-icon>
           }
         </span>
       </mat-list-item>

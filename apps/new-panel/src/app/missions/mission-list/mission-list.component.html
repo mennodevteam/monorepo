@@ -3,18 +3,32 @@
   <h1 fxFlex>{{ 'nav.missions' | translate }}</h1>
   @if (!isEmpty) {
     <button mat-flat-button (click)="addMission()">
-      <i class="fa-regular fa-plus"></i>
+      <ng-icon name="saxAddOutline"></ng-icon>
       {{ 'mission.add' | translate }}
     </button>
   }
 </mat-toolbar>
 <main p-md>
+  <!-- Educational Promo Banner -->
+  <mat-card class="promo-card blue">
+    <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+      <div class="np-icon-badge"><ng-icon name="saxInfoCircleOutline"></ng-icon></div>
+      <div fxFlex>
+        <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
+          <p style="margin: 0 0 6px 0;">با تعریف سناریوهای مختلف خرید (مانند خرید بالاتر از یک مبلغ خاص یا تعداد مشخصی سفارش)، برای مشتریان خود مأموریت‌های جذاب ایجاد کرده و با اهدای خودکار شارژ کیف پول، آن‌ها را به خرید مجدد ترغیب کنید.</p>
+          <p style="margin: 0;">علاوه بر مأموریت‌ها، می‌توانید برای ایجاد تخفیف‌های مستقیم روی سبد خرید، به بخش <a routerLink="/coupons">کدهای تخفیف</a> مراجعه کنید.</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
   @if (query.isLoading()) {
     <app-data-loading />
   } @else if (!isEmpty) {
     <mat-card appearance="outlined">
       <mat-card-content>
-        <table mat-table [dataSource]="query.data() || []">
+        <div class="invoices-table-container">
+          <table mat-table [dataSource]="query.data() || []" class="np-table">
           <ng-container matColumnDef="title">
             <th mat-header-cell *matHeaderCellDef>{{ 'app.title' | translate }}</th>
             <td mat-cell *matCellDef="let mission">
@@ -50,10 +64,10 @@
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let mission" style="width: 128px">
               <button mat-icon-button routerLink="edit" [queryParams]="{ id: mission.id }">
-                <i class="fa-regular fa-edit fa-xs"></i>
+                <ng-icon name="saxEditOutline"></ng-icon>
               </button>
               <button mat-icon-button (click)="deleteMission(mission)">
-                <i class="fa-regular fa-trash-alt fa-xs"></i>
+                <ng-icon name="saxTrashOutline"></ng-icon>
               </button>
             </td>
           </ng-container>
@@ -61,8 +75,9 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
-      </mat-card-content>
-    </mat-card>
+      </div>
+    </mat-card-content>
+  </mat-card>
   } @else {
     <app-empty-state
       icon="bullseye-arrow"

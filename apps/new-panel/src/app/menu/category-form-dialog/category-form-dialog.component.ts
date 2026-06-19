@@ -10,6 +10,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { ProductCategory } from '@menno/types';
 import { MenuService } from '../menu.service';
 import { MenuViewType } from '@menno/types';
+import { mapFaIcon } from '../../shared/utils/icon-mapper';
 
 @Component({
   selector: 'app-category-form-dialog',
@@ -38,5 +39,9 @@ export class CategoryFormDialogComponent {
     dto.menu = { id: this.menu.data()?.id };
     this.menu.saveCategoryMutation.mutate(dto);
     this.dialogRef.close();
+  }
+
+  getCategoryIcon(iconName: string | undefined | null): string {
+    return mapFaIcon(iconName || undefined);
   }
 }

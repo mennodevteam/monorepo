@@ -1,6 +1,6 @@
 <mat-toolbar class="content-toolbar" fxLayoutGap="8px">
   <button mat-icon-button goBack type="button">
-    <i class="fa-regular fa-arrow-right"></i>
+    <ng-icon name="saxArrowRight3Bold"></ng-icon>
   </button>
   <h1 fxFlex>{{ 'settings.orderConfig' | translate }}</h1>
   <button mat-flat-button (click)="save()" [disabled]="!form.dirty" type="button">
@@ -9,22 +9,19 @@
 </mat-toolbar>
 
 <form [formGroup]="form">
-  <main p-md w-md fxLayout="column" fxLayoutGap="32px">
+  <main p-md w-md class="np-form-container">
     <!-- Ordering Status Section -->
-    <div fxLayout="column" fxLayoutGap="12px">
-      <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
-        <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
+    <div class="np-form-section">
+      <div class="np-form-toggle-wrapper" style="justify-content: space-between; width: 100%;">
+        <h3 class="np-section-title" style="margin: 0 !important;">
           {{ 'appConfig.disableOrdering' | translate }}
         </h3>
-        <mat-button-toggle-group formControlName="disableOrdering">
-          <mat-button-toggle [value]="false">{{ 'app.active' | translate }}</mat-button-toggle>
-          <mat-button-toggle [value]="true">{{ 'app.inactive' | translate }}</mat-button-toggle>
-        </mat-button-toggle-group>
+        <mat-slide-toggle formControlName="disableOrdering"></mat-slide-toggle>
       </div>
       
-      <div fxLayout="column" fxLayoutGap="12px">
+      <div class="np-form-inputs">
         @if (!form.controls['disableOrdering']?.value) {
-          <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'appConfig.selectableOrderTypesDescription' | translate: { shop: shopService.businessCategoryTitle() } }}</p>
+          <p class="np-section-desc">{{ 'appConfig.selectableOrderTypesDescription' | translate: { shop: shopService.businessCategoryTitle() } }}</p>
           <mat-form-field appearance="outline">
             <mat-label>{{ 'appConfig.selectableOrderTypes' | translate }}</mat-label>
             <mat-select formControlName="selectableOrderTypes" multiple>
@@ -47,18 +44,15 @@
 
     <!-- Payment Status Section -->
     @if (shopService.data()?.paymentGateway) {
-      <div fxLayout="column" fxLayoutGap="12px">
-        <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
-          <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
+      <div class="np-form-section">
+        <div class="np-form-toggle-wrapper" style="justify-content: space-between; width: 100%;">
+          <h3 class="np-section-title" style="margin: 0 !important;">
             {{ 'appConfig.disablePayment' | translate }}
           </h3>
-          <mat-button-toggle-group formControlName="disablePayment">
-            <mat-button-toggle [value]="false">{{ 'app.active' | translate }}</mat-button-toggle>
-            <mat-button-toggle [value]="true">{{ 'app.inactive' | translate }}</mat-button-toggle>
-          </mat-button-toggle-group>
+          <mat-slide-toggle formControlName="disablePayment"></mat-slide-toggle>
         </div>
         
-        <div fxLayout="column" fxLayoutGap="12px">
+        <div class="np-form-inputs">
           @if (!form.controls['disablePayment']?.value) {
             <mat-form-field appearance="outline">
               <mat-label>{{ 'appConfig.requiredPayment' | translate }}</mat-label>
@@ -82,13 +76,13 @@
     }
 
     <!-- SMS Notification Section -->
-    <div fxLayout="column" fxLayoutGap="12px">
-      <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">
+    <div class="np-form-section">
+      <h3 class="np-section-title">
         {{ 'appConfig.smsOnNewOrder' | translate }}
       </h3>
-      <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'appConfig.smsOnNewOrderDescription' | translate }}</p>
+      <p class="np-section-desc">{{ 'appConfig.smsOnNewOrderDescription' | translate }}</p>
       
-      <div fxLayout="column" fxLayoutGap="12px">
+      <div class="np-form-inputs">
         <mat-form-field appearance="outline">
           <mat-label>{{ 'appConfig.smsOnNewOrderLabel' | translate }}</mat-label>
           <mat-chip-grid #chipGridSms>
@@ -96,7 +90,7 @@
               <mat-chip-row (removed)="removeSmsOnNewOrder(phone)">
                 {{ phone }}
                 <button matChipRemove>
-                  <i class="fa-regular fa-close"></i>
+                  <ng-icon name="saxCloseCircleOutline"></ng-icon>
                 </button>
               </mat-chip-row>
             }

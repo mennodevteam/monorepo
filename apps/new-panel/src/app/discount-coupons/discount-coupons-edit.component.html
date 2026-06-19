@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
   <mat-toolbar class="content-toolbar" fxLayout="row" fxLayoutGap="8px">
     <button mat-icon-button goBack>
-      <i class="fa-regular fa-arrow-right"></i>
+      <ng-icon name="saxArrowRight3Bold"></ng-icon>
     </button>
     <h1 fxFlex>
       @if (coupon()) {
@@ -21,18 +21,18 @@
     >
       {{ 'app.save' | translate }}
       @if (saveMutation.isPending()) {
-        <i class="fa-solid fa-spinner fa-spin"></i>
+        <ng-icon name="saxRotateRightOutline"></ng-icon>
       }
     </button>
   </mat-toolbar>
 
-  <main p-md w-md fxLayout="column" fxLayoutGap="24px">
-    <div fxLayout="column" fxLayoutGap="24px">
+  <main p-md w-md class="np-form-container">
+    <div class="np-form-container" style="gap: 24px !important;">
       <!-- Basic Information -->
-      <div fxLayout="column" fxLayoutGap="12px">
-        <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">{{ 'discountCoupons.basicInfo' | translate }}</h3>
-        <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'discountCoupons.basicInfoDescription' | translate }}</p>
-        <div fxLayout="column" fxLayoutGap="12px">
+      <div class="np-form-section">
+        <h3 class="np-section-title">{{ 'discountCoupons.basicInfo' | translate }}</h3>
+        <p class="np-section-desc">{{ 'discountCoupons.basicInfoDescription' | translate }}</p>
+        <div class="np-form-inputs">
           <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
             <mat-label>{{ 'app.title' | translate }}</mat-label>
             <input matInput formControlName="title" required />
@@ -66,12 +66,12 @@
       </div>
 
       <!-- Discount Details -->
-      <div fxLayout="column" fxLayoutGap="12px">
-        <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">{{ 'discountCoupons.discountDetails' | translate }}</h3>
-        <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'discountCoupons.discountDetailsDescription' | translate }}</p>
-        <div fxLayout="column" fxLayoutGap="12px">
-          <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start start">
-            <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
+      <div class="np-form-section">
+        <h3 class="np-section-title">{{ 'discountCoupons.discountDetails' | translate }}</h3>
+        <p class="np-section-desc">{{ 'discountCoupons.discountDetailsDescription' | translate }}</p>
+        <div class="np-form-inputs">
+          <div class="np-form-row">
+            <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
               <mat-label>{{ 'discountCoupons.type' | translate }}</mat-label>
               <mat-select formControlName="type" (selectionChange)="typeChanged()" required>
                 <mat-option value="percentage">{{
@@ -82,7 +82,7 @@
             </mat-form-field>
 
             @if (form.get('type')?.value === 'fixed') {
-              <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
+              <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
                 <mat-label>{{ 'discountCoupons.fixedDiscountLabel' | translate }}</mat-label>
                 <input matInput formControlName="fixedDiscount" type="number" />
                 <mat-hint>{{ form.get('fixedDiscount')?.value | menuCurrency }}</mat-hint>
@@ -96,7 +96,7 @@
             }
 
             @if (form.get('type')?.value === 'percentage') {
-              <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
+              <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
                 <mat-label>{{ 'discountCoupons.percentageDiscountLabel' | translate }}</mat-label>
                 <input matInput formControlName="percentageDiscount" type="number" />
                 <mat-hint>%</mat-hint>
@@ -110,15 +110,15 @@
             }
           </div>
 
-          <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start start">
-            <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
+          <div class="np-form-row">
+            <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
               <mat-label>{{ 'discountCoupons.minPrice' | translate }}</mat-label>
               <input matInput formControlName="minPrice" type="number" />
               <mat-hint>{{ form.get('minPrice')?.value | menuCurrency }}</mat-hint>
             </mat-form-field>
 
             @if (form.get('type')?.value === 'percentage') {
-              <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" fxFlex>
+              <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
                 <mat-label>{{ 'discountCoupons.maxDiscount' | translate }}</mat-label>
                 <input matInput formControlName="maxDiscount" type="number" />
                 <mat-hint>{{ form.get('maxDiscount')?.value | menuCurrency }}</mat-hint>
@@ -129,12 +129,12 @@
       </div>
     </div>
 
-    <div fxLayout="column" fxLayoutGap="24px">
+    <div class="np-form-container" style="gap: 24px !important;">
       <!-- Date Range -->
-      <div fxLayout="column" fxLayoutGap="12px">
-        <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">{{ 'app.dateRange' | translate }}</h3>
-        <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'discountCoupons.dateRangeDescription' | translate }}</p>
-        <div fxLayout="column" fxLayoutGap="12px">
+      <div class="np-form-section">
+        <h3 class="np-section-title">{{ 'app.dateRange' | translate }}</h3>
+        <p class="np-section-desc">{{ 'discountCoupons.dateRangeDescription' | translate }}</p>
+        <div class="np-form-inputs">
           <mat-form-field appearance="outline">
             <mat-label>{{ 'app.dateRange' | translate }}</mat-label>
             <mat-date-range-input [rangePicker]="dateRangePicker">
@@ -152,18 +152,18 @@
       </div>
 
       <!-- Usage Limits -->
-      <div fxLayout="column" fxLayoutGap="12px">
-        <h3 style="font-size: 1.1rem; font-weight: 500; margin: 0; color: #171717;">{{ 'discountCoupons.usage' | translate }}</h3>
-        <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">{{ 'discountCoupons.usageDescription' | translate }}</p>
-        <div fxLayout="column" fxLayoutGap="12px">
-          <p style="font-size: 0.78rem; color: var(--text-secondary); margin: 0 0 4px 0;">{{ 'discountCoupons.maxUsePerUserDescription' | translate }}</p>
+      <div class="np-form-section">
+        <h3 class="np-section-title">{{ 'discountCoupons.usage' | translate }}</h3>
+        <p class="np-section-desc">{{ 'discountCoupons.usageDescription' | translate }}</p>
+        <div class="np-form-inputs">
+          <p class="np-section-desc" style="margin-bottom: 4px !important;">{{ 'discountCoupons.maxUsePerUserDescription' | translate }}</p>
           <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
             <mat-label>{{ 'discountCoupons.maxUsePerUser' | translate }}</mat-label>
             <input matInput formControlName="maxUsePerUser" type="number" />
             <mat-hint>{{ 'discountCoupons.maxUseEmptyHint' | translate }}</mat-hint>
           </mat-form-field>
 
-          <p style="font-size: 0.78rem; color: var(--text-secondary); margin: 12px 0 4px 0;">{{ 'discountCoupons.maxUseDescription' | translate }}</p>
+          <p class="np-section-desc" style="margin-top: 12px !important; margin-bottom: 4px !important;">{{ 'discountCoupons.maxUseDescription' | translate }}</p>
           <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
             <mat-label>{{ 'discountCoupons.maxUse' | translate }}</mat-label>
             <input matInput formControlName="maxUse" type="number" />

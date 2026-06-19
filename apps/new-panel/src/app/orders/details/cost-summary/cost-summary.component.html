@@ -1,7 +1,7 @@
 <mat-card appearance="outlined">
   <mat-card-header>
     <mat-card-title>
-      <i class="fa-solid fa-calculator middle"></i>
+      <ng-icon name="saxCalculatorOutline"></ng-icon>
       {{ 'order.costSummary' | translate }}
     </mat-card-title>
   </mat-card-header>
@@ -20,7 +20,7 @@
             {{ order()?.materialCost | number | menuCurrency }}
           } @else {
             <button mat-icon-button (click)="unknownMaterialCost()">
-              <i class="fa-regular fa-question fa-xs"></i>
+              <ng-icon name="saxInfoCircleOutline"></ng-icon>
             </button>
             {{ 'app.unknown' | translate }}
           }
@@ -30,7 +30,7 @@
         <span matListItemTitle> {{ 'order.extraCosts' | translate }}: </span>
         <span matListItemMeta>
           <button mat-icon-button (click)="addExtraCost()">
-            <i class="fa-regular fa-edit fa-xs"></i>
+            <ng-icon name="saxEditOutline"></ng-icon>
           </button>
           <span>
             {{ order()?.extraCosts || 0 | number | menuCurrency }}
@@ -54,7 +54,7 @@
   </mat-card-content>
   <mat-divider />
   <mat-card-actions fxLayout="row" fxLayoutGap="8px">
-    <i class="fa-solid fa-arrow-trend-up"></i>
+    <ng-icon name="saxTrendUpOutline"></ng-icon>
     {{ 'order.totalProfit' | translate }}:
     <span fxFlex></span>
     @if (order()?.materialCost) {
@@ -66,7 +66,7 @@
       </small>
     } @else {
       <button mat-button (click)="unknownMaterialCost()">
-        <i class="fa-regular fa-question fa-xs"></i>
+        <ng-icon name="saxInfoCircleOutline"></ng-icon>
         {{ 'app.unknown' | translate }}
       </button>
     }
