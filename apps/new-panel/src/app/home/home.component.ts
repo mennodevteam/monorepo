@@ -6,7 +6,6 @@ import { ShopService } from '../shop/shop.service';
 import { ShopInfoCardComponent } from './shop-info-card/shop-info-card.component';
 import { PlanCardComponent } from './plan-card/plan-card.component';
 import { WalletCardComponent } from './wallet-card/wallet-card.component';
-import { AiIntelligenceCardComponent } from './ai-intelligence-card/ai-intelligence-card.component';
 import { OrderTotalComponent } from './order-total/order-total.component';
 import { AuthService } from '../auth/auth.service';
 import { UserAction } from '@menno/types';
@@ -22,7 +21,6 @@ import { MatCardModule } from '@angular/material/card';
     ShopInfoCardComponent,
     PlanCardComponent,
     WalletCardComponent,
-    AiIntelligenceCardComponent,
     OrderTotalComponent,
     MatCardModule,
   ],

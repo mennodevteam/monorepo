@@ -1,16 +1,36 @@
-<mat-toolbar class="content-toolbar">
-  <h1 fxFlex>
-    {{ 'home.title' | translate }}
-  </h1>
-</mat-toolbar>
 @let shop = shopService.data();
 @if (shop) {
-  <main p-md w-lg class="np-form-container">
-    <!-- Payment Gateway Warning Banner -->
+  <main p-md w-lg class="home-container">
+    
+    <!-- Welcome Header -->
+    <div class="welcome-header animate-slide-up" fxLayout="row" fxLayoutAlign="space-between center" fxLayout.xs="column" fxLayoutGap.xs="16px">
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+        <img class="shop-logo-large" imageLoader [imageFile]="shop.logoImage" alt="Logo" />
+        <div>
+          <h1 class="welcome-title">{{ 'home.title' | translate }}، {{ shop.title }}</h1>
+          <p class="welcome-subtitle">
+            <span>{{ 'home.shopInfo.code' | translate }}: <strong eng>{{ shop.code }}</strong></span>
+            @if (shop.businessCategory) {
+              <span class="dot-divider">•</span>
+              <span class="business-category">{{ shop.businessCategory | businessCategory }}</span>
+            }
+          </p>
+        </div>
+      </div>
+      <div class="quick-status-badge">
+        <span class="pulse-dot"></span>
+        <a [href]="shopService.appLink()" target="_blank" class="live-link">
+          {{ 'home.openApp' | translate }}
+          <ng-icon name="saxLinkOutline"></ng-icon>
+        </a>
+      </div>
+    </div>
+
+    <!-- Warnings / Banners -->
     @if (!shop.paymentGateway) {
-      <mat-card class="promo-card orange">
+      <mat-card class="promo-card orange animate-slide-up" style="animation-delay: 0.05s;">
         <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
-          <div class="np-icon-badge"><ng-icon name="saxDangerOutline"></ng-icon></div>
+          <div class="np-icon-badge orange"><ng-icon name="saxDangerOutline"></ng-icon></div>
           <div fxFlex>
             <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
               <p style="margin: 0 0 6px 0;">درگاه پرداخت آنلاین شما فعال نیست. برای شروع پذیرش پرداخت‌های آنلاین از مشتریان، لطفاً تنظیمات درگاه بانکی خود را تکمیل کنید.</p>
@@ -21,11 +41,10 @@
       </mat-card>
     }
 
-    <!-- Menu Onboarding Banner -->
     @if (!menuService.loading() && menuService.categories()?.length === 0) {
-      <mat-card class="promo-card blue">
+      <mat-card class="promo-card blue animate-slide-up" style="animation-delay: 0.05s;">
         <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
-          <div class="np-icon-badge"><ng-icon name="saxInfoCircleOutline"></ng-icon></div>
+          <div class="np-icon-badge blue"><ng-icon name="saxInfoCircleOutline"></ng-icon></div>
           <div fxFlex>
             <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
               <p style="margin: 0 0 6px 0;">هنوز هیچ دسته‌بندی یا محصولی در منوی دیجیتال خود ثبت نکرده‌اید. همین حالا اولین دسته‌بندی را ایجاد کرده و منو را بسازید.</p>
@@ -36,16 +55,80 @@
       </mat-card>
     }
 
-    <div fxLayout="column" fxLayoutGap="24px">
-      <app-shop-info-card></app-shop-info-card>
-      @if (auth.hasAccess(UserAction.Reports)) {
-        <app-order-total />
-      }
-    </div>
-    <div fxLayout="column" fxLayoutGap="24px">
-      <app-plan-card></app-plan-card>
-      <app-wallet-card></app-wallet-card>
-      <app-ai-intelligence-card></app-ai-intelligence-card>
+    <!-- Dashboard Grid Layout -->
+    <div class="dashboard-grid animate-slide-up" style="animation-delay: 0.1s;">
+      
+      <!-- Right Column: Main Content -->
+      <div class="main-column" fxLayout="column" fxLayoutGap="24px">
+        
+        <!-- Quick Actions Hub -->
+        <div class="dashboard-card action-hub-card">
+          <div class="card-header">
+            <h2 class="card-title-main">
+              <ng-icon name="saxSetting5Outline"></ng-icon>
+              دسترسی سریع
+            </h2>
+          </div>
+          <div class="quick-actions-grid">
+            <a class="action-card" routerLink="/orders/new">
+              <div class="action-icon green">
+                <ng-icon name="saxAddCircleOutline"></ng-icon>
+              </div>
+              <div class="action-details">
+                <span class="action-name">ثبت سفارش جدید</span>
+                <span class="action-desc">ثبت و مدیریت سفارشات جدید</span>
+              </div>
+              <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
+            </a>
+
+            <a class="action-card" routerLink="/menu/list">
+              <div class="action-icon blue">
+                <ng-icon name="saxBoxOutline"></ng-icon>
+              </div>
+              <div class="action-details">
+                <span class="action-name">مدیریت منو و محصولات</span>
+                <span class="action-desc">دسته‌بندی‌ها و محصولات مجموعه</span>
+              </div>
+              <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
+            </a>
+
+            <a class="action-card" routerLink="/club/members">
+              <div class="action-icon teal">
+                <ng-icon name="saxPeopleOutline"></ng-icon>
+              </div>
+              <div class="action-details">
+                <span class="action-name">باشگاه مشتریان</span>
+                <span class="action-desc">مدیریت اطلاعات و ارتباط با مشتریان</span>
+              </div>
+              <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
+            </a>
+
+            <a class="action-card" routerLink="/settings/app-config">
+              <div class="action-icon purple">
+                <ng-icon name="saxColorfilterOutline"></ng-icon>
+              </div>
+              <div class="action-details">
+                <span class="action-name">ظاهر و دیزاین سایت</span>
+                <span class="action-desc">شخصی‌سازی رنگ‌ها و لوگو</span>
+              </div>
+              <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
+            </a>
+          </div>
+        </div>
+
+        <!-- Sales Report Card -->
+        @if (auth.hasAccess(UserAction.Reports)) {
+          <app-order-total></app-order-total>
+        }
+      </div>
+
+      <!-- Left Column: Sidebar Details -->
+      <div class="sidebar-column" fxLayout="column" fxLayoutGap="24px">
+        <app-shop-info-card></app-shop-info-card>
+        <app-plan-card></app-plan-card>
+        <app-wallet-card></app-wallet-card>
+      </div>
+
     </div>
   </main>
 }
