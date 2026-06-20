@@ -15,6 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl, Validators } from '@angular/forms';
 import { lastValueFrom } from 'rxjs';
 import { MaterialsService } from '../inventory/materials.service';
+import { getHomeTips } from './tips.constants';
 
 @Component({
   selector: 'app-home',
@@ -39,22 +40,14 @@ export class HomeComponent {
   private readonly snack = inject(MatSnackBar);
   readonly UserAction = UserAction;
 
-  private readonly randomIndex = Math.floor(Math.random() * 7);
+  private readonly randomIndex = Math.floor(Math.random() * 100);
 
   readonly randomMessage = computed(() => {
     const user = this.auth.userSignal();
     const name = user?.firstName || 'همکار';
 
-    const messages = [
-      `${name} عزیز، می‌دونستی با تکمیل فرمول ساخت (BOM)، سود و زیان هر سفارش به طور خودکار محاسبه می‌شه؟ 📈`,
-      `${name} عزیز، می‌دونستی که با آپلود لوگو در بخش ظاهر و دیزاین، اعتبار و اعتماد مشتریان به کاتالوگ شما چند برابر می‌شه؟ 🎨`,
-      `${name} عزیز، می‌دونستی با ارسال لینک وب‌سایت از طریق SMS، مشتریان می‌تونن خیلی راحت و آنلاین سفارش ثبت کنن؟ 💬`,
-      `${name} عزیز، می‌دونستی که اتصال درگاه پرداخت آنلاین، درصد سفارش‌های لغوشده شما را تا ۸۰٪ کاهش میده؟ 💳`,
-      `${name} عزیز، می‌دونستی با تعریف سناریوهای فروش (Missions)، مشتریان به ازای خرید خود پاداش می‌گیرند و دوباره برمی‌گردند؟ 🎁`,
-      `${name} عزیز، می‌دونستی که پلتفرم فروش شات امکان ثبت‌نام و اعتبارسنجی شماره تماس مشتریان را به صورت رایگان فراهم می‌کنه؟ 🔒`,
-      `${name} عزیز، می‌دونستی داشتن حداقل ۳ محصول فعال با تصاویر باکیفیت، نرخ فروش آنلاین را تا ۳ برابر افزایش میده؟ 📸`
-    ];
-    return messages[this.randomIndex];
+    const messages = getHomeTips(name);
+    return messages[this.randomIndex % messages.length];
   });
 
   readonly totalProductCount = computed(() => {

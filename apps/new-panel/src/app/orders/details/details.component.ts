@@ -20,6 +20,7 @@ import { FormsModule } from '@angular/forms';
 import { CostSummaryComponent } from './cost-summary/cost-summary.component';
 import { TranslateService } from '@ngx-translate/core';
 import { printOrder } from '../print-order.helper';
+import { DialogService } from '../../core/services/dialog.service';
 
 import { ShopService } from '../../shop/shop.service';
 
@@ -48,6 +49,7 @@ export class OrderDetailsComponent {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly queryClient = inject(QueryClient);
+  private readonly dialog = inject(DialogService);
   readonly ordersService = inject(OrdersService);
   readonly shopService = inject(ShopService);
   User = User;
@@ -113,5 +115,20 @@ export class OrderDetailsComponent {
     const id = this.orderId();
     if (!id || this.ordersService.syncMennoBaleMutation.isPending()) return;
     this.ordersService.syncMennoBaleMutation.mutate(id);
+  }
+
+  deleteOrder() {
+    const id = this.orderId();
+    if (!id) return;
+    this.dialog.alert(
+      this.translate.instant('app.delete'),
+      this.translate.instant('app.deleteConfirm')
+    ).then((result) => {
+      if (result) {
+        this.ordersService.deleteMutation.mutateAsync(id).then(() => {
+          this.router.navigate(['/admin/orders']);
+        });
+      }
+    });
   }
 }
