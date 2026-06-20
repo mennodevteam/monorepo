@@ -637,7 +637,7 @@
       "listDescription": "فقط شناسه کانال را اینجا بزنید؛ توکن ربات شات و لینک پنل در متغیرهای محیطی سرور تنظیم می‌شود.",
       "formDescription": "توکن ربات مشترک شات و آدرس new-panel روی سرور با MENNO_BALE_ORDERS_BOT_TOKEN و NEW_PANEL_BASE_URL تنظیم شده‌اند. اینجا فقط chat_id کانال را وارد کنید؛ ربات شات را در کانال ادمین کنید.",
       "channelId": "شناسه کانال (chat_id)",
-      "channelIdHint": "مثال: -1001234567890 — ربات مننو (همان توکن سرور) باید در کانال ادمین باشد.",
+      "channelIdHint": "مثال: -1001234567890 — ربات شات (همان توکن سرور) باید در کانال ادمین باشد.",
       "docs": "مستندات API بله",
       "docsDescription": "متدهای sendMessage و editMessageText"
     }

@@ -25,7 +25,7 @@ export class ShopService {
     effect(() => {
       const shop = this.data();
       if (shop) {
-        this.title.setTitle(`MENNO | ${shop.title}`);
+        this.title.setTitle(`SHOTTT | ${shop.title}`);
       }
     });
   }

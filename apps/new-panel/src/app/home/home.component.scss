@@ -19,7 +19,7 @@
   .shop-logo-large {
     width: 64px;
     height: 64px;
-    border-radius: 50%;
+    border-radius: 12px;
     border: 3px solid #ffffff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     object-fit: cover;
@@ -153,9 +153,17 @@
 
 .quick-actions-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
   padding: 20px;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
@@ -175,6 +183,7 @@
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
+  cursor: pointer;
 
   &::before {
     content: '';
@@ -207,6 +216,9 @@
   &:hover:has(.action-icon.blue)::before { background-color: #2563eb; }
   &:hover:has(.action-icon.teal)::before { background-color: #0d9488; }
   &:hover:has(.action-icon.purple)::before { background-color: #9333ea; }
+  &:hover:has(.action-icon.orange)::before { background-color: #ea580c; }
+  &:hover:has(.action-icon.coral)::before { background-color: #f43f5e; }
+  &:hover:has(.action-icon.cyan)::before { background-color: #0891b2; }
 
   .action-icon {
     display: inline-flex;
@@ -225,6 +237,9 @@
     &.blue { background-color: #eff6ff; color: #2563eb; }
     &.teal { background-color: #f0fdfa; color: #0d9488; }
     &.purple { background-color: #faf5ff; color: #9333ea; }
+    &.orange { background-color: #fff7ed; color: #ea580c; }
+    &.coral { background-color: #fff1f2; color: #f43f5e; }
+    &.cyan { background-color: #ecfeff; color: #0891b2; }
   }
 
   .action-details {
@@ -236,12 +251,21 @@
       font-size: 0.85rem;
       font-weight: 500;
       color: var(--text-primary);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
 
     .action-desc {
       font-size: 0.75rem;
       color: var(--text-muted);
       margin-top: 2px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.4;
+      height: 2.8em;
     }
   }
 
@@ -255,3 +279,69 @@
     justify-content: center;
   }
 }
+
+/* Tabs for Quick Access */
+.tabs-header-row {
+  display: inline-flex;
+  background-color: #f4f4f5;
+  padding: 4px;
+  border-radius: 9999px;
+  border: 1px solid var(--border-color);
+  direction: rtl;
+}
+
+.tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: transparent;
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--text-primary);
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+
+  &.active {
+    color: var(--text-primary);
+    background-color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  }
+
+  .tab-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    
+    &.warning {
+      background-color: #ea580c;
+      box-shadow: 0 0 0 2px rgba(234, 88, 12, 0.2);
+    }
+  }
+}
+
+/* Card Badge inside Quick Action Card */
+.card-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  white-space: nowrap;
+  margin-inline-end: 8px;
+  
+  &.warning {
+    background-color: #fff7ed;
+    color: #ea580c;
+    border: 1px solid #ffedd5;
+  }
+}
+

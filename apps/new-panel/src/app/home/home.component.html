@@ -1,19 +1,20 @@
 @let shop = shopService.data();
 @if (shop) {
   <main p-md w-lg class="home-container">
-    
     <!-- Welcome Header -->
-    <div class="welcome-header animate-slide-up" fxLayout="row" fxLayoutAlign="space-between center" fxLayout.xs="column" fxLayoutGap.xs="16px">
+    <div
+      class="welcome-header animate-slide-up"
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+      fxLayout.xs="column"
+      fxLayoutGap.xs="16px"
+    >
       <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
         <img class="shop-logo-large" imageLoader [imageFile]="shop.logoImage" alt="Logo" />
         <div>
           <h1 class="welcome-title">{{ 'home.title' | translate }}، {{ shop.title }}</h1>
           <p class="welcome-subtitle">
-            <span>{{ 'home.shopInfo.code' | translate }}: <strong eng>{{ shop.code }}</strong></span>
-            @if (shop.businessCategory) {
-              <span class="dot-divider">•</span>
-              <span class="business-category">{{ shop.businessCategory | businessCategory }}</span>
-            }
+            <span>{{ randomMessage() }}</span>
           </p>
         </div>
       </div>
@@ -28,13 +29,19 @@
 
     <!-- Warnings / Banners -->
     @if (!shop.paymentGateway) {
-      <mat-card class="promo-card orange animate-slide-up" style="animation-delay: 0.05s;">
+      <mat-card class="promo-card orange animate-slide-up" style="animation-delay: 0.05s">
         <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
           <div class="np-icon-badge orange"><ng-icon name="saxDangerOutline"></ng-icon></div>
           <div fxFlex>
-            <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
-              <p style="margin: 0 0 6px 0;">درگاه پرداخت آنلاین شما فعال نیست. برای شروع پذیرش پرداخت‌های آنلاین از مشتریان، لطفاً تنظیمات درگاه بانکی خود را تکمیل کنید.</p>
-              <p style="margin: 0;">برای اتصال حساب بانکی و راه‌اندازی درگاه پرداخت آنلاین، می‌توانید به بخش <a routerLink="/admin/settings/third-parties">تنظیمات درگاه بانکی</a> مراجعه کنید.</p>
+            <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6">
+              <p style="margin: 0 0 6px 0">
+                درگاه پرداخت آنلاین شما فعال نیست. برای شروع پذیرش پرداخت‌های آنلاین از مشتریان، لطفاً تنظیمات
+                درگاه بانکی خود را تکمیل کنید.
+              </p>
+              <p style="margin: 0">
+                برای اتصال حساب بانکی و راه‌اندازی درگاه پرداخت آنلاین، می‌توانید به بخش
+                <a routerLink="/admin/settings/third-parties">تنظیمات درگاه بانکی</a> مراجعه کنید.
+              </p>
             </div>
           </div>
         </mat-card-content>
@@ -42,80 +49,215 @@
     }
 
     @if (!menuService.loading() && menuService.categories()?.length === 0) {
-      <mat-card class="promo-card blue animate-slide-up" style="animation-delay: 0.05s;">
+      <mat-card class="promo-card blue animate-slide-up" style="animation-delay: 0.05s">
         <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
           <div class="np-icon-badge blue"><ng-icon name="saxInfoCircleOutline"></ng-icon></div>
           <div fxFlex>
-            <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
-              <p style="margin: 0 0 6px 0;">هنوز هیچ دسته‌بندی یا محصولی در منوی دیجیتال خود ثبت نکرده‌اید. همین حالا اولین دسته‌بندی را ایجاد کرده و منو را بسازید.</p>
-              <p style="margin: 0;">برای ایجاد دسته‌بندی‌ها و اضافه کردن محصولات خود به منو، به بخش <a routerLink="/admin/menu/list">مدیریت منو و محصولات</a> بروید.</p>
+            <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6">
+              <p style="margin: 0 0 6px 0">
+                هنوز هیچ دسته‌بندی یا محصولی در منوی دیجیتال خود ثبت نکرده‌اید. همین حالا اولین دسته‌بندی را
+                ایجاد کرده و منو را بسازید.
+              </p>
+              <p style="margin: 0">
+                برای ایجاد دسته‌بندی‌ها و اضافه کردن محصولات خود به منو، به بخش
+                <a routerLink="/admin/menu/list">مدیریت منو و محصولات</a> بروید.
+              </p>
             </div>
           </div>
         </mat-card-content>
       </mat-card>
     }
 
-    <!-- Dashboard Grid Layout -->
-    <div class="dashboard-grid animate-slide-up" style="animation-delay: 0.1s;">
+    <!-- Quick Actions Hub (Full Width) -->
+    <div class="dashboard-card action-hub-card animate-slide-up" style="animation-delay: 0.1s">
+      <div class="card-header" fxLayout="row" fxLayoutAlign="space-between center" fxLayout.xs="column" fxLayoutGap.xs="12px">
+        <h2 class="card-title-main" style="margin: 0;">
+          <ng-icon name="saxSetting5Outline"></ng-icon>
+          دسترسی سریع
+        </h2>
+        <!-- Tabs Header Row (All in one line) -->
+        <div class="tabs-header-row" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+          <button class="tab-btn" [class.active]="currentActiveTab === 'setup'" (click)="selectTab('setup')">
+            منو و راه‌اندازی
+            @if (recommendedTab() === 'setup') {
+              <span class="tab-badge-dot warning"></span>
+            }
+          </button>
+          <button class="tab-btn" [class.active]="currentActiveTab === 'accounting'" (click)="selectTab('accounting')">
+            مالی و انبار
+            @if (recommendedTab() === 'accounting') {
+              <span class="tab-badge-dot warning"></span>
+            }
+          </button>
+          <button class="tab-btn" [class.active]="currentActiveTab === 'marketing'" (click)="selectTab('marketing')">
+            مشتریان و بازاریابی
+          </button>
+        </div>
+      </div>
       
+      <!-- Quick Actions Grid -->
+      <div class="quick-actions-grid">
+        <!-- ==================== Tab 1: Menu & Setup ==================== -->
+        @if (currentActiveTab === 'setup') {
+          <a class="action-card" routerLink="/admin/settings/app-config">
+            <div class="action-icon purple">
+              <ng-icon name="saxColorfilterOutline"></ng-icon>
+            </div>
+            <div class="action-details">
+              <span class="action-name">ظاهر و دیزاین سایت</span>
+              <span class="action-desc">شخصی‌سازی رنگ‌ها و لوگو</span>
+            </div>
+            @if (noLogo()) {
+              <span class="card-badge warning">بدون لوگو</span>
+            }
+            <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
+          </a>
+
+          <a class="action-card" routerLink="/admin/menu/list">
+            <div class="action-icon blue">
+              <ng-icon name="saxBoxOutline"></ng-icon>
+            </div>
+            <div class="action-details">
+              <span class="action-name">مدیریت منو و محصولات</span>
+              <span class="action-desc">دسته‌بندی‌ها و محصولات مجموعه</span>
+            </div>
+            @if (noCategories()) {
+              <span class="card-badge warning">بدون دسته‌بندی</span>
+            } @else if (lowProducts()) {
+              <span class="card-badge warning">کمبود محصول</span>
+            }
+            <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
+          </a>
+
+          <a class="action-card" routerLink="/admin/settings/order-config">
+            <div class="action-icon orange">
+              <ng-icon name="saxSetting2Outline"></ng-icon>
+            </div>
+            <div class="action-details">
+              <span class="action-name">{{ 'home.shopInfo.orderConfig' | translate }}</span>
+              <span class="action-desc">فعال و غیرفعال کردن و محدودیت سفارش‌گیری</span>
+            </div>
+            <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
+          </a>
+        }
+
+        <!-- ==================== Tab 2: Accounting & Inventory ==================== -->
+        @if (currentActiveTab === 'accounting') {
+          <a class="action-card" routerLink="/admin/inventory/materials">
+            <div class="action-icon orange">
+              <ng-icon name="saxArchiveOutline"></ng-icon>
+            </div>
+            <div class="action-details">
+              <span class="action-name">مواد اولیه انبار</span>
+              <span class="action-desc">تعریف مواد اولیه و مدیریت انبار</span>
+            </div>
+            @if (noMaterials()) {
+              <span class="card-badge warning">ثبت نشده</span>
+            }
+            <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
+          </a>
+
+          <a class="action-card" routerLink="/admin/inventory/bom">
+            <div class="action-icon purple">
+              <ng-icon name="saxTaskSquareOutline"></ng-icon>
+            </div>
+            <div class="action-details">
+              <span class="action-name">فرمول ساخت محصولات (BOM)</span>
+              <span class="action-desc">فرمول ساخت برای محاسبه سود و زیان</span>
+            </div>
+            @if (noBoms()) {
+              <span class="card-badge warning">بدون فرمول سود</span>
+            }
+            <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
+          </a>
+
+          <a class="action-card" routerLink="/admin/pricing">
+            <div class="action-icon green">
+              <ng-icon name="saxDollarSquareOutline"></ng-icon>
+            </div>
+            <div class="action-details">
+              <span class="action-name">قیمت‌گذاری محصولات</span>
+              <span class="action-desc">ویرایش و به‌روزرسانی سریع قیمت‌ها</span>
+            </div>
+            <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
+          </a>
+
+          <a class="action-card" routerLink="/admin/orders/new">
+            <div class="action-icon green">
+              <ng-icon name="saxAddCircleOutline"></ng-icon>
+            </div>
+            <div class="action-details">
+              <span class="action-name">ثبت سفارش جدید</span>
+              <span class="action-desc">ثبت و مدیریت سفارشات جدید</span>
+            </div>
+            <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
+          </a>
+        }
+
+        <!-- ==================== Tab 3: Customers & Marketing ==================== -->
+        @if (currentActiveTab === 'marketing') {
+          <a class="action-card" routerLink="/admin/club/members">
+            <div class="action-icon teal">
+              <ng-icon name="saxPeopleOutline"></ng-icon>
+            </div>
+            <div class="action-details">
+              <span class="action-name">باشگاه مشتریان</span>
+              <span class="action-desc">مدیریت اطلاعات و ارتباط با مشتریان</span>
+            </div>
+            <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
+          </a>
+
+          <div class="action-card cursor-pointer" (click)="sendLink()">
+            <div class="action-icon coral">
+              <ng-icon name="saxMessageOutline"></ng-icon>
+            </div>
+            <div class="action-details">
+              <span class="action-name">ارسال لینک به مشتری (SMS)</span>
+              <span class="action-desc">ارسال پیامکی لینک وب‌سایت به مشتریان</span>
+            </div>
+            <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
+          </div>
+
+          <div class="action-card cursor-pointer" [copyClipboard]="shopService.appLink()">
+            <div class="action-icon cyan">
+              <ng-icon name="saxCopyOutline"></ng-icon>
+            </div>
+            <div class="action-details">
+              <span class="action-name">کپی لینک وب‌سایت</span>
+              <span class="action-desc">کپی آدرس سایت برای اشتراک‌گذاری</span>
+            </div>
+            <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
+          </div>
+
+          <a class="action-card" routerLink="/admin/missions">
+            <div class="action-icon green">
+              <ng-icon name="saxDiscountShapeOutline"></ng-icon>
+            </div>
+            <div class="action-details">
+              <span class="action-name">سناریوهای فروش</span>
+              <span class="action-desc">پاداش خودکار در صورت خرید مشتریان</span>
+            </div>
+            <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
+          </a>
+
+          <a class="action-card" routerLink="/admin/coupons">
+            <div class="action-icon orange">
+              <ng-icon name="saxTagOutline"></ng-icon>
+            </div>
+            <div class="action-details">
+              <span class="action-name">کدهای تخفیف</span>
+              <span class="action-desc">ساخت و مدیریت کدهای تخفیف</span>
+            </div>
+            <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
+          </a>
+        }
+      </div>
+    </div>
+
+    <!-- Dashboard Grid Layout -->
+    <div class="dashboard-grid animate-slide-up" style="animation-delay: 0.15s">
       <!-- Right Column: Main Content -->
       <div class="main-column" fxLayout="column" fxLayoutGap="24px">
-        
-        <!-- Quick Actions Hub -->
-        <div class="dashboard-card action-hub-card">
-          <div class="card-header">
-            <h2 class="card-title-main">
-              <ng-icon name="saxSetting5Outline"></ng-icon>
-              دسترسی سریع
-            </h2>
-          </div>
-          <div class="quick-actions-grid">
-            <a class="action-card" routerLink="/admin/orders/new">
-              <div class="action-icon green">
-                <ng-icon name="saxAddCircleOutline"></ng-icon>
-              </div>
-              <div class="action-details">
-                <span class="action-name">ثبت سفارش جدید</span>
-                <span class="action-desc">ثبت و مدیریت سفارشات جدید</span>
-              </div>
-              <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
-            </a>
-
-            <a class="action-card" routerLink="/admin/menu/list">
-              <div class="action-icon blue">
-                <ng-icon name="saxBoxOutline"></ng-icon>
-              </div>
-              <div class="action-details">
-                <span class="action-name">مدیریت منو و محصولات</span>
-                <span class="action-desc">دسته‌بندی‌ها و محصولات مجموعه</span>
-              </div>
-              <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
-            </a>
-
-            <a class="action-card" routerLink="/admin/club/members">
-              <div class="action-icon teal">
-                <ng-icon name="saxPeopleOutline"></ng-icon>
-              </div>
-              <div class="action-details">
-                <span class="action-name">باشگاه مشتریان</span>
-                <span class="action-desc">مدیریت اطلاعات و ارتباط با مشتریان</span>
-              </div>
-              <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
-            </a>
-
-            <a class="action-card" routerLink="/admin/settings/app-config">
-              <div class="action-icon purple">
-                <ng-icon name="saxColorfilterOutline"></ng-icon>
-              </div>
-              <div class="action-details">
-                <span class="action-name">ظاهر و دیزاین سایت</span>
-                <span class="action-desc">شخصی‌سازی رنگ‌ها و لوگو</span>
-              </div>
-              <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
-            </a>
-          </div>
-        </div>
-
         <!-- Sales Report Card -->
         @if (auth.hasAccess(UserAction.Reports)) {
           <app-order-total></app-order-total>
@@ -124,11 +266,9 @@
 
       <!-- Left Column: Sidebar Details -->
       <div class="sidebar-column" fxLayout="column" fxLayoutGap="24px">
-        <app-shop-info-card></app-shop-info-card>
         <app-plan-card></app-plan-card>
         <app-wallet-card></app-wallet-card>
       </div>
-
     </div>
   </main>
 }

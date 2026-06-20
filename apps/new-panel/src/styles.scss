@@ -1075,5 +1075,23 @@ div[p-md]:has(> :first-child.promo-card) {
   padding-top: 0 !important;
 }
 
+/* ==========================================================================
+   Global ng-icon overrides for alignment and clipping fixes
+   ========================================================================== */
+ng-icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  vertical-align: middle !important;
+
+  svg {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: visible !important;
+  }
+}
+
+
 
 
