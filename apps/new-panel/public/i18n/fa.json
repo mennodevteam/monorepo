@@ -403,7 +403,8 @@
   "address": {
     "postalCode": "کدپستی",
     "unit": "پلاک",
-    "ring": "واحد"
+    "ring": "واحد",
+    "noTitle": "بدون عنوان"
   },
   "errors": {
     "changeError": "خطا در ذخیره‌سازی"
@@ -454,7 +455,7 @@
   "newOrder": {
     "newTitle": "ثبت سفارش جدید",
     "editTitle": "ویرایش سفارش",
-    "searchItemLabel": "اضافه کردن آیتم",
+    "searchItemLabel": "جستجو و اضافه کردن آیتم",
     "manualDiscount": "تخفیف دستی",
     "manualCost": "هزینه مازاد",
     "addressTitle": "انتخاب آدرس",
@@ -1084,7 +1085,6 @@
     "durationInDays": "مدت اعتبار (روز)",
     "emptyState": "هیچ سناریو فروشی تعریف نشده است. سناریوهای فروش به مشتریان کمک می‌کند تا با خرید بیشتر پاداش دریافت کنند."
   },
-
   "discountCoupons": {
     "add": "افزودن کد تخفیف",
     "newTitle": "افزودن کد تخفیف جدید",
@@ -1311,22 +1311,22 @@
     "newProductList": "لیست محصولات جدید",
     "editCategoryList": "ویرایش لیست دسته‌بندی‌ها",
     "newCategoryList": "لیست دسته‌بندی‌های جدید",
-        "viewType": "نوع نمایش",
-        "carousel": "کاروسل",
-        "grid": "گرید",
-        "button": "دکمه",
-        "gridCols": "تعداد ستون‌های گرید",
-        "gridColsHint": "تعداد ستون‌های گرید (1 تا 6)",
-        "carouselRows": "تعداد ردیف‌های کاروسل",
-        "carouselRowsHint": "تعداد ردیف‌های کاروسل (1 تا 4)",
-        "titleHint": "عنوان اختیاری برای نمایش در بالای لیست محصولات",
-        "products": "محصولات",
-        "selectProducts": "انتخاب محصولات",
-        "noProductsSelected": "هیچ محصولی انتخاب نشده است",
-        "categories": "دسته‌بندی‌ها",
-        "selectCategories": "انتخاب دسته‌بندی‌ها",
-        "noCategoriesSelected": "هیچ دسته‌بندی‌ای انتخاب نشده است",
-        "showMore": "نمایش دکمه مشاهده همه",
+    "viewType": "نوع نمایش",
+    "carousel": "کاروسل",
+    "grid": "گرید",
+    "button": "دکمه",
+    "gridCols": "تعداد ستون‌های گرید",
+    "gridColsHint": "تعداد ستون‌های گرید (1 تا 6)",
+    "carouselRows": "تعداد ردیف‌های کاروسل",
+    "carouselRowsHint": "تعداد ردیف‌های کاروسل (1 تا 4)",
+    "titleHint": "عنوان اختیاری برای نمایش در بالای لیست محصولات",
+    "products": "محصولات",
+    "selectProducts": "انتخاب محصولات",
+    "noProductsSelected": "هیچ محصولی انتخاب نشده است",
+    "categories": "دسته‌بندی‌ها",
+    "selectCategories": "انتخاب دسته‌بندی‌ها",
+    "noCategoriesSelected": "هیچ دسته‌بندی‌ای انتخاب نشده است",
+    "showMore": "نمایش دکمه مشاهده همه",
     "sortSections": "مرتب‌سازی بخش‌ها"
   }
 }

@@ -1,4 +1,4 @@
-<mat-card appearance="outlined">
+<mat-card appearance="outlined" class="customer-card">
   @let customer = service.customer();
   <mat-card-header>
     <mat-card-title>
@@ -6,24 +6,36 @@
       {{ 'order.customer' | translate }}
     </mat-card-title>
   </mat-card-header>
+  
   <mat-card-content>
     @if (customer) {
-      <p>{{ User.fullName(customer) }} - {{ customer.mobilePhone }}</p>
+      <div class="customer-profile-container" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+        <div class="customer-avatar" fxLayout="row" fxLayoutAlign="center center">
+          {{ customer.firstName.charAt(0) || customer.lastName.charAt(0) || 'م' }}
+        </div>
+        <div fxLayout="column" fxLayoutGap="4px" fxFlex>
+          <span class="customer-name">{{ User.fullName(customer) }}</span>
+          <span class="customer-phone">{{ customer.mobilePhone }}</span>
+        </div>
+      </div>
     } @else {
-      <br />
-      <app-search-member-autocomplete (userSelect)="selectUser($event)" />
+      <div class="search-customer-wrapper">
+        <app-search-member-autocomplete (userSelect)="selectUser($event)" />
+      </div>
     }
   </mat-card-content>
+  
   @if (customer) {
-    <mat-card-actions>
-      <button mat-button (click)="editMember()">
+    <mat-card-actions class="customer-card-actions" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+      <button mat-button (click)="editMember()" class="action-btn">
         <ng-icon name="saxEditOutline"></ng-icon>
         {{ 'app.edit' | translate }}
       </button>
-      <button mat-button class="warn-theme" (click)="clearMember()">
+      <button mat-button class="warn-theme action-btn" (click)="clearMember()">
         <ng-icon name="saxCloseCircleOutline"></ng-icon>
         {{ 'app.remove' | translate }}
       </button>
     </mat-card-actions>
   }
 </mat-card>
+

@@ -4,6 +4,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SHARED } from '../..';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { debounceTime, distinctUntilChanged, lastValueFrom } from 'rxjs';
@@ -20,8 +21,9 @@ import { ClubService } from '../../../core/services/club.service';
     MatAutocompleteModule,
     MatInputModule,
     SHARED,
-    ReactiveFormsModule
-],
+    ReactiveFormsModule,
+    MatProgressSpinnerModule
+  ],
   templateUrl: './search-member-autocomplete.component.html',
   styleUrl: './search-member-autocomplete.component.scss',
 })

@@ -128,11 +128,11 @@
       }
     </div>
   }
-  @if (typeof text() === 'string') {
+  @if (isString(text())) {
     <p>{{ text() }}</p>
   } @else {
     <div>
-      @for (line of text(); track line) {
+      @for (line of textAsArray(); track line) {
         <p>{{ line }}</p>
       }
     </div>

@@ -76,6 +76,13 @@ export class NewOrdersService {
         this.orderCampaign.set(order.details?.campaign ?? '');
       }
     });
+
+    effect(() => {
+      const shop = this.shop.data();
+      if (shop?.appConfig?.orderingTypes?.length && !this.order() && this.type() === undefined) {
+        this.type.set(shop.appConfig.orderingTypes[0]);
+      }
+    });
   }
 
   dto = computed(() => {

@@ -1,105 +1,73 @@
-<mat-form-field id="search-item" appearance="outline">
-  <mat-label>{{ 'newOrder.searchItemLabel' | translate }}</mat-label>
-  <input
-    type="text"
-    matInput
-    autofocus
-    [(ngModel)]="searchInput"
-    [matAutocomplete]="auto"
-    [ngModelOptions]="{ standalone: true }"
-  />
-  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectItem($event)" autoActiveFirstOption>
-    @for (item of searchedItems(); track $index) {
-      <mat-option [value]="item">
-        <span style="display: inline-block">
-          {{ item.product.title }}
-        </span>
-        @if (item.variant) {
-          <span style="display: inline-block"> - {{ item.variant.title }} </span>
+@if (items().length) {
+  <table mat-table [dataSource]="items()">
+    <ng-container matColumnDef="index">
+      <th mat-header-cell *matHeaderCellDef style="width: 64px">{{ 'app.index' | translate }}</th>
+      <td mat-cell *matCellDef="let item; let i = index">
+        @if (!item.isAbstract) {
+          {{ item.details?.addIndex ?? i + 1 }}
         }
-        <span style="display: inline-block"> ({{ item.category.title }}) </span> |
-        @if (Product.hasDiscount(item.product, item.variant)) {
-          <span class="line-through">
-            {{ Product.realPrice(item.product, item.variant) | number | menuCurrency }}
-          </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef>{{ 'app.title' | translate }}</th>
+      <td mat-cell *matCellDef="let item">
+        {{ item.title }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fee">
+      <th mat-header-cell *matHeaderCellDef style="width: 128px">{{ 'app.fee' | translate }}</th>
+      <td mat-cell *matCellDef="let item">
+        @if (!item.isAbstract) {
+          {{ item.price | number | menuCurrency }}
         }
+      </td>
+    </ng-container>
 
-        {{ Product.totalPrice(item.product, item.variant) | number | menuCurrency }}
-      </mat-option>
-    }
-  </mat-autocomplete>
-</mat-form-field>
+    <ng-container matColumnDef="quantity">
+      <th mat-header-cell *matHeaderCellDef style="width: 160px">{{ 'app.count' | translate }}</th>
+      <td mat-cell *matCellDef="let item">
+        @if (!item.isAbstract) {
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button (click)="service.add(item.product, item.productVariant)">
+              <ng-icon name="saxAddCircleOutline"></ng-icon>
+            </button>
+            <span>
+              {{ 'app.number' | translate: { value: item.quantity } }}
+            </span>
+            <button mat-icon-button (click)="service.minus(item.product, item.productVariant)">
+              <ng-icon name="saxMinusCircleOutline"></ng-icon>
+            </button>
+          </div>
+        }
+      </td>
+    </ng-container>
 
-<table mat-table [dataSource]="items()">
-  <ng-container matColumnDef="index">
-    <th mat-header-cell *matHeaderCellDef style="width: 64px">{{ 'app.index' | translate }}</th>
-    <td mat-cell *matCellDef="let item; let i = index">
-      @if (!item.isAbstract) {
-        {{ item.details?.addIndex ?? i + 1 }}
-      }
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="total">
+      <th mat-header-cell *matHeaderCellDef style="width: 160px">{{ 'app.sum' | translate }}</th>
+      <td mat-cell *matCellDef="let item">
+        {{ item.price * item.quantity | number | menuCurrency }}
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="title">
-    <th mat-header-cell *matHeaderCellDef>{{ 'app.title' | translate }}</th>
-    <td mat-cell *matCellDef="let item">
-      {{ item.title }}
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="fee">
-    <th mat-header-cell *matHeaderCellDef style="width: 128px">{{ 'app.fee' | translate }}</th>
-    <td mat-cell *matCellDef="let item">
-      @if (!item.isAbstract) {
-        {{ item.price | number | menuCurrency }}
-      }
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="quantity">
-    <th mat-header-cell *matHeaderCellDef style="width: 160px">{{ 'app.count' | translate }}</th>
-    <td mat-cell *matCellDef="let item">
-      @if (!item.isAbstract) {
-        <div fxLayout="row" fxLayoutAlign="start center">
-          <button mat-icon-button (click)="service.add(item.product, item.productVariant)">
-            <ng-icon name="saxAddCircleOutline"></ng-icon>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let item" style="width: 64px">
+        @if (!item.isAbstract) {
+          <button
+            mat-icon-button
+            (click)="service.remove(item.product, item.productVariant)"
+          >
+            <ng-icon name="saxTrashOutline"></ng-icon>
           </button>
-          <span>
-            {{ 'app.number' | translate: { value: item.quantity } }}
-          </span>
-          <button mat-icon-button (click)="service.minus(item.product, item.productVariant)">
-            <ng-icon name="saxMinusCircleOutline"></ng-icon>
-          </button>
-        </div>
-      }
-    </td>
-  </ng-container>
+        }
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="total">
-    <th mat-header-cell *matHeaderCellDef style="width: 160px">{{ 'app.sum' | translate }}</th>
-    <td mat-cell *matCellDef="let item">
-      {{ item.price * item.quantity | number | menuCurrency }}
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let item" style="width: 64px">
-      @if (!item.isAbstract) {
-        <button
-          mat-icon-button
-          (click)="service.remove(item.product, item.productVariant)"
-        >
-          <ng-icon name="saxTrashOutline"></ng-icon>
-        </button>
-      }
-    </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns; let last = last" [class.total]="last"></tr>
-</table>
-
-@if (!items().length) {
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns; let last = last" [class.total]="last"></tr>
+  </table>
+} @else {
   <app-empty-state />
 }

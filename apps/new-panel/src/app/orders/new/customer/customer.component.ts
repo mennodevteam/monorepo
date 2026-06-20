@@ -23,6 +23,7 @@ export class CustomerComponent {
   selectUser(member?: Member | null) {
     if (member) {
       this.service.customer.set(member?.user);
+      this.service.address.set(undefined);
       this.member.set(member);
       this.service.dirty.set(true);
     }
@@ -30,6 +31,7 @@ export class CustomerComponent {
 
   clearMember() {
     this.service.customer.set(undefined);
+    this.service.address.set(undefined);
     this.service.dirty.set(true);
     this.member.set(null);
   }
@@ -38,7 +40,10 @@ export class CustomerComponent {
     const member = this.member();
     if (member) {
       const savedMember = await this.club.editMemberDialog(member);
-      if (savedMember) this.service.customer.set(savedMember.user);
+      if (savedMember) {
+        this.service.customer.set(savedMember.user);
+      }
     }
   }
 }
+

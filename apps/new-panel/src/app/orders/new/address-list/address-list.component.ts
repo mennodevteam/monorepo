@@ -37,8 +37,18 @@ export class AddressListComponent {
   constructor() {
     effect(() => {
       const addresses = this.addressesQuery.data();
-      if (!this.service.address() && addresses?.length) {
-        this.service.address.set(addresses[0]);
+      const currentAddress = this.service.address();
+      if (addresses?.length) {
+        if (currentAddress) {
+          const match = addresses.find((a) => a.id === currentAddress.id);
+          if (match) {
+            if (this.service.address() !== match || !this.service.address()?.deliveryArea) {
+              this.service.address.set(match);
+            }
+          }
+        } else {
+          this.service.address.set(addresses[0]);
+        }
       }
     });
   }

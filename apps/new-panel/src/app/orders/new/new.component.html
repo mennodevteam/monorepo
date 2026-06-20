@@ -21,7 +21,51 @@
   <main p-md>
     <div fxLayout.gt-md="row" fxLayout="column" fxLayoutGap="16px" fxLayoutAlign.gt-md="start start">
       <div fxLayout="column" fxLayoutGap="16px" fxFlex>
-        <mat-card appearance="outlined" fxFlex>
+        <mat-form-field id="search-item" appearance="outline">
+          <mat-label>{{ 'newOrder.searchItemLabel' | translate }}</mat-label>
+          <input
+            type="text"
+            matInput
+            autofocus
+            [(ngModel)]="searchInput"
+            [matAutocomplete]="auto"
+            [ngModelOptions]="{ standalone: true }"
+          />
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectItem($event)" autoActiveFirstOption>
+            @for (item of searchedItems(); track $index) {
+              @let status = getItemStatus(item.product, item.variant);
+              <mat-option [value]="item" [disabled]="status.disabled">
+                <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+                  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+                    <span style="font-weight: 500;">
+                      {{ item.product.title }}
+                      @if (item.variant) {
+                        - {{ item.variant.title }}
+                      }
+                    </span>
+                    <span style="color: var(--text-muted); font-size: 0.8rem;">
+                      ({{ item.category.title }})
+                    </span>
+                    <span style="color: var(--text-muted); margin-inline: 4px;">|</span>
+                    @if (Product.hasDiscount(item.product, item.variant)) {
+                      <span class="line-through" style="color: var(--text-muted); font-size: 0.85rem; margin-inline-end: 4px;">
+                        {{ Product.realPrice(item.product, item.variant) | number | menuCurrency }}
+                      </span>
+                    }
+                    <span style="font-weight: 600;">
+                      {{ Product.totalPrice(item.product, item.variant) | number | menuCurrency }}
+                    </span>
+                  </div>
+                  <span class="status-badge" [class]="status.class">
+                    {{ status.label }}
+                  </span>
+                </div>
+              </mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-card appearance="outlined">
           <mat-card-content>
             <app-new-order-items />
           </mat-card-content>

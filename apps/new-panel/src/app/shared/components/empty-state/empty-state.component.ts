@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SHARED_MODULES } from '../../modules';
 import { MatButtonModule } from '@angular/material/button';
@@ -23,7 +23,17 @@ export class EmptyStateComponent {
   action = input<EmptyStateAction | undefined>();
   actionClick = output<void>();
 
+  textAsArray = computed(() => {
+    const val = this.text();
+    if (Array.isArray(val)) return val;
+    return [];
+  });
+
   getIconName(iconName: string | undefined): string {
     return mapFaIcon(iconName);
+  }
+
+  isString(val: any): boolean {
+    return typeof val === 'string';
   }
 }

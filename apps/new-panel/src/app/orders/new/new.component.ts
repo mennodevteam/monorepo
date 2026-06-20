@@ -1,12 +1,12 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
-import { PlatformLocation } from '@angular/common';
+import { CommonModule, PlatformLocation } from '@angular/common';
 import { NewOrdersService } from './new-order.service';
 import { SHARED } from '../../shared';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { NewOrderItemsComponent } from './items/items.component';
-import { FormControl, Validators } from '@angular/forms';
-import { Order, OrderType } from '@menno/types';
+import { FormControl, FormsModule, Validators } from '@angular/forms';
+import { Order, OrderType, Product, ProductCategory, ProductVariant, Status } from '@menno/types';
 import { ShopService } from '../../shop/shop.service';
 import { FormComponent } from '../../core/guards/dirty-form-deactivator.guard';
 import { DialogService } from '../../core/services/dialog.service';
@@ -21,11 +21,17 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ConfigModalComponent, OrderConfigData } from './config-modal/config-modal.component';
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MenuService } from '../../menu/menu.service';
+import Fuse from 'fuse.js';
 
 @Component({
   selector: 'app-new',
   standalone: true,
   imports: [
+    CommonModule,
     SHARED,
     MatToolbarModule,
     MatCardModule,
@@ -33,8 +39,12 @@ import { ConfigModalComponent, OrderConfigData } from './config-modal/config-mod
     NewOrderItemsComponent,
     AddressListComponent,
     CustomerComponent,
-    OrderTypeComponent
-],
+    OrderTypeComponent,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule
+  ],
   providers: [NewOrdersService],
   templateUrl: './new.component.html',
   styleUrl: './new.component.scss',
@@ -42,6 +52,7 @@ import { ConfigModalComponent, OrderConfigData } from './config-modal/config-mod
 export class NewOrderComponent implements FormComponent {
   readonly t = inject(TranslateService);
   readonly shop = inject(ShopService);
+  readonly menu = inject(MenuService);
   readonly http = inject(HttpClient);
   readonly dialog = inject(DialogService);
   readonly matDialog = inject(MatDialog);
@@ -51,6 +62,98 @@ export class NewOrderComponent implements FormComponent {
   readonly router = inject(Router);
   saving = signal(false);
   OrderType = OrderType;
+  Product = Product;
+  searchInput = signal('');
+
+  allSearchableItems = computed(() => {
+    const categories = this.menu.categories() || [];
+    const list: {
+      category: ProductCategory;
+      product: Product;
+      variant?: ProductVariant;
+      productTitle: string;
+      variantTitle: string;
+      categoryTitle: string;
+      combinedTitle: string;
+    }[] = [];
+    for (const category of categories) {
+      if (category.products) {
+        for (const product of category.products) {
+          if (product.variants?.length) {
+            for (const variant of product.variants) {
+              list.push({
+                category,
+                product,
+                variant,
+                productTitle: product.title,
+                variantTitle: variant.title,
+                categoryTitle: category.title,
+                combinedTitle: `${product.title} ${variant.title}`,
+              });
+            }
+          } else {
+            list.push({
+              category,
+              product,
+              productTitle: product.title,
+              variantTitle: '',
+              categoryTitle: category.title,
+              combinedTitle: product.title,
+            });
+          }
+        }
+      }
+    }
+    return list;
+  });
+
+  fuse = computed(() => {
+    const list = this.allSearchableItems();
+    return new Fuse(list, {
+      keys: [
+        { name: 'combinedTitle', weight: 1 },
+        { name: 'productTitle', weight: 0.8 },
+        { name: 'variantTitle', weight: 0.6 },
+        { name: 'categoryTitle', weight: 0.3 }
+      ],
+      threshold: 0.4,
+    });
+  });
+
+  searchedItems = computed(() => {
+    const query = this.searchInput().trim();
+    if (!query) return [];
+    return this.fuse().search(query).map(res => res.item);
+  });
+
+  selectItem(item: MatAutocompleteSelectedEvent) {
+    const value = item.option.value;
+    if (value) {
+      this.service.add(value.product, value.variant);
+      this.searchInput.set('');
+      this.service.dirty.set(true);
+    }
+  }
+
+  getItemStatus(product: Product, variant?: ProductVariant): { label: string; class: string; disabled: boolean } {
+    const pStatus = product.status;
+    const vStatus = variant?.status;
+
+    if (pStatus === Status.Inactive || vStatus === Status.Inactive) {
+      return { label: 'غیرفعال', class: 'status-badge-inactive', disabled: true };
+    }
+
+    if (
+      pStatus === Status.Blocked ||
+      vStatus === Status.Blocked ||
+      product.stock === 0 ||
+      variant?.stock === 0
+    ) {
+      return { label: 'ناموجود', class: 'status-badge-unavailable', disabled: false };
+    }
+
+    return { label: 'موجود', class: 'status-badge-available', disabled: false };
+  }
 
   orderId = signal(this.route.snapshot.params['id']);
   orderQuery = injectQuery(() => ({

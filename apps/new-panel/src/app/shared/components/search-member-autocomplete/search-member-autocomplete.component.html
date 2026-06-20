@@ -7,8 +7,8 @@
     [formControl]="searchControl"
     [matAutocomplete]="auto"
   />
-  @if (query.isLoading()) {
-    <i matIconSuffix class="fa-regular fa-spinner-third fa-spin"></i>
+  @if (query.isFetching()) {
+    <mat-spinner matSuffix [diameter]="18"></mat-spinner>
   } @else if (selectedMember()) {
     <button mat-icon-button matSuffix (click)="selectedMember.set(null); searchControl.setValue('')">
       <ng-icon name="saxCloseCircleOutline"></ng-icon>

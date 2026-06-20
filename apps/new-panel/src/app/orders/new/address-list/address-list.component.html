@@ -7,30 +7,54 @@
   </mat-card-header>
   <mat-card-content>
     @if (addressesQuery.data()) {
-      <mat-nav-list>
+      <div class="address-options-list" fxLayout="column" fxLayoutGap="12px">
         @for (address of addressesQuery.data(); track address.id) {
-          <a mat-list-item [lines]="3" (click)="selectAddress(address)">
-            <span matListItemTitle>
-              <i
-                class="{{
-                  address.id === service.address()?.id ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle'
-                }}"
-              ></i>
-              @if (address.title) {
-                {{ address.title }} .
+          @let isSelected = address.id === service.address()?.id;
+          <div
+            class="address-option-card"
+            [class.selected]="isSelected"
+            (click)="selectAddress(address)"
+            fxLayout="row"
+            fxLayoutAlign="space-between center"
+          >
+            <div fxLayout="column" fxLayoutGap="4px" fxFlex>
+              <div class="address-header" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+                <ng-icon name="saxLocationOutline" class="address-icon"></ng-icon>
+                <span class="address-title">
+                  @if (address.title) {
+                    {{ address.title }}
+                  } @else {
+                    {{ 'address.noTitle' | translate }}
+                  }
+                </span>
+                @if (address.region?.title) {
+                  <span class="address-region">({{ address.region?.title }})</span>
+                }
+              </div>
+              <div class="address-description">
+                {{ address.description }}
+                @if (address.unit || address.ring) {
+                  <span class="address-details-span">
+                    @if (address.unit) {
+                      - {{ 'address.unit' | translate }} {{ address.unit }}
+                    }
+                    @if (address.ring) {
+                      - {{ 'address.ring' | translate }} {{ address.ring }}
+                    }
+                  </span>
+                }
+              </div>
+            </div>
+            <div class="check-container">
+              @if (isSelected) {
+                <ng-icon name="saxTickCircleOutline" class="check-icon selected"></ng-icon>
+              } @else {
+                <div class="check-icon-placeholder"></div>
               }
-              {{ address.region?.title }}
-            </span>
-            {{ address.description }}
-            @if (address.unit) {
-              {{ 'address.unit' | translate }} {{ address.unit }}
-            }
-            @if (address.ring) {
-              {{ 'address.ring' | translate }} {{ address.ring }}
-            }
-          </a>
+            </div>
+          </div>
         }
-      </mat-nav-list>
+      </div>
 
       @if (!addressesQuery.data()?.length) {
         <app-empty-state />
