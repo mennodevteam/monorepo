@@ -1,155 +1,45 @@
-.container {
-  height: 100vh;
+.auth-container {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #ffffff;
+  padding: 60px 24px;
+  box-sizing: border-box;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  position: relative;
-  background: radial-gradient(circle at 80% 20%, rgba(255, 179, 0, 0.08) 0%, transparent 50%),
-              radial-gradient(circle at 10% 80%, rgba(23, 23, 23, 0.03) 0%, transparent 50%),
-              #fafafa;
-  background-image: radial-gradient(circle at 80% 20%, rgba(255, 179, 0, 0.08) 0%, transparent 50%),
-                    radial-gradient(circle at 10% 80%, rgba(23, 23, 23, 0.03) 0%, transparent 50%),
-                    radial-gradient(rgba(23, 23, 23, 0.04) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 20px 20px;
-
-  @media screen and (max-width: 960px) {
-    height: auto;
-    background: #ffffff;
-  }
+  justify-content: start;
 }
 
-.container-card {
-  width: 960px;
-  min-height: 580px;
-  overflow: hidden;
-  border-radius: 24px !important;
-  border: 1px solid rgba(23, 23, 23, 0.08) !important;
-  box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.01) !important;
-  background: rgba(255, 255, 255, 0.98) !important;
-  backdrop-filter: blur(20px);
-
-  mat-card-content {
-    padding: 0 !important;
-    height: 100%;
-  }
-
-  @media screen and (max-width: 960px) {
-    height: 100vh;
-    width: 100%;
-    min-height: unset;
-    border-radius: 0 !important;
-    border: none !important;
-    box-shadow: none !important;
-    background: #ffffff !important;
-    
-    mat-card-content {
-      height: auto;
-    }
-  }
-}
-
-.logo-container {
-  background: linear-gradient(135deg, #ffeeda 0%, #ffba38 100%);
-  position: relative;
-  overflow: hidden;
-  height: 580px;
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(rgba(255, 255, 255, 0.25) 1.5px, transparent 1.5px);
-    background-size: 24px 24px;
-    opacity: 0.8;
-  }
-
-  @media screen and (max-width: 960px) {
-    height: 240px;
-  }
-}
-
-.brand-content {
-  position: relative;
-  z-index: 1;
+.brand-header {
   text-align: center;
-  padding: 32px;
-}
-
-.logo-wrapper {
-  background: rgba(255, 255, 255, 0.9);
-  padding: 16px;
-  border-radius: 24px;
-  box-shadow: 0 12px 32px rgba(255, 179, 0, 0.15), 0 4px 8px rgba(0, 0, 0, 0.02);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  animation: float 4s ease-in-out infinite;
+  margin-bottom: 32px;
+  width: 100%;
 }
 
 .brand-logo {
-  height: 64px;
+  height: 48px;
   width: auto;
-  
-  @media screen and (max-width: 960px) {
-    height: 48px;
-  }
+  margin-bottom: 12px;
 }
 
 .brand-title {
-  font-size: 2.25rem;
-  font-weight: 900;
-  color: #281900;
-  margin: 0 0 8px 0;
-  letter-spacing: -0.03em;
-  
-  @media screen and (max-width: 960px) {
-    font-size: 1.75rem;
-    margin-bottom: 4px;
-  }
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #171717;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.02em;
 }
 
 .brand-subtitle {
-  font-size: 0.95rem;
+  font-size: 0.875rem;
   font-weight: 500;
-  color: #513600;
+  color: var(--text-secondary);
   margin: 0;
-  line-height: 1.6;
-  max-width: 280px;
-  opacity: 0.85;
-  
-  @media screen and (max-width: 960px) {
-    font-size: 0.85rem;
-    max-width: 100%;
-  }
-}
-
-.text-container {
-  padding: 40px;
-  height: 580px;
-  background: #ffffff;
-  
-  @media screen and (max-width: 960px) {
-    height: auto;
-    padding: 32px 24px;
-  }
+  line-height: 1.5;
 }
 
 .form-wrapper {
   width: 100%;
-  max-width: 380px;
-  
-  @media screen and (max-width: 960px) {
-    max-width: 100%;
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
+  max-width: 400px;
+  box-sizing: border-box;
 }

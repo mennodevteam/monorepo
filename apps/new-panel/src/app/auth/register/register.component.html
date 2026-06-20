@@ -49,31 +49,29 @@
       </mat-form-field>
     }
 
-    <div fxLayout="row" fxLayoutGap="12px" fxLayout.lt-sm="column" fxLayoutGap.lt-sm="12px">
-      <mat-form-field appearance="outline" class="custom-field" fxFlex>
-        <mat-label> {{ 'shop.regionState' | translate }} </mat-label>
-        <mat-select [(ngModel)]="selectedState" [ngModelOptions]="{ standalone: true }" required>
-          @for (state of states; track state) {
-            <mat-option [value]="state">
-              {{ state.title }}
-            </mat-option>
-          }
-        </mat-select>
-        <ng-icon name="saxLocationOutline" matPrefix class="input-icon"></ng-icon>
-      </mat-form-field>
+    <mat-form-field appearance="outline" class="custom-field">
+      <mat-label> {{ 'shop.regionState' | translate }} </mat-label>
+      <mat-select [(ngModel)]="selectedState" [ngModelOptions]="{ standalone: true }" required>
+        @for (state of states; track state) {
+          <mat-option [value]="state">
+            {{ state.title }}
+          </mat-option>
+        }
+      </mat-select>
+      <ng-icon name="saxLocationOutline" matPrefix class="input-icon"></ng-icon>
+    </mat-form-field>
 
-      <mat-form-field appearance="outline" class="custom-field" fxFlex>
-        <mat-label> {{ 'shop.region' | translate }} </mat-label>
-        <mat-select formControlName="regionId">
-          @for (region of selectedState()?.regions; track region) {
-            <mat-option [value]="region.id">
-              {{ region.title }}
-            </mat-option>
-          }
-        </mat-select>
-        <ng-icon name="saxLocationOutline" matPrefix class="input-icon"></ng-icon>
-      </mat-form-field>
-    </div>
+    <mat-form-field appearance="outline" class="custom-field">
+      <mat-label> {{ 'shop.region' | translate }} </mat-label>
+      <mat-select formControlName="regionId">
+        @for (region of selectedState()?.regions; track region) {
+          <mat-option [value]="region.id">
+            {{ region.title }}
+          </mat-option>
+        }
+      </mat-select>
+      <ng-icon name="saxLocationOutline" matPrefix class="input-icon"></ng-icon>
+    </mat-form-field>
 
     <div fxLayout="row" fxLayoutAlign="start center" class="section-divider">
       <span class="divider-text">{{ 'register.loginInfo' | translate }}</span>
