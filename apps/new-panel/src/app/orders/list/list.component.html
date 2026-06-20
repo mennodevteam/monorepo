@@ -69,18 +69,11 @@
           icon="file-invoice"
         />
       } @else {
-        @if (isMobile()) {
-          <app-order-card-view
-            [orders]="query.data()?.[0] || []"
-            (stateChange)="stateChange($event.order, $event.state)"
-          />
-        } @else {
-          <app-order-table
-            [orders]="query.data()?.[0] || []"
-            (stateChange)="stateChange($event.order, $event.state)"
-            (delete)="delete($event)"
-          />
-        }
+        <app-order-table
+          [orders]="query.data()?.[0] || []"
+          (stateChange)="stateChange($event.order, $event.state)"
+          (delete)="delete($event)"
+        />
       }
       @if (!query.data()) {
         <app-data-loading />

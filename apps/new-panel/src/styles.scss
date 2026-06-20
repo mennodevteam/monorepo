@@ -128,6 +128,10 @@ a:not(.sidenav-link):not(.mat-mdc-list-item) {
 
 *[p-md] {
   padding: 16px;
+
+  @media (max-width: 1279px) {
+    padding: 8px !important;
+  }
 }
 
 *[w-xs] {
@@ -186,6 +190,31 @@ i.middle {
 
   button[goBack] {
     margin-inline-start: -12px !important;
+  }
+
+  @media (max-width: 1279px) {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    height: auto !important;
+    min-height: unset !important;
+    padding-inline: 8px !important;
+    padding-block: 8px !important;
+    gap: 8px !important;
+    margin-block-end: 0.75rem !important;
+    
+    & > * {
+      margin: 0 !important;
+    }
+    
+    h1, h2, h3, h4 {
+      flex: 0 0 100% !important;
+      margin-bottom: 4px !important;
+    }
+    
+    button, a {
+      flex: 1 1 auto !important;
+      min-width: fit-content !important;
+    }
   }
 }
 
@@ -543,6 +572,83 @@ tr.mat-mdc-row:last-child td, tr:last-child td {
   border-radius: 0.75rem;
   box-shadow: none;
   margin-top: 1.5rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+// Sub-toolbars and search/filter rows inside main page
+main mat-toolbar:not(.content-toolbar),
+main .mat-mdc-toolbar {
+  @media (max-width: 1279px) {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: unset !important;
+    padding: 10px !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+    background-color: #fafafa !important;
+    border-radius: 8px !important;
+    border: 1px solid var(--border-color) !important;
+    
+    mat-form-field {
+      width: 100% !important;
+    }
+    
+    mat-toolbar-row {
+      display: flex !important;
+      flex-direction: column !important;
+      height: auto !important;
+      min-height: unset !important;
+      padding: 0 !important;
+      gap: 6px !important;
+      align-items: stretch !important;
+      font-size: 0.8125rem !important;
+      
+      span[fxFlex] {
+        display: none !important;
+      }
+      
+      button {
+        width: 100% !important;
+      }
+    }
+  }
+}
+
+// Table mobile horizontal scroll, min-width and compact styling
+@media (max-width: 1279px) {
+  .invoices-table-container {
+    border-radius: 0.5rem !important;
+    margin-top: 0.75rem !important;
+    
+    table, .mat-mdc-table {
+      min-width: 800px !important;
+    }
+  }
+
+  .mat-mdc-table, .invoices-table, table {
+    th.mat-mdc-header-cell, th {
+      font-size: 0.7rem !important;
+      padding: 6px 8px !important;
+    }
+    
+    td.mat-mdc-cell, td {
+      font-size: 0.7rem !important;
+      padding: 6px 8px !important;
+    }
+  }
+
+  .np-table {
+    th.mat-mdc-header-cell, th {
+      padding: 4px 6px !important;
+      font-size: 0.68rem !important;
+    }
+
+    td.mat-mdc-cell, td {
+      padding: 4px 6px !important;
+      font-size: 0.68rem !important;
+    }
+  }
 }
 
 // Compact tables styling
@@ -1222,6 +1328,19 @@ select {
     &:hover {
       opacity: 0.8;
       text-decoration: underline !important;
+    }
+  }
+  @media (max-width: 1279px) {
+    .np-icon-badge {
+      display: none !important;
+    }
+    .mat-mdc-card-content, 
+    mat-card-content {
+      gap: 0 !important;
+      
+      & > [fxFlex] {
+        margin: 0 !important;
+      }
     }
   }
 }

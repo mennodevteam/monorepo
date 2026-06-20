@@ -2,6 +2,37 @@
   flex-wrap: wrap;
   gap: 8px;
   min-height: 56px;
+
+  @media (max-width: 1279px) {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    height: auto !important;
+    min-height: unset !important;
+    padding: 8px 12px !important;
+    gap: 8px !important;
+    
+    .order-list-toolbar__filters {
+      width: 100% !important;
+      display: flex !important;
+      gap: 6px !important;
+      
+      .order-list-toolbar__date-wrap {
+        flex: 1;
+        button {
+          width: 100%;
+        }
+      }
+      
+      & > button {
+        flex: 1;
+      }
+    }
+    
+    button[routerLink="../new"] {
+      width: 100% !important;
+    }
+  }
 }
 
 .order-list-toolbar__filters {

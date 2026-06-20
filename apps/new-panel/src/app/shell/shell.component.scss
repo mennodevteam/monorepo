@@ -1,5 +1,6 @@
 // Sidenav dimensions and alignments
 mat-sidenav {
+  position: fixed !important;
   width: 270px;
   padding: 0 !important;
   background-color: #ffffff !important;
@@ -8,6 +9,7 @@ mat-sidenav {
   display: flex !important;
   flex-direction: column !important;
   height: 100vh !important;
+  z-index: 1000 !important;
 
   ::ng-deep .mat-drawer-inner-container {
     display: flex !important;
@@ -97,6 +99,17 @@ mat-sidenav {
 mat-sidenav-content {
   margin-top: 0 !important;
   background-color: #ffffff !important;
+
+  &.main-content-container {
+    padding: 2.5rem !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+
+    @media (max-width: 1279px) {
+      padding: 0 !important;
+    }
+  }
 }
 
 mat-sidenav-container,
@@ -104,6 +117,122 @@ mat-sidenav-content {
   overflow: initial;
   height: 100vh !important;
   background-color: #ffffff !important;
+}
+
+.workspace-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.workspace-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  box-sizing: border-box;
+
+  @media (max-width: 1279px) {
+    padding: 0 !important; // Enforce full screen width for content wrapper on mobile
+  }
+}
+
+// Mobile Fixed Header (very narrow/thin, sticky)
+.mobile-fixed-header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px; // very narrow, standard compact mobile header height is 44px or 48px
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.75rem;
+  z-index: 1000;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.mobile-menu-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  color: var(--text-primary);
+  transition: background-color 0.2s, transform 0.1s;
+  padding: 0;
+
+  &:hover {
+    background-color: var(--nav-item-hover);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.mobile-logo-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  
+  .mobile-logo {
+    height: 1.25rem; // Very thin titlebar logo height
+    width: auto;
+  }
+}
+
+.mobile-notification-btn {
+  background: transparent !important;
+  color: var(--text-primary) !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  border: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  transition: background-color 0.2s, transform 0.1s !important;
+
+  &:hover {
+    background-color: var(--nav-item-hover) !important;
+  }
+
+  &:active {
+    transform: scale(0.95) !important;
+  }
+
+  ng-icon {
+    font-size: 1.1rem !important;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  ::ng-deep .mat-badge-content {
+    background-color: var(--mat-sys-error) !important;
+    color: #ffffff !important;
+    font-size: 0.6rem !important;
+    width: 14px !important;
+    height: 14px !important;
+    line-height: 14px !important;
+  }
 }
 
 // Profile and bell buttons inside sidebar header
