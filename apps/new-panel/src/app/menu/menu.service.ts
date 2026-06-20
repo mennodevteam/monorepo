@@ -5,6 +5,7 @@ import { Menu, MenuCost, Product, ProductCategory } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { injectMutation, injectQuery, injectQueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
 const QUERY_KEY = ['menus'];
 
@@ -26,10 +27,12 @@ export class MenuService {
   readonly snack = inject(MatSnackBar);
   readonly t = inject(TranslateService);
   readonly queryClient = injectQueryClient();
+  readonly auth = inject(AuthService);
 
   private query = injectQuery(() => ({
     queryKey: QUERY_KEY,
     queryFn: () => lastValueFrom(this.http.get<Menu>('/menus')),
+    enabled: !!this.auth.userSignal(),
   }));
 
   data = computed(() => {

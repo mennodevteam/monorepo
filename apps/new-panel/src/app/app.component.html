@@ -1,1 +1,11 @@
-<router-outlet />
+@if (isLoading()) {
+  <div class="initial-loader">
+    <div class="loader-content">
+      <img src="icons/logo.svg" alt="shot" class="loader-logo" />
+      <div class="loader-text">در حال دریافت اطلاعات...</div>
+      <div class="loader-spinner"></div>
+    </div>
+  </div>
+} @else {
+  <router-outlet />
+}

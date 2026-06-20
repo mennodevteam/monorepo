@@ -1,0 +1,89 @@
+.initial-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  font-family: 'Estedad', 'Inter', sans-serif;
+  direction: rtl;
+}
+
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.loader-logo {
+  width: 80px;
+  height: auto;
+  animation: pulse-logo 2.5s infinite ease-in-out;
+}
+
+.loader-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #64748b; /* Sleek slate color */
+  text-align: center;
+  animation: fade-text 1.5s infinite alternate ease-in-out;
+}
+
+.loader-spinner {
+  width: 48px;
+  height: 4px;
+  background-color: #f1f5f9;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.loader-spinner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 50%;
+  background-color: #007bcc; /* Matched primary theme color */
+  border-radius: 2px;
+  animation: loading-bar 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse-logo {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-text {
+  0% {
+    opacity: 0.55;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes loading-bar {
+  0% {
+    left: -50%;
+  }
+  50% {
+    left: 25%;
+    width: 60%;
+  }
+  100% {
+    left: 100%;
+  }
+}
