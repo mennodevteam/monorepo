@@ -23,6 +23,16 @@
     margin-bottom: 1rem;
   }
 
+  a {
+    color: #171717 !important;
+    text-decoration: underline !important;
+    font-weight: 700 !important;
+
+    &:hover {
+      color: #000000 !important;
+    }
+  }
+
   .points-list {
     margin: 1.25rem 0;
     padding-inline-start: 1.25rem;
