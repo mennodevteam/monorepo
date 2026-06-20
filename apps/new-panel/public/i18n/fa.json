@@ -38,6 +38,7 @@
     "confirmDelete": "تایید حذف",
     "deleteConfirmMessage": "آیا از حذف {{value}} اطمینان دارید؟",
     "default": "پیش‌فرض",
+    "sort": "مرتب‌سازی",
     "delete": "حذف",
     "downloadSample": "دانلود فایل نمونه",
     "uploadCsv": "آپلود CSV",

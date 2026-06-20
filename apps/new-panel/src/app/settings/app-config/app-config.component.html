@@ -13,6 +13,27 @@
 
 <form [formGroup]="form">
   <main p-md w-md class="np-form-container">
+    <!-- Promo Card -->
+    <mat-card class="promo-card blue" style="margin-bottom: 24px;">
+      <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+        <div class="np-icon-badge"><ng-icon name="saxInfoCircleOutline"></ng-icon></div>
+        <div fxFlex>
+          <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
+            <h4 style="margin: 0 0 8px 0; font-size: 0.875rem; font-weight: 600; color: var(--text-primary);">ظاهر و دیزاین سایت</h4>
+            
+            <p style="margin: 0 0 8px 0;">
+              در این صفحه می‌توانید رنگ سازمانی (تم کاتالوگ) و حالت نمایش (تاریک/روشن) وب‌سایت خود را تنظیم کرده و پیش‌نمایش آن را در قالب شبیه‌ساز موبایل مشاهده کنید.
+            </p>
+            
+            <p style="margin: 0;">
+              📱 برای مدیریت و تغییر چیدمان صفحه اول وب‌سایت (مانند افزودن اسلایدر بنر، دسته‌بندی‌های دایره‌ای یا لیست‌های اختصاصی محصولات پرفروش و جدید)، می‌توانید به بخش 
+              <a routerLink="/admin/home-sections" style="font-weight: 600; color: var(--primary-color); text-decoration: none;">تنظیمات بخش‌های صفحه اصلی کاتالوگ</a> مراجعه کنید.
+            </p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
     <div class="config-layout">
       <!-- Theme Section -->
       <div class="np-form-section">

@@ -79,6 +79,8 @@
   font-size: 0.95rem;
   padding: 0 8px;
   direction: ltr;
+  display: inline-block;
+  unicode-bidi: embed;
 }
 
 .domain-suffix {
@@ -87,6 +89,8 @@
   font-size: 0.95rem;
   padding: 0 8px;
   direction: ltr;
+  display: inline-block;
+  unicode-bidi: embed;
 }
 
 .live-preview-box {
@@ -122,3 +126,23 @@
     }
   }
 }
+
+.subdomain-field {
+  ::ng-deep {
+    .mat-mdc-form-field-flex {
+      flex-direction: row-reverse !important;
+    }
+    .mat-mdc-form-field-infix {
+      direction: ltr !important;
+    }
+    .mat-mdc-form-field-icon-prefix {
+      padding-inline-start: 12px !important;
+      padding-inline-end: 4px !important;
+    }
+    .mat-mdc-form-field-icon-suffix {
+      padding-inline-start: 4px !important;
+      padding-inline-end: 12px !important;
+    }
+  }
+}
+

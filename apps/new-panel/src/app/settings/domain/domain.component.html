@@ -28,24 +28,26 @@
       </div>
 
       <div class="np-form-inputs">
-        <mat-form-field appearance="outline" class="w-full" dir="ltr">
-          <mat-label dir="rtl">{{ 'domain.subdomainLabel' | translate }}</mat-label>
+        <mat-form-field appearance="outline" class="w-full subdomain-field">
+          <mat-label>{{ 'domain.subdomainLabel' | translate }}</mat-label>
           <span matPrefix class="domain-prefix">https://</span>
           <input
             matInput
             formControlName="username"
             [placeholder]="'domain.subdomainPlaceholder' | translate"
             required
+            ltr
+            eng
           />
           <span matSuffix class="domain-suffix">.{{ appDomain }}</span>
           @if (form.controls.username.hasError('required')) {
-            <mat-error dir="rtl">{{ 'app.required' | translate }}</mat-error>
+            <mat-error>{{ 'app.required' | translate }}</mat-error>
           }
           @if (form.controls.username.hasError('minlength')) {
-            <mat-error dir="rtl">{{ 'domain.subdomainMinLength' | translate }}</mat-error>
+            <mat-error>{{ 'domain.subdomainMinLength' | translate }}</mat-error>
           }
           @if (form.controls.username.hasError('pattern')) {
-            <mat-error dir="rtl">{{ 'domain.subdomainPattern' | translate }}</mat-error>
+            <mat-error>{{ 'domain.subdomainPattern' | translate }}</mat-error>
           }
         </mat-form-field>
 

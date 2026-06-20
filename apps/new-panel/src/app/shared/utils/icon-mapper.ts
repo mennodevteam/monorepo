@@ -120,6 +120,7 @@ export const FA_TO_ICONSAX_MAP: { [key: string]: string } = {
   'folder-open': 'saxFolderOpenOutline',
   'folder': 'saxFolderOutline',
   'bullseye-arrow': 'saxAwardOutline',
+  'mobile': 'saxMobileOutline',
 };
 
 export function mapFaIcon(faIcon: string | undefined): string {
