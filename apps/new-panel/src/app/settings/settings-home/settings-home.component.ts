@@ -72,7 +72,7 @@ export class SettingsHomeComponent {
     },
     {
       title: 'settings.appConfig',
-      subtitle: 'شخصی‌سازی ظاهر، تم رنگی دکمه‌ها و نحوه نمایش محصولات منو',
+      subtitle: 'شخصی‌سازی ظاهر، تم رنگی دکمه‌ها و نحوه نمایش محصولات کاتالوگ',
       route: 'app-config',
       icon: 'saxColorfilterOutline',
       colorClass: 'pink'

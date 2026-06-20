@@ -100,8 +100,8 @@ export class DeveloperApiComponent implements OnInit {
           type: 'select',
           multiple: true,
           options: [
-            { value: 'menu:read', text: 'منو: خواندن (محصولات و دسته‌بندی‌ها)' },
-            { value: 'menu:write', text: 'منو: نوشتن (افزودن و ویرایش محصولات)' },
+            { value: 'menu:read', text: 'کاتالوگ: خواندن (محصولات و دسته‌بندی‌ها)' },
+            { value: 'menu:write', text: 'کاتالوگ: نوشتن (افزودن و ویرایش محصولات)' },
             { value: 'orders:read', text: 'سفارشات: خواندن (لیست و جزئیات سفارشات)' },
             { value: 'orders:write', text: 'سفارشات: نوشتن (تغییر وضعیت سفارش)' },
             { value: 'reports:read', text: 'گزارشات: خواندن (گزارش‌های فروش)' },

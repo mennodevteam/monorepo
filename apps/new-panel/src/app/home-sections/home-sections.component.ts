@@ -11,11 +11,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { HomeSectionsService } from './home-sections.service';
 import { TranslateService } from '@ngx-translate/core';
-import { HomeSection, HomeSectionType, ProductListConfig, CategoryListConfig } from '@menno/types';
+import { HomeSection, HomeSectionType, BannerConfig, ProductListConfig, CategoryListConfig, Product, ProductCategory, Menu } from '@menno/types';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SHARED } from '../shared';
 import { EmptyStateComponent } from '../shared/components/empty-state/empty-state.component';
 import { DialogService } from '../core/services/dialog.service';
+import { MenuService } from '../menu/menu.service';
+import { DataLoadingComponent } from '../shared/components/data-loading/data-loading.component';
 
 const COLS = ['index', 'type', 'title', 'visible', 'actions'];
 
@@ -35,6 +37,7 @@ const COLS = ['index', 'type', 'title', 'visible', 'actions'];
     MatMenuModule,
     MatTooltipModule,
     EmptyStateComponent,
+    DataLoadingComponent,
   ],
   templateUrl: './home-sections.component.html',
   styleUrl: './home-sections.component.scss',
@@ -45,8 +48,47 @@ export class HomeSectionsComponent {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   readonly homeSectionsService = inject(HomeSectionsService);
+  readonly menuService = inject(MenuService);
   readonly displayedColumns = COLS;
   readonly HomeSectionType = HomeSectionType;
+  readonly isLoading = computed(() => this.homeSectionsService.homeSectionsQuery.isPending());
+
+  asBannerConfig(config: any): BannerConfig {
+    return config as BannerConfig;
+  }
+
+  asProductListConfig(config: any): ProductListConfig {
+    return config as ProductListConfig;
+  }
+
+  asCategoryListConfig(config: any): CategoryListConfig {
+    return config as CategoryListConfig;
+  }
+
+  getProductImage(product: Product) {
+    return Product.mainImageFile(product) || undefined;
+  }
+
+  getCategoryImage(category: ProductCategory) {
+    return category.imageFile || undefined;
+  }
+
+  getProductById(id: string): Product | undefined {
+    const menu = this.menuService.data();
+    if (!menu) return undefined;
+    return Menu.getProductById(menu, id) || undefined;
+  }
+
+  getCategoryById(id: number): ProductCategory | undefined {
+    const menu = this.menuService.data();
+    if (!menu || !menu.categories) return undefined;
+    return menu.categories.find((cat) => cat.id === id);
+  }
+
+  allCategories(): ProductCategory[] {
+    const menu = this.menuService.data();
+    return menu?.categories || [];
+  }
 
   readonly sections = computed(() => this.homeSectionsService.homeSections());
 

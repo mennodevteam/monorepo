@@ -43,7 +43,7 @@
           <div fxFlex>
             <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6">
               <p style="margin: 0 0 6px 0">
-                آدرس اینترنتی (ساب‌دامنه) مجموعه شما تنظیم نشده است. برای اینکه مشتریان بتوانند منوی آنلاین شما را مشاهده کنند، ثبت آدرس اینترنتی الزامی است.
+                آدرس اینترنتی (ساب‌دامنه) مجموعه شما تنظیم نشده است. برای اینکه مشتریان بتوانند کاتالوگ آنلاین شما را مشاهده کنند، ثبت آدرس اینترنتی الزامی است.
               </p>
               <p style="margin: 0">
                 برای تنظیم آدرس اینترنتی و اتصال دامنه اختصاصی، لطفاً به بخش
@@ -82,12 +82,12 @@
           <div fxFlex>
             <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6">
               <p style="margin: 0 0 6px 0">
-                هنوز هیچ دسته‌بندی یا محصولی در منوی دیجیتال خود ثبت نکرده‌اید. همین حالا اولین دسته‌بندی را
-                ایجاد کرده و منو را بسازید.
+                هنوز هیچ دسته‌بندی یا محصولی در کاتالوگ دیجیتال خود ثبت نکرده‌اید. همین حالا اولین دسته‌بندی را
+                ایجاد کرده و کاتالوگ را بسازید.
               </p>
               <p style="margin: 0">
-                برای ایجاد دسته‌بندی‌ها و اضافه کردن محصولات خود به منو، به بخش
-                <a routerLink="/admin/menu/list">مدیریت منو و محصولات</a> بروید.
+                برای ایجاد دسته‌بندی‌ها و اضافه کردن محصولات خود به کاتالوگ، به بخش
+                <a routerLink="/admin/menu/list">مدیریت کاتالوگ و محصولات</a> بروید.
               </p>
             </div>
           </div>
@@ -105,7 +105,7 @@
         <!-- Tabs Header Row (All in one line) -->
         <div class="tabs-header-row" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
           <button class="tab-btn" [class.active]="currentActiveTab === 'setup'" (click)="selectTab('setup')">
-            منو و راه‌اندازی
+            کاتالوگ و راه‌اندازی
             @if (recommendedTab() === 'setup') {
               <span class="tab-badge-dot warning"></span>
             }
@@ -145,7 +145,7 @@
               <ng-icon name="saxBoxOutline"></ng-icon>
             </div>
             <div class="action-details">
-              <span class="action-name">مدیریت منو و محصولات</span>
+              <span class="action-name">مدیریت کاتالوگ و محصولات</span>
               <span class="action-desc">دسته‌بندی‌ها و محصولات مجموعه</span>
             </div>
             @if (noCategories()) {

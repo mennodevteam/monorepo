@@ -21,11 +21,11 @@
             <div class="np-config-text">
               <h3 class="np-section-title">وضعیت سفارش‌گیری آنلاین</h3>
               <p class="np-section-desc">
-                @if (form.controls['orderingActive']?.value) {
-                  مشتریان می‌توانند از طریق منوی آنلاین شما سفارش ثبت کنند.
-                } @else {
-                  ثبت سفارش موقتاً غیرفعال است و مشتریان فقط امکان مشاهده منو را دارند.
-                }
+                  @if (form.controls['orderingActive']?.value) {
+                    مشتریان می‌توانند از طریق کاتالوگ آنلاین شما سفارش ثبت کنند.
+                  } @else {
+                    ثبت سفارش موقتاً غیرفعال است و مشتریان فقط امکان مشاهده کاتالوگ را دارند.
+                  }
               </p>
             </div>
           </div>
@@ -39,20 +39,22 @@
 
         @if (!form.controls['orderingActive']?.value) {
           <div class="np-config-body animate-slide-up">
-            <div class="promo-card orange" style="display: flex; gap: 16px; padding: 16px; border-radius: 12px; margin-top: 16px; border-right: 4px solid #ea580c !important; background-color: #fff7ed !important;">
-              <div class="np-icon-badge orange" style="background-color: #fff !important; color: #ea580c !important;">
-                <ng-icon name="saxInfoCircleOutline"></ng-icon>
-              </div>
-              <div style="display: flex; flex-direction: column; gap: 4px; justify-content: center;">
-                <h4 style="margin: 0; font-size: 0.875rem; font-weight: 600; color: var(--text-primary);">راهنمای غیرفعال‌سازی موقت</h4>
-                <p style="margin: 0; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.6;">
-                  اگر غیرفعال‌سازی سفارش‌گیری موقتی است، پیشنهاد می‌شود یک پیام خوش‌آمدگویی تعریف کنید تا در هنگام ورود مشتریان، علت عدم سفارش‌گیری به آن‌ها اطلاع داده شود.
-                </p>
-                <a routerLink="/admin/settings/welcome-message" style="font-size: 0.78rem; margin-top: 4px; display: inline-block; color: #ea580c; text-decoration: underline; font-weight: 600;">
-                  تنظیم پیام خوش‌آمدگویی
-                </a>
-              </div>
-            </div>
+            <mat-card class="promo-card orange" style="margin-top: 16px;">
+              <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+                <div class="np-icon-badge"><ng-icon name="saxInfoCircleOutline"></ng-icon></div>
+                <div fxFlex>
+                  <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
+                    <h4 style="margin: 0 0 4px 0; font-size: 0.875rem; font-weight: 600; color: var(--text-primary);">راهنمای غیرفعال‌سازی موقت</h4>
+                    <p style="margin: 0;">
+                      اگر غیرفعال‌سازی سفارش‌گیری موقتی است، پیشنهاد می‌شود یک پیام خوش‌آمدگویی تعریف کنید تا در هنگام ورود مشتریان، علت عدم سفارش‌گیری به آن‌ها اطلاع داده شود.
+                    </p>
+                    <a routerLink="/admin/settings/welcome-message" style="font-size: 0.78rem; margin-top: 4px; display: inline-block;">
+                      تنظیم پیام خوش‌آمدگویی
+                    </a>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
           </div>
         }
       </mat-card-content>

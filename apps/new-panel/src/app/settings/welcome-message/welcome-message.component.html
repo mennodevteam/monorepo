@@ -11,17 +11,19 @@
 <form [formGroup]="form">
   <main p-md w-md class="np-form-container animate-slide-up">
     <!-- Promo Banner -->
-    <div class="promo-card blue" style="display: flex; gap: 16px; padding: 16px; border-radius: 12px; border-right: 4px solid #2563eb !important; background-color: #eff6ff !important;">
-      <div class="np-icon-badge blue" style="background-color: #ffffff !important; color: #2563eb !important;">
-        <ng-icon name="saxInfoCircleOutline"></ng-icon>
-      </div>
-      <div style="display: flex; flex-direction: column; gap: 4px; justify-content: center;">
-        <h4 style="margin: 0; font-size: 0.875rem; font-weight: 600; color: var(--text-primary);">پیام خوش‌آمدگویی آنلاین</h4>
-        <p style="margin: 0; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.6;">
-          پیام خوش‌آمدگویی نخستین پیامی است که مشتریان در منو مشاهده می‌کنند. می‌توانید از آن برای خوش‌آمدگویی، معرفی تخفیف‌ها یا اطلاع‌رسانی‌های موقت (مانند عدم سفارش‌گیری موقت) استفاده کنید.
-        </p>
-      </div>
-    </div>
+    <mat-card class="promo-card blue">
+      <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+        <div class="np-icon-badge"><ng-icon name="saxInfoCircleOutline"></ng-icon></div>
+        <div fxFlex>
+          <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
+            <h4 style="margin: 0 0 4px 0; font-size: 0.875rem; font-weight: 600; color: var(--text-primary);">پیام خوش‌آمدگویی آنلاین</h4>
+            <p style="margin: 0;">
+              پیام خوش‌آمدگویی نخستین پیامی است که مشتریان در کاتالوگ مشاهده می‌کنند. می‌توانید از آن برای خوش‌آمدگویی، معرفی تخفیف‌ها یا اطلاع‌رسانی‌های موقت (مانند عدم سفارش‌گیری موقت) استفاده کنید.
+            </p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
 
     <!-- Welcome Message Config Card -->
     <mat-card class="np-config-card">

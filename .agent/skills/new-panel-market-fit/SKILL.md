@@ -67,8 +67,16 @@ Use this skill whenever you are refactoring, creating, or polishing screens unde
   - Brief description.
   - A CTA button or link (`.btn-secondary` or underlined button) directing the user to the config page.
 
+### Interactive Settings Card Pattern
+- Transform settings groups and item lists (e.g., config page options, home page sections list) into visual cards (`.np-config-card`).
+- **Header Structure**: Use `.np-config-header` containing:
+  - An icon badge (`.np-icon-badge`) colored dynamically based on the state or item type (e.g., `.green`, `.blue`, `.orange`, `.purple`, `.gray`).
+  - Title and dynamic description texts wrapped in `.np-config-text`.
+  - Action items wrapped in `.np-config-action`, containing status badges (`.status-badge .status-badge-available` or `.status-badge-inactive`) and toggles/control buttons.
+- **Body / Content Preview**: Render a live visual representation or configuration details inside the card content (`.np-config-body` or similar). Hide/show config inputs dynamically using transition classes (`.animate-slide-up`).
+- **Promo Banners**: When settings are disabled or need recommendations, inject a `.promo-card` with an informational link directing users to the appropriate settings screen.
+
 ### AI Page Unification
-- Apply class `.np-ai-page` to the main scroll container on all AI routes:
   ```html
   <main p-md class="np-ai-page">
      ...
