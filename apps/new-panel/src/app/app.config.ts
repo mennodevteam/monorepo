@@ -106,6 +106,7 @@ import {
   saxArrowLeft1Bold,
   saxArrowLeft2Bold,
   saxArrowLeft3Bold,
+  saxForbiddenBold,
 } from '@ng-icons/iconsax/bold';
 
 export const appConfig: ApplicationConfig = {
@@ -223,6 +224,7 @@ export const appConfig: ApplicationConfig = {
       saxArrowLeft1Bold,
       saxArrowLeft2Bold,
       saxArrowLeft3Bold,
+      saxForbiddenBold,
     }),
   ],
 };

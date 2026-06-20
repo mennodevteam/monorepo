@@ -1,0 +1,101 @@
+.dialog-title {
+  font-family: 'Estedad', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 1.25rem !important;
+  color: #171717;
+  padding: 1.5rem 1.5rem 0.5rem 1.5rem !important;
+  margin: 0 !important;
+  text-align: right;
+}
+
+.dialog-content {
+  font-family: 'Estedad', sans-serif !important;
+  font-size: 0.875rem !important;
+  line-height: 1.8 !important;
+  color: var(--text-primary) !important;
+  padding: 0 1.5rem 1.5rem 1.5rem !important;
+  text-align: justify;
+  max-height: 60vh;
+  overflow-y: auto;
+
+  p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  .points-list {
+    margin: 1.25rem 0;
+    padding-inline-start: 1.25rem;
+    list-style-type: decimal;
+
+    li {
+      margin-bottom: 0.875rem;
+      
+      strong {
+        color: #171717;
+      }
+    }
+  }
+
+  .conclusion-text {
+    margin-top: 1.25rem;
+    margin-bottom: 0;
+    padding: 1rem;
+    background-color: #fafafa;
+    border-radius: 8px;
+    border-right: 3px solid #171717;
+  }
+
+  // Custom Scrollbar
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #e5e5e5;
+    border-radius: 4px;
+  }
+}
+
+.dialog-actions {
+  padding: 0.75rem 1.5rem 1.5rem 1.5rem !important;
+  margin: 0 !important;
+  display: flex !important;
+  justify-content: flex-end !important; // standard left side placement in RTL
+
+  .close-dialog-btn {
+    min-height: 2.5rem;
+    padding: 0.625rem 2rem;
+    font-size: 0.8125rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    background-color: #171717 !important;
+    color: #ffffff !important;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #262626 !important;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .dialog-title {
+    font-size: 1.15rem !important;
+    padding: 1.25rem 1.25rem 0.5rem 1.25rem !important;
+  }
+  .dialog-content {
+    padding: 0 1.25rem 1.25rem 1.25rem !important;
+    font-size: 0.8125rem !important;
+  }
+  .dialog-actions {
+    padding: 0.5rem 1.25rem 1.25rem 1.25rem !important;
+    
+    .close-dialog-btn {
+      width: 100%;
+    }
+  }
+}

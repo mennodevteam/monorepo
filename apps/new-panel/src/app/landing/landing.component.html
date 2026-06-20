@@ -49,10 +49,14 @@
         <span class="business-badge">کارگاه‌های تولیدی و خانگی</span>
       </div>
 
-      <div class="hero-actions" fxLayout="row" fxLayoutAlign="center center" style="margin-top: 12px;">
+      <div class="hero-actions" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutGap="12px" style="margin-top: 12px;">
         <a routerLink="/admin/auth/register" class="btn btn-primary btn-hero-primary">
           <span>شروع رایگان و ثبت‌نام سریع</span>
         </a>
+        <button (click)="openCreatorMessage()" class="btn btn-secondary btn-hero-secondary">
+          <ng-icon name="saxForbiddenBold"></ng-icon>
+          <span>دست نگهدار! یک لحظه فکر کن</span>
+        </button>
       </div>
     </div>
   </section>
@@ -220,7 +224,7 @@
               <div fxLayout="row" fxLayoutAlign="space-between start">
                 <div>
                   <h3 class="plan-name">کاتالوگ دیجیتال شات</h3>
-                  <p class="plan-desc text-secondary">صرفاً جهت نمایش شیک و فوق‌العاده سریع منو به مشتریان</p>
+                  <p class="plan-desc text-secondary">اگر صرفاً به دنبال نمایش شیک محصولات و منوی خود بدون ثبت سفارش هستید، پلتفرم فروش برای شما مناسب نیست. ما کاتالوگ دیجیتال شات را داریم که فوق‌العاده سریع و کاملاً رایگان است.</p>
                 </div>
               </div>
               
@@ -231,19 +235,19 @@
               <mat-divider></mat-divider>
 
               <ul class="plan-features" fxLayout="column" fxLayoutGap="12px">
-                <li fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                <li>
                   <ng-icon name="saxTickCircleOutline" class="feature-check text-success"></ng-icon>
                   <span>نمایش کاتالوگ دیجیتال با سرعت لود زیر ۱ ثانیه</span>
                 </li>
-                <li fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                <li>
                   <ng-icon name="saxTickCircleOutline" class="feature-check text-success"></ng-icon>
                   <span>مستقر روی سرورهای اختصاصی مجزا</span>
                 </li>
-                <li fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                <li>
                   <ng-icon name="saxTickCircleOutline" class="feature-check text-success"></ng-icon>
                   <span>کاملاً رایگان و بدون هیچ محدودیتی در نمایش</span>
                 </li>
-                <li fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                <li>
                   <ng-icon name="saxInfoCircleOutline" class="feature-check text-muted" style="color: var(--text-muted) !important;"></ng-icon>
                   <span class="text-muted">این نسخه فاقد ابزارهای سفارش‌گیری، انبارداری و مارکتینگ است.</span>
                 </li>
@@ -270,32 +274,28 @@
               </div>
 
               <div class="plan-price">
-                <span class="price-value text-white">۷.۹</span>
-                <span class="price-period text-secondary"> میلیون تومان / سالانه</span>
+                <span class="price-value text-white">۶.۹</span>
+                <span class="price-period text-secondary"> میلیون تومان / ماهانه</span>
               </div>
 
               <mat-divider></mat-divider>
 
               <ul class="plan-features text-white" fxLayout="column" fxLayoutGap="12px">
-                <li fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                <li>
                   <ng-icon name="saxTickCircleOutline" class="feature-check text-success"></ng-icon>
-                  <span><strong>یک پکیج جامع:</strong> ارائه تمام امکانات فوق در قالب یک اشتراک یکپارچه</span>
+                  <span><strong>یک پکیج جامع:</strong> ارائه تمام امکانات معرفی‌شده فوق در قالب یک اشتراک یکپارچه</span>
                 </li>
-                <li fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                <li>
                   <ng-icon name="saxTickCircleOutline" class="feature-check text-success"></ng-icon>
-                  <span>عدم نیاز به پرداخت هرگونه هزینه مازاد برای فعال‌سازی بخش‌ها</span>
+                  <span>بدون نیاز به پرداخت هرگونه هزینه مازاد برای فعال‌سازی بخش‌های مختلف</span>
                 </li>
-                <li fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                <li>
                   <ng-icon name="saxTickCircleOutline" class="feature-check text-success"></ng-icon>
-                  <span>وب‌سایت اختصاصی، درگاه پرداخت، انبارداری تولیدی، چت و پیامک</span>
+                  <span>بدون هیچ‌گونه کارمزد روی تراکنش‌ها یا سقف فروش</span>
                 </li>
-                <li fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                <li>
                   <ng-icon name="saxTickCircleOutline" class="feature-check text-success"></ng-icon>
-                  <span>گزارشات دقیق سود و زیان هر فاکتور و تحلیل پیشرفته داده‌ها</span>
-                </li>
-                <li fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-                  <ng-icon name="saxTickCircleOutline" class="feature-check text-success"></ng-icon>
-                  <span>به‌روزرسانی‌های مداوم و پشتیبانی همیشگی تیم فنی</span>
+                  <span>به‌روزرسانی‌های مداوم و پشتیبانی همیشگی تیم فنی شات</span>
                 </li>
               </ul>
 
