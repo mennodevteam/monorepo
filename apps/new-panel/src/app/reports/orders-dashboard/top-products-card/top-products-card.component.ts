@@ -126,10 +126,12 @@ export class TopProductsCardComponent {
 
   private generateFillColors(count: number): string[] {
     const colors = [
-      '#6B9BD2', // Soft Blue
-      '#8FBC8F', // Soft Green
-      '#D2B48C', // Soft Beige
-      '#DDA0DD', // Soft Purple
+      '#93c5fd', // Soft Blue
+      '#a7f3d0', // Soft Green
+      '#fde047', // Soft Yellow/Amber
+      '#c4b5fd', // Soft Purple
+      '#fbcfe8', // Soft Pink
+      '#5eead4', // Soft Teal
     ];
 
     const result: string[] = [];

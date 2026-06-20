@@ -35,8 +35,8 @@ export class LoadMenuRefCardComponent {
   public readonly fromDate = input.required<Date>();
   public readonly toDate = input.required<Date>();
 
-  public readonly bgColors = ['#eff6ff', '#fff7ed', '#faf5ff', '#fdf2f8', '#f0fdfa', '#f0fdf4'];
-  public readonly borderColors = ['#2563eb', '#ea580c', '#9333ea', '#db2777', '#0d9488', '#16a34a'];
+  public readonly bgColors = ['#93c5fd', '#fde047', '#c4b5fd', '#fbcfe8', '#5eead4', '#a7f3d0'];
+  public readonly borderColors = ['#93c5fd', '#fde047', '#c4b5fd', '#fbcfe8', '#5eead4', '#a7f3d0'];
 
   public chartOptions: ChartConfiguration['options'] = {
     plugins: {
@@ -65,8 +65,8 @@ export class LoadMenuRefCardComponent {
         {
           data: data.map((x: any) => x.count),
           backgroundColor: this.bgColors.slice(0, data.length),
-          borderColor: this.borderColors.slice(0, data.length),
-          borderWidth: 1,
+          borderColor: '#ffffff',
+          borderWidth: 2,
         },
       ],
       labels: data.map((x: any) => x.source),

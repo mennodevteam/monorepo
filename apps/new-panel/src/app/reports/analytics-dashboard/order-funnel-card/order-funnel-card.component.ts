@@ -74,9 +74,9 @@ export class OrderFunnelCardComponent {
             data.selectAddress,
             data.addOrder,
           ],
-          backgroundColor: ['#eff6ff', '#fff7ed', '#faf5ff', '#fdf2f8', '#f0fdfa', '#f0fdf4'],
-          borderColor: ['#2563eb', '#ea580c', '#9333ea', '#db2777', '#0d9488', '#16a34a'],
-          borderWidth: 1,
+          backgroundColor: ['#93c5fd', '#fde047', '#c4b5fd', '#fbcfe8', '#5eead4', '#a7f3d0'],
+          borderColor: '#ffffff',
+          borderWidth: 2,
         },
       ],
       labels: [

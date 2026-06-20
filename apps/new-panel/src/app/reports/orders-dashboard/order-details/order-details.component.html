@@ -17,87 +17,103 @@
     @if (data) {
       <mat-list>
         <mat-list-item>
-          <span matListItemTitle>{{ 'dashboard.saleSum' | translate }}</span>
-          <span matListItemLine eng>{{ data.total || 0 | number | menuCurrency }}</span>
+          <div class="detail-row">
+            <span class="detail-label">{{ 'dashboard.saleSum' | translate }}</span>
+            <span class="detail-value" eng>{{ data.total || 0 | number }}</span>
+          </div>
         </mat-list-item>
 
         <mat-divider></mat-divider>
 
         <mat-list-item>
-          <span matListItemTitle>{{ 'dashboard.saleCount' | translate }}</span>
-          <span matListItemLine eng>{{ data.count | number }}</span>
+          <div class="detail-row">
+            <span class="detail-label">{{ 'dashboard.saleCount' | translate }}</span>
+            <span class="detail-value" eng>{{ data.count | number }}</span>
+          </div>
         </mat-list-item>
 
         <mat-divider></mat-divider>
 
         <mat-list-item>
-          <span matListItemTitle>{{ 'dashboard.averageOrderValue' | translate }}</span>
-          <span matListItemLine eng>
-            {{ data.total / data.count | number: '1.0-0' | menuCurrency }}
-          </span>
+          <div class="detail-row">
+            <span class="detail-label">{{ 'dashboard.averageOrderValue' | translate }}</span>
+            <span class="detail-value" eng>
+              {{ data.total / data.count | number: '1.0-0' }}
+            </span>
+          </div>
         </mat-list-item>
 
         <mat-divider></mat-divider>
 
         <mat-list-item>
-          <span matListItemTitle>{{ 'dashboard.averageItemsPerOrder' | translate }}</span>
-          <span matListItemLine eng>
-            {{ data.nonAbstractItemCountAvg | number: '1.1-1' }}
-          </span>
+          <div class="detail-row">
+            <span class="detail-label">{{ 'dashboard.averageItemsPerOrder' | translate }}</span>
+            <span class="detail-value" eng>
+              {{ data.nonAbstractItemCountAvg | number: '1.1-1' }}
+            </span>
+          </div>
         </mat-list-item>
 
         <mat-divider></mat-divider>
 
         <mat-list-item>
-          <span matListItemTitle>
-            {{ 'dashboard.totalProfit' | translate }}
-            @if (isProfitEstimate) {
-              <ng-container *ngTemplateOutlet="profitEstimateIcon" />
-            }
-          </span>
-          <span matListItemLine eng>
-            {{ data.avgProfit * data.count | number: '1.0-0' | menuCurrency }}
-          </span>
+          <div class="detail-row">
+            <span class="detail-label">
+              {{ 'dashboard.totalProfit' | translate }}
+              @if (isProfitEstimate) {
+                <ng-container *ngTemplateOutlet="profitEstimateIcon" />
+              }
+            </span>
+            <span class="detail-value" eng>
+              {{ data.avgProfit * data.count | number: '1.0-0' }}
+            </span>
+          </div>
         </mat-list-item>
 
         <mat-divider></mat-divider>
 
         <mat-list-item>
-          <span matListItemTitle>
-            {{ 'dashboard.averageProfit' | translate }}
-            @if (isProfitEstimate) {
-              <ng-container *ngTemplateOutlet="profitEstimateIcon" />
-            }
-          </span>
-          <span matListItemLine eng>
-            {{ data.avgProfit || 0 | number: '1.0-0' | menuCurrency }}
-            ({{ ((data.avgProfit * data.count) / data.total) * 100 | number: '1.0-0' }}%)
-          </span>
+          <div class="detail-row">
+            <span class="detail-label">
+              {{ 'dashboard.averageProfit' | translate }}
+              @if (isProfitEstimate) {
+                <ng-container *ngTemplateOutlet="profitEstimateIcon" />
+              }
+            </span>
+            <span class="detail-value" eng>
+              {{ data.avgProfit || 0 | number: '1.0-0' }}
+              ({{ ((data.avgProfit * data.count) / data.total) * 100 | number: '1.0-0' }}%)
+            </span>
+          </div>
         </mat-list-item>
 
         <mat-divider></mat-divider>
 
         <mat-list-item>
-          <span matListItemTitle>
-            {{ 'dashboard.totalMaterialCost' | translate }}
-            @if (isProfitEstimate) {
-              <ng-container *ngTemplateOutlet="profitEstimateIcon" />
-            }
-          </span>
-          <span matListItemLine eng>
-            {{ data.avgMaterialCost * data.count || 0 | number | menuCurrency }}
-            ({{ ((data.avgMaterialCost * data.count) / data.total) * 100 | number: '1.0-0' }}%)
-          </span>
+          <div class="detail-row">
+            <span class="detail-label">
+              {{ 'dashboard.totalMaterialCost' | translate }}
+              @if (isProfitEstimate) {
+                <ng-container *ngTemplateOutlet="profitEstimateIcon" />
+              }
+            </span>
+            <span class="detail-value" eng>
+              {{ data.avgMaterialCost * data.count || 0 | number }}
+              ({{ ((data.avgMaterialCost * data.count) / data.total) * 100 | number: '1.0-0' }}%)
+            </span>
+          </div>
         </mat-list-item>
 
         <mat-divider></mat-divider>
 
         <mat-list-item>
-          <span matListItemTitle>{{ 'dashboard.totalExtraCost' | translate }}</span>
-          <span matListItemLine eng>
-            {{ data.totalExtraCost || 0 | number | menuCurrency }}
-            ({{ (data.totalExtraCost / data.total) * 100 | number: '1.0-0' }}%)
-          </span>
+          <div class="detail-row">
+            <span class="detail-label">{{ 'dashboard.totalExtraCost' | translate }}</span>
+            <span class="detail-value" eng>
+              {{ data.totalExtraCost || 0 | number }}
+              ({{ (data.totalExtraCost / data.total) * 100 | number: '1.0-0' }}%)
+            </span>
+          </div>
         </mat-list-item>
       </mat-list>
     } @else {

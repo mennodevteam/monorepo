@@ -9,6 +9,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 import * as moment from 'jalali-moment';
 
 @Component({
@@ -24,6 +26,8 @@ import * as moment from 'jalali-moment';
     MatInputModule,
     MatFormFieldModule,
     MatToolbarModule,
+    MatCardModule,
+    MatButtonModule,
   ],
   templateUrl: './orders-dashboard.component.html',
   styleUrl: './orders-dashboard.component.scss',

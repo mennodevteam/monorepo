@@ -8,6 +8,7 @@
   [matSortActive]="sortBy() ?? ''"
   [matSortDirection]="sortType() === 'ASC' ? 'asc' : 'desc'"
   (matSortChange)="onMatSortChange($event)"
+  class="np-table"
 >
   <ng-container matColumnDef="select">
     <th mat-header-cell *matHeaderCellDef style="width: 64px">

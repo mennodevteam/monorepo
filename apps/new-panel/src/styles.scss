@@ -545,6 +545,67 @@ tr.mat-mdc-row:last-child td, tr:last-child td {
   margin-top: 1.5rem;
 }
 
+// Compact tables styling
+.np-table {
+  th.mat-mdc-header-cell, th {
+    padding: 6px 12px !important;
+    font-size: 0.75rem !important;
+    height: 32px !important;
+  }
+
+  td.mat-mdc-cell, td {
+    padding: 4px 12px !important;
+    font-size: 0.75rem !important;
+    height: 32px !important;
+    vertical-align: middle !important;
+    
+    // Make buttons inside cells more compact
+    .mat-mdc-button, .mat-mdc-outlined-button {
+      min-height: 24px !important;
+      height: 24px !important;
+      line-height: 24px !important;
+      font-size: 0.75rem !important;
+      padding: 0 6px !important;
+      border-radius: 6px !important;
+    }
+    
+    .mat-mdc-icon-button {
+      width: 24px !important;
+      height: 24px !important;
+      min-width: 24px !important;
+      min-height: 24px !important;
+      padding: 0 !important;
+      
+      ng-icon {
+        font-size: 1rem !important;
+      }
+    }
+
+    // Chips inside compact table cells
+    .mat-mdc-standard-chip, .mat-mdc-chip {
+      --mdc-chip-label-text-size: 0.7rem;
+      min-height: 22px !important;
+      height: 22px !important;
+      padding: 0 6px !important;
+      border-radius: 6px !important;
+      
+      .mdc-evolution-chip__cell--primary,
+      .mdc-evolution-chip__action {
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+        min-height: 22px !important;
+        height: 22px !important;
+      }
+      
+      ng-icon {
+        font-size: 0.9rem !important;
+        margin-inline-end: 2px !important;
+      }
+    }
+  }
+}
+
+
 // Status Badges & Chips
 .status-badge {
   font-size: 0.6875rem;

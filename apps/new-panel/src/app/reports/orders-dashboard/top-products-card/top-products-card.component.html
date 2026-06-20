@@ -7,7 +7,9 @@
   <br />
   <mat-card-content>
     @if (query.data()) {
-      <canvas baseChart [data]="chartData()" [options]="chartOptions()" type="bar" height="300px"></canvas>
+      <div style="height: 300px; position: relative; width: 100%;">
+        <canvas baseChart [data]="chartData()" [options]="chartOptions()" type="bar"></canvas>
+      </div>
     }
   </mat-card-content>
   @if (totalPages() > 1) {

@@ -1,3 +1,37 @@
+:host {
+  display: block;
+}
+
 mat-card {
-  height: 565px;
+  height: 100%;
+}
+
+mat-list-item {
+  height: auto !important;
+  min-height: 42px !important;
+
+  ::ng-deep .mdc-list-item__content {
+    width: 100% !important;
+  }
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.detail-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+}
+
+.detail-value {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
 }
