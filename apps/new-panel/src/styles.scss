@@ -183,6 +183,10 @@ i.middle {
     margin: 0 !important;
     font-family: 'Estedad', sans-serif !important;
   }
+
+  button[goBack] {
+    margin-inline-start: -12px !important;
+  }
 }
 
 // Align toolbar with centered content widths
@@ -190,6 +194,13 @@ i.middle {
 :has(main[w-sm]) .content-toolbar { max-width: 960px !important; margin-inline: auto !important; width: 100% !important; }
 :has(main[w-md]) .content-toolbar { max-width: 1024px !important; margin-inline: auto !important; width: 100% !important; }
 :has(main[w-lg]) .content-toolbar { max-width: 1280px !important; margin-inline: auto !important; width: 100% !important; }
+
+// Ensure routed components span full width to allow internal centering margins to compute correctly
+.workspace-content > * {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
 
 .success-text {
   color: theme.$success-color;

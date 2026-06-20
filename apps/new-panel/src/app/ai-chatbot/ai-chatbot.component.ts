@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { injectMutation, injectQueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 
-import { SHARED } from '../../shared';
+import { SHARED } from '../shared';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -15,8 +15,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-import { FormComponent } from '../../core/guards/dirty-form-deactivator.guard';
-import { ShopService } from '../../shop/shop.service';
+import { FormComponent } from '../core/guards/dirty-form-deactivator.guard';
+import { ShopService } from '../shop/shop.service';
 
 @Component({
   selector: 'app-ai-chatbot',

@@ -17,9 +17,18 @@
 .settings-list-item {
   height: auto !important;
   min-height: 80px !important;
-  padding: 12px 16px !important;
+  padding: 0 16px !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
   border-radius: 0 !important;
+
+  --mdc-list-list-item-top-padding: 16px;
+  --mdc-list-list-item-bottom-padding: 16px;
+  --mdc-list-list-item-leading-space: 0px;
+  --mdc-list-list-item-trailing-space: 0px;
+
+  ::ng-deep .mat-mdc-list-item-text {
+    align-self: center !important;
+  }
 
   ::ng-deep .mdc-list-item__hover-indicator,
   ::ng-deep .mat-mdc-list-item-hover-indicator,

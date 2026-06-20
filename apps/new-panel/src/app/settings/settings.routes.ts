@@ -6,12 +6,10 @@ import { ShopComponent } from './shop/shop.component';
 import { dirtyFormDeactivator } from '../core/guards/dirty-form-deactivator.guard';
 import { AppConfigComponent } from './app-config/app-config.component';
 import { OrderConfigComponent } from './order-config/order-config.component';
-import { AiChatbotComponent } from './ai-chatbot/ai-chatbot.component';
 import { DeliveryAreaComponent } from './delivery-area/delivery-area.component';
 import { WelcomeMessageComponent } from './welcome-message/welcome-message.component';
 import { UserManagementComponent } from './user-management/user-management.component';
 import { WebScriptsComponent } from './web-scripts/web-scripts.component';
-import { DeveloperApiComponent } from './developer-api/developer-api.component';
 import { SettingsHomeComponent } from './settings-home/settings-home.component';
 import { DomainSettingComponent } from './domain/domain.component';
 
@@ -26,12 +24,10 @@ export const settingsRoutes: Route[] = [
       { path: 'domain', component: DomainSettingComponent, canDeactivate: [dirtyFormDeactivator] },
       { path: 'app-config', component: AppConfigComponent, canDeactivate: [dirtyFormDeactivator] },
       { path: 'order-config', component: OrderConfigComponent, canDeactivate: [dirtyFormDeactivator] },
-      { path: 'ai-chatbot', component: AiChatbotComponent, canDeactivate: [dirtyFormDeactivator] },
       { path: 'welcome-message', component: WelcomeMessageComponent, canDeactivate: [dirtyFormDeactivator] },
       { path: 'delivery-area', component: DeliveryAreaComponent },
       { path: 'users', component: UserManagementComponent },
       { path: 'web-scripts', component: WebScriptsComponent },
-      { path: 'developer-api', component: DeveloperApiComponent },
       { path: '', component: SettingsHomeComponent, pathMatch: 'full' },
     ],
   },

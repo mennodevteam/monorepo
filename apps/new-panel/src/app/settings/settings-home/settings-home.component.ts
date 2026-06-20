@@ -85,14 +85,6 @@ export class SettingsHomeComponent {
       colorClass: 'green'
     },
     {
-      title: 'settings.aiChatbot',
-      subtitle: 'پشتیبانی خودکار و پاسخ‌گویی به سوالات مشتریان با هوش مصنوعی در بله و اپلیکیشن',
-      route: 'ai-chatbot',
-      icon: 'saxCpuOutline',
-      colorClass: 'ai',
-      isAi: true
-    },
-    {
       title: 'settings.welcomeMessage',
       subtitle: 'نمایش پیام دلخواه یا راهنما در بدو ورود مشتریان به وب‌سایت',
       route: 'welcome-message',
@@ -131,13 +123,6 @@ export class SettingsHomeComponent {
       title: 'settings.webScripts',
       subtitle: 'افزودن کدهای اختصاصی مانند گوگل آنالیتیکس و ابزارهای رهگیری به وب‌سایت',
       route: 'web-scripts',
-      icon: 'saxCodeOutline',
-      colorClass: 'cyan'
-    },
-    {
-      title: 'settings.developerApi',
-      subtitle: 'دسترسی به کلید‌های توسعه‌دهندگان، مستندات API و تنظیمات پیشرفته',
-      route: 'developer-api',
       icon: 'saxCodeOutline',
       colorClass: 'cyan'
     }

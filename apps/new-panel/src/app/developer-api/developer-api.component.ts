@@ -14,8 +14,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { SHARED } from '../../shared';
-import { DialogService } from '../../core/services/dialog.service';
+import { SHARED } from '../shared';
+import { DialogService } from '../core/services/dialog.service';
 import { ShopApiKey } from '@menno/types';
 
 @Component({

@@ -29,6 +29,10 @@ export class AppConfigComponent implements FormComponent {
   });
   ThemeMode = ThemeMode;
 
+  get selectedColor(): string {
+    return this.form.get('themeHex')?.value || '#000000';
+  }
+
   openApp() {
     const shop = this.shopService.data();
     if (shop) window.open(Shop.appLink(shop, environment.appDomain), shop.title, 'width=400,height=700');

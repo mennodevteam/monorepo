@@ -23,6 +23,9 @@ import { AiDataExportComponent } from './ai-data-export/ai-data-export.component
 import { AiChatHistoryComponent } from './ai-chat-history/ai-chat-history.component';
 import { AiHubComponent } from './ai-hub/ai-hub.component';
 import { homeSectionsRoutes } from './home-sections/home-sections.routes';
+import { AiChatbotComponent } from './ai-chatbot/ai-chatbot.component';
+import { DeveloperApiComponent } from './developer-api/developer-api.component';
+import { dirtyFormDeactivator } from './core/guards/dirty-form-deactivator.guard';
 
 export const appRoutes: Route[] = [
   {
@@ -48,8 +51,21 @@ export const appRoutes: Route[] = [
             canActivate: [authGuard, shopDataActivator, menuDataActivator],
             children: [
               { path: 'home', component: HomeComponent },
-              { path: 'ai', component: AiHubComponent },
-              { path: 'ai-chat-history', component: AiChatHistoryComponent },
+              {
+                path: 'ai',
+                children: [
+                  { path: '', component: AiHubComponent },
+                  { path: 'chatbot', component: AiChatbotComponent, canDeactivate: [dirtyFormDeactivator] },
+                  { path: 'developer-api', component: DeveloperApiComponent },
+                  { path: 'chat-history', component: AiChatHistoryComponent },
+                  {
+                    path: 'export',
+                    component: AiDataExportComponent,
+                    canActivate: [userActionsGuard],
+                    data: { userActions: [UserAction.Reports] },
+                  },
+                ],
+              },
               {
                 path: 'reports',
                 children: reportRoutes,
@@ -107,12 +123,6 @@ export const appRoutes: Route[] = [
               {
                 path: 'sms',
                 children: smsRoutes,
-                canActivate: [userActionsGuard],
-                data: { userActions: [UserAction.Reports] },
-              },
-              {
-                path: 'ai-export',
-                component: AiDataExportComponent,
                 canActivate: [userActionsGuard],
                 data: { userActions: [UserAction.Reports] },
               },

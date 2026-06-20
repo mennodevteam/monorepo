@@ -13,7 +13,6 @@
             mat-list-item
             [routerLink]="['/admin/settings', item.route]"
             class="settings-list-item"
-            [class.ai-item]="item.isAi"
           >
             <!-- Start Icon -->
             <div matListItemAvatar class="np-icon-badge lg" [ngClass]="item.colorClass">
@@ -23,9 +22,6 @@
             <!-- Title & Subtitle -->
             <div matListItemTitle class="title-wrapper">
               <span class="item-title">{{ item.title | translate }}</span>
-              @if (item.isAi) {
-                <span class="ai-badge">هوش مصنوعی</span>
-              }
             </div>
             <span matListItemLine class="item-subtitle">{{ item.subtitle }}</span>
           </a>

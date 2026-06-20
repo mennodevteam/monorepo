@@ -13,28 +13,117 @@
 
 <form [formGroup]="form">
   <main p-md w-md class="np-form-container">
-    <!-- Theme Section -->
-    <div class="np-form-section">
-      <h3 class="np-section-title">
-        {{ 'appConfig.themeSection' | translate }}
-      </h3>
-      <p class="np-section-desc">
-        {{ 'appConfig.themeSectionDescription' | translate }}
-      </p>
-      <div class="np-form-row" style="align-items: center !important; gap: 16px !important;">
-        <input formControlName="themeHex" type="color" class="np-color-input" style="flex: 0 0 auto !important; min-width: auto !important;" />
-        <span>{{ 'appConfig.theme' | translate }}</span>
+    <div class="config-layout">
+      <!-- Theme Section -->
+      <div class="np-form-section">
+        <h3 class="np-section-title">
+          {{ 'appConfig.themeSection' | translate }}
+        </h3>
+        <p class="np-section-desc">
+          {{ 'appConfig.themeSectionDescription' | translate }}
+        </p>
+        
+        <div class="color-picker-container">
+          <div class="color-picker-wrapper">
+            <input formControlName="themeHex" type="color" class="np-color-input" />
+            <div class="color-display-ring" [style.borderColor]="selectedColor"></div>
+          </div>
+          <div class="color-picker-info">
+            <span class="color-picker-label">{{ 'appConfig.theme' | translate }}</span>
+            <span class="color-picker-value" [style.color]="selectedColor">{{ selectedColor }}</span>
+          </div>
+        </div>
+        
+        <h5 class="np-sub-section-title" style="margin-top: 24px !important; margin-bottom: 12px !important;">{{ 'appConfig.themeMode' | translate }}</h5>
+        <div class="theme-mode-options">
+          <div class="theme-mode-card" 
+               [class.active]="form.get('themeMode')?.value === ThemeMode.Light" 
+               (click)="form.get('themeMode')?.setValue(ThemeMode.Light); form.markAsDirty()">
+            <ng-icon name="phosphorSun" class="mode-icon"></ng-icon>
+            <span class="mode-title">{{ 'appConfig.themeModeLight' | translate }}</span>
+          </div>
+
+          <div class="theme-mode-card" 
+               [class.active]="form.get('themeMode')?.value === ThemeMode.Dark" 
+               (click)="form.get('themeMode')?.setValue(ThemeMode.Dark); form.markAsDirty()">
+            <ng-icon name="phosphorMoon" class="mode-icon"></ng-icon>
+            <span class="mode-title">{{ 'appConfig.themeModeDark' | translate }}</span>
+          </div>
+        </div>
       </div>
-      
-      <h5 class="np-sub-section-title" style="margin-top: 16px !important; margin-bottom: 8px !important;">{{ 'appConfig.themeMode' | translate }}</h5>
-      <mat-radio-group formControlName="themeMode" class="np-form-inputs" style="gap: 8px !important;">
-        <mat-radio-button [value]="ThemeMode.Dark">
-          {{ 'appConfig.themeModeDark' | translate }}
-        </mat-radio-button>
-        <mat-radio-button [value]="ThemeMode.Light">
-          {{ 'appConfig.themeModeLight' | translate }}
-        </mat-radio-button>
-      </mat-radio-group>
+
+      <!-- Preview Section -->
+      <div class="preview-section">
+        <h3 class="np-section-title">
+          {{ 'appConfig.previewTitle' | translate }}
+        </h3>
+        <p class="np-section-desc">
+          {{ 'appConfig.previewDesc' | translate }}
+        </p>
+        
+        <div class="phone-container-wrapper">
+          <div class="phone-mockup" 
+               [class.dark-mode]="form.get('themeMode')?.value === ThemeMode.Dark"
+               [style.--selected-color]="selectedColor">
+            
+            <!-- Status Bar -->
+            <div class="status-bar">
+              <span class="time">12:30</span>
+              <div class="icons">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </div>
+            </div>
+            
+            <!-- Toolbar -->
+            <div class="toolbar">
+              <div class="toolbar-back-btn"></div>
+              <div class="toolbar-title-skeleton"></div>
+              <div class="toolbar-action-btn"></div>
+            </div>
+            
+            <!-- Content Area (Skeleton List View) -->
+            <div class="phone-content">
+              <!-- Category Horizontal Row Skeleton -->
+              <div class="categories-row">
+                <div class="category-skeleton active"></div>
+                <div class="category-skeleton"></div>
+                <div class="category-skeleton"></div>
+              </div>
+              
+              <!-- Wireframe Item Card 1 -->
+              <div class="wireframe-card">
+                <div class="wireframe-card-left">
+                  <div class="text-pill short"></div>
+                  <div class="text-pill long"></div>
+                  <div class="text-pill medium"></div>
+                </div>
+                <div class="wireframe-image-skeleton"></div>
+              </div>
+              
+              <!-- Wireframe Item Card 2 -->
+              <div class="wireframe-card">
+                <div class="wireframe-card-left">
+                  <div class="text-pill short"></div>
+                  <div class="text-pill long"></div>
+                  <div class="text-pill medium"></div>
+                </div>
+                <div class="wireframe-image-skeleton"></div>
+              </div>
+            </div>
+            
+            <!-- Bottom Primary Action Button -->
+            <div class="bottom-action-container">
+              <button type="button" class="bottom-action-btn">
+                <span class="btn-skeleton-text"></span>
+              </button>
+              <div class="home-indicator"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 </form>

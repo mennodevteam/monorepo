@@ -108,6 +108,7 @@ import {
   saxArrowLeft3Bold,
   saxForbiddenBold,
 } from '@ng-icons/iconsax/bold';
+import { phosphorSun, phosphorMoon } from '@ng-icons/phosphor-icons/regular';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -217,6 +218,8 @@ export const appConfig: ApplicationConfig = {
       saxComponentOutline,
       saxLogoutOutline,
       saxMenuOutline,
+      phosphorSun,
+      phosphorMoon,
       saxArrowRightBold,
       saxArrowRight2Bold,
       saxArrowRight3Bold,

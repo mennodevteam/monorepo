@@ -4,7 +4,7 @@ mat-spinner {
 
 main {
   padding: 24px;
-  max-width: 800px;
+  max-width: 1024px; // Expand to fit both form and preview comfortably
 }
 
 .image-section {
@@ -19,3 +19,471 @@ main {
   height: 160px;
   border-radius: 8px;
 }
+
+/* Live Preview Layout Grid */
+.config-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px; /* Slightly narrower left-column width for the narrow phone */
+  gap: 48px;
+  align-items: start;
+
+  @media (max-width: 840px) {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+.preview-section {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+
+  .phone-container-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+  }
+}
+
+/* Premium Settings Form Styling */
+.color-picker-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: #fafafa;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-top: 12px;
+  direction: rtl;
+
+  .color-picker-wrapper {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    .np-color-input {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none !important;
+      cursor: pointer;
+      outline: none;
+      z-index: 2;
+      background: transparent;
+      padding: 0;
+      
+      &::-webkit-color-swatch-wrapper {
+        padding: 0;
+      }
+      &::-webkit-color-swatch {
+        border: none;
+        border-radius: 50%;
+      }
+    }
+
+    .color-display-ring {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid var(--selected-color);
+      z-index: 1;
+      transition: border-color 0.2s ease;
+    }
+  }
+
+  .color-picker-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-align: right;
+  }
+
+  .color-picker-label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .color-picker-value {
+    font-size: 0.72rem;
+    font-family: monospace;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+}
+
+/* Visual Theme Mode Radio Cards */
+.theme-mode-options {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+  direction: rtl;
+
+  .theme-mode-card {
+    flex: 1;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    background-color: #ffffff;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    box-sizing: border-box;
+
+    &:hover {
+      border-color: #a3a3a3;
+      transform: translateY(-1px);
+      
+      .mode-icon {
+        color: #171717;
+      }
+    }
+
+    &.active {
+      border-color: #171717 !important;
+      border-width: 2px !important;
+      background-color: #fcfcfc;
+      padding: 19px 15px; /* prevent layout shift from 2px border */
+
+      .mode-title {
+        color: #171717;
+        font-weight: 600;
+      }
+
+      .mode-icon {
+        color: #171717;
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  .mode-title {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .mode-icon {
+    font-size: 28px; /* Clean flat large icon size */
+    color: #737373; /* Muted flat gray */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+}
+
+/* Phone Mockup Styling */
+.phone-mockup {
+  --selected-color: #000000;
+  
+  width: 270px; /* Reduced width to feel like a real sleek phone aspect ratio */
+  height: 490px; /* Scaled height */
+  border-radius: 30px;
+  border: 10px solid #18181b; /* Sleek device outline */
+  background-color: #ffffff;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+  direction: rtl; /* Persian layout direction */
+
+  /* Dark Mode Styling */
+  &.dark-mode {
+    background-color: #121212;
+    border-color: #27272a;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
+
+    .status-bar {
+      color: rgba(255, 255, 255, 0.5);
+      .dot {
+        background-color: rgba(255, 255, 255, 0.35);
+      }
+    }
+
+    .toolbar {
+      border-bottom-color: rgba(255, 255, 255, 0.06);
+      .toolbar-back-btn {
+        background-color: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .toolbar-title-skeleton {
+        background-color: rgba(255, 255, 255, 0.08);
+      }
+    }
+
+    .category-skeleton {
+      background-color: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.12);
+      
+      &::after {
+        background-color: rgba(255, 255, 255, 0.12);
+      }
+
+      &.active {
+        background-color: color-mix(in srgb, var(--selected-color) 15%, transparent) !important;
+        border-color: var(--selected-color) !important;
+        &::after {
+          background-color: var(--selected-color) !important;
+        }
+      }
+    }
+
+    .wireframe-card {
+      border-color: rgba(255, 255, 255, 0.08);
+      background-color: rgba(255, 255, 255, 0.01);
+
+      .text-pill {
+        background-color: rgba(255, 255, 255, 0.06);
+      }
+
+      .wireframe-image-skeleton {
+        background-color: rgba(255, 255, 255, 0.06);
+      }
+    }
+
+    .bottom-action-container {
+      background-color: #121212;
+      border-top-color: rgba(255, 255, 255, 0.06);
+      
+      .home-indicator {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+
+  /* Status Bar */
+  .status-bar {
+    height: 20px;
+    padding: 0 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 9px;
+    font-family: monospace;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.4);
+    z-index: 10;
+    direction: ltr; /* time is always ltr */
+
+    .icons {
+      display: flex;
+      gap: 3px;
+      .dot {
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.25);
+      }
+    }
+  }
+
+  /* Toolbar */
+  .toolbar {
+    height: 40px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    transition: border-color 0.3s ease;
+
+    .toolbar-back-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: rgba(0, 0, 0, 0.04);
+      color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      
+      &::before {
+        content: "→"; /* Arrow pointing right for Persian RTL layout back button */
+        font-size: 11px;
+        font-weight: bold;
+      }
+    }
+
+    .toolbar-title-skeleton {
+      flex: 1;
+      height: 10px;
+      border-radius: 5px;
+      background-color: rgba(0, 0, 0, 0.05);
+      max-width: 70px;
+      transition: background-color 0.3s ease;
+    }
+
+    .toolbar-action-btn {
+      width: 40px;
+      height: 20px;
+      border-radius: 10px;
+      background-color: var(--selected-color);
+      transition: background-color 0.3s ease;
+    }
+  }
+
+  /* Scrollable Content */
+  .phone-content {
+    flex: 1;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 3px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.08);
+      border-radius: 1.5px;
+    }
+  }
+
+  /* Horizontal Category row skeleton */
+  .categories-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 2px;
+
+    .category-skeleton {
+      height: 20px;
+      border-radius: 10px;
+      background-color: rgba(0, 0, 0, 0.03);
+      border: 1px dashed rgba(0, 0, 0, 0.1);
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 50%;
+        height: 4px;
+        border-radius: 2px;
+        background-color: rgba(0, 0, 0, 0.06);
+        transition: background-color 0.3s ease;
+      }
+
+      &.active {
+        border-style: solid;
+        border-color: var(--selected-color) !important;
+        background-color: color-mix(in srgb, var(--selected-color) 8%, transparent) !important;
+
+        &::after {
+          background-color: var(--selected-color) !important;
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+
+  /* Wireframe Item Cards (matching the dashed skeleton layout) */
+  .wireframe-card {
+    border: 1.5px dashed rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    background-color: rgba(0, 0, 0, 0.005);
+    transition: all 0.3s ease;
+
+    .wireframe-card-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .text-pill {
+      height: 6px;
+      border-radius: 3px;
+      background-color: rgba(0, 0, 0, 0.04);
+      transition: background-color 0.3s ease;
+
+      &.short {
+        width: 40%;
+      }
+      &.long {
+        width: 85%;
+      }
+      &.medium {
+        width: 60%;
+      }
+    }
+
+    .wireframe-image-skeleton {
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
+      background-color: rgba(0, 0, 0, 0.04);
+      flex-shrink: 0;
+      transition: background-color 0.3s ease;
+    }
+  }
+
+  /* Bottom Bar */
+  .bottom-action-container {
+    padding: 10px 12px 6px 12px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s ease, border-top-color 0.3s ease;
+
+    .bottom-action-btn {
+      width: 100%;
+      height: 32px;
+      border-radius: 10px;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--selected-color);
+      box-shadow: 0 3px 10px color-mix(in srgb, var(--selected-color) 20%, transparent);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+      .btn-skeleton-text {
+        width: 50px;
+        height: 5px;
+        border-radius: 2.5px;
+        background-color: rgba(255, 255, 255, 0.65);
+      }
+    }
+
+    .home-indicator {
+      width: 80px;
+      height: 3px;
+      border-radius: 1.5px;
+      background-color: rgba(0, 0, 0, 0.12);
+      transition: background-color 0.3s ease;
+    }
+  }
+}
+
