@@ -73,6 +73,14 @@
   width: 100%;
 }
 
+.domain-prefix {
+  font-weight: 400;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  padding: 0 8px;
+  direction: ltr;
+}
+
 .domain-suffix {
   font-weight: 500;
   color: var(--text-secondary);
@@ -112,104 +120,5 @@
     &:hover {
       color: var(--text-primary);
     }
-  }
-}
-
-/* DNS Instructions Card */
-.dns-instructions-card {
-  background: var(--background-hover, rgba(0, 0, 0, 0.01));
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 16px;
-  margin-top: 12px;
-
-  .dns-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-
-    .dns-info-icon {
-      color: var(--primary-color, #3f51b5);
-      font-size: 1.2rem;
-    }
-
-    h4 {
-      margin: 0;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--text-primary);
-    }
-  }
-
-  .dns-desc {
-    margin: 0 0 16px 0;
-    font-size: 0.8rem;
-    line-height: 1.6;
-    color: var(--text-secondary);
-    font-weight: 300;
-  }
-
-  .dns-table-container {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background: var(--card-background);
-    margin-bottom: 12px;
-  }
-
-  .dns-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.8rem;
-    text-align: right;
-
-    th, td {
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    th {
-      background: var(--background-hover, rgba(0, 0, 0, 0.02));
-      color: var(--text-secondary);
-      font-weight: 500;
-    }
-
-    tr:last-child td {
-      border-bottom: none;
-    }
-  }
-
-  .dns-badge {
-    display: inline-block;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    font-weight: 600;
-
-    &.cname {
-      background: rgba(52, 152, 219, 0.1);
-      color: #2980b9;
-    }
-  }
-
-  .dns-code {
-    font-family: monospace;
-    font-size: 0.85rem;
-    background: rgba(0, 0, 0, 0.04);
-    padding: 2px 6px;
-    border-radius: 4px;
-    color: #e74c3c;
-    direction: ltr;
-    display: inline-block;
-  }
-
-  .dns-note {
-    margin: 0;
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    font-style: italic;
-    font-weight: 300;
   }
 }

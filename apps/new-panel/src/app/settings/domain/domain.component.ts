@@ -45,12 +45,6 @@ export class DomainSettingComponent implements OnInit, FormComponent {
         Validators.minLength(3),
         Validators.pattern(/^[a-zA-Z0-9_]+$/)
       ]
-    ],
-    domain: [
-      '',
-      [
-        Validators.pattern(/^[a-zA-Z0-9.-]+$/)
-      ]
     ]
   });
 
@@ -69,8 +63,7 @@ export class DomainSettingComponent implements OnInit, FormComponent {
     const shop = this.shopService.data();
     if (shop) {
       this.form.patchValue({
-        username: shop.username || '',
-        domain: shop.domain || ''
+        username: shop.username || ''
       });
     }
   }
@@ -88,10 +81,8 @@ export class DomainSettingComponent implements OnInit, FormComponent {
     try {
       this.form.markAsPristine();
       const username = dto.username ? dto.username.toLowerCase() : '';
-      const domain = dto.domain && dto.domain.trim() ? dto.domain.toLowerCase().trim() : null;
       await this.shopService.saveMutation.mutateAsync({
-        username,
-        domain
+        username
       } as any);
     } catch (err: any) {
       this.form.markAsDirty();
@@ -99,8 +90,6 @@ export class DomainSettingComponent implements OnInit, FormComponent {
       if (err.status === 409) {
         if (message === 'the username is already taken') {
           this.snack.open(this.translate.instant('domain.duplicateUsername'), '', { duration: 3000 });
-        } else if (message === 'the domain is already taken') {
-          this.snack.open(this.translate.instant('domain.duplicateDomain'), '', { duration: 3000 });
         } else {
           this.snack.open(this.translate.instant('errors.changeError'), '', { duration: 3000 });
         }

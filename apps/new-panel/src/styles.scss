@@ -763,13 +763,18 @@ button, a {
 
 // Style Angular Material Form Fields with smooth light gray background
 .mat-mdc-text-field-wrapper {
-  background-color: #f5f5f5 !important;
+  background-color: #fafafa !important;
   border-radius: 8px !important;
   transition: background-color 0.2s ease, box-shadow 0.2s ease !important;
 }
 
 .mat-mdc-form-field.mat-focused .mat-mdc-text-field-wrapper {
   background-color: #ffffff !important;
+}
+
+.mat-mdc-form-field.mat-form-field-disabled .mat-mdc-text-field-wrapper {
+  background-color: #f5f5f5 !important;
+  opacity: 0.65 !important;
 }
 
 // Ensure the inner native controls transition nicely too
@@ -787,7 +792,7 @@ input[type="search"],
 textarea,
 select {
   &:not(.mat-mdc-form-field-input-control) {
-    background-color: #f5f5f5 !important;
+    background-color: #fafafa !important;
     border: 1px solid var(--border-color) !important;
     border-radius: 8px !important;
     padding: 0.625rem 0.875rem !important;
@@ -800,6 +805,14 @@ select {
       background-color: #ffffff !important;
       border-color: #171717 !important;
       box-shadow: 0 0 0 2px rgba(23, 23, 23, 0.05) !important;
+    }
+
+    &:disabled {
+      background-color: #f5f5f5 !important;
+      color: var(--text-muted) !important;
+      border-color: var(--border-color) !important;
+      opacity: 0.65 !important;
+      cursor: not-allowed !important;
     }
   }
 }

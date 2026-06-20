@@ -11,7 +11,7 @@
         @for (item of settingsItems; track item.route; let last = $last) {
           <a
             mat-list-item
-            [routerLink]="['/settings', item.route]"
+            [routerLink]="['/admin/settings', item.route]"
             class="settings-list-item"
             [class.ai-item]="item.isAi"
           >

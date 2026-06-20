@@ -144,6 +144,6 @@ export class SettingsHomeComponent {
   ];
 
   navigateTo(route: string) {
-    this.router.navigate(['settings', route]);
+    this.router.navigate(['/admin/settings', route]);
   }
 }
