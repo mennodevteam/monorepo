@@ -1,21 +1,72 @@
-<mat-toolbar class="content-toolbar" fxLayoutGap="8px">
-  <mat-form-field appearance="outline" subscriptSizing="dynamic">
-    <mat-label>{{ 'app.dateRange' | translate }}</mat-label>
-    <mat-date-range-input [rangePicker]="picker">
-      <input matStartDate [(ngModel)]="fromDate" placeholder="{{ 'app.fromDate' | translate }}" />
-      <input matEndDate [(ngModel)]="toDate" placeholder="{{ 'app.toDate' | translate }}" />
-    </mat-date-range-input>
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-date-range-picker #picker></mat-date-range-picker>
-  </mat-form-field>
+<mat-toolbar class="content-toolbar" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+  <h1 fxFlex>داشبورد آنالیتیکس و عملکرد فروش</h1>
+  
+  <div class="date-picker-trigger-wrap">
+    <div class="hidden-date-input-anchor" aria-hidden="true">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-date-range-input [rangePicker]="picker">
+          <input
+            matStartDate
+            [ngModel]="fromDate()"
+            (ngModelChange)="fromDate.set($event)"
+            placeholder="{{ 'app.fromDate' | translate }}"
+          />
+          <input
+            matEndDate
+            [ngModel]="toDate()"
+            (ngModelChange)="toDate.set($event)"
+            placeholder="{{ 'app.toDate' | translate }}"
+          />
+        </mat-date-range-input>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+    </div>
+    
+    <button mat-stroked-button (click)="picker.open()" type="button" class="date-picker-btn">
+      <ng-icon name="saxCalendarOutline"></ng-icon>
+      @if (fromDate() && toDate()) {
+        <span>{{ fromDate() | pdate: false }} تا {{ toDate() | pdate: false }}</span>
+      } @else {
+        <span>انتخاب بازه زمانی</span>
+      }
+    </button>
+  </div>
 </mat-toolbar>
-<main fxLayout="column" fxLayoutGap="16px" p-md>
-  <div fxLayout="column" fxLayoutGap="16px">
-    <app-user-stat-card [fromDate]="validFromDate()" [toDate]="validToDate()" />
+
+<main p-md fxLayout="column" fxLayoutGap="20px">
+  <!-- Promo Card -->
+  <mat-card class="promo-card blue">
+    <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+      <div class="np-icon-badge"><ng-icon name="saxInfoCircleOutline"></ng-icon></div>
+      <div fxFlex>
+        <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
+          <h4 style="margin: 0 0 8px 0; font-size: 0.875rem; font-weight: 600; color: var(--text-primary);">داشبورد آنالیتیکس کاتالوگ</h4>
+          
+          <p style="margin: 0 0 8px 0;">
+            در این صفحه می‌توانید آمارهای کلیدی مربوط به عملکرد کاتالوگ آنلاین خود را مشاهده، مقایسه و تحلیل کنید.
+          </p>
+          
+          <p style="margin: 0;">
+            📊 با بررسی نمودارهای رفتار کاربران، منبع ورودی مشتریان و فانل تبدیل سفارشات در بازه‌های زمانی مختلف، می‌توانید نقاط قوت و فرصت‌های بهبود کاتالوگ فروش خود را شناسایی و بهینه‌سازی کنید.
+          </p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- First: Menu view stats (Full width) -->
+  <div class="analytics-full-width">
     <app-menu-stat-card [fromDate]="validFromDate()" [toDate]="validToDate()" />
   </div>
-  <div fxLayout="column" fxLayoutGap="16px">
-    <app-order-funnel-card [fromDate]="validFromDate()" [toDate]="validToDate()" />
+
+  <!-- Second: User stats and Entry source side-by-side (2 columns) -->
+  <div class="analytics-grid-two-cols">
+    <app-user-stat-card [fromDate]="validFromDate()" [toDate]="validToDate()" />
     <app-load-menu-ref-card [fromDate]="validFromDate()" [toDate]="validToDate()" />
+  </div>
+
+  <!-- Third: Order funnel stats (Full width) -->
+  <div class="analytics-full-width">
+    <app-order-funnel-card [fromDate]="validFromDate()" [toDate]="validToDate()" />
   </div>
 </main>

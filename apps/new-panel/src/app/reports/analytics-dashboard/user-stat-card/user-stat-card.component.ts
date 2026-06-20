@@ -63,7 +63,9 @@ export class UserStatCardComponent {
       datasets: [
         {
           data: [data.uniqueUserCount - data.retentionCount, data.retentionCount],
-          backgroundColor: ['#6B9BD2', '#8FBC8F'],
+          backgroundColor: ['#eff6ff', '#f0fdf4'],
+          borderColor: ['#2563eb', '#16a34a'],
+          borderWidth: 1,
         },
       ],
       labels: [this.t.instant('dashboard.newUserCount'), this.t.instant('dashboard.retentionUserCount')],

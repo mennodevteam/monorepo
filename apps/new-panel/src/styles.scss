@@ -1197,6 +1197,108 @@ ng-icon {
   }
 }
 
+/* ==========================================================================
+   Global Angular Material Date Picker popover design overrides
+   ========================================================================== */
+.mat-datepicker-content,
+.mat-calendar,
+.mat-calendar-header,
+.mat-calendar-body,
+.mat-calendar-body-cell,
+.mat-calendar-body-cell-content,
+.mat-calendar-body-label,
+.mat-calendar-table-header-divider {
+  font-family: 'Estedad', system-ui, -apple-system, sans-serif !important;
+}
+
+.mat-datepicker-content {
+  border-radius: 16px !important;
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid var(--border-color) !important;
+  background-color: #ffffff !important;
+  padding: 8px !important;
+  overflow: hidden !important;
+
+  .mat-datepicker-content-container,
+  .mat-calendar,
+  .mat-calendar-header {
+    background-color: #ffffff !important;
+  }
+
+  .mat-calendar-header {
+    padding: 8px 8px 0 8px !important;
+  }
+
+  .mat-calendar-controls {
+    margin: 0 !important;
+  }
+
+  .mat-calendar-previous-button,
+  .mat-calendar-next-button {
+    color: var(--text-secondary) !important;
+  }
+
+  .mat-calendar-period-button {
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    color: var(--text-primary) !important;
+    border-radius: 8px !important;
+    
+    &:hover {
+      background-color: var(--nav-item-hover) !important;
+    }
+  }
+
+  .mat-calendar-table-header {
+    color: var(--text-muted) !important;
+    
+    th {
+      font-size: 0.8rem !important;
+      font-weight: 500 !important;
+      padding: 8px 0 !important;
+    }
+  }
+
+  .mat-calendar-body-cell-content {
+    font-size: 0.8125rem !important;
+    border-radius: 50% !important;
+    color: var(--text-primary) !important;
+    border: none !important;
+    
+    &.mat-calendar-body-selected {
+      background-color: #171717 !important;
+      color: #ffffff !important;
+    }
+  }
+
+  .mat-calendar-body-in-range::before {
+    background-color: #f5f5f5 !important;
+  }
+
+  .mat-calendar-body-today:not(.mat-calendar-body-selected) {
+    border-color: var(--border-dark) !important;
+    border-width: 1px !important;
+  }
+
+  .mat-datepicker-actions {
+    background-color: #ffffff !important;
+    padding: 8px !important;
+    border-top: 1px solid var(--border-color) !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    
+    button {
+      font-family: 'Estedad', system-ui, -apple-system, sans-serif !important;
+      font-size: 0.8rem !important;
+      font-weight: 500 !important;
+      border-radius: 8px !important;
+      height: 36px !important;
+      padding: 0 16px !important;
+    }
+  }
+}
+
 
 
 

@@ -1,7 +1,9 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { SHARED } from '../../../shared';
 import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
 import { HttpClient } from '@angular/common/http';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
@@ -15,7 +17,14 @@ Chart.defaults.font.family = 'Estedad';
 @Component({
   selector: 'app-load-menu-ref-card',
   standalone: true,
-  imports: [SHARED, MatCardModule, BaseChartDirective, MatMenuModule],
+  imports: [
+    SHARED,
+    CommonModule,
+    MatCardModule,
+    MatListModule,
+    BaseChartDirective,
+    MatMenuModule
+  ],
   templateUrl: './load-menu-ref-card.component.html',
   styleUrl: './load-menu-ref-card.component.scss',
 })
@@ -26,11 +35,13 @@ export class LoadMenuRefCardComponent {
   public readonly fromDate = input.required<Date>();
   public readonly toDate = input.required<Date>();
 
+  public readonly bgColors = ['#eff6ff', '#fff7ed', '#faf5ff', '#fdf2f8', '#f0fdfa', '#f0fdf4'];
+  public readonly borderColors = ['#2563eb', '#ea580c', '#9333ea', '#db2777', '#0d9488', '#16a34a'];
+
   public chartOptions: ChartConfiguration['options'] = {
     plugins: {
       legend: {
-        display: true,
-        position: 'left',
+        display: false,
       },
     },
     responsive: true,
@@ -48,15 +59,14 @@ export class LoadMenuRefCardComponent {
         ],
         labels: [],
       } as ChartConfiguration['data'];
-    const colors = [
-      '#6B9BD2', '#8FBC8F', '#D2B48C', '#DDA0DD'
-    ];
     
     return {
       datasets: [
         {
           data: data.map((x: any) => x.count),
-          backgroundColor: colors.slice(0, data.length),
+          backgroundColor: this.bgColors.slice(0, data.length),
+          borderColor: this.borderColors.slice(0, data.length),
+          borderWidth: 1,
         },
       ],
       labels: data.map((x: any) => x.source),

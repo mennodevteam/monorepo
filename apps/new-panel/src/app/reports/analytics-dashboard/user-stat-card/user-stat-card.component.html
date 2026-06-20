@@ -7,18 +7,23 @@
     @if (query.data()) {
       @let uniqueUserCount = query.data().uniqueUserCount;
       @let retentionCount = query.data().retentionCount;
-      <mat-list>
-        <mat-list-item>
-          <span matListItemLine>{{ 'app.count' | translate }}:</span>
-          <span matListItemMeta eng>{{ uniqueUserCount | number }}</span>
-        </mat-list-item>
-        <mat-list-item>
-          <span matListItemLine>{{ 'dashboard.retentionRate' | translate }}:</span>
-          <span matListItemMeta eng>{{ (retentionCount / uniqueUserCount) * 100 | number: '1.0-0' }}%</span>
-        </mat-list-item>
-      </mat-list>
+      
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+        <mat-list fxFlex="45">
+          <mat-list-item>
+            <span matListItemLine>{{ 'app.count' | translate }}:</span>
+            <span matListItemMeta eng>{{ uniqueUserCount | number }}</span>
+          </mat-list-item>
+          <mat-list-item>
+            <span matListItemLine>{{ 'dashboard.retentionRate' | translate }}:</span>
+            <span matListItemMeta eng>{{ (retentionCount / uniqueUserCount) * 100 | number: '1.0-0' }}%</span>
+          </mat-list-item>
+        </mat-list>
 
-      <canvas baseChart [data]="chartData()" [options]="chartOptions" type="pie" height="200px"></canvas>
+        <div fxFlex="50" fxLayout="row" fxLayoutAlign="center center" style="height: 140px;">
+          <canvas baseChart [data]="chartData()" [options]="chartOptions" type="pie" style="max-height: 130px; max-width: 130px;"></canvas>
+        </div>
+      </div>
     } @else {
       <app-data-loading />
     }
