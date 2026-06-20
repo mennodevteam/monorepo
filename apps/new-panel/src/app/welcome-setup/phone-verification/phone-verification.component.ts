@@ -125,7 +125,7 @@ export class PhoneVerificationComponent implements OnDestroy {
         this.snack.open(this.translate.instant('otp.verificationSuccess'), '', { duration: 3000 });
 
         // Navigate to next step in welcome setup
-        this.router.navigate(['/welcome/next-step']);
+        this.router.navigate(['/admin/welcome/next-step']);
       }
     } catch (error) {
       this.snack.open(this.translate.instant('otp.verificationFailed'), '', { duration: 3000 });

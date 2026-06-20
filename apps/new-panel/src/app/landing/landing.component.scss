@@ -1,0 +1,525 @@
+.landing-container {
+  min-height: 100vh;
+  background-color: #ffffff;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+// Global Button Enforcements to override global `a` tag !important colors
+.btn {
+  text-decoration: none !important;
+  font-weight: 600 !important;
+
+  &:hover {
+    text-decoration: none !important;
+  }
+
+  ng-icon, i {
+    color: inherit !important;
+  }
+}
+
+.btn-primary {
+  background-color: #171717 !important;
+  color: #ffffff !important;
+
+  span {
+    color: #ffffff !important;
+  }
+
+  &:hover {
+    background-color: #262626 !important;
+    color: #ffffff !important;
+
+    span {
+      color: #ffffff !important;
+    }
+  }
+}
+
+.btn-secondary {
+  background-color: #f5f5f5 !important;
+  color: #404040 !important;
+  border: 1px solid var(--border-color) !important;
+
+  span {
+    color: #404040 !important;
+  }
+
+  &:hover {
+    background-color: #e5e5e5 !important;
+    color: #171717 !important;
+
+    span {
+      color: #171717 !important;
+    }
+  }
+}
+
+// Glassmorphic Header Navigation
+.landing-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.75rem 1.5rem;
+
+  .header-content {
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .brand-logo {
+    height: 2.25rem;
+    width: auto;
+  }
+
+  // Header Nav Links
+  .header-nav {
+    .nav-link {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary) !important;
+      cursor: pointer;
+      transition: color 0.2s ease;
+      text-decoration: none !important;
+
+      &:hover {
+        color: var(--text-primary) !important;
+        text-decoration: none !important;
+      }
+    }
+  }
+
+  .login-btn {
+    font-size: 0.8125rem;
+    padding: 0.5rem 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    
+    ng-icon { font-size: 1.05rem; }
+  }
+
+  .register-btn {
+    font-size: 0.8125rem;
+    padding: 0.5rem 1.25rem;
+  }
+}
+
+// Hero Section
+.hero-section {
+  position: relative;
+  padding: 5.5rem 1.5rem 4.5rem 1.5rem;
+  background: radial-gradient(circle at top, rgba(23, 23, 23, 0.02) 0%, rgba(255, 255, 255, 0) 60%);
+  overflow: hidden;
+
+  .glow-orb {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(109, 40, 217, 0.06) 0%, rgba(255, 255, 255, 0) 70%);
+    filter: blur(60px);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .badge-new {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background-color: #f5f5f5;
+    border: 1px solid var(--border-color);
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    line-height: 1.3;
+    color: #0a0a0a;
+    margin-bottom: 1.25rem;
+
+    @media (max-width: 600px) { font-size: 1.85rem; }
+  }
+
+  .hero-subtitle {
+    font-size: 1.05rem;
+    max-width: 600px;
+    margin: 0 auto 1.5rem auto;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  // Target Business Badges
+  .business-types {
+    margin-bottom: 2.25rem;
+    
+    .business-badge {
+      display: inline-block;
+      padding: 0.35rem 0.85rem;
+      background-color: #f5f5f5;
+      border: 1px solid var(--border-color);
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: #171717;
+        color: #ffffff;
+        border-color: #171717;
+      }
+    }
+  }
+
+  .hero-actions {
+    width: 100%;
+    
+    .btn { min-height: 2.75rem; }
+
+    @media (max-width: 600px) {
+      .btn { width: 100%; }
+    }
+  }
+
+  .btn-hero-primary {
+    padding: 0.875rem 2.5rem;
+    font-size: 0.875rem;
+    
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+}
+
+// Features Section (GRAY BACKGROUND)
+.features-section {
+  padding: 5rem 1.5rem;
+  background-color: #fafafa;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+
+  .section-header {
+    margin-bottom: 3.5rem;
+
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #0a0a0a;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-description {
+      font-size: 0.95rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+  }
+
+  .feature-card {
+    height: 100%;
+    background-color: #ffffff !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 1.25rem !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    text-align: center;
+
+    &:hover {
+      transform: translateY(-4px);
+      border-color: #a3a3a3 !important;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.03) !important;
+    }
+  }
+
+  .feature-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0.5rem 0 0 0;
+  }
+
+  .feature-text {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    margin: 0;
+    color: var(--text-secondary);
+  }
+}
+
+// Pricing Section (WHITE BACKGROUND)
+.pricing-section {
+  padding: 5rem 1.5rem;
+  background-color: #ffffff;
+  border-top: none;
+
+  .section-header {
+    margin-bottom: 3.5rem;
+
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #0a0a0a;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-description {
+      font-size: 0.95rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+  }
+
+  .pricing-grid {
+    margin: 0 auto;
+    max-width: 1000px;
+    width: 100%;
+  }
+
+  .pricing-card-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pricing-card {
+    height: 100%;
+    background-color: #ffffff !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 1.5rem !important;
+    padding: 2.25rem 2rem !important;
+    box-shadow: none !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    display: flex;
+    flex-direction: column;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.04) !important;
+    }
+
+    &.featured {
+      background-color: #171717 !important;
+      border-color: #262626 !important;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08) !important;
+      
+      // Force text colors to be white inside featured card
+      color: #ffffff !important;
+
+      .plan-name {
+        color: #ffffff !important;
+      }
+
+      .plan-desc {
+        color: rgba(255, 255, 255, 0.7) !important;
+      }
+
+      .plan-price {
+        .price-value {
+          color: #ffffff !important;
+        }
+        .price-period {
+          color: rgba(255, 255, 255, 0.5) !important;
+        }
+      }
+
+      .plan-features {
+        li {
+          color: #ffffff !important;
+          
+          span {
+            color: #ffffff !important;
+          }
+        }
+      }
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12) !important;
+      }
+    }
+  }
+
+  .plan-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 0.25rem 0;
+  }
+
+  .plan-desc {
+    font-size: 0.78rem;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  .plan-badge {
+    padding: 0.2rem 0.5rem;
+    background-color: #f5f5f5;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    white-space: nowrap;
+
+    &.featured {
+      background-color: #262626;
+      border-color: #404040;
+      color: #ffffff;
+    }
+  }
+
+  .plan-price {
+    margin: 1.5rem 0;
+    
+    .price-value {
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .price-period {
+      font-size: 0.85rem;
+    }
+  }
+
+  // Bulletproof Features List Layout to Prevent Overflows in RTL
+  .plan-features {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 1.5rem 0 !important;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: right;
+
+    li {
+      font-size: 0.8125rem;
+      line-height: 1.6;
+      display: flex !important;
+      align-items: flex-start !important;
+      gap: 10px !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      color: var(--text-primary) !important;
+    }
+
+    .feature-check {
+      font-size: 1.25rem !important;
+      flex-shrink: 0 !important;
+      margin-top: 2px !important;
+    }
+  }
+
+  .w-100 {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .featured-btn {
+    background-color: #ffffff !important;
+    color: #171717 !important;
+    
+    span {
+      color: #171717 !important;
+    }
+
+    &:hover {
+      background-color: #f5f5f5 !important;
+      color: #171717 !important;
+      
+      span {
+        color: #171717 !important;
+      }
+    }
+  }
+}
+
+// CTA Bottom Section
+.cta-bottom {
+  padding: 5rem 1.5rem;
+  background-color: #fafafa;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+
+  .cta-bottom-content {
+    margin: 0 auto;
+
+    h2 {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: #0a0a0a;
+      margin: 0;
+    }
+
+    p {
+      font-size: 0.95rem;
+      max-width: 500px;
+      line-height: 1.6;
+    }
+  }
+
+  .btn-large {
+    min-height: 3rem;
+    padding: 0.875rem 2.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+// Footer
+.landing-footer {
+  padding: 2.5rem 1.5rem;
+  background-color: #ffffff;
+
+  .footer-content {
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .footer-logo {
+    height: 1.75rem;
+    width: auto;
+  }
+
+  .footer-brand {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .footer-copy { font-size: 0.75rem; }
+
+  @media (max-width: 600px) {
+    text-align: center;
+    .footer-content {
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
+}
+
+// Animations
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+.animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }

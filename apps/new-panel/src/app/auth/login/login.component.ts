@@ -47,7 +47,7 @@ export class LoginComponent {
     this.isLoading.set(true);
     try {
       await this.auth.login(username, password);
-      this.router.navigateByUrl('/', {
+      this.router.navigateByUrl('/admin', {
         replaceUrl: true,
       });
     } catch (error) {

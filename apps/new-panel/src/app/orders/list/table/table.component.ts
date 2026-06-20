@@ -57,7 +57,7 @@ export class TableComponent {
   private readonly translate = inject(TranslateService);
 
   navigateToOrder(order: Order) {
-    this.router.navigate(['/orders/details', order.id], {
+    this.router.navigate(['/admin/orders/details', order.id], {
       state: {
         order,
       },

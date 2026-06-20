@@ -1,0 +1,337 @@
+<div class="landing-container">
+  <!-- Header / Navigation Bar -->
+  <header class="landing-header">
+    <div class="header-content" fxLayout="row" fxLayoutAlign="space-between center">
+      <!-- Right Side: Logo -->
+      <div class="brand-wrapper" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="24px">
+        <img src="icons/logo.svg" alt="شات" class="brand-logo" />
+        
+        <!-- Navigation Links in Header -->
+        <nav class="header-nav" fxLayout="row" fxLayoutGap="20px" fxHide.xs>
+          <a (click)="scrollTo('features')" class="nav-link">امکانات</a>
+          <a (click)="scrollTo('pricing')" class="nav-link">قیمت‌گذاری</a>
+        </nav>
+      </div>
+
+      <!-- Left Side: Login / Register CTAs -->
+      <div class="header-ctas" fxLayout="row" fxLayoutGap="12px">
+        <a routerLink="/admin" class="btn btn-secondary login-btn">
+          <ng-icon name="saxUserOutline" class="middle"></ng-icon>
+          <span>ورود به پنل</span>
+        </a>
+        <a routerLink="/admin/auth/register" class="btn btn-primary register-btn">
+          <span>ثبت نام</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section" fxLayout="column" fxLayoutAlign="center center" center-align>
+    <!-- Light mesh/glow gradient in background (fully styling-driven) -->
+    <div class="glow-orb"></div>
+    
+    <div class="hero-content animate-slide-up" w-sm fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+      <div class="badge-new animate-pulse">نسخه جدید پنل فروش</div>
+      <h1 class="hero-title">
+        پلتفرم فروش شات
+      </h1>
+      <p class="hero-subtitle text-secondary">
+        پلتفرمی مدرن و یکپارچه برای مدیریت کاتالوگ دیجیتال، پیگیری سفارش‌ها، انبارداری هوشمند و باشگاه مشتریان؛ توانمندسازی کسب‌وکار شما با فناوری روز.
+      </p>
+
+      <!-- Target Businesses badges list -->
+      <div class="business-types" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="8px">
+        <span class="business-badge">آنلاین‌شاپ‌ها</span>
+        <span class="business-badge">فروشگاه‌های تولیدی</span>
+        <span class="business-badge">اینستاگرام‌شاپ‌ها</span>
+        <span class="business-badge">رستوران‌ها و کافه‌ها</span>
+        <span class="business-badge">کارگاه‌های تولیدی و خانگی</span>
+      </div>
+
+      <div class="hero-actions" fxLayout="row" fxLayoutAlign="center center" style="margin-top: 12px;">
+        <a routerLink="/admin/auth/register" class="btn btn-primary btn-hero-primary">
+          <span>شروع رایگان و ثبت‌نام سریع</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Features Section -->
+  <section id="features" class="features-section">
+    <div w-lg>
+      <div class="section-header" center-align>
+        <h2 class="section-title">امکانات پلتفرم فروش شات</h2>
+        <p class="section-description text-secondary">تمام ابزارهای مورد نیاز برای خودکارسازی و توسعه کسب‌وکار شما در یک پنل واحد</p>
+      </div>
+
+      <div class="features-grid" fxLayout="row wrap" fxLayoutGap="24px grid">
+        <!-- Feature 1: Website -->
+        <div fxFlex="33" fxFlex.lt-lg="50" fxFlex.lt-md="100">
+          <mat-card appearance="outlined" class="feature-card">
+            <mat-card-content fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="12px" center-align>
+              <div class="np-icon-badge lg blue">
+                <ng-icon name="saxShopOutline"></ng-icon>
+              </div>
+              <h3 class="feature-name">وب‌سایت کامل فروشگاهی</h3>
+              <p class="feature-text text-secondary">
+                ایجاد یک سایت اختصاصی کامل و مدرن جهت سفارش‌گیری آنلاین مستقیم و بدون واسطه از مشتریان.
+              </p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- Feature 2: Product & Banner Management -->
+        <div fxFlex="33" fxFlex.lt-lg="50" fxFlex.lt-md="100">
+          <mat-card appearance="outlined" class="feature-card">
+            <mat-card-content fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="12px" center-align>
+              <div class="np-icon-badge lg green">
+                <ng-icon name="saxCategoryOutline"></ng-icon>
+              </div>
+              <h3 class="feature-name">مدیریت کاتالوگ دیجیتال و بنرها</h3>
+              <p class="feature-text text-secondary">
+                کنترل کامل محصولات، دسته‌بندی‌ها و تعریف بنرهای تبلیغاتی شخصی‌سازی‌شده در صفحه اصلی سایت شما.
+              </p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- Feature 3: Production Inventory -->
+        <div fxFlex="33" fxFlex.lt-lg="50" fxFlex.lt-md="100">
+          <mat-card appearance="outlined" class="feature-card">
+            <mat-card-content fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="12px" center-align>
+              <div class="np-icon-badge lg orange">
+                <ng-icon name="saxArchiveOutline"></ng-icon>
+              </div>
+              <h3 class="feature-name">انبارداری تولیدی</h3>
+              <p class="feature-text text-secondary">
+                مدیریت تخصصی مواد اولیه، فرمولاسیون ساخت و تولید محصولات همراه با کسر خودکار موجودی انبار پس از هر فروش.
+              </p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- Feature 4: Profit calculation -->
+        <div fxFlex="33" fxFlex.lt-lg="50" fxFlex.lt-md="100">
+          <mat-card appearance="outlined" class="feature-card">
+            <mat-card-content fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="12px" center-align>
+              <div class="np-icon-badge lg cyan">
+                <ng-icon name="saxCalculatorOutline"></ng-icon>
+              </div>
+              <h3 class="feature-name">محاسبه سود و زیان دقیق</h3>
+              <p class="feature-text text-secondary">
+                محاسبه خودکار و دقیق سود و زیان حاصل از هر سفارش بر مبنای بهای تمام‌شده کالاها و گزارش‌های تحلیل مالی.
+              </p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- Feature 5: Customer relations marketing -->
+        <div fxFlex="33" fxFlex.lt-lg="50" fxFlex.lt-md="100">
+          <mat-card appearance="outlined" class="feature-card">
+            <mat-card-content fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="12px" center-align>
+              <div class="np-icon-badge lg pink">
+                <ng-icon name="saxPeopleOutline"></ng-icon>
+              </div>
+              <h3 class="feature-name">ارتباط با مشتری و مارکتینگ</h3>
+              <p class="feature-text text-secondary">
+                ارسال پیامک‌های گروهی هدفمند به گروه‌های مشتریان و تعریف کوپن‌های تخفیف پویا برای افزایش وفاداری.
+              </p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- Feature 6: Customer Chat -->
+        <div fxFlex="33" fxFlex.lt-lg="50" fxFlex.lt-md="100">
+          <mat-card appearance="outlined" class="feature-card">
+            <mat-card-content fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="12px" center-align>
+              <div class="np-icon-badge lg purple">
+                <ng-icon name="saxMessageOutline"></ng-icon>
+              </div>
+              <h3 class="feature-name">چت و گفتگوی مستقیم</h3>
+              <p class="feature-text text-secondary">
+                ارتباط مستقیم درون‌برنامه‌ای با خریداران جهت مشاوره، راهنمایی خرید و پشتیبانی سریع سفارش‌ها.
+              </p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- Feature 7: Regional Shipping -->
+        <div fxFlex="33" fxFlex.lt-lg="50" fxFlex.lt-md="100">
+          <mat-card appearance="outlined" class="feature-card">
+            <mat-card-content fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="12px" center-align>
+              <div class="np-icon-badge lg teal">
+                <ng-icon name="saxLocationOutline"></ng-icon>
+              </div>
+              <h3 class="feature-name">هزینه ارسال استانی و شهری</h3>
+              <p class="feature-text text-secondary">
+                قیمت‌گذاری منعطف و خودکار روی هزینه ارسال سفارش‌ها بر اساس شهر و استان مقصد خریدار.
+              </p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- Feature 8: Payment Gateways -->
+        <div fxFlex="33" fxFlex.lt-lg="50" fxFlex.lt-md="100">
+          <mat-card appearance="outlined" class="feature-card">
+            <mat-card-content fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="12px" center-align>
+              <div class="np-icon-badge lg sky">
+                <ng-icon name="saxShoppingCartOutline"></ng-icon>
+              </div>
+              <h3 class="feature-name">اتصال به درگاه‌های پرداخت</h3>
+              <p class="feature-text text-secondary">
+                اتصال مستقیم به معتبرترین درگاه‌های پرداخت آنلاین جهت دریافت امن و سریع مبالغ فاکتورها.
+              </p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- Feature 9: AI Ready Data -->
+        <div fxFlex="33" fxFlex.lt-lg="50" fxFlex.lt-md="100">
+          <mat-card appearance="outlined" class="feature-card">
+            <mat-card-content fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="12px" center-align>
+              <div class="np-icon-badge lg ai">
+                <ng-icon name="saxCpuOutline"></ng-icon>
+              </div>
+              <h3 class="feature-name">آماده‌سازی داده‌ها برای هوش مصنوعی</h3>
+              <p class="feature-text text-secondary">
+                دسته‌بندی و خروجی ساختاریافته داده‌های فروش جهت تحلیل, مدل‌سازی و پیش‌بینی توسط ابزارهای هوش مصنوعی.
+              </p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="pricing-section">
+    <div w-lg>
+      <div class="section-header" center-align>
+        <h2 class="section-title">قیمت‌گذاری</h2>
+        <p class="section-description text-secondary">راهکار متناسب با ابعاد و ساختار کسب‌وکار خود را انتخاب کنید</p>
+      </div>
+
+      <div class="pricing-grid" fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="center stretch" fxLayoutGap="32px">
+        <!-- Plan 1: Simple Catalog (FREE OPTION) -->
+        <div fxFlex="45" fxFlex.lt-md="100" class="pricing-card-wrapper">
+          <mat-card appearance="outlined" class="pricing-card">
+            <mat-card-content fxLayout="column" fxLayoutGap="20px">
+              <div fxLayout="row" fxLayoutAlign="space-between start">
+                <div>
+                  <h3 class="plan-name">کاتالوگ دیجیتال شات</h3>
+                  <p class="plan-desc text-secondary">صرفاً جهت نمایش شیک و فوق‌العاده سریع منو به مشتریان</p>
+                </div>
+              </div>
+              
+              <div class="plan-price">
+                <span class="price-value">رایگان</span>
+              </div>
+
+              <mat-divider></mat-divider>
+
+              <ul class="plan-features" fxLayout="column" fxLayoutGap="12px">
+                <li fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                  <ng-icon name="saxTickCircleOutline" class="feature-check text-success"></ng-icon>
+                  <span>نمایش کاتالوگ دیجیتال با سرعت لود زیر ۱ ثانیه</span>
+                </li>
+                <li fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                  <ng-icon name="saxTickCircleOutline" class="feature-check text-success"></ng-icon>
+                  <span>مستقر روی سرورهای اختصاصی مجزا</span>
+                </li>
+                <li fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                  <ng-icon name="saxTickCircleOutline" class="feature-check text-success"></ng-icon>
+                  <span>کاملاً رایگان و بدون هیچ محدودیتی در نمایش</span>
+                </li>
+                <li fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                  <ng-icon name="saxInfoCircleOutline" class="feature-check text-muted" style="color: var(--text-muted) !important;"></ng-icon>
+                  <span class="text-muted">این نسخه فاقد ابزارهای سفارش‌گیری، انبارداری و مارکتینگ است.</span>
+                </li>
+              </ul>
+
+              <div class="pricing-actions" style="margin-top: auto;">
+                <a href="https://shottt.ir" target="_blank" class="btn btn-secondary w-100">
+                  <span>مشاهده سایت کاتالوگ دیجیتال شات</span>
+                </a>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- Plan 2: Advanced Platform (PAID SUBSCRIPTION) -->
+        <div fxFlex="45" fxFlex.lt-md="100" class="pricing-card-wrapper featured">
+          <mat-card appearance="outlined" class="pricing-card featured">
+            <mat-card-content fxLayout="column" fxLayoutGap="20px">
+              <div fxLayout="row" fxLayoutAlign="space-between start">
+                <div>
+                  <h3 class="plan-name text-white">پلتفرم فروش شات</h3>
+                  <p class="plan-desc text-secondary">پلتفرم کامل مدیریت سفارشات، انبارداری و بازاریابی مجموعه</p>
+                </div>
+              </div>
+
+              <div class="plan-price">
+                <span class="price-value text-white">۷.۹</span>
+                <span class="price-period text-secondary"> میلیون تومان / سالانه</span>
+              </div>
+
+              <mat-divider></mat-divider>
+
+              <ul class="plan-features text-white" fxLayout="column" fxLayoutGap="12px">
+                <li fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                  <ng-icon name="saxTickCircleOutline" class="feature-check text-success"></ng-icon>
+                  <span><strong>یک پکیج جامع:</strong> ارائه تمام امکانات فوق در قالب یک اشتراک یکپارچه</span>
+                </li>
+                <li fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                  <ng-icon name="saxTickCircleOutline" class="feature-check text-success"></ng-icon>
+                  <span>عدم نیاز به پرداخت هرگونه هزینه مازاد برای فعال‌سازی بخش‌ها</span>
+                </li>
+                <li fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                  <ng-icon name="saxTickCircleOutline" class="feature-check text-success"></ng-icon>
+                  <span>وب‌سایت اختصاصی، درگاه پرداخت، انبارداری تولیدی، چت و پیامک</span>
+                </li>
+                <li fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                  <ng-icon name="saxTickCircleOutline" class="feature-check text-success"></ng-icon>
+                  <span>گزارشات دقیق سود و زیان هر فاکتور و تحلیل پیشرفته داده‌ها</span>
+                </li>
+                <li fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                  <ng-icon name="saxTickCircleOutline" class="feature-check text-success"></ng-icon>
+                  <span>به‌روزرسانی‌های مداوم و پشتیبانی همیشگی تیم فنی</span>
+                </li>
+              </ul>
+
+              <div class="pricing-actions" style="margin-top: auto;">
+                <a routerLink="/admin/auth/register" class="btn btn-primary w-100 featured-btn">
+                  <span>ثبت‌نام و فعال‌سازی پلتفرم فروش</span>
+                </a>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner Bottom -->
+  <section class="cta-bottom" center-align>
+    <div class="cta-bottom-content" w-sm fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+      <h2>همین امروز مدیریت مدرن را آغاز کنید</h2>
+      <p class="text-secondary">ثبت‌نام در سامانه شات کمتر از ۲ دقیقه زمان می‌برد و بلافاصله می‌توانید فعالیت خود را آغاز کنید.</p>
+      <a routerLink="/admin/auth/register" class="btn btn-primary btn-large">
+        <span>ثبت‌نام رایگان کسب‌وکار شما</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="landing-footer">
+    <div class="footer-content" w-lg fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+      <div class="footer-brand" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+        <img src="icons/logo.svg" alt="شات" class="footer-logo" />
+        <span>شات؛ پلتفرم یکپارچه مدیریت کسب‌وکار</span>
+      </div>
+      <div class="footer-copy text-muted">
+        &copy; ۲۰۲۶ سامانه مدیریت فروش شات. تمامی حقوق محفوظ است.
+      </div>
+    </div>
+  </footer>
+</div>

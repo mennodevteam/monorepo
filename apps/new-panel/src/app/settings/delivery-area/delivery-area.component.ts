@@ -97,7 +97,7 @@ export class DeliveryAreaComponent {
           this.translate.instant('deliveryArea.shopNotSetDialog.description'),
         )
         .then((ok) => {
-          if (ok) this.router.navigateByUrl('/settings/shop');
+          if (ok) this.router.navigateByUrl('/admin/settings/shop');
         });
     }
   }

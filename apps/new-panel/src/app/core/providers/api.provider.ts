@@ -55,7 +55,7 @@ class ApiInterceptor implements HttpInterceptor {
         ) {
           sessionStorage.removeItem(JWT_KEY);
           localStorage.removeItem(JWT_KEY);
-          this.router.navigateByUrl('/login');
+          this.router.navigateByUrl('/admin/auth/login');
         } else if (err.status === HttpStatusCode.TooEarly) {
           this.dialog
             .open(AlertDialogComponent, {

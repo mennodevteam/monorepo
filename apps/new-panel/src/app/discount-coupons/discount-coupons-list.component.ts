@@ -87,6 +87,6 @@ export class DiscountCouponsListComponent {
   }
 
   addCoupon() {
-    this.router.navigate(['/discount-coupons/edit']);
+    this.router.navigate(['/admin/coupons/edit']);
   }
 } 

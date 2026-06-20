@@ -50,7 +50,7 @@ export class AlopeykComponent {
           },
         )
         .then((val) => {
-          if (val) this.router.navigateByUrl('/settings/shop');
+          if (val) this.router.navigateByUrl('/admin/settings/shop');
         });
     }
   }

@@ -60,6 +60,6 @@ export class CostListComponent {
   }
 
   addCost() {
-    this.router.navigate(['/menu/costs/edit']);
+    this.router.navigate(['/admin/menu/costs/edit']);
   }
 }

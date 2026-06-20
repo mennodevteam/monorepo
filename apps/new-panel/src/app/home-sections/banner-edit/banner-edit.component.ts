@@ -373,7 +373,7 @@ export class BannerEditComponent implements FormComponent {
 
     await this.homeSectionsService.saveMutation.mutateAsync(section);
     this.form.markAsPristine();
-    this.router.navigate(['/home-sections']);
+    this.router.navigate(['/admin/home-sections']);
   }
 
   canDeactivate() {

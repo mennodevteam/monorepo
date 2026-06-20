@@ -22,7 +22,7 @@ export class CardComponent {
   OrderType = OrderType;
 
   navigateToOrder(order: Order) {
-    this.router.navigate(['/orders/details', order.id], {
+    this.router.navigate(['/admin/orders/details', order.id], {
       state: { order },
     });
   }

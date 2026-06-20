@@ -65,7 +65,7 @@
             @for (notification of notifications.data(); track notification) {
               <a
                 mat-list-item
-                routerLink="/orders/details/{{ (notification.order || notification.chat?.order)?.id }}"
+                routerLink="/admin/orders/details/{{ (notification.order || notification.chat?.order)?.id }}"
               >
                 @if (notification.order) {
                   <span matListItemTitle>{{ 'notifications.newOrder' | translate }}</span>
@@ -89,7 +89,7 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
-        routerLink="/home"
+        routerLink="/admin/home"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
         <div matListItemIcon class="np-icon-badge sm gray">
@@ -102,7 +102,7 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
-        routerLink="/orders"
+        routerLink="/admin/orders"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
         <div matListItemIcon class="np-icon-badge sm green">
@@ -115,7 +115,7 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
-        routerLink="/menu/categories"
+        routerLink="/admin/menu/categories"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
         <div matListItemIcon class="np-icon-badge sm purple">
@@ -128,7 +128,7 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
-        routerLink="/menu/list"
+        routerLink="/admin/menu/list"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
         <div matListItemIcon class="np-icon-badge sm purple">
@@ -143,7 +143,7 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
-        routerLink="/inventory/materials"
+        routerLink="/admin/inventory/materials"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
         <div matListItemIcon class="np-icon-badge sm teal">
@@ -154,7 +154,7 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
-        routerLink="/inventory/bom"
+        routerLink="/admin/inventory/bom"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
         <div matListItemIcon class="np-icon-badge sm teal">
@@ -165,7 +165,7 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
-        routerLink="/menu/availability"
+        routerLink="/admin/menu/availability"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
         <div matListItemIcon class="np-icon-badge sm teal">
@@ -178,7 +178,7 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
-        routerLink="/menu/costs"
+        routerLink="/admin/menu/costs"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
         <div matListItemIcon class="np-icon-badge sm pink">
@@ -189,7 +189,7 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
-        routerLink="/pricing"
+        routerLink="/admin/pricing"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
         <div matListItemIcon class="np-icon-badge sm pink">
@@ -204,7 +204,7 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
-        routerLink="/club/members"
+        routerLink="/admin/club/members"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
         <div matListItemIcon class="np-icon-badge sm orange">
@@ -215,7 +215,7 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
-        routerLink="/coupons"
+        routerLink="/admin/coupons"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
         <div matListItemIcon class="np-icon-badge sm orange">
@@ -226,7 +226,7 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
-        routerLink="/missions"
+        routerLink="/admin/missions"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
         <div matListItemIcon class="np-icon-badge sm orange">
@@ -239,7 +239,7 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
-        routerLink="/reports/orders-dashboard"
+        routerLink="/admin/reports/orders-dashboard"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
         <div matListItemIcon class="np-icon-badge sm green">
@@ -250,7 +250,7 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
-        routerLink="/reports/analytics-dashboard"
+        routerLink="/admin/reports/analytics-dashboard"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
         <div matListItemIcon class="np-icon-badge sm green">
@@ -261,7 +261,7 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
-        routerLink="/sms"
+        routerLink="/admin/sms"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
         <div matListItemIcon class="np-icon-badge sm blue">
@@ -272,7 +272,7 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
-        routerLink="/ai"
+        routerLink="/admin/ai"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
         <div matListItemIcon class="np-icon-badge sm ai">
@@ -283,7 +283,7 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
-        routerLink="/home-sections"
+        routerLink="/admin/home-sections"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
         <div matListItemIcon class="np-icon-badge sm gray">
@@ -297,7 +297,7 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
-        routerLink="/settings"
+        routerLink="/admin/settings"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >
         <div matListItemIcon class="np-icon-badge sm gray">

@@ -47,7 +47,7 @@ export class RegisterComponent {
       lastValueFrom(this.http.post<Shop>(`/shops/register/v2`, dto)),
     onSuccess: async (data, dto) => {
       await this.auth.login(dto.loginUsername!, dto.loginPassword!);
-      this.router.navigateByUrl('/');
+      this.router.navigateByUrl('/admin');
     },
     onError: (err: any, newData, context) => {
       const status = err.status;

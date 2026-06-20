@@ -58,17 +58,17 @@ export class MenuListComponent {
   });
 
   setTab(category: ProductCategory) {
-    this.router.navigate(['/menu/list'], { queryParams: { id: category.id } });
+    this.router.navigate(['/admin/menu/list'], { queryParams: { id: category.id } });
     this.selectedCategoryId.set(category.id);
   }
 
   editCategory(category?: ProductCategory) {
-    this.router.navigate(['/menu/categories/edit'], {
+    this.router.navigate(['/admin/menu/categories/edit'], {
       queryParams: category ? { id: category.id } : {},
     });
   }
 
   goToCategories() {
-    this.router.navigate(['/menu/categories']);
+    this.router.navigate(['/admin/menu/categories']);
   }
 }
