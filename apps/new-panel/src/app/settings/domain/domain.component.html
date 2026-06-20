@@ -1,0 +1,133 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <mat-toolbar class="content-toolbar">
+    <button mat-icon-button goBack type="button">
+      <ng-icon name="saxArrowRight3Bold"></ng-icon>
+    </button>
+    <h2>{{ 'domain.title' | translate }}</h2>
+    <span fxFlex></span>
+    <button mat-flat-button [disabled]="!form.dirty || isSaving() || form.invalid" type="submit">
+      @if (isSaving()) {
+        <span>{{ 'app.saving' | translate }}</span>
+      } @else {
+        <span>{{ 'app.save' | translate }}</span>
+      }
+    </button>
+  </mat-toolbar>
+
+  <main p-md w-md class="np-form-container animate-slide-up">
+    <!-- Subdomain Section -->
+    <div class="np-form-section">
+      <div class="section-header-wrapper">
+        <div class="np-icon-badge md purple-light">
+          <ng-icon name="saxLinkOutline"></ng-icon>
+        </div>
+        <div>
+          <h3 class="np-section-title">{{ 'domain.subdomainSection' | translate }}</h3>
+          <p class="np-section-desc">{{ 'domain.subdomainDescription' | translate }}</p>
+        </div>
+      </div>
+
+      <div class="np-form-inputs">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>{{ 'domain.subdomainLabel' | translate }}</mat-label>
+          <input
+            matInput
+            formControlName="username"
+            [placeholder]="'domain.subdomainPlaceholder' | translate"
+            dir="ltr"
+            lang="en"
+            required
+          />
+          <span matSuffix class="domain-suffix">.{{ appDomain }}</span>
+          @if (form.controls.username.hasError('required')) {
+            <mat-error>{{ 'app.required' | translate }}</mat-error>
+          }
+          @if (form.controls.username.hasError('minlength')) {
+            <mat-error>{{ 'domain.subdomainMinLength' | translate }}</mat-error>
+          }
+          @if (form.controls.username.hasError('pattern')) {
+            <mat-error>{{ 'domain.subdomainPattern' | translate }}</mat-error>
+          }
+        </mat-form-field>
+
+        @if (currentSubdomainUrl()) {
+          <div class="live-preview-box" fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+              <span class="preview-label">پیش‌نمایش آدرس:</span>
+              <a [href]="currentSubdomainUrl()" target="_blank" class="preview-url">
+                {{ currentSubdomainUrl() }}
+              </a>
+            </div>
+            <button
+              mat-icon-button
+              type="button"
+              [copyClipboard]="currentSubdomainUrl()"
+              matTooltip="کپی آدرس"
+            >
+              <ng-icon name="saxCopyOutline"></ng-icon>
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Custom Domain Section -->
+    <div class="np-form-section">
+      <div class="section-header-wrapper">
+        <div class="np-icon-badge md blue-light">
+          <ng-icon name="saxSetting2Outline"></ng-icon>
+        </div>
+        <div>
+          <h3 class="np-section-title">{{ 'domain.customDomainSection' | translate }}</h3>
+          <p class="np-section-desc">{{ 'domain.customDomainDescription' | translate }}</p>
+        </div>
+      </div>
+
+      <div class="np-form-inputs">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>{{ 'domain.customDomainLabel' | translate }}</mat-label>
+          <input
+            matInput
+            formControlName="domain"
+            [placeholder]="'domain.customDomainPlaceholder' | translate"
+            dir="ltr"
+            lang="en"
+          />
+          @if (form.controls.domain.hasError('pattern')) {
+            <mat-error>{{ 'domain.subdomainPattern' | translate }}</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- DNS Instructions Box -->
+        <div class="dns-instructions-card">
+          <div class="dns-header">
+            <ng-icon name="saxInfoCircleOutline" class="dns-info-icon"></ng-icon>
+            <h4>{{ 'domain.dnsInstructions' | translate }}</h4>
+          </div>
+          <p class="dns-desc">{{ 'domain.dnsInstructionsDesc' | translate }}</p>
+
+          <div class="dns-table-container">
+            <table class="dns-table">
+              <thead>
+                <tr>
+                  <th>{{ 'domain.dnsRecordType' | translate }}</th>
+                  <th>{{ 'domain.dnsHost' | translate }}</th>
+                  <th>{{ 'domain.dnsValue' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="dns-badge cname">CNAME</span></td>
+                  <td><code class="dns-code">@</code> یا <code class="dns-code">www</code></td>
+                  <td><code class="dns-code">{{ appDomain }}</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="dns-note">{{ 'domain.dnsGuideNote' | translate }}</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</form>

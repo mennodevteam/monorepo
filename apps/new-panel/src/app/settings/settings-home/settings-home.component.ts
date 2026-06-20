@@ -17,7 +17,8 @@ import {
   saxComponentOutline,
   saxCodeOutline,
   saxArrowLeft2Outline,
-  saxSetting2Outline
+  saxSetting2Outline,
+  saxLinkOutline
 } from '@ng-icons/iconsax/outline';
 
 @Component({
@@ -44,7 +45,8 @@ import {
       saxComponentOutline,
       saxCodeOutline,
       saxArrowLeft2Outline,
-      saxSetting2Outline
+      saxSetting2Outline,
+      saxLinkOutline
     })
   ],
   templateUrl: './settings-home.component.html',
@@ -60,6 +62,13 @@ export class SettingsHomeComponent {
       route: 'shop',
       icon: 'saxShopOutline',
       colorClass: 'blue'
+    },
+    {
+      title: 'settings.domain',
+      subtitle: 'تنظیم آدرس اینترنتی، ساب‌دامنه shottt.ir و اتصال دامنه اختصاصی',
+      route: 'domain',
+      icon: 'saxLinkOutline',
+      colorClass: 'purple'
     },
     {
       title: 'settings.appConfig',

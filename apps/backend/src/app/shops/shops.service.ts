@@ -93,8 +93,31 @@ export class ShopsService {
   }
 
   async save(shop: Shop): Promise<Shop> {
-    if (shop.username !== undefined && !Shop.isUsernameValid(shop.username)) {
-      throw new HttpException('the username is invalid', HttpStatus.NOT_ACCEPTABLE);
+    if (shop.username !== undefined) {
+      if (!Shop.isUsernameValid(shop.username)) {
+        throw new HttpException('the username is invalid', HttpStatus.NOT_ACCEPTABLE);
+      }
+      const existing = await this.shopsRepository.findOne({
+        where: { username: shop.username.toLowerCase(), id: Not(shop.id) },
+      });
+      if (existing) {
+        throw new HttpException('the username is already taken', HttpStatus.CONFLICT);
+      }
+      shop.username = shop.username.toLowerCase();
+    }
+    if (shop.domain !== undefined) {
+      if (shop.domain !== null && shop.domain.trim() !== '') {
+        const domainVal = shop.domain.toLowerCase().trim();
+        const existing = await this.shopsRepository.findOne({
+          where: { domain: domainVal, id: Not(shop.id) },
+        });
+        if (existing) {
+          throw new HttpException('the domain is already taken', HttpStatus.CONFLICT);
+        }
+        shop.domain = domainVal;
+      } else {
+        shop.domain = null;
+      }
     }
     return await this.shopsRepository.save(shop);
   }

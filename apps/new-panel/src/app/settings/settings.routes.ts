@@ -13,6 +13,7 @@ import { UserManagementComponent } from './user-management/user-management.compo
 import { WebScriptsComponent } from './web-scripts/web-scripts.component';
 import { DeveloperApiComponent } from './developer-api/developer-api.component';
 import { SettingsHomeComponent } from './settings-home/settings-home.component';
+import { DomainSettingComponent } from './domain/domain.component';
 
 export const settingsRoutes: Route[] = [
   {
@@ -22,6 +23,7 @@ export const settingsRoutes: Route[] = [
       { path: 'sms', component: AutoSmsSettingComponent },
       { path: 'third-parties', children: thirdPartiesRoutes },
       { path: 'shop', component: ShopComponent, canDeactivate: [dirtyFormDeactivator] },
+      { path: 'domain', component: DomainSettingComponent, canDeactivate: [dirtyFormDeactivator] },
       { path: 'app-config', component: AppConfigComponent, canDeactivate: [dirtyFormDeactivator] },
       { path: 'order-config', component: OrderConfigComponent, canDeactivate: [dirtyFormDeactivator] },
       { path: 'ai-chatbot', component: AiChatbotComponent, canDeactivate: [dirtyFormDeactivator] },

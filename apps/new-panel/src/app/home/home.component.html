@@ -18,16 +18,43 @@
           </p>
         </div>
       </div>
-      <div class="quick-status-badge">
-        <span class="pulse-dot"></span>
-        <a [href]="shopService.appLink()" target="_blank" class="live-link">
-          {{ 'home.openApp' | translate }}
-          <ng-icon name="saxLinkOutline"></ng-icon>
-        </a>
+      <div class="quick-status-badge" [class.danger]="!shop.username">
+        @if (shop.username) {
+          <span class="pulse-dot"></span>
+          <a [href]="shopService.appLink()" target="_blank" class="live-link">
+            {{ 'home.openApp' | translate }}
+            <ng-icon name="saxLinkOutline"></ng-icon>
+          </a>
+        } @else {
+          <span class="danger-dot"></span>
+          <a routerLink="/admin/settings/domain" class="live-link">
+            {{ 'home.openApp' | translate }}
+            <ng-icon name="saxDangerOutline"></ng-icon>
+          </a>
+        }
       </div>
     </div>
 
     <!-- Warnings / Banners -->
+    @if (!shop.username) {
+      <mat-card class="promo-card orange animate-slide-up" style="animation-delay: 0.05s">
+        <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+          <div class="np-icon-badge orange"><ng-icon name="saxDangerOutline"></ng-icon></div>
+          <div fxFlex>
+            <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6">
+              <p style="margin: 0 0 6px 0">
+                آدرس اینترنتی (ساب‌دامنه) مجموعه شما تنظیم نشده است. برای اینکه مشتریان بتوانند منوی آنلاین شما را مشاهده کنند، ثبت آدرس اینترنتی الزامی است.
+              </p>
+              <p style="margin: 0">
+                برای تنظیم آدرس اینترنتی و اتصال دامنه اختصاصی، لطفاً به بخش
+                <a routerLink="/admin/settings/domain">تنظیمات آدرس و دامنه</a> مراجعه کنید.
+              </p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+
     @if (!shop.paymentGateway) {
       <mat-card class="promo-card orange animate-slide-up" style="animation-delay: 0.05s">
         <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
@@ -257,7 +284,7 @@
     <!-- Dashboard Grid Layout -->
     <div class="dashboard-grid animate-slide-up" style="animation-delay: 0.15s">
       <!-- Right Column: Main Content -->
-      <div class="main-column" fxLayout="column" fxLayoutGap="24px">
+      <div class="main-column" fxLayout="column" fxLayoutGap="16px">
         <!-- Sales Report Card -->
         @if (auth.hasAccess(UserAction.Reports)) {
           <app-order-total></app-order-total>
@@ -265,7 +292,7 @@
       </div>
 
       <!-- Left Column: Sidebar Details -->
-      <div class="sidebar-column" fxLayout="column" fxLayoutGap="24px">
+      <div class="sidebar-column" fxLayout="column" fxLayoutGap="16px">
         <app-plan-card></app-plan-card>
         <app-wallet-card></app-wallet-card>
       </div>
