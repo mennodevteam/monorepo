@@ -85,6 +85,12 @@ export class SmsService {
                   kavenegarId: entry.messageid,
                 });
             }
+            if (dto.accountId) {
+              const totalCost = sentSms.reduce<number>((sum, s) => sum + s.cost, 0);
+              if (totalCost > 0) {
+                await this.smsAccountsRepo.decrement({ id: dto.accountId }, 'charge', totalCost);
+              }
+            }
             await this.smsRepo.save(sentSms);
             const g =
               group && (await this.smsGroupsRepo.findOne({ where: { id: group.id }, relations: ['list'] }));
@@ -160,6 +166,9 @@ export class SmsService {
               statusDescription: entry.statustext,
               kavenegarId: entry.messageid,
             };
+            if (accountId && sms.cost > 0) {
+              await this.smsAccountsRepo.decrement({ id: accountId }, 'charge', sms.cost);
+            }
             const savedSms = await this.smsRepo.save(sms);
             resolve(savedSms);
           } else {
