@@ -92,13 +92,6 @@ export class SettingsHomeComponent {
       colorClass: 'purple'
     },
     {
-      title: 'orderMessagesSetting.title',
-      subtitle: 'تنظیم متن و زمان ارسال پیامک‌های اطلاع‌رسانی خودکار وضعیت سفارش به مشتری',
-      route: 'sms',
-      icon: 'saxSmsOutline',
-      colorClass: 'orange'
-    },
-    {
       title: 'settings.deliveryAreas',
       subtitle: 'تعیین محدوده‌های پیک، هزینه ارسال سفارشات و حداقل مبلغ خرید هر محدوده',
       route: 'delivery-area',

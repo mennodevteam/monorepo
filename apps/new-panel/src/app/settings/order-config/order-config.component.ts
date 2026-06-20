@@ -44,16 +44,26 @@ export class OrderConfigComponent implements FormComponent {
   }
 
   form = new FormGroup({
-    disableOrdering: new FormControl(this.appConfig.disableOrdering),
-    disablePayment: new FormControl(this.appConfig.disablePayment),
+    orderingActive: new FormControl(!this.appConfig.disableOrdering),
+    paymentActive: new FormControl(!this.appConfig.disablePayment),
     selectableOrderTypes: new FormControl(this.appConfig.selectableOrderTypes),
     requiredPayment: new FormControl(this.appConfig.requiredPayment),
     smsOnNewOrder: new FormControl(this.appConfig?.smsOnNewOrder || []),
+    disableOrderingText: new FormControl(this.appConfig.disableOrderingText || ''),
   });
 
   async save() {
     try {
-      const appConfig = this.form.getRawValue();
+      const val = this.form.getRawValue();
+      const appConfig = {
+        disableOrdering: !val.orderingActive,
+        disablePayment: !val.paymentActive,
+        selectableOrderTypes: val.selectableOrderTypes,
+        requiredPayment: val.requiredPayment,
+        smsOnNewOrder: val.smsOnNewOrder,
+        disableOrderingText: val.disableOrderingText,
+        disableOrderingOnClose: false,
+      };
       this.form.markAsPristine();
       await this.shopService.saveAppConfigMutation.mutateAsync({
         appConfig: appConfig as Partial<AppConfig>,

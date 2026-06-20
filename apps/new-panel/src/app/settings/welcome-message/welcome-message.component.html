@@ -9,74 +9,96 @@
 </mat-toolbar>
 
 <form [formGroup]="form">
-  <main p-md w-md class="np-form-container">
-    <!-- Welcome Message Section -->
-    <div class="np-form-section">
-      <h3 class="np-section-title">
-        {{ 'welcomeMessage.titleSection' | translate }}
-      </h3>
-      <p class="np-section-desc">
-        {{ 'welcomeMessage.titleDescription' | translate }}
-      </p>
-
-      <div class="np-form-inputs">
-        <div class="np-form-toggle-wrapper">
-          <mat-slide-toggle formControlName="enabled">
-            {{ 'welcomeMessage.enabled' | translate }}
-          </mat-slide-toggle>
-        </div>
-
-        <mat-form-field appearance="outline">
-          <mat-label>{{ 'welcomeMessage.title' | translate }}</mat-label>
-          <input
-            matInput
-            formControlName="title"
-            placeholder="{{ 'welcomeMessage.titlePlaceholder' | translate }}"
-            [disabled]="!form.get('enabled')?.value"
-          />
-          @if (form.get('title')?.hasError('required')) {
-            <mat-error>
-              {{ 'app.required' | translate }}
-            </mat-error>
-          }
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>{{ 'welcomeMessage.description' | translate }}</mat-label>
-          <textarea
-            matInput
-            rows="4"
-            formControlName="description"
-            placeholder="{{ 'welcomeMessage.descriptionPlaceholder' | translate }}"
-            [disabled]="!form.get('enabled')?.value"
-          >
-          </textarea>
-          @if (form.get('description')?.hasError('required')) {
-            <mat-error>
-              {{ 'app.required' | translate }}
-            </mat-error>
-          }
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>{{ 'welcomeMessage.delay' | translate }}</mat-label>
-          <input
-            matInput
-            type="number"
-            formControlName="delayInSeconds"
-            placeholder="{{ 'welcomeMessage.delayPlaceholder' | translate }}"
-            [disabled]="!form.get('enabled')?.value"
-            eng
-            ltr
-          />
-          <mat-hint>{{ 'welcomeMessage.delayHint' | translate }}</mat-hint>
-          @if (form.get('delayInSeconds')?.hasError('min')) {
-            <mat-error>
-              {{ 'app.minValue' | translate: { value: 0 } }}
-            </mat-error>
-          }
-        </mat-form-field>
+  <main p-md w-md class="np-form-container animate-slide-up">
+    <!-- Promo Banner -->
+    <div class="promo-card blue" style="display: flex; gap: 16px; padding: 16px; border-radius: 12px; border-right: 4px solid #2563eb !important; background-color: #eff6ff !important;">
+      <div class="np-icon-badge blue" style="background-color: #ffffff !important; color: #2563eb !important;">
+        <ng-icon name="saxInfoCircleOutline"></ng-icon>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px; justify-content: center;">
+        <h4 style="margin: 0; font-size: 0.875rem; font-weight: 600; color: var(--text-primary);">پیام خوش‌آمدگویی آنلاین</h4>
+        <p style="margin: 0; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.6;">
+          پیام خوش‌آمدگویی نخستین پیامی است که مشتریان در منو مشاهده می‌کنند. می‌توانید از آن برای خوش‌آمدگویی، معرفی تخفیف‌ها یا اطلاع‌رسانی‌های موقت (مانند عدم سفارش‌گیری موقت) استفاده کنید.
+        </p>
       </div>
     </div>
+
+    <!-- Welcome Message Config Card -->
+    <mat-card class="np-config-card">
+      <mat-card-content>
+        <div class="np-config-header" [class.static]="!form.controls['enabled']?.value">
+          <div class="np-config-title-group">
+            <div class="np-icon-badge" [class.purple]="form.controls['enabled']?.value" [class.gray]="!form.controls['enabled']?.value">
+              <ng-icon name="saxSmsOutline"></ng-icon>
+            </div>
+            <div class="np-config-text">
+              <h3 class="np-section-title">وضعیت نمایش پیام خوش‌آمدگویی</h3>
+              <p class="np-section-desc">
+                {{ 'welcomeMessage.titleDescription' | translate }}
+              </p>
+            </div>
+          </div>
+          <div class="np-config-action">
+            <span class="status-badge" [class.status-badge-available]="form.controls['enabled']?.value" [class.status-badge-inactive]="!form.controls['enabled']?.value">
+              {{ form.controls['enabled']?.value ? 'فعال' : 'غیرفعال' }}
+            </span>
+            <mat-slide-toggle formControlName="enabled"></mat-slide-toggle>
+          </div>
+        </div>
+
+        @if (form.controls['enabled']?.value) {
+          <div class="np-config-body animate-slide-up" style="margin-top: 20px;">
+            <div class="np-form-inputs">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ 'welcomeMessage.title' | translate }}</mat-label>
+                <input
+                  matInput
+                  formControlName="title"
+                  placeholder="{{ 'welcomeMessage.titlePlaceholder' | translate }}"
+                />
+                @if (form.get('title')?.hasError('required')) {
+                  <mat-error>
+                    {{ 'app.required' | translate }}
+                  </mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ 'welcomeMessage.description' | translate }}</mat-label>
+                <textarea
+                  matInput
+                  rows="4"
+                  formControlName="description"
+                  placeholder="{{ 'welcomeMessage.descriptionPlaceholder' | translate }}"
+                ></textarea>
+                @if (form.get('description')?.hasError('required')) {
+                  <mat-error>
+                    {{ 'app.required' | translate }}
+                  </mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ 'welcomeMessage.delay' | translate }}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="delayInSeconds"
+                  placeholder="{{ 'welcomeMessage.delayPlaceholder' | translate }}"
+                  eng
+                  ltr
+                />
+                <mat-hint>{{ 'welcomeMessage.delayHint' | translate }}</mat-hint>
+                @if (form.get('delayInSeconds')?.hasError('min')) {
+                  <mat-error>
+                    {{ 'app.minValue' | translate: { value: 0 } }}
+                  </mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
   </main>
 </form>
