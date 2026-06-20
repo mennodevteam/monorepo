@@ -1,6 +1,9 @@
-form {
+.auth-form {
   height: 100%;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.4s ease-out forwards;
   
   &.loading {
     opacity: 0.7;
@@ -8,18 +11,117 @@ form {
   }
 }
 
-#logo {
-  width: 128px;
-  margin: 0 auto;
+.form-header {
+  text-align: right;
+  margin-bottom: 8px;
 }
 
-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+.form-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #171717;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.form-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.fields-container {
+  width: 100%;
+}
+
+.custom-field {
+  width: 100%;
   
-  mat-spinner {
-    margin: 0;
+  ::ng-deep .mat-mdc-text-field-wrapper {
+    padding-inline: 16px !important;
+    min-height: 52px !important;
+  }
+
+  .input-icon {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    margin-inline-end: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .toggle-password-btn {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    
+    ng-icon {
+      font-size: 1.15rem;
+    }
+  }
+}
+
+.submit-btn {
+  background-color: #171717 !important;
+  color: #ffffff !important;
+  height: 48px !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  border-radius: 12px !important;
+  margin-top: 8px;
+  box-shadow: 0 4px 12px rgba(23, 23, 23, 0.1) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+
+  &:hover:not(:disabled) {
+    background-color: #262626 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(23, 23, 23, 0.15) !important;
+  }
+
+  &:disabled {
+    background-color: #f5f5f5 !important;
+    color: #a3a3a3 !important;
+    box-shadow: none !important;
+  }
+
+  .btn-spinner {
+    margin: 0 auto;
+    ::ng-deep circle {
+      stroke: currentColor !important;
+    }
+  }
+}
+
+.form-footer {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.switch-auth-btn {
+  font-size: 0.825rem !important;
+  font-weight: 500 !important;
+  color: var(--text-secondary) !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+
+  &:hover {
+    color: #171717 !important;
+    background-color: rgba(23, 23, 23, 0.04) !important;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

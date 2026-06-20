@@ -39,6 +39,7 @@ export class LoginComponent {
   });
   
   isLoading = signal(false);
+  hidePassword = signal(true);
 
   async submit() {
     const { username, password } = this.loginForm.getRawValue();

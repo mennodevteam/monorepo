@@ -1,37 +1,63 @@
 <form
-  p-md
-  w-xs
-  fxLayout="column"
-  fxLayoutAlign="center stretch"
-  center-align
   [formGroup]="loginForm"
   (ngSubmit)="submit()"
-  fxLayoutAlign="center default"
   [class.loading]="isLoading()"
-  fxLayoutGap="16px"
+  fxLayout="column"
+  fxLayoutGap="20px"
+  class="auth-form"
 >
-  <h1>
-    {{ 'login.title' | translate }}
-  </h1>
-  <div fxLayout="column">
-    <mat-form-field>
+  <div class="form-header" fxLayout="column" fxLayoutGap="6px">
+    <h1 class="form-title">
+      {{ 'login.title' | translate }}
+    </h1>
+    <p class="form-subtitle">خوش آمدید! برای ورود به حساب کاربری اطلاعات خود را وارد کنید.</p>
+  </div>
+
+  <div fxLayout="column" fxLayoutGap="4px" class="fields-container">
+    <mat-form-field appearance="outline" class="custom-field">
       <mat-label>نام کاربری</mat-label>
-      <input matInput formControlName="username" eng ltr [disabled]="isLoading()" />
+      <input matInput formControlName="username" eng ltr [disabled]="isLoading()" placeholder="username" />
+      <ng-icon name="saxUserOutline" matPrefix class="input-icon"></ng-icon>
     </mat-form-field>
-    <mat-form-field>
+
+    <mat-form-field appearance="outline" class="custom-field">
       <mat-label>رمز عبور</mat-label>
-      <input matInput formControlName="password" eng ltr type="password" [disabled]="isLoading()" />
+      <input 
+        matInput 
+        formControlName="password" 
+        eng 
+        ltr 
+        [type]="hidePassword() ? 'password' : 'text'" 
+        [disabled]="isLoading()" 
+        placeholder="••••••••" 
+      />
+      <ng-icon name="saxKeyOutline" matPrefix class="input-icon"></ng-icon>
+      <button
+        type="button"
+        mat-icon-button
+        matSuffix
+        (click)="hidePassword.set(!hidePassword())"
+        [attr.aria-label]="'تغییر نمایش رمز'"
+        class="toggle-password-btn"
+      >
+        <ng-icon [name]="hidePassword() ? 'saxEyeSlashOutline' : 'saxEyeOutline'"></ng-icon>
+      </button>
     </mat-form-field>
   </div>
 
-  <button mat-flat-button [disabled]="isLoading() || loginForm.invalid">
+  <button mat-flat-button type="submit" [disabled]="isLoading() || loginForm.invalid" class="submit-btn">
     @if (!isLoading()) {
-      <span>ورود</span>
+      <span>ورود به پنل مدیریت</span>
     }
     @if (isLoading()) {
-      <mat-spinner diameter="24"></mat-spinner>
+      <mat-spinner diameter="20" class="btn-spinner"></mat-spinner>
     }
   </button>
 
-  <a mat-button routerLink="/admin/auth/register"> ثبت‌نام در شات </a>
+  <div class="form-footer" fxLayout="row" fxLayoutAlign="center center">
+    <a mat-button routerLink="/admin/auth/register" class="switch-auth-btn">
+      هنوز ثبت‌نام نکرده‌اید؟ ایجاد حساب کاربری شات
+    </a>
+  </div>
 </form>
+

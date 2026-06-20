@@ -1,27 +1,31 @@
 <form
-  p-md
-  w-xs
-  fxLayout="column"
-  fxLayoutAlign="center stretch"
-  center-align
   [formGroup]="registerForm"
   (ngSubmit)="submit()"
-  fxLayoutAlign="center default"
   [class.loading]="isLoading()"
-  fxLayoutGap="16px"
+  fxLayout="column"
+  fxLayoutGap="20px"
+  class="auth-form"
 >
-  <h1>
-    {{ 'register.title' | translate }}
-  </h1>
+  <div class="form-header" fxLayout="column" fxLayoutGap="6px">
+    <h1 class="form-title">
+      {{ 'register.title' | translate }}
+    </h1>
+    <p class="form-subtitle">برای ساخت پنل فروشگاهی و سفارش‌گیری خود اطلاعات زیر را تکمیل کنید.</p>
+  </div>
 
-  <div fxLayout="column">
-    <h4>{{ 'register.baseInfo' | translate }}</h4>
-    <mat-form-field>
+  <div fxLayout="column" fxLayoutGap="12px" class="fields-container">
+    <div fxLayout="row" fxLayoutAlign="start center" class="section-divider">
+      <span class="divider-text">{{ 'register.baseInfo' | translate }}</span>
+      <div class="divider-line" fxFlex></div>
+    </div>
+
+    <mat-form-field appearance="outline" class="custom-field">
       <mat-label>{{ 'register.shopTitle' | translate }}</mat-label>
-      <input matInput formControlName="title" />
+      <input matInput formControlName="title" placeholder="مثال: کافه شات" />
+      <ng-icon name="saxShopOutline" matPrefix class="input-icon"></ng-icon>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field appearance="outline" class="custom-field">
       <mat-label>{{ 'register.shopCategory' | translate }}</mat-label>
       <mat-select formControlName="businessCategory">
         @for (category of businessCategories; track category) {
@@ -30,69 +34,101 @@
           </mat-option>
         }
       </mat-select>
+      <ng-icon name="saxCategoryOutline" matPrefix class="input-icon"></ng-icon>
     </mat-form-field>
 
     @if (registerForm.get('businessCategory')?.value === BusinessCategory.Other) {
-      <mat-form-field>
+      <mat-form-field appearance="outline" class="custom-field animate-fade-in">
         <mat-label>{{ 'register.customBusinessCategory' | translate }}</mat-label>
         <input
           matInput
           formControlName="customBusinessCategory"
           placeholder="{{ 'register.customBusinessCategoryHint' | translate }}"
         />
+        <ng-icon name="saxCategoryOutline" matPrefix class="input-icon"></ng-icon>
       </mat-form-field>
     }
 
-    <mat-form-field>
-      <mat-label> {{ 'shop.regionState' | translate }} </mat-label>
-      <mat-select [(ngModel)]="selectedState" [ngModelOptions]="{ standalone: true }" required>
-        @for (state of states; track state) {
-          <mat-option [value]="state">
-            {{ state.title }}
-          </mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label> {{ 'shop.region' | translate }} </mat-label>
-      <mat-select formControlName="regionId">
-        @for (region of selectedState()?.regions; track region) {
-          <mat-option [value]="region.id">
-            {{ region.title }}
-          </mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
+    <div fxLayout="row" fxLayoutGap="12px" fxLayout.lt-sm="column" fxLayoutGap.lt-sm="12px">
+      <mat-form-field appearance="outline" class="custom-field" fxFlex>
+        <mat-label> {{ 'shop.regionState' | translate }} </mat-label>
+        <mat-select [(ngModel)]="selectedState" [ngModelOptions]="{ standalone: true }" required>
+          @for (state of states; track state) {
+            <mat-option [value]="state">
+              {{ state.title }}
+            </mat-option>
+          }
+        </mat-select>
+        <ng-icon name="saxLocationOutline" matPrefix class="input-icon"></ng-icon>
+      </mat-form-field>
 
+      <mat-form-field appearance="outline" class="custom-field" fxFlex>
+        <mat-label> {{ 'shop.region' | translate }} </mat-label>
+        <mat-select formControlName="regionId">
+          @for (region of selectedState()?.regions; track region) {
+            <mat-option [value]="region.id">
+              {{ region.title }}
+            </mat-option>
+          }
+        </mat-select>
+        <ng-icon name="saxLocationOutline" matPrefix class="input-icon"></ng-icon>
+      </mat-form-field>
+    </div>
 
-    <h4>{{ 'register.loginInfo' | translate }}</h4>
+    <div fxLayout="row" fxLayoutAlign="start center" class="section-divider">
+      <span class="divider-text">{{ 'register.loginInfo' | translate }}</span>
+      <div class="divider-line" fxFlex></div>
+    </div>
 
-    <mat-form-field>
+    <mat-form-field appearance="outline" class="custom-field">
       <mat-label>{{ 'register.loginUsername' | translate }}</mat-label>
-      <input matInput formControlName="loginUsername" class="lowercase" ltr eng />
+      <input matInput formControlName="loginUsername" class="lowercase" ltr eng placeholder="username" />
+      <ng-icon name="saxUserOutline" matPrefix class="input-icon"></ng-icon>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field appearance="outline" class="custom-field">
       <mat-label>{{ 'register.loginPassword' | translate }}</mat-label>
-      <input matInput formControlName="loginPassword" ltr eng />
+      <input 
+        matInput 
+        formControlName="loginPassword" 
+        ltr 
+        eng 
+        [type]="hidePassword() ? 'password' : 'text'" 
+        placeholder="••••••••" 
+      />
+      <ng-icon name="saxKeyOutline" matPrefix class="input-icon"></ng-icon>
+      <button
+        type="button"
+        mat-icon-button
+        matSuffix
+        (click)="hidePassword.set(!hidePassword())"
+        [attr.aria-label]="'تغییر نمایش رمز'"
+        class="toggle-password-btn"
+      >
+        <ng-icon [name]="hidePassword() ? 'saxEyeSlashOutline' : 'saxEyeOutline'"></ng-icon>
+      </button>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field appearance="outline" class="custom-field">
       <mat-label>{{ 'register.mobilePhone' | translate }}</mat-label>
-      <input matInput formControlName="mobilePhone" ltr eng />
+      <input matInput formControlName="mobilePhone" ltr eng placeholder="09123456789" />
+      <ng-icon name="saxCallOutline" matPrefix class="input-icon"></ng-icon>
     </mat-form-field>
   </div>
 
-  <button mat-flat-button [disabled]="isLoading() || registerForm.invalid">
+  <button mat-flat-button type="submit" [disabled]="isLoading() || registerForm.invalid" class="submit-btn">
     @if (!isLoading()) {
       <span>{{ 'register.submit' | translate }}</span>
     }
     @if (isLoading()) {
-      <mat-spinner diameter="24"></mat-spinner>
+      <mat-spinner diameter="20" class="btn-spinner"></mat-spinner>
     }
   </button>
 
-  <a mat-button routerLink="/admin/auth/login">
-    {{ 'register.loginLink' | translate }}
-  </a>
+  <div class="form-footer" fxLayout="row" fxLayoutAlign="center center">
+    <a mat-button routerLink="/admin/auth/login" class="switch-auth-btn">
+      {{ 'register.loginLink' | translate }}
+    </a>
+  </div>
 </form>
+

@@ -1,12 +1,21 @@
 <div class="container" fxLayout="column" fxLayoutAlign="center center">
-  <mat-card appearance="outlined" class="container-card">
-    <mat-card-content fxLayout="row" fxLayout.lt-md="column-reverse">
-      <div fxFlex="50" fxFlex.lt-md="100" fxLayout="column" class="text-container">
-        <router-outlet></router-outlet>
+  <mat-card appearance="outlined" class="container-card animate-slide-up">
+    <mat-card-content fxLayout="row" fxLayout.lt-md="column-reverse" style="height: 100%;">
+      <div fxFlex="50" fxFlex.lt-md="100" fxLayout="column" class="text-container" fxLayoutAlign="center center">
+        <div class="form-wrapper">
+          <router-outlet></router-outlet>
+        </div>
       </div>
       <div fxFlex="50" class="logo-container" fxLayout="column" fxLayoutAlign="center center">
-        <img src="icons/logo.svg" alt="shottt logo" />
+        <div class="brand-content" fxLayout="column" fxLayoutAlign="center center">
+          <div class="logo-wrapper">
+            <img src="icons/logo.svg" alt="shottt logo" class="brand-logo" />
+          </div>
+          <h2 class="brand-title">شات</h2>
+          <p class="brand-subtitle">پنل هوشمند مدیریت و سفارش‌گیری آنلاین</p>
+        </div>
       </div>
     </mat-card-content>
   </mat-card>
 </div>
+

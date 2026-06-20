@@ -89,6 +89,7 @@ export class RegisterComponent {
   });
 
   isLoading = signal(false);
+  hidePassword = signal(true);
   selectedState = signal<State | undefined>(undefined);
 
   businessCategories = Object.values(BusinessCategory);

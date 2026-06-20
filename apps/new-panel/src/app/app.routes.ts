@@ -27,7 +27,6 @@ import { homeSectionsRoutes } from './home-sections/home-sections.routes';
 export const appRoutes: Route[] = [
   {
     path: '',
-    canActivate: [translateActivator],
     children: [
       {
         path: '',
@@ -37,6 +36,7 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'admin',
+        canActivate: [translateActivator],
         children: [
           {
             path: 'auth',
