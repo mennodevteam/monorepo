@@ -15,12 +15,12 @@
 
       <!-- Left Side: Login / Register CTAs -->
       <div class="header-ctas" fxLayout="row" fxLayoutGap="12px">
-        <a routerLink="/admin" class="btn btn-secondary login-btn">
+        <a (click)="openSoonDialog()" class="btn btn-secondary login-btn" style="cursor: pointer;">
           <ng-icon name="saxUserOutline" class="middle"></ng-icon>
-          <span>ورود به پنل</span>
+          <span>ورود به پنل (به زودی)</span>
         </a>
-        <a routerLink="/admin/auth/register" class="btn btn-primary register-btn">
-          <span>ثبت نام</span>
+        <a (click)="openSoonDialog()" class="btn btn-primary register-btn" style="cursor: pointer;">
+          <span>ثبت نام (به زودی)</span>
         </a>
       </div>
     </div>
@@ -32,7 +32,7 @@
     <div class="glow-orb"></div>
     
     <div class="hero-content animate-slide-up" w-sm fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
-      <div class="badge-new animate-pulse">نسخه جدید پنل فروش</div>
+      <div class="badge-new animate-pulse">نسخه جدید پنل فروش (به زودی)</div>
       <h1 class="hero-title">
         پلتفرم فروش شات
       </h1>
@@ -50,7 +50,7 @@
       </div>
 
       <div class="hero-actions" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutGap="12px" style="margin-top: 12px;">
-        <a routerLink="/admin/auth/register" class="btn btn-primary btn-hero-primary">
+        <a (click)="openSoonDialog()" class="btn btn-primary btn-hero-primary" style="cursor: pointer;">
           <span>شروع رایگان و ثبت‌نام سریع</span>
         </a>
         <button (click)="openCreatorMessage()" class="btn btn-secondary btn-hero-secondary">
@@ -300,7 +300,7 @@
               </ul>
 
               <div class="pricing-actions" style="margin-top: auto;">
-                <a routerLink="/admin/auth/register" class="btn btn-primary w-100 featured-btn">
+                <a (click)="openSoonDialog()" class="btn btn-primary w-100 featured-btn" style="cursor: pointer;">
                   <span>ثبت‌نام و فعال‌سازی پلتفرم فروش</span>
                 </a>
               </div>
@@ -316,7 +316,7 @@
     <div class="cta-bottom-content" w-sm fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
       <h2>همین امروز مدیریت مدرن را آغاز کنید</h2>
       <p class="text-secondary">ثبت‌نام در سامانه شات کمتر از ۲ دقیقه زمان می‌برد و بلافاصله می‌توانید فعالیت خود را آغاز کنید.</p>
-      <a routerLink="/admin/auth/register" class="btn btn-primary btn-large">
+      <a (click)="openSoonDialog()" class="btn btn-primary btn-large" style="cursor: pointer;">
         <span>ثبت‌نام رایگان کسب‌وکار شما</span>
       </a>
     </div>

@@ -4,6 +4,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CreatorMessageDialogComponent } from './creator-message-dialog.component';
+import { SoonDialogComponent } from './soon-dialog.component';
 
 @Component({
   selector: 'app-landing',
@@ -23,6 +24,13 @@ export class LandingComponent {
   openCreatorMessage() {
     this.dialog.open(CreatorMessageDialogComponent, {
       maxWidth: '650px',
+      width: '90%',
+    });
+  }
+
+  openSoonDialog() {
+    this.dialog.open(SoonDialogComponent, {
+      maxWidth: '500px',
       width: '90%',
     });
   }
