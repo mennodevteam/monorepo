@@ -41,9 +41,11 @@
   <ng-container matColumnDef="mobilePhone">
     <th mat-header-cell *matHeaderCellDef>{{ 'membersTable.mobilePhone' | translate }}</th>
     <td mat-cell *matCellDef="let row">
-      <a [href]="'tel:' + row.member.user.mobilePhone" mat-button eng>
-        {{ row.member.user.mobilePhone }}
-      </a>
+      @if (row.member.user?.mobilePhone) {
+        <a [href]="'tel:' + row.member.user.mobilePhone" mat-button eng>
+          {{ row.member.user.mobilePhone }}
+        </a>
+      }
     </td>
   </ng-container>
 

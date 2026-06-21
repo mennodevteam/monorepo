@@ -19,7 +19,9 @@
       @for (member of query.data()?.[0]; track member.id) {
         <mat-option [value]="member">
           {{ User.fullName(member.user) }}
-          <span eng>{{ member.user.mobilePhone }}</span>
+          @if (member.user?.mobilePhone) {
+            <span eng>{{ member.user.mobilePhone }}</span>
+          }
         </mat-option>
       }
       @if (!query.isLoading()) {

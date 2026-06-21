@@ -1,6 +1,7 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, Validators } from '@angular/forms';
+import { DecimalPipe } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { injectQuery, injectQueryClient, injectMutation } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
@@ -25,6 +26,7 @@ import { ShopService } from '../shop/shop.service';
   standalone: true,
   imports: [
     SHARED,
+    DecimalPipe,
     MatToolbarModule,
     MatCardModule,
     MatButtonModule,

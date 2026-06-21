@@ -243,8 +243,10 @@ export class MemberListComponent {
 
   sendMessage(member?: Member) {
     const receptors = member
-      ? [member.user.mobilePhone]
-      : this.selectedMembers().map((m) => m.user.mobilePhone);
+      ? (member.user?.mobilePhone ? [member.user.mobilePhone] : [])
+      : this.selectedMembers()
+          .map((m) => m.user?.mobilePhone)
+          .filter((phone): phone is string => !!phone);
     this.dialogService
       .prompt(
         this.t.instant('sms.newDialog.groupTitle'),

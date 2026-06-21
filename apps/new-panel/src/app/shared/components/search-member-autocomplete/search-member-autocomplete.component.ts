@@ -65,7 +65,8 @@ export class SearchMemberAutocompleteComponent {
 
   displayFn(member: Member): string {
     if (member) {
-      return `${User.fullName(member.user)} (${member.user.mobilePhone})`;
+      const phone = member.user?.mobilePhone;
+      return `${User.fullName(member.user)}${phone ? ` (${phone})` : ''}`;
     }
     return '';
   }
