@@ -3,6 +3,11 @@
   width: 100%;
 }
 
+main {
+  padding: 24px;
+  max-width: 1024px;
+}
+
 table {
   background: transparent;
   border-collapse: collapse;
@@ -24,4 +29,24 @@ tr.mat-mdc-row:hover {
 
 .mat-mdc-cell {
   border-bottom: 1px solid var(--border-color);
+}
+
+/* Two-column layout matching app-config */
+.config-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 32px;
+  align-items: start;
+
+  @media (max-width: 960px) {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+.preview-section {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
 }

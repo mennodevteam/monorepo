@@ -34,9 +34,9 @@ export class ShopApiKeysController {
     const shop = await this.auth.getPanelUserShop(user);
 
     // Generate random API key
-    const rawKey = `menno_live_${crypto.randomBytes(24).toString('hex')}`;
+    const rawKey = `shottt_live_${crypto.randomBytes(24).toString('hex')}`;
     const hashedKey = crypto.createHash('sha256').update(rawKey).digest('hex');
-    const keyHint = `${rawKey.slice(0, 14)}...${rawKey.slice(-4)}`;
+    const keyHint = `${rawKey.slice(0, 15)}...${rawKey.slice(-4)}`;
 
     const apiKey = this.shopApiKeyRepo.create({
       description: dto.description || 'API Key',

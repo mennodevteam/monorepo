@@ -17,6 +17,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SHARED } from '../shared';
 import { DialogService } from '../core/services/dialog.service';
 import { ShopApiKey } from '@menno/types';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-developer-api',
@@ -43,7 +44,7 @@ export class DeveloperApiComponent implements OnInit {
   private readonly snack = inject(MatSnackBar);
   private readonly queryClient = injectQueryClient();
 
-  readonly openApiUrl = `${window.location.origin}/api/v1/shop-integration/openapi.json`;
+  readonly openApiUrl = `${environment.apiUrl.replace(/\/+$/, '')}/api/v1/shop-integration/openapi.json`;
   readonly newGeneratedKey = signal<string | null>(null);
 
   ngOnInit() {

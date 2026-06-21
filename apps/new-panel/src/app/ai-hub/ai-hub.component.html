@@ -15,45 +15,28 @@
 
   <!-- Tools Grid -->
   <div class="ai-tools-grid">
-    <!-- Card 1: Chatbot Settings -->
-    <mat-card appearance="outlined" class="ai-tool-card" (click)="navigateTo('/admin/ai/chatbot')">
+    <!-- Card 1: MCP Settings -->
+    <mat-card appearance="outlined" class="ai-tool-card" (click)="navigateTo('/admin/ai/developer-api')">
       <mat-card-header>
         <div class="ai-icon-wrapper blue">
           <ng-icon name="saxCpuOutline"></ng-icon>
         </div>
-        <mat-card-title>تنظیمات چت‌بات هوشمند</mat-card-title>
-        <mat-card-subtitle>فعال‌سازی و سناریو ربات هوش مصنوعی</mat-card-subtitle>
+        <mat-card-title>تنظیم کردن MCP</mat-card-title>
+        <mat-card-subtitle>اتصال دستیار هوشمند به کاتالوگ و سفارش‌ها</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <p>ربات پاسخگوی خودکار را فعال کنید تا به سوالات کاربران در پیام‌رسان بله پاسخ داده و در ثبت سفارش به آن‌ها کمک کند.</p>
+        <p>با ایجاد یک MCP، دستیار هوش مصنوعی شما می‌تواند کارهایی مانند به‌روزرسانی قیمت‌ها، دریافت گزارش فروش و مدیریت وضعیت سفارش‌ها را مستقیماً انجام دهد.</p>
       </mat-card-content>
       <mat-card-actions align="end">
-        <button mat-button color="primary">مدیریت و پیکربندی <ng-icon name="saxArrowLeftOutline" style="margin-inline-start: 4px;"></ng-icon></button>
+        <button mat-button color="primary">تنظیمات و راه‌اندازی <ng-icon name="saxArrowLeftOutline" style="margin-inline-start: 4px;"></ng-icon></button>
       </mat-card-actions>
     </mat-card>
 
-    <!-- Card 2: Chat History -->
-    <mat-card appearance="outlined" class="ai-tool-card" (click)="navigateTo('/admin/ai/chat-history')">
-      <mat-card-header>
-        <div class="ai-icon-wrapper violet">
-          <ng-icon name="saxMessageOutline"></ng-icon>
-        </div>
-        <mat-card-title>تاریخچه گفتگوها</mat-card-title>
-        <mat-card-subtitle>مکالمات مشتریان با چت‌بات</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>تمام چت‌ها و گفتگوهای انجام‌شده بین مشتریان و ربات هوشمند را بررسی و تحلیل کنید تا سوالات متداول مشتریان را متوجه شوید.</p>
-      </mat-card-content>
-      <mat-card-actions align="end">
-        <button mat-button color="primary">مشاهده گفتگوها <ng-icon name="saxArrowLeftOutline" style="margin-inline-start: 4px;"></ng-icon></button>
-      </mat-card-actions>
-    </mat-card>
-
-    <!-- Card 3: Data Export -->
+    <!-- Card 2: Data Export -->
     <mat-card appearance="outlined" class="ai-tool-card" (click)="navigateTo('/admin/ai/export')">
       <mat-card-header>
         <div class="ai-icon-wrapper green">
-          <ng-icon name="saxDocumentUploadOutline"></ng-icon>
+          <ng-icon name="saxDocumentDownloadOutline"></ng-icon>
         </div>
         <mat-card-title>خروجی داده هوش مصنوعی</mat-card-title>
         <mat-card-subtitle>خروجی ساختاریافته کاتالوگ و سفارش‌ها</mat-card-subtitle>
@@ -66,20 +49,20 @@
       </mat-card-actions>
     </mat-card>
 
-    <!-- Card 4: Developer API -->
-    <mat-card appearance="outlined" class="ai-tool-card" (click)="navigateTo('/admin/ai/developer-api')">
+    <!-- Card 3: Chatbot Settings -->
+    <mat-card appearance="outlined" class="ai-tool-card" (click)="navigateTo('/admin/ai/chatbot')">
       <mat-card-header>
-        <div class="ai-icon-wrapper orange">
-          <ng-icon name="saxKeyOutline"></ng-icon>
+        <div class="ai-icon-wrapper violet">
+          <ng-icon name="saxMessageOutline"></ng-icon>
         </div>
-        <mat-card-title>تنظیمات کلید دسترسی (API)</mat-card-title>
-        <mat-card-subtitle>ارتباط امن با مدل‌های زبانی دیگر</mat-card-subtitle>
+        <mat-card-title>تنظیمات چت‌بات هوشمند</mat-card-title>
+        <mat-card-subtitle>فعال‌سازی و سناریو ربات هوش مصنوعی</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <p>برای اتصال پنل به عامل‌های هوشمند خارجی مانند Gemini Spark، کلیدهای دسترسی بسازید و لینک OpenAPI را کپی کنید.</p>
+        <p>ربات پاسخگوی خودکار را فعال کنید تا به سوالات کاربران در پیام‌رسان بله پاسخ داده و در ثبت سفارش به آن‌ها کمک کند.</p>
       </mat-card-content>
       <mat-card-actions align="end">
-        <button mat-button color="primary">تنظیمات کلیدهای API <ng-icon name="saxArrowLeftOutline" style="margin-inline-start: 4px;"></ng-icon></button>
+        <button mat-button color="primary">مدیریت و پیکربندی <ng-icon name="saxArrowLeftOutline" style="margin-inline-start: 4px;"></ng-icon></button>
       </mat-card-actions>
     </mat-card>
   </div>

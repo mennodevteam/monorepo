@@ -3,6 +3,10 @@
     <ng-icon name="saxArrowRight3Bold"></ng-icon>
   </button>
   <h1 fxFlex>{{ 'settings.aiChatbot' | translate }}</h1>
+  <button mat-stroked-button routerLink="/admin/ai/chat-history" type="button" style="margin-inline-end: 8px;">
+    <ng-icon name="saxMessageOutline" style="margin-inline-end: 4px;"></ng-icon>
+    مشاهده تاریخچه گفتگوها
+  </button>
   <button mat-flat-button (click)="save()" [disabled]="!form.dirty || saveMutation.isPending()">
     {{ 'app.save' | translate }}
   </button>
@@ -11,13 +15,14 @@
 <form [formGroup]="form">
   <main p-md w-md class="np-form-container np-ai-page">
     <!-- Hint Section -->
-    <mat-card class="promo-card blue">
+    <mat-card class="promo-card blue" style="margin-bottom: 24px;">
       <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
         <div class="np-icon-badge"><ng-icon name="saxInfoCircleOutline"></ng-icon></div>
         <div fxFlex>
           <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
-            <p style="margin: 0 0 6px 0;">{{ 'aiChatbot.setupThirdPartyHint' | translate }}</p>
-            <p style="margin: 0;">برای تنظیم توکن بله و اتصال هوش مصنوعی به پیام‌رسان بله، می‌توانید به بخش <a routerLink="/admin/settings/third-parties/bale">{{ 'aiChatbot.goToThirdPartiesBale' | translate }}</a> مراجعه کنید.</p>
+            <h4 style="margin: 0 0 8px 0; font-size: 0.875rem; font-weight: 600; color: var(--text-primary);">راهنمای راه‌اندازی ربات هوشمند</h4>
+            <p style="margin: 0 0 8px 0;">برای اینکه چت‌بات بتواند به پیام‌های مشتریان شما پاسخ دهد، ابتدا باید در پیام‌رسان بله یک ربات بسازید و توکن آن را فعال کنید.</p>
+            <p style="margin: 0;">جهت ثبت توکن و فعال‌سازی ربات بله، می‌توانید به بخش <a routerLink="/admin/settings/third-parties/bale" style="font-weight: 600; color: var(--primary-color); text-decoration: none;">تنظیمات پیام‌رسان بله</a> مراجعه فرمایید.</p>
           </div>
         </div>
       </mat-card-content>

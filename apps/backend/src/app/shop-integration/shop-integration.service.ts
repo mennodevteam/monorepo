@@ -1,9 +1,31 @@
 import { Injectable, NotFoundException, ForbiddenException, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Order, Product, Shop, FilterOrderDto, OrderReportDto, OrderState, User, OrderMessageEvent } from '@menno/types';
+import { Repository, In } from 'typeorm';
+import {
+  Order,
+  Product,
+  Shop,
+  FilterOrderDto,
+  OrderReportDto,
+  OrderState,
+  User,
+  OrderMessageEvent,
+  ProductCategory,
+  Member,
+  FilterMemberV2Dto,
+  NewSmsDto,
+  Material,
+  BillOfMaterial,
+  BillOfProduct,
+  InventoryTransaction,
+  InventoryTransactionType,
+  CostUpdateStrategy,
+  MenuCost,
+} from '@menno/types';
 import { RedisService } from '../core/redis.service';
 import { OrdersService } from '../orders/orders.service';
+import { ClubsService } from '../clubs/clubs.service';
+import { SmsService } from '../sms/sms.service';
 
 @Injectable()
 export class ShopIntegrationService {
@@ -14,8 +36,24 @@ export class ShopIntegrationService {
     private productRepo: Repository<Product>,
     @InjectRepository(Order)
     private orderRepo: Repository<Order>,
+    @InjectRepository(ProductCategory)
+    private categoryRepo: Repository<ProductCategory>,
+    @InjectRepository(Member)
+    private memberRepo: Repository<Member>,
+    @InjectRepository(Material)
+    private materialRepo: Repository<Material>,
+    @InjectRepository(BillOfMaterial)
+    private bomRepo: Repository<BillOfMaterial>,
+    @InjectRepository(BillOfProduct)
+    private bopRepo: Repository<BillOfProduct>,
+    @InjectRepository(InventoryTransaction)
+    private inventoryTransactionRepo: Repository<InventoryTransaction>,
+    @InjectRepository(MenuCost)
+    private costsRepo: Repository<MenuCost>,
     private redis: RedisService,
     private ordersService: OrdersService,
+    private clubsService: ClubsService,
+    private smsService: SmsService,
   ) {}
 
   async getMenu(shopId: string) {
@@ -119,5 +157,387 @@ export class ShopIntegrationService {
       groupBy: (query.groupBy || 'date') as any,
     };
     return this.ordersService.report(dto);
+  }
+
+  async createCategory(shopId: string, dto: Partial<ProductCategory>) {
+    const shop = await this.shopRepo.findOne({ where: { id: shopId }, relations: ['menu'] });
+    if (!shop || !shop.menu) {
+      throw new NotFoundException('Shop or shop menu not found');
+    }
+
+    const newCategory = this.categoryRepo.create({
+      ...dto,
+      menu: shop.menu,
+    });
+
+    const saved = await this.categoryRepo.save(newCategory);
+    await this.redis.updateMenu(shopId);
+    return saved;
+  }
+
+  async updateCategory(shopId: string, categoryId: number, dto: Partial<ProductCategory>) {
+    const shop = await this.shopRepo.findOne({ where: { id: shopId }, relations: ['menu'] });
+    if (!shop || !shop.menu) {
+      throw new NotFoundException('Shop or shop menu not found');
+    }
+
+    const existing = await this.categoryRepo.findOne({
+      where: {
+        id: categoryId,
+        menu: { id: shop.menu.id },
+      },
+    });
+
+    if (!existing) {
+      throw new NotFoundException('Category not found in this shop');
+    }
+
+    const updated = await this.categoryRepo.save({
+      ...existing,
+      ...dto,
+      id: categoryId,
+    });
+
+    await this.redis.updateMenu(shopId);
+    return updated;
+  }
+
+  async getCustomers(shopId: string, filters: FilterMemberV2Dto) {
+    const shop = await this.shopRepo.findOne({
+      where: { id: shopId },
+      relations: ['club', 'menu'],
+    });
+    if (!shop || !shop.club) {
+      throw new NotFoundException('Shop or club not found');
+    }
+
+    return this.clubsService.filterMembersV2(filters, shop);
+  }
+
+  async createOrUpdateCustomer(shopId: string, dto: Partial<Member>) {
+    const shop = await this.shopRepo.findOne({
+      where: { id: shopId },
+      relations: ['club'],
+    });
+    if (!shop || !shop.club) {
+      throw new NotFoundException('Shop or club not found');
+    }
+
+    const member = {
+      ...dto,
+      club: shop.club,
+    } as Member;
+
+    if (member.tags) {
+      for (const t of member.tags) {
+        if (!t.id) t.club = shop.club;
+      }
+    }
+
+    return this.clubsService.saveMember(member);
+  }
+
+  async sendCustomerSms(shopId: string, dto: { receptors?: string[]; message: string; filter?: FilterMemberV2Dto }) {
+    const shop = await this.shopRepo.findOne({
+      where: { id: shopId },
+      relations: ['smsAccount', 'club', 'menu'],
+    });
+
+    if (!shop || !shop.smsAccount) {
+      throw new NotFoundException('Shop or SMS account not found');
+    }
+
+    let receptors: string[] = [];
+    let messages: string[] = [];
+
+    if (dto.receptors && dto.receptors.length > 0) {
+      receptors = [...dto.receptors];
+      messages = dto.receptors.map(() => dto.message);
+    } else if (dto.filter) {
+      const members = await this.clubsService.filterMembersV2(dto.filter, shop);
+      const pairs = members.data
+        .map((row) => ({
+          phone: row.member.user?.mobilePhone,
+          message: dto.message.replace('@@@', User.fullName(row.member.user)),
+        }))
+        .filter((row): row is { phone: string; message: string } => !!row.phone);
+
+      receptors = pairs.map((p) => p.phone);
+      messages = pairs.map((p) => p.message);
+    } else {
+      throw new HttpException('Either receptors or filter must be provided', HttpStatus.BAD_REQUEST);
+    }
+
+    if (receptors.length === 0) {
+      return { count: 0, status: 'No receptors found' };
+    }
+
+    const newSmsDto: NewSmsDto = {
+      receptors,
+      messages,
+      accountId: shop.smsAccount.id,
+    };
+
+    return this.smsService.send(newSmsDto);
+  }
+
+  // Materials management
+  async getMaterials(shopId: string) {
+    return this.materialRepo.find({
+      where: { shop: { id: shopId } },
+      relations: ['boms', 'boms.product', 'boms.variant'],
+      order: { createdAt: 'DESC' },
+    });
+  }
+
+  async createOrUpdateMaterial(shopId: string, dto: Partial<Material>) {
+    const shop = await this.shopRepo.findOneBy({ id: shopId });
+    if (!shop) {
+      throw new NotFoundException('Shop not found');
+    }
+    return this.materialRepo.save({ ...dto, shop });
+  }
+
+  async deleteMaterial(shopId: string, id: string) {
+    const material = await this.materialRepo.findOne({ where: { id, shop: { id: shopId } } });
+    if (!material) {
+      throw new NotFoundException('Material not found in this shop');
+    }
+    return this.materialRepo.delete(id);
+  }
+
+  // BOM management
+  async getBoms(shopId: string) {
+    return this.bomRepo.find({
+      where: { material: { shop: { id: shopId } } },
+      relations: ['material', 'product', 'variant'],
+    });
+  }
+
+  async createOrUpdateBom(shopId: string, dto: Partial<BillOfMaterial>) {
+    if (dto.material?.id) {
+      const material = await this.materialRepo.findOne({ where: { id: dto.material.id, shop: { id: shopId } } });
+      if (!material) {
+        throw new NotFoundException('Material not found in this shop');
+      }
+    }
+    return this.bomRepo.save({ ...dto, shop: { id: shopId } });
+  }
+
+  async deleteBom(shopId: string, id: string) {
+    const bom = await this.bomRepo.findOne({ where: { id, material: { shop: { id: shopId } } } });
+    if (!bom) {
+      throw new NotFoundException('BOM entry not found in this shop');
+    }
+    return this.bomRepo.delete(id);
+  }
+
+  // BOP management
+  async getBops(shopId: string) {
+    return this.bopRepo.find({
+      where: { shop: { id: shopId } },
+      relations: ['productSource', 'variantSource', 'product', 'variant'],
+    });
+  }
+
+  async createOrUpdateBop(shopId: string, dto: Partial<BillOfProduct>) {
+    return this.bopRepo.save({ ...dto, shop: { id: shopId } });
+  }
+
+  async deleteBop(shopId: string, id: string) {
+    const bop = await this.bopRepo.findOne({ where: { id, shop: { id: shopId } } });
+    if (!bop) {
+      throw new NotFoundException('BOP entry not found in this shop');
+    }
+    return this.bopRepo.delete(id);
+  }
+
+  // Inventory Transactions
+  async createInventoryTransaction(shopId: string, dto: Partial<InventoryTransaction>) {
+    const shop = await this.shopRepo.findOneBy({ id: shopId });
+    if (!shop) {
+      throw new NotFoundException('Shop not found');
+    }
+
+    if (!dto.material?.id) {
+      throw new HttpException('material.id is required', HttpStatus.BAD_REQUEST);
+    }
+    const material = await this.materialRepo.findOne({ where: { id: dto.material.id, shop: { id: shopId } } });
+    if (!material) {
+      throw new NotFoundException('Material not found in this shop');
+    }
+
+    const transaction = await this.inventoryTransactionRepo.save({ ...dto, shop });
+
+    if (dto.type === InventoryTransactionType.Consumption) {
+      await this.materialRepo.decrement({ id: dto.material.id }, 'stock', dto.quantity);
+    } else if (dto.type === InventoryTransactionType.Purchase) {
+      await this.materialRepo.update(dto.material.id, {
+        stock: () => `stock + ${dto.quantity}`,
+        cost: () => {
+          if (dto.unitPrice && dto.costUpdateStrategy === CostUpdateStrategy.Last)
+            return dto.unitPrice.toString();
+          if (dto.unitPrice && dto.costUpdateStrategy === CostUpdateStrategy.Average)
+            return `CASE WHEN cost IS NULL THEN ${dto.unitPrice} ELSE ((stock * cost + ${dto.quantity} * ${dto.unitPrice}) / (stock + ${dto.quantity})) END`;
+          return 'cost';
+        },
+      });
+    } else if (dto.type === InventoryTransactionType.Adjustment) {
+      await this.materialRepo.update(dto.material.id, { stock: dto.quantity });
+    }
+
+    return transaction;
+  }
+
+  async getProductCostsAndProfit(shopId: string) {
+    const shop = await this.shopRepo.findOne({
+      where: { id: shopId },
+      relations: [
+        'menu.categories.products.variants',
+      ],
+    });
+
+    if (!shop || !shop.menu) {
+      throw new NotFoundException('Shop or shop menu not found');
+    }
+
+    const boms = await this.bomRepo.find({
+      where: { material: { shop: { id: shopId } } },
+      relations: ['material', 'product', 'variant'],
+    });
+
+    const bops = await this.bopRepo.find({
+      where: { shop: { id: shopId } },
+      relations: ['productSource', 'variantSource', 'product', 'variant'],
+    });
+
+    const result: Array<{
+      productId: string;
+      productTitle: string;
+      variantId?: number;
+      variantTitle?: string;
+      salesPrice: number;
+      costPrice: number | null;
+      grossProfit: number | null;
+      profitMarginPercent: number | null;
+    }> = [];
+
+    if (shop.menu.categories) {
+      for (const cat of shop.menu.categories) {
+        if (cat.products) {
+          for (const product of cat.products) {
+            if (product.variants && product.variants.length > 0) {
+              for (const variant of product.variants) {
+                const cost = Product.calculateCost(product, variant, boms, bops);
+                const salesPrice = variant.price;
+                const grossProfit = cost !== null ? salesPrice - cost : null;
+                const profitMarginPercent = (cost !== null && salesPrice > 0) ? Math.round((grossProfit / salesPrice) * 100) : null;
+
+                result.push({
+                  productId: product.id,
+                  productTitle: product.title,
+                  variantId: variant.id,
+                  variantTitle: variant.title,
+                  salesPrice,
+                  costPrice: cost,
+                  grossProfit,
+                  profitMarginPercent,
+                });
+              }
+            } else {
+              const cost = Product.calculateCost(product, null, boms, bops);
+              const salesPrice = product.price;
+              const grossProfit = cost !== null ? salesPrice - cost : null;
+              const profitMarginPercent = (cost !== null && salesPrice > 0) ? Math.round((grossProfit / salesPrice) * 100) : null;
+
+              result.push({
+                productId: product.id,
+                productTitle: product.title,
+                salesPrice,
+                costPrice: cost,
+                grossProfit,
+                profitMarginPercent,
+              });
+            }
+          }
+        }
+      }
+    }
+
+    return result;
+  }
+
+  async getMenuCosts(shopId: string) {
+    const shop = await this.shopRepo.findOne({ where: { id: shopId }, relations: ['menu'] });
+    if (!shop || !shop.menu) {
+      throw new NotFoundException('Shop or shop menu not found');
+    }
+    return this.costsRepo.find({
+      where: { menu: { id: shop.menu.id } },
+      relations: ['includeProductCategory', 'includeProduct'],
+      order: { createdAt: 'ASC' },
+    });
+  }
+
+  async createOrUpdateMenuCost(shopId: string, dto: Partial<MenuCost>) {
+    const shop = await this.shopRepo.findOne({ where: { id: shopId }, relations: ['menu'] });
+    if (!shop || !shop.menu) {
+      throw new NotFoundException('Shop or shop menu not found');
+    }
+
+    if (dto.id) {
+      const existing = await this.costsRepo.findOne({
+        where: { id: dto.id, menu: { id: shop.menu.id } },
+      });
+      if (!existing) {
+        throw new NotFoundException('Menu cost not found in this shop');
+      }
+    }
+
+    if (dto.includeProductCategory && dto.includeProductCategory.length > 0) {
+      const catIds = dto.includeProductCategory.map((c) => c.id);
+      const count = await this.categoryRepo.count({
+        where: { id: In(catIds), menu: { id: shop.menu.id } },
+      });
+      if (count !== catIds.length) {
+        throw new HttpException('Some product categories do not belong to this shop', HttpStatus.BAD_REQUEST);
+      }
+    }
+
+    if (dto.includeProduct && dto.includeProduct.length > 0) {
+      const prodIds = dto.includeProduct.map((p) => p.id);
+      const count = await this.productRepo.count({
+        where: { id: In(prodIds), category: { menu: { id: shop.menu.id } } },
+      });
+      if (count !== prodIds.length) {
+        throw new HttpException('Some products do not belong to this shop', HttpStatus.BAD_REQUEST);
+      }
+    }
+
+    const saved = await this.costsRepo.save({
+      ...dto,
+      menu: shop.menu,
+    });
+
+    await this.redis.updateMenu(shopId);
+    return saved;
+  }
+
+  async deleteMenuCost(shopId: string, id: number) {
+    const shop = await this.shopRepo.findOne({ where: { id: shopId }, relations: ['menu'] });
+    if (!shop || !shop.menu) {
+      throw new NotFoundException('Shop or shop menu not found');
+    }
+
+    const cost = await this.costsRepo.findOne({
+      where: { id, menu: { id: shop.menu.id } },
+    });
+    if (!cost) {
+      throw new NotFoundException('Menu cost not found in this shop');
+    }
+
+    await this.costsRepo.delete(id);
+    await this.redis.updateMenu(shopId);
+    return { success: true };
   }
 }
