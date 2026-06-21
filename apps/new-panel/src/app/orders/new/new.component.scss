@@ -33,3 +33,107 @@
   }
 }
 
+
+
+.slots-row {
+  margin-bottom: 16px;
+
+  .slots-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .slot-btn {
+    border-radius: 0.75rem !important;
+    font-size: 0.8125rem !important;
+    height: 36px !important;
+    line-height: 34px !important;
+    padding: 0 14px !important;
+    border: 1px solid var(--border-color, #E5E5E5) !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    background: transparent;
+    color: var(--text-secondary, #525252) !important;
+
+    &:hover {
+      background-color: var(--nav-item-hover, rgba(245, 245, 245, 0.8)) !important;
+      border-color: var(--text-muted, #737373) !important;
+      color: var(--text-primary, #171717) !important;
+    }
+
+    &.active {
+      background-color: var(--mat-sys-primary, #171717) !important;
+      color: #ffffff !important;
+      border-color: var(--mat-sys-primary, #171717) !important;
+      font-weight: 500 !important;
+
+      .slot-dot {
+        transform: scale(1.1);
+        
+        &.filled {
+          background-color: #22892f;
+          box-shadow: 0 0 6px rgba(34, 137, 47, 0.8);
+        }
+      }
+      
+      .slot-summary-empty {
+        color: rgba(255, 255, 255, 0.6) !important;
+      }
+    }
+
+    .slot-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: var(--border-dark, #E4E4E7);
+      transition: all 0.2s ease;
+
+      &.filled {
+        background-color: #22892f; // Green from Tertiary palette
+        box-shadow: 0 0 4px rgba(34, 137, 47, 0.5);
+      }
+    }
+
+    .slot-summary {
+      font-size: 0.75rem;
+      opacity: 0.85;
+      font-weight: normal;
+    }
+
+    .slot-summary-empty {
+      font-size: 0.75rem;
+      color: var(--text-muted, #737373);
+      font-weight: normal;
+      transition: color 0.2s ease;
+    }
+  }
+
+  .clear-slot-btn {
+    border-radius: 0.75rem !important;
+    font-size: 0.8125rem !important;
+    height: 36px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    border: 1px solid transparent !important;
+    color: var(--mat-sys-error, #ba1a1a) !important;
+    
+    &:hover:not([disabled]) {
+      background-color: var(--mat-sys-error-container, #ffdad6) !important;
+    }
+
+    &[disabled] {
+      color: var(--text-muted, #737373) !important;
+      opacity: 0.5;
+    }
+    
+    ng-icon {
+      font-size: 1.1rem !important;
+    }
+  }
+}
+

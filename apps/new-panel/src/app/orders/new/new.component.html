@@ -19,6 +19,49 @@
 
 @if (!orderId() || service.order()) {
   <main p-md>
+
+    @if (!orderId()) {
+      <div class="slots-row" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+        <div class="slots-list" fxLayout="row" fxLayoutGap="8px">
+          @for (slot of service.slotsMetadata(); track slot.id) {
+            <button
+              mat-stroked-button
+              type="button"
+              class="slot-btn"
+              [class.active]="service.activeSlot() === slot.id"
+              (click)="service.selectSlot(slot.id)"
+            >
+              <span class="slot-dot" [class.filled]="!slot.isEmpty"></span>
+              {{ 'newOrder.slot' | translate }} {{ slot.id }}
+              @if (!slot.isEmpty) {
+                <span class="slot-summary">
+                  ({{ slot.itemCount }} آیتم
+                  @if (slot.customerName) {
+                    - {{ slot.customerName }}
+                  })
+                </span>
+              } @else {
+                <span class="slot-summary-empty">({{ 'newOrder.empty' | translate }})</span>
+              }
+            </button>
+          }
+        </div>
+        
+        <button
+          mat-button
+          type="button"
+          color="warn"
+          class="clear-slot-btn"
+          [disabled]="!service.dirty()"
+          (click)="service.clear()"
+          matTooltip="{{ 'newOrder.clearActiveSlot' | translate }}"
+        >
+          <ng-icon name="saxTrashOutline"></ng-icon>
+          {{ 'newOrder.clearActive' | translate }}
+        </button>
+      </div>
+    }
+
     <div fxLayout.gt-md="row" fxLayout="column" fxLayoutGap="16px" fxLayoutAlign.gt-md="start start">
       <div fxLayout="column" fxLayoutGap="16px" fxFlex>
         <mat-form-field id="search-item" appearance="outline">

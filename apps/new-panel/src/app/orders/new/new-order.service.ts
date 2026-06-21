@@ -1,4 +1,5 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import {
   Address,
   DiscountCoupon,
@@ -22,6 +23,8 @@ import { OrdersService } from '../order.service';
 
 @Injectable()
 export class NewOrdersService {
+  private readonly route = inject(ActivatedRoute);
+  isEditMode = !!this.route.snapshot.params['id'];
   private readonly shop = inject(ShopService);
   private readonly menu = inject(MenuService);
   private readonly ordersService = inject(OrdersService);
@@ -44,6 +47,39 @@ export class NewOrdersService {
   extraCost = signal<number>(0);
   orderReferrer = signal<string>('');
   orderCampaign = signal<string>('');
+
+  // Slot management
+  activeSlot = signal<number>(1);
+  slotsUpdated = signal<number>(0);
+  private isLoadingSlot = false;
+
+  slotsMetadata = computed(() => {
+    this.slotsUpdated(); // Dependency to trigger re-evaluation
+    const metadata = [];
+    for (let i = 1; i <= 4; i++) {
+      const dataStr = localStorage.getItem(`new-order-slot-${i}`);
+      if (dataStr) {
+        try {
+          const data = JSON.parse(dataStr);
+          const itemCount = data.items?.reduce((sum: number, item: any) => sum + (item.quantity || 0), 0) || 0;
+          const customerName = data.customer?.firstName 
+            ? `${data.customer.firstName} ${data.customer.lastName || ''}`.trim() 
+            : (data.customer?.phone || '');
+          metadata.push({
+            id: i,
+            isEmpty: itemCount === 0 && !customerName,
+            itemCount,
+            customerName,
+          });
+        } catch (e) {
+          metadata.push({ id: i, isEmpty: true, itemCount: 0, customerName: '' });
+        }
+      } else {
+        metadata.push({ id: i, isEmpty: true, itemCount: 0, customerName: '' });
+      }
+    }
+    return metadata;
+  });
 
   constructor() {
     effect(() => {
@@ -82,6 +118,57 @@ export class NewOrdersService {
       if (shop?.appConfig?.orderingTypes?.length && !this.order() && this.type() === undefined) {
         this.type.set(shop.appConfig.orderingTypes[0]);
       }
+    });
+
+    effect(() => {
+      const slot = this.activeSlot();
+      const items = this.items();
+      const customer = this.customer();
+      const address = this.address();
+      const manualDiscount = this.manualDiscount();
+      const manualCost = this.manualCost();
+      const discountCoupon = this.discountCoupon();
+      const type = this.type();
+      const orderDateTime = this.orderDateTime();
+      const useCurrentDateTime = this.useCurrentDateTime();
+      const excludeFromReport = this.excludeFromReport();
+      const extraCost = this.extraCost();
+      const orderReferrer = this.orderReferrer();
+      const orderCampaign = this.orderCampaign();
+      
+      if (this.isEditMode) return;
+      if (this.isLoadingSlot) return;
+      
+      const isEmpty = items.length === 0 &&
+                      !customer &&
+                      manualDiscount === 0 &&
+                      manualCost === 0 &&
+                      !discountCoupon &&
+                      extraCost === 0 &&
+                      !orderReferrer &&
+                      !orderCampaign;
+                      
+      if (isEmpty) {
+        localStorage.removeItem(`new-order-slot-${slot}`);
+      } else {
+        const slotData = {
+          items,
+          customer,
+          address,
+          manualDiscount,
+          manualCost,
+          discountCoupon,
+          type,
+          orderDateTime,
+          useCurrentDateTime,
+          excludeFromReport,
+          extraCost,
+          orderReferrer,
+          orderCampaign,
+        };
+        localStorage.setItem(`new-order-slot-${slot}`, JSON.stringify(slotData));
+      }
+      this.slotsUpdated.update((n) => n + 1);
     });
   }
 
@@ -191,14 +278,24 @@ export class NewOrdersService {
   }
 
   clear() {
+    this.clearFormOnly();
+    if (!this.isEditMode) {
+      const currentSlot = this.activeSlot();
+      localStorage.removeItem(`new-order-slot-${currentSlot}`);
+      this.slotsUpdated.update((n) => n + 1);
+    }
+  }
+
+  clearFormOnly() {
     this.dirty.set(false);
-    this.type.set(this.shop.data()?.appConfig?.orderingTypes[0]);
     this.items.set([]);
     this.address.set(undefined);
     this.manualCost.set(0);
     this.manualDiscount.set(0);
     this.discountCoupon.set(undefined);
     this.order.set(undefined);
+    this.customer.set(undefined);
+    this.type.set(this.shop.data()?.appConfig?.orderingTypes[0]);
 
     // Reset configuration
     this.orderDateTime.set(new Date());
@@ -207,6 +304,55 @@ export class NewOrdersService {
     this.extraCost.set(0);
     this.orderReferrer.set('');
     this.orderCampaign.set('');
+  }
+
+  loadLastActiveSlot() {
+    const savedActive = localStorage.getItem('new-order-active-slot');
+    const slotId = savedActive ? parseInt(savedActive, 10) : 1;
+    this.selectSlot(slotId);
+  }
+
+  selectSlot(slotId: number) {
+    if (this.isEditMode) return; // Do not allow slot switching in edit mode
+    
+    this.isLoadingSlot = true;
+    this.activeSlot.set(slotId);
+    localStorage.setItem('new-order-active-slot', String(slotId));
+    
+    const dataStr = localStorage.getItem(`new-order-slot-${slotId}`);
+    if (dataStr) {
+      try {
+        const data = JSON.parse(dataStr);
+        this.items.set(data.items || []);
+        this.customer.set(data.customer || undefined);
+        this.address.set(data.address || undefined);
+        this.manualDiscount.set(data.manualDiscount || 0);
+        this.manualCost.set(data.manualCost || 0);
+        this.discountCoupon.set(data.discountCoupon || undefined);
+        this.type.set(data.type || this.shop.data()?.appConfig?.orderingTypes[0]);
+        
+        this.orderDateTime.set(data.orderDateTime ? new Date(data.orderDateTime) : new Date());
+        this.useCurrentDateTime.set(data.useCurrentDateTime !== false);
+        this.excludeFromReport.set(!!data.excludeFromReport);
+        this.extraCost.set(data.extraCost || 0);
+        this.orderReferrer.set(data.orderReferrer || '');
+        this.orderCampaign.set(data.orderCampaign || '');
+        
+        this.dirty.set(
+          (data.items && data.items.length > 0) ||
+          data.customer !== undefined ||
+          (data.manualDiscount && data.manualDiscount > 0) ||
+          (data.manualCost && data.manualCost > 0)
+        );
+      } catch (e) {
+        this.clearFormOnly();
+      }
+    } else {
+      this.clearFormOnly();
+    }
+    
+    this.isLoadingSlot = false;
+    this.slotsUpdated.update((n) => n + 1);
   }
 
   updateConfig(config: {

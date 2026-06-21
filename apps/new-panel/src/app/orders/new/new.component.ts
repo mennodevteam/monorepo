@@ -178,9 +178,16 @@ export class NewOrderComponent implements FormComponent {
         this.service.order.set(order);
       }
     });
+
+    if (!this.route.snapshot.params['id']) {
+      this.service.loadLastActiveSlot();
+    }
   }
 
   canDeactivate() {
+    if (!this.orderId()) {
+      return true; // No warning needed since slot memory auto-saves progress
+    }
     return !this.service.dirty();
   }
 
