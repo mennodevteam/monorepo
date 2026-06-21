@@ -19,6 +19,12 @@ export class ShopIntegrationController {
         title: 'Shottt Vendor Integration API',
         description: `Secure REST API to read and manage vendor data (items, menu, orders, and reports) on behalf of a store.
 
+### Currency
+All prices and monetary values in this API are in **Toman** (Iranian Toman). If the user provides values in Rial, you MUST convert them to Toman by dividing by 10 before sending to the API.
+
+### Order Type
+All orders in this system are of type **Delivery** (value: \`1\`). The \`type\` field does not need to be explicitly set when creating or managing orders.
+
 ### Product Availability & Status Hierarchy Rules:
 Product availability is determined by a hierarchical structure: \`Category > Product > Variant\`.
 1. **Status Fields**: Category, Product, and Variant each have their own \`status\` field (\`0: Inactive\`, \`1: Active\`, \`2: Pending\`, \`3: Blocked\`).
@@ -75,9 +81,24 @@ To protect database integrity and prevent unintended customer communications, th
             properties: {
               id: { type: 'string' },
               title: { type: 'string' },
-              price: { type: 'number' },
-              stock: { type: 'number' },
               description: { type: 'string', nullable: true },
+              price: { type: 'number', description: 'Price in Toman. For products with variants, each variant has its own price.' },
+              status: { type: 'integer', description: 'Product status. 0: Inactive, 1: Active, 2: Pending, 3: Blocked/Finished (sold-out)' },
+              stock: { type: 'number', nullable: true, description: 'Available stock. Only for products without variants. null = unlimited.' },
+              position: { type: 'number', nullable: true, description: 'Display order position.' },
+              slug: { type: 'string', nullable: true },
+              maxBasket: { type: 'number', nullable: true, description: 'Maximum quantity per order.' },
+              subcategories: { type: 'array', items: { type: 'string' }, description: 'Sub-category labels.' },
+              orderTypes: {
+                type: 'array',
+                items: { type: 'integer', description: '0: DineIn, 1: Delivery, 2: Takeaway' },
+                description: 'Order types this product is available for.',
+              },
+              variants: {
+                type: 'array',
+                items: { $ref: '#/components/schemas/ProductVariant' },
+                description: 'Product variants (sizes, flavors). Each has its own price, stock, and status.',
+              },
               category: {
                 type: 'object',
                 properties: {
@@ -92,11 +113,32 @@ To protect database integrity and prevent unintended customer communications, th
             properties: {
               id: { type: 'string' },
               qNumber: { type: 'number' },
-              state: { type: 'number', description: '0: Pending, 1: Accepted, 2: Rejected, 3: Completed, 4: Canceled' },
-              type: { type: 'number', description: '0: TakeAway, 1: DineIn, 2: Delivery' },
-              totalPrice: { type: 'number' },
+              state: { type: 'integer', description: 'Order state. 0: Canceled, 1: Pending, 2: Processing, 3: Shipping, 4: Completed, 5: Ready' },
+              type: { type: 'integer', description: 'Order type. 0: DineIn, 1: Delivery, 2: Takeaway' },
+              paymentType: { type: 'integer', description: 'Payment method. 0: NotPayed, 1: Online, 2: Cash, 3: ClubWallet' },
+              totalPrice: { type: 'number', description: 'Total price in Toman.' },
+              materialCost: { type: 'number', nullable: true, description: 'Total raw material cost in Toman.' },
+              extraCosts: { type: 'number', nullable: true, description: 'Extra costs in Toman.' },
+              useWallet: { type: 'number', nullable: true, description: 'Amount paid from customer wallet in Toman.' },
+              isManual: { type: 'boolean', description: 'true if manually created by the vendor.' },
               note: { type: 'string', nullable: true },
+              items: {
+                type: 'array',
+                items: { $ref: '#/components/schemas/OrderItem' },
+                description: 'Line items (products + abstract cost/discount items).',
+              },
+              customer: {
+                type: 'object',
+                nullable: true,
+                properties: {
+                  mobilePhone: { type: 'string' },
+                  firstName: { type: 'string', nullable: true },
+                  lastName: { type: 'string', nullable: true },
+                },
+              },
               createdAt: { type: 'string', format: 'date-time' },
+              updatedAt: { type: 'string', format: 'date-time' },
+              seenAt: { type: 'string', format: 'date-time', nullable: true, description: 'When the vendor first saw this order.' },
             },
           },
           ProductCategory: {
@@ -105,9 +147,16 @@ To protect database integrity and prevent unintended customer communications, th
               id: { type: 'number' },
               title: { type: 'string' },
               description: { type: 'string', nullable: true },
-              status: { type: 'integer', description: '0: Inactive, 1: Active' },
+              status: { type: 'integer', description: '0: Inactive, 1: Active, 2: Pending, 3: Blocked' },
               slug: { type: 'string', nullable: true },
               position: { type: 'number', nullable: true },
+              orderTypes: {
+                type: 'array',
+                items: { type: 'integer', description: '0: DineIn, 1: Delivery, 2: Takeaway' },
+                description: 'Order types this category is available for.',
+              },
+              isAbstract: { type: 'boolean', description: 'Abstract categories contain non-product items (e.g., service charges).' },
+              faIcon: { type: 'string', nullable: true, description: 'FontAwesome icon name.' },
             },
             required: ['title'],
           },
@@ -131,14 +180,22 @@ To protect database integrity and prevent unintended customer communications, th
           FilterCustomer: {
             type: 'object',
             properties: {
-              query: { type: 'string', nullable: true },
+              query: { type: 'string', nullable: true, description: 'Search by customer name or phone number.' },
               joinedAtFromDate: { type: 'string', format: 'date-time', nullable: true },
               joinedAtToDate: { type: 'string', format: 'date-time', nullable: true },
+              firstOrderFromDate: { type: 'string', format: 'date-time', nullable: true, description: 'Filter by first order date range.' },
+              firstOrderToDate: { type: 'string', format: 'date-time', nullable: true },
+              lastOrderFromDate: { type: 'string', format: 'date-time', nullable: true, description: 'Filter by last order date range.' },
+              lastOrderToDate: { type: 'string', format: 'date-time', nullable: true },
+              orderFromDate: { type: 'string', format: 'date-time', nullable: true, description: 'Date range start for order count calculation.' },
+              orderToDate: { type: 'string', format: 'date-time', nullable: true, description: 'Date range end for order count calculation.' },
+              lastVisitFromDate: { type: 'string', format: 'date-time', nullable: true, description: 'Filter by last menu visit date.' },
+              lastVisitToDate: { type: 'string', format: 'date-time', nullable: true },
               fromStar: { type: 'number', nullable: true },
               toStar: { type: 'number', nullable: true },
               minOrderCount: { type: 'number', nullable: true },
               maxOrderCount: { type: 'number', nullable: true },
-              sortBy: { type: 'string', enum: ['joinedAt', 'firstOrder', 'lastOrder', 'lastVisit', 'totalOrderCount', 'totalOrderSum', 'star', 'wallet'], default: 'joinedAt' },
+              sortBy: { type: 'string', enum: ['firstOrder', 'lastOrder', 'joinedAt', 'lastVisit', 'totalOrderCount', 'totalOrderSum', 'star', 'wallet'], default: 'joinedAt' },
               sortType: { type: 'string', enum: ['ASC', 'DESC'], default: 'DESC' },
               take: { type: 'number', default: 20 },
               skip: { type: 'number', default: 0 },
@@ -148,12 +205,13 @@ To protect database integrity and prevent unintended customer communications, th
             type: 'object',
             properties: {
               id: { type: 'string' },
-              title: { type: 'string' },
-              stock: { type: 'number' },
-              cost: { type: 'number', nullable: true },
-              unit: { type: 'string', description: 'Unit of measurement' },
+              name: { type: 'string', description: 'Name of the raw material.' },
+              stock: { type: 'number', description: 'Current stock in the specified unit.' },
+              cost: { type: 'number', nullable: true, description: 'Unit cost in Toman. Updated automatically via purchase invoices or purchase transactions.' },
+              unit: { type: 'string', enum: ['count', 'gram', 'kg', 'liter', 'ml'], description: 'Unit of measurement.' },
+              createdAt: { type: 'string', format: 'date-time' },
             },
-            required: ['title', 'unit'],
+            required: ['name', 'unit'],
           },
           BillOfMaterial: {
             type: 'object',
@@ -183,10 +241,12 @@ To protect database integrity and prevent unintended customer communications, th
             properties: {
               id: { type: 'string' },
               material: { type: 'object', properties: { id: { type: 'string' } } },
-              type: { type: 'integer', description: '0: Consumption, 1: Purchase, 2: Adjustment' },
-              quantity: { type: 'number' },
-              unitPrice: { type: 'number', nullable: true },
-              costUpdateStrategy: { type: 'integer', description: '0: Average, 1: Last, 2: Manual, 3: None' },
+              type: { type: 'string', enum: ['purchase', 'consumption', 'adjustment'], description: 'Transaction type. purchase: adds stock + updates cost. consumption: subtracts stock. adjustment: sets stock to exact quantity.' },
+              quantity: { type: 'number', description: 'purchase: amount to add. consumption: amount to subtract. adjustment: new absolute stock value.' },
+              unitPrice: { type: 'number', nullable: true, description: 'Unit price in Toman. Only for purchase transactions.' },
+              costUpdateStrategy: { type: 'string', enum: ['average', 'last', 'current'], description: 'Cost update method. average: weighted average. last: replace with new price. current: keep unchanged.' },
+              note: { type: 'string', nullable: true, description: 'Optional note.' },
+              createdAt: { type: 'string', format: 'date-time' },
             },
             required: ['material', 'type', 'quantity'],
           },
@@ -195,8 +255,9 @@ To protect database integrity and prevent unintended customer communications, th
             properties: {
               id: { type: 'string' },
               date: { type: 'string', format: 'date-time' },
-              supplier: { type: 'string', nullable: true },
+              supplier: { type: 'string', nullable: true, description: 'Supplier name.' },
               description: { type: 'string', nullable: true },
+              createdAt: { type: 'string', format: 'date-time' },
               items: {
                 type: 'array',
                 items: {
@@ -226,7 +287,7 @@ To protect database integrity and prevent unintended customer communications, th
               title: { type: 'string' },
               description: { type: 'string', nullable: true },
               percentageCost: { type: 'number', description: 'Percentage of charge. Can be negative for percentage discounts (e.g. -10 for 10% discount).' },
-              fixedCost: { type: 'number', description: 'Fixed amount of charge. Can be negative for fixed discounts.' },
+              fixedCost: { type: 'number', description: 'Fixed amount in Toman. Can be negative for fixed discounts (e.g. -5000 = 5000 Toman discount).' },
               showOnItem: { type: 'boolean', description: 'If true, the cost/discount is applied directly to each item price. If false, it is calculated globally on the total order sum.' },
               orderTypes: {
                 type: 'array',
@@ -257,6 +318,86 @@ To protect database integrity and prevent unintended customer communications, th
               },
             },
             required: ['title'],
+          },
+          ProductVariant: {
+            type: 'object',
+            description: 'A variant of a product (e.g., size, flavor). Each variant has its own price, stock, and status.',
+            properties: {
+              id: { type: 'number' },
+              title: { type: 'string' },
+              description: { type: 'string', nullable: true },
+              price: { type: 'number', description: 'Variant price in Toman.' },
+              status: { type: 'integer', description: '0: Inactive, 1: Active, 2: Pending, 3: Blocked/Finished' },
+              stock: { type: 'number', nullable: true, description: 'Available stock. null = unlimited.' },
+              position: { type: 'number', nullable: true },
+            },
+          },
+          OrderItem: {
+            type: 'object',
+            description: 'A line item in an order. Prices in Toman.',
+            properties: {
+              id: { type: 'string' },
+              product: { $ref: '#/components/schemas/Product' },
+              productVariant: { $ref: '#/components/schemas/ProductVariant' },
+              title: { type: 'string', nullable: true, description: 'Display title (for abstract items like taxes/discounts).' },
+              price: { type: 'number', description: 'Unit price in Toman (after item-level discounts).' },
+              realPrice: { type: 'number', nullable: true, description: 'Original price in Toman before discounts.' },
+              isAbstract: { type: 'boolean', description: 'true for non-product line items (taxes, fees, discounts).' },
+              quantity: { type: 'number' },
+              note: { type: 'string', nullable: true },
+            },
+          },
+          CustomerResponse: {
+            type: 'object',
+            description: 'Customer data returned by list/filter endpoints. Contains member profile + computed order statistics.',
+            properties: {
+              member: {
+                type: 'object',
+                properties: {
+                  id: { type: 'string' },
+                  user: {
+                    type: 'object',
+                    properties: {
+                      mobilePhone: { type: 'string' },
+                      firstName: { type: 'string', nullable: true },
+                      lastName: { type: 'string', nullable: true },
+                      gender: { type: 'integer', nullable: true, description: '0: Male, 1: Female' },
+                      birthDate: { type: 'string', format: 'date-time', nullable: true },
+                    },
+                  },
+                  star: { type: 'number', description: 'Customer rating (0-5).' },
+                  gem: { type: 'number', description: 'Loyalty points.' },
+                  wallet: {
+                    type: 'object',
+                    nullable: true,
+                    properties: {
+                      charge: { type: 'number', description: 'Wallet balance in Toman.' },
+                    },
+                  },
+                  joinedAt: { type: 'string', format: 'date-time' },
+                  description: { type: 'string', nullable: true },
+                  referrer: { type: 'string', nullable: true },
+                  campaign: { type: 'string', nullable: true },
+                  tags: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        id: { type: 'string' },
+                        title: { type: 'string' },
+                        color: { type: 'string' },
+                      },
+                    },
+                  },
+                },
+              },
+              joinedAt: { type: 'string', format: 'date-time' },
+              firstOrderTime: { type: 'string', format: 'date-time', nullable: true, description: 'Date of first order.' },
+              lastOrderTime: { type: 'string', format: 'date-time', nullable: true, description: 'Date of most recent order.' },
+              totalOrderCount: { type: 'number', description: 'Total orders placed.' },
+              totalOrderSum: { type: 'number', description: 'Total order value in Toman.' },
+              lastVisitDate: { type: 'string', format: 'date-time', nullable: true, description: 'Last time customer viewed the menu.' },
+            },
           },
         },
       },
@@ -359,7 +500,7 @@ To protect database integrity and prevent unintended customer communications, th
                   schema: {
                     type: 'object',
                     properties: {
-                      state: { type: 'integer', description: '0: Pending, 1: Accepted, 2: Rejected, 3: Completed, 4: Canceled' },
+                      state: { type: 'integer', description: 'Order state. 0: Canceled, 1: Pending, 2: Processing, 3: Shipping, 4: Completed, 5: Ready' },
                     },
                     required: ['state'],
                   },
@@ -546,7 +687,7 @@ To protect database integrity and prevent unintended customer communications, th
             },
             post: {
               summary: 'Create or update a raw material',
-              description: 'Adds or updates a raw material definition. Required scope: inventory:write',
+              description: 'Adds or updates a raw material. The field is `name` (not title). Provide `id` to update existing, omit for new. Costs in Toman. Required scope: inventory:write',
               requestBody: {
                 required: true,
                 content: {
@@ -595,7 +736,7 @@ To protect database integrity and prevent unintended customer communications, th
             },
             post: {
               summary: 'Create or update a BOM configuration',
-              description: 'Saves a Bill of Materials entry linking a material to a product. Required scope: inventory:write',
+              description: 'Saves a BOM entry linking a raw material to a product/variant with a consumption quantity. Defines the recipe: how much of each material is consumed per unit of product. Required scope: inventory:write',
               requestBody: {
                 required: true,
                 content: {
@@ -644,7 +785,7 @@ To protect database integrity and prevent unintended customer communications, th
             },
             post: {
               summary: 'Create or update a BOP configuration',
-              description: 'Saves a Bill of Product recipe linking a product as an ingredient of another product. Required scope: inventory:write',
+              description: 'Saves a BOP entry linking one product as an ingredient of another (e.g., combo meal containing a burger). Defines how many units of source product are consumed per unit of target. Required scope: inventory:write',
               requestBody: {
                 required: true,
                 content: {
@@ -684,7 +825,7 @@ To protect database integrity and prevent unintended customer communications, th
           '/inventory/transactions': {
             post: {
               summary: 'Create an inventory transaction',
-              description: 'Logs a stock adjustment, purchase, or consumption transaction, updating the material stock. Required scope: inventory:write',
+              description: 'Logs a stock movement. Types: `purchase` increases stock and updates unit cost (based on costUpdateStrategy). `consumption` decreases stock. `adjustment` sets stock to the exact quantity value. Prices in Toman. Required scope: inventory:write',
               requestBody: {
                 required: true,
                 content: {
@@ -714,7 +855,7 @@ To protect database integrity and prevent unintended customer communications, th
             },
             post: {
               summary: 'Create a purchase invoice',
-              description: 'Registers a new purchase invoice, updating material stock quantities and unit costs in the warehouse. Required scope: inventory:write',
+              description: 'Registers a purchase invoice for raw materials. Side effects per item: (1) increases material stock by purchased quantity, (2) updates material unit cost based on costUpdateStrategy (last: replaces, average: weighted average, current: unchanged), (3) stores previousStock/previousCost for revert. Prices in Toman. Required scope: inventory:write',
               requestBody: {
                 required: true,
                 content: {
@@ -735,7 +876,7 @@ To protect database integrity and prevent unintended customer communications, th
           '/inventory/purchase-invoices/{id}': {
             delete: {
               summary: 'Delete a purchase invoice',
-              description: 'Deletes a purchase invoice history. Optional query parameter `revertStock` can be set to true to decrement material stock and revert cost. Required scope: inventory:write',
+              description: 'Deletes a purchase invoice. If `revertStock=true`, the backend subtracts purchased quantities from material stock and restores unit cost to previousCost. If `revertStock=false` (default), only the invoice record is deleted. Required scope: inventory:write',
               parameters: [
                 {
                   name: 'id',
@@ -760,7 +901,7 @@ To protect database integrity and prevent unintended customer communications, th
           '/inventory/profit': {
             get: {
               summary: 'Get cost price and profit per product',
-              description: 'Calculates the real-time material cost price, sales price, gross profit, and profit margin percent for each product and variant on the menu. Required scope: inventory:read',
+              description: 'Calculates real-time profitability per product/variant: material cost (from BOM recipes), sales price, gross profit, and profit margin %. All monetary values in Toman. Required scope: inventory:read',
               responses: {
                 200: {
                   description: 'Successful Response returning product profit sheet',
