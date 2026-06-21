@@ -157,6 +157,17 @@
       <a
         mat-list-item
         routerLinkActive="active-link"
+        routerLink="/admin/inventory/purchase-invoices"
+        (click)="isSmallScreen() && isDrawerClose.set(true)"
+      >
+        <div matListItemIcon class="np-icon-badge sm teal">
+          <ng-icon name="saxReceipt2Outline"></ng-icon>
+        </div>
+        <span matListItemTitle>{{ 'nav.purchaseInvoices' | translate }}</span>
+      </a>
+      <a
+        mat-list-item
+        routerLinkActive="active-link"
         routerLink="/admin/inventory/bom"
         (click)="isSmallScreen() && isDrawerClose.set(true)"
       >

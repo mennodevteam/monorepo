@@ -1,0 +1,30 @@
+.invoices-table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 8px;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+table.np-table {
+  width: 100%;
+  th {
+    font-weight: 500;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--border-color);
+  }
+  td {
+    font-size: 0.9rem;
+    padding: 12px 8px;
+    vertical-align: middle;
+  }
+}
+
+mat-card {
+  margin-bottom: 16px;
+}

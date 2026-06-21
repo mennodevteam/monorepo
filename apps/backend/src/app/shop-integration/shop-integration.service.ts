@@ -21,6 +21,8 @@ import {
   InventoryTransactionType,
   CostUpdateStrategy,
   MenuCost,
+  PurchaseInvoice,
+  PurchaseInvoiceItem,
 } from '@menno/types';
 import { RedisService } from '../core/redis.service';
 import { OrdersService } from '../orders/orders.service';
@@ -50,6 +52,10 @@ export class ShopIntegrationService {
     private inventoryTransactionRepo: Repository<InventoryTransaction>,
     @InjectRepository(MenuCost)
     private costsRepo: Repository<MenuCost>,
+    @InjectRepository(PurchaseInvoice)
+    private purchaseInvoiceRepo: Repository<PurchaseInvoice>,
+    @InjectRepository(PurchaseInvoiceItem)
+    private purchaseInvoiceItemRepo: Repository<PurchaseInvoiceItem>,
     private redis: RedisService,
     private ordersService: OrdersService,
     private clubsService: ClubsService,
@@ -539,5 +545,103 @@ export class ShopIntegrationService {
     await this.costsRepo.delete(id);
     await this.redis.updateMenu(shopId);
     return { success: true };
+  }
+
+  // Purchase Invoices
+  async getPurchaseInvoices(shopId: string) {
+    return this.purchaseInvoiceRepo.find({
+      where: { shop: { id: shopId } },
+      relations: ['items', 'items.material'],
+      order: { date: 'DESC', createdAt: 'DESC' },
+    });
+  }
+
+  async createPurchaseInvoice(shopId: string, dto: Partial<PurchaseInvoice>) {
+    const shop = await this.shopRepo.findOneBy({ id: shopId });
+    if (!shop) {
+      throw new NotFoundException('Shop not found');
+    }
+
+    const invoice = this.purchaseInvoiceRepo.create({
+      date: dto.date || new Date(),
+      supplier: dto.supplier,
+      description: dto.description,
+      shop: shop,
+    });
+    const savedInvoice = await this.purchaseInvoiceRepo.save(invoice);
+
+    const savedItems: PurchaseInvoiceItem[] = [];
+    for (const itemDto of dto.items || []) {
+      if (!itemDto.material?.id) continue;
+      const material = await this.materialRepo.findOne({
+        where: { id: itemDto.material.id, shop: { id: shopId } },
+      });
+      if (!material) continue;
+
+      const previousStock = material.stock;
+      const previousCost = material.cost;
+
+      let newCost = material.cost;
+      const qty = itemDto.quantity || 0;
+      const price = itemDto.unitPrice || 0;
+      const strategy = itemDto.costUpdateStrategy || CostUpdateStrategy.Last;
+
+      if (strategy === CostUpdateStrategy.Last) {
+        newCost = price;
+      } else if (strategy === CostUpdateStrategy.Average) {
+        const currentStock = material.stock || 0;
+        const currentCost = material.cost || 0;
+        if (material.cost === null || material.cost === undefined) {
+          newCost = price;
+        } else {
+          newCost = (currentStock * currentCost + qty * price) / (currentStock + qty);
+        }
+      }
+
+      await this.materialRepo.update(material.id, {
+        stock: material.stock + qty,
+        cost: newCost,
+      });
+
+      const invoiceItem = this.purchaseInvoiceItemRepo.create({
+        purchaseInvoice: savedInvoice,
+        material: material,
+        quantity: qty,
+        unitPrice: price,
+        costUpdateStrategy: strategy,
+        previousStock: previousStock,
+        previousCost: previousCost,
+      });
+      savedItems.push(await this.purchaseInvoiceItemRepo.save(invoiceItem));
+    }
+
+    savedInvoice.items = savedItems;
+    return savedInvoice;
+  }
+
+  async deletePurchaseInvoice(shopId: string, id: string, revertStock: boolean) {
+    const invoice = await this.purchaseInvoiceRepo.findOne({
+      where: { id, shop: { id: shopId } },
+      relations: ['items', 'items.material'],
+    });
+    if (!invoice) {
+      throw new NotFoundException('Purchase invoice not found');
+    }
+
+    if (revertStock) {
+      for (const item of invoice.items || []) {
+        if (item.material) {
+          const updateData: any = {
+            stock: () => `stock - ${item.quantity}`,
+          };
+          if (item.previousCost !== null && item.previousCost !== undefined) {
+            updateData.cost = item.previousCost;
+          }
+          await this.materialRepo.update(item.material.id, updateData);
+        }
+      }
+    }
+
+    return this.purchaseInvoiceRepo.delete(id);
   }
 }

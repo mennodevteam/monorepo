@@ -2,7 +2,7 @@ import { Controller, Get, Post, Put, Patch, Delete, Body, Param, Query, UseGuard
 import { ApiKeyAuthGuard } from '../auth/api-key-auth.guard';
 import { RequiredScopes } from '../auth/scopes.decorator';
 import { RequestShop } from './shop.decorator';
-import { Shop, Product, Order, FilterOrderDto, ProductCategory, Member, FilterMemberV2Dto, Material, BillOfMaterial, BillOfProduct, InventoryTransaction, MenuCost } from '@menno/types';
+import { Shop, Product, Order, FilterOrderDto, ProductCategory, Member, FilterMemberV2Dto, Material, BillOfMaterial, BillOfProduct, InventoryTransaction, MenuCost, PurchaseInvoice, PurchaseInvoiceItem } from '@menno/types';
 import { ShopIntegrationService } from './shop-integration.service';
 import { Public } from '../auth/public.decorator';
 
@@ -189,6 +189,35 @@ To protect database integrity and prevent unintended customer communications, th
               costUpdateStrategy: { type: 'integer', description: '0: Average, 1: Last, 2: Manual, 3: None' },
             },
             required: ['material', 'type', 'quantity'],
+          },
+          PurchaseInvoice: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              date: { type: 'string', format: 'date-time' },
+              supplier: { type: 'string', nullable: true },
+              description: { type: 'string', nullable: true },
+              items: {
+                type: 'array',
+                items: {
+                  $ref: '#/components/schemas/PurchaseInvoiceItem',
+                },
+              },
+            },
+            required: ['items'],
+          },
+          PurchaseInvoiceItem: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              material: { type: 'object', properties: { id: { type: 'string' } } },
+              quantity: { type: 'number' },
+              unitPrice: { type: 'number' },
+              costUpdateStrategy: { type: 'string', enum: ['average', 'last', 'current'] },
+              previousStock: { type: 'number', nullable: true },
+              previousCost: { type: 'number', nullable: true },
+            },
+            required: ['material', 'quantity', 'unitPrice'],
           },
           MenuCost: {
             type: 'object',
@@ -673,6 +702,61 @@ To protect database integrity and prevent unintended customer communications, th
               },
             },
           },
+          '/inventory/purchase-invoices': {
+            get: {
+              summary: 'Retrieve purchase invoices history',
+              description: 'Returns the full list of purchase invoices registered for this shop. Required scope: inventory:read',
+              responses: {
+                200: {
+                  description: 'Successful Response',
+                },
+              },
+            },
+            post: {
+              summary: 'Create a purchase invoice',
+              description: 'Registers a new purchase invoice, updating material stock quantities and unit costs in the warehouse. Required scope: inventory:write',
+              requestBody: {
+                required: true,
+                content: {
+                  'application/json': {
+                    schema: {
+                      $ref: '#/components/schemas/PurchaseInvoice',
+                    },
+                  },
+                },
+              },
+              responses: {
+                201: {
+                  description: 'Purchase invoice created and stock/costs updated successfully',
+                },
+              },
+            },
+          },
+          '/inventory/purchase-invoices/{id}': {
+            delete: {
+              summary: 'Delete a purchase invoice',
+              description: 'Deletes a purchase invoice history. Optional query parameter `revertStock` can be set to true to decrement material stock and revert cost. Required scope: inventory:write',
+              parameters: [
+                {
+                  name: 'id',
+                  in: 'path',
+                  required: true,
+                  schema: { type: 'string' },
+                },
+                {
+                  name: 'revertStock',
+                  in: 'query',
+                  required: false,
+                  schema: { type: 'boolean', default: false },
+                },
+              ],
+              responses: {
+                200: {
+                  description: 'Purchase invoice deleted successfully',
+                },
+              },
+            },
+          },
           '/inventory/profit': {
             get: {
               summary: 'Get cost price and profit per product',
@@ -961,5 +1045,32 @@ To protect database integrity and prevent unintended customer communications, th
   @RequiredScopes('menu:write')
   async deleteMenuCost(@RequestShop() shop: Shop, @Param('id') id: string) {
     return this.integrationService.deleteMenuCost(shop.id, Number(id));
+  }
+
+  // Inventory: Purchase Invoices
+  @Get('inventory/purchase-invoices')
+  @UseGuards(ApiKeyAuthGuard)
+  @RequiredScopes('inventory:read')
+  async getPurchaseInvoices(@RequestShop() shop: Shop) {
+    return this.integrationService.getPurchaseInvoices(shop.id);
+  }
+
+  @Post('inventory/purchase-invoices')
+  @UseGuards(ApiKeyAuthGuard)
+  @RequiredScopes('inventory:write')
+  async createPurchaseInvoice(@RequestShop() shop: Shop, @Body() dto: Partial<PurchaseInvoice>) {
+    return this.integrationService.createPurchaseInvoice(shop.id, dto);
+  }
+
+  @Delete('inventory/purchase-invoices/:id')
+  @UseGuards(ApiKeyAuthGuard)
+  @RequiredScopes('inventory:write')
+  async deletePurchaseInvoice(
+    @RequestShop() shop: Shop,
+    @Param('id') id: string,
+    @Query('revertStock') revertStock: string,
+  ) {
+    const revert = revertStock === 'true';
+    return this.integrationService.deletePurchaseInvoice(shop.id, id, revert);
   }
 }

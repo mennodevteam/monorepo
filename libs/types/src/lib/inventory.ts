@@ -67,3 +67,25 @@ export class BillOfProduct {
   quantity: number;
   shop: Shop;
 }
+
+export class PurchaseInvoice {
+  id: string;
+  date: Date;
+  supplier?: string;
+  description?: string;
+  createdAt: Date;
+  shop: Shop;
+  items: PurchaseInvoiceItem[];
+}
+
+export class PurchaseInvoiceItem {
+  id: string;
+  purchaseInvoice: PurchaseInvoice;
+  material: Material;
+  quantity: number;
+  unitPrice: number;
+  costUpdateStrategy: CostUpdateStrategy;
+  previousStock?: number;
+  previousCost?: number;
+}
+

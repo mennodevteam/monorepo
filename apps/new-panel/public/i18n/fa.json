@@ -192,6 +192,7 @@
     "dashboard": "داشبورد عملکرد فروش",
     "analytics": "آنالیتیکس",
     "materials": "مواد اولیه",
+    "purchaseInvoices": "فاکتورهای خرید",
     "bom": "فرمول ساخت {{value}}",
     "sms": "گزارش پیامک‌های ارسالی",
     "aiSection": "هوش مصنوعی",
@@ -1336,5 +1337,25 @@
     "noCategoriesSelected": "هیچ دسته‌بندی‌ای انتخاب نشده است",
     "showMore": "نمایش دکمه مشاهده همه",
     "sortSections": "مرتب‌سازی بخش‌ها"
+  },
+  "purchaseInvoices": {
+    "title": "فاکتورهای خرید انبار",
+    "history": "تاریخچه خریدها",
+    "createNew": "ثبت فاکتور خرید جدید",
+    "supplier": "تامین‌کننده / محل خرید",
+    "description": "توضیحات فاکتور",
+    "date": "تاریخ فاکتور",
+    "save": "ذخیره فاکتور خرید",
+    "searchMaterial": "جستجوی ماده اولیه...",
+    "priceUpdateStrategy": "نحوه بروزرسانی قیمت انبار",
+    "confirmDelete": "آیا از حذف این فاکتور مطمئن هستید؟",
+    "revertStockQuestion": "آیا می‌خواهید موجودی مواد اولیه این فاکتور نیز از انبار کسر و به حالت قبل برگردد؟",
+    "deleteInvoice": "حذف فاکتور",
+    "itemsCount": "تعداد اقلام",
+    "totalAmount": "جمع کل خرید",
+    "materialName": "نام ماده اولیه",
+    "quantity": "مقدار",
+    "unitPrice": "قیمت واحد",
+    "priceStrategy": "استراتژی قیمت"
   }
 }

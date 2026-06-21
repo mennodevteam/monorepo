@@ -1,0 +1,222 @@
+<mat-toolbar class="content-toolbar" fxLayoutGap="8px">
+  <h1 fxFlex>{{ 'purchaseInvoices.title' | translate }}</h1>
+  @if (viewMode() === 'list') {
+    <button mat-flat-button color="primary" (click)="setViewMode('create')">
+      <ng-icon name="saxAddOutline"></ng-icon>
+      {{ 'purchaseInvoices.createNew' | translate }}
+    </button>
+  } @else {
+    <button mat-stroked-button (click)="setViewMode('list')">
+      {{ 'app.cancel' | translate }}
+    </button>
+  }
+</mat-toolbar>
+
+<main p-md>
+  @if (viewMode() === 'create') {
+    <div fxLayout="column" fxLayoutGap="24px">
+      <mat-card appearance="outlined">
+        <mat-card-content fxLayout="column" fxLayoutGap="16px">
+          <h2 style="font-weight: 500; margin: 0;">{{ 'purchaseInvoices.createNew' | translate }}</h2>
+
+          <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="16px">
+            <mat-form-field appearance="outline" fxFlex>
+              <mat-label>{{ 'purchaseInvoices.supplier' | translate }}</mat-label>
+              <input matInput [(ngModel)]="invoiceForm.supplier" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex>
+              <mat-label>{{ 'purchaseInvoices.date' | translate }}</mat-label>
+              <input matInput [matDatepicker]="picker" [(ngModel)]="invoiceForm.date" />
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="16px">
+            <mat-form-field appearance="outline" fxFlex>
+              <mat-label>{{ 'purchaseInvoices.description' | translate }}</mat-label>
+              <textarea matInput [(ngModel)]="invoiceForm.description" rows="2"></textarea>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex>
+              <mat-label>{{ 'purchaseInvoices.priceUpdateStrategy' | translate }}</mat-label>
+              <mat-select [(ngModel)]="invoiceForm.costUpdateStrategy">
+                <mat-option [value]="CostUpdateStrategy.Last">
+                  {{ 'materials.costUpdateStrategy.' + CostUpdateStrategy.Last | translate }}
+                </mat-option>
+                <mat-option [value]="CostUpdateStrategy.Average">
+                  {{ 'materials.costUpdateStrategy.' + CostUpdateStrategy.Average | translate }}
+                </mat-option>
+                <mat-option [value]="CostUpdateStrategy.Current">
+                  {{ 'materials.costUpdateStrategy.' + CostUpdateStrategy.Current | translate }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card appearance="outlined">
+        <mat-card-content fxLayout="column" fxLayoutGap="16px">
+          <h3 style="font-weight: 500; margin: 0;">{{ 'purchaseInvoices.searchMaterial' | translate }}</h3>
+
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>{{ 'app.search' | translate }}</mat-label>
+            <input
+              type="text"
+              matInput
+              [matAutocomplete]="auto"
+              [(ngModel)]="searchQuery"
+              (ngModelChange)="filterMaterials($event)"
+              placeholder="مثلا: شکر، شیر ..."
+            />
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onMaterialSelected($event)">
+              @for (mat of filteredMaterials(); track mat.id) {
+                <mat-option [value]="mat">
+                  {{ mat.name }} ({{ 'materials.units.' + mat.unit | translate }})
+                </mat-option>
+              }
+            </mat-autocomplete>
+          </mat-form-field>
+
+          @if (invoiceItems().length > 0) {
+            <div class="invoices-table-container">
+              <table class="np-table w-100" style="border-collapse: collapse;">
+                <thead>
+                  <tr style="text-align: right; border-bottom: 1px solid var(--border-color);">
+                    <th style="padding: 12px;">{{ 'purchaseInvoices.materialName' | translate }}</th>
+                    <th style="padding: 12px;">{{ 'purchaseInvoices.quantity' | translate }}</th>
+                    <th style="padding: 12px;">{{ 'purchaseInvoices.unitPrice' | translate }}</th>
+                    <th style="padding: 12px;">{{ 'app.total' | translate }}</th>
+                    <th style="padding: 12px; width: 60px;"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of invoiceItems(); track item.material.id; let idx = $index) {
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                      <td style="padding: 12px;">{{ item.material.name }}</td>
+                      <td style="padding: 12px;">
+                        <span eng>{{ item.quantity | number }}</span> {{ 'materials.units.' + item.material.unit | translate }}
+                      </td>
+                      <td style="padding: 12px;">
+                        <span eng>{{ item.unitPrice | number | menuCurrency }}</span>
+                      </td>
+                      <td style="padding: 12px;">
+                        <span eng>{{ (item.quantity * item.unitPrice) | number | menuCurrency }}</span>
+                      </td>
+                      <td style="padding: 12px; text-align: center;">
+                        <button mat-icon-button color="warn" (click)="removeItem(idx)">
+                          <ng-icon name="saxTrashOutline"></ng-icon>
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-top: 16px;">
+              <span style="font-weight: 500;">
+                {{ 'purchaseInvoices.totalAmount' | translate }}: <span eng>{{ totalAmount() | number | menuCurrency }}</span>
+              </span>
+              <button mat-flat-button color="primary" [disabled]="isSaving()" (click)="saveInvoice()">
+                {{ 'app.save' | translate }}
+              </button>
+            </div>
+          } @else {
+            <div style="text-align: center; padding: 24px; color: var(--text-muted);">
+              هیچ ماده اولیه‌ای به فاکتور اضافه نشده است. از جعبه جستجوی بالا مواد اولیه را پیدا کرده و وارد فاکتور کنید.
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+    </div>
+  } @else {
+    @if (materialsService.purchaseInvoicesQuery.isLoading()) {
+      <app-data-loading />
+    } @else {
+      @let invoices = materialsService.purchaseInvoicesQuery.data() || [];
+      @if (invoices.length > 0) {
+        <div fxLayout="column" fxLayoutGap="16px">
+          @for (invoice of invoices; track invoice.id) {
+            <mat-card appearance="outlined">
+              <mat-card-content fxLayout="column" fxLayoutGap="12px">
+                <div fxLayout="row" fxLayoutAlign="space-between start">
+                  <div fxLayout="column" fxLayoutGap="4px">
+                    <span style="font-weight: 500; font-size: 1.1rem;">
+                      {{ invoice.supplier || 'تامین‌کننده ثبت نشده' }}
+                    </span>
+                    <span style="color: var(--text-secondary); font-size: 0.85rem;" eng>
+                      {{ invoice.date | date: 'yyyy/MM/dd HH:mm' }}
+                    </span>
+                  </div>
+                  <div>
+                    <button mat-icon-button color="warn" (click)="deleteInvoice(invoice)">
+                      <ng-icon name="saxTrashOutline"></ng-icon>
+                    </button>
+                  </div>
+                </div>
+
+                @if (invoice.description) {
+                  <p style="margin: 0; font-size: 0.9rem; color: var(--text-secondary);">
+                    {{ invoice.description }}
+                  </p>
+                }
+
+                <mat-divider />
+
+                <div class="invoices-table-container">
+                  <table class="np-table w-100" style="border-collapse: collapse; font-size: 0.85rem;">
+                    <thead>
+                      <tr style="text-align: right; color: var(--text-secondary); border-bottom: 1px solid var(--border-color);">
+                        <th style="padding: 8px 0;">{{ 'purchaseInvoices.materialName' | translate }}</th>
+                        <th style="padding: 8px 0;">{{ 'purchaseInvoices.quantity' | translate }}</th>
+                        <th style="padding: 8px 0;">{{ 'purchaseInvoices.unitPrice' | translate }}</th>
+                        <th style="padding: 8px 0;">{{ 'app.total' | translate }}</th>
+                        <th style="padding: 8px 0;">{{ 'purchaseInvoices.priceStrategy' | translate }}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (item of invoice.items; track item.id) {
+                        <tr style="border-bottom: 1px dashed var(--border-color);">
+                          <td style="padding: 8px 0;">{{ item.material?.name || 'ماده اولیه حذف شده' }}</td>
+                          <td style="padding: 8px 0;">
+                            <span eng>{{ item.quantity | number }}</span> {{ 'materials.units.' + item.material?.unit | translate }}
+                          </td>
+                          <td style="padding: 8px 0;">
+                            <span eng>{{ item.unitPrice | number | menuCurrency }}</span>
+                          </td>
+                          <td style="padding: 8px 0;">
+                            <span eng>{{ (item.quantity * item.unitPrice) | number | menuCurrency }}</span>
+                          </td>
+                          <td style="padding: 8px 0;">
+                            <span class="status-badge" [class]="getStrategyBadgeClass(item.costUpdateStrategy)">
+                              {{ 'materials.costUpdateStrategy.' + item.costUpdateStrategy | translate }}
+                            </span>
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-top: 8px; font-weight: 500;">
+                  <span>{{ 'purchaseInvoices.itemsCount' | translate }}: <span eng>{{ invoice.items?.length }}</span></span>
+                  <span>{{ 'purchaseInvoices.totalAmount' | translate }}: <span eng>{{ getInvoiceTotal(invoice) | number | menuCurrency }}</span></span>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          }
+        </div>
+      } @else {
+        <app-empty-state
+          icon="receipt"
+          [text]="'هیچ فاکتور خریدی ثبت نشده است.'"
+          [action]="{ label: 'purchaseInvoices.createNew' | translate, icon: 'plus' }"
+          (actionClick)="setViewMode('create')"
+        />
+      }
+    }
+  }
+</main>

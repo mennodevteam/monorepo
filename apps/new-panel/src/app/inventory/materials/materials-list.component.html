@@ -17,6 +17,10 @@
         : ('materials.uploadCsv' | translate)
     }}
   </button>
+  <button mat-stroked-button routerLink="/admin/inventory/purchase-invoices">
+    <ng-icon name="saxReceipt2Outline"></ng-icon>
+    {{ 'nav.purchaseInvoices' | translate }}
+  </button>
   <button mat-flat-button color="primary" (click)="openMaterialDialog()">{{ 'app.add' | translate }}</button>
 </mat-toolbar>
 <main p-md>
