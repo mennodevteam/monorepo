@@ -471,7 +471,7 @@ To protect database integrity and prevent unintended customer communications, th
           '/customers/messages': {
             post: {
               summary: 'Send SMS to customers',
-              description: 'Sends arbitrary SMS text messages to a list of customer mobile numbers, or to all customers matching a filter. Required scope: customers:write',
+              description: 'Sends arbitrary SMS text messages to a list of customer mobile numbers, or to all customers matching a filter. Required scope: sms:write',
               requestBody: {
                 required: true,
                 content: {
@@ -853,7 +853,7 @@ To protect database integrity and prevent unintended customer communications, th
 
   @Post('customers/messages')
   @UseGuards(ApiKeyAuthGuard)
-  @RequiredScopes('customers:write')
+  @RequiredScopes('sms:write')
   async sendCustomerSms(
     @RequestShop() shop: Shop,
     @Body() dto: { receptors?: string[]; message: string; filter?: FilterMemberV2Dto },

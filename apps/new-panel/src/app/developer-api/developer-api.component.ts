@@ -18,6 +18,7 @@ import { SHARED } from '../shared';
 import { DialogService } from '../core/services/dialog.service';
 import { ShopApiKey } from '@menno/types';
 import { environment } from '../../environments/environment';
+import { ShopService } from '../shop/shop.service';
 
 @Component({
   selector: 'app-developer-api',
@@ -43,9 +44,11 @@ export class DeveloperApiComponent implements OnInit {
   private readonly translate = inject(TranslateService);
   private readonly snack = inject(MatSnackBar);
   private readonly queryClient = injectQueryClient();
+  private readonly shop = inject(ShopService);
 
   readonly openApiUrl = `${environment.apiUrl.replace(/\/+$/, '')}/api/v1/shop-integration/openapi.json`;
   readonly newGeneratedKey = signal<string | null>(null);
+  readonly smsCharge = computed(() => this.shop.data()?.smsAccount?.charge ?? 0);
 
   ngOnInit() {
     const onboardingSeen = localStorage.getItem('menno_onboarding_developer_api');
@@ -108,6 +111,11 @@ export class DeveloperApiComponent implements OnInit {
             { value: 'reports:read', text: 'گزارشات: خواندن (گزارش‌های فروش)' },
             { value: 'shop:read', text: 'تنظیمات فروشگاه: خواندن' },
             { value: 'shop:write', text: 'تنظیمات فروشگاه: نوشتن' },
+            { value: 'customers:read', text: 'مشتریان: خواندن (اعضای باشگاه مشتریان)' },
+            { value: 'customers:write', text: 'مشتریان: نوشتن (افزودن و ویرایش اطلاعات)' },
+            { value: 'sms:write', text: 'پیامک: ارسال پیامک به مشتریان' },
+            { value: 'inventory:read', text: 'انبارداری و فرمول ساخت: خواندن' },
+            { value: 'inventory:write', text: 'انبارداری و فرمول ساخت: نوشتن (تراکنش انبار و دستور تهیه)' },
           ],
         },
       })

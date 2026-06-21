@@ -190,6 +190,21 @@
 
     <!-- Right Column: Sidebar / Help / Examples -->
     <div class="preview-section" fxLayout="column" fxLayoutGap="24px">
+      <!-- SMS Balance Card -->
+      <mat-card appearance="outlined" style="background: linear-gradient(135deg, #fef7e0, #fffcf0); border: 1px solid #ffe082;">
+        <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px" style="padding: 16px;">
+          <div style="background-color: #fff3cd; color: #ffc107; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px;">
+            <ng-icon name="saxSmsOutline" style="font-size: 1.5rem;"></ng-icon>
+          </div>
+          <div fxFlex>
+            <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 500;">میزان شارژ پیامک فروشگاه</div>
+            <div style="font-size: 1.15rem; font-weight: 700; color: #b78103; margin-top: 4px; font-family: 'Estedad';">
+              {{ smsCharge() | number }} <span style="font-size: 0.75rem; font-weight: 500;">ریال</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
       <!-- Steps to connect -->
       <mat-card appearance="outlined">
         <mat-card-header>
