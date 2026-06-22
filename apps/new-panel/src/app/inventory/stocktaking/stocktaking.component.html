@@ -1,0 +1,236 @@
+<mat-toolbar class="content-toolbar" fxLayoutGap="8px">
+  @if (viewMode() === 'list') {
+    <button mat-icon-button routerLink="/admin/inventory/materials">
+      <ng-icon name="saxArrowRight3Bold"></ng-icon>
+    </button>
+    <h1 fxFlex>{{ 'stocktaking.title' | translate }}</h1>
+    <button mat-flat-button color="primary" (click)="setViewMode('create')">
+      <ng-icon name="saxAddOutline"></ng-icon>
+      {{ 'stocktaking.createNew' | translate }}
+    </button>
+  } @else if (viewMode() === 'create') {
+    <button mat-icon-button (click)="setViewMode('list')">
+      <ng-icon name="saxArrowRight3Bold"></ng-icon>
+    </button>
+    <h1 fxFlex>{{ 'stocktaking.createNew' | translate }}</h1>
+    <button mat-flat-button color="primary" [disabled]="isSaving() || stocktakingItems().length === 0" (click)="saveStocktaking()">
+      {{ 'app.save' | translate }}
+    </button>
+  } @else if (viewMode() === 'detail') {
+    @let stocktaking = selectedStocktaking();
+    <button mat-icon-button (click)="setViewMode('list')">
+      <ng-icon name="saxArrowRight3Bold"></ng-icon>
+    </button>
+    @if (stocktaking) {
+      <div fxLayout="column" style="line-height: 1.2;">
+        <span style="font-weight: 500; font-size: 0.95rem; font-family: 'Estedad';">
+          {{ stocktaking.description || 'بدون توضیحات' }}
+        </span>
+        <span style="font-size: 0.72rem; color: var(--text-muted);">
+          {{ stocktaking.date | pdate: true }}
+        </span>
+      </div>
+      <span fxFlex></span>
+      <button mat-icon-button color="warn" (click)="deleteStocktaking(stocktaking); $event.stopPropagation()">
+        <ng-icon name="saxTrashOutline"></ng-icon>
+      </button>
+    }
+  }
+</mat-toolbar>
+
+<main p-md w-lg>
+  @if (viewMode() === 'create') {
+    <div fxLayout="column" fxLayoutGap="24px" class="animate-slide-up">
+      <mat-card appearance="outlined">
+        <mat-card-content fxLayout="column" fxLayoutGap="16px">
+          <h2 style="font-weight: 500; margin: 0;">{{ 'stocktaking.createNew' | translate }}</h2>
+
+          <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="16px">
+            <mat-form-field appearance="outline" fxFlex>
+              <mat-label>{{ 'stocktaking.date' | translate }}</mat-label>
+              <input matInput [matDatepicker]="picker" [(ngModel)]="stocktakingForm.date" />
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex>
+              <mat-label>{{ 'stocktaking.description' | translate }}</mat-label>
+              <input matInput [(ngModel)]="stocktakingForm.description" />
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card appearance="outlined">
+        <mat-card-content fxLayout="column" fxLayoutGap="16px">
+          <h3 style="font-weight: 500; margin: 0;">{{ 'stocktaking.searchMaterial' | translate }}</h3>
+
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>{{ 'app.search' | translate }}</mat-label>
+            <input
+              type="text"
+              matInput
+              [matAutocomplete]="auto"
+              [(ngModel)]="searchQuery"
+              (ngModelChange)="filterMaterials($event)"
+              placeholder="مثلا: شکر، شیر ..."
+            />
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onMaterialSelected($event)">
+              @for (mat of filteredMaterials(); track mat.id) {
+                <mat-option [value]="mat">
+                  {{ mat.name }} ({{ 'materials.units.' + mat.unit | translate }})
+                </mat-option>
+              }
+            </mat-autocomplete>
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+
+      @if (stocktakingItems().length > 0) {
+        <mat-card appearance="outlined">
+          <mat-card-content style="padding: 0;">
+            <div class="invoices-table-container">
+              <table class="np-table">
+                <thead>
+                  <tr>
+                    <th>{{ 'stocktaking.materialName' | translate }}</th>
+                    <th>{{ 'stocktaking.previousStock' | translate }}</th>
+                    <th>{{ 'stocktaking.countedQuantity' | translate }}</th>
+                    <th style="width: 60px; text-align: center;"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of stocktakingItems(); track item.material.id; let idx = $index) {
+                    <tr>
+                      <td>{{ item.material.name }}</td>
+                      <td>
+                        <span eng>{{ item.material.stock | number }}</span> {{ 'materials.units.' + item.material.unit | translate }}
+                      </td>
+                      <td>
+                        <span eng style="color: var(--primary-color); font-weight: 600;">{{ item.countedQuantity | number }}</span> {{ 'materials.units.' + item.material.unit | translate }}
+                      </td>
+                      <td style="text-align: center;">
+                        <button mat-icon-button color="warn" (click)="removeItem(idx)">
+                          <ng-icon name="saxTrashOutline"></ng-icon>
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <div fxLayout="row" fxLayoutAlign="space-between center" style="padding: 4px 16px; font-weight: 500; font-size: 0.95rem;">
+          <span>
+            {{ 'stocktaking.itemsCount' | translate }}: <span eng>{{ stocktakingItems().length }}</span>
+          </span>
+        </div>
+      }
+    </div>
+  } @else if (viewMode() === 'list') {
+    @if (materialsService.stocktakingsQuery.isLoading()) {
+      <app-data-loading />
+    } @else {
+      @let stocktakings = materialsService.stocktakingsQuery.data() || [];
+      @if (stocktakings.length > 0) {
+        <mat-card appearance="outlined" class="animate-slide-up">
+          <mat-card-content style="padding: 0;">
+            <div class="invoices-table-container">
+              <table class="np-table">
+                <thead>
+                  <tr>
+                    <th>{{ 'stocktaking.description' | translate }}</th>
+                    <th>{{ 'app.date' | translate }}</th>
+                    <th>{{ 'stocktaking.itemsCount' | translate }}</th>
+                    <th style="width: 80px; text-align: center;">{{ 'app.actions' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (st of stocktakings; track st.id) {
+                    <tr (click)="showStocktakingDetails(st)" style="cursor: pointer;" class="clickable-row">
+                      <td>
+                        <span style="font-weight: 500;">
+                          {{ st.description || 'بدون توضیحات' }}
+                        </span>
+                      </td>
+                      <td>
+                        {{ st.date | pdate }}
+                      </td>
+                      <td eng>
+                        {{ st.items?.length || 0 }}
+                      </td>
+                      <td style="text-align: center;">
+                        <button mat-icon-button color="warn" (click)="deleteStocktaking(st); $event.stopPropagation()">
+                          <ng-icon name="saxTrashOutline"></ng-icon>
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      } @else {
+        <app-empty-state
+          icon="warehouse-full"
+          [text]="'هیچ انبارگردانی ثبت نشده است.'"
+          [action]="{ label: 'stocktaking.createNew' | translate, icon: 'plus' }"
+          (actionClick)="setViewMode('create')"
+        />
+      }
+    }
+  } @else if (viewMode() === 'detail') {
+    @let stocktaking = selectedStocktaking();
+    @if (stocktaking) {
+      <div fxLayout="column" fxLayoutGap="16px" class="animate-slide-up">
+        @if (stocktaking.description) {
+          <mat-card appearance="outlined">
+            <mat-card-content style="padding: 12px 16px;">
+              <p style="margin: 0; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+                {{ stocktaking.description }}
+              </p>
+            </mat-card-content>
+          </mat-card>
+        }
+
+        <mat-card appearance="outlined">
+          <mat-card-content style="padding: 0;">
+            <div class="invoices-table-container">
+              <table class="np-table">
+                <thead>
+                  <tr>
+                    <th>{{ 'stocktaking.materialName' | translate }}</th>
+                    <th>{{ 'stocktaking.previousStock' | translate }}</th>
+                    <th>{{ 'stocktaking.countedQuantity' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of stocktaking.items; track item.id) {
+                    <tr>
+                      <td>{{ item.material?.name || 'ماده اولیه حذف شده' }}</td>
+                      <td>
+                        <span eng>{{ item.previousStock | number }}</span> {{ 'materials.units.' + item.material?.unit | translate }}
+                      </td>
+                      <td>
+                        <span eng style="font-weight: 500; color: var(--primary-color);">{{ item.countedQuantity | number }}</span> {{ 'materials.units.' + item.material?.unit | translate }}
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <div fxLayout="row" fxLayoutAlign="space-between center" style="padding: 4px 16px; font-weight: 500; font-size: 0.95rem;">
+          <span>
+            {{ 'stocktaking.itemsCount' | translate }}: <span eng>{{ stocktaking.items?.length || 0 }}</span>
+          </span>
+        </div>
+      </div>
+    }
+  }
+</main>

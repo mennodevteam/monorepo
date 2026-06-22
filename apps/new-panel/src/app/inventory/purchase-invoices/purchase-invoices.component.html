@@ -1,5 +1,8 @@
 <mat-toolbar class="content-toolbar" fxLayoutGap="8px">
   @if (viewMode() === 'list') {
+    <button mat-icon-button routerLink="/admin/inventory/materials">
+      <ng-icon name="saxArrowRight3Bold"></ng-icon>
+    </button>
     <h1 fxFlex>{{ 'purchaseInvoices.title' | translate }}</h1>
     <button mat-flat-button color="primary" (click)="setViewMode('create')">
       <ng-icon name="saxAddOutline"></ng-icon>

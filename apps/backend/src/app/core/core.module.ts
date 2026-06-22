@@ -57,6 +57,8 @@ import {
   ShopApiKeySchema,
   PurchaseInvoiceSchema,
   PurchaseInvoiceItemSchema,
+  StocktakingSchema,
+  StocktakingItemSchema,
 } from './schemas';
 import { RedisService } from './redis.service';
 import { HttpModule } from '@nestjs/axios';
@@ -123,6 +125,8 @@ import { ChatSchema } from './schemas/chat.schema';
       ShopApiKeySchema,
       PurchaseInvoiceSchema,
       PurchaseInvoiceItemSchema,
+      StocktakingSchema,
+      StocktakingItemSchema,
     ]),
   ],
   providers: [RedisService],

@@ -1360,5 +1360,21 @@
     "priceStrategy": "استراتژی قیمت",
     "details": "جزئیات فاکتور",
     "previousCost": "قیمت قبلی: {{price}} تومان"
+  },
+  "stocktaking": {
+    "title": "لیست‌های انبارگردانی",
+    "createNew": "ثبت لیست انبارگردانی جدید",
+    "description": "توضیحات",
+    "date": "تاریخ انبارگردانی",
+    "save": "ثبت انبارگردانی",
+    "searchMaterial": "جستجوی ماده اولیه...",
+    "confirmDelete": "آیا از حذف این انبارگردانی مطمئن هستید؟",
+    "revertStockQuestion": "آیا می‌خواهید موجودی مواد اولیه به حالت قبل از این انبارگردانی برگردد؟",
+    "deleteTitle": "حذف انبارگردانی",
+    "itemsCount": "تعداد اقلام",
+    "materialName": "نام ماده اولیه",
+    "previousStock": "موجودی قبل",
+    "countedQuantity": "مقدار شمارش‌شده",
+    "details": "جزئیات انبارگردانی"
   }
 }

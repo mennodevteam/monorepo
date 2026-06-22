@@ -8,6 +8,7 @@ import {
   InventoryTransactionType,
   Material,
   PurchaseInvoice,
+  Stocktaking,
 } from '@menno/types';
 import { injectMutation, injectQuery, injectQueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
@@ -272,6 +273,37 @@ export class MaterialsService {
       ),
     onSuccess: () => {
       this.queryClient.invalidateQueries({ queryKey: ['purchaseInvoices'] });
+      this.queryClient.invalidateQueries({ queryKey: ['materials'] });
+    },
+    onError: () => {
+      this.snack.open(this.translate.instant('errors.changeError'), '', { duration: 2000 });
+    },
+  }));
+
+  public stocktakingsQuery = injectQuery(() => ({
+    queryKey: ['stocktakings'],
+    queryFn: () => lastValueFrom(this.http.get<Stocktaking[]>(`${this.baseUrl}/stocktakings`)),
+  }));
+
+  public saveStocktakingMutation = injectMutation(() => ({
+    mutationFn: (data: Partial<Stocktaking>) =>
+      lastValueFrom(this.http.post<Stocktaking>(`${this.baseUrl}/stocktakings`, data)),
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: ['stocktakings'] });
+      this.queryClient.invalidateQueries({ queryKey: ['materials'] });
+    },
+    onError: () => {
+      this.snack.open(this.translate.instant('errors.changeError'), '', { duration: 2000 });
+    },
+  }));
+
+  public deleteStocktakingMutation = injectMutation(() => ({
+    mutationFn: ({ id, revertStock }: { id: string; revertStock: boolean }) =>
+      lastValueFrom(
+        this.http.delete<void>(`${this.baseUrl}/stocktakings/${id}?revertStock=${revertStock}`),
+      ),
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: ['stocktakings'] });
       this.queryClient.invalidateQueries({ queryKey: ['materials'] });
     },
     onError: () => {

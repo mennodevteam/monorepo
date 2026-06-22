@@ -17,26 +17,33 @@
         : ('materials.uploadCsv' | translate)
     }}
   </button>
-  <button mat-stroked-button routerLink="/admin/inventory/purchase-invoices">
-    <ng-icon name="saxReceipt2Outline"></ng-icon>
-    {{ 'nav.purchaseInvoices' | translate }}
-  </button>
   <button mat-flat-button color="primary" (click)="openMaterialDialog()">{{ 'app.add' | translate }}</button>
 </mat-toolbar>
 <main p-md>
-  <!-- Educational Promo Banner -->
-  <mat-card class="promo-card blue">
-    <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
-      <div class="np-icon-badge"><ng-icon name="saxInfoCircleOutline"></ng-icon></div>
-      <div fxFlex>
-        <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
-          <p style="margin: 0 0 6px 0;"><strong>توجه:</strong> مواد اولیه کاملاً از محصولاتی که مشتری در سایت مشاهده می‌کند جدا است. محصولات نهایی تعریف‌شدۀ کاتالوگ ممکن است از ترکیب یک یا چند ماده اولیه تشکیل شوند. در این بخش ابتدا باید مواد اولیه و موجودی آن‌ها را تعریف کنید، تا بتوانید در بخش فرمول ساخت (BOM) آن‌ها را ترکیب کنید.</p>
-          <p style="margin: 0 0 6px 0;">سیستم به صورت خودکار تعداد دفعات تقریبی قابل تولید از هر محصول را بر اساس موجودی فعلی انبار محاسبه می‌کند. همچنین برای مشاهده گزارش تخمینی موجودی محصولات بر اساس مواد اولیه انبار، می‌توانید به بخش <a routerLink="/admin/menu/product-availability">وضعیت موجودی محصولات</a> مراجعه فرمایید.</p>
-          <p style="margin: 0;">برای ثبت خریدهای جدید، ثبت قیمت‌های خرید و افزایش خودکار موجودی مواد اولیه در انبار، می‌توانید از بخش <a routerLink="/admin/inventory/purchase-invoices">فاکتورهای خرید انبار</a> استفاده نمایید.</p>
-        </div>
+  <!-- Quick Access Hub -->
+  <div class="quick-actions-container">
+    <a class="action-card" routerLink="/admin/inventory/materials/purchase-invoices">
+      <div class="action-icon green">
+        <ng-icon name="saxReceipt2Outline"></ng-icon>
       </div>
-    </mat-card-content>
-  </mat-card>
+      <div class="action-details">
+        <span class="action-name">ثبت فاکتور خرید مواد اولیه</span>
+        <span class="action-desc">ثبت قیمت خرید مواد اولیه و افزایش موجودی انبار به همراه گزارش تاریخچه خریدها</span>
+      </div>
+      <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
+    </a>
+
+    <a class="action-card" routerLink="/admin/inventory/materials/stocktaking">
+      <div class="action-icon teal">
+        <ng-icon name="saxArchiveOutline"></ng-icon>
+      </div>
+      <div class="action-details">
+        <span class="action-name">ثبت لیست انبارگردانی</span>
+        <span class="action-desc">تنظیم دقیق و تصحیح موجودی مواد اولیه انبار با ثبت مقادیر شمارش شده جدید</span>
+      </div>
+      <ng-icon name="saxArrowLeftOutline" class="arrow-icon"></ng-icon>
+    </a>
+  </div>
 
   @let queryData = materialsService.materialsQuery.data();
   @if (queryData && queryData.length > 0) {
@@ -104,9 +111,6 @@
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element">
               <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
-                <button mat-stroked-button [disabled]="!element.id" (click)="openAdjustmentDialog(element)">
-                  {{ 'materials.adjustment' | translate }}
-                </button>
                 <button mat-icon-button [disabled]="!element.id" (click)="openEditDialog(element)">
                   <ng-icon name="saxEditOutline"></ng-icon>
                 </button>

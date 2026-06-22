@@ -23,6 +23,8 @@ import {
   MenuCost,
   PurchaseInvoice,
   PurchaseInvoiceItem,
+  Stocktaking,
+  StocktakingItem,
 } from '@menno/types';
 import { RedisService } from '../core/redis.service';
 import { OrdersService } from '../orders/orders.service';
@@ -56,6 +58,10 @@ export class ShopIntegrationService {
     private purchaseInvoiceRepo: Repository<PurchaseInvoice>,
     @InjectRepository(PurchaseInvoiceItem)
     private purchaseInvoiceItemRepo: Repository<PurchaseInvoiceItem>,
+    @InjectRepository(Stocktaking)
+    private stocktakingRepo: Repository<Stocktaking>,
+    @InjectRepository(StocktakingItem)
+    private stocktakingItemRepo: Repository<StocktakingItem>,
     private redis: RedisService,
     private ordersService: OrdersService,
     private clubsService: ClubsService,
@@ -643,5 +649,76 @@ export class ShopIntegrationService {
     }
 
     return this.purchaseInvoiceRepo.delete(id);
+  }
+
+  // Stocktakings
+  async getStocktakings(shopId: string) {
+    return this.stocktakingRepo.find({
+      where: { shop: { id: shopId } },
+      relations: ['items', 'items.material'],
+      order: { date: 'DESC', createdAt: 'DESC' },
+    });
+  }
+
+  async createStocktaking(shopId: string, dto: Partial<Stocktaking>) {
+    const shop = await this.shopRepo.findOneBy({ id: shopId });
+    if (!shop) {
+      throw new NotFoundException('Shop not found');
+    }
+
+    const stocktaking = this.stocktakingRepo.create({
+      date: dto.date || new Date(),
+      description: dto.description,
+      shop: shop,
+    });
+    const savedStocktaking = await this.stocktakingRepo.save(stocktaking);
+
+    const savedItems: StocktakingItem[] = [];
+    for (const itemDto of dto.items || []) {
+      if (!itemDto.material?.id) continue;
+      const material = await this.materialRepo.findOne({
+        where: { id: itemDto.material.id, shop: { id: shopId } },
+      });
+      if (!material) continue;
+
+      const previousStock = material.stock;
+
+      await this.materialRepo.update(material.id, {
+        stock: itemDto.countedQuantity,
+      });
+
+      const stocktakingItem = this.stocktakingItemRepo.create({
+        stocktaking: savedStocktaking,
+        material: material,
+        countedQuantity: itemDto.countedQuantity,
+        previousStock: previousStock,
+      });
+      savedItems.push(await this.stocktakingItemRepo.save(stocktakingItem));
+    }
+
+    savedStocktaking.items = savedItems;
+    return savedStocktaking;
+  }
+
+  async deleteStocktaking(shopId: string, id: string, revertStock: boolean) {
+    const stocktaking = await this.stocktakingRepo.findOne({
+      where: { id, shop: { id: shopId } },
+      relations: ['items', 'items.material'],
+    });
+    if (!stocktaking) {
+      throw new NotFoundException('Stocktaking not found');
+    }
+
+    if (revertStock) {
+      for (const item of stocktaking.items || []) {
+        if (item.material && item.previousStock !== null && item.previousStock !== undefined) {
+          await this.materialRepo.update(item.material.id, {
+            stock: item.previousStock,
+          });
+        }
+      }
+    }
+
+    return this.stocktakingRepo.delete(id);
   }
 }

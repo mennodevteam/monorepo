@@ -89,3 +89,21 @@ export class PurchaseInvoiceItem {
   previousCost?: number;
 }
 
+export class Stocktaking {
+  id: string;
+  date: Date;
+  description?: string;
+  createdAt: Date;
+  shop: Shop;
+  items: StocktakingItem[];
+}
+
+export class StocktakingItem {
+  id: string;
+  stocktaking: Stocktaking;
+  material: Material;
+  countedQuantity: number;
+  previousStock?: number;
+}
+
+

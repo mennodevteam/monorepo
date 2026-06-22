@@ -9,6 +9,8 @@ import {
   MaterialUnit,
   PurchaseInvoice,
   PurchaseInvoiceItem,
+  Stocktaking,
+  StocktakingItem,
 } from '@menno/types';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
@@ -25,6 +27,10 @@ export class MaterialsController {
     private readonly purchaseInvoiceRepository: Repository<PurchaseInvoice>,
     @InjectRepository(PurchaseInvoiceItem)
     private readonly purchaseInvoiceItemRepository: Repository<PurchaseInvoiceItem>,
+    @InjectRepository(Stocktaking)
+    private readonly stocktakingRepository: Repository<Stocktaking>,
+    @InjectRepository(StocktakingItem)
+    private readonly stocktakingItemRepository: Repository<StocktakingItem>,
     private auth: AuthService,
   ) {}
 
@@ -191,5 +197,80 @@ export class MaterialsController {
     }
 
     return this.purchaseInvoiceRepository.delete(id);
+  }
+
+  @Get('stocktakings')
+  async findStocktakings(@LoginUser() user: AuthPayload) {
+    const shop = await this.auth.getPanelUserShop(user);
+    return this.stocktakingRepository.find({
+      where: { shop: { id: shop.id } },
+      relations: ['items', 'items.material'],
+      order: { date: 'DESC', createdAt: 'DESC' },
+    });
+  }
+
+  @Post('stocktakings')
+  async createStocktaking(@Body() dto: Partial<Stocktaking>, @LoginUser() user: AuthPayload) {
+    const shop = await this.auth.getPanelUserShop(user);
+    const stocktaking = this.stocktakingRepository.create({
+      date: dto.date || new Date(),
+      description: dto.description,
+      shop: shop,
+    });
+    const savedStocktaking = await this.stocktakingRepository.save(stocktaking);
+
+    const savedItems: StocktakingItem[] = [];
+    for (const itemDto of dto.items || []) {
+      if (!itemDto.material?.id) continue;
+      const material = await this.materialRepository.findOne({
+        where: { id: itemDto.material.id, shop: { id: shop.id } },
+      });
+      if (!material) continue;
+
+      const previousStock = material.stock;
+
+      await this.materialRepository.update(material.id, {
+        stock: itemDto.countedQuantity,
+      });
+
+      const stocktakingItem = this.stocktakingItemRepository.create({
+        stocktaking: savedStocktaking,
+        material: material,
+        countedQuantity: itemDto.countedQuantity,
+        previousStock: previousStock,
+      });
+      savedItems.push(await this.stocktakingItemRepository.save(stocktakingItem));
+    }
+
+    savedStocktaking.items = savedItems;
+    return savedStocktaking;
+  }
+
+  @Delete('stocktakings/:id')
+  async deleteStocktaking(
+    @Param('id') id: string,
+    @Query('revertStock') revertStock: string,
+    @LoginUser() user: AuthPayload,
+  ) {
+    const shop = await this.auth.getPanelUserShop(user);
+    const stocktaking = await this.stocktakingRepository.findOne({
+      where: { id, shop: { id: shop.id } },
+      relations: ['items', 'items.material'],
+    });
+    if (!stocktaking) {
+      throw new NotFoundException('Stocktaking not found');
+    }
+
+    if (revertStock === 'true') {
+      for (const item of stocktaking.items || []) {
+        if (item.material && item.previousStock !== null && item.previousStock !== undefined) {
+          await this.materialRepository.update(item.material.id, {
+            stock: item.previousStock,
+          });
+        }
+      }
+    }
+
+    return this.stocktakingRepository.delete(id);
   }
 }

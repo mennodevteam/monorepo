@@ -2,7 +2,7 @@ import { Controller, Get, Post, Put, Patch, Delete, Body, Param, Query, UseGuard
 import { ApiKeyAuthGuard } from '../auth/api-key-auth.guard';
 import { RequiredScopes } from '../auth/scopes.decorator';
 import { RequestShop } from './shop.decorator';
-import { Shop, Product, Order, FilterOrderDto, ProductCategory, Member, FilterMemberV2Dto, Material, BillOfMaterial, BillOfProduct, InventoryTransaction, MenuCost, PurchaseInvoice, PurchaseInvoiceItem } from '@menno/types';
+import { Shop, Product, Order, FilterOrderDto, ProductCategory, Member, FilterMemberV2Dto, Material, BillOfMaterial, BillOfProduct, InventoryTransaction, MenuCost, PurchaseInvoice, PurchaseInvoiceItem, Stocktaking, StocktakingItem } from '@menno/types';
 import { ShopIntegrationService } from './shop-integration.service';
 import { Public } from '../auth/public.decorator';
 
@@ -23,18 +23,18 @@ export class ShopIntegrationController {
 All prices and monetary values in this API are in **Toman** (Iranian Toman). If the user provides values in Rial, you MUST convert them to Toman by dividing by 10 before sending to the API.
 
 ### Order Type
-All orders in this system are of type **Delivery** (value: \`1\`). The \`type\` field does not need to be explicitly set when creating or managing orders.
+All orders in this system are of type **Delivery** (value: \`1\`). The \`type\` field does not need to be explicitly set. Order types/channels (dine-in, delivery, takeaway) are not supported on category/product/cost levels; all menu items are available universally.
 
 ### Product Availability & Status Hierarchy Rules:
-Product availability is determined by a hierarchical structure: \`Category > Product > Variant\`.
-1. **Status Fields**: Category, Product, and Variant each have their own \`status\` field (\`0: Inactive\`, \`1: Active\`, \`2: Pending\`, \`3: Blocked\`).
+Product availability is determined solely by the hierarchical structure: \`Category > Product > Variant\`.
+1. **Status Fields**: Category, Product, and Variant each have their own \`status\` field (\`0: Inactive\`, \`1: Active\`, \`2: Pending\`, \`3: Blocked/Finished\`).
 2. **Parent Inactivity Propagation**: If a parent category status is \`Inactive (0)\`, all products and their variants under that category are automatically considered inactive/unavailable, regardless of their own individual status fields.
 3. **Product Inactivity Propagation**: If a product status is \`Inactive (0)\` or \`Blocked (3)\`, all of its variants are automatically considered inactive/unavailable.
-4. **Availability Rule**: A product is considered unavailable if its status is \`Inactive (0)\` or \`Blocked (3)\`, or if its stock is \`0\`. For products with variants, it is unavailable if all variants are inactive, blocked, or out of stock.
+4. **Availability Rule**: A product/variant is considered unavailable if its status is \`Inactive (0)\` or \`Blocked (3)\`. The direct \`stock\` field is deprecated and must not be used for availability checks; warehouse stock and depletion are managed at the raw materials level (\`Material\`) via \`BillOfMaterial\` formulas.
 
 ### Menu Costs, Taxes & Dynamic Pricing Rules:
 \`MenuCost\` items define how taxes, service charges, surcharges, and discounts are applied.
-1. **Status & Validity Filter**: Only active menu costs (\`status: 1\`) within their valid date range (\`fromDate\` to \`toDate\`) and matching the order's \`orderType\` must be applied.
+1. **Status & Validity Filter**: Only active menu costs (\`status: 1\`) within their valid date range (\`fromDate\` to \`toDate\`) must be applied.
 2. **Discounts Representation**: Discounts are defined as negative values (e.g., a \`percentageCost\` of \`-10\` means a 10% discount, and a \`fixedCost\` of \`-5000\` means a 5000 fixed discount).
 3. **Item-Level Costs (\`showOnItem: true\`)**:
    - Applies directly to individual product/variant base prices.
@@ -78,22 +78,18 @@ To protect database integrity and prevent unintended customer communications, th
         schemas: {
           Product: {
             type: 'object',
+            description: 'A catalog product visible to customers. (Persian: محصول / کالا). A product can have multiple variants (size, flavor) with individual pricing and stock.',
             properties: {
               id: { type: 'string' },
               title: { type: 'string' },
               description: { type: 'string', nullable: true },
               price: { type: 'number', description: 'Price in Toman. For products with variants, each variant has its own price.' },
               status: { type: 'integer', description: 'Product status. 0: Inactive, 1: Active, 2: Pending, 3: Blocked/Finished (sold-out)' },
-              stock: { type: 'number', nullable: true, description: 'Available stock. Only for products without variants. null = unlimited.' },
+              stock: { type: 'number', nullable: true, deprecated: true, description: 'DEPRECATED. Direct stock level is no longer used for products. Stock is managed entirely through Materials and BillOfMaterials.' },
               position: { type: 'number', nullable: true, description: 'Display order position.' },
               slug: { type: 'string', nullable: true },
               maxBasket: { type: 'number', nullable: true, description: 'Maximum quantity per order.' },
               subcategories: { type: 'array', items: { type: 'string' }, description: 'Sub-category labels.' },
-              orderTypes: {
-                type: 'array',
-                items: { type: 'integer', description: '0: DineIn, 1: Delivery, 2: Takeaway' },
-                description: 'Order types this product is available for.',
-              },
               variants: {
                 type: 'array',
                 items: { $ref: '#/components/schemas/ProductVariant' },
@@ -110,6 +106,7 @@ To protect database integrity and prevent unintended customer communications, th
           },
           Order: {
             type: 'object',
+            description: 'A customer order containing delivery/dine-in/takeaway details, customer info, and items. (Persian: سفارش).',
             properties: {
               id: { type: 'string' },
               qNumber: { type: 'number' },
@@ -143,6 +140,7 @@ To protect database integrity and prevent unintended customer communications, th
           },
           ProductCategory: {
             type: 'object',
+            description: 'A menu category grouping products together. (Persian: دسته‌بندی محصولات).',
             properties: {
               id: { type: 'number' },
               title: { type: 'string' },
@@ -150,11 +148,6 @@ To protect database integrity and prevent unintended customer communications, th
               status: { type: 'integer', description: '0: Inactive, 1: Active, 2: Pending, 3: Blocked' },
               slug: { type: 'string', nullable: true },
               position: { type: 'number', nullable: true },
-              orderTypes: {
-                type: 'array',
-                items: { type: 'integer', description: '0: DineIn, 1: Delivery, 2: Takeaway' },
-                description: 'Order types this category is available for.',
-              },
               isAbstract: { type: 'boolean', description: 'Abstract categories contain non-product items (e.g., service charges).' },
               faIcon: { type: 'string', nullable: true, description: 'FontAwesome icon name.' },
             },
@@ -162,6 +155,7 @@ To protect database integrity and prevent unintended customer communications, th
           },
           Customer: {
             type: 'object',
+            description: 'A customer profile representing a member of the shop club. (Persian: مشتری / عضو باشگاه).',
             properties: {
               id: { type: 'string' },
               joinedAt: { type: 'string', format: 'date-time' },
@@ -179,6 +173,7 @@ To protect database integrity and prevent unintended customer communications, th
           },
           FilterCustomer: {
             type: 'object',
+            description: 'Query criteria used to filter and search for customers/club members. (Persian: فیلتر مشتریان).',
             properties: {
               query: { type: 'string', nullable: true, description: 'Search by customer name or phone number.' },
               joinedAtFromDate: { type: 'string', format: 'date-time', nullable: true },
@@ -203,6 +198,7 @@ To protect database integrity and prevent unintended customer communications, th
           },
           Material: {
             type: 'object',
+            description: 'A raw material stored in the warehouse and used to manufacture products. (Persian: ماده اولیه). Stock and cost are tracked at this level.',
             properties: {
               id: { type: 'string' },
               name: { type: 'string', description: 'Name of the raw material.' },
@@ -215,6 +211,7 @@ To protect database integrity and prevent unintended customer communications, th
           },
           BillOfMaterial: {
             type: 'object',
+            description: 'A Bill of Materials (BOM) record representing a manufacturing formula. Associates a raw material with a product/variant and specifies the required quantity. (Persian: فرمول ساخت / فرمول تولید).',
             properties: {
               id: { type: 'string' },
               material: { $ref: '#/components/schemas/Material' },
@@ -226,6 +223,7 @@ To protect database integrity and prevent unintended customer communications, th
           },
           BillOfProduct: {
             type: 'object',
+            description: 'A Bill of Products (BOP) record representing a composite product formula. Associates a source product/variant with a target product/variant, showing how a product is made of another product. (Persian: فرمول محصول / محصول نیمه ساخته).',
             properties: {
               id: { type: 'string' },
               productSource: { type: 'object', properties: { id: { type: 'string' } } },
@@ -238,6 +236,7 @@ To protect database integrity and prevent unintended customer communications, th
           },
           InventoryTransaction: {
             type: 'object',
+            description: 'An individual warehouse transaction record representing a stock change (purchase, consumption, or adjustment). (Persian: تراکنش انبار / ثبت تراکنش انبار).',
             properties: {
               id: { type: 'string' },
               material: { type: 'object', properties: { id: { type: 'string' } } },
@@ -252,6 +251,7 @@ To protect database integrity and prevent unintended customer communications, th
           },
           PurchaseInvoice: {
             type: 'object',
+            description: 'A purchase invoice documenting the registration of purchased raw materials from a supplier. (Persian: فاکتور خرید انبار / فاکتور خرید مواد اولیه).',
             properties: {
               id: { type: 'string' },
               date: { type: 'string', format: 'date-time' },
@@ -269,6 +269,7 @@ To protect database integrity and prevent unintended customer communications, th
           },
           PurchaseInvoiceItem: {
             type: 'object',
+            description: 'An item in a purchase invoice representing the quantity and unit price of a purchased material. (Persian: اقلام فاکتور خرید).',
             properties: {
               id: { type: 'string' },
               material: { type: 'object', properties: { id: { type: 'string' } } },
@@ -280,8 +281,45 @@ To protect database integrity and prevent unintended customer communications, th
             },
             required: ['material', 'quantity', 'unitPrice'],
           },
+          Stocktaking: {
+            type: 'object',
+            description: 'Represents a single stocktaking / inventory auditing event where raw materials stock are checked and updated to the actual counted values.',
+            properties: {
+              id: { type: 'string', description: 'Unique identifier of the stocktaking record.' },
+              date: { type: 'string', format: 'date-time', description: 'The date and time when the stocktaking was physically performed.' },
+              description: { type: 'string', nullable: true, description: 'Optional comments or notes about this stocktaking session.' },
+              createdAt: { type: 'string', format: 'date-time', description: 'Timestamp when the record was created in the system.' },
+              items: {
+                type: 'array',
+                description: 'The list of materials audited during this stocktaking session.',
+                items: {
+                  $ref: '#/components/schemas/StocktakingItem',
+                },
+              },
+            },
+            required: ['items'],
+          },
+          StocktakingItem: {
+            type: 'object',
+            description: 'An audited item in a stocktaking event. Contains the reference to the material, the actual counted quantity, and the recorded previous stock.',
+            properties: {
+              id: { type: 'string', description: 'Unique identifier of the stocktaking item.' },
+              material: {
+                type: 'object',
+                description: 'The material being audited.',
+                properties: {
+                  id: { type: 'string', description: 'The unique identifier of the raw material.' }
+                },
+                required: ['id']
+              },
+              countedQuantity: { type: 'number', description: 'The actual physical quantity counted in the warehouse.' },
+              previousStock: { type: 'number', nullable: true, description: 'The registered stock level in the system immediately before this stocktaking was saved. Used for rollbacks.' },
+            },
+            required: ['material', 'countedQuantity'],
+          },
           MenuCost: {
             type: 'object',
+            description: 'Automatic costs, service fees, taxes, or discounts applied to products, categories, or the entire order. (Persian: هزینه‌های جانبی منو / مالیات / تخفیف‌های خودکار).',
             properties: {
               id: { type: 'integer' },
               title: { type: 'string' },
@@ -289,10 +327,6 @@ To protect database integrity and prevent unintended customer communications, th
               percentageCost: { type: 'number', description: 'Percentage of charge. Can be negative for percentage discounts (e.g. -10 for 10% discount).' },
               fixedCost: { type: 'number', description: 'Fixed amount in Toman. Can be negative for fixed discounts (e.g. -5000 = 5000 Toman discount).' },
               showOnItem: { type: 'boolean', description: 'If true, the cost/discount is applied directly to each item price. If false, it is calculated globally on the total order sum.' },
-              orderTypes: {
-                type: 'array',
-                items: { type: 'integer', description: '0: DineIn, 1: Delivery, 2: Takeaway' },
-              },
               fromDate: { type: 'string', format: 'date-time', nullable: true },
               toDate: { type: 'string', format: 'date-time', nullable: true },
               status: { type: 'integer', description: '0: Inactive, 1: Active, 2: Pending, 3: Blocked' },
@@ -328,7 +362,7 @@ To protect database integrity and prevent unintended customer communications, th
               description: { type: 'string', nullable: true },
               price: { type: 'number', description: 'Variant price in Toman.' },
               status: { type: 'integer', description: '0: Inactive, 1: Active, 2: Pending, 3: Blocked/Finished' },
-              stock: { type: 'number', nullable: true, description: 'Available stock. null = unlimited.' },
+              stock: { type: 'number', nullable: true, deprecated: true, description: 'DEPRECATED. Direct stock level is no longer used for product variants. Stock is managed entirely through Materials and BillOfMaterials.' },
               position: { type: 'number', nullable: true },
             },
           },
@@ -898,6 +932,61 @@ To protect database integrity and prevent unintended customer communications, th
               },
             },
           },
+          '/inventory/stocktakings': {
+            get: {
+              summary: 'Retrieve stocktakings history',
+              description: 'Returns the full list of stocktaking sheets registered for this shop. Required scope: inventory:read',
+              responses: {
+                200: {
+                  description: 'Successful Response',
+                },
+              },
+            },
+            post: {
+              summary: 'Create a stocktaking sheet',
+              description: 'Registers a new stocktaking event for raw materials. Side effects per item: (1) updates material stock to countedQuantity, (2) stores previousStock for revert. Required scope: inventory:write',
+              requestBody: {
+                required: true,
+                content: {
+                  'application/json': {
+                    schema: {
+                      $ref: '#/components/schemas/Stocktaking',
+                    },
+                  },
+                },
+              },
+              responses: {
+                201: {
+                  description: 'Stocktaking sheet created and stock levels updated successfully',
+                },
+              },
+            },
+          },
+          '/inventory/stocktakings/{id}': {
+            delete: {
+              summary: 'Delete a stocktaking sheet',
+              description: 'Deletes a stocktaking sheet. If `revertStock=true`, the backend restores material stock to previousStock. If `revertStock=false` (default), only the stocktaking record is deleted. Required scope: inventory:write',
+              parameters: [
+                {
+                  name: 'id',
+                  in: 'path',
+                  required: true,
+                  schema: { type: 'string' },
+                },
+                {
+                  name: 'revertStock',
+                  in: 'query',
+                  required: false,
+                  schema: { type: 'boolean', default: false },
+                },
+              ],
+              responses: {
+                200: {
+                  description: 'Stocktaking sheet deleted successfully',
+                },
+              },
+            },
+          },
           '/inventory/profit': {
             get: {
               summary: 'Get cost price and profit per product',
@@ -1213,5 +1302,32 @@ To protect database integrity and prevent unintended customer communications, th
   ) {
     const revert = revertStock === 'true';
     return this.integrationService.deletePurchaseInvoice(shop.id, id, revert);
+  }
+
+  // Inventory: Stocktaking
+  @Get('inventory/stocktakings')
+  @UseGuards(ApiKeyAuthGuard)
+  @RequiredScopes('inventory:read')
+  async getStocktakings(@RequestShop() shop: Shop) {
+    return this.integrationService.getStocktakings(shop.id);
+  }
+
+  @Post('inventory/stocktakings')
+  @UseGuards(ApiKeyAuthGuard)
+  @RequiredScopes('inventory:write')
+  async createStocktaking(@RequestShop() shop: Shop, @Body() dto: Partial<Stocktaking>) {
+    return this.integrationService.createStocktaking(shop.id, dto);
+  }
+
+  @Delete('inventory/stocktakings/:id')
+  @UseGuards(ApiKeyAuthGuard)
+  @RequiredScopes('inventory:write')
+  async deleteStocktaking(
+    @RequestShop() shop: Shop,
+    @Param('id') id: string,
+    @Query('revertStock') revertStock: string,
+  ) {
+    const revert = revertStock === 'true';
+    return this.integrationService.deleteStocktaking(shop.id, id, revert);
   }
 }

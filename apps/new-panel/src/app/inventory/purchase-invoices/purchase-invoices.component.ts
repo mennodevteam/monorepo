@@ -103,7 +103,7 @@ export class PurchaseInvoicesComponent {
 
   setViewMode(mode: 'list' | 'create' | 'detail') {
     if (mode === 'list') {
-      this.router.navigate(['/admin/inventory/purchase-invoices']);
+      this.router.navigate(['/admin/inventory/materials/purchase-invoices']);
       this.viewMode.set('list');
     } else {
       this.viewMode.set(mode);
@@ -132,7 +132,7 @@ export class PurchaseInvoicesComponent {
   }
 
   showInvoiceDetails(invoice: PurchaseInvoice) {
-    this.router.navigate(['/admin/inventory/purchase-invoices', invoice.id]);
+    this.router.navigate(['/admin/inventory/materials/purchase-invoices', invoice.id]);
   }
 
   getPriceChangePercentage(item: PurchaseInvoiceItem): number | null {
@@ -269,7 +269,7 @@ export class PurchaseInvoicesComponent {
                 },
                 {
                   onSuccess: () => {
-                    this.router.navigate(['/admin/inventory/purchase-invoices']);
+                    this.router.navigate(['/admin/inventory/materials/purchase-invoices']);
                   },
                 },
               );

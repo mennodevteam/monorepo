@@ -7,4 +7,108 @@
 .mat-elevation-z8 {
   border-radius: 8px;
   overflow: hidden;
-} 
+}
+
+.quick-actions-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.action-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  text-decoration: none !important;
+  color: inherit !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 4px;
+    height: 100%;
+    background: transparent;
+    transition: background-color 0.2s ease;
+  }
+
+  &:hover {
+    background-color: #fafafa;
+    border-color: var(--border-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+
+    .arrow-icon {
+      transform: translateX(-4px);
+      opacity: 1;
+    }
+
+    &::before {
+      background-color: currentColor;
+    }
+  }
+
+  &:hover:has(.action-icon.green)::before { background-color: #16a34a; }
+  &:hover:has(.action-icon.teal)::before { background-color: #0d9488; }
+
+  .action-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    flex-shrink: 0;
+
+    ng-icon {
+      font-size: 1.5rem;
+    }
+
+    &.green { background-color: #f0fdf4; color: #16a34a; }
+    &.teal { background-color: #f0fdfa; color: #0d9488; }
+  }
+
+  .action-details {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+
+    .action-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .action-desc {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+  }
+
+  .arrow-icon {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    opacity: 0.6;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+  }
+}
+ 
