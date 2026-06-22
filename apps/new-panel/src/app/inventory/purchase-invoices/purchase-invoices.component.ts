@@ -10,7 +10,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CostUpdateStrategy, Material, PurchaseInvoice, PurchaseInvoiceItem } from '@menno/types';
 import { MaterialsService } from '../materials.service';
 import { DialogService } from '../../core/services/dialog.service';
@@ -31,6 +33,7 @@ import { SHARED } from '../../shared';
     MatDatepickerModule,
     MatAutocompleteModule,
     MatDividerModule,
+    MatTooltipModule,
     SHARED,
   ],
   templateUrl: './purchase-invoices.component.html',
@@ -40,9 +43,20 @@ export class PurchaseInvoicesComponent {
   public materialsService = inject(MaterialsService);
   private dialog = inject(DialogService);
   private translate = inject(TranslateService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
-  // View state: 'list' or 'create'
-  viewMode = signal<'list' | 'create'>('list');
+  // View state: 'list' or 'create' or 'detail'
+  viewMode = signal<'list' | 'create' | 'detail'>('list');
+
+  invoiceId = signal<string | null>(null);
+
+  selectedInvoice = computed(() => {
+    const id = this.invoiceId();
+    if (!id) return null;
+    const invoices = this.materialsService.purchaseInvoicesQuery.data() || [];
+    return invoices.find((inv) => inv.id === id) || null;
+  });
 
   // Form values for new invoice
   invoiceForm = {
@@ -75,19 +89,58 @@ export class PurchaseInvoicesComponent {
     return this.invoiceItems().reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
   });
 
-  setViewMode(mode: 'list' | 'create') {
-    this.viewMode.set(mode);
-    if (mode === 'create') {
-      // Reset form
-      this.invoiceForm = {
-        supplier: '',
-        date: new Date(),
-        description: '',
-        costUpdateStrategy: CostUpdateStrategy.Last,
-      };
-      this.invoiceItems.set([]);
-      this.searchQuery.set('');
+  constructor() {
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get('id');
+      this.invoiceId.set(id);
+      if (id) {
+        this.viewMode.set('detail');
+      } else if (this.viewMode() === 'detail') {
+        this.viewMode.set('list');
+      }
+    });
+  }
+
+  setViewMode(mode: 'list' | 'create' | 'detail') {
+    if (mode === 'list') {
+      this.router.navigate(['/admin/inventory/purchase-invoices']);
+      this.viewMode.set('list');
+    } else {
+      this.viewMode.set(mode);
+      if (mode === 'create') {
+        // Reset form
+        this.invoiceForm = {
+          supplier: '',
+          date: new Date(),
+          description: '',
+          costUpdateStrategy: CostUpdateStrategy.Last,
+        };
+        this.invoiceItems.set([]);
+        this.searchQuery.set('');
+      }
     }
+  }
+
+  canDeactivate(): boolean {
+    if (this.viewMode() === 'create') {
+      const hasSupplier = !!this.invoiceForm.supplier?.trim();
+      const hasDescription = !!this.invoiceForm.description?.trim();
+      const hasItems = this.invoiceItems().length > 0;
+      return !(hasSupplier || hasDescription || hasItems);
+    }
+    return true;
+  }
+
+  showInvoiceDetails(invoice: PurchaseInvoice) {
+    this.router.navigate(['/admin/inventory/purchase-invoices', invoice.id]);
+  }
+
+  getPriceChangePercentage(item: PurchaseInvoiceItem): number | null {
+    if (item.previousCost === null || item.previousCost === undefined || item.previousCost === 0) {
+      return null;
+    }
+    const diff = item.unitPrice - item.previousCost;
+    return (diff / item.previousCost) * 100;
   }
 
   filterMaterials(query: string) {
@@ -203,16 +256,23 @@ export class PurchaseInvoicesComponent {
                 config: {
                   data: {
                     okText: this.translate.instant('app.yes'),
-                    cancelText: this.translate.instant('app.cancel'), // Can be translated as no/cancel
+                    cancelText: this.translate.instant('app.cancel'),
                   },
                 },
               },
             )
             .then((revertStock) => {
-              this.materialsService.deletePurchaseInvoiceMutation.mutate({
-                id: invoice.id,
-                revertStock: !!revertStock,
-              });
+              this.materialsService.deletePurchaseInvoiceMutation.mutate(
+                {
+                  id: invoice.id,
+                  revertStock: !!revertStock,
+                },
+                {
+                  onSuccess: () => {
+                    this.router.navigate(['/admin/inventory/purchase-invoices']);
+                  },
+                },
+              );
             });
         }
       });

@@ -2,6 +2,7 @@ import { Route } from '@angular/router';
 import { MaterialsListComponent } from './materials/materials-list.component';
 import { BomListComponent } from './bom-list/bom-list.component';
 import { PurchaseInvoicesComponent } from './purchase-invoices/purchase-invoices.component';
+import { dirtyFormDeactivator } from '../core/guards/dirty-form-deactivator.guard';
 
 export const materialsRoutes: Route[] = [
   {
@@ -15,5 +16,11 @@ export const materialsRoutes: Route[] = [
   {
     path: 'purchase-invoices',
     component: PurchaseInvoicesComponent,
+    canDeactivate: [dirtyFormDeactivator],
+  },
+  {
+    path: 'purchase-invoices/:id',
+    component: PurchaseInvoicesComponent,
+    canDeactivate: [dirtyFormDeactivator],
   },
 ];

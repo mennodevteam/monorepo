@@ -62,7 +62,8 @@
     "loadMore": "نمایش بیشتر",
     "active": "فعال",
     "inactive": "غیرفعال",
-    "clear": "پاک کردن"
+    "clear": "پاک کردن",
+    "back": "بازگشت"
   },
   "home": {
     "title": "به شات خوش آمدید",
@@ -1339,7 +1340,7 @@
     "sortSections": "مرتب‌سازی بخش‌ها"
   },
   "purchaseInvoices": {
-    "title": "فاکتورهای خرید انبار",
+    "title": "فاکتورهای خرید مواد اولیه",
     "history": "تاریخچه خریدها",
     "createNew": "ثبت فاکتور خرید جدید",
     "supplier": "تامین‌کننده / محل خرید",
@@ -1356,6 +1357,8 @@
     "materialName": "نام ماده اولیه",
     "quantity": "مقدار",
     "unitPrice": "قیمت واحد",
-    "priceStrategy": "استراتژی قیمت"
+    "priceStrategy": "استراتژی قیمت",
+    "details": "جزئیات فاکتور",
+    "previousCost": "قیمت قبلی: {{price}} تومان"
   }
 }

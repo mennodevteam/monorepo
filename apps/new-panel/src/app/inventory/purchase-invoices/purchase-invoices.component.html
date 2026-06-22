@@ -1,20 +1,43 @@
 <mat-toolbar class="content-toolbar" fxLayoutGap="8px">
-  <h1 fxFlex>{{ 'purchaseInvoices.title' | translate }}</h1>
   @if (viewMode() === 'list') {
+    <h1 fxFlex>{{ 'purchaseInvoices.title' | translate }}</h1>
     <button mat-flat-button color="primary" (click)="setViewMode('create')">
       <ng-icon name="saxAddOutline"></ng-icon>
       {{ 'purchaseInvoices.createNew' | translate }}
     </button>
-  } @else {
-    <button mat-stroked-button (click)="setViewMode('list')">
-      {{ 'app.cancel' | translate }}
+  } @else if (viewMode() === 'create') {
+    <button mat-icon-button (click)="setViewMode('list')">
+      <ng-icon name="saxArrowRight3Bold"></ng-icon>
     </button>
+    <h1 fxFlex>{{ 'purchaseInvoices.createNew' | translate }}</h1>
+    <button mat-flat-button color="primary" [disabled]="isSaving() || invoiceItems().length === 0" (click)="saveInvoice()">
+      {{ 'app.save' | translate }}
+    </button>
+  } @else if (viewMode() === 'detail') {
+    @let invoice = selectedInvoice();
+    <button mat-icon-button (click)="setViewMode('list')">
+      <ng-icon name="saxArrowRight3Bold"></ng-icon>
+    </button>
+    @if (invoice) {
+      <div fxLayout="column" style="line-height: 1.2;">
+        <span style="font-weight: 500; font-size: 0.95rem; font-family: 'Estedad';">
+          {{ invoice.supplier || 'تامین‌کننده ثبت نشده' }}
+        </span>
+        <span style="font-size: 0.72rem; color: var(--text-muted);">
+          {{ invoice.date | pdate: true }}
+        </span>
+      </div>
+      <span fxFlex></span>
+      <button mat-icon-button color="warn" (click)="deleteInvoice(invoice); $event.stopPropagation()">
+        <ng-icon name="saxTrashOutline"></ng-icon>
+      </button>
+    }
   }
 </mat-toolbar>
 
-<main p-md>
+<main p-md w-lg>
   @if (viewMode() === 'create') {
-    <div fxLayout="column" fxLayoutGap="24px">
+    <div fxLayout="column" fxLayoutGap="24px" class="animate-slide-up">
       <mat-card appearance="outlined">
         <mat-card-content fxLayout="column" fxLayoutGap="16px">
           <h2 style="font-weight: 500; margin: 0;">{{ 'purchaseInvoices.createNew' | translate }}</h2>
@@ -79,33 +102,37 @@
               }
             </mat-autocomplete>
           </mat-form-field>
+        </mat-card-content>
+      </mat-card>
 
-          @if (invoiceItems().length > 0) {
+      @if (invoiceItems().length > 0) {
+        <mat-card appearance="outlined">
+          <mat-card-content style="padding: 0;">
             <div class="invoices-table-container">
-              <table class="np-table w-100" style="border-collapse: collapse;">
+              <table class="np-table">
                 <thead>
-                  <tr style="text-align: right; border-bottom: 1px solid var(--border-color);">
-                    <th style="padding: 12px;">{{ 'purchaseInvoices.materialName' | translate }}</th>
-                    <th style="padding: 12px;">{{ 'purchaseInvoices.quantity' | translate }}</th>
-                    <th style="padding: 12px;">{{ 'purchaseInvoices.unitPrice' | translate }}</th>
-                    <th style="padding: 12px;">{{ 'app.total' | translate }}</th>
-                    <th style="padding: 12px; width: 60px;"></th>
+                  <tr>
+                    <th>{{ 'purchaseInvoices.materialName' | translate }}</th>
+                    <th>{{ 'purchaseInvoices.quantity' | translate }}</th>
+                    <th>{{ 'purchaseInvoices.unitPrice' | translate }}</th>
+                    <th>{{ 'app.total' | translate }}</th>
+                    <th style="width: 60px; text-align: center;"></th>
                   </tr>
                 </thead>
                 <tbody>
                   @for (item of invoiceItems(); track item.material.id; let idx = $index) {
-                    <tr style="border-bottom: 1px solid var(--border-color);">
-                      <td style="padding: 12px;">{{ item.material.name }}</td>
-                      <td style="padding: 12px;">
+                    <tr>
+                      <td>{{ item.material.name }}</td>
+                      <td>
                         <span eng>{{ item.quantity | number }}</span> {{ 'materials.units.' + item.material.unit | translate }}
                       </td>
-                      <td style="padding: 12px;">
-                        <span eng>{{ item.unitPrice | number | menuCurrency }}</span>
+                      <td>
+                        <span eng>{{ item.unitPrice | number }}</span> {{ 'app.currency' | translate }}
                       </td>
-                      <td style="padding: 12px;">
-                        <span eng>{{ (item.quantity * item.unitPrice) | number | menuCurrency }}</span>
+                      <td>
+                        <span eng>{{ (item.quantity * item.unitPrice) | number }}</span> {{ 'app.currency' | translate }}
                       </td>
-                      <td style="padding: 12px; text-align: center;">
+                      <td style="text-align: center;">
                         <button mat-icon-button color="warn" (click)="removeItem(idx)">
                           <ng-icon name="saxTrashOutline"></ng-icon>
                         </button>
@@ -115,100 +142,82 @@
                 </tbody>
               </table>
             </div>
+          </mat-card-content>
+        </mat-card>
 
-            <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-top: 16px;">
-              <span style="font-weight: 500;">
-                {{ 'purchaseInvoices.totalAmount' | translate }}: <span eng>{{ totalAmount() | number | menuCurrency }}</span>
-              </span>
-              <button mat-flat-button color="primary" [disabled]="isSaving()" (click)="saveInvoice()">
-                {{ 'app.save' | translate }}
-              </button>
-            </div>
-          } @else {
-            <div style="text-align: center; padding: 24px; color: var(--text-muted);">
-              هیچ ماده اولیه‌ای به فاکتور اضافه نشده است. از جعبه جستجوی بالا مواد اولیه را پیدا کرده و وارد فاکتور کنید.
-            </div>
-          }
-        </mat-card-content>
-      </mat-card>
+        <!-- Totals Summary -->
+        <div fxLayout="row" fxLayoutAlign="space-between center" style="padding: 4px 16px; font-weight: 500; font-size: 0.95rem;">
+          <span>
+            {{ 'purchaseInvoices.itemsCount' | translate }}: <span eng>{{ invoiceItems().length }}</span>
+          </span>
+          <span>
+            {{ 'purchaseInvoices.totalAmount' | translate }}: <span eng style="color: var(--primary-color); font-weight: 600;">{{ totalAmount() | number }}</span> {{ 'app.currency' | translate }}
+          </span>
+        </div>
+      }
     </div>
-  } @else {
+  } @else if (viewMode() === 'list') {
+    <!-- Educational Promo Banner -->
+    <mat-card class="promo-card blue" style="margin-bottom: 16px;">
+      <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+        <div class="np-icon-badge"><ng-icon name="saxInfoCircleOutline"></ng-icon></div>
+        <div fxFlex>
+          <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
+            <p style="margin: 0;">فاکتورهای خرید ثبت‌شده در این بخش، به صورت خودکار موجودی و قیمت تمام‌شده مواد اولیه را در <a routerLink="/admin/inventory/materials">لیست مواد اولیه</a> بروزرسانی می‌کنند.</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
     @if (materialsService.purchaseInvoicesQuery.isLoading()) {
       <app-data-loading />
     } @else {
       @let invoices = materialsService.purchaseInvoicesQuery.data() || [];
       @if (invoices.length > 0) {
-        <div fxLayout="column" fxLayoutGap="16px">
-          @for (invoice of invoices; track invoice.id) {
-            <mat-card appearance="outlined">
-              <mat-card-content fxLayout="column" fxLayoutGap="12px">
-                <div fxLayout="row" fxLayoutAlign="space-between start">
-                  <div fxLayout="column" fxLayoutGap="4px">
-                    <span style="font-weight: 500; font-size: 1.1rem;">
-                      {{ invoice.supplier || 'تامین‌کننده ثبت نشده' }}
-                    </span>
-                    <span style="color: var(--text-secondary); font-size: 0.85rem;" eng>
-                      {{ invoice.date | date: 'yyyy/MM/dd HH:mm' }}
-                    </span>
-                  </div>
-                  <div>
-                    <button mat-icon-button color="warn" (click)="deleteInvoice(invoice)">
-                      <ng-icon name="saxTrashOutline"></ng-icon>
-                    </button>
-                  </div>
-                </div>
-
-                @if (invoice.description) {
-                  <p style="margin: 0; font-size: 0.9rem; color: var(--text-secondary);">
-                    {{ invoice.description }}
-                  </p>
-                }
-
-                <mat-divider />
-
-                <div class="invoices-table-container">
-                  <table class="np-table w-100" style="border-collapse: collapse; font-size: 0.85rem;">
-                    <thead>
-                      <tr style="text-align: right; color: var(--text-secondary); border-bottom: 1px solid var(--border-color);">
-                        <th style="padding: 8px 0;">{{ 'purchaseInvoices.materialName' | translate }}</th>
-                        <th style="padding: 8px 0;">{{ 'purchaseInvoices.quantity' | translate }}</th>
-                        <th style="padding: 8px 0;">{{ 'purchaseInvoices.unitPrice' | translate }}</th>
-                        <th style="padding: 8px 0;">{{ 'app.total' | translate }}</th>
-                        <th style="padding: 8px 0;">{{ 'purchaseInvoices.priceStrategy' | translate }}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @for (item of invoice.items; track item.id) {
-                        <tr style="border-bottom: 1px dashed var(--border-color);">
-                          <td style="padding: 8px 0;">{{ item.material?.name || 'ماده اولیه حذف شده' }}</td>
-                          <td style="padding: 8px 0;">
-                            <span eng>{{ item.quantity | number }}</span> {{ 'materials.units.' + item.material?.unit | translate }}
-                          </td>
-                          <td style="padding: 8px 0;">
-                            <span eng>{{ item.unitPrice | number | menuCurrency }}</span>
-                          </td>
-                          <td style="padding: 8px 0;">
-                            <span eng>{{ (item.quantity * item.unitPrice) | number | menuCurrency }}</span>
-                          </td>
-                          <td style="padding: 8px 0;">
-                            <span class="status-badge" [class]="getStrategyBadgeClass(item.costUpdateStrategy)">
-                              {{ 'materials.costUpdateStrategy.' + item.costUpdateStrategy | translate }}
-                            </span>
-                          </td>
-                        </tr>
-                      }
-                    </tbody>
-                  </table>
-                </div>
-
-                <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-top: 8px; font-weight: 500;">
-                  <span>{{ 'purchaseInvoices.itemsCount' | translate }}: <span eng>{{ invoice.items?.length }}</span></span>
-                  <span>{{ 'purchaseInvoices.totalAmount' | translate }}: <span eng>{{ getInvoiceTotal(invoice) | number | menuCurrency }}</span></span>
-                </div>
-              </mat-card-content>
-            </mat-card>
-          }
-        </div>
+        <mat-card appearance="outlined" class="animate-slide-up">
+          <mat-card-content style="padding: 0;">
+            <div class="invoices-table-container">
+              <table class="np-table">
+                <thead>
+                  <tr>
+                    <th>{{ 'purchaseInvoices.supplier' | translate }}</th>
+                    <th>{{ 'app.date' | translate }}</th>
+                    <th>{{ 'purchaseInvoices.itemsCount' | translate }}</th>
+                    <th>{{ 'purchaseInvoices.totalAmount' | translate }}</th>
+                    <th style="width: 80px; text-align: center;">{{ 'app.actions' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (invoice of invoices; track invoice.id) {
+                    <tr (click)="showInvoiceDetails(invoice)" style="cursor: pointer;" class="clickable-row">
+                      <td>
+                        <span style="font-weight: 500;">
+                          {{ invoice.supplier || 'تامین‌کننده ثبت نشده' }}
+                        </span>
+                      </td>
+                      <td>
+                        {{ invoice.date | pdate }}
+                      </td>
+                      <td eng>
+                        {{ invoice.items?.length || 0 }}
+                      </td>
+                      <td>
+                        <span eng style="font-weight: 500;">
+                          {{ getInvoiceTotal(invoice) | number }}
+                        </span> {{ 'app.currency' | translate }}
+                      </td>
+                      <td style="text-align: center;">
+                        <button mat-icon-button color="warn" (click)="deleteInvoice(invoice); $event.stopPropagation()">
+                          <ng-icon name="saxTrashOutline"></ng-icon>
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </mat-card-content>
+        </mat-card>
       } @else {
         <app-empty-state
           icon="receipt"
@@ -217,6 +226,87 @@
           (actionClick)="setViewMode('create')"
         />
       }
+    }
+  } @else if (viewMode() === 'detail') {
+    @let invoice = selectedInvoice();
+    @if (invoice) {
+      <div fxLayout="column" fxLayoutGap="16px" class="animate-slide-up">
+        @if (invoice.description) {
+          <!-- Description Card -->
+          <mat-card appearance="outlined">
+            <mat-card-content style="padding: 12px 16px;">
+              <p style="margin: 0; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+                {{ invoice.description }}
+              </p>
+            </mat-card-content>
+          </mat-card>
+        }
+
+        <!-- Invoice Items -->
+        <mat-card appearance="outlined">
+          <mat-card-content style="padding: 0;">
+            <div class="invoices-table-container">
+              <table class="np-table">
+                <thead>
+                  <tr>
+                    <th>{{ 'purchaseInvoices.materialName' | translate }}</th>
+                    <th>{{ 'purchaseInvoices.quantity' | translate }}</th>
+                    <th>{{ 'purchaseInvoices.unitPrice' | translate }}</th>
+                    <th>{{ 'app.total' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of invoice.items; track item.id) {
+                    <tr>
+                      <td>{{ item.material?.name || 'ماده اولیه حذف شده' }}</td>
+                      <td>
+                        <span eng>{{ item.quantity | number }}</span> {{ 'materials.units.' + item.material?.unit | translate }}
+                      </td>
+                      <td>
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+                          <span eng style="font-weight: 500;">
+                            {{ item.unitPrice | number }}
+                          </span>
+                          {{ 'app.currency' | translate }}
+                          
+                          @let pctChange = getPriceChangePercentage(item);
+                          @if (pctChange !== null && pctChange !== 0) {
+                            <span
+                              [matTooltip]="'purchaseInvoices.previousCost' | translate: { price: (item.previousCost | number) }"
+                              style="font-size: 0.72rem; padding: 2px 6px; border-radius: 4px; font-weight: 600; display: inline-flex; align-items: center; cursor: help;"
+                              [style.background-color]="pctChange > 0 ? '#fee2e2' : '#dcfce7'"
+                              [style.color]="pctChange > 0 ? '#dc2626' : '#16a34a'"
+                              eng
+                            >
+                              {{ pctChange > 0 ? '+' : '' }}{{ pctChange | number: '1.0-1' }}%
+                            </span>
+                          }
+                        </div>
+                      </td>
+                      <td>
+                        <span eng style="font-weight: 500;">
+                          {{ (item.quantity * item.unitPrice) | number }}
+                        </span>
+                        {{ 'app.currency' | translate }}
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Totals Summary -->
+        <div fxLayout="row" fxLayoutAlign="space-between center" style="padding: 4px 16px; font-weight: 500; font-size: 0.95rem;">
+          <span>
+            {{ 'purchaseInvoices.itemsCount' | translate }}: <span eng>{{ invoice.items?.length || 0 }}</span>
+          </span>
+          <span>
+            {{ 'purchaseInvoices.totalAmount' | translate }}: <span eng style="color: var(--primary-color); font-weight: 600;">{{ getInvoiceTotal(invoice) | number }}</span> {{ 'app.currency' | translate }}
+          </span>
+        </div>
+      </div>
     }
   }
 </main>
