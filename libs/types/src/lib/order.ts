@@ -69,6 +69,8 @@ export class Order {
    * If third-party channel changes, we send a new message instead of editing with a stale id.
    */
   mennoBaleNotifyChannelId?: string | null;
+  emojiKey?: string;
+  trackingCode?: string;
 
   static sum(order: Order) {
     let sum = 0;

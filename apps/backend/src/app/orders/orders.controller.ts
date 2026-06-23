@@ -24,8 +24,9 @@ import {
   Query,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { In, Repository, IsNull } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
+import { Public } from '../auth/public.decorator';
 import { LoginUser } from '../auth/user.decorator';
 import { AuthPayload } from '../core/types/auth-payload';
 import { Roles } from '../auth/roles.decorators';
@@ -424,5 +425,55 @@ export class OrdersController {
         'shop.paymentGateway',
       ],
     });
+  }
+
+  @Public()
+  @Get('backfill')
+  async backfillOrders(@Query('shopId') shopId: string) {
+    if (!shopId) {
+      throw new HttpException('shopId query parameter is required', HttpStatus.BAD_REQUEST);
+    }
+
+    const orders = await this.ordersRepo.find({
+      where: [
+        { shop: { id: shopId }, emojiKey: IsNull() },
+        { shop: { id: shopId }, trackingCode: IsNull() },
+      ],
+    });
+
+    const emojis = [
+      // Flags
+      '🇮🇷', '🇧🇷', '🇩🇪', '🇮🇹', '🇪🇸', '🇬🇧', '🇫🇷', '🇯🇵', '🇰🇷', '🇨🇦', '🇦🇷', '🇺🇸', '🇳🇱', '🇦🇺', '🇨🇭', '🇸🇪', '🇹🇷', '🇵🇹', '🇲🇽', '🇮🇳', '🇨🇳',
+      // Foods & Drinks
+      '🍎', '🍌', '🍒', '🍓', '🍍', '🥝', '🍇', '🍉', '🍕', '🍔', '🍟', '🌭', '🥪', '🌮', '🌯', '🍦', '🍩', '🍪', '🍫', '🍬', '🥤', '🧃', '🧉', '🥑', '🥕', '🌽', '🌶️', '🧀', '🥞', '🥓', '🍳', '🍜', '🍣', '🥟', '🍤', '🧁', '🍯', '☕', '🍵', '🍺', '🍷', '🍹',
+      // Sports & Entertainment
+      '⚽', '🏀', '🏈', '⚾', '🎾', '🏐', '🎱', '🏓', '🏎', '🚓', '🚑', '🚒', '🛵', '🏍', '🚲', '🛹', '✈️', '⛵', '🛸', '🎈', '🎉', '🎊', '🎁', '🎨', '🎬', '🎧', '🎸', '🎹', '🎮', '🎲', '🧩', '🎯', '🎳', '🎡', '🎢', '🏆', '🥇', '🥈', '🥉',
+      // Animals & Nature
+      '🦁', '🐯', '🐼', '🦊', '🐸', '🐵', '🐣', '🐧', '🦋', '🐝', '🐙', '🐠', '🐬', '🦄', '🐶', '🐱', '🐹', '🐰', '🐻', '🐨', '🐮', '🐷', '🐧', '🐦', '🦆', '🦅', '🦉', '🐢', '🐍', '🦀', '🦞', '🐘', '🐪', '🐫', '🦒', '🦘',
+      // Weather & Stars
+      '🌻', '🌞', '🌈', '🔥', '💧', '⚡', '⭐', '🌟', '✨', '☄️', '💥', '🪐', '🌍', '❄️', '☃️'
+    ];
+
+    let updatedCount = 0;
+    for (const order of orders) {
+      let changed = false;
+      if (!order.emojiKey) {
+        const randomEmoji = () => emojis[Math.floor(Math.random() * emojis.length)];
+        order.emojiKey = `${randomEmoji()}${randomEmoji()}`;
+        changed = true;
+      }
+      if (!order.trackingCode) {
+        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const randomLetter = letters[Math.floor(Math.random() * letters.length)];
+        const randomDigits = Array.from({ length: 4 }, () => Math.floor(Math.random() * 10)).join('');
+        order.trackingCode = `${randomLetter}${randomDigits}`;
+        changed = true;
+      }
+      if (changed) {
+        await this.ordersRepo.save(order);
+        updatedCount++;
+      }
+    }
+    return { success: true, updatedCount };
   }
 }

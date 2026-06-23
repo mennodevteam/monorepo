@@ -108,6 +108,31 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
 
   async beforeInsert(event: InsertEvent<Order>) {
     const order = event.entity;
+
+    if (!order.emojiKey) {
+      const emojis = [
+        // Flags
+        '🇮🇷', '🇧🇷', '🇩🇪', '🇮🇹', '🇪🇸', '🇬🇧', '🇫🇷', '🇯🇵', '🇰🇷', '🇨🇦', '🇦🇷', '🇺🇸', '🇳🇱', '🇦🇺', '🇨🇭', '🇸🇪', '🇹🇷', '🇵🇹', '🇲🇽', '🇮🇳', '🇨🇳',
+        // Foods & Drinks
+        '🍎', '🍌', '🍒', '🍓', '🍍', '🥝', '🍇', '🍉', '🍕', '🍔', '🍟', '🌭', '🥪', '🌮', '🌯', '🍦', '🍩', '🍪', '🍫', '🍬', '🥤', '🧃', '🧉', '🥑', '🥕', '🌽', '🌶️', '🧀', '🥞', '🥓', '🍳', '🍜', '🍣', '🥟', '🍤', '🧁', '🍯', '☕', '🍵', '🍺', '🍷', '🍹',
+        // Sports & Entertainment
+        '⚽', '🏀', '🏈', '⚾', '🎾', '🏐', '🎱', '🏓', '🏎', '🚓', '🚑', '🚒', '🛵', '🏍', '🚲', '🛹', '✈️', '⛵', '🛸', '🎈', '🎉', '🎊', '🎁', '🎨', '🎬', '🎧', '🎸', '🎹', '🎮', '🎲', '🧩', '🎯', '🎳', '🎡', '🎢', '🏆', '🥇', '🥈', '🥉',
+        // Animals & Nature
+        '🦁', '🐯', '🐼', '🦊', '🐸', '🐵', '🐣', '🐧', '🦋', '🐝', '🐙', '🐠', '🐬', '🦄', '🐶', '🐱', '🐹', '🐰', '🐻', '🐨', '🐮', '🐷', '🐧', '🐦', '🦆', '🦅', '🦉', '🐢', '🐍', '🦀', '🦞', '🐘', '🐪', '🐫', '🦒', '🦘',
+        // Weather & Stars
+        '🌻', '🌞', '🌈', '🔥', '💧', '⚡', '⭐', '🌟', '✨', '☄️', '💥', '🪐', '🌍', '❄️', '☃️'
+      ];
+      const randomEmoji = () => emojis[Math.floor(Math.random() * emojis.length)];
+      order.emojiKey = `${randomEmoji()}${randomEmoji()}`;
+    }
+
+    if (!order.trackingCode) {
+      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      const randomLetter = letters[Math.floor(Math.random() * letters.length)];
+      const randomDigits = Array.from({ length: 4 }, () => Math.floor(Math.random() * 10)).join('');
+      order.trackingCode = `${randomLetter}${randomDigits}`;
+    }
+
     const customer = order.customer ? await this.usersRepo.findOneBy({ id: order.customer.id }) : undefined;
     const shop = order.shop
       ? await this.shopsRepo.findOne({ where: { id: order.shop.id }, relations: ['club'] })

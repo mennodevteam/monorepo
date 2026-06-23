@@ -22,6 +22,8 @@ const RESTAURANT_COLS = ['createdAt', 'type', 'customer', 'price', 'state', 'act
 const ALL_COLS = [
   'createdAt',
   'customer',
+  'emojiKey',
+  'trackingCode',
   'referrer',
   'campaign',
   'type',
@@ -120,6 +122,8 @@ export class TableComponent {
     const textMap: { [key: string]: string } = {
       createdAt: this.translate.instant('app.date'),
       customer: this.translate.instant('order.customer'),
+      emojiKey: this.translate.instant('order.emojiKey'),
+      trackingCode: this.translate.instant('order.trackingCode'),
       referrer: this.translate.instant('order.referrerColumn'),
       campaign: this.translate.instant('order.campaignColumn'),
       type: this.translate.instant('app.type'),

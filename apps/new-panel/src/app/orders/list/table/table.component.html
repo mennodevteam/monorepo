@@ -14,6 +14,20 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="emojiKey">
+      <th mat-header-cell *matHeaderCellDef>{{ 'order.emojiKey' | translate }}</th>
+      <td mat-cell *matCellDef="let order" style="font-size: 1.25rem;">
+        {{ order.emojiKey || '—' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="trackingCode">
+      <th mat-header-cell *matHeaderCellDef>{{ 'order.trackingCode' | translate }}</th>
+      <td mat-cell *matCellDef="let order" eng>
+        {{ order.trackingCode || '—' }}
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="referrer">
       <th mat-header-cell *matHeaderCellDef>{{ 'order.referrerColumn' | translate }}</th>
       <td mat-cell *matCellDef="let order" class="order-table-attr-cell">

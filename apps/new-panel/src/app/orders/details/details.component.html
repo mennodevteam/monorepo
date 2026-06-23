@@ -4,13 +4,21 @@
   </button>
   @if (order()) {
     <div fxLayout="column" style="line-height: 1.2;">
-      <span style="font-weight: 500; font-size: 0.95rem; font-family: 'Estedad';">
-        @if (order()?.customer) {
-          {{ User.fullName(order()?.customer!) }}
-        } @else {
-          {{ 'order.type.' + order()?.type | translate }}
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+        <span style="font-weight: 500; font-size: 0.95rem; font-family: 'Estedad';">
+          @if (order()?.customer) {
+            {{ User.fullName(order()?.customer!) }}
+          } @else {
+            {{ 'order.type.' + order()?.type | translate }}
+          }
+        </span>
+        @if (order()?.emojiKey) {
+          <span style="font-size: 1.2rem; line-height: 1;">{{ order()?.emojiKey }}</span>
         }
-      </span>
+        @if (order()?.trackingCode) {
+          <span style="font-size: 0.72rem; font-family: monospace; background: var(--border-color); padding: 2px 6px; border-radius: 4px;" eng>{{ order()?.trackingCode }}</span>
+        }
+      </div>
       <span style="font-size: 0.72rem; color: var(--text-muted);">
         {{ order()?.createdAt | pdate: true }}
       </span>

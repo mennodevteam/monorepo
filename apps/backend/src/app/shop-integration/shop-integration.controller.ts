@@ -136,6 +136,8 @@ To protect database integrity and prevent unintended customer communications, th
               createdAt: { type: 'string', format: 'date-time' },
               updatedAt: { type: 'string', format: 'date-time' },
               seenAt: { type: 'string', format: 'date-time', nullable: true, description: 'When the vendor first saw this order.' },
+              emojiKey: { type: 'string', description: 'Two random emojis to visually identify the order (e.g. 🍎🍌)' },
+              trackingCode: { type: 'string', description: 'Unique tracking number combining one uppercase letter and four random digits (e.g. A1234)' },
             },
           },
           ProductCategory: {

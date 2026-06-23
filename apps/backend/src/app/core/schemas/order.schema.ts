@@ -119,6 +119,16 @@ export const OrderSchema = new EntitySchema<Order>({
       type: String,
       nullable: true,
     },
+    emojiKey: {
+      type: String,
+      length: 20,
+      nullable: true,
+    },
+    trackingCode: {
+      type: String,
+      length: 10,
+      nullable: true,
+    },
   },
   relations: {
     creator: {
