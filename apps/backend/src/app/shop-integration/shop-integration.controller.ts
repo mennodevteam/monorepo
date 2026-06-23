@@ -2,7 +2,7 @@ import { Controller, Get, Post, Put, Patch, Delete, Body, Param, Query, UseGuard
 import { ApiKeyAuthGuard } from '../auth/api-key-auth.guard';
 import { RequiredScopes } from '../auth/scopes.decorator';
 import { RequestShop } from './shop.decorator';
-import { Shop, Product, Order, FilterOrderDto, ProductCategory, Member, FilterMemberV2Dto, Material, BillOfMaterial, BillOfProduct, InventoryTransaction, MenuCost, PurchaseInvoice, PurchaseInvoiceItem, Stocktaking, StocktakingItem } from '@menno/types';
+import { Shop, Product, Order, FilterOrderDto, ProductCategory, Member, FilterMemberV2Dto, Material, BillOfMaterial, BillOfProduct, InventoryTransaction, MenuCost, PurchaseInvoice, PurchaseInvoiceItem, Stocktaking, StocktakingItem, OrderDto, ProductItem } from '@menno/types';
 import { ShopIntegrationService } from './shop-integration.service';
 import { Public } from '../auth/public.decorator';
 
@@ -514,6 +514,60 @@ To protect database integrity and prevent unintended customer communications, th
               },
             },
           },
+          post: {
+            summary: 'Create a new order',
+            description: 'Creates a new manual delivery order for the shop. Calculates item prices, active menu costs, surcharges, and order total automatically. Required scope: orders:write',
+            requestBody: {
+              required: true,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      customerId: { type: 'string', description: 'ID of the club member (customer) associated with the order.' },
+                      extraCosts: { type: 'number', description: 'Manual delivery or extra fees in Toman.' },
+                      manualDiscount: { type: 'number', description: 'Manual discount amount in Toman.' },
+                      manualCost: { type: 'number', description: 'Manual extra cost amount in Toman.' },
+                      paymentType: { type: 'integer', description: 'Payment method. 0: NotPayed, 1: Online, 2: Cash, 3: ClubWallet' },
+                      note: { type: 'string', description: 'Optional order note/comment.' },
+                      address: {
+                        type: 'object',
+                        description: 'Delivery address structure. If provided, city (region) is mandatory.',
+                        properties: {
+                          description: { type: 'string', description: 'Detailed address string.' },
+                          region: {
+                            type: 'object',
+                            properties: { id: { type: 'string' } },
+                            required: ['id'],
+                            description: 'City/Region ID.'
+                          }
+                        },
+                        required: ['description', 'region']
+                      },
+                      productItems: {
+                        type: 'array',
+                        items: {
+                          type: 'object',
+                          properties: {
+                            productId: { type: 'string' },
+                            productVariantId: { type: 'number' },
+                            quantity: { type: 'number' }
+                          },
+                          required: ['productId', 'quantity']
+                        }
+                      }
+                    },
+                    required: ['productItems']
+                  }
+                }
+              }
+            },
+            responses: {
+              201: {
+                description: 'Order created successfully'
+              }
+            }
+          }
         },
         '/orders/{id}/state': {
           patch: {
@@ -1047,6 +1101,151 @@ To protect database integrity and prevent unintended customer communications, th
               },
             },
           },
+          '/orders/{id}/items': {
+            put: {
+              summary: 'Update order items (Avoid modifying outer properties)',
+              description: 'Updates only the product items of the specified order, recalculating costs and prices. WARNING: Use this endpoint specifically when you want to update the items. Do NOT use it to update general order properties (like note, state, extra costs, customer, etc.) to prevent overwriting unrelated fields. Required scope: orders:write',
+              parameters: [
+                { name: 'id', in: 'path', required: true, schema: { type: 'string' } }
+              ],
+              requestBody: {
+                required: true,
+                content: {
+                  'application/json': {
+                    schema: {
+                      type: 'object',
+                      properties: {
+                        productItems: {
+                          type: 'array',
+                          items: {
+                            type: 'object',
+                            properties: {
+                              productId: { type: 'string' },
+                              productVariantId: { type: 'number' },
+                              quantity: { type: 'number' }
+                            },
+                            required: ['productId', 'quantity']
+                          }
+                        }
+                      },
+                      required: ['productItems']
+                    }
+                  }
+                }
+              },
+              responses: {
+                200: { description: 'Order items updated successfully' }
+              }
+            }
+          },
+          '/orders/{id}/properties': {
+            put: {
+              summary: 'Update order properties (excluding items and customer)',
+              description: 'Modifies specific order status, notes, or costs. WARNING: Do NOT use this endpoint to edit order items or change the customer associated with the order. Unrelated properties are preserved automatically. Required scope: orders:write',
+              parameters: [
+                { name: 'id', in: 'path', required: true, schema: { type: 'string' } }
+              ],
+              requestBody: {
+                required: true,
+                content: {
+                  'application/json': {
+                    schema: {
+                      type: 'object',
+                      properties: {
+                        state: { type: 'integer', description: 'Order state. 0: Canceled, 1: Pending, 2: Processing, 3: Shipping, 4: Completed, 5: Ready' },
+                        extraCosts: { type: 'number', description: 'Extra costs in Toman.' },
+                        manualDiscount: { type: 'number', description: 'Manual discount in Toman.' },
+                        manualCost: { type: 'number', description: 'Manual cost in Toman.' },
+                        paymentType: { type: 'integer', description: 'Payment method. 0: NotPayed, 1: Online, 2: Cash, 3: ClubWallet' },
+                        note: { type: 'string', description: 'General note' }
+                      }
+                    }
+                  }
+                }
+              },
+              responses: {
+                200: { description: 'Order properties updated successfully' }
+              }
+            }
+          },
+          '/orders/{id}/customer': {
+            put: {
+              summary: 'Update or clear order customer',
+              description: 'Changes the customer associated with the order or clears the customer by passing null. WARNING: Only updates the customer relationship. Does not modify items or other order properties. Required scope: orders:write',
+              parameters: [
+                { name: 'id', in: 'path', required: true, schema: { type: 'string' } }
+              ],
+              requestBody: {
+                required: true,
+                content: {
+                  'application/json': {
+                    schema: {
+                      type: 'object',
+                      properties: {
+                        memberId: { type: 'string', nullable: true, description: 'The customer/member ID to associate, or null to clear.' }
+                      },
+                      required: ['memberId']
+                    }
+                  }
+                }
+              },
+              responses: {
+                200: { description: 'Order customer updated successfully' }
+              }
+            }
+          },
+          '/customers/{id}/addresses': {
+            get: {
+              summary: 'Get customer addresses',
+              description: 'Retrieves all registered shipping addresses for the specified customer/member. Required scope: customers:read',
+              parameters: [
+                { name: 'id', in: 'path', required: true, schema: { type: 'string' }, description: 'Customer/Member ID' }
+              ],
+              responses: {
+                200: { description: 'List of customer addresses' }
+              }
+            },
+            post: {
+              summary: 'Create customer address (City is mandatory)',
+              description: 'Adds a new shipping address for the specified customer. The city (regionId) is mandatory. Required scope: customers:write',
+              parameters: [
+                { name: 'id', in: 'path', required: true, schema: { type: 'string' }, description: 'Customer/Member ID' }
+              ],
+              requestBody: {
+                required: true,
+                content: {
+                  'application/json': {
+                    schema: {
+                      type: 'object',
+                      properties: {
+                        description: { type: 'string', description: 'Full address description.' },
+                        regionId: { type: 'string', description: 'Mandatory city/region ID.' },
+                        title: { type: 'string', description: 'Address label (e.g. Home, Office).' },
+                        latitude: { type: 'number' },
+                        longitude: { type: 'number' },
+                        unit: { type: 'string' },
+                        ring: { type: 'string' },
+                        postalCode: { type: 'string' }
+                      },
+                      required: ['description', 'regionId']
+                    }
+                  }
+                }
+              },
+              responses: {
+                201: { description: 'Address created successfully' }
+              }
+            }
+          },
+          '/regions': {
+            get: {
+              summary: 'List available cities/regions',
+              description: 'Returns the sorted list of supported cities/regions for creating customer addresses. Required scope: customers:read',
+              responses: {
+                200: { description: 'List of regions' }
+              }
+            }
+          },
       },
     };
   }
@@ -1329,5 +1528,86 @@ To protect database integrity and prevent unintended customer communications, th
   ) {
     const revert = revertStock === 'true';
     return this.integrationService.deleteStocktaking(shop.id, id, revert);
+  }
+
+  @Post('orders')
+  @UseGuards(ApiKeyAuthGuard)
+  @RequiredScopes('orders:write')
+  async createOrder(@RequestShop() shop: Shop, @Body() dto: Partial<OrderDto>) {
+    return this.integrationService.createOrder(shop.id, dto);
+  }
+
+  @Put('orders/:id/items')
+  @UseGuards(ApiKeyAuthGuard)
+  @RequiredScopes('orders:write')
+  async updateOrderItems(
+    @RequestShop() shop: Shop,
+    @Param('id') id: string,
+    @Body('productItems') productItems: ProductItem[],
+  ) {
+    return this.integrationService.updateOrderItems(shop.id, id, productItems);
+  }
+
+  @Put('orders/:id/properties')
+  @UseGuards(ApiKeyAuthGuard)
+  @RequiredScopes('orders:write')
+  async updateOrderProperties(
+    @RequestShop() shop: Shop,
+    @Param('id') id: string,
+    @Body() dto: {
+      state?: number;
+      extraCosts?: number;
+      manualDiscount?: number;
+      manualCost?: number;
+      paymentType?: number;
+      note?: string;
+    },
+  ) {
+    return this.integrationService.updateOrderProperties(shop.id, id, dto);
+  }
+
+  @Put('orders/:id/customer')
+  @UseGuards(ApiKeyAuthGuard)
+  @RequiredScopes('orders:write')
+  async updateOrderCustomer(
+    @RequestShop() shop: Shop,
+    @Param('id') id: string,
+    @Body('memberId') memberId: string | null,
+  ) {
+    return this.integrationService.updateOrderCustomer(shop.id, id, memberId);
+  }
+
+  @Get('customers/:id/addresses')
+  @UseGuards(ApiKeyAuthGuard)
+  @RequiredScopes('customers:read')
+  async getCustomerAddresses(@RequestShop() shop: Shop, @Param('id') id: string) {
+    return this.integrationService.getCustomerAddresses(shop.id, id);
+  }
+
+  @Post('customers/:id/addresses')
+  @UseGuards(ApiKeyAuthGuard)
+  @RequiredScopes('customers:write')
+  async createCustomerAddress(
+    @RequestShop() shop: Shop,
+    @Param('id') id: string,
+    @Body() dto: {
+      description: string;
+      regionId: string;
+      title?: string;
+      latitude?: number;
+      longitude?: number;
+      unit?: string;
+      ring?: string;
+      postalCode?: string;
+    },
+  ) {
+    return this.integrationService.createCustomerAddress(shop.id, id, dto);
+  }
+
+  @Get('regions')
+  @UseGuards(ApiKeyAuthGuard)
+  @RequiredScopes('customers:read')
+  async getRegions() {
+    return this.integrationService.getRegions();
   }
 }

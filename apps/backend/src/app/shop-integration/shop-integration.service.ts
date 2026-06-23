@@ -25,6 +25,14 @@ import {
   PurchaseInvoiceItem,
   Stocktaking,
   StocktakingItem,
+  Address,
+  Region,
+  DeliveryType,
+  DeliveryArea,
+  OrderDto,
+  ProductItem,
+  MANUAL_DISCOUNT_TITLE,
+  MANUAL_COST_TITLE,
 } from '@menno/types';
 import { RedisService } from '../core/redis.service';
 import { OrdersService } from '../orders/orders.service';
@@ -62,6 +70,10 @@ export class ShopIntegrationService {
     private stocktakingRepo: Repository<Stocktaking>,
     @InjectRepository(StocktakingItem)
     private stocktakingItemRepo: Repository<StocktakingItem>,
+    @InjectRepository(Address)
+    private addressRepo: Repository<Address>,
+    @InjectRepository(Region)
+    private regionRepo: Repository<Region>,
     private redis: RedisService,
     private ordersService: OrdersService,
     private clubsService: ClubsService,
@@ -720,5 +732,219 @@ export class ShopIntegrationService {
     }
 
     return this.stocktakingRepo.delete(id);
+  }
+
+  async createOrder(shopId: string, dto: Partial<OrderDto>) {
+    dto.shopId = shopId;
+    dto.isManual = true;
+    if (dto.type === undefined) {
+      dto.type = 1; // Delivery
+    }
+    return this.ordersService.addOrder(dto as OrderDto);
+  }
+
+  async updateOrderItems(shopId: string, orderId: string, productItems: ProductItem[]) {
+    const order = await this.orderRepo.findOne({
+      where: { id: orderId, shop: { id: shopId } },
+      relations: ['items.product', 'items.productVariant', 'customer', 'shop', 'address'],
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found in this shop');
+    }
+
+    const manualDiscountItem = order.items?.find((x) => x.isAbstract && x.title === MANUAL_DISCOUNT_TITLE);
+    const manualDiscount = manualDiscountItem ? Math.abs(manualDiscountItem.price) : undefined;
+
+    const manualCostItem = order.items?.find((x) => x.isAbstract && x.title === MANUAL_COST_TITLE);
+    const manualCost = manualCostItem ? manualCostItem.price : undefined;
+
+    const dto: OrderDto = {
+      id: order.id,
+      shopId: shopId,
+      customerId: order.customer?.id,
+      type: order.type,
+      isManual: order.isManual,
+      extraCosts: order.extraCosts,
+      manualDiscount: manualDiscount,
+      manualCost: manualCost,
+      paymentType: order.paymentType,
+      note: order.note,
+      address: order.address,
+      productItems: productItems,
+    };
+
+    return this.ordersService.editOrder(dto);
+  }
+
+  async updateOrderProperties(
+    shopId: string,
+    orderId: string,
+    properties: {
+      state?: number;
+      extraCosts?: number;
+      manualDiscount?: number;
+      manualCost?: number;
+      paymentType?: number;
+      note?: string;
+    },
+  ) {
+    const order = await this.orderRepo.findOne({
+      where: { id: orderId, shop: { id: shopId } },
+      relations: ['items.product', 'items.productVariant', 'customer', 'shop', 'address'],
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found in this shop');
+    }
+
+    const manualDiscountItem = order.items?.find((x) => x.isAbstract && x.title === MANUAL_DISCOUNT_TITLE);
+    const existingManualDiscount = manualDiscountItem ? Math.abs(manualDiscountItem.price) : undefined;
+
+    const manualCostItem = order.items?.find((x) => x.isAbstract && x.title === MANUAL_COST_TITLE);
+    const existingManualCost = manualCostItem ? manualCostItem.price : undefined;
+
+    const productItems = order.items
+      .filter((x) => !x.isAbstract && x.product)
+      .map((x) => ({
+        productId: x.product.id,
+        productVariantId: x.productVariant?.id,
+        quantity: x.quantity,
+      }));
+
+    const dto: OrderDto = {
+      id: order.id,
+      shopId: shopId,
+      customerId: order.customer?.id,
+      type: order.type,
+      isManual: order.isManual,
+      extraCosts: properties.extraCosts !== undefined ? properties.extraCosts : order.extraCosts,
+      manualDiscount: properties.manualDiscount !== undefined ? properties.manualDiscount : existingManualDiscount,
+      manualCost: properties.manualCost !== undefined ? properties.manualCost : existingManualCost,
+      paymentType: properties.paymentType !== undefined ? properties.paymentType : order.paymentType,
+      note: properties.note !== undefined ? properties.note : order.note,
+      address: order.address,
+      productItems: productItems,
+    };
+
+    const updated = await this.ordersService.editOrder(dto);
+
+    if (properties.state !== undefined && properties.state !== order.state) {
+      await this.updateOrderState(shopId, orderId, properties.state);
+    }
+
+    return this.orderRepo.findOne({
+      where: { id: orderId },
+      relations: ['items.product', 'items.productVariant', 'customer'],
+    });
+  }
+
+  async updateOrderCustomer(shopId: string, orderId: string, memberId: string | null) {
+    const order = await this.orderRepo.findOne({
+      where: { id: orderId, shop: { id: shopId } },
+      relations: ['customer'],
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found in this shop');
+    }
+
+    if (!memberId) {
+      order.customer = null;
+    } else {
+      const member = await this.memberRepo.findOne({
+        where: { id: memberId },
+        relations: ['user'],
+      });
+      if (!member) {
+        throw new NotFoundException('Customer/Member not found');
+      }
+      order.customer = member.user;
+    }
+
+    await this.orderRepo.save(order);
+    return order;
+  }
+
+  async getCustomerAddresses(shopId: string, memberId: string) {
+    const member = await this.memberRepo.findOne({
+      where: { id: memberId },
+      relations: ['user'],
+    });
+    if (!member) {
+      throw new NotFoundException('Customer/Member not found');
+    }
+
+    return this.addressRepo.find({
+      where: { user: { id: member.user.id } },
+      relations: ['region'],
+      order: { id: 'DESC' },
+    });
+  }
+
+  async createCustomerAddress(
+    shopId: string,
+    memberId: string,
+    dto: {
+      description: string;
+      regionId: string;
+      title?: string;
+      latitude?: number;
+      longitude?: number;
+      unit?: string;
+      ring?: string;
+      postalCode?: string;
+    },
+  ) {
+    const member = await this.memberRepo.findOne({
+      where: { id: memberId },
+      relations: ['user'],
+    });
+    if (!member) {
+      throw new NotFoundException('Customer/Member not found');
+    }
+
+    if (!dto.regionId) {
+      throw new HttpException('regionId (city) is required', HttpStatus.BAD_REQUEST);
+    }
+
+    const region = await this.regionRepo.findOneBy({ id: dto.regionId });
+    if (!region) {
+      throw new NotFoundException('Region/City not found');
+    }
+
+    const address = new Address();
+    address.user = member.user;
+    address.region = region;
+    address.description = dto.description;
+    address.title = dto.title;
+    address.latitude = dto.latitude;
+    address.longitude = dto.longitude;
+    address.unit = dto.unit;
+    address.ring = dto.ring;
+    address.postalCode = dto.postalCode;
+
+    const shop = await this.shopRepo.findOne({
+      where: { id: shopId },
+      relations: ['deliveryAreas.region', 'appConfig'],
+    });
+
+    if (shop) {
+      const deliveryType = shop.appConfig?.deliveryType;
+      const deliveryAreas = shop.deliveryAreas || [];
+      if ((!deliveryType || deliveryType === DeliveryType.Standard) && address.latitude && address.longitude) {
+        address.deliveryArea = DeliveryArea.isInWitchArea(deliveryAreas, [address.latitude, address.longitude]);
+      } else if (deliveryType === DeliveryType.Post && address.region) {
+        address.deliveryArea = DeliveryArea.isInWitchArea(deliveryAreas, undefined, address.region);
+      }
+    }
+
+    return this.addressRepo.save(address);
+  }
+
+  async getRegions() {
+    return this.regionRepo.find({
+      order: { title: 'ASC' },
+    });
   }
 }
