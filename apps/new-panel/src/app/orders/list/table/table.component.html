@@ -16,7 +16,7 @@
 
     <ng-container matColumnDef="emojiKey">
       <th mat-header-cell *matHeaderCellDef>{{ 'order.emojiKey' | translate }}</th>
-      <td mat-cell *matCellDef="let order" style="font-size: 2rem; line-height: 1;">
+      <td mat-cell *matCellDef="let order" style="font-size: 2rem !important; line-height: 1;">
         {{ order.emojiKey || '—' }}
       </td>
     </ng-container>
