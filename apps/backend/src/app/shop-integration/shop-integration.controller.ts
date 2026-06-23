@@ -1103,47 +1103,10 @@ To protect database integrity and prevent unintended customer communications, th
               },
             },
           },
-          '/orders/{id}/items': {
-            put: {
-              summary: 'Update order items (Avoid modifying outer properties)',
-              description: 'Updates only the product items of the specified order, recalculating costs and prices. WARNING: Use this endpoint specifically when you want to update the items. Do NOT use it to update general order properties (like note, state, extra costs, customer, etc.) to prevent overwriting unrelated fields. Required scope: orders:write',
-              parameters: [
-                { name: 'id', in: 'path', required: true, schema: { type: 'string' } }
-              ],
-              requestBody: {
-                required: true,
-                content: {
-                  'application/json': {
-                    schema: {
-                      type: 'object',
-                      properties: {
-                        productItems: {
-                          type: 'array',
-                          items: {
-                            type: 'object',
-                            properties: {
-                              productId: { type: 'string' },
-                              productVariantId: { type: 'number' },
-                              quantity: { type: 'number' }
-                            },
-                            required: ['productId', 'quantity']
-                          }
-                        }
-                      },
-                      required: ['productItems']
-                    }
-                  }
-                }
-              },
-              responses: {
-                200: { description: 'Order items updated successfully' }
-              }
-            }
-          },
           '/orders/{id}/properties': {
             put: {
               summary: 'Update order properties (excluding items and customer)',
-              description: 'Modifies specific order status, notes, or costs. WARNING: Do NOT use this endpoint to edit order items or change the customer associated with the order. Unrelated properties are preserved automatically. Required scope: orders:write',
+              description: 'Modifies specific order status or extra costs. Required scope: orders:write',
               parameters: [
                 { name: 'id', in: 'path', required: true, schema: { type: 'string' } }
               ],
@@ -1155,11 +1118,7 @@ To protect database integrity and prevent unintended customer communications, th
                       type: 'object',
                       properties: {
                         state: { type: 'integer', description: 'Order state. 0: Canceled, 1: Pending, 2: Processing, 3: Shipping, 4: Completed, 5: Ready' },
-                        extraCosts: { type: 'number', description: 'Extra costs in Toman.' },
-                        manualDiscount: { type: 'number', description: 'Manual discount in Toman.' },
-                        manualCost: { type: 'number', description: 'Manual cost in Toman.' },
-                        paymentType: { type: 'integer', description: 'Payment method. 0: NotPayed, 1: Online, 2: Cash, 3: ClubWallet' },
-                        note: { type: 'string', description: 'General note' }
+                        extraCosts: { type: 'number', description: 'Extra costs in Toman.' }
                       }
                     }
                   }
@@ -1559,10 +1518,6 @@ To protect database integrity and prevent unintended customer communications, th
     @Body() dto: {
       state?: number;
       extraCosts?: number;
-      manualDiscount?: number;
-      manualCost?: number;
-      paymentType?: number;
-      note?: string;
     },
   ) {
     return this.integrationService.updateOrderProperties(shop.id, id, dto);

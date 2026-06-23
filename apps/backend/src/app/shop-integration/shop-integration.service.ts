@@ -745,41 +745,7 @@ export class ShopIntegrationService {
   }
 
   async updateOrderItems(shopId: string, orderId: string, productItems: ProductItem[]) {
-    const order = await this.orderRepo.findOne({
-      where: { id: orderId, shop: { id: shopId } },
-      relations: ['items.product', 'items.productVariant', 'customer', 'shop', 'address.deliveryArea', 'discountCoupon'],
-    });
-
-    if (!order) {
-      throw new NotFoundException('Order not found in this shop');
-    }
-
-    const manualDiscountItem = order.items?.find((x) => x.isAbstract && x.title === MANUAL_DISCOUNT_TITLE);
-    const manualDiscount = manualDiscountItem ? Math.abs(manualDiscountItem.price) : undefined;
-
-    const manualCostItem = order.items?.find((x) => x.isAbstract && x.title === MANUAL_COST_TITLE);
-    const manualCost = manualCostItem ? manualCostItem.price : undefined;
-
-    const dto: OrderDto = {
-      id: order.id,
-      shopId: shopId,
-      customerId: order.customer?.id,
-      type: order.type,
-      isManual: order.isManual,
-      extraCosts: order.extraCosts,
-      manualDiscount: manualDiscount,
-      manualCost: manualCost,
-      paymentType: order.paymentType,
-      note: order.note,
-      address: order.address,
-      productItems: productItems,
-      excludeFromReports: order.excludeFromReports,
-      discountCoupon: order.discountCoupon,
-      payment: order.payment,
-      details: order.details,
-    };
-
-    return this.ordersService.editOrder(dto);
+    throw new ForbiddenException('Editing order items is not allowed');
   }
 
   async updateOrderProperties(
@@ -788,58 +754,33 @@ export class ShopIntegrationService {
     properties: {
       state?: number;
       extraCosts?: number;
-      manualDiscount?: number;
-      manualCost?: number;
-      paymentType?: number;
-      note?: string;
     },
   ) {
     const order = await this.orderRepo.findOne({
       where: { id: orderId, shop: { id: shopId } },
-      relations: ['items.product', 'items.productVariant', 'customer', 'shop', 'address.deliveryArea', 'discountCoupon'],
     });
 
     if (!order) {
       throw new NotFoundException('Order not found in this shop');
     }
 
-    const manualDiscountItem = order.items?.find((x) => x.isAbstract && x.title === MANUAL_DISCOUNT_TITLE);
-    const existingManualDiscount = manualDiscountItem ? Math.abs(manualDiscountItem.price) : undefined;
+    let changed = false;
 
-    const manualCostItem = order.items?.find((x) => x.isAbstract && x.title === MANUAL_COST_TITLE);
-    const existingManualCost = manualCostItem ? manualCostItem.price : undefined;
-
-    const productItems = order.items
-      .filter((x) => !x.isAbstract && x.product)
-      .map((x) => ({
-        productId: x.product.id,
-        productVariantId: x.productVariant?.id,
-        quantity: x.quantity,
-      }));
-
-    const dto: OrderDto = {
-      id: order.id,
-      shopId: shopId,
-      customerId: order.customer?.id,
-      type: order.type,
-      isManual: order.isManual,
-      extraCosts: properties.extraCosts !== undefined ? properties.extraCosts : order.extraCosts,
-      manualDiscount: properties.manualDiscount !== undefined ? properties.manualDiscount : existingManualDiscount,
-      manualCost: properties.manualCost !== undefined ? properties.manualCost : existingManualCost,
-      paymentType: properties.paymentType !== undefined ? properties.paymentType : order.paymentType,
-      note: properties.note !== undefined ? properties.note : order.note,
-      address: order.address,
-      productItems: productItems,
-      excludeFromReports: order.excludeFromReports,
-      discountCoupon: order.discountCoupon,
-      payment: order.payment,
-      details: order.details,
-    };
-
-    const updated = await this.ordersService.editOrder(dto);
+    if (properties.extraCosts !== undefined) {
+      order.extraCosts = properties.extraCosts;
+      changed = true;
+    }
 
     if (properties.state !== undefined && properties.state !== order.state) {
-      await this.updateOrderState(shopId, orderId, properties.state);
+      order.state = properties.state;
+      changed = true;
+    }
+
+    if (changed) {
+      await this.orderRepo.save(order);
+      if (properties.state !== undefined) {
+        this.ordersService.checkAfterUpdateOrderMessage(orderId, OrderMessageEvent.OnChangeState);
+      }
     }
 
     return this.orderRepo.findOne({
@@ -847,7 +788,6 @@ export class ShopIntegrationService {
       relations: ['items.product', 'items.productVariant', 'customer'],
     });
   }
-
   async updateOrderCustomer(shopId: string, orderId: string, memberId: string | null) {
     const order = await this.orderRepo.findOne({
       where: { id: orderId, shop: { id: shopId } },
