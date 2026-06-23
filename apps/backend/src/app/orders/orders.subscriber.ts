@@ -123,7 +123,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
         '🌻', '🌞', '🌈', '🔥', '💧', '⚡', '⭐', '🌟', '✨', '☄️', '💥', '🪐', '🌍', '❄️', '☃️'
       ];
       const randomEmoji = () => emojis[Math.floor(Math.random() * emojis.length)];
-      order.emojiKey = `${randomEmoji()}${randomEmoji()}`;
+      order.emojiKey = randomEmoji();
     }
 
     if (!order.trackingCode) {

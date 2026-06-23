@@ -438,7 +438,7 @@ export class OrdersController {
       let changed = false;
       if (!order.emojiKey) {
         const randomEmoji = () => emojis[Math.floor(Math.random() * emojis.length)];
-        order.emojiKey = `${randomEmoji()}${randomEmoji()}`;
+        order.emojiKey = randomEmoji();
         changed = true;
       }
       if (!order.trackingCode) {

@@ -338,8 +338,8 @@
     "OTHER": "سایر"
   },
   "order": {
-    "emojiKey": "ایموجی کلید",
-    "trackingCode": "شماره پیگیری",
+    "emojiKey": "ایموجی",
+    "trackingCode": "پیگیری",
     "costSummary": "خلاصه هزینه‌ها و سود",
     "showCost": "نمایش هزینه مواد اولیه روی هر آیتم",
     "customer": "مشتری",
