@@ -33,6 +33,7 @@ import {
   ProductItem,
   MANUAL_DISCOUNT_TITLE,
   MANUAL_COST_TITLE,
+  DELIVERY_COST_TITLE,
 } from '@menno/types';
 import { RedisService } from '../core/redis.service';
 import { OrdersService } from '../orders/orders.service';
@@ -746,7 +747,7 @@ export class ShopIntegrationService {
   async updateOrderItems(shopId: string, orderId: string, productItems: ProductItem[]) {
     const order = await this.orderRepo.findOne({
       where: { id: orderId, shop: { id: shopId } },
-      relations: ['items.product', 'items.productVariant', 'customer', 'shop', 'address'],
+      relations: ['items.product', 'items.productVariant', 'customer', 'shop', 'address.deliveryArea', 'discountCoupon'],
     });
 
     if (!order) {
@@ -772,6 +773,10 @@ export class ShopIntegrationService {
       note: order.note,
       address: order.address,
       productItems: productItems,
+      excludeFromReports: order.excludeFromReports,
+      discountCoupon: order.discountCoupon,
+      payment: order.payment,
+      details: order.details,
     };
 
     return this.ordersService.editOrder(dto);
@@ -791,7 +796,7 @@ export class ShopIntegrationService {
   ) {
     const order = await this.orderRepo.findOne({
       where: { id: orderId, shop: { id: shopId } },
-      relations: ['items.product', 'items.productVariant', 'customer', 'shop', 'address'],
+      relations: ['items.product', 'items.productVariant', 'customer', 'shop', 'address.deliveryArea', 'discountCoupon'],
     });
 
     if (!order) {
@@ -825,6 +830,10 @@ export class ShopIntegrationService {
       note: properties.note !== undefined ? properties.note : order.note,
       address: order.address,
       productItems: productItems,
+      excludeFromReports: order.excludeFromReports,
+      discountCoupon: order.discountCoupon,
+      payment: order.payment,
+      details: order.details,
     };
 
     const updated = await this.ordersService.editOrder(dto);
