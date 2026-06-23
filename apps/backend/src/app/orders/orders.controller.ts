@@ -406,27 +406,6 @@ export class OrdersController {
     return countsMap;
   }
 
-  @Get(':id')
-  @Roles(UserRole.App)
-  getOrderDetailsApp(@Param('id') id: string) {
-    return this.ordersRepo.findOne({
-      where: {
-        id,
-      },
-      withDeleted: true,
-      relations: [
-        'shop',
-        'shop.appConfig',
-        'items',
-        'customer',
-        'waiter',
-        'creator',
-        'address',
-        'shop.paymentGateway',
-      ],
-    });
-  }
-
   @Public()
   @Get('backfill')
   async backfillOrders(@Query('shopId') shopId: string) {
@@ -475,5 +454,26 @@ export class OrdersController {
       }
     }
     return { success: true, updatedCount };
+  }
+
+  @Get(':id')
+  @Roles(UserRole.App)
+  getOrderDetailsApp(@Param('id') id: string) {
+    return this.ordersRepo.findOne({
+      where: {
+        id,
+      },
+      withDeleted: true,
+      relations: [
+        'shop',
+        'shop.appConfig',
+        'items',
+        'customer',
+        'waiter',
+        'creator',
+        'address',
+        'shop.paymentGateway',
+      ],
+    });
   }
 }
