@@ -15,6 +15,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatMenuModule } from '@angular/material/menu';
 import { SHARED } from '../shared';
 import { DialogService } from '../core/services/dialog.service';
 import { ShopApiKey } from '@menno/types';
@@ -36,6 +37,7 @@ import { ShopService } from '../shop/shop.service';
     MatDividerModule,
     MatTableModule,
     MatTooltipModule,
+    MatMenuModule,
   ],
   templateUrl: './developer-api.component.html',
   styleUrl: './developer-api.component.scss',
@@ -51,7 +53,6 @@ export class DeveloperApiComponent implements OnInit {
   readonly openApiUrl = `${environment.apiUrl.replace(/\/+$/, '')}/api/v1/shop-integration/openapi.json`;
   readonly mcpUrl = `${environment.apiUrl.replace(/\/+$/, '')}/api/v1/shop-integration/mcp`;
   readonly newGeneratedKey = signal<string | null>(null);
-  readonly smsCharge = computed(() => this.shop.data()?.smsAccount?.charge ?? 0);
 
   ngOnInit() {
     const onboardingSeen = localStorage.getItem('menno_onboarding_developer_api');

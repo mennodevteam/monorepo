@@ -10,7 +10,7 @@
   </button>
 </mat-toolbar>
 
-<main p-md class="np-form-container">
+<main p-md w-md class="np-form-container">
   <!-- Top Educational Promo Card -->
   <mat-card class="promo-card blue" style="margin-bottom: 24px;">
     <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
@@ -27,7 +27,7 @@
   </mat-card>
 
   <div class="config-layout">
-    <!-- Left Column: Settings and API Keys -->
+    <!-- Right Column: Settings, Steps and API Keys -->
     <div class="np-form-section" fxLayout="column" fxLayoutGap="24px">
       <!-- API URL & OpenAPI spec card -->
       <mat-card appearance="outlined">
@@ -82,8 +82,49 @@
             </button>
           </div>
           <p style="margin: 12px 0 0 0; font-size: 0.75rem; color: var(--text-muted); line-height: 1.6;">
-            از این لینک می‌توانید برای اتصال مستقیم و بدون واسطه (بدون نیاز به ماژول یا پل واسط محلی) به دستیارهای هوشمند استفاده کنید. برای راهنمایی بیشتر، بخش «مراحل راه‌اندازی» در سمت چپ را مطالعه کنید.
+            از این لینک می‌توانید برای اتصال مستقیم و بدون واسطه (بدون نیاز به ماژول یا پل واسط محلی) به دستیارهای هوشمند استفاده کنید. برای راهنمایی بیشتر، بخش «مراحل راه‌اندازی» در زیر را مطالعه کنید.
           </p>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Steps to connect (Moved here to the right/main section) -->
+      <mat-card appearance="outlined">
+        <mat-card-header>
+          <mat-card-title style="font-weight: 500; font-size: 0.9rem;">مراحل راه‌اندازی سرور MCP</mat-card-title>
+        </mat-card-header>
+        <mat-card-content style="padding-top: 16px;">
+          <p style="margin: 0 0 12px 0; font-size: 0.78rem; font-weight: 500; color: var(--text-primary);">۱. ابتدا یک کلید دسترسی (API Key) جدید در جدول زیر بسازید.</p>
+          
+          <div style="margin-bottom: 16px;">
+            <p style="margin: 0 0 6px 0; font-size: 0.78rem; font-weight: 600; color: var(--text-primary);">۲. اتصال مستقیم در ویرایشگر Cursor (توصیه شده):</p>
+            <p style="margin: 0 0 6px 0; font-size: 0.75rem; color: var(--text-secondary); line-height: 1.6;">
+              به راحتی می‌توانید تنظیمات زیر را به فایل `mcp.json` در مسیر `.cursor/mcp.json` پروژه خود اضافه کنید:
+            </p>
+            <pre style="direction: ltr; font-family: monospace; font-size: 0.72rem; background: #f5f5f5; padding: 10px; border-radius: 6px; overflow-x: auto; margin: 0 0 12px 0; border: 1px solid var(--border-color);">
+"mcpServers": &#123;
+  "shottt": &#123;
+    "type": "http",
+    "url": "{{ mcpUrl }}?apiKey=YOUR_API_KEY"
+  &#125;
+&#125;</pre>
+            <p style="margin: 0; font-size: 0.72rem; color: var(--text-muted); line-height: 1.5;">
+              همچنین می‌توانید از منوی Settings > Features > MCP در Cursor یک سرور جدید با نام دلخواه (مثلاً shottt)، نوع <strong>HTTP</strong> و با آدرس و کلید دسترسی فوق ایجاد کنید.
+            </p>
+          </div>
+
+          <div>
+            <p style="margin: 0 0 6px 0; font-size: 0.78rem; font-weight: 600; color: var(--text-primary);">۳. اتصال در Claude Desktop:</p>
+            <p style="margin: 0 0 6px 0; font-size: 0.75rem; color: var(--text-secondary); line-height: 1.6;">
+              تنظیمات زیر را به فایل پیکربندی `claude_desktop_config.json` خود اضافه کنید:
+            </p>
+            <pre style="direction: ltr; font-family: monospace; font-size: 0.72rem; background: #f5f5f5; padding: 10px; border-radius: 6px; overflow-x: auto; margin: 0; border: 1px solid var(--border-color);">
+"mcpServers": &#123;
+  "shottt": &#123;
+    "type": "http",
+    "url": "{{ mcpUrl }}?apiKey=YOUR_API_KEY"
+  &#125;
+&#125;</pre>
+          </div>
         </mat-card-content>
       </mat-card>
 
@@ -146,8 +187,8 @@
                 
                 <!-- Description Column -->
                 <ng-container matColumnDef="description">
-                  <th mat-header-cell *matHeaderCellDef>توضیحات کلید</th>
-                  <td mat-cell *matCellDef="let key">
+                  <th mat-header-cell *matHeaderCellDef style="text-align: right !important;">توضیحات کلید</th>
+                  <td mat-cell *matCellDef="let key" style="text-align: right !important;">
                     <div style="font-weight: 500; color: var(--text-primary);">{{ key.description }}</div>
                     <div style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace; direction: ltr; text-align: right; margin-top: 4px;">{{ key.keyHint }}</div>
                   </td>
@@ -155,35 +196,48 @@
 
                 <!-- Scopes Column -->
                 <ng-container matColumnDef="scopes">
-                  <th mat-header-cell *matHeaderCellDef>دسترسی‌ها</th>
-                  <td mat-cell *matCellDef="let key">
-                    <mat-chip-listbox aria-label="Permissions" style="display: inline-flex; flex-wrap: wrap; gap: 4px;">
-                      @for (scope of key.scopes; track scope) {
-                        <mat-chip-option
-                          [selectable]="false"
-                          style="font-size: 0.75rem; height: 24px; padding: 0 8px;"
-                          [style.background-color]="scope.includes('write') ? 'rgba(233, 30, 99, 0.08)' : 'rgba(33, 150, 243, 0.08)'"
-                          [style.color]="scope.includes('write') ? '#e91e63' : '#2196f3'"
-                        >
-                          {{ scope }}
-                        </mat-chip-option>
-                      }
-                    </mat-chip-listbox>
+                  <th mat-header-cell *matHeaderCellDef style="text-align: right !important;">دسترسی‌ها</th>
+                  <td mat-cell *matCellDef="let key" style="text-align: right !important;">
+                    <button
+                      mat-stroked-button
+                      [matMenuTriggerFor]="scopeMenu"
+                      (click)="$event.stopPropagation()"
+                      style="font-family: 'Estedad'; font-size: 0.75rem; height: 28px; padding: 0 8px; border-radius: 6px; color: #2196f3; border-color: rgba(33, 150, 243, 0.2);"
+                    >
+                      <span>{{ key.scopes.length }} دسترسی</span>
+                      <ng-icon name="saxArrowDownOutline" style="margin-inline-start: 6px; font-size: 0.8rem; vertical-align: middle;"></ng-icon>
+                    </button>
+                    <mat-menu #scopeMenu="matMenu">
+                      <div style="padding: 12px; min-width: 200px; direction: rtl; text-align: right;" (click)="$event.stopPropagation()">
+                        <div style="font-size: 0.8rem; font-weight: bold; color: var(--text-primary); margin-bottom: 8px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
+                          دسترسی‌های کلید
+                        </div>
+                        <div fxLayout="column" fxLayoutGap="8px">
+                          @for (scope of key.scopes; track scope) {
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px" style="font-size: 0.75rem; font-family: monospace;">
+                              <span [style.background-color]="scope.includes('write') ? '#e91e63' : '#2196f3'"
+                                    style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;"></span>
+                              <span style="direction: ltr; text-align: left; flex: 1;">{{ scope }}</span>
+                            </div>
+                          }
+                        </div>
+                      </div>
+                    </mat-menu>
                   </td>
                 </ng-container>
 
                 <!-- Created At Column -->
                 <ng-container matColumnDef="createdAt">
-                  <th mat-header-cell *matHeaderCellDef>تاریخ ساخت</th>
-                  <td mat-cell *matCellDef="let key" style="font-size: 0.8125rem; color: var(--text-secondary);">
+                  <th mat-header-cell *matHeaderCellDef style="text-align: right !important;">تاریخ ساخت</th>
+                  <td mat-cell *matCellDef="let key" style="font-size: 0.8125rem; color: var(--text-secondary); text-align: right !important;">
                     {{ key.createdAt | pdate: true }}
                   </td>
                 </ng-container>
 
                 <!-- Last Used Column -->
                 <ng-container matColumnDef="lastUsedAt">
-                  <th mat-header-cell *matHeaderCellDef>آخرین استفاده</th>
-                  <td mat-cell *matCellDef="let key" style="font-size: 0.8125rem; color: var(--text-secondary);">
+                  <th mat-header-cell *matHeaderCellDef style="text-align: right !important;">آخرین استفاده</th>
+                  <td mat-cell *matCellDef="let key" style="font-size: 0.8125rem; color: var(--text-secondary); text-align: right !important;">
                     @if (key.lastUsedAt) {
                       {{ key.lastUsedAt | pdate: true }}
                     } @else {
@@ -217,83 +271,55 @@
       </mat-card>
     </div>
 
-    <!-- Right Column: Sidebar / Help / Examples -->
+    <!-- Left Column: Sidebar / Help / Examples -->
     <div class="preview-section" fxLayout="column" fxLayoutGap="24px">
-      <!-- SMS Balance Card -->
-      <mat-card appearance="outlined" style="background: linear-gradient(135deg, #fef7e0, #fffcf0); border: 1px solid #ffe082;">
-        <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px" style="padding: 16px;">
-          <div style="background-color: #fff3cd; color: #ffc107; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px;">
-            <ng-icon name="saxSmsOutline" style="font-size: 1.5rem;"></ng-icon>
-          </div>
-          <div fxFlex>
-            <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 500;">میزان شارژ پیامک فروشگاه</div>
-            <div style="font-size: 1.15rem; font-weight: 700; color: #b78103; margin-top: 4px; font-family: 'Estedad';">
-              {{ smsCharge() | number }} <span style="font-size: 0.75rem; font-weight: 500;">ریال</span>
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-
-      <!-- Steps to connect -->
-      <mat-card appearance="outlined">
-        <mat-card-header>
-          <mat-card-title style="font-weight: 500; font-size: 0.9rem;">مراحل راه‌اندازی سرور MCP</mat-card-title>
-        </mat-card-header>
-        <mat-card-content style="padding-top: 16px;">
-          <p style="margin: 0 0 12px 0; font-size: 0.78rem; font-weight: 500; color: var(--text-primary);">۱. ابتدا یک کلید دسترسی (API Key) جدید در ستون مقابل بسازید.</p>
-          
-          <div style="margin-bottom: 16px;">
-            <p style="margin: 0 0 6px 0; font-size: 0.78rem; font-weight: 600; color: var(--text-primary);">۲. اتصال مستقیم در ویرایشگر Cursor (توصیه شده):</p>
-            <p style="margin: 0 0 6px 0; font-size: 0.75rem; color: var(--text-secondary); line-height: 1.6;">
-              به راحتی می‌توانید تنظیمات زیر را به فایل `mcp.json` در مسیر `.cursor/mcp.json` پروژه خود اضافه کنید:
-            </p>
-            <pre style="direction: ltr; font-family: monospace; font-size: 0.72rem; background: #f5f5f5; padding: 10px; border-radius: 6px; overflow-x: auto; margin: 0 0 12px 0; border: 1px solid var(--border-color);">
-"mcpServers": &#123;
-  "shottt": &#123;
-    "type": "http",
-    "url": "{{ mcpUrl }}?apiKey=YOUR_API_KEY"
-  &#125;
-&#125;</pre>
-            <p style="margin: 0; font-size: 0.72rem; color: var(--text-muted); line-height: 1.5;">
-              همچنین می‌توانید از منوی Settings > Features > MCP در Cursor یک سرور جدید با نام دلخواه (مثلاً shottt)، نوع <strong>HTTP</strong> و با آدرس و کلید دسترسی فوق ایجاد کنید.
-            </p>
-          </div>
-
-          <div>
-            <p style="margin: 0 0 6px 0; font-size: 0.78rem; font-weight: 600; color: var(--text-primary);">۳. اتصال در Claude Desktop:</p>
-            <p style="margin: 0 0 6px 0; font-size: 0.75rem; color: var(--text-secondary); line-height: 1.6;">
-              تنظیمات زیر را به فایل پیکربندی `claude_desktop_config.json` خود اضافه کنید:
-            </p>
-            <pre style="direction: ltr; font-family: monospace; font-size: 0.72rem; background: #f5f5f5; padding: 10px; border-radius: 6px; overflow-x: auto; margin: 0; border: 1px solid var(--border-color);">
-"mcpServers": &#123;
-  "shottt": &#123;
-    "type": "http",
-    "url": "{{ mcpUrl }}?apiKey=YOUR_API_KEY"
-  &#125;
-&#125;</pre>
-          </div>
-        </mat-card-content>
-      </mat-card>
-
       <!-- Examples of Tasks -->
       <mat-card appearance="outlined">
         <mat-card-header>
-          <mat-card-title style="font-weight: 500; font-size: 0.9rem;">مثال‌هایی از دستورات دستیار</mat-card-title>
-          <mat-card-subtitle>چه کارهایی از دستیار برمی‌آید؟</mat-card-subtitle>
+          <mat-card-title style="font-weight: 500; font-size: 0.9rem;">چه کارهایی از دستیار برمی‌آید؟</mat-card-title>
+          <mat-card-subtitle>۱۰ نمونه از کارهایی که می‌توانید به صورت متنی از دستیار بخواهید</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content style="padding-top: 16px;">
           <ul style="margin: 0; padding-inline-start: 20px; line-height: 1.8; color: var(--text-secondary); font-size: 0.78rem;">
-            <li style="margin-bottom: 12px;">
+            <li style="margin-bottom: 14px;">
               <strong>🛍️ مدیریت سفارش‌ها:</strong>
               <div style="color: var(--text-muted); font-size: 0.72rem; margin-top: 2px;">«سفارش‌های در انتظار امروز را نشان بده» یا «سفارش شماره ۱۵ را قبول کن»</div>
             </li>
-            <li style="margin-bottom: 12px;">
-              <strong>🏷️ ویرایش کاتالوگ:</strong>
-              <div style="color: var(--text-muted); font-size: 0.72rem; margin-top: 2px;">«موجودی پیتزا را تمام شده بزن» یا «قیمت همبرگر را ۱۰٪ افزایش بده»</div>
+            <li style="margin-bottom: 14px;">
+              <strong>🏷️ تغییر موجودی:</strong>
+              <div style="color: var(--text-muted); font-size: 0.72rem; margin-top: 2px;">«موجودی پیتزا پپرونی را تمام شده بزن» یا «موجودی نوشابه را شارژ کن»</div>
             </li>
-            <li style="margin-bottom: 12px;">
-              <strong>📊 تحلیل گزارش‌ها:</strong>
-              <div style="color: var(--text-muted); font-size: 0.72rem; margin-top: 2px;">«مجموع فروش دیروز چقدر بود؟» یا «پرفروش‌ترین کالاها را نام ببر»</div>
+            <li style="margin-bottom: 14px;">
+              <strong>💰 به‌روزرسانی قیمت‌ها:</strong>
+              <div style="color: var(--text-muted); font-size: 0.72rem; margin-top: 2px;">«قیمت همبرگر را ۱۰ درصد افزایش بده» یا «قیمت سالاد سزار را ۵۰ هزار تومان بگذار»</div>
+            </li>
+            <li style="margin-bottom: 14px;">
+              <strong>📊 آمار فروش و درآمد:</strong>
+              <div style="color: var(--text-muted); font-size: 0.72rem; margin-top: 2px;">«مجموع فروش دیروز چقدر بود؟» یا «گزارش فروش این هفته را به صورت جدول نمایش بده»</div>
+            </li>
+            <li style="margin-bottom: 14px;">
+              <strong>👥 اطلاعات مشتریان:</strong>
+              <div style="color: var(--text-muted); font-size: 0.72rem; margin-top: 2px;">«لیست ۱۰ مشتری برتر ماه گذشته را به من نشان بده» یا «اطلاعات تماس خریدار سفارش آخر را بده»</div>
+            </li>
+            <li style="margin-bottom: 14px;">
+              <strong>📦 کنترل انبارداری:</strong>
+              <div style="color: var(--text-muted); font-size: 0.72rem; margin-top: 2px;">«کدام مواد اولیه در انبار رو به اتمام است؟» یا «تراکنش خروج آرد گندم به میزان ۵ کیلوگرم ثبت کن»</div>
+            </li>
+            <li style="margin-bottom: 14px;">
+              <strong>🎫 کدهای تخفیف:</strong>
+              <div style="color: var(--text-muted); font-size: 0.72rem; margin-top: 2px;">«یک کد تخفیف جدید با نام YALDA و تخفیف ۲۰٪ برای فردا بساز»</div>
+            </li>
+            <li style="margin-bottom: 14px;">
+              <strong>📈 تحلیل پرفروش‌ترین‌ها:</strong>
+              <div style="color: var(--text-muted); font-size: 0.72rem; margin-top: 2px;">«پرفروش‌ترین غذاهای شعبه مرکزی در ماه اخیر چه چیزهایی بودند؟»</div>
+            </li>
+            <li style="margin-bottom: 14px;">
+              <strong>⏱️ وضعیت تحویل سفارش:</strong>
+              <div style="color: var(--text-muted); font-size: 0.72rem; margin-top: 2px;">«وضعیت سفارش شماره ۲۳ را به "ارسال شد" تغییر بده»</div>
+            </li>
+            <li style="margin-bottom: 14px;">
+              <strong>⚙️ مشخصات فروشگاه:</strong>
+              <div style="color: var(--text-muted); font-size: 0.72rem; margin-top: 2px;">«ساعت کاری فروشگاه را برای امروز تا ساعت ۲۴ تمدید کن»</div>
             </li>
           </ul>
         </mat-card-content>

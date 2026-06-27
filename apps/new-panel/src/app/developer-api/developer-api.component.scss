@@ -5,10 +5,10 @@
 
 main {
   padding: 24px;
-  max-width: 1024px;
 }
 
 table {
+  width: 100%;
   background: transparent;
   border-collapse: collapse;
 }
@@ -25,10 +25,12 @@ tr.mat-mdc-row:hover {
   color: var(--text-secondary);
   font-size: 0.8125rem;
   border-bottom: 1px solid var(--border-color);
+  text-align: right !important;
 }
 
 .mat-mdc-cell {
   border-bottom: 1px solid var(--border-color);
+  text-align: right !important;
 }
 
 /* Two-column layout matching app-config */
