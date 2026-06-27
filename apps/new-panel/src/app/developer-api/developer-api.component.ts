@@ -49,6 +49,7 @@ export class DeveloperApiComponent implements OnInit {
   private readonly shop = inject(ShopService);
 
   readonly openApiUrl = `${environment.apiUrl.replace(/\/+$/, '')}/api/v1/shop-integration/openapi.json`;
+  readonly mcpUrl = `${environment.apiUrl.replace(/\/+$/, '')}/api/v1/shop-integration/mcp`;
   readonly newGeneratedKey = signal<string | null>(null);
   readonly smsCharge = computed(() => this.shop.data()?.smsAccount?.charge ?? 0);
 

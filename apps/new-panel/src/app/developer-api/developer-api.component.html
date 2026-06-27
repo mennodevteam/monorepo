@@ -58,6 +58,35 @@
         </mat-card-content>
       </mat-card>
 
+      <!-- MCP Server Link Card -->
+      <mat-card appearance="outlined">
+        <mat-card-header>
+          <mat-card-title style="font-weight: 500; font-size: 0.9rem;">لینک اتصال مستقیم سرور MCP (HTTP)</mat-card-title>
+        </mat-card-header>
+        <mat-card-content style="padding-top: 16px;">
+          <div class="np-form-row" style="direction: ltr; align-items: center !important;">
+            <input
+              matInput
+              readonly
+              [value]="mcpUrl"
+              style="font-family: monospace; font-size: 0.8125rem; background: #fff; padding: 8px 12px; border-radius: 4px; border: 1px solid var(--border-color); flex: 1;"
+            />
+            <button
+              mat-stroked-button
+              [copyClipboard]="mcpUrl"
+              (copied)="copyToClipboardSuccess()"
+              style="font-family: 'Estedad'; font-size: 0.8125rem; height: 36px; flex: 0 0 auto !important; min-width: auto !important;"
+            >
+              <ng-icon name="saxCopyOutline" style="margin-inline-end: 4px;"></ng-icon>
+              کپی لینک
+            </button>
+          </div>
+          <p style="margin: 12px 0 0 0; font-size: 0.75rem; color: var(--text-muted); line-height: 1.6;">
+            از این لینک می‌توانید برای اتصال مستقیم و بدون واسطه (بدون نیاز به ماژول یا پل واسط محلی) به دستیارهای هوشمند استفاده کنید. برای راهنمایی بیشتر، بخش «مراحل راه‌اندازی» در سمت چپ را مطالعه کنید.
+          </p>
+        </mat-card-content>
+      </mat-card>
+
       <!-- Newly Generated Key Warning Card -->
       @if (newGeneratedKey()) {
         <app-alert type="warning" title="کلید دسترسی با موفقیت ساخته شد!" icon="fa-warning">
@@ -208,15 +237,41 @@
       <!-- Steps to connect -->
       <mat-card appearance="outlined">
         <mat-card-header>
-          <mat-card-title style="font-weight: 500; font-size: 0.9rem;">مراحل راه‌اندازی</mat-card-title>
+          <mat-card-title style="font-weight: 500; font-size: 0.9rem;">مراحل راه‌اندازی سرور MCP</mat-card-title>
         </mat-card-header>
         <mat-card-content style="padding-top: 16px;">
-          <ol style="margin: 0; padding-inline-start: 20px; line-height: 2; color: var(--text-secondary); font-size: 0.78rem;">
-            <li style="margin-bottom: 8px;">ابتدا یک کلید دسترسی (API Key) جدید با تعیین دسترسی‌های مورد نیاز در ستون مقابل بسازید.</li>
-            <li style="margin-bottom: 8px;">لینک مشخصات OpenAPI بالا را کپی کرده و در بخش پیکربندی هوش مصنوعی یا ربات خود وارد کنید.</li>
-            <li style="margin-bottom: 8px;">نوع احراز هویت را روی <strong>API Key</strong> و در هدر (Header) با نام <strong>X-Shop-API-Key</strong> قرار دهید.</li>
-            <li style="margin-bottom: 8px;">مقدار کلید ساخته شده را به عنوان مقدار هدر قرار دهید.</li>
-          </ol>
+          <p style="margin: 0 0 12px 0; font-size: 0.78rem; font-weight: 500; color: var(--text-primary);">۱. ابتدا یک کلید دسترسی (API Key) جدید در ستون مقابل بسازید.</p>
+          
+          <div style="margin-bottom: 16px;">
+            <p style="margin: 0 0 6px 0; font-size: 0.78rem; font-weight: 600; color: var(--text-primary);">۲. اتصال مستقیم در ویرایشگر Cursor (توصیه شده):</p>
+            <p style="margin: 0 0 6px 0; font-size: 0.75rem; color: var(--text-secondary); line-height: 1.6;">
+              به راحتی می‌توانید تنظیمات زیر را به فایل `mcp.json` در مسیر `.cursor/mcp.json` پروژه خود اضافه کنید:
+            </p>
+            <pre style="direction: ltr; font-family: monospace; font-size: 0.72rem; background: #f5f5f5; padding: 10px; border-radius: 6px; overflow-x: auto; margin: 0 0 12px 0; border: 1px solid var(--border-color);">
+"mcpServers": &#123;
+  "shottt": &#123;
+    "type": "http",
+    "url": "{{ mcpUrl }}?apiKey=YOUR_API_KEY"
+  &#125;
+&#125;</pre>
+            <p style="margin: 0; font-size: 0.72rem; color: var(--text-muted); line-height: 1.5;">
+              همچنین می‌توانید از منوی Settings > Features > MCP در Cursor یک سرور جدید با نام دلخواه (مثلاً shottt)، نوع <strong>HTTP</strong> و با آدرس و کلید دسترسی فوق ایجاد کنید.
+            </p>
+          </div>
+
+          <div>
+            <p style="margin: 0 0 6px 0; font-size: 0.78rem; font-weight: 600; color: var(--text-primary);">۳. اتصال در Claude Desktop:</p>
+            <p style="margin: 0 0 6px 0; font-size: 0.75rem; color: var(--text-secondary); line-height: 1.6;">
+              تنظیمات زیر را به فایل پیکربندی `claude_desktop_config.json` خود اضافه کنید:
+            </p>
+            <pre style="direction: ltr; font-family: monospace; font-size: 0.72rem; background: #f5f5f5; padding: 10px; border-radius: 6px; overflow-x: auto; margin: 0; border: 1px solid var(--border-color);">
+"mcpServers": &#123;
+  "shottt": &#123;
+    "type": "http",
+    "url": "{{ mcpUrl }}?apiKey=YOUR_API_KEY"
+  &#125;
+&#125;</pre>
+          </div>
         </mat-card-content>
       </mat-card>
 

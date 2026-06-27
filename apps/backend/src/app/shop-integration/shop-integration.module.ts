@@ -4,11 +4,12 @@ import { OrdersModule } from '../orders/orders.module';
 import { ClubsModule } from '../clubs/clubs.module';
 import { SmsModule } from '../sms/sms.module';
 import { ShopIntegrationController } from './shop-integration.controller';
+import { ShopIntegrationMcpController } from './shop-integration-mcp.controller';
 import { ShopIntegrationService } from './shop-integration.service';
 
 @Module({
   imports: [CoreModule, OrdersModule, ClubsModule, SmsModule],
-  controllers: [ShopIntegrationController],
+  controllers: [ShopIntegrationController, ShopIntegrationMcpController],
   providers: [ShopIntegrationService],
   exports: [ShopIntegrationService],
 })
