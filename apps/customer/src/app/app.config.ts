@@ -7,6 +7,7 @@ import { QueryClient, provideTanStackQuery } from '@tanstack/angular-query-exper
 import { appRoutes } from './app.routes';
 import { apiInterceptorProvider } from './core/providers/api.provider';
 import { ThemeService } from './core/services/theme.service';
+import { provideSsrDataTransfer } from './core/providers/ssr-data.provider';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -28,9 +29,11 @@ export const appConfig: ApplicationConfig = {
       }),
     ),
     apiInterceptorProvider(),
+    provideSsrDataTransfer(),
     provideAppInitializer(() => {
       const themeService = inject(ThemeService);
       return themeService.init();
     }),
   ],
 };
+
