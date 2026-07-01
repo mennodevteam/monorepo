@@ -76,7 +76,10 @@ function createApp(): express.Express {
   const server = express();
   const distFolder = resolve(__dirname, '..');
   const browserDistFolder = join(distFolder, 'browser');
-  const angularApp = new AngularNodeAppEngine();
+  const angularApp = new AngularNodeAppEngine({
+    allowedHosts: ['*'],
+    trustProxyHeaders: true,
+  });
 
   server.get('/robots.txt', (req, res) => {
     const forwardedProto = req.get('x-forwarded-proto');
