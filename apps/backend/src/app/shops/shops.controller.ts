@@ -54,7 +54,7 @@ export class ShopsController {
 
       if (shop) {
         const endpoint = (process.env.LIARA_BUCKET_ENDPOINT || '').trim();
-        const logoHost = (endpoint.includes('liara.space') || endpoint.includes('liara.ir'))
+        const logoHost = (endpoint.includes('liara.space') || endpoint.includes('liara.site') || endpoint.includes('liara.ir'))
           ? `${process.env.LIARA_BUCKET_NAME}.${endpoint}`
           : endpoint;
         const logo = `https://${logoHost}/${shop.logoImage?.sm || shop.logo}`;

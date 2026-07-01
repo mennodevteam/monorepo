@@ -41,7 +41,7 @@ export class FilesService {
 
   getUrl(key: string) {
     const endpoint = (process.env.LIARA_BUCKET_ENDPOINT || '').trim();
-    if (endpoint.includes('liara.space') || endpoint.includes('liara.ir')) {
+    if (endpoint.includes('liara.space') || endpoint.includes('liara.site') || endpoint.includes('liara.ir')) {
       return `https://${process.env.LIARA_BUCKET_NAME}.${endpoint}/${key}`;
     }
     return `https://${endpoint}/${key}`;
