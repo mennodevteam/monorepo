@@ -78,7 +78,13 @@ function createApp(): express.Express {
   const browserDistFolder = join(distFolder, 'browser');
   const angularApp = new AngularNodeAppEngine({
     allowedHosts: ['*'],
-    trustProxyHeaders: true,
+    trustProxyHeaders: [
+      'x-forwarded-for',
+      'x-forwarded-host',
+      'x-forwarded-proto',
+      'x-forwarded-port',
+      'x-forwarded-server',
+    ],
   });
 
   server.get('/robots.txt', (req, res) => {
