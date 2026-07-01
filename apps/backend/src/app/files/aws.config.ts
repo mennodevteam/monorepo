@@ -2,8 +2,15 @@ import { S3 } from 'aws-sdk';
 
 /** Full URL, e.g. https://storage.iran.liara.space (Liara docs: LIARA_ENDPOINT) */
 function normalizeLiaraEndpoint(): string | undefined {
-  const raw = (process.env.LIARA_ENDPOINT || process.env.LIARA_BUCKET_ENDPOINT || '').trim();
-  if (!raw) return undefined;
+  let raw = (process.env.LIARA_ENDPOINT || '').trim();
+  if (!raw) {
+    const bucketEndpoint = (process.env.LIARA_BUCKET_ENDPOINT || '').trim();
+    if (bucketEndpoint && (bucketEndpoint.includes('liara.space') || bucketEndpoint.includes('liara.ir'))) {
+      raw = bucketEndpoint;
+    } else {
+      raw = 'storage.iran.liara.space';
+    }
+  }
   const withoutTrailingSlash = raw.replace(/\/+$/, '');
   if (/^https?:\/\//i.test(withoutTrailingSlash)) {
     return withoutTrailingSlash;
