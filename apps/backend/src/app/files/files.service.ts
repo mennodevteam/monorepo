@@ -11,6 +11,9 @@ export class FilesService {
 
   async uploadFromUrl(link: string, name: string, path?: string) {
     const binary = await fetch(link);
+    if (!binary.ok) {
+      throw new Error(`Failed to fetch image from URL: ${link}, Status: ${binary.status}`);
+    }
     const blob = await binary.buffer();
     return await this.upload(<any>{ buffer: blob }, name, path);
   }
@@ -57,31 +60,34 @@ export class FilesService {
     const xxsKey = `${pre}_${name}_xxs.jpeg`;
 
     const save = async () => {
-      const origin: any = await this.uploadFromUrl(
-        `https://img.menno.pro/_/plain/${url}@webp`,
-        originKey,
-        path,
-      );
-      const md: any = await this.uploadFromUrl(
-        `https://img.menno.pro/_/width:512/plain/${url}@webp`,
-        mdKey,
-        path,
-      );
-      const sm: any = await this.uploadFromUrl(
-        `https://img.menno.pro/_/width:256/plain/${url}@webp`,
-        smKey,
-        path,
-      );
-      const xs: any = await this.uploadFromUrl(
-        `https://img.menno.pro/_/width:128/plain/${url}@jpeg`,
-        xsKey,
-        path,
-      );
-      const xxs: any = await this.uploadFromUrl(
-        `https://img.menno.pro/_/width:64/plain/${url}@jpeg`,
-        xxsKey,
-        path,
-      );
+      try {
+        await Promise.all([
+          this.uploadFromUrl(`https://img.menno.pro/_/plain/${url}@webp`, originKey, path),
+          this.uploadFromUrl(`https://img.menno.pro/_/width:512/plain/${url}@webp`, mdKey, path),
+          this.uploadFromUrl(`https://img.menno.pro/_/width:256/plain/${url}@webp`, smKey, path),
+          this.uploadFromUrl(`https://img.menno.pro/_/width:128/plain/${url}@jpeg`, xsKey, path),
+          this.uploadFromUrl(`https://img.menno.pro/_/width:64/plain/${url}@jpeg`, xxsKey, path),
+        ]);
+      } catch (err) {
+        console.error('imgproxy failed, copying original image as fallback:', err);
+        try {
+          const binary = await fetch(url);
+          if (!binary.ok) {
+            throw new Error(`Failed to fetch original image for fallback: ${binary.status}`);
+          }
+          const blob = await binary.buffer();
+          await Promise.all([
+            this.upload(<any>{ buffer: blob }, originKey, path),
+            this.upload(<any>{ buffer: blob }, mdKey, path),
+            this.upload(<any>{ buffer: blob }, smKey, path),
+            this.upload(<any>{ buffer: blob }, xsKey, path),
+            this.upload(<any>{ buffer: blob }, xxsKey, path),
+          ]);
+          console.log('Successfully saved fallback images.');
+        } catch (fallbackErr) {
+          console.error('Fallback failed:', fallbackErr);
+        }
+      }
     };
 
     if (waiting) await save();

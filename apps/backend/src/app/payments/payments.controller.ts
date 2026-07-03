@@ -106,6 +106,7 @@ export class PaymentsController {
       plugins: Plugin[];
     },
   ) {
+    throw new HttpException('امکان تمدید ماژول وجود ندارد. لطفا با پشتیبانی تماس بگیرید.', HttpStatus.BAD_REQUEST);
     const shop: Shop = await this.auth.getPanelUserShop(user, ['plugins']);
     const defaultGateway = await this.defaultGateway;
     const userData = await this.auth.getUserData(user);
