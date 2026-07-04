@@ -237,12 +237,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     } catch (error) {}
 
     if (resolvedId) {
-      this.logger.debug(`Menno Bale afterInsert order=${resolvedId} qNumber=${order.qNumber} shop=${order.shop?.id}`);
       this.syncMennoBaleInBackground(resolvedId, true, event.queryRunner, order.items);
-    } else {
-      this.logger.log(
-        `[Menno Bale] afterInsert skip: no order id (entity.id=${order.id ?? 'unset'} entityId=${JSON.stringify(event.entityId)})`,
-      );
     }
   }
 
@@ -252,11 +247,8 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
       const mennoOnly =
         updated.length > 0 &&
         updated.every((c) => c === 'mennoBaleChannelMessageId' || c === 'mennoBaleNotifyChannelId');
-      const orderId = event.entity?.id as string | undefined;
+      const orderId = event.entity?.id;
       if (orderId && !mennoOnly) {
-        this.logger.debug(
-          `Menno Bale afterUpdate order=${orderId} allowCreate=false updated=[${updated.join(',')}]`,
-        );
         const entityItems = event.entity?.items;
         this.syncMennoBaleInBackground(
           orderId,
@@ -264,8 +256,6 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
           event.queryRunner,
           Array.isArray(entityItems) && entityItems.length > 0 ? entityItems : undefined,
         );
-      } else if (orderId && mennoOnly) {
-        this.logger.debug(`Menno Bale afterUpdate skip order=${orderId}: mennoBale fields only`);
       }
 
       const order = {
@@ -281,7 +271,6 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
 
   async afterSoftRemove(event: SoftRemoveEvent<Order>): Promise<any> {
     if (event.entity?.id) {
-      this.logger.debug(`Menno Bale afterSoftRemove order=${event.entity.id} allowCreate=false`);
       this.syncMennoBaleInBackground(event.entity.id, false, event.queryRunner);
 
       const order = await this.ordersRepo.findOne({

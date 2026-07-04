@@ -98,7 +98,6 @@ export class MennoBaleOrderNotificationsService {
         allowCreate: prev?.allowCreate === true || allowCreate,
         items: items?.length ? items : prev?.items,
       });
-      this.logger.debug(`Menno Bale queued until commit order=${orderId} allowCreate=${allowCreate}`);
       return;
     }
 
@@ -110,7 +109,6 @@ export class MennoBaleOrderNotificationsService {
     if (!pending?.size) return;
     this.pendingByRunner.delete(queryRunner);
     for (const [orderId, { allowCreate, items }] of pending) {
-      this.logger.debug(`Menno Bale flush after commit order=${orderId} allowCreate=${allowCreate}`);
       void this.runSyncInBackground(orderId, allowCreate, items?.length ? { items } : undefined);
     }
   }
@@ -126,36 +124,29 @@ export class MennoBaleOrderNotificationsService {
     allowCreate = true,
     ctx?: MennoBaleSyncContext,
   ): Promise<MennoBaleSyncResult> {
-    this.logger.debug(`Menno Bale sync start order=${orderId} allowCreate=${allowCreate}`);
-
     const order = await this.ordersRepo.findOne({
       where: { id: orderId },
       relations: ['shop', 'shop.thirdParties', 'customer', 'address', 'address.region'],
       withDeleted: true,
     });
     if (!order) {
-      this.logger.log(`[Menno Bale] skip order=${orderId}: order not found`);
       return { ok: false, skipReason: 'order not found' };
     }
     if (!order.shop) {
-      this.logger.log(`[Menno Bale] skip order=${orderId}: shop missing on order`);
       return { ok: false, skipReason: 'shop missing on order' };
     }
     if (!order.shop.thirdParties?.length) {
-      this.logger.log(`[Menno Bale] skip order=${orderId} shop=${order.shop.id}: no thirdParties`);
       return { ok: false, skipReason: 'no thirdParties' };
     }
 
     if (ctx?.items?.length) {
       order.items = ctx.items;
-      this.logger.debug(`Menno Bale sync order=${orderId}: using ${ctx.items.length} in-memory item(s)`);
     } else {
       const itemRows = await this.orderItemsRepo.find({
         where: { order: { id: orderId } },
         order: { id: 'ASC' },
       });
       order.items = itemRows;
-      this.logger.debug(`Menno Bale sync order=${orderId}: loaded ${itemRows.length} item(s)`);
     }
 
     const latest = await this.ordersRepo.findOne({ where: { id: orderId }, withDeleted: true });
@@ -175,17 +166,12 @@ export class MennoBaleOrderNotificationsService {
     const channelId = keys?.channelId?.trim();
     const botToken = (process.env.MENNO_BALE_ORDERS_BOT_TOKEN || '').trim();
     if (!party) {
-      this.logger.log(
-        `[Menno Bale] skip order=${orderId} shop=${order.shop.id}: mennoBaleOrders not configured (apps=${order.shop.thirdParties.map((t) => t.app).join(',')})`,
-      );
       return { ok: false, skipReason: 'mennoBaleOrders not configured' };
     }
     if (!channelId) {
-      this.logger.log(`[Menno Bale] skip order=${orderId} shop=${order.shop.id}: channelId empty`);
       return { ok: false, skipReason: 'channelId empty' };
     }
     if (!botToken) {
-      this.logger.log(`[Menno Bale] skip order=${orderId}: MENNO_BALE_ORDERS_BOT_TOKEN not set`);
       return { ok: false, skipReason: 'MENNO_BALE_ORDERS_BOT_TOKEN not set' };
     }
 
@@ -201,10 +187,6 @@ export class MennoBaleOrderNotificationsService {
     const channelMatches =
       !order.mennoBaleNotifyChannelId || order.mennoBaleNotifyChannelId === channelId;
 
-    this.logger.debug(
-      `Menno Bale sync order=${orderId} shop=${order.shop.id} channelId=${channelId} msgId=${msgId ?? 'none'} channelMatches=${channelMatches} state=${order.state} deleted=${!!order.deletedAt}`,
-    );
-
     if (msgId != null && msgId > 0 && channelMatches) {
       try {
         await this.callBotApi(botToken, 'editMessageText', {
@@ -213,7 +195,6 @@ export class MennoBaleOrderNotificationsService {
           text,
           ...(reply_markup ? { reply_markup } : {}),
         });
-        this.logger.debug(`Menno Bale sync order=${orderId}: editMessageText ok msgId=${msgId}`);
         return { ok: true, action: 'edited' };
       } catch (e: unknown) {
         const errText = String((e as Error)?.message || e);
@@ -229,21 +210,13 @@ export class MennoBaleOrderNotificationsService {
         }
         this.logger.warn(`Menno Bale editMessageText lost message order=${orderId}, sending new: ${errText}`);
       }
-    } else if (msgId != null && msgId > 0 && !channelMatches) {
-      this.logger.debug(
-        `Menno Bale orders: channel changed for shop order=${orderId} stored=${order.mennoBaleNotifyChannelId} current=${channelId}, will post new message`,
-      );
     }
 
     if (!allowCreate) {
-      this.logger.log(
-        `[Menno Bale] skip sendMessage order=${orderId}: allowCreate=false, no channel card yet (msgId=${msgId ?? 'none'})`,
-      );
       return { ok: false, skipReason: 'no channel card yet' };
     }
 
     try {
-      this.logger.debug(`Menno Bale sync order=${orderId}: sendMessage chatId=${chatId}`);
       const body = await this.postBale(botToken, 'sendMessage', {
         chat_id: chatId,
         text,
@@ -258,12 +231,8 @@ export class MennoBaleOrderNotificationsService {
           mennoBaleChannelMessageId: newId,
           mennoBaleNotifyChannelId: channelId,
         });
-        this.logger.debug(`Menno Bale sync order=${orderId}: sendMessage ok saved msgId=${newId}`);
         return { ok: true, action: 'sent' };
       }
-      this.logger.log(
-        `[Menno Bale] sendMessage ok but no message_id order=${orderId} (ok=${body?.ok}) — card not saved`,
-      );
       return { ok: false, error: 'sendMessage returned no message_id' };
     } catch (e: unknown) {
       const errText = String((e as Error)?.message || e);

@@ -4,6 +4,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { Address, ChangePasswordDto, Region, ShopUser, User, UserRole } from '@menno/types';
@@ -21,6 +22,7 @@ let kavenegarApi;
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
   mobilePhoneTokens: { [key: string]: string } = {};
   constructor(
     @InjectRepository(User)
@@ -137,19 +139,27 @@ export class AuthService {
 
   async sendToken(mobilePhone: string, validateTime = 70000, domain?: string) {
     const token = Math.floor(Math.random() * 8000 + 1000).toString();
-    await this.lookup(
-      mobilePhone,
-      domain
+    this.logger.log(`Attempting to send token to mobile: ${mobilePhone}, domain: ${domain || 'N/A'}`);
+    try {
+      const template = domain
         ? process.env.KAVENEGAR_CONFIRM_PHONE_TEMPLATE_WEB
-        : process.env.KAVENEGAR_CONFIRM_PHONE_TEMPLATE,
-      token,
-      domain,
-    );
-    console.log('send token', domain, mobilePhone, token);
+        : process.env.KAVENEGAR_CONFIRM_PHONE_TEMPLATE;
+      this.logger.log(`Using Kavenegar template: ${template} for ${mobilePhone}`);
+      await this.lookup(
+        mobilePhone,
+        template,
+        token,
+        domain,
+      );
+      this.logger.log(`Token sent successfully to ${mobilePhone}. Token: ${token}`);
+    } catch (error) {
+      this.logger.error(`Failed to send token to ${mobilePhone} (domain: ${domain}): ${JSON.stringify(error) || error}`);
+      throw error;
+    }
     this.mobilePhoneTokens[mobilePhone] = token;
     setTimeout(() => {
       if (this.mobilePhoneTokens[mobilePhone] === token) {
-        console.log('delete token', mobilePhone, token);
+        this.logger.log(`Deleting token for mobile: ${mobilePhone}`);
         delete this.mobilePhoneTokens[mobilePhone];
       }
     }, validateTime);

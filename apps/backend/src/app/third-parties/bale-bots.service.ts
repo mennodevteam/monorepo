@@ -431,18 +431,11 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
             ]);
           });
         }
-        this.logger.log(`[${traceId}] reply markup=${reply_markup ? this.safeJson(reply_markup) : '-'}`);
-
         try {
-          this.logger.log(`[${traceId}] bale send start textLen=${result.text.length}`);
           await this.sendPlainText(runtime, chatId, result.text, reply_markup);
-          this.logger.log(`[${traceId}] bale send done`);
         } catch (error) {
           this.logger.error(`AI Chatbot send error for shop ${runtime.shop.id}: ${(error as Error)?.message}`);
-          this.logger.error(`[${traceId}] bale send failed error=${(error as Error)?.message || error}`);
-          this.logger.log(`[${traceId}] bale fallback send start strippedText="${this.preview(this.stripMarkdown(result.text), 1000)}"`);
           await this.sendPlainText(runtime, chatId, this.stripMarkdown(result.text));
-          this.logger.log(`[${traceId}] bale fallback send done`);
         }
         return;
       }
@@ -491,12 +484,10 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
 
   private async sendChatAction(runtime: BaleBotRuntime, chatId: number, traceId: string) {
     try {
-      this.logger.log(`[${traceId}] bale chat action start`);
       await this.callBotApiExpectOk(runtime.token, 'sendChatAction', {
         chat_id: chatId,
         action: 'typing',
       });
-      this.logger.log(`[${traceId}] bale chat action done`);
     } catch (error) {
       this.logger.warn(`[${traceId}] bale chat action failed: ${(error as Error)?.message || error}`);
     }
@@ -510,7 +501,6 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
 
     return () => {
       clearInterval(interval);
-      this.logger.log(`[${traceId}] bale chat action stopped`);
     };
   }
 

@@ -268,6 +268,6 @@ export class SmsService {
   }
 
   private getCost(realCost: number) {
-    return realCost * 0.109;
+    return realCost * 0.109 * 1.3;
   }
 }

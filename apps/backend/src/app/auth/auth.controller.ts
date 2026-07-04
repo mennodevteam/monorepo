@@ -102,8 +102,8 @@ export class AuthController {
   @Public()
   @Get('sendToken/:mobile')
   async sendToken(@Param() params, @Req() req: Request) {
-    const referer: string = req.headers['referer'];
-    const url = referer.split('://')[1].split('/')[0];
+    const referer = req.headers['referer'] as string | undefined;
+    const url = referer ? (referer.split('://')[1]?.split('/')[0] || undefined) : undefined;
     return this.auth.sendToken(PersianNumberService.toEnglish(params.mobile), 70000, url);
   }
 
