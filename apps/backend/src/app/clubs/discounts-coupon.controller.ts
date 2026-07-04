@@ -5,6 +5,7 @@ import {
   Order,
   Shop,
   Status,
+  User,
   UserRole,
 } from '@menno/types';
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
@@ -119,6 +120,45 @@ export class DiscountsCouponController {
       userId,
       isEnabled: userId ? true : false,
     });
+  }
+
+  @Roles(UserRole.Panel)
+  @Get('/:couponId/usages')
+  async getUsages(
+    @Param('couponId') couponId: string,
+  ): Promise<any> {
+    const orders = await this.ordersRepo.find({
+      where: { discountCoupon: { id: couponId } },
+      relations: ['customer', 'items'],
+      order: { createdAt: 'DESC' },
+    });
+
+    const usages = orders.map((order) => {
+      const discountItem = order.items?.find(
+        (item) => item.isAbstract && item.title === 'کد تخفیف',
+      );
+      const discountAmount = discountItem ? Math.abs(discountItem.price) : 0;
+
+      const customerName = User.fullName(order.customer) || 'مشتری مهمان';
+
+      return {
+        orderId: order.id,
+        trackingCode: order.trackingCode,
+        createdAt: order.createdAt,
+        totalPrice: order.totalPrice,
+        customerName,
+        customerPhone: order.customer?.mobilePhone || order.details?.customerPhone || '',
+        discountAmount,
+      };
+    });
+
+    const totalDiscountAmount = usages.reduce((sum, item) => sum + item.discountAmount, 0);
+
+    return {
+      totalUsages: usages.length,
+      totalDiscountAmount,
+      usages,
+    };
   }
 
   @Roles(UserRole.Panel)

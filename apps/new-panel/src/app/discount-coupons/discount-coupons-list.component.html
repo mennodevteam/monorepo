@@ -8,6 +8,7 @@
     </button>
   }
 </mat-toolbar>
+
 <main p-md w-md>
   <!-- Educational Promo Banner -->
   <mat-card class="promo-card blue">
@@ -25,66 +26,285 @@
   @if (query.isLoading()) {
     <app-data-loading />
   } @else if (!isEmpty) {
-    <mat-card appearance="outlined">
-      <mat-card-content>
-        <div class="invoices-table-container">
-          <table mat-table [dataSource]="data()" class="np-table">
-          <ng-container matColumnDef="index">
-            <th mat-header-cell *matHeaderCellDef>{{ 'app.index' | translate }}</th>
-            <td mat-cell *matCellDef="let coupon; let i = index" style="width: 72px">
-              <span eng>
-                {{ i + 1 }}
-              </span>
-            </td>
-          </ng-container>
+    <mat-tab-group class="np-tab-group" style="margin-top: 16px;">
+      <!-- Active Coupons Tab -->
+      <mat-tab label="{{ 'discountCoupons.activeCoupons' | translate }} ({{ activeCoupons().length }})">
+        <mat-card appearance="outlined" style="margin-top: 16px; border-top-left-radius: 0; border-top-right-radius: 0;">
+          <mat-card-content style="padding: 0;">
+            @if (activeCoupons().length === 0) {
+              <div style="text-align: center; padding: 48px; color: var(--text-secondary);">
+                {{ 'discountCoupons.noActiveCoupons' | translate }}
+              </div>
+            } @else {
+              <div class="invoices-table-container">
+                <table mat-table [dataSource]="activeCoupons()" class="np-table">
+                  <!-- Index -->
+                  <ng-container matColumnDef="index">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'app.index' | translate }}</th>
+                    <td mat-cell *matCellDef="let coupon; let i = index" style="width: 50px">
+                      <span eng>{{ i + 1 }}</span>
+                    </td>
+                  </ng-container>
 
-          <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef>{{ 'app.title' | translate }}</th>
-            <td mat-cell *matCellDef="let coupon">
-              {{ coupon.title }}
-            </td>
-          </ng-container>
+                  <!-- Title -->
+                  <ng-container matColumnDef="title">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'app.title' | translate }}</th>
+                    <td mat-cell *matCellDef="let coupon">
+                      {{ coupon.title }}
+                    </td>
+                  </ng-container>
 
-          <ng-container matColumnDef="discount">
-            <th mat-header-cell *matHeaderCellDef>{{ 'discountCoupons.discount' | translate }}</th>
-            <td mat-cell *matCellDef="let coupon">
-              @if (coupon.percentageDiscount) {
-                {{ 'discountCoupons.percentageDiscount' | translate: { value: (coupon.percentageDiscount | number) } }}
-              }
-              @if (coupon.fixedDiscount) {
-                {{ coupon.fixedDiscount | menuCurrency }}
-              }
-            </td>
-          </ng-container>
+                  <!-- Code -->
+                  <ng-container matColumnDef="code">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'discountCoupons.code' | translate }}</th>
+                    <td mat-cell *matCellDef="let coupon">
+                      <span class="code-badge" eng>{{ coupon.code }}</span>
+                    </td>
+                  </ng-container>
 
-          <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef>{{ 'app.status' | translate }}</th>
-            <td mat-cell *matCellDef="let coupon">
-              <mat-slide-toggle
-                [checked]="coupon.status === Status.Active"
-                (change)="changeStatus(coupon, $event.checked)"
-              />
-            </td>
-          </ng-container>
+                  <!-- Discount -->
+                  <ng-container matColumnDef="discount">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'discountCoupons.discount' | translate }}</th>
+                    <td mat-cell *matCellDef="let coupon">
+                      @if (coupon.percentageDiscount) {
+                        {{ 'discountCoupons.percentageDiscount' | translate: { value: (coupon.percentageDiscount | number) } }}
+                      }
+                      @if (coupon.fixedDiscount) {
+                        {{ coupon.fixedDiscount | menuCurrency }}
+                      }
+                    </td>
+                  </ng-container>
 
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let coupon" style="width: 128px">
-              <button mat-icon-button routerLink="edit" [queryParams]="{ id: coupon.id }">
-                <ng-icon name="saxEditOutline"></ng-icon>
-              </button>
-              <button mat-icon-button (click)="deleteCoupon(coupon)">
-                <ng-icon name="saxTrashOutline"></ng-icon>
-              </button>
-            </td>
-          </ng-container>
+                  <!-- Restrictions -->
+                  <ng-container matColumnDef="restrictions">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'discountCoupons.couponRestrictions' | translate }}</th>
+                    <td mat-cell *matCellDef="let coupon">
+                      <div class="restriction-container">
+                        <!-- Validity Date Range -->
+                        @if (coupon.startedAt || coupon.expiredAt) {
+                          <div class="restriction-item">
+                            <ng-icon name="saxCalendarOutline"></ng-icon>
+                            <span eng>{{ coupon.startedAt | date: 'yyyy/MM/dd' }} تا {{ coupon.expiredAt | date: 'yyyy/MM/dd' }}</span>
+                          </div>
+                        }
+                        <!-- Total Usages count -->
+                        @if (coupon.maxUse) {
+                          <div class="restriction-item">
+                            <ng-icon name="saxDiscountShapeOutline"></ng-icon>
+                            <span>{{ 'discountCoupons.usagesCount' | translate }}: <span eng>{{ coupon.usedCount || 0 }}</span> از <span eng>{{ coupon.maxUse }}</span></span>
+                          </div>
+                        } @else if (coupon.usedCount) {
+                          <div class="restriction-item">
+                            <ng-icon name="saxDiscountShapeOutline"></ng-icon>
+                            <span>{{ 'discountCoupons.usagesCount' | translate }}: <span eng>{{ coupon.usedCount }}</span></span>
+                          </div>
+                        }
+                        <!-- Max Per User -->
+                        @if (coupon.maxUsePerUser && coupon.maxUsePerUser > 1) {
+                          <div class="restriction-item">
+                            <ng-icon name="saxUserOutline"></ng-icon>
+                            <span>{{ 'discountCoupons.maxUsePerUser' | translate }}: <span eng>{{ coupon.maxUsePerUser }}</span></span>
+                          </div>
+                        }
+                        <!-- Min Basket Value -->
+                        @if (coupon.minPrice) {
+                          <div class="restriction-item">
+                            <ng-icon name="saxDollarSquareOutline"></ng-icon>
+                            <span>{{ 'discountCoupons.minPrice' | translate }}: {{ coupon.minPrice | menuCurrency }}</span>
+                          </div>
+                        }
+                        <!-- Star / Tag restrictions -->
+                        @if (coupon.tag) {
+                          <div class="restriction-item">
+                            <ng-icon name="saxTagOutline"></ng-icon>
+                            <span>{{ 'discountCoupons.tag' | translate }}: {{ coupon.tag.title }}</span>
+                          </div>
+                        }
+                        @if (coupon.star != null && coupon.star > -1) {
+                          <div class="restriction-item">
+                            <ng-icon name="saxStarOutline"></ng-icon>
+                            <span>{{ 'discountCoupons.star' | translate }}: <span eng>{{ coupon.star }}</span> ستاره به بالا</span>
+                          </div>
+                        }
+                      </div>
+                    </td>
+                  </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        </table>
-      </div>
-    </mat-card-content>
-  </mat-card>
+                  <!-- Status -->
+                  <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'app.status' | translate }}</th>
+                    <td mat-cell *matCellDef="let coupon">
+                      @let statusInfo = getCouponStatus(coupon);
+                      <span class="status-badge {{ statusInfo.color }}">
+                        {{ statusInfo.label | translate }}
+                      </span>
+                    </td>
+                  </ng-container>
+
+                  <!-- Actions -->
+                  <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef style="width: 140px"></th>
+                    <td mat-cell *matCellDef="let coupon">
+                      <button mat-icon-button (click)="openReport(coupon)" [title]="'discountCoupons.usagesReport' | translate">
+                        <ng-icon name="saxChart1Outline"></ng-icon>
+                      </button>
+                      <button mat-icon-button routerLink="edit" [queryParams]="{ id: coupon.id }">
+                        <ng-icon name="saxEditOutline"></ng-icon>
+                      </button>
+                      <button mat-icon-button (click)="deleteCoupon(coupon)">
+                        <ng-icon name="saxTrashOutline"></ng-icon>
+                      </button>
+                    </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                </table>
+              </div>
+            }
+          </mat-card-content>
+        </mat-card>
+      </mat-tab>
+
+      <!-- Inactive & Expired Coupons Tab -->
+      <mat-tab label="{{ 'discountCoupons.inactiveCoupons' | translate }} ({{ inactiveCoupons().length }})">
+        <mat-card appearance="outlined" style="margin-top: 16px; border-top-left-radius: 0; border-top-right-radius: 0;">
+          <mat-card-content style="padding: 0;">
+            @if (inactiveCoupons().length === 0) {
+              <div style="text-align: center; padding: 48px; color: var(--text-secondary);">
+                {{ 'discountCoupons.noInactiveCoupons' | translate }}
+              </div>
+            } @else {
+              <div class="invoices-table-container">
+                <table mat-table [dataSource]="inactiveCoupons()" class="np-table">
+                  <!-- Index -->
+                  <ng-container matColumnDef="index">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'app.index' | translate }}</th>
+                    <td mat-cell *matCellDef="let coupon; let i = index" style="width: 50px">
+                      <span eng>{{ i + 1 }}</span>
+                    </td>
+                  </ng-container>
+
+                  <!-- Title -->
+                  <ng-container matColumnDef="title">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'app.title' | translate }}</th>
+                    <td mat-cell *matCellDef="let coupon">
+                      {{ coupon.title }}
+                    </td>
+                  </ng-container>
+
+                  <!-- Code -->
+                  <ng-container matColumnDef="code">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'discountCoupons.code' | translate }}</th>
+                    <td mat-cell *matCellDef="let coupon">
+                      <span class="code-badge" eng>{{ coupon.code }}</span>
+                    </td>
+                  </ng-container>
+
+                  <!-- Discount -->
+                  <ng-container matColumnDef="discount">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'discountCoupons.discount' | translate }}</th>
+                    <td mat-cell *matCellDef="let coupon">
+                      @if (coupon.percentageDiscount) {
+                        {{ 'discountCoupons.percentageDiscount' | translate: { value: (coupon.percentageDiscount | number) } }}
+                      }
+                      @if (coupon.fixedDiscount) {
+                        {{ coupon.fixedDiscount | menuCurrency }}
+                      }
+                    </td>
+                  </ng-container>
+
+                  <!-- Restrictions -->
+                  <ng-container matColumnDef="restrictions">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'discountCoupons.couponRestrictions' | translate }}</th>
+                    <td mat-cell *matCellDef="let coupon">
+                      <div class="restriction-container">
+                        <!-- Validity Date Range -->
+                        @if (coupon.startedAt || coupon.expiredAt) {
+                          <div class="restriction-item">
+                            <ng-icon name="saxCalendarOutline"></ng-icon>
+                            <span eng>{{ coupon.startedAt | date: 'yyyy/MM/dd' }} تا {{ coupon.expiredAt | date: 'yyyy/MM/dd' }}</span>
+                          </div>
+                        }
+                        <!-- Total Usages count -->
+                        @if (coupon.maxUse) {
+                          <div class="restriction-item">
+                            <ng-icon name="saxDiscountShapeOutline"></ng-icon>
+                            <span>{{ 'discountCoupons.usagesCount' | translate }}: <span eng>{{ coupon.usedCount || 0 }}</span> از <span eng>{{ coupon.maxUse }}</span></span>
+                          </div>
+                        } @else if (coupon.usedCount) {
+                          <div class="restriction-item">
+                            <ng-icon name="saxDiscountShapeOutline"></ng-icon>
+                            <span>{{ 'discountCoupons.usagesCount' | translate }}: <span eng>{{ coupon.usedCount }}</span></span>
+                          </div>
+                        }
+                        <!-- Max Per User -->
+                        @if (coupon.maxUsePerUser && coupon.maxUsePerUser > 1) {
+                          <div class="restriction-item">
+                            <ng-icon name="saxUserOutline"></ng-icon>
+                            <span>{{ 'discountCoupons.maxUsePerUser' | translate }}: <span eng>{{ coupon.maxUsePerUser }}</span></span>
+                          </div>
+                        }
+                        <!-- Min Basket Value -->
+                        @if (coupon.minPrice) {
+                          <div class="restriction-item">
+                            <ng-icon name="saxDollarSquareOutline"></ng-icon>
+                            <span>{{ 'discountCoupons.minPrice' | translate }}: {{ coupon.minPrice | menuCurrency }}</span>
+                          </div>
+                        }
+                        <!-- Star / Tag restrictions -->
+                        @if (coupon.tag) {
+                          <div class="restriction-item">
+                            <ng-icon name="saxTagOutline"></ng-icon>
+                            <span>{{ 'discountCoupons.tag' | translate }}: {{ coupon.tag.title }}</span>
+                          </div>
+                        }
+                        @if (coupon.star != null && coupon.star > -1) {
+                          <div class="restriction-item">
+                            <ng-icon name="saxStarOutline"></ng-icon>
+                            <span>{{ 'discountCoupons.star' | translate }}: <span eng>{{ coupon.star }}</span> ستاره به بالا</span>
+                          </div>
+                        }
+                      </div>
+                    </td>
+                  </ng-container>
+
+                  <!-- Status -->
+                  <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'app.status' | translate }}</th>
+                    <td mat-cell *matCellDef="let coupon">
+                      @let statusInfo = getCouponStatus(coupon);
+                      <span class="status-badge {{ statusInfo.color }}">
+                        {{ statusInfo.label | translate }}
+                      </span>
+                    </td>
+                  </ng-container>
+
+                  <!-- Actions -->
+                  <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef style="width: 140px"></th>
+                    <td mat-cell *matCellDef="let coupon">
+                      <button mat-icon-button (click)="openReport(coupon)" [title]="'discountCoupons.usagesReport' | translate">
+                        <ng-icon name="saxChart1Outline"></ng-icon>
+                      </button>
+                      <button mat-icon-button routerLink="edit" [queryParams]="{ id: coupon.id }">
+                        <ng-icon name="saxEditOutline"></ng-icon>
+                      </button>
+                      <button mat-icon-button (click)="deleteCoupon(coupon)">
+                        <ng-icon name="saxTrashOutline"></ng-icon>
+                      </button>
+                    </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                </table>
+              </div>
+            }
+          </mat-card-content>
+        </mat-card>
+      </mat-tab>
+    </mat-tab-group>
   } @else {
     <app-empty-state
       icon="badge-dollar"
@@ -96,4 +316,4 @@
       (actionClick)="addCoupon()"
     />
   }
-</main> 
+</main>

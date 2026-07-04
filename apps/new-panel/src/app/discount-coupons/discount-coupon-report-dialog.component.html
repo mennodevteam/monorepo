@@ -1,0 +1,104 @@
+<h2 mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+  <span>{{ 'discountCoupons.usagesReportTitle' | translate: { value: coupon.title } }}</span>
+  <button mat-icon-button mat-dialog-close>
+    <ng-icon name="saxCloseCircleOutline"></ng-icon>
+  </button>
+</h2>
+
+<mat-dialog-content class="dialog-content">
+  @if (query.isLoading()) {
+    <app-data-loading />
+  } @else {
+    @let report = query.data();
+    @if (report) {
+      <div class="summary-container">
+        <div class="summary-card">
+          <h4>{{ 'discountCoupons.totalUsages' | translate }}</h4>
+          <div class="value">
+            <span eng>{{ report.totalUsages }}</span>
+            @if (coupon.maxUse) {
+              <span style="font-size: 0.9rem; color: var(--text-secondary); margin: 0 4px;">/</span>
+              <span eng style="font-size: 0.9rem; color: var(--text-secondary);">{{ coupon.maxUse }}</span>
+            } @else {
+              <span style="font-size: 0.8rem; color: var(--text-secondary); margin-right: 4px;">({{ 'discountCoupons.unlimited' | translate }})</span>
+            }
+          </div>
+        </div>
+        <div class="summary-card">
+          <h4>{{ 'discountCoupons.totalDiscountAmount' | translate }}</h4>
+          <div class="value">
+            {{ report.totalDiscountAmount | menuCurrency }}
+          </div>
+        </div>
+      </div>
+
+      @if (report.usages.length === 0) {
+        <div class="empty-state">
+          <p>{{ 'discountCoupons.noUsagesYet' | translate }}</p>
+        </div>
+      } @else {
+        <div class="invoices-table-container">
+          <table mat-table [dataSource]="report.usages" class="np-table">
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef>{{ 'app.index' | translate }}</th>
+              <td mat-cell *matCellDef="let item; let i = index" style="width: 50px">
+                <span eng>{{ i + 1 }}</span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="customerName">
+              <th mat-header-cell *matHeaderCellDef>{{ 'discountCoupons.customer' | translate }}</th>
+              <td mat-cell *matCellDef="let item">
+                {{ item.customerName }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="customerPhone">
+              <th mat-header-cell *matHeaderCellDef>{{ 'addMemberDialog.mobile' | translate }}</th>
+              <td mat-cell *matCellDef="let item" style="width: 120px">
+                <span eng ltr>{{ item.customerPhone }}</span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="orderDate">
+              <th mat-header-cell *matHeaderCellDef>{{ 'discountCoupons.orderDate' | translate }}</th>
+              <td mat-cell *matCellDef="let item" style="width: 140px">
+                <span eng>{{ item.createdAt | date: 'yyyy/MM/dd HH:mm' }}</span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="orderAmount">
+              <th mat-header-cell *matHeaderCellDef>{{ 'discountCoupons.orderAmount' | translate }}</th>
+              <td mat-cell *matCellDef="let item">
+                {{ item.totalPrice | menuCurrency }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="discountValue">
+              <th mat-header-cell *matHeaderCellDef>{{ 'discountCoupons.discountValue' | translate }}</th>
+              <td mat-cell *matCellDef="let item">
+                {{ item.discountAmount | menuCurrency }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef style="width: 60px"></th>
+              <td mat-cell *matCellDef="let item">
+                <a [routerLink]="['/admin/orders/details', item.orderId]" mat-dialog-close mat-icon-button>
+                  <ng-icon name="saxEyeOutline"></ng-icon>
+                </a>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+      }
+    }
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">{{ 'app.close' | translate }}</button>
+</mat-dialog-actions>

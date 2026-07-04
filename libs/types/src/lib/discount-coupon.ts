@@ -24,4 +24,5 @@ export class DiscountCoupon {
   tag?: MemberTag;
   club: Club;
   user: User;
+  usedCount?: number;
 }

@@ -62,6 +62,15 @@
               <mat-error>{{ 'discountCoupons.code' | translate }} {{ 'app.required' | translate }}</mat-error>
             }
           </mat-form-field>
+
+          <div style="margin-top: 8px; display: flex; align-items: center;">
+            <mat-slide-toggle
+              [checked]="form.get('status')?.value === Status.Active"
+              (change)="form.get('status')?.setValue($event.checked ? Status.Active : Status.Inactive)"
+            >
+              {{ 'app.status' | translate }}: {{ (form.get('status')?.value === Status.Active ? 'discountCoupons.statusActive' : 'discountCoupons.statusInactive') | translate }}
+            </mat-slide-toggle>
+          </div>
         </div>
       </div>
 

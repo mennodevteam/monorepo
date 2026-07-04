@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {
   FormBuilder,
   FormControl,
@@ -37,6 +38,7 @@ import { FormComponent } from '../core/guards/dirty-form-deactivator.guard';
     MatCardModule,
     MatSelectModule,
     MatDatepickerModule,
+    MatSlideToggleModule,
     ReactiveFormsModule
 ],
   templateUrl: './discount-coupons-edit.component.html',
@@ -117,6 +119,7 @@ export class DiscountCouponsEditComponent implements FormComponent {
       maxDiscount: new FormControl(coupon?.maxDiscount || 0),
       maxUse: new FormControl(coupon?.maxUse || null),
       maxUsePerUser: new FormControl(coupon?.maxUsePerUser || 1),
+      status: new FormControl(coupon?.status || Status.Active),
     });
 
     // Add conditional validators

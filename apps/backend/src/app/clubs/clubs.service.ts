@@ -452,6 +452,27 @@ export class ClubsService {
       relations: ['user', 'tag'],
     });
 
+    if (coupons.length > 0) {
+      const couponIds = coupons.map((c) => c.id);
+      const usageCounts = await this.ordersRepo
+        .createQueryBuilder('order')
+        .innerJoin('order.discountCoupon', 'coupon')
+        .select('coupon.id', 'couponId')
+        .addSelect('COUNT(order.id)', 'count')
+        .where('coupon.id IN (:...couponIds)', { couponIds })
+        .groupBy('coupon.id')
+        .getRawMany();
+
+      const countsMap = new Map<string, number>();
+      for (const row of usageCounts) {
+        countsMap.set(row.couponId, parseInt(row.count, 10));
+      }
+
+      for (const coupon of coupons) {
+        coupon.usedCount = countsMap.get(coupon.id) || 0;
+      }
+    }
+
     if (dto.userId) {
       if (!member) {
         coupons = coupons.filter((x) => !x.user && !x.code && x.star == null);

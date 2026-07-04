@@ -5,6 +5,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { EmptyStateComponent } from '../shared/components/empty-state/empty-state.component';
 import { DataLoadingComponent } from '../shared/components/data-loading/data-loading.component';
 import { Router } from '@angular/router';
@@ -17,6 +19,7 @@ import { injectQuery } from '@tanstack/angular-query-experimental';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { computed } from '@angular/core';
+import { DiscountCouponReportDialogComponent } from './discount-coupon-report-dialog.component';
 
 @Component({
   selector: 'app-discount-coupons-list',
@@ -28,6 +31,8 @@ import { computed } from '@angular/core';
     MatCardModule,
     MatTableModule,
     MatSlideToggleModule,
+    MatTabsModule,
+    MatDialogModule,
     EmptyStateComponent,
     DataLoadingComponent,
   ],
@@ -38,11 +43,12 @@ export class DiscountCouponsListComponent {
   private readonly http = inject(HttpClient);
   private readonly clubService = inject(ClubService);
   private readonly dialog = inject(DialogService);
+  private readonly dialogCtrl = inject(MatDialog);
   private readonly t = inject(TranslateService);
   private readonly router = inject(Router);
 
   readonly Status = Status;
-  readonly displayedColumns = ['index', 'title', 'discount', 'status', 'actions'];
+  readonly displayedColumns = ['index', 'title', 'code', 'discount', 'restrictions', 'status', 'actions'];
 
   query = injectQuery(() => ({
     queryKey: ['discountCoupons'],
@@ -58,6 +64,40 @@ export class DiscountCouponsListComponent {
   });
 
   isEmptyData = computed(() => this.data()?.length === 0);
+
+  isCouponActive(coupon: DiscountCoupon): boolean {
+    if (coupon.status !== Status.Active) return false;
+    const now = new Date();
+    if (coupon.startedAt && new Date(coupon.startedAt) > now) return false;
+    if (coupon.expiredAt && new Date(coupon.expiredAt) < now) return false;
+    if (coupon.maxUse && coupon.usedCount != null && coupon.usedCount >= coupon.maxUse) return false;
+    return true;
+  }
+
+  activeCoupons = computed(() => {
+    return this.data().filter((c) => this.isCouponActive(c));
+  });
+
+  inactiveCoupons = computed(() => {
+    return this.data().filter((c) => !this.isCouponActive(c));
+  });
+
+  getCouponStatus(coupon: DiscountCoupon): { label: string; color: string } {
+    if (coupon.status === Status.Inactive) {
+      return { label: 'discountCoupons.statusInactive', color: 'gray' };
+    }
+    const now = new Date();
+    if (coupon.startedAt && new Date(coupon.startedAt) > now) {
+      return { label: 'discountCoupons.statusUpcoming', color: 'blue' };
+    }
+    if (coupon.expiredAt && new Date(coupon.expiredAt) < now) {
+      return { label: 'discountCoupons.statusExpired', color: 'red' };
+    }
+    if (coupon.maxUse && coupon.usedCount != null && coupon.usedCount >= coupon.maxUse) {
+      return { label: 'discountCoupons.statusCompleted', color: 'orange' };
+    }
+    return { label: 'discountCoupons.statusActive', color: 'green' };
+  }
 
   async changeStatus(coupon: DiscountCoupon, checked: boolean) {
     const prevStatus = coupon.status;
@@ -86,7 +126,14 @@ export class DiscountCouponsListComponent {
     }
   }
 
+  openReport(coupon: DiscountCoupon) {
+    this.dialogCtrl.open(DiscountCouponReportDialogComponent, {
+      width: '850px',
+      data: coupon,
+    });
+  }
+
   addCoupon() {
     this.router.navigate(['/admin/coupons/edit']);
   }
-} 
+}
