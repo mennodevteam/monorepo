@@ -39,6 +39,7 @@ export class AuthService {
     kavenegarApi = Kavenegar.KavenegarApi({
       apikey: process.env.KAVENEGAR_API_KEY,
     });
+    kavenegarApi.options.host = process.env.KAVENEGAR_API_HOST || 'api.kavenegar.ir';
   }
 
   async validateUser(username: string, pass: string): Promise<User> {

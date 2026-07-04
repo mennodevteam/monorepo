@@ -33,6 +33,7 @@ export class SmsService {
     kavenegarApi = Kavenegar.KavenegarApi({
       apikey: process.env.KAVENEGAR_API_KEY,
     });
+    kavenegarApi.options.host = process.env.KAVENEGAR_API_HOST || 'api.kavenegar.ir';
   }
 
   async send(dto: NewSmsDto, groupMessage?: string) {
