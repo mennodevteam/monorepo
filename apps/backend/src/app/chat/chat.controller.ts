@@ -1,5 +1,5 @@
 import { Address, Chat, ChatType, Order, Region, Shop, User, UserRole } from '@menno/types';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { Public } from '../auth/public.decorator';
@@ -69,6 +69,73 @@ export class ChatController {
     }
 
     return Array.from(threadsMap.values());
+  }
+
+  @Get('threads-paginated')
+  @Roles(UserRole.Panel)
+  async getThreadsPaginated(
+    @LoginUser() user: AuthPayload,
+    @Query('take') take?: string,
+    @Query('skip') skip?: string,
+    @Query('search') search?: string,
+  ): Promise<any[]> {
+    const limit = take ? parseInt(take, 10) : 20;
+    const offset = skip ? parseInt(skip, 10) : 0;
+    const shop = await this.auth.getPanelUserShop(user);
+
+    const qb = this.repo.createQueryBuilder('chat')
+      .leftJoin('chat.user', 'user')
+      .select('chat.userId', 'userId')
+      .addSelect('MAX(chat.createdAt)', 'maxCreatedAt')
+      .where('chat.shopId = :shopId', { shopId: shop.id })
+      .groupBy('chat.userId')
+      .orderBy('maxCreatedAt', 'DESC')
+      .offset(offset)
+      .limit(limit);
+
+    if (search) {
+      qb.andWhere(
+        '(user.firstName LIKE :search OR user.lastName LIKE :search OR user.mobilePhone LIKE :search)',
+        { search: `%${search}%` }
+      );
+    }
+
+    const rows = await qb.getRawMany<{ userId: string }>();
+    const userIds = rows.map((r) => r.userId).filter(Boolean);
+    if (!userIds.length) return [];
+
+    const chats = await this.repo.find({
+      where: {
+        shop: { id: shop.id },
+        user: { id: In(userIds) }
+      },
+      relations: ['user', 'order'],
+      order: { createdAt: 'DESC' },
+    });
+
+    const threadsMap = new Map<string, {
+      user: User;
+      lastChat: Chat;
+      unreadCount: number;
+    }>();
+
+    for (const chat of chats) {
+      if (!chat.user) continue;
+      const userId = chat.user.id;
+      if (!threadsMap.has(userId)) {
+        threadsMap.set(userId, {
+          user: chat.user,
+          lastChat: chat,
+          unreadCount: 0,
+        });
+      }
+      const thread = threadsMap.get(userId)!;
+      if (chat.type === ChatType.Send && !chat.seen) {
+        thread.unreadCount++;
+      }
+    }
+
+    return userIds.map((id) => threadsMap.get(id)).filter(Boolean);
   }
 
   @Get('user/:userId')

@@ -11,16 +11,16 @@
       </div>
     </div>
 
-    <div class="threads-list">
-      @if (threadsQuery.isPending()) {
+    <div class="threads-list" (scroll)="onScroll($event)">
+      @if (threadsInfiniteQuery.isPending()) {
         <div class="loading-state">
           <mat-spinner diameter="40"></mat-spinner>
         </div>
-      } @else if (threadsQuery.isError()) {
+      } @else if (threadsInfiniteQuery.isError()) {
         <div class="error-state">
           <p class="warn">خطا در بارگذاری گفتگوها</p>
         </div>
-      } @else if (!filteredThreads().length) {
+      } @else if (!threads().length) {
         <div class="empty-list-state">
           <app-empty-state
             icon="message"
@@ -28,24 +28,23 @@
           ></app-empty-state>
         </div>
       } @else {
-        @for (thread of filteredThreads(); track thread.order.id) {
+        @for (thread of threads(); track thread.user.id) {
           <div
             class="thread-item"
-            [class.active]="selectedThread()?.order?.id === thread.order.id"
+            [class.active]="selectedThread()?.user?.id === thread.user.id"
             [class.unread]="thread.unreadCount > 0"
             (click)="selectThread(thread)"
           >
             <div class="thread-avatar">
-              {{ thread.order.emojiKey || '🛒' }}
+              {{ getAvatarPlaceholder(thread.user) }}
             </div>
             <div class="thread-details">
               <div class="thread-row">
                 <span class="customer-name">
                   {{ thread.user.firstName || thread.user.lastName ? (thread.user.firstName + ' ' + thread.user.lastName) : t.instant('chatsPage.unknownCustomer') }}
-                  <span class="order-id-tag">({{ 'chatsPage.orderChatLink' | translate: { id: thread.order.id } }})</span>
                 </span>
                 <span class="message-time">
-                  {{ thread.lastChat?.createdAt | pdate: true }}
+                  {{ thread.lastChat?.createdAt | pdate: false }}
                 </span>
               </div>
               <div class="thread-row">
@@ -55,6 +54,11 @@
                 }
               </div>
             </div>
+          </div>
+        }
+        @if (threadsInfiniteQuery.isFetchingNextPage()) {
+          <div class="loading-state-more" style="padding: 16px; display: flex; justify-content: center;">
+            <mat-spinner diameter="25"></mat-spinner>
           </div>
         }
       }
@@ -70,23 +74,19 @@
         </button>
         <div class="active-customer-info">
           <div class="avatar">
-            {{ selectedThread().order.emojiKey || '🛒' }}
+            {{ getAvatarPlaceholder(activeUser()) }}
           </div>
           <div class="details">
-            <h3>{{ selectedThread().user.firstName || selectedThread().user.lastName ? (selectedThread().user.firstName + ' ' + selectedThread().user.lastName) : t.instant('chatsPage.unknownCustomer') }}</h3>
-            <span>
-              {{ selectedThread().user.mobilePhone }} • 
-              تاریخ سفارش: {{ selectedThread().order.createdAt | pdate: true }} • 
-              وضعیت: {{ 'order.state.' + selectedThread().order.state | translate }}
-            </span>
+            <h3>{{ activeUser()?.firstName || activeUser()?.lastName ? (activeUser().firstName + ' ' + activeUser().lastName) : t.instant('chatsPage.unknownCustomer') }}</h3>
+            <span>{{ activeUser()?.mobilePhone }}</span>
           </div>
         </div>
         <div class="chat-actions">
-          @if (selectedThread().order) {
+          @if (selectedThread().order || selectedThread().lastChat?.order) {
             <button
               mat-stroked-button
               color="primary"
-              (click)="viewLatestOrder(selectedThread().order.id)"
+              (click)="viewLatestOrder(selectedThread().order?.id || selectedThread().lastChat?.order?.id)"
             >
               <ng-icon name="saxReceipt2Outline" style="margin-inline-end: 4px; vertical-align: middle;"></ng-icon>
               {{ 'chatsPage.viewOrder' | translate }}
@@ -113,19 +113,24 @@
           </div>
         } @else {
           <div class="messages-list">
-            @for (msg of (messagesQuery.data() || []).slice().reverse(); track msg.id) {
-              <div
-                class="message-wrapper"
-                [class.sent]="msg.type === ChatType.Receive"
-                [class.received]="msg.type === ChatType.Send"
-              >
-                <div class="message-bubble">
-                  <p class="message-text" linkify>{{ msg.text }}</p>
-                  <div class="message-meta">
-                    <span class="msg-time">{{ msg.createdAt | pdate: true }}</span>
+            @for (group of messagesByDay(); track group.dateKey) {
+              <div class="timeline-day-separator">
+                <span class="day-label">{{ group.date | pdate: false }}</span>
+              </div>
+              @for (msg of group.messages; track msg.id) {
+                <div
+                  class="message-wrapper"
+                  [class.sent]="msg.type === ChatType.Receive"
+                  [class.received]="msg.type === ChatType.Send"
+                >
+                  <div class="message-bubble">
+                    <p class="message-text" linkify>{{ msg.text }}</p>
+                    <div class="message-meta">
+                      <span class="msg-time">{{ msg.createdAt | pdate: true }}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              }
             }
           </div>
         }
