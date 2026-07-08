@@ -89,7 +89,7 @@ export class ChatController {
       .addSelect('MAX(chat.createdAt)', 'maxCreatedAt')
       .where('chat.shopId = :shopId', { shopId: shop.id })
       .groupBy('chat.userId')
-      .orderBy('maxCreatedAt', 'DESC')
+      .orderBy('MAX("chat"."createdAt")', 'DESC')
       .offset(offset)
       .limit(limit);
 
