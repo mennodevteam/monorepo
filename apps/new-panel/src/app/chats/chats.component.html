@@ -4,7 +4,10 @@
     <div class="sidebar-header">
       <h2>{{ 'chatsPage.title' | translate }}</h2>
       <div class="autocomplete-wrapper">
-        <app-search-member-autocomplete (userSelect)="onMemberSelect($event)"></app-search-member-autocomplete>
+        <app-search-member-autocomplete
+          (userSelect)="onMemberSelect($event)"
+          (queryChange)="searchQuery.set($event)"
+        ></app-search-member-autocomplete>
       </div>
     </div>
 
@@ -33,7 +36,7 @@
             (click)="selectThread(thread)"
           >
             <div class="thread-avatar">
-              {{ getAvatarPlaceholder(thread.user) }}
+              {{ thread.order.emojiKey || '🛒' }}
             </div>
             <div class="thread-details">
               <div class="thread-row">
@@ -67,11 +70,15 @@
         </button>
         <div class="active-customer-info">
           <div class="avatar">
-            {{ getAvatarPlaceholder(selectedThread().user) }}
+            {{ selectedThread().order.emojiKey || '🛒' }}
           </div>
           <div class="details">
             <h3>{{ selectedThread().user.firstName || selectedThread().user.lastName ? (selectedThread().user.firstName + ' ' + selectedThread().user.lastName) : t.instant('chatsPage.unknownCustomer') }}</h3>
-            <span>{{ selectedThread().user.mobilePhone }} • {{ 'chatsPage.orderChatLink' | translate: { id: selectedThread().order.id } }}</span>
+            <span>
+              {{ selectedThread().user.mobilePhone }} • 
+              تاریخ سفارش: {{ selectedThread().order.createdAt | pdate: true }} • 
+              وضعیت: {{ 'order.state.' + selectedThread().order.state | translate }}
+            </span>
           </div>
         </div>
         <div class="chat-actions">
@@ -106,7 +113,7 @@
           </div>
         } @else {
           <div class="messages-list">
-            @for (msg of messagesQuery.data(); track msg.id) {
+            @for (msg of (messagesQuery.data() || []).slice().reverse(); track msg.id) {
               <div
                 class="message-wrapper"
                 [class.sent]="msg.type === ChatType.Receive"
@@ -148,7 +155,7 @@
           }
         </button>
       </div>
-    @} @else {
+    } @else {
       <!-- Empty State -->
       <div class="empty-chat-area">
         <ng-icon name="saxMessageOutline" class="empty-icon"></ng-icon>

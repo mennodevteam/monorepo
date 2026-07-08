@@ -93,16 +93,11 @@
         .thread-avatar {
           width: 44px;
           height: 44px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
-          color: var(--text-primary, #18181b);
           display: flex;
           align-items: center;
           justify-content: center;
-          font-weight: 500;
-          font-size: 0.95rem;
+          font-size: 1.5rem;
           flex-shrink: 0;
-          border: 1px solid var(--border-color, #e5e5e5);
         }
 
         .thread-details {
@@ -209,13 +204,10 @@
         .avatar {
           width: 40px;
           height: 40px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
-          color: var(--text-primary);
           display: flex;
           align-items: center;
           justify-content: center;
-          font-weight: 500;
+          font-size: 1.5rem;
         }
 
         .details {

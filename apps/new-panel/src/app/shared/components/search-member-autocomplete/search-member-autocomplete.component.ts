@@ -33,6 +33,7 @@ export class SearchMemberAutocompleteComponent {
   searchControl = new FormControl('');
   searchQuery = signal('');
   userSelect = output<Member | null>();
+  queryChange = output<string>();
   selectedMember = signal<Member | null>(null);
   User = User;
 
@@ -55,7 +56,9 @@ export class SearchMemberAutocompleteComponent {
         distinctUntilChanged(), // Only emit if the value is different
       )
       .subscribe((value) => {
-        if (value) this.searchQuery.set(PersianNumberService.toEnglish(value));
+        const val = value || '';
+        this.queryChange.emit(val);
+        if (val) this.searchQuery.set(PersianNumberService.toEnglish(val));
       });
 
     effect(() => {
