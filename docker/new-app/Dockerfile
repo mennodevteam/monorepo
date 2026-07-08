@@ -21,7 +21,7 @@ RUN npm install -g pnpm@9 --registry=https://repo.hmirror.ir/npm
 COPY --from=deps /workspace/node_modules ./node_modules
 COPY . .
 ENV NX_DAEMON=false
-RUN pnpm nx run new-app:build:production
+RUN pnpm nx run new-app:build:production --parallel=1
 
 FROM nginx:1.27-alpine AS runner
 
