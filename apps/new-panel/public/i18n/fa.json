@@ -186,6 +186,7 @@
     "orderList": "سفارشات",
     "clubSection": "مشتریان",
     "clubMembers": "مشتریان",
+    "chats": "گفتگوها",
     "discountCoupons": "کد‌های تخفیف",
     "missions": "سناریو فروش",
     "settings": "تنظیمات",
@@ -1405,5 +1406,22 @@
     "previousStock": "موجودی قبل",
     "countedQuantity": "مقدار شمارش‌شده",
     "details": "جزئیات انبارگردانی"
+  },
+  "chatsPage": {
+    "title": "گفتگوها",
+    "searchPlaceholder": "جستجوی مشتری (نام یا شماره موبایل)...",
+    "emptyStateTitle": "هنوز گفتگویی انتخاب نشده است",
+    "emptyStateSubtitle": "برای شروع مکالمه، یکی از گفتگوها را از لیست انتخاب کنید.",
+    "noChatsTitle": "هیچ گفتگویی یافت نشد",
+    "noChatsSubtitle": "در حال حاضر هیچ گفتگوی مشتری در فروشگاه شما ثبت نشده است.",
+    "inputPlaceholder": "پیام خود را بنویسید...",
+    "send": "ارسال",
+    "unknownCustomer": "مشتری ناشناس",
+    "latestOrder": "آخرین سفارش: #{{id}}",
+    "viewOrder": "مشاهده سفارش",
+    "orderChatLink": "مرتبط با سفارش #{{id}}",
+    "typing": "در حال تایپ...",
+    "online": "آنلاین",
+    "offline": "آفلاین"
   }
 }

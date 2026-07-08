@@ -103,6 +103,13 @@ export const appRoutes: Route[] = [
                 data: { userActions: [UserAction.Club] },
               },
               {
+                path: 'chats',
+                loadComponent: () =>
+                  import('./chats/chats.component').then((m) => m.ChatsComponent),
+                canActivate: [userActionsGuard],
+                data: { userActions: [UserAction.Order] },
+              },
+              {
                 path: 'inventory',
                 children: materialsRoutes,
                 canActivate: [userActionsGuard],

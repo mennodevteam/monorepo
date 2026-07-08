@@ -34,6 +34,96 @@ export class ChatController {
     });
   }
 
+  @Get('threads')
+  @Roles(UserRole.Panel)
+  async getThreads(@LoginUser() user: AuthPayload): Promise<any[]> {
+    const shop = await this.auth.getPanelUserShop(user);
+    const chats = await this.repo.find({
+      where: { shop: { id: shop.id } },
+      relations: ['user', 'order'],
+      order: { createdAt: 'DESC' },
+    });
+
+    const threadsMap = new Map<string, {
+      user: User;
+      lastChat: Chat;
+      unreadCount: number;
+      lastOrder?: Order;
+    }>();
+
+    for (const chat of chats) {
+      if (!chat.user) continue;
+      const userId = chat.user.id;
+      if (!threadsMap.has(userId)) {
+        threadsMap.set(userId, {
+          user: chat.user,
+          lastChat: chat,
+          unreadCount: 0,
+        });
+      }
+      const thread = threadsMap.get(userId)!;
+      if (chat.type === ChatType.Send && !chat.seen) {
+        thread.unreadCount++;
+      }
+      if (!thread.lastOrder && chat.order) {
+        thread.lastOrder = chat.order;
+      }
+    }
+
+    const threads = Array.from(threadsMap.values());
+    for (const thread of threads) {
+      if (!thread.lastOrder) {
+        const lastOrder = await this.ordersRepo.findOne({
+          where: {
+            customer: { id: thread.user.id },
+            shop: { id: shop.id },
+          },
+          order: { createdAt: 'DESC' },
+        });
+        if (lastOrder) {
+          thread.lastOrder = lastOrder;
+        }
+      }
+    }
+
+    return threads;
+  }
+
+  @Get('user/:userId')
+  @Roles(UserRole.Panel)
+  async findByUser(
+    @Param('userId') userId: string,
+    @LoginUser() user: AuthPayload,
+  ): Promise<Chat[]> {
+    const shop = await this.auth.getPanelUserShop(user);
+    return this.repo.find({
+      where: {
+        user: { id: userId },
+        shop: { id: shop.id },
+      },
+      relations: ['user', 'shop', 'order'],
+      order: {
+        createdAt: 'ASC',
+      },
+    });
+  }
+
+  @Get('last-order/:userId')
+  @Roles(UserRole.Panel)
+  async getLastOrder(
+    @Param('userId') userId: string,
+    @LoginUser() user: AuthPayload,
+  ): Promise<Order | null> {
+    const shop = await this.auth.getPanelUserShop(user);
+    return this.ordersRepo.findOne({
+      where: {
+        customer: { id: userId },
+        shop: { id: shop.id },
+      },
+      order: { createdAt: 'DESC' },
+    });
+  }
+
   @Post()
   @Roles(UserRole.Panel, UserRole.App)
   async save(@Body() chat: Chat, @LoginUser() user: AuthPayload): Promise<Chat> {

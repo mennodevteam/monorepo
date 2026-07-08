@@ -49,6 +49,7 @@ import {
   saxNotificationOutline,
   saxMenuOutline,
   saxSetting2Outline,
+  saxMessageOutline,
 } from '@ng-icons/iconsax/outline';
 
 @Component({
@@ -102,6 +103,7 @@ import {
       saxNotificationOutline,
       saxMenuOutline,
       saxSetting2Outline,
+      saxMessageOutline,
     }),
   ],
 })

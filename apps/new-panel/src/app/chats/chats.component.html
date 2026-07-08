@@ -1,0 +1,178 @@
+<div class="chats-container" [class.show-chat-area]="showMobileChatArea()">
+  <!-- Sidebar Threads List -->
+  <div class="threads-sidebar">
+    <div class="sidebar-header">
+      <h2>{{ 'chatsPage.title' | translate }}</h2>
+      <div class="autocomplete-wrapper">
+        <app-search-member-autocomplete (userSelect)="onMemberSelect($event)"></app-search-member-autocomplete>
+      </div>
+    </div>
+
+    <div class="threads-list">
+      @if (threadsQuery.isPending()) {
+        <div class="loading-state">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
+      } @else if (threadsQuery.isError()) {
+        <div class="error-state">
+          <p class="warn">خطا در بارگذاری گفتگوها</p>
+        </div>
+      } @else if (!filteredThreads().length) {
+        <div class="empty-list-state">
+          <app-empty-state
+            icon="message"
+            [text]="t.instant('chatsPage.noChatsSubtitle')"
+          ></app-empty-state>
+        </div>
+      } @else {
+        @for (thread of filteredThreads(); track thread.user.id) {
+          <div
+            class="thread-item"
+            [class.active]="selectedThread()?.user?.id === thread.user.id"
+            [class.unread]="thread.unreadCount > 0"
+            (click)="selectThread(thread)"
+          >
+            <div class="thread-avatar">
+              {{ getAvatarPlaceholder(thread.user) }}
+            </div>
+            <div class="thread-details">
+              <div class="thread-row">
+                <span class="customer-name">
+                  {{ thread.user.firstName || thread.user.lastName ? (thread.user.firstName + ' ' + thread.user.lastName) : t.instant('chatsPage.unknownCustomer') }}
+                </span>
+                <span class="message-time">
+                  {{ thread.lastChat?.createdAt | pdate: true }}
+                </span>
+              </div>
+              <div class="thread-row">
+                <span class="message-snippet">{{ thread.lastChat?.text }}</span>
+                @if (thread.unreadCount > 0) {
+                  <span class="unread-badge">{{ thread.unreadCount }}</span>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      }
+    </div>
+  </div>
+
+  <!-- Main Chat Area -->
+  <div class="chat-area">
+    @if (selectedThread()) {
+      <div class="chat-header">
+        <button class="mobile-back-btn" (click)="backToList()">
+          <ng-icon name="saxArrowRightOutline" size="20"></ng-icon>
+        </button>
+        <div class="active-customer-info">
+          <div class="avatar">
+            {{ getAvatarPlaceholder(selectedThread().user) }}
+          </div>
+          <div class="details">
+            <h3>{{ selectedThread().user.firstName || selectedThread().user.lastName ? (selectedThread().user.firstName + ' ' + selectedThread().user.lastName) : t.instant('chatsPage.unknownCustomer') }}</h3>
+            <span>{{ selectedThread().user.mobilePhone }}</span>
+          </div>
+        </div>
+        <div class="chat-actions">
+          @if (selectedThread().lastOrder) {
+            <button
+              mat-stroked-button
+              color="primary"
+              (click)="viewLatestOrder(selectedThread().lastOrder.id)"
+            >
+              <ng-icon name="saxReceipt2Outline" style="margin-inline-end: 4px; vertical-align: middle;"></ng-icon>
+              {{ 'chatsPage.viewOrder' | translate }}
+            </button>
+          }
+        </div>
+      </div>
+
+      @if (showPromoBanner()) {
+        <div class="promo-banner-inline">
+          <div class="banner-content">
+            <ng-icon name="saxInfoCircleOutline" class="info-icon"></ng-icon>
+            <span>این گفتگو به سفارش مشتری متصل است. ارسال پیام مستقیم خارج از سفارش ممکن نیست و پیام به آخرین سفارش متصل می‌شود.</span>
+          </div>
+          <button class="close-banner-btn" (click)="showPromoBanner.set(false)">&times;</button>
+        </div>
+      }
+
+      <!-- Messages Timeline -->
+      <div class="messages-timeline" #scrollContainer>
+        @if (messagesQuery.isPending()) {
+          <div class="loading-state">
+            <mat-spinner diameter="30"></mat-spinner>
+          </div>
+        } @else {
+          <div class="messages-list">
+            @for (msg of messagesQuery.data(); track msg.id) {
+              <div
+                class="message-wrapper"
+                [class.sent]="msg.type === ChatType.Receive"
+                [class.received]="msg.type === ChatType.Send"
+              >
+                <div class="message-bubble">
+                  <p class="message-text" linkify>{{ msg.text }}</p>
+                  <div class="message-meta">
+                    @if (msg.order) {
+                      <a [routerLink]="['/admin/orders/details', msg.order.id]" class="msg-order-link">
+                        {{ 'chatsPage.orderChatLink' | translate: { id: msg.order.id } }}
+                      </a>
+                    }
+                    <span class="msg-time">{{ msg.createdAt | pdate: true }}</span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Input Footer -->
+      <div class="chat-footer">
+        <textarea
+          [placeholder]="t.instant('chatsPage.inputPlaceholder')"
+          [ngModel]="text()"
+          (ngModelChange)="text.set($event)"
+          (keydown.enter)="$event.preventDefault(); sendMessage()"
+          rows="2"
+          [disabled]="sendMutation.isPending()"
+        ></textarea>
+        <button
+          mat-flat-button
+          color="primary"
+          [disabled]="!text().trim() || sendMutation.isPending()"
+          (click)="sendMessage()"
+        >
+          @if (sendMutation.isPending()) {
+            <mat-spinner diameter="20" color="accent"></mat-spinner>
+          } @else {
+            <ng-icon name="saxSendOutline" style="margin-inline-end: 4px; vertical-align: middle;"></ng-icon>
+            {{ 'chatsPage.send' | translate }}
+          }
+        </button>
+      </div>
+    @} @else {
+      <!-- Empty State -->
+      <div class="empty-chat-area">
+        <ng-icon name="saxMessageOutline" class="empty-icon"></ng-icon>
+        <h3>{{ 'chatsPage.emptyStateTitle' | translate }}</h3>
+        <p style="margin-bottom: 24px;">{{ 'chatsPage.emptyStateSubtitle' | translate }}</p>
+
+        <mat-card class="promo-card blue" style="max-width: 500px; margin: 0 auto; text-align: right;">
+          <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px" style="padding: 16px; display: flex; align-items: flex-start; gap: 16px;">
+            <div class="np-icon-badge" style="flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background-color: #eff6ff; color: #2563eb;">
+              <ng-icon name="saxInfoCircleOutline" size="20"></ng-icon>
+            </div>
+            <div fxLayout="column" fxLayoutGap="4px" style="text-align: right; display: flex; flex-direction: column; gap: 4px;">
+              <h4 style="margin: 0; font-weight: 600; font-family: 'Estedad'; font-size: 0.9rem; color: var(--text-primary);">راهنمای گفتگو با مشتریان</h4>
+              <p style="margin: 0; font-size: 0.775rem; color: var(--text-secondary); font-family: 'Estedad'; line-height: 1.6; font-weight: 300;">
+                گفتگو با مشتریان بر اساس سفارش‌های ثبت‌شده آن‌ها انجام می‌شود. امکان ایجاد گفتگوی جدید بدون داشتن سفارش وجود ندارد. پیام‌های ارسالی به طور خودکار بر روی آخرین سفارش مشتری ثبت شده و برای او پیامک اطلاع‌رسانی ارسال می‌گردد.
+              </p>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+    }
+  </div>
+</div>
