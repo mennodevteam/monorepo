@@ -126,6 +126,15 @@
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
+              display: flex;
+              align-items: center;
+              gap: 4px;
+
+              .order-id-tag {
+                font-size: 0.725rem;
+                color: var(--text-muted);
+                font-weight: normal;
+              }
             }
 
             .message-time {
@@ -310,19 +319,14 @@
           justify-content: flex-end;
 
           .message-bubble {
-            background-color: var(--mat-sys-primary, #18181b);
-            color: var(--mat-sys-on-primary, #ffffff);
+            background-color: #ffffff;
+            color: var(--text-primary);
             border-bottom-left-radius: 2px;
+            border: 1px solid var(--border-color);
             text-align: right;
 
             .msg-time {
-              color: rgba(255, 255, 255, 0.7);
-            }
-
-            .msg-order-link {
-              background-color: rgba(255, 255, 255, 0.15);
-              color: #ffffff;
-              border-color: rgba(255, 255, 255, 0.3);
+              color: var(--text-muted);
             }
           }
         }

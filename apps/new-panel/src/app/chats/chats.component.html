@@ -25,10 +25,10 @@
           ></app-empty-state>
         </div>
       } @else {
-        @for (thread of filteredThreads(); track thread.user.id) {
+        @for (thread of filteredThreads(); track thread.order.id) {
           <div
             class="thread-item"
-            [class.active]="selectedThread()?.user?.id === thread.user.id"
+            [class.active]="selectedThread()?.order?.id === thread.order.id"
             [class.unread]="thread.unreadCount > 0"
             (click)="selectThread(thread)"
           >
@@ -39,6 +39,7 @@
               <div class="thread-row">
                 <span class="customer-name">
                   {{ thread.user.firstName || thread.user.lastName ? (thread.user.firstName + ' ' + thread.user.lastName) : t.instant('chatsPage.unknownCustomer') }}
+                  <span class="order-id-tag">({{ 'chatsPage.orderChatLink' | translate: { id: thread.order.id } }})</span>
                 </span>
                 <span class="message-time">
                   {{ thread.lastChat?.createdAt | pdate: true }}
@@ -70,15 +71,15 @@
           </div>
           <div class="details">
             <h3>{{ selectedThread().user.firstName || selectedThread().user.lastName ? (selectedThread().user.firstName + ' ' + selectedThread().user.lastName) : t.instant('chatsPage.unknownCustomer') }}</h3>
-            <span>{{ selectedThread().user.mobilePhone }}</span>
+            <span>{{ selectedThread().user.mobilePhone }} • {{ 'chatsPage.orderChatLink' | translate: { id: selectedThread().order.id } }}</span>
           </div>
         </div>
         <div class="chat-actions">
-          @if (selectedThread().lastOrder) {
+          @if (selectedThread().order) {
             <button
               mat-stroked-button
               color="primary"
-              (click)="viewLatestOrder(selectedThread().lastOrder.id)"
+              (click)="viewLatestOrder(selectedThread().order.id)"
             >
               <ng-icon name="saxReceipt2Outline" style="margin-inline-end: 4px; vertical-align: middle;"></ng-icon>
               {{ 'chatsPage.viewOrder' | translate }}
@@ -91,7 +92,7 @@
         <div class="promo-banner-inline">
           <div class="banner-content">
             <ng-icon name="saxInfoCircleOutline" class="info-icon"></ng-icon>
-            <span>این گفتگو به سفارش مشتری متصل است. ارسال پیام مستقیم خارج از سفارش ممکن نیست و پیام به آخرین سفارش متصل می‌شود.</span>
+            <span>این گفتگو مستقیماً به سفارش مشتری متصل است و پیام‌های ارسالی بر روی همین سفارش ثبت می‌شوند.</span>
           </div>
           <button class="close-banner-btn" (click)="showPromoBanner.set(false)">&times;</button>
         </div>
@@ -114,11 +115,6 @@
                 <div class="message-bubble">
                   <p class="message-text" linkify>{{ msg.text }}</p>
                   <div class="message-meta">
-                    @if (msg.order) {
-                      <a [routerLink]="['/admin/orders/details', msg.order.id]" class="msg-order-link">
-                        {{ 'chatsPage.orderChatLink' | translate: { id: msg.order.id } }}
-                      </a>
-                    }
                     <span class="msg-time">{{ msg.createdAt | pdate: true }}</span>
                   </div>
                 </div>

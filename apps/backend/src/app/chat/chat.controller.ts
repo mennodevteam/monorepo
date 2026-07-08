@@ -48,45 +48,27 @@ export class ChatController {
       user: User;
       lastChat: Chat;
       unreadCount: number;
-      lastOrder?: Order;
+      order: Order;
     }>();
 
     for (const chat of chats) {
-      if (!chat.user) continue;
-      const userId = chat.user.id;
-      if (!threadsMap.has(userId)) {
-        threadsMap.set(userId, {
-          user: chat.user,
+      if (!chat.order) continue;
+      const orderId = chat.order.id;
+      if (!threadsMap.has(orderId)) {
+        threadsMap.set(orderId, {
+          user: chat.user || chat.order.customer,
           lastChat: chat,
           unreadCount: 0,
+          order: chat.order,
         });
       }
-      const thread = threadsMap.get(userId)!;
+      const thread = threadsMap.get(orderId)!;
       if (chat.type === ChatType.Send && !chat.seen) {
         thread.unreadCount++;
       }
-      if (!thread.lastOrder && chat.order) {
-        thread.lastOrder = chat.order;
-      }
     }
 
-    const threads = Array.from(threadsMap.values());
-    for (const thread of threads) {
-      if (!thread.lastOrder) {
-        const lastOrder = await this.ordersRepo.findOne({
-          where: {
-            customer: { id: thread.user.id },
-            shop: { id: shop.id },
-          },
-          order: { createdAt: 'DESC' },
-        });
-        if (lastOrder) {
-          thread.lastOrder = lastOrder;
-        }
-      }
-    }
-
-    return threads;
+    return Array.from(threadsMap.values());
   }
 
   @Get('user/:userId')

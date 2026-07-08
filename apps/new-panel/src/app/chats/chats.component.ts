@@ -69,9 +69,9 @@ export class ChatsComponent {
   }));
 
   messagesQuery = injectQuery(() => ({
-    queryKey: ['chat', 'user', this.selectedThread()?.user?.id],
-    queryFn: () => lastValueFrom(this.http.get<Chat[]>(`/chat/user/${this.selectedThread()?.user?.id}`)),
-    enabled: !!this.selectedThread()?.user?.id,
+    queryKey: ['chat', 'order', this.selectedThread()?.order?.id],
+    queryFn: () => lastValueFrom(this.http.get<Chat[]>(`/chat/order/${this.selectedThread()?.order?.id}`)),
+    enabled: !!this.selectedThread()?.order?.id,
     refetchInterval: 10000,
   }));
 
@@ -159,34 +159,34 @@ export class ChatsComponent {
   onMemberSelect(member: Member | null) {
     if (!member || !member.user) return;
 
-    const threads = this.threadsQuery.data() || [];
-    const existingThread = threads.find((t) => t.user?.id === member.user?.id);
+    this.http.get<Order>(`/chat/last-order/${member.user.id}`).subscribe({
+      next: (lastOrder) => {
+        if (lastOrder) {
+          const threads = this.threadsQuery.data() || [];
+          const existingThread = threads.find((t) => t.order?.id === lastOrder.id);
 
-    if (existingThread) {
-      this.selectThread(existingThread);
-    } else {
-      this.http.get<Order>(`/chat/last-order/${member.user.id}`).subscribe({
-        next: (lastOrder) => {
-          if (lastOrder) {
+          if (existingThread) {
+            this.selectThread(existingThread);
+          } else {
             const tempThread = {
               user: member.user,
               lastChat: null,
               unreadCount: 0,
-              lastOrder: lastOrder,
+              order: lastOrder,
             };
             this.selectedThread.set(tempThread);
             this.showMobileChatArea.set(true);
             this.showPromoBanner.set(true);
             this.scrollToEnd(200);
-          } else {
-            this.dialog.alert(
-              this.t.instant('chatsPage.noOrderTitle', { defaultValue: 'خطا' }),
-              this.t.instant('chatsPage.noOrderMessage', { defaultValue: 'این مشتری هیچ سفارشی ثبت نکرده است و امکان گفتگو با وی وجود ندارد.' })
-            );
           }
-        },
-      });
-    }
+        } else {
+          this.dialog.alert(
+            this.t.instant('chatsPage.noOrderTitle', { defaultValue: 'خطا' }),
+            this.t.instant('chatsPage.noOrderMessage', { defaultValue: 'این مشتری هیچ سفارشی ثبت نکرده است و امکان گفتگو با وی وجود ندارد.' })
+          );
+        }
+      },
+    });
   }
 
   backToList() {
@@ -198,28 +198,8 @@ export class ChatsComponent {
     const thread = this.selectedThread();
     if (!textVal || !thread) return;
 
-    // Use order of the last message in this thread, or default to the customer's last order
-    const chats = this.messagesQuery.data() || [];
-    let orderId = '';
-    
-    // Find the latest message that has an associated order
-    for (let i = chats.length - 1; i >= 0; i--) {
-      const order = chats[i].order;
-      if (order?.id) {
-        orderId = order.id;
-        break;
-      }
-    }
-
-    if (!orderId && thread.lastOrder?.id) {
-      orderId = thread.lastOrder.id;
-    }
-
-    if (!orderId) {
-      // Fallback: This shouldn't normally happen since order is required,
-      // but if we don't have it, we cannot save the chat according to backend rules.
-      return;
-    }
+    const orderId = thread.order?.id;
+    if (!orderId) return;
 
     this.sendMutation.mutate({
       text: textVal,
