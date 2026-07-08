@@ -21,6 +21,7 @@ RUN npm install -g pnpm@9 --registry=https://repo.hmirror.ir/npm
 
 COPY --from=deps /workspace/node_modules ./node_modules
 COPY . .
+ENV NX_DAEMON=false
 RUN pnpm nx run backend:build:production
 
 FROM node:24-alpine AS prod-deps
