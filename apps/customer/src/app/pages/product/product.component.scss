@@ -139,19 +139,20 @@
     opacity: 0.8;
   }
 }
-
 .variant-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 16px 0;
   border-bottom: 1px solid var(--mat-sys-outline-variant);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
 
   &:last-child {
     border-bottom: none;
   }
 }
-
 .variant-info {
   display: flex;
   flex-direction: column;
