@@ -170,10 +170,12 @@
                           <button mat-icon-button type="button" (click)="editVariant(variant)" matTooltip="ویرایش نام واریانت">
                             <ng-icon name="saxEditOutline"></ng-icon>
                           </button>
+                          <button mat-icon-button type="button" (click)="duplicateVariant($index)" matTooltip="کپی کردن واریانت">
+                            <ng-icon name="saxCopyOutline"></ng-icon>
+                          </button>
                           <button mat-icon-button type="button" (click)="deleteVariant($index)" style="color: #f44336;">
                             <ng-icon name="saxTrashOutline"></ng-icon>
-                          </button>
-                        </div>
+                          </button>                        </div>
                       </div>
                       
                       <div class="bops-list-container" style="display: flex; flex-direction: column; gap: 8px; padding-right: 12px; border-right: 2px solid rgba(0,0,0,0.05); box-sizing: border-box; width: 100%;">

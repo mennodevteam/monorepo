@@ -467,7 +467,6 @@ export class ProductEditComponent implements FormComponent {
       this.imagesForm.markAsDirty();
     }
   }
-
   async deleteVariant(index: number) {
     if (
       await this.dialog.alert(
@@ -480,6 +479,35 @@ export class ProductEditComponent implements FormComponent {
     }
   }
 
+  duplicateVariant(index: number) {
+    const originalVariantGroup = this.variantsForm.at(index) as FormGroup;
+    if (!originalVariantGroup) return;
+
+    const originalValue = originalVariantGroup.getRawValue();
+
+    // Map duplicated packItems
+    const duplicatedPackItems = this.fb.array(
+      (originalValue.packItems || []).map((packItem: any) =>
+        this.fb.group({
+          productSource: [packItem.productSource, Validators.required],
+          variantSource: [packItem.variantSource],
+          quantity: [packItem.quantity ?? 1, [Validators.required, Validators.min(0.001)]],
+        })
+      )
+    );
+
+    const duplicatedVariantGroup = this.fb.group({
+      status: [originalValue.status],
+      position: [this.variantsForm.length],
+      title: [`${originalValue.title} (کپی)`, Validators.required],
+      price: [originalValue.price],
+      packItems: duplicatedPackItems,
+    });
+
+    this.variantsForm.push(duplicatedVariantGroup);
+    this.variantsForm.markAsDirty();
+    this.form.markAsDirty();
+  }
   async submit() {
     const hasVariants = this.form.controls['hasVariants'].value;
     const isPack = this.form.controls['type'].value === ProductType.Pack;
