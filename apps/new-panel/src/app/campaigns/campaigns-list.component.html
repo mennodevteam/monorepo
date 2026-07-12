@@ -47,7 +47,7 @@
         </ng-container>
 
         <ng-container matColumnDef="status">
-          <mat-header-cell *matHeaderCellDef>وضعیت</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef>وضعیت اجرا</mat-header-cell>
           <mat-cell *matCellDef="let element">
             @let status = getCampaignStatus(element);
             <span class="status-chip {{ status.color }}">{{ status.label }}</span>

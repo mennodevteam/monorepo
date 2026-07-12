@@ -72,12 +72,12 @@ export class CampaignsListComponent {
     const end = new Date(campaign.endDate);
 
     if (start > now) {
-      return { label: 'در انتظار شروع', color: 'blue' };
+      return { label: 'شروع نشده', color: 'blue' };
     }
     if (end < now) {
-      return { label: 'پایان یافته', color: 'red' };
+      return { label: 'تمام شده', color: 'red' };
     }
-    return { label: 'فعال', color: 'green' };
+    return { label: 'جاری', color: 'green' };
   }
 
   addCampaign() {

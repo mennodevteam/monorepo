@@ -49,14 +49,334 @@
   },
   "nodes": [
     {
+      "label": "campaigns.service.ts",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service",
+      "community": 14,
+      "norm_label": "campaigns.service.ts"
+    },
+    {
+      "label": "CampaignsService",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "community": 14,
+      "norm_label": "campaignsservice"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_constructor",
+      "community": 14,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".validateCampaignDates()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_validatecampaigndates",
+      "community": 14,
+      "norm_label": ".validatecampaigndates()"
+    },
+    {
+      "label": ".checkOverlap()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L47",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_checkoverlap",
+      "community": 14,
+      "norm_label": ".checkoverlap()"
+    },
+    {
+      "label": ".create()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L67",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_create",
+      "community": 14,
+      "norm_label": ".create()"
+    },
+    {
+      "label": ".findAll()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L82",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findall",
+      "community": 14,
+      "norm_label": ".findall()"
+    },
+    {
+      "label": ".findOne()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L120",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone",
+      "community": 14,
+      "norm_label": ".findone()"
+    },
+    {
+      "label": ".update()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L128",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update",
+      "community": 14,
+      "norm_label": ".update()"
+    },
+    {
+      "label": ".remove()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L147",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_remove",
+      "community": 14,
+      "norm_label": ".remove()"
+    },
+    {
+      "label": ".getActiveCampaign()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L163",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaign",
+      "community": 14,
+      "norm_label": ".getactivecampaign()"
+    },
+    {
+      "label": ".getActiveCampaignByUsername()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L173",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaignbyusername",
+      "community": 14,
+      "norm_label": ".getactivecampaignbyusername()"
+    },
+    {
+      "label": ".getCampaignReport()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L184",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getcampaignreport",
+      "community": 14,
+      "norm_label": ".getcampaignreport()"
+    },
+    {
+      "label": ".handleCampaignTransitions()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L267",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_handlecampaigntransitions",
+      "community": 14,
+      "norm_label": ".handlecampaigntransitions()"
+    },
+    {
+      "label": "campaign-report.component.ts",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component",
+      "community": 40,
+      "norm_label": "campaign-report.component.ts"
+    },
+    {
+      "label": "CampaignReport",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreport",
+      "community": 40,
+      "norm_label": "campaignreport"
+    },
+    {
+      "label": "CampaignReportComponent",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L286",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "community": 40,
+      "norm_label": "campaignreportcomponent"
+    },
+    {
+      "label": ".ngOnInit()",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L294",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_ngoninit",
+      "community": 40,
+      "norm_label": ".ngoninit()"
+    },
+    {
+      "label": ".getClickRate()",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L311",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getclickrate",
+      "community": 40,
+      "norm_label": ".getclickrate()"
+    },
+    {
+      "label": ".getBasketRate()",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L317",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getbasketrate",
+      "community": 40,
+      "norm_label": ".getbasketrate()"
+    },
+    {
+      "label": ".getConversionRate()",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L323",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getconversionrate",
+      "community": 40,
+      "norm_label": ".getconversionrate()"
+    },
+    {
+      "label": ".getOrderStateLabel()",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L329",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getorderstatelabel",
+      "community": 40,
+      "norm_label": ".getorderstatelabel()"
+    },
+    {
+      "label": ".goBack()",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L342",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_goback",
+      "community": 40,
+      "norm_label": ".goback()"
+    },
+    {
+      "label": "campaigns-list.component.ts",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_list_component",
+      "community": 40,
+      "norm_label": "campaigns-list.component.ts"
+    },
+    {
+      "label": "CampaignsListComponent",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
+      "source_location": "L35",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent",
+      "community": 40,
+      "norm_label": "campaignslistcomponent"
+    },
+    {
+      "label": ".getCampaignStatus()",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
+      "source_location": "L66",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_getcampaignstatus",
+      "community": 40,
+      "norm_label": ".getcampaignstatus()"
+    },
+    {
+      "label": ".addCampaign()",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
+      "source_location": "L80",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_addcampaign",
+      "community": 40,
+      "norm_label": ".addcampaign()"
+    },
+    {
+      "label": ".editCampaign()",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
+      "source_location": "L84",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_editcampaign",
+      "community": 40,
+      "norm_label": ".editcampaign()"
+    },
+    {
+      "label": ".isDeletable()",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
+      "source_location": "L88",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_isdeletable",
+      "community": 40,
+      "norm_label": ".isdeletable()"
+    },
+    {
+      "label": ".toggleEnable()",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
+      "source_location": "L92",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_toggleenable",
+      "community": 40,
+      "norm_label": ".toggleenable()"
+    },
+    {
+      "label": ".deleteCampaign()",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
+      "source_location": "L104",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_deletecampaign",
+      "community": 40,
+      "norm_label": ".deletecampaign()"
+    },
+    {
+      "label": ".openReport()",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
+      "source_location": "L115",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_openreport",
+      "community": 40,
+      "norm_label": ".openreport()"
+    },
+    {
       "label": "shell.component.ts",
       "file_type": "code",
       "source_file": "apps/new-panel/src/app/shell/shell.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_shell_shell_component",
       "community": 238,
-      "norm_label": "shell.component.ts"
+      "norm_label": "shell.component.ts",
+      "id": "apps_new_panel_src_app_shell_shell_component"
     },
     {
       "label": "ShellComponent",
@@ -64,9 +384,9 @@
       "source_file": "apps/new-panel/src/app/shell/shell.component.ts",
       "source_location": "L112",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_shell_shell_component_shellcomponent",
       "community": 238,
-      "norm_label": "shellcomponent"
+      "norm_label": "shellcomponent",
+      "id": "apps_new_panel_src_app_shell_shell_component_shellcomponent"
     },
     {
       "label": ".isBigDataPage()",
@@ -74,9 +394,9 @@
       "source_file": "apps/new-panel/src/app/shell/shell.component.ts",
       "source_location": "L126",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_shell_shell_component_shellcomponent_isbigdatapage",
       "community": 238,
-      "norm_label": ".isbigdatapage()"
+      "norm_label": ".isbigdatapage()",
+      "id": "apps_new_panel_src_app_shell_shell_component_shellcomponent_isbigdatapage"
     },
     {
       "label": ".constructor()",
@@ -84,9 +404,9 @@
       "source_file": "apps/new-panel/src/app/shell/shell.component.ts",
       "source_location": "L139",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_shell_shell_component_shellcomponent_constructor",
       "community": 238,
-      "norm_label": ".constructor()"
+      "norm_label": ".constructor()",
+      "id": "apps_new_panel_src_app_shell_shell_component_shellcomponent_constructor"
     },
     {
       "label": ".toggleSection()",
@@ -94,9 +414,9 @@
       "source_file": "apps/new-panel/src/app/shell/shell.component.ts",
       "source_location": "L149",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_shell_shell_component_shellcomponent_togglesection",
       "community": 238,
-      "norm_label": ".togglesection()"
+      "norm_label": ".togglesection()",
+      "id": "apps_new_panel_src_app_shell_shell_component_shellcomponent_togglesection"
     },
     {
       "label": ".logout()",
@@ -104,9 +424,9 @@
       "source_file": "apps/new-panel/src/app/shell/shell.component.ts",
       "source_location": "L153",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_shell_shell_component_shellcomponent_logout",
       "community": 238,
-      "norm_label": ".logout()"
+      "norm_label": ".logout()",
+      "id": "apps_new_panel_src_app_shell_shell_component_shellcomponent_logout"
     },
     {
       "label": "app.module.ts",
@@ -247,146 +567,6 @@
       "community": 14,
       "norm_label": "campaignsmodule",
       "id": "apps_backend_src_app_campaigns_campaigns_module_campaignsmodule"
-    },
-    {
-      "label": "campaigns.service.ts",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": "campaigns.service.ts",
-      "id": "apps_backend_src_app_campaigns_campaigns_service"
-    },
-    {
-      "label": "CampaignsService",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L9",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": "campaignsservice",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice"
-    },
-    {
-      "label": ".constructor()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L12",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".constructor()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_constructor"
-    },
-    {
-      "label": ".validateCampaignDates()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L24",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".validatecampaigndates()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_validatecampaigndates"
-    },
-    {
-      "label": ".checkOverlap()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L42",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".checkoverlap()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_checkoverlap"
-    },
-    {
-      "label": ".create()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L62",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".create()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_create"
-    },
-    {
-      "label": ".findAll()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L77",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".findall()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findall"
-    },
-    {
-      "label": ".findOne()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L115",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".findone()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone"
-    },
-    {
-      "label": ".update()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L123",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".update()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update"
-    },
-    {
-      "label": ".remove()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L142",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".remove()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_remove"
-    },
-    {
-      "label": ".getActiveCampaign()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L158",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".getactivecampaign()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaign"
-    },
-    {
-      "label": ".getActiveCampaignByUsername()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L168",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".getactivecampaignbyusername()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaignbyusername"
-    },
-    {
-      "label": ".getCampaignReport()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L179",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".getcampaignreport()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getcampaignreport"
-    },
-    {
-      "label": ".handleCampaignTransitions()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L262",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".handlecampaigntransitions()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_handlecampaigntransitions"
     },
     {
       "label": "core.module.ts",
@@ -1139,96 +1319,6 @@
       "id": "apps_new_panel_src_app_app_routes_approutes"
     },
     {
-      "label": "campaign-report.component.ts",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": "campaign-report.component.ts",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component"
-    },
-    {
-      "label": "CampaignReport",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L13",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": "campaignreport",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreport"
-    },
-    {
-      "label": "CampaignReportComponent",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L241",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": "campaignreportcomponent",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent"
-    },
-    {
-      "label": ".ngOnInit()",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L249",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": ".ngoninit()",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_ngoninit"
-    },
-    {
-      "label": ".getClickRate()",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L266",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": ".getclickrate()",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getclickrate"
-    },
-    {
-      "label": ".getBasketRate()",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L272",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": ".getbasketrate()",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getbasketrate"
-    },
-    {
-      "label": ".getConversionRate()",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L278",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": ".getconversionrate()",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getconversionrate"
-    },
-    {
-      "label": ".getOrderStateLabel()",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L284",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": ".getorderstatelabel()",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getorderstatelabel"
-    },
-    {
-      "label": ".goBack()",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L297",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": ".goback()",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_goback"
-    },
-    {
       "label": "campaigns-edit.component.ts",
       "file_type": "code",
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
@@ -1387,96 +1477,6 @@
       "community": 40,
       "norm_label": ".cancel()",
       "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_cancel"
-    },
-    {
-      "label": "campaigns-list.component.ts",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": "campaigns-list.component.ts",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_list_component"
-    },
-    {
-      "label": "CampaignsListComponent",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
-      "source_location": "L35",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": "campaignslistcomponent",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent"
-    },
-    {
-      "label": ".getCampaignStatus()",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
-      "source_location": "L66",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": ".getcampaignstatus()",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_getcampaignstatus"
-    },
-    {
-      "label": ".addCampaign()",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
-      "source_location": "L80",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": ".addcampaign()",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_addcampaign"
-    },
-    {
-      "label": ".editCampaign()",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
-      "source_location": "L84",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": ".editcampaign()",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_editcampaign"
-    },
-    {
-      "label": ".isDeletable()",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
-      "source_location": "L88",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": ".isdeletable()",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_isdeletable"
-    },
-    {
-      "label": ".toggleEnable()",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
-      "source_location": "L92",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": ".toggleenable()",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_toggleenable"
-    },
-    {
-      "label": ".deleteCampaign()",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
-      "source_location": "L104",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": ".deletecampaign()",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_deletecampaign"
-    },
-    {
-      "label": ".openReport()",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
-      "source_location": "L115",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": ".openreport()",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_openreport"
     },
     {
       "label": "campaigns.routes.ts",
@@ -3524,7 +3524,7 @@
       "source_file": "apps/backend/src/app/auth/api-key-auth.guard.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 267,
+      "community": 10,
       "norm_label": "api-key-auth.guard.ts",
       "id": "apps_backend_src_app_auth_api_key_auth_guard"
     },
@@ -3534,7 +3534,7 @@
       "source_file": "apps/backend/src/app/auth/api-key-auth.guard.ts",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 267,
+      "community": 10,
       "norm_label": "apikeyauthguard",
       "id": "apps_backend_src_app_auth_api_key_auth_guard_apikeyauthguard"
     },
@@ -3544,7 +3544,7 @@
       "source_file": "apps/backend/src/app/auth/api-key-auth.guard.ts",
       "source_location": "L17",
       "_origin": "ast",
-      "community": 267,
+      "community": 10,
       "norm_label": ".constructor()",
       "id": "apps_backend_src_app_auth_api_key_auth_guard_apikeyauthguard_constructor"
     },
@@ -3554,7 +3554,7 @@
       "source_file": "apps/backend/src/app/auth/api-key-auth.guard.ts",
       "source_location": "L23",
       "_origin": "ast",
-      "community": 267,
+      "community": 10,
       "norm_label": ".canactivate()",
       "id": "apps_backend_src_app_auth_api_key_auth_guard_apikeyauthguard_canactivate"
     },
@@ -4234,7 +4234,7 @@
       "source_file": "apps/backend/src/app/auth/scopes.decorator.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 267,
+      "community": 10,
       "norm_label": "scopes.decorator.ts",
       "id": "apps_backend_src_app_auth_scopes_decorator"
     },
@@ -4244,7 +4244,7 @@
       "source_file": "apps/backend/src/app/auth/scopes.decorator.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 267,
+      "community": 10,
       "norm_label": "requiredscopes()",
       "id": "apps_backend_src_app_auth_scopes_decorator_requiredscopes"
     },
@@ -5904,7 +5904,7 @@
       "source_file": "apps/backend/src/app/core/schemas/material.schema.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 10,
+      "community": 48,
       "norm_label": "material.schema.ts",
       "id": "apps_backend_src_app_core_schemas_material_schema"
     },
@@ -5914,7 +5914,7 @@
       "source_file": "apps/backend/src/app/core/schemas/material.schema.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 10,
+      "community": 48,
       "norm_label": "materialschema",
       "id": "apps_backend_src_app_core_schemas_material_schema_materialschema"
     },
@@ -7774,7 +7774,7 @@
       "source_file": "apps/backend/src/app/materials/materials.controller.ts",
       "source_location": "L213",
       "_origin": "ast",
-      "community": 160,
+      "community": 10,
       "norm_label": ".createstocktaking()",
       "id": "apps_backend_src_app_materials_materials_controller_materialscontroller_createstocktaking"
     },
@@ -9514,7 +9514,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration.controller.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 267,
+      "community": 10,
       "norm_label": "shop-integration.controller.ts",
       "id": "apps_backend_src_app_shop_integration_shop_integration_controller"
     },
@@ -9574,7 +9574,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration.controller.ts",
       "source_location": "L1231",
       "_origin": "ast",
-      "community": 3,
+      "community": 266,
       "norm_label": ".updateproduct()",
       "id": "apps_backend_src_app_shop_integration_shop_integration_controller_shopintegrationcontroller_updateproduct"
     },
@@ -9594,7 +9594,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration.controller.ts",
       "source_location": "L1259",
       "_origin": "ast",
-      "community": 266,
+      "community": 3,
       "norm_label": ".updateorderstate()",
       "id": "apps_backend_src_app_shop_integration_shop_integration_controller_shopintegrationcontroller_updateorderstate"
     },
@@ -9854,7 +9854,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration.controller.ts",
       "source_location": "L1478",
       "_origin": "ast",
-      "community": 160,
+      "community": 10,
       "norm_label": ".createstocktaking()",
       "id": "apps_backend_src_app_shop_integration_shop_integration_controller_shopintegrationcontroller_createstocktaking"
     },
@@ -10014,7 +10014,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration.service.ts",
       "source_location": "L116",
       "_origin": "ast",
-      "community": 3,
+      "community": 266,
       "norm_label": ".updateproduct()",
       "id": "apps_backend_src_app_shop_integration_shop_integration_service_shopintegrationservice_updateproduct"
     },
@@ -10034,7 +10034,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration.service.ts",
       "source_location": "L157",
       "_origin": "ast",
-      "community": 266,
+      "community": 3,
       "norm_label": ".updateorderstate()",
       "id": "apps_backend_src_app_shop_integration_shop_integration_service_shopintegrationservice_updateorderstate"
     },
@@ -10284,7 +10284,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration.service.ts",
       "source_location": "L683",
       "_origin": "ast",
-      "community": 160,
+      "community": 10,
       "norm_label": ".createstocktaking()",
       "id": "apps_backend_src_app_shop_integration_shop_integration_service_shopintegrationservice_createstocktaking"
     },
@@ -10374,7 +10374,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop.decorator.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 267,
+      "community": 10,
       "norm_label": "shop.decorator.ts",
       "id": "apps_backend_src_app_shop_integration_shop_decorator"
     },
@@ -10384,7 +10384,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop.decorator.ts",
       "source_location": "L3",
       "_origin": "ast",
-      "community": 267,
+      "community": 10,
       "norm_label": "requestshop",
       "id": "apps_backend_src_app_shop_integration_shop_decorator_requestshop"
     },
@@ -40354,7 +40354,7 @@
       "source_file": "libs/types/src/lib/inventory.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 10,
+      "community": 48,
       "norm_label": "materialunit",
       "id": "libs_types_src_lib_inventory_materialunit"
     },
@@ -40444,7 +40444,7 @@
       "source_file": "libs/types/src/lib/inventory.ts",
       "source_location": "L92",
       "_origin": "ast",
-      "community": 160,
+      "community": 10,
       "norm_label": "stocktaking",
       "id": "libs_types_src_lib_inventory_stocktaking"
     },
@@ -46154,6 +46154,560 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller",
+      "target": "apps_backend_src_app_campaigns_campaigns_service"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_module",
+      "target": "apps_backend_src_app_campaigns_campaigns_service"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice"
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_constructor",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_module",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_checkoverlap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L67",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_create",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L82",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findall",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L120",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L163",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaign",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L173",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaignbyusername",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L184",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getcampaignreport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L267",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_handlecampaigntransitions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L147",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_remove",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L128",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_validatecampaigndates",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L68",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_create",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_validatecampaigndates",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L135",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_validatecampaigndates",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L69",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_create",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_checkoverlap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L136",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_checkoverlap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_create",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_create"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_findall",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findall"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_findone",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L185",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getcampaignreport",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L148",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_remove",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L129",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_update",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L65",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_remove",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_remove"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L82",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_getactive",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaign"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L84",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_getactive",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaignbyusername"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L72",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_getreport",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getcampaignreport"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L286",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns.routes.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaigns_routes",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L317",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getbasketrate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L311",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getclickrate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L323",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getconversionrate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L329",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getorderstatelabel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L342",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_goback",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L294",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_ngoninit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns.routes.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaigns_routes",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaigns_list_component",
+      "target": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns.routes.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaigns_routes",
+      "target": "apps_new_panel_src_app_campaigns_campaigns_list_component"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
+      "source_location": "L80",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_addcampaign",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
+      "source_location": "L104",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_deletecampaign",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
+      "source_location": "L84",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_editcampaign",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
+      "source_location": "L66",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_getcampaignstatus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
+      "source_location": "L88",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_isdeletable",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
+      "source_location": "L115",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_openreport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
+      "source_location": "L92",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_toggleenable",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns.routes.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaigns_routes",
+      "target": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "apps/new-panel/src/app/app.routes.ts",
       "source_location": "L10",
       "weight": 1.0,
@@ -46167,9 +46721,9 @@
       "source_file": "apps/new-panel/src/app/shell/shell.component.ts",
       "source_location": "L112",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_shell_shell_component",
-      "target": "apps_new_panel_src_app_shell_shell_component_shellcomponent",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_shell_shell_component_shellcomponent"
     },
     {
       "relation": "imports_from",
@@ -46178,9 +46732,9 @@
       "source_file": "apps/new-panel/src/app/shell/shell.component.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_shell_shell_component",
-      "target": "libs_types_src_lib_menu",
-      "confidence_score": 1.0
+      "target": "libs_types_src_lib_menu"
     },
     {
       "relation": "imports_from",
@@ -46210,9 +46764,9 @@
       "source_file": "apps/new-panel/src/app/shell/shell.component.ts",
       "source_location": "L139",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_shell_shell_component_shellcomponent",
-      "target": "apps_new_panel_src_app_shell_shell_component_shellcomponent_constructor",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_shell_shell_component_shellcomponent_constructor"
     },
     {
       "relation": "method",
@@ -46220,9 +46774,9 @@
       "source_file": "apps/new-panel/src/app/shell/shell.component.ts",
       "source_location": "L126",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_shell_shell_component_shellcomponent",
-      "target": "apps_new_panel_src_app_shell_shell_component_shellcomponent_isbigdatapage",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_shell_shell_component_shellcomponent_isbigdatapage"
     },
     {
       "relation": "method",
@@ -46230,9 +46784,9 @@
       "source_file": "apps/new-panel/src/app/shell/shell.component.ts",
       "source_location": "L153",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_shell_shell_component_shellcomponent",
-      "target": "apps_new_panel_src_app_shell_shell_component_shellcomponent_logout",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_shell_shell_component_shellcomponent_logout"
     },
     {
       "relation": "method",
@@ -46240,9 +46794,9 @@
       "source_file": "apps/new-panel/src/app/shell/shell.component.ts",
       "source_location": "L149",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_shell_shell_component_shellcomponent",
-      "target": "apps_new_panel_src_app_shell_shell_component_shellcomponent_togglesection",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_shell_shell_component_shellcomponent_togglesection"
     },
     {
       "relation": "imports",
@@ -46340,28 +46894,6 @@
       "confidence_score": 1.0,
       "source": "apps_backend_src_app_campaigns_campaigns_controller",
       "target": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller",
-      "target": "apps_backend_src_app_campaigns_campaigns_service"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice"
     },
     {
       "relation": "imports_from",
@@ -46466,105 +46998,6 @@
       "target": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller"
     },
     {
-      "relation": "references",
-      "context": "parameter_type",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L24",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_constructor",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L33",
-      "weight": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_create",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_create"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L40",
-      "weight": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_findall",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findall"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L47",
-      "weight": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_findone",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L58",
-      "weight": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_update",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L65",
-      "weight": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_remove",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_remove"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L72",
-      "weight": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_getreport",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getcampaignreport"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L82",
-      "weight": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_getactive",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaign"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L84",
-      "weight": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_getactive",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaignbyusername"
-    },
-    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/backend/src/app/campaigns/campaigns.module.ts",
@@ -46573,28 +47006,6 @@
       "confidence_score": 1.0,
       "source": "apps_backend_src_app_campaigns_campaigns_module",
       "target": "apps_backend_src_app_campaigns_campaigns_module_campaignsmodule"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.module.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_module",
-      "target": "apps_backend_src_app_campaigns_campaigns_service"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.module.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_module",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice"
     },
     {
       "relation": "imports_from",
@@ -46650,213 +47061,6 @@
       "confidence_score": 1.0,
       "source": "apps_backend_src_app_campaigns_campaigns_module",
       "target": "apps_backend_src_app_core_schemas_order_schema_orderschema"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L42",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_checkoverlap"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L12",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_constructor"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L62",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_create"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L77",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findall"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L115",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L158",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaign"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L168",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaignbyusername"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L179",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getcampaignreport"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L262",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_handlecampaigntransitions"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L142",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_remove"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L123",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L24",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_validatecampaigndates"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L63",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_create",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_validatecampaigndates"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L130",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_validatecampaigndates"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L64",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_create",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_checkoverlap"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L131",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_checkoverlap"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L180",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getcampaignreport",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L143",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_remove",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L124",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone"
     },
     {
       "relation": "imports_from",
@@ -49516,108 +49720,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L13",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreport"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L241",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns.routes.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaigns_routes",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L272",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getbasketrate"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L266",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getclickrate"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L278",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getconversionrate"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L284",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getorderstatelabel"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L297",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_goback"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L249",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_ngoninit"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns.routes.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaigns_routes",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L43",
       "weight": 1.0,
@@ -49819,108 +49921,6 @@
       "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_save",
       "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_combinedateandtime"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
-      "source_location": "L35",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaigns_list_component",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns.routes.ts",
-      "source_location": "L2",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaigns_routes",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_list_component"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
-      "source_location": "L80",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_addcampaign"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
-      "source_location": "L104",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_deletecampaign"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
-      "source_location": "L84",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_editcampaign"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
-      "source_location": "L66",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_getcampaignstatus"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
-      "source_location": "L88",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_isdeletable"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
-      "source_location": "L115",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_openreport"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns-list.component.ts",
-      "source_location": "L92",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_toggleenable"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns.routes.ts",
-      "source_location": "L2",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaigns_routes",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent"
     },
     {
       "relation": "contains",
@@ -168044,5 +168044,5 @@
       "source_file": "ARCHITECTURE.md"
     }
   ],
-  "built_at_commit": "4611e534bd8a8ac0d6417f5a1a9ce5968cb592c0"
+  "built_at_commit": "07812d215b8925e8d0b75cb7cdaaff1aae0f50c3"
 }

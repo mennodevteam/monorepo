@@ -5535,8 +5535,8 @@
     "semantic_hash": ""
   },
   "apps/backend/src/app/campaigns/campaigns.service.ts": {
-    "mtime": 1783870133.6831272,
-    "ast_hash": "fc68abd79e07b40bf797ebb1cad602bb",
+    "mtime": 1783871230.9851174,
+    "ast_hash": "8354c4f28614251fb0648386a299b0eb",
     "semantic_hash": ""
   },
   "apps/backend/src/app/core/schemas/campaign.schema.ts": {
@@ -5550,8 +5550,8 @@
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/campaigns/campaign-report.component.ts": {
-    "mtime": 1783870148.3849585,
-    "ast_hash": "df9f37e8b5a9250dd7faaf9b5a1ea274",
+    "mtime": 1783871269.0400612,
+    "ast_hash": "7dbe95c0f8f984325c22904a48b983a4",
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts": {
@@ -5560,8 +5560,8 @@
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/campaigns/campaigns-list.component.ts": {
-    "mtime": 1783870038.1472368,
-    "ast_hash": "bdcb79cc65dfd5b2bc35f61683508474",
+    "mtime": 1783871236.4625826,
+    "ast_hash": "510d0c7c7e97b0ba7560bbbc86790fdf",
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/campaigns/campaigns.routes.ts": {
@@ -5585,8 +5585,8 @@
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/campaigns/campaigns-list.component.html": {
-    "mtime": 1783870670.6501966,
-    "ast_hash": "6a29fcdf37b63beb04e2bcb1b950c430",
+    "mtime": 1783871246.2947965,
+    "ast_hash": "fbed9ce3aae1b792ca497b031fca3733",
     "semantic_hash": ""
   }
 }
