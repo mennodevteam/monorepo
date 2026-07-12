@@ -1,12 +1,10 @@
 @let isEmpty = isEmptyData();
 <mat-toolbar class="content-toolbar" fxLayoutGap="8px">
   <h1 fxFlex>{{ 'nav.campaigns' | translate }}</h1>
-  @if (!isEmpty) {
-    <button mat-flat-button (click)="addCampaign()">
-      <ng-icon name="saxAddOutline"></ng-icon>
-      ایجاد کمپین جدید
-    </button>
-  }
+  <button mat-flat-button (click)="addCampaign()">
+    <ng-icon name="saxAddOutline"></ng-icon>
+    ایجاد کمپین جدید
+  </button>
 </mat-toolbar>
 
 <main p-md w-md>

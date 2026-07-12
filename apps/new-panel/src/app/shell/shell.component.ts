@@ -50,6 +50,7 @@ import {
   saxMenuOutline,
   saxSetting2Outline,
   saxMessageOutline,
+  saxGiftOutline,
 } from '@ng-icons/iconsax/outline';
 
 @Component({
@@ -104,6 +105,7 @@ import {
       saxMenuOutline,
       saxSetting2Outline,
       saxMessageOutline,
+      saxGiftOutline,
     }),
   ],
 })
