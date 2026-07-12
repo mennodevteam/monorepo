@@ -129,7 +129,7 @@
               @if (item.materialCost) {
                 {{ item.materialCost | number : '1.0-0' }}
               } @else {
-                <ng-icon name="saxInfoCircleOutline"></ng-icon>
+                <ng-icon name="saxInfoCircleOutline" class="red" style="color: #f44336; cursor: help;" [matTooltip]="'فرمول ساخت یا قیمت مواد اولیه نامشخص است'"></ng-icon>
               }
             </td>
           </ng-container>
@@ -144,7 +144,7 @@
                   {{ price - item.materialCost | number : '1.0-0' }}
                 </span>
               } @else {
-                <ng-icon name="saxInfoCircleOutline"></ng-icon>
+                <ng-icon name="saxInfoCircleOutline" class="red" style="color: #f44336; cursor: help;" [matTooltip]="'فرمول ساخت یا قیمت مواد اولیه نامشخص است'"></ng-icon>
               }
             </td>
           </ng-container>
@@ -158,7 +158,7 @@
                   {{ percentage | number: '1.0-0' }}%
                 </span>
               } @else {
-                <ng-icon name="saxInfoCircleOutline"></ng-icon>
+                <ng-icon name="saxInfoCircleOutline" class="red" style="color: #f44336; cursor: help;" [matTooltip]="'فرمول ساخت یا قیمت مواد اولیه نامشخص است'"></ng-icon>
               }
             </td>
           </ng-container>

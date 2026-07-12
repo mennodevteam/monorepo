@@ -356,6 +356,14 @@ export class BomListComponent {
 
   editableItem = signal<CategoryItem['items'][number] | null>(null);
   editType = signal<'material' | 'product'>('material');
+  allBoms = computed(() => this.materialsService.bomsQuery.data() || []);
+  allBops = computed(() => this.materialsService.bopsQuery.data() || []);
+
+  isBopCostMissing(bop: any): boolean {
+    const cost = Product.calculateCost(bop.productSource, bop.variantSource || null, this.allBoms(), this.allBops());
+    return cost === null || cost === undefined || cost === 0;
+  }
+
   categoryItems = computed<CategoryItem[]>(() => {
     const result: CategoryItem[] = [];
     const allBoms = this.materialsService.bomsQuery.data() || [];

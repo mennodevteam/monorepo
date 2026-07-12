@@ -30,6 +30,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ShopService } from '../shop/shop.service';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 interface PricingItem {
   category: ProductCategory;
@@ -63,6 +64,7 @@ interface PricingItem {
     MatInputModule,
     MatSortModule,
     MatCheckboxModule,
+    MatTooltipModule,
   ],
   templateUrl: './pricing.component.html',
   styleUrl: './pricing.component.scss',
