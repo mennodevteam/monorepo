@@ -10,10 +10,11 @@ import { Campaign, CampaignManualCost } from '@menno/types';
 import { SHARED } from '../shared';
 import { DataLoadingComponent } from '../shared/components/data-loading/data-loading.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ReactiveFormsModule, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 interface CampaignReport {
   campaignId: string;
@@ -56,6 +57,7 @@ interface CampaignReport {
     MatTooltipModule,
     MatFormFieldModule,
     MatInputModule,
+    MatDialogModule,
     ReactiveFormsModule,
     RouterModule,
     SHARED,
@@ -77,10 +79,10 @@ interface CampaignReport {
         <app-data-loading />
       } @else if (report()) {
         @let r = report()!;
-        <div style="display: flex; flex-direction: column; gap: 24px;">
+        <div style="display: flex; flex-direction: column; gap: 40px;">
           
           <!-- Sleek Header Info (No bulky background box) -->
-          <div style="padding: 8px 4px;">
+          <div style="padding: 8px 4px 0 4px;">
             <h2 style="margin: 0 0 6px 0; font-weight: 800; font-size: 20px; color: var(--text-primary);">
               گزارش عملکرد: {{ r.title }}
             </h2>
@@ -110,147 +112,141 @@ interface CampaignReport {
 
           </div>
 
-          <!-- Vertical Financial Statement Card (Simplistic list format, matching design system) -->
-          <mat-card style="padding: 28px; border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
-            <h3 style="margin: 0 0 20px 0; font-weight: bold; border-bottom: 1px solid #f5f5f5; padding-bottom: 12px; font-size: 15px; color: var(--text-primary);">
+          <!-- Section 1: Financial Summary (Header outside the card) -->
+          <div>
+            <h3 style="margin: 0 4px 12px 4px; font-weight: 800; font-size: 15px; color: var(--text-primary);">
               خلاصه عملکرد مالی کمپین
             </h3>
-            
-            <div style="display: flex; flex-direction: column; gap: 16px; font-size: 13px;">
-              
-              <!-- 1. Gross Sales -->
-              <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid #f9f9f9; padding-left: 8px; padding-right: 8px;">
-                <span style="color: var(--text-secondary);">مجموع فروش کل (خالص پرداختی فاکتورها):</span>
-                <strong style="color: var(--text-primary); font-size: 14px;">{{ r.totalSales | number }} تومان</strong>
-              </div>
+            <mat-card style="padding: 28px; border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
+              <div style="display: flex; flex-direction: column; gap: 16px; font-size: 13px;">
+                
+                <!-- 1. Gross Sales -->
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid #f9f9f9; padding-left: 8px; padding-right: 8px;">
+                  <span style="color: var(--text-secondary);">مجموع فروش کل (خالص پرداختی فاکتورها):</span>
+                  <strong style="color: var(--text-primary); font-size: 14px;">{{ r.totalSales | number }} تومان</strong>
+                </div>
 
-              <!-- 2. Campaign Discounts -->
-              <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid #f9f9f9; padding-left: 8px; padding-right: 8px;">
-                <span style="color: var(--text-secondary);">مجموع تخفیف‌های مستقیم اعمال شده کمپین:</span>
-                <strong style="color: var(--text-primary); font-size: 14px;">{{ r.totalCampaignDiscounts | number }} تومان</strong>
-              </div>
+                <!-- 2. Campaign Discounts -->
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid #f9f9f9; padding-left: 8px; padding-right: 8px;">
+                  <span style="color: var(--text-secondary);">مجموع تخفیف‌های مستقیم اعمال شده کمپین:</span>
+                  <strong style="color: var(--text-primary); font-size: 14px;">{{ r.totalCampaignDiscounts | number }} تومان</strong>
+                </div>
 
-              <!-- 3. Sales Profit -->
-              <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid #f9f9f9; padding-left: 8px; padding-right: 8px;">
-                <span style="color: var(--text-secondary); display: flex; align-items: center; gap: 6px;">
-                  مجموع سود فروش سفارشات:
-                  <ng-icon name="saxInfoCircleOutline" style="color: var(--text-muted); cursor: pointer; font-size: 1rem; vertical-align: middle;" matTooltip="مجموع سود همه سفارشات کمپین (فروش کل منهای بهای تمام‌شده مواد اولیه)"></ng-icon>
-                </span>
-                <strong style="color: var(--text-primary); font-size: 14px;">{{ (r.totalSales - r.totalMaterialCost) | number }} تومان</strong>
-              </div>
+                <!-- 3. Sales Profit -->
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid #f9f9f9; padding-left: 8px; padding-right: 8px;">
+                  <span style="color: var(--text-secondary); display: flex; align-items: center; gap: 6px;">
+                    مجموع سود فروش سفارشات:
+                    <ng-icon name="saxInfoCircleOutline" style="color: var(--text-muted); cursor: pointer; font-size: 1rem; vertical-align: middle;" matTooltip="مجموع سود همه سفارشات کمپین (فروش کل منهای بهای تمام‌شده مواد اولیه)"></ng-icon>
+                  </span>
+                  <strong style="color: var(--text-primary); font-size: 14px;">{{ (r.totalSales - r.totalMaterialCost) | number }} تومان</strong>
+                </div>
 
-              <!-- 4. Campaign Operating Costs -->
-              <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid #f9f9f9; padding-left: 8px; padding-right: 8px;">
-                <span style="color: var(--text-secondary); display: flex; align-items: center; gap: 6px;">
-                  هزینه‌های عملیاتی کمپین:
-                  <ng-icon name="saxInfoCircleOutline" style="color: var(--text-muted); cursor: pointer; font-size: 1rem; vertical-align: middle;" matTooltip="مجموع هزینه‌های متفرقه کمپین مانند تبلیغات، بلاگرها و... که در جدول پایین صفحه ثبت شده است"></ng-icon>
-                </span>
-                <strong style="color: var(--text-primary); font-size: 14px;">{{ r.totalManualCosts | number }} تومان</strong>
-              </div>
+                <!-- 4. Campaign Operating Costs -->
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid #f9f9f9; padding-left: 8px; padding-right: 8px;">
+                  <span style="color: var(--text-secondary); display: flex; align-items: center; gap: 6px;">
+                    هزینه‌های عملیاتی کمپین:
+                    <ng-icon name="saxInfoCircleOutline" style="color: var(--text-muted); cursor: pointer; font-size: 1rem; vertical-align: middle;" matTooltip="مجموع هزینه‌های متفرقه کمپین مانند تبلیغات، بلاگرها و... که در جدول پایین صفحه ثبت شده است"></ng-icon>
+                  </span>
+                  <strong style="color: var(--text-primary); font-size: 14px;">{{ r.totalManualCosts | number }} تومان</strong>
+                </div>
 
-              <!-- 5. Net Profit -->
-              <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center; background-color: var(--card-bg, #fafafa); padding: 20px 24px; border-radius: 14px; border: 1px solid var(--border-color, #e0e0e0);">
-                <span style="font-weight: bold; color: var(--text-primary); font-size: 15px; display: flex; align-items: center; gap: 6px;">
-                  سود خالص نهایی کمپین:
-                  <ng-icon name="saxInfoCircleOutline" style="color: var(--text-muted); cursor: pointer; font-size: 1.1rem; vertical-align: middle;" matTooltip="سود نهایی کمپین حاصل کسر تمام هزینه‌های عملیاتی از سود فروش سفارشات"></ng-icon>
-                </span>
-                <strong style="font-size: 24px; color: var(--text-primary); font-weight: 800;">
-                  {{ r.netProfit | number }} تومان
-                </strong>
-              </div>
+                <!-- 5. Net Profit -->
+                <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center; background-color: var(--card-bg, #fafafa); padding: 20px 24px; border-radius: 14px; border: 1px solid var(--border-color, #e0e0e0);">
+                  <span style="font-weight: bold; color: var(--text-primary); font-size: 15px; display: flex; align-items: center; gap: 6px;">
+                    سود خالص نهایی کمپین:
+                    <ng-icon name="saxInfoCircleOutline" style="color: var(--text-muted); cursor: pointer; font-size: 1.1rem; vertical-align: middle;" matTooltip="سود نهایی کمپین حاصل کسر تمام هزینه‌های عملیاتی از سود فروش سفارشات"></ng-icon>
+                  </span>
+                  <strong style="font-size: 24px; color: var(--text-primary); font-weight: 800;">
+                    {{ r.netProfit | number }} تومان
+                  </strong>
+                </div>
 
+              </div>
+            </mat-card>
+          </div>
+
+          <!-- Section 2: Campaign Operating Costs (Headers outside card, Action Dialog based management) -->
+          <div>
+            <div fxLayout="row" fxLayoutAlign="space-between center" style="margin: 0 4px 12px 4px;">
+              <div fxLayout="column">
+                <h3 style="margin: 0 0 4px 0; font-weight: 800; font-size: 15px; color: var(--text-primary);">
+                  هزینه‌های عملیاتی کمپین
+                </h3>
+                <p style="font-size: 12px; color: var(--text-secondary); margin: 0; line-height: 1.6;">
+                  هزینه‌های جانبی مربوط به کمپین (مانند تبلیغات، اینفلوئنسرها، بنرها و سایر مبالغ متفرقه)
+                </p>
+              </div>
+              <button mat-stroked-button type="button" (click)="openAddCostDialog(addCostDialogTemplate)" style="border-radius: 10px;">
+                <ng-icon name="saxAddOutline" style="vertical-align: middle; margin-left: 4px;"></ng-icon>
+                افزودن هزینه جدید
+              </button>
             </div>
-          </mat-card>
-
-          <!-- Campaign Operating Costs Editable Box (Directly managed here) -->
-          <mat-card style="padding: 24px; border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
-            <h3 style="margin: 0 0 8px 0; font-weight: bold; font-size: 15px; color: var(--text-primary);">
-              هزینه‌های عملیاتی کمپین
-            </h3>
-            <p style="font-size: 12px; color: var(--text-secondary); margin: 0 0 20px 0; line-height: 1.6;">
-              هزینه‌های جانبی مربوط به کمپین (مانند تبلیغات، اینفلوئنسرها، بنرها و سایر مبالغ متفرقه) را در اینجا وارد و مدیریت کنید تا سود خالص در لحظه محاسبه شود.
-            </p>
-
-            <form [formGroup]="form" (ngSubmit)="saveManualCosts()">
-              <div formArrayName="manualCosts" style="display: flex; flex-direction: column; gap: 12px;">
-                @for (cost of manualCostsArray.controls; track cost; let idx = $index) {
-                  <div [formGroupName]="idx" style="display: flex; gap: 16px; align-items: center; width: 100%;">
-                    <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 2;">
-                      <mat-label>عنوان هزینه (مثلا: تبلیغات اینستاگرام)</mat-label>
-                      <input matInput formControlName="title" required />
-                    </mat-form-field>
-                    
-                    <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 1;">
-                      <mat-label>مبلغ هزینه (تومان)</mat-label>
-                      <input matInput formControlName="amount" type="number" required />
-                    </mat-form-field>
-                    
-                    <button mat-icon-button type="button" (click)="removeManualCost(idx)" style="color: var(--red-color, #f44336);">
-                      <ng-icon name="saxTrashOutline"></ng-icon>
-                    </button>
-                  </div>
-                }
-              </div>
-
-              <div style="margin-top: 16px; display: flex; gap: 12px; justify-content: flex-start; align-items: center;">
-                <button mat-stroked-button type="button" (click)="addManualCost()" style="border-style: dashed; border-color: var(--border-color);">
-                  <ng-icon name="saxAddOutline" style="vertical-align: middle; margin-left: 4px;"></ng-icon>
-                  افزودن ردیف هزینه جدید
-                </button>
-
-                <button mat-flat-button color="primary" type="submit" [disabled]="savingCosts()">
-                  @if (savingCosts()) {
-                    در حال ذخیره...
-                  } @else {
-                    ذخیره تغییرات هزینه‌ها
+            
+            <mat-card style="padding: 24px; border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+              @if (r.manualCosts?.length) {
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                  @for (cost of r.manualCosts; track cost.title; let idx = $index) {
+                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text-primary); border-bottom: 1px solid #f9f9f9; padding: 10px 8px;">
+                      <span>{{ cost.title }}</span>
+                      <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="16px">
+                        <strong>{{ cost.amount | number }} تومان</strong>
+                        <button mat-icon-button type="button" (click)="deleteCost(idx)" style="color: var(--red-color, #f44336); width: 36px; height: 36px; line-height: 36px;">
+                          <ng-icon name="saxTrashOutline" style="font-size: 1.1rem;"></ng-icon>
+                        </button>
+                      </div>
+                    </div>
                   }
-                </button>
-              </div>
-            </form>
-          </mat-card>
+                </div>
+              } @else {
+                <p style="text-align: center; color: var(--text-muted); margin: 20px 0; font-size: 13px;">هیچ هزینه عملیاتی برای این کمپین ثبت نشده است.</p>
+              }
+            </mat-card>
+          </div>
 
-          <!-- Campaign Orders List Card -->
-          <mat-card style="padding: 24px; border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
-            <h3 style="margin: 0 0 16px 0; font-weight: bold; border-bottom: 1px solid #f5f5f5; padding-bottom: 12px; font-size: 15px; color: var(--text-primary);">
+          <!-- Section 3: Campaign Orders List -->
+          <div>
+            <h3 style="margin: 0 4px 12px 4px; font-weight: 800; font-size: 15px; color: var(--text-primary);">
               سفارشات ثبت شده در بازه کمپین
             </h3>
-            @if (r.orders?.length) {
-              <div style="max-height: 400px; overflow-y: auto;">
-                <table style="width: 100%; border-collapse: collapse; text-align: right; font-size: 13px;">
-                  <thead>
-                    <tr style="border-bottom: 2px solid #f5f5f5; color: var(--text-secondary); height: 40px;">
-                      <th style="padding: 8px; font-weight: 600;">نام مشتری</th>
-                      <th style="padding: 8px; font-weight: 600;">تاریخ ثبت</th>
-                      <th style="padding: 8px; font-weight: 600;">مبلغ فاکتور</th>
-                      <th style="padding: 8px; font-weight: 600;">سود سفارش</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @for (order of r.orders; track order.id) {
-                      <tr style="border-bottom: 1px solid #f5f5f5; height: 48px;">
-                        <td style="padding: 8px;">
-                          <a [routerLink]="['/admin/orders/details', order.id]" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">
-                            @if (order.customer) {
-                              {{ order.customer.firstName || '' }} {{ order.customer.lastName || '' }}
-                            } @else {
-                              مشتری مهمان
-                            }
-                          </a>
-                        </td>
-                        <td style="padding: 8px; color: var(--text-secondary);">{{ order.createdAt | pdate: true }}</td>
-                        <td style="padding: 8px; font-weight: 500;">{{ order.totalPrice | number }} تومان</td>
-                        <td style="padding: 8px; font-weight: 500; color: var(--text-primary);">
-                          {{ (order.totalPrice - (order.materialCost || 0)) | number }} تومان
-                        </td>
+            <mat-card style="padding: 24px; border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+              @if (r.orders?.length) {
+                <div style="max-height: 400px; overflow-y: auto;">
+                  <table style="width: 100%; border-collapse: collapse; text-align: right; font-size: 13px;">
+                    <thead>
+                      <tr style="border-bottom: 2px solid #f5f5f5; color: var(--text-secondary); height: 40px;">
+                        <th style="padding: 8px; font-weight: 600;">نام مشتری</th>
+                        <th style="padding: 8px; font-weight: 600;">تاریخ ثبت</th>
+                        <th style="padding: 8px; font-weight: 600;">مبلغ فاکتور</th>
+                        <th style="padding: 8px; font-weight: 600;">سود سفارش</th>
                       </tr>
-                    }
-                  </tbody>
-                </table>
-              </div>
-            } @else {
-              <p style="text-align: center; color: var(--text-muted); margin: 20px 0; font-size: 13px;">هیچ سفارشی برای این کمپین ثبت نشده است.</p>
-            }
-          </mat-card>
+                    </thead>
+                    <tbody>
+                      @for (order of r.orders; track order.id) {
+                        <tr style="border-bottom: 1px solid #f5f5f5; height: 48px;">
+                          <td style="padding: 8px;">
+                            <a [routerLink]="['/admin/orders/details', order.id]" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">
+                              @if (order.customer) {
+                                {{ order.customer.firstName || '' }} {{ order.customer.lastName || '' }}
+                              } @else {
+                                مشتری مهمان
+                              }
+                            </a>
+                          </td>
+                          <td style="padding: 8px; color: var(--text-secondary);">{{ order.createdAt | pdate: true }}</td>
+                          <td style="padding: 8px; font-weight: 500;">{{ order.totalPrice | number }} تومان</td>
+                          <td style="padding: 8px; font-weight: 500; color: var(--text-primary);">
+                            {{ (order.totalPrice - (order.materialCost || 0)) | number }} تومان
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              } @else {
+                <p style="text-align: center; color: var(--text-muted); margin: 20px 0; font-size: 13px;">هیچ سفارشی در بازه اجرای این کمپین ثبت نشده است.</p>
+              }
+            </mat-card>
+          </div>
 
         </div>
       } @else {
@@ -260,6 +256,34 @@ interface CampaignReport {
         </div>
       }
     </main>
+
+    <!-- Dialog Template for Adding a Cost Row -->
+    <ng-template #addCostDialogTemplate>
+      <h2 mat-dialog-title style="font-family: 'Estedad'; direction: rtl; margin-top: 8px; font-weight: bold; font-size: 16px;">افزودن هزینه عملیاتی جدید</h2>
+      <mat-dialog-content style="font-family: 'Estedad'; direction: rtl; padding-top: 16px;">
+        <form [formGroup]="costForm" style="display: flex; flex-direction: column; gap: 16px; padding: 4px 0;">
+          <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>عنوان هزینه (مثلا: تبلیغات اینستاگرام)</mat-label>
+            <input matInput formControlName="title" required />
+          </mat-form-field>
+          
+          <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>مبلغ هزینه (تومان)</mat-label>
+            <input matInput formControlName="amount" type="number" required />
+          </mat-form-field>
+        </form>
+      </mat-dialog-content>
+      <mat-dialog-actions align="end" style="font-family: 'Estedad'; direction: rtl; gap: 8px; padding: 12px 24px 20px 24px;">
+        <button mat-button (click)="closeDialog()">انصراف</button>
+        <button mat-flat-button color="primary" [disabled]="costForm.invalid || savingCosts()" (click)="submitNewCost()">
+          @if (savingCosts()) {
+            در حال ثبت...
+          } @else {
+            ثبت هزینه
+          }
+        </button>
+      </mat-dialog-actions>
+    </ng-template>
   `,
 })
 export class CampaignReportComponent implements OnInit {
@@ -268,18 +292,18 @@ export class CampaignReportComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
   private readonly snack = inject(MatSnackBar);
+  private readonly dialog = inject(MatDialog);
 
   loading = signal(true);
   savingCosts = signal(false);
   report = signal<CampaignReport | null>(null);
 
-  form = this.fb.group({
-    manualCosts: this.fb.array([]),
+  costForm = this.fb.group({
+    title: ['', Validators.required],
+    amount: [null as number | null, [Validators.required, Validators.min(0)]],
   });
 
-  get manualCostsArray(): FormArray {
-    return this.form.get('manualCosts') as FormArray;
-  }
+  private dialogRef?: MatDialogRef<any>;
 
   async ngOnInit() {
     await this.loadReport();
@@ -296,18 +320,6 @@ export class CampaignReportComponent implements OnInit {
     try {
       const data = await lastValueFrom(this.http.get<CampaignReport>(`/campaigns/${id}/report`));
       this.report.set(data);
-
-      this.manualCostsArray.clear();
-      if (data.manualCosts) {
-        for (const cost of data.manualCosts) {
-          this.manualCostsArray.push(
-            this.fb.group({
-              title: [cost.title, Validators.required],
-              amount: [cost.amount, [Validators.required, Validators.min(0)]],
-            })
-          );
-        }
-      }
     } catch (err) {
       console.error(err);
       this.snack.open('خطا در دریافت اطلاعات گزارش کمپین', 'بستن', { duration: 3000 });
@@ -316,40 +328,68 @@ export class CampaignReportComponent implements OnInit {
     }
   }
 
-  addManualCost() {
-    this.manualCostsArray.push(
-      this.fb.group({
-        title: ['', Validators.required],
-        amount: [0, [Validators.required, Validators.min(0)]],
-      })
-    );
+  openAddCostDialog(template: any) {
+    this.costForm.reset({ title: '', amount: null });
+    this.dialogRef = this.dialog.open(template, {
+      width: '420px',
+      direction: 'rtl',
+      autoFocus: true,
+    });
   }
 
-  removeManualCost(index: number) {
-    this.manualCostsArray.removeAt(index);
+  closeDialog() {
+    this.dialogRef?.close();
   }
 
-  async saveManualCosts() {
-    if (this.form.invalid) {
-      this.snack.open('لطفاً اطلاعات هزینه‌ها را به درستی وارد کنید', 'بستن', { duration: 3000 });
-      return;
-    }
+  async submitNewCost() {
+    if (this.costForm.invalid) return;
+    const r = this.report();
+    if (!r) return;
 
-    const id = this.route.snapshot.queryParamMap.get('id');
+    const newCost = this.costForm.value;
     this.savingCosts.set(true);
     try {
+      const currentCosts = r.manualCosts || [];
+      const updatedCosts = [...currentCosts, newCost];
+
       await lastValueFrom(
-        this.http.put(`/campaigns/${id}`, {
-          manualCosts: this.form.value.manualCosts,
+        this.http.put(`/campaigns/${r.campaignId}`, {
+          manualCosts: updatedCosts,
         })
       );
-      this.snack.open('هزینه‌های عملیاتی با موفقیت بروزرسانی شد', 'بستن', { duration: 3000 });
+
+      this.snack.open('هزینه عملیاتی جدید با موفقیت ثبت شد', 'بستن', { duration: 3000 });
+      this.closeDialog();
       await this.loadReport();
     } catch (err) {
       console.error(err);
-      this.snack.open('خطا در ذخیره هزینه‌های عملیاتی', 'بستن', { duration: 3000 });
+      this.snack.open('خطا در ثبت هزینه جدید', 'بستن', { duration: 3000 });
     } finally {
       this.savingCosts.set(false);
+    }
+  }
+
+  async deleteCost(index: number) {
+    const r = this.report();
+    if (!r) return;
+
+    if (!confirm('آیا از حذف این هزینه عملیاتی اطمینان دارید؟')) return;
+
+    try {
+      const updatedCosts = [...(r.manualCosts || [])];
+      updatedCosts.splice(index, 1);
+
+      await lastValueFrom(
+        this.http.put(`/campaigns/${r.campaignId}`, {
+          manualCosts: updatedCosts,
+        })
+      );
+
+      this.snack.open('هزینه عملیاتی با موفقیت حذف شد', 'بستن', { duration: 3000 });
+      await this.loadReport();
+    } catch (err) {
+      console.error(err);
+      this.snack.open('خطا در حذف هزینه', 'بستن', { duration: 3000 });
     }
   }
 
@@ -388,3 +428,4 @@ export class CampaignReportComponent implements OnInit {
     this.router.navigate(['/admin/campaigns']);
   }
 }
+
