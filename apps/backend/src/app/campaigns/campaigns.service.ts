@@ -91,6 +91,7 @@ export class CampaignsService {
       .addSelect('COUNT(order.id)', 'orderCount')
       .addSelect('SUM(order.totalPrice)', 'totalSales')
       .addSelect('SUM(COALESCE(order.materialCost, 0))', 'totalMaterialCost')
+      .addSelect('SUM(COALESCE(order.extraCosts, 0))', 'totalExtraCosts')
       .where('order.shop = :shopId', { shopId })
       .andWhere('order.state != :canceled', { canceled: OrderState.Canceled })
       .andWhere('order.campaignId IS NOT NULL')
@@ -102,9 +103,10 @@ export class CampaignsService {
       const orderCount = stat ? parseInt(stat.orderCount, 10) : 0;
       const totalSales = stat ? parseFloat(stat.totalSales) : 0;
       const totalMaterialCost = stat ? parseFloat(stat.totalMaterialCost) : 0;
+      const totalExtraCosts = stat ? parseFloat(stat.totalExtraCosts) : 0;
 
       const totalManualCosts = c.manualCosts?.reduce((sum, cost) => sum + (cost.amount || 0), 0) || 0;
-      const netProfit = totalSales - totalMaterialCost - totalManualCosts;
+      const netProfit = totalSales - totalMaterialCost - totalExtraCosts - totalManualCosts;
 
       return {
         ...c,
