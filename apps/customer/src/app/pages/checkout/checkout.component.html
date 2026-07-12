@@ -50,7 +50,7 @@
             <span class="status-toolbar__message">حداقل مبلغ برای ثبت سفارش {{ minOrderPrice | number }} تومان است</span>
           } @else if (!deliveryCost) {
             <span class="status-toolbar__message">هزینه ارسال برای شما رایگان است</span>
-            @if (minPriceForFree) {
+            @if (minPriceForFree && !isCampaignFreeDeliveryActive()) {
               <span class="status-toolbar__description">هزینه ارسال برای سفارشات بالای {{ minPriceForFree | number }} تومان رایگان است.</span>
             }
           } @else if (minPriceForFree && minPriceForFree > cart.sum()) {

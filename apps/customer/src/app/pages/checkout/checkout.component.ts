@@ -36,6 +36,7 @@ import { StatAction, OrderPaymentType, OrderType } from '@menno/types';
 import { SectionComponent } from '../../shared/components/section/section.component';
 import { AddressCardComponent } from './components/address-card/address-card.component';
 import { VpnCheckService } from '../../core/services/vpn-check.service';
+import { CampaignService } from '../../core/services/campaign.service';
 
 @Component({
   selector: 'app-checkout',
@@ -81,6 +82,7 @@ export class CheckoutComponent {
   dialog = inject(MatDialog);
   addressesService = inject(AddressesService);
   vpnCheck = inject(VpnCheckService);
+  campaignService = inject(CampaignService);
   OrderType = OrderType;
   editIcon = saxEditOutline;
   addIcon = saxAddOutline;
@@ -92,6 +94,11 @@ export class CheckoutComponent {
   statusInfoIcon = saxTruckFastBold;
   Math = Math;
   hasAddresses = computed(() => (this.addressesService.addresses()?.length || 0) > 0);
+  isCampaignFreeDeliveryActive = computed(() => {
+    const campaign = this.campaignService.activeCampaign();
+    if (!campaign || !campaign.enabled) return false;
+    return (campaign.actions || []).some((action) => action.type === 'free_delivery');
+  });
   private hasAutoOpenedAddressDialog = signal(false);
   
   constructor() {
