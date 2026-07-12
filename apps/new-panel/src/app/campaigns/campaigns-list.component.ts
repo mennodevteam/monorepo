@@ -64,9 +64,6 @@ export class CampaignsListComponent {
   isEmptyData = computed(() => this.data()?.length === 0);
 
   getCampaignStatus(campaign: Campaign): { label: string; color: string } {
-    if (!campaign.enabled) {
-      return { label: 'غیرفعال', color: 'gray' };
-    }
     const now = new Date();
     const start = new Date(campaign.startDate);
     const end = new Date(campaign.endDate);

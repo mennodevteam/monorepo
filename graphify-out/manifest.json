@@ -5560,8 +5560,8 @@
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/campaigns/campaigns-list.component.ts": {
-    "mtime": 1783872283.4035673,
-    "ast_hash": "9309154f8053f9a753d2ba41d5bbdf49",
+    "mtime": 1783872590.1687658,
+    "ast_hash": "4fa5fe725e3ea3f0cbb9199890a76056",
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/campaigns/campaigns.routes.ts": {
@@ -5585,8 +5585,8 @@
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/campaigns/campaigns-list.component.html": {
-    "mtime": 1783872293.9085674,
-    "ast_hash": "2f8653660e16af1dc4df3f4eb683d977",
+    "mtime": 1783872584.2385352,
+    "ast_hash": "4dbae0edc0a802166bc889fc621421fa",
     "semantic_hash": ""
   }
 }
