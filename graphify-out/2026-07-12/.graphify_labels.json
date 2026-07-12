@@ -264,7 +264,5 @@
   "262": "jsonbin.ts",
   "263": "quantity-log-dto.ts",
   "264": "shop-settlements-filter.dto.ts",
-  "265": "stock-item.ts",
-  "266": ".executeTool",
-  "267": "shop-integration.controller.ts"
+  "265": "stock-item.ts"
 }

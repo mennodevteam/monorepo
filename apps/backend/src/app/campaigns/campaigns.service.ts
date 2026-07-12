@@ -195,7 +195,7 @@ export class CampaignsService {
         shop: { id: shopId },
         state: Not(OrderState.Canceled),
       },
-      relations: ['items'],
+      relations: ['items', 'customer'],
     });
 
     let totalSales = 0;
@@ -263,6 +263,10 @@ export class CampaignsService {
         materialCost: o.materialCost,
         createdAt: o.createdAt,
         state: o.state,
+        customer: o.customer ? {
+          firstName: o.customer.firstName,
+          lastName: o.customer.lastName,
+        } : null,
       })),
     };
   }

@@ -219,7 +219,7 @@
 
       <!-- Campaign Manual Extra Costs -->
       <div class="np-form-section">
-        <h3 class="np-section-title">هزینه‌های مازاد کمپین</h3>
+        <h3 class="np-section-title">هزینه‌های عملیاتی کمپین</h3>
         <p class="np-section-desc">هزینه‌های جانبی مانند تبلیغات، اینفلوئنسر یا ارسال‌های متفرقه مربوط به این کمپین را برای محاسبه دقیق سود و زیان وارد کنید.</p>
         
         <div class="np-form-inputs" style="display: flex; flex-direction: column; gap: 16px;">
@@ -230,19 +230,19 @@
                   <mat-label>عنوان هزینه (مثلا: تبلیغات اینستاگرام)</mat-label>
                   <input matInput formControlName="title" required />
                 </mat-form-field>
-
+                
                 <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 1;">
                   <mat-label>مبلغ هزینه (تومان)</mat-label>
                   <input matInput formControlName="amount" type="number" required />
                 </mat-form-field>
-
+                
                 <button mat-icon-button type="button" (click)="removeManualCost(idx)" style="color: var(--red-color, #f44336);">
                   <ng-icon name="saxTrashOutline"></ng-icon>
                 </button>
               </div>
             }
           </div>
-
+          
           <button mat-stroked-button type="button" (click)="addManualCost()" style="width: 100%; border-style: dashed; border-color: var(--primary-color);">
             <ng-icon name="saxAddOutline"></ng-icon>
             اضافه کردن ردیف هزینه جدید
