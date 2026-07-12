@@ -1,5 +1,6 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { injectQuery, injectMutation, injectQueryClient } from '@tanstack/angular-query-experimental';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -297,9 +298,23 @@ export class CampaignReportComponent implements OnInit {
   private readonly snack = inject(MatSnackBar);
   private readonly dialog = inject(MatDialog);
 
-  loading = signal(true);
+  private readonly queryClient = injectQueryClient();
+
+  query = injectQuery(() => {
+    const id = this.route.snapshot.queryParamMap.get('id');
+    return {
+      queryKey: ['campaign-report', id],
+      queryFn: () => {
+        if (!id) throw new Error('No campaign ID provided');
+        return lastValueFrom(this.http.get<CampaignReport>(`/campaigns/${id}/report`));
+      },
+      enabled: !!id,
+    };
+  });
+
+  loading = computed(() => this.query.isPending());
   savingCosts = signal(false);
-  report = signal<CampaignReport | null>(null);
+  report = computed(() => this.query.data() || null);
 
   costForm = this.fb.group({
     title: ['', Validators.required],
@@ -308,26 +323,10 @@ export class CampaignReportComponent implements OnInit {
 
   private dialogRef?: MatDialogRef<any>;
 
-  async ngOnInit() {
-    await this.loadReport();
-  }
-
-  async loadReport() {
+  ngOnInit() {
     const id = this.route.snapshot.queryParamMap.get('id');
     if (!id) {
       this.router.navigate(['/admin/campaigns']);
-      return;
-    }
-
-    this.loading.set(true);
-    try {
-      const data = await lastValueFrom(this.http.get<CampaignReport>(`/campaigns/${id}/report`));
-      this.report.set(data);
-    } catch (err) {
-      console.error(err);
-      this.snack.open('خطا در دریافت اطلاعات گزارش کمپین', 'بستن', { duration: 3000 });
-    } finally {
-      this.loading.set(false);
     }
   }
 
@@ -363,7 +362,7 @@ export class CampaignReportComponent implements OnInit {
 
       this.snack.open('هزینه عملیاتی جدید با موفقیت ثبت شد', 'بستن', { duration: 3000 });
       this.closeDialog();
-      await this.loadReport();
+      this.queryClient.invalidateQueries({ queryKey: ['campaign-report', r.campaignId] });
     } catch (err) {
       console.error(err);
       this.snack.open('خطا در ثبت هزینه جدید', 'بستن', { duration: 3000 });
@@ -389,7 +388,7 @@ export class CampaignReportComponent implements OnInit {
       );
 
       this.snack.open('هزینه عملیاتی با موفقیت حذف شد', 'بستن', { duration: 3000 });
-      await this.loadReport();
+      this.queryClient.invalidateQueries({ queryKey: ['campaign-report', r.campaignId] });
     } catch (err) {
       console.error(err);
       this.snack.open('خطا در حذف هزینه', 'بستن', { duration: 3000 });

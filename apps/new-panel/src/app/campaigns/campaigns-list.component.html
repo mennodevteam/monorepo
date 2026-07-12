@@ -21,7 +21,7 @@
     </mat-card-content>
   </mat-card>
 
-  @if (query.isLoading()) {
+  @if (query.isPending()) {
     <app-data-loading />
   } @else if (!isEmpty) {
     <mat-card style="margin-top: 16px;">
