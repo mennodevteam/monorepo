@@ -67,8 +67,19 @@
 
     <div class="product-variants">
       @if (hasVariants()) {
+        @if (product.type === 'pack') {
+          <div style="font-size: 0.82em; color: #666; margin-bottom: 12px; padding: 6px 10px; background: rgba(0,0,0,0.02); border-radius: 8px; text-align: right; display: flex; align-items: center; gap: 6px; direction: rtl; line-height: 1.4;">
+            <span>ℹ️</span>
+            <span>برای مشاهده جزئیات دقیق هر آیتم قبل از سفارش روی آیتم کلیک کنید.</span>
+          </div>
+        }
+        
         @for (variant of variants(); track variant.id) {
-          <div class="variant-item" style="flex-direction: column; align-items: stretch; gap: 8px;">
+          <div 
+            class="variant-item" 
+            [style.cursor]="product.type === 'pack' ? 'pointer' : 'default'"
+            (click)="product.type === 'pack' && variant.packItems?.length ? openPackDetails(variant.packItems, packDetailsDialog) : null"
+            style="flex-direction: column; align-items: stretch; gap: 8px;">
             <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
               <div class="variant-info">
                 <span class="variant-title" style="font-weight: 500;">{{ variant.title }}</span>
@@ -79,17 +90,16 @@
                   <span class="price-current">{{ variantTotalPrice(variant) | number }} تومان</span>
                 </div>
               </div>
-              <app-quantity-selector [product]="product" [variant]="variant" />
+              
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <app-quantity-selector [product]="product" [variant]="variant" />
+                @if (product.type === 'pack' && variant.packItems?.length) {
+                  <span style="font-size: 1.05em; color: var(--mat-sys-primary, #6200ee); display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; background: rgba(0,0,0,0.03); border-radius: 50%;">
+                    ℹ️
+                  </span>
+                }
+              </div>
             </div>
-            @if (product.type === 'pack' && variant.packItems?.length) {
-              <button 
-                mat-button 
-                color="primary" 
-                style="margin-top: 6px; width: 100%; border-radius: 8px; background: rgba(0, 0, 0, 0.02); font-size: 0.85em; height: 36px;"
-                (click)="openPackDetails(variant.packItems, packDetailsDialog)">
-                📦 مشاهده اقلام پکیج
-              </button>
-            }
           </div>
         }
       } @else {
@@ -105,14 +115,17 @@
           </div>
           <app-quantity-selector [product]="product" />
         </div>
+        
         @if (product.type === 'pack' && product.packItems?.length) {
-          <button 
-            mat-button 
-            color="primary" 
-            style="margin-top: 12px; width: 100%; border-radius: 8px; background: rgba(0, 0, 0, 0.02); font-size: 0.9em; height: 40px;"
-            (click)="openPackDetails(product.packItems, packDetailsDialog)">
-            📦 مشاهده اقلام پکیج
-          </button>
+          <div class="product-pack-items" style="padding: 12px; margin-top: 12px; background: rgba(0,0,0,0.03); border-radius: 8px; font-size: 0.95em; color: #333; display: flex; flex-direction: column; gap: 6px; width: 100%;">
+            <span style="font-weight: bold; font-size: 0.9em; opacity: 0.9; margin-bottom: 4px; text-align: right;">محتویات پکیج:</span>
+            @for (item of product.packItems; track item.id) {
+              <div style="display: flex; justify-content: space-between; align-items: center; direction: rtl;">
+                <span>{{ item.product.title }} @if (item.variant) { ({{ item.variant.title }}) }</span>
+                <span style="font-weight: 500;">{{ item.quantity }} عدد</span>
+              </div>
+            }
+          </div>
         }
       }
     </div>
