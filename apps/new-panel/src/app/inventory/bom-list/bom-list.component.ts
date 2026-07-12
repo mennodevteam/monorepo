@@ -356,7 +356,6 @@ export class BomListComponent {
 
   editableItem = signal<CategoryItem['items'][number] | null>(null);
   editType = signal<'material' | 'product'>('material');
-
   categoryItems = computed<CategoryItem[]>(() => {
     const result: CategoryItem[] = [];
     const allBoms = this.materialsService.bomsQuery.data() || [];
@@ -376,29 +375,46 @@ export class BomListComponent {
       for (const product of category.products || []) {
         if (!product.variants?.length) {
           if (!showInactiveItems && product.status === Status.Inactive) continue;
-          const productBoms = allBoms.filter((bom) => bom.product?.id === product.id);
-          const productBops = allBops.filter((bop) => bop.product?.id === product.id);
           if (this.searchQuery() && !product.title.toLowerCase().includes(this.searchQuery().toLowerCase()))
             continue;
+
+          const productBoms = product.type === 'pack' ? [] : allBoms.filter((bom) => bom.product?.id === product.id);
+          const productBops = product.type === 'pack'
+            ? (product.packItems || []).map((pi) => ({
+                id: pi.id,
+                productSource: pi.product,
+                variantSource: pi.variant,
+                quantity: pi.quantity,
+              } as any))
+            : allBops.filter((bop) => bop.product?.id === product.id);
 
           items.push({
             product,
             boms: productBoms.filter((bom) => !bom.variant),
             bops: productBops.filter((bop) => !bop.variant),
-            cost: product.variants?.length ? null : Product.calculateCost(product, null, allBoms, allBops),
+            cost: Product.calculateCost(product, null, allBoms, allBops),
           });
         } else {
           const variants = product.variants || [];
           for (const variant of variants) {
             if (!showInactiveItems && variant.status === Status.Inactive) continue;
-            const variantBoms = allBoms.filter((bom) => bom.variant?.id === variant.id);
-            const variantBops = allBops.filter((bop) => bop.variant?.id === variant.id);
             if (
               this.searchQuery() &&
               !variant.title.toLowerCase().includes(this.searchQuery().toLowerCase()) &&
               !product.title.toLowerCase().includes(this.searchQuery().toLowerCase())
             )
               continue;
+
+            const variantBoms = product.type === 'pack' ? [] : allBoms.filter((bom) => bom.variant?.id === variant.id);
+            const variantBops = product.type === 'pack'
+              ? (variant.packItems || []).map((pi) => ({
+                  id: pi.id,
+                  productSource: pi.product,
+                  variantSource: pi.variant,
+                  quantity: pi.quantity,
+                } as any))
+              : allBops.filter((bop) => bop.variant?.id === variant.id);
+
             items.push({
               product,
               variant,
@@ -413,7 +429,6 @@ export class BomListComponent {
     }
     return result;
   });
-
   addBom(product: Product, variant?: ProductVariant, material?: Material) {
     const fields: PromptFields = {
       material: {
