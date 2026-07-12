@@ -353,6 +353,10 @@ export class ProductEditComponent implements FormComponent {
       });
   }
 
+  compareFn(a: any, b: any): boolean {
+    return a && b ? a.id === b.id : a === b;
+  }
+
   getPackItemsFormArray(variant?: AbstractControl): FormArray {
     if (variant) {
       return variant.get('packItems') as FormArray;

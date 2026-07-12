@@ -358,9 +358,20 @@ export class BomListComponent {
   editType = signal<'material' | 'product'>('material');
   allBoms = computed(() => this.materialsService.bomsQuery.data() || []);
   allBops = computed(() => this.materialsService.bopsQuery.data() || []);
+  mappedBops = computed(() => {
+    const bops = this.materialsService.bopsQuery.data() || [];
+    return bops.map((bop) => ({
+      ...bop,
+      parentProduct: bop.product,
+      parentVariant: bop.variant,
+      product: bop.productSource,
+      variant: bop.variantSource,
+      quantity: bop.quantity,
+    }));
+  });
 
   isBopCostMissing(bop: any): boolean {
-    const cost = Product.calculateCost(bop.productSource, bop.variantSource || null, this.allBoms(), this.allBops());
+    const cost = Product.calculateCost(bop.productSource, bop.variantSource || null, this.allBoms(), this.mappedBops());
     return cost === null || cost === undefined || cost === 0;
   }
 
@@ -400,7 +411,7 @@ export class BomListComponent {
             product,
             boms: productBoms.filter((bom) => !bom.variant),
             bops: productBops.filter((bop) => !bop.variant),
-            cost: Product.calculateCost(product, null, allBoms, allBops),
+            cost: Product.calculateCost(product, null, allBoms, this.mappedBops()),
           });
         } else {
           const variants = product.variants || [];
@@ -428,7 +439,7 @@ export class BomListComponent {
               variant,
               boms: variantBoms,
               bops: variantBops,
-              cost: Product.calculateCost(product, variant, allBoms, allBops),
+              cost: Product.calculateCost(product, variant, allBoms, this.mappedBops()),
             });
           }
         }

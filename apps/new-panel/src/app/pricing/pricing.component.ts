@@ -115,6 +115,14 @@ export class PricingComponent {
     const showInactiveItems = this.showInactiveItems();
     const allBoms = this.materialsService.bomsQuery.data() || [];
     const allBops = this.materialsService.bopsQuery.data() || [];
+    const mappedBops = allBops.map((bop) => ({
+      ...bop,
+      parentProduct: bop.product,
+      parentVariant: bop.variant,
+      product: bop.productSource,
+      variant: bop.variantSource,
+      quantity: bop.quantity,
+    }));
 
     for (const category of categories) {
       // Skip if category filter is applied and doesn't match
@@ -132,7 +140,7 @@ export class PricingComponent {
 
           const materialCost = product.variants?.length
             ? 0
-            : Product.calculateCost(product, null, allBoms, allBops);
+            : Product.calculateCost(product, null, allBoms, mappedBops);
           result.push({
             category,
             product,
@@ -155,7 +163,7 @@ export class PricingComponent {
             )
               continue;
 
-            const materialCost = Product.calculateCost(product, variant, allBoms, allBops);
+            const materialCost = Product.calculateCost(product, variant, allBoms, mappedBops);
             result.push({
               category,
               product,

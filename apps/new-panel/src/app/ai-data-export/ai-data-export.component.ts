@@ -471,6 +471,14 @@ export class AiDataExportComponent {
     allBops: any[]
   ): Record<string, any>[] {
     const result: Record<string, any>[] = [];
+    const mappedBops = allBops.map((bop) => ({
+      ...bop,
+      parentProduct: bop.product,
+      parentVariant: bop.variant,
+      product: bop.productSource,
+      variant: bop.variantSource,
+      quantity: bop.quantity,
+    }));
 
     for (const category of categories) {
       const products = category.products || [];
@@ -483,7 +491,7 @@ export class AiDataExportComponent {
 
         if (!product.variants?.length) {
           // Product without variants
-          const materialCost = Product.calculateCost(product, null, allBoms, allBops) || 0;
+          const materialCost = Product.calculateCost(product, null, allBoms, mappedBops) || 0;
           const totalPrice = Product.totalPrice(product);
           const profit = materialCost ? totalPrice - materialCost : 0;
           const profitPercentage = totalPrice && materialCost ? ((totalPrice - materialCost) / totalPrice) * 100 : 0;
@@ -509,7 +517,7 @@ export class AiDataExportComponent {
               continue;
             }
 
-            const materialCost = Product.calculateCost(product, variant, allBoms, allBops) || 0;
+            const materialCost = Product.calculateCost(product, variant, allBoms, mappedBops) || 0;
             const totalPrice = Product.totalPrice(product, variant);
             const profit = materialCost ? variant.price - materialCost : 0;
             const profitPercentage = variant.price && materialCost ? ((variant.price - materialCost) / variant.price) * 100 : 0;
