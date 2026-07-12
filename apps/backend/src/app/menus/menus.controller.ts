@@ -34,6 +34,10 @@ export class MenusController {
         where: { id: shop.id },
         relations: [
           'menu.categories.products.variants',
+          'menu.categories.products.packItems.product.variants',
+          'menu.categories.products.packItems.variant',
+          'menu.categories.products.variants.packItems.product.variants',
+          'menu.categories.products.variants.packItems.variant',
           'menu.costs',
           'menu.costs.includeProductCategory',
           'menu.costs.includeProduct',
