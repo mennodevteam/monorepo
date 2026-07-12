@@ -1255,8 +1255,8 @@
     "semantic_hash": "f7ba8de54913d567abaf742fc41aa7b6"
   },
   "apps/customer/src/app/core/services/menu.service.ts": {
-    "mtime": 1783868728.1687188,
-    "ast_hash": "79bd4db626d9043ce6e178930514f827",
+    "mtime": 1783875970.1978664,
+    "ast_hash": "898cfe25310c056114e199de9f95befb",
     "semantic_hash": ""
   },
   "apps/customer/src/app/core/services/orders.service.ts": {

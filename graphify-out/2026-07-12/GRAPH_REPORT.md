@@ -1,16 +1,16 @@
 # Graph Report - monorepo  (2026-07-12)
 
 ## Corpus Check
-- 868 files · ~386,121 words
+- 868 files · ~386,134 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 4600 nodes · 11291 edges · 256 communities (173 shown, 83 thin omitted)
+- 4600 nodes · 11291 edges · 255 communities (173 shown, 82 thin omitted)
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 470 edges (avg confidence: 0.63)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `ab62bd5b`
+- Built from commit: `c2b4bc52`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -71,7 +71,6 @@
 - [[_COMMUNITY_Module CartService, .clear()|Module: CartService, .clear()]]
 - [[_COMMUNITY_Module OrdersService, .getById()|Module: OrdersService, .getById()]]
 - [[_COMMUNITY_Module chat.component.ts, ChatComp...|Module: chat.component.ts, ChatComp...]]
-- [[_COMMUNITY_Module .filterMembersAnniversary()...|Module: .filterMembersAnniversary()...]]
 - [[_COMMUNITY_Module PaymentGatewaysController, ...|Module: PaymentGatewaysController, ...]]
 - [[_COMMUNITY_Module .getCategoryIcon(), categor...|Module: .getCategoryIcon(), categor...]]
 - [[_COMMUNITY_Module api-key-auth.guard.ts, ApiK...|Module: api-key-auth.guard.ts, ApiK...]]
@@ -295,7 +294,7 @@
 - **new-panel UI/UX Guidelines** — _agent_apps_new_panel_design_rules_m3_integration, _agent_apps_new_panel_design_rules_spacing_typography, _agent_apps_new_panel_design_rules_control_standardization, _agent_skills_new_panel_market_fit_skill_empty_states, _agent_skills_new_panel_market_fit_skill_onboarding [INFERRED 0.95]
 - **E-Commerce Frontend Core Flow and Analytics** — _agent_apps_customer_architecture_overview, _agent_apps_customer_event_tracking_overview, apps_new_app_src_app_miscellaneous_readme_overview [INFERRED 0.85]
 
-## Communities (256 total, 83 thin omitted)
+## Communities (255 total, 82 thin omitted)
 
 ### Community 0 - "Utility Helper Methods"
 Cohesion: 0.03
@@ -311,7 +310,7 @@ Nodes (20): ChatSchema, DateRangeDialogComponent, DateRangeDialogData, DateRange
 
 ### Community 3 - "Shop Integration Controllers"
 Cohesion: 0.05
-Nodes (5): ShopIntegrationController, McpSession, ShopIntegrationMcpController, ShopIntegrationService, Shop
+Nodes (6): ShopIntegrationController, McpSession, ShopIntegrationMcpController, ShopIntegrationService, FilterMemberV2Dto, Shop
 
 ### Community 4 - "Workspace Dependencies"
 Cohesion: 0.02
@@ -924,7 +923,7 @@ Nodes (14): isLocalDevHost(), isMennoSubdomainHost(), isShopLocalSubdomainHost()
 ## Knowledge Gaps
 - **847 isolated node(s):** `CampaignReport`, `SignalProductItem`, `campaignsRoutes`, `CampaignAction`, `CampaignManualCost` (+842 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **83 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **82 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
@@ -933,7 +932,7 @@ _Questions this graph is uniquely positioned to answer:_
   _High betweenness centrality (0.068) - this node is a cross-community bridge._
 - **Why does `kavenegar` connect `Workspace Dependencies` to `Module: .completeMission(), Wallets...`, `Module: .constructor(), admin-local...`?**
   _High betweenness centrality (0.067) - this node is a cross-community bridge._
-- **Why does `Shop` connect `Shop Integration Controllers` to `User and Address Controllers`, `NestJS App Modules`, `Order System and Schemas`, `Frontend Dialogs and Guards`, `BOM and Product UI Components`, `Module: .addSubcategory(), .addSubc...`, `Address UI Components and Regions`, `Inventory and Shop Services`, `Module: .constructor(), admin-local...`, `Module: image-loader.directive.ts, ...`, `Module: .constructor(), shop-user.s...`, `Module: .save(), login.component.ts`, `Module: address-edit.component.ts, ...`, `Module: menu-cost.schema.ts, produc...`, `Module: addresses.controller.ts, ai...`, `Module: .updateAiChatbot(), AppConf...`, `Module: app-redirect.controller.ts,...`, `Module: basalam.controller.ts, Basa...`, `Module: el(), en()`, `Module: BaleBotsService, .buildInli...`, `Module: discount-coupon-modal.compo...`, `Module: AuthController, .changePane...`, `Module: .key(), print-action.schema.ts`, `Module: index.ts, footer.component.ts`, `Module: .constructor(), OrdersSubsc...`, `Module: HomeSectionsController, .co...`, `Module: app.component.ts, index.ts`, `Module: .filterMembersAnniversary()...`, `Module: PaymentGatewaysController, ...`, `Module: .getCategoryIcon(), categor...`, `Module: api-key-auth.guard.ts, ApiK...`, `Module: .addPackItemFromAutocomplet...`, `Module: BuyDaysDialogComponent, .fo...`, `Module: index.ts, order-type-bottom...`, `Module: .filterDiscountCoupons(), D...`, `Module: .updateMenu(), MenuCostsCon...`, `Module: AiChatbotService, .buildMes...`, `Module: ensureRedisConnected(), get...`, `Module: AiChatbotController, .chat()`, `Module: DingController, .constructor()`, `Module: app.routes.ts, appRoutes`, `Module: .completeMission(), Wallets...`, `Module: shop.schema.ts, auth.compon...`, `Module: ssr-data.provider.ts, HOME_...`, `Module: get-file-url.ts, web-app-ma...`, `Module: resolve-shop-username.ts, i...`, `OrderDetailsComponent`, `Module: PageSeoConfig, SeoService`, `.createMaterial`, `Module: ai-chat-history.component.t...`?**
+- **Why does `Shop` connect `Shop Integration Controllers` to `User and Address Controllers`, `NestJS App Modules`, `Order System and Schemas`, `Frontend Dialogs and Guards`, `BOM and Product UI Components`, `Module: .addSubcategory(), .addSubc...`, `Address UI Components and Regions`, `Inventory and Shop Services`, `Module: .constructor(), admin-local...`, `Module: image-loader.directive.ts, ...`, `Module: .constructor(), shop-user.s...`, `Module: .save(), login.component.ts`, `Module: address-edit.component.ts, ...`, `Module: menu-cost.schema.ts, produc...`, `Module: addresses.controller.ts, ai...`, `Module: .updateAiChatbot(), AppConf...`, `Module: app-redirect.controller.ts,...`, `Module: basalam.controller.ts, Basa...`, `Module: el(), en()`, `Module: BaleBotsService, .buildInli...`, `Module: discount-coupon-modal.compo...`, `Module: AuthController, .changePane...`, `Module: .key(), print-action.schema.ts`, `Module: index.ts, footer.component.ts`, `Module: .constructor(), OrdersSubsc...`, `Module: HomeSectionsController, .co...`, `Module: app.component.ts, index.ts`, `Module: PaymentGatewaysController, ...`, `Module: .getCategoryIcon(), categor...`, `Module: api-key-auth.guard.ts, ApiK...`, `Module: .addPackItemFromAutocomplet...`, `Module: BuyDaysDialogComponent, .fo...`, `Module: index.ts, order-type-bottom...`, `Module: .filterDiscountCoupons(), D...`, `Module: .updateMenu(), MenuCostsCon...`, `Module: AiChatbotService, .buildMes...`, `Module: ensureRedisConnected(), get...`, `Module: AiChatbotController, .chat()`, `Module: DingController, .constructor()`, `Module: app.routes.ts, appRoutes`, `Module: .completeMission(), Wallets...`, `Module: shop.schema.ts, auth.compon...`, `Module: ssr-data.provider.ts, HOME_...`, `Module: get-file-url.ts, web-app-ma...`, `Module: resolve-shop-username.ts, i...`, `OrderDetailsComponent`, `Module: PageSeoConfig, SeoService`, `.createMaterial`, `Module: ai-chat-history.component.t...`?**
   _High betweenness centrality (0.062) - this node is a cross-community bridge._
 - **What connects `CampaignReport`, `SignalProductItem`, `campaignsRoutes` to the rest of the system?**
   _847 weakly-connected nodes found - possible documentation gaps or missing edges._

@@ -148,7 +148,7 @@
                   </button>
                 </div>
 
-                <div style="display: flex; flex-direction: column; gap: 16px;" formGroupName="payload">
+                <div style="display: flex; flex-direction: column; gap: 16px;">
                   <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
                     <mat-label>نوع آفر</mat-label>
                     <mat-select formControlName="type" (selectionChange)="action.get('payload')?.reset()">
@@ -157,53 +157,55 @@
                     </mat-select>
                   </mat-form-field>
 
-                  <!-- Free Delivery payload fields -->
-                  @if (action.get('type')?.value === 'free_delivery') {
-                    <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
-                      <mat-label>حداقل مبلغ خرید (تومان)</mat-label>
-                      <input matInput formControlName="minOrderValue" type="number" />
-                    </mat-form-field>
-                  }
-
-                  <!-- Product Discount payload fields -->
-                  @if (action.get('type')?.value === 'product_discount') {
-                    <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
-                      <mat-label>انتخاب محصول</mat-label>
-                      <mat-select formControlName="productId">
-                        @for (p of allProducts(); track p.id) {
-                          <mat-option [value]="p.id">{{ p.title }}</mat-option>
-                        }
-                      </mat-select>
-                    </mat-form-field>
-
-                    @let selectedProductId = action.get('payload.productId')?.value;
-                    @if (selectedProductId && getProductVariants(selectedProductId).length > 0) {
+                  <div style="display: flex; flex-direction: column; gap: 16px;" formGroupName="payload">
+                    <!-- Free Delivery payload fields -->
+                    @if (action.get('type')?.value === 'free_delivery') {
                       <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
-                        <mat-label>انتخاب تنوع محصول</mat-label>
-                        <mat-select formControlName="variantId">
-                          <mat-option value="">همه تنوع‌ها</mat-option>
-                          @for (v of getProductVariants(selectedProductId); track v.id) {
-                            <mat-option [value]="v.id">{{ v.title }}</mat-option>
-                          }
-                        </mat-select>
+                        <mat-label>حداقل مبلغ خرید (تومان)</mat-label>
+                        <input matInput formControlName="minOrderValue" type="number" />
                       </mat-form-field>
                     }
 
-                    <div style="display: flex; gap: 16px;">
-                      <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 1;">
-                        <mat-label>نوع تخفیف</mat-label>
-                        <mat-select formControlName="discountType">
-                          <mat-option value="percent">درصدی</mat-option>
-                          <mat-option value="fixed">مبلغ ثابت (تومان)</mat-option>
+                    <!-- Product Discount payload fields -->
+                    @if (action.get('type')?.value === 'product_discount') {
+                      <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+                        <mat-label>انتخاب محصول</mat-label>
+                        <mat-select formControlName="productId">
+                          @for (p of allProducts(); track p.id) {
+                            <mat-option [value]="p.id">{{ p.title }}</mat-option>
+                          }
                         </mat-select>
                       </mat-form-field>
 
-                      <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 1;">
-                        <mat-label>میزان تخفیف</mat-label>
-                        <input matInput formControlName="discountValue" type="number" />
-                      </mat-form-field>
-                    </div>
-                  }
+                      @let selectedProductId = action.get('payload.productId')?.value;
+                      @if (selectedProductId && getProductVariants(selectedProductId).length > 0) {
+                        <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+                          <mat-label>انتخاب تنوع محصول</mat-label>
+                          <mat-select formControlName="variantId">
+                            <mat-option value="">همه تنوع‌ها</mat-option>
+                            @for (v of getProductVariants(selectedProductId); track v.id) {
+                              <mat-option [value]="v.id">{{ v.title }}</mat-option>
+                            }
+                          </mat-select>
+                        </mat-form-field>
+                      }
+
+                      <div style="display: flex; gap: 16px;">
+                        <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 1;">
+                          <mat-label>نوع تخفیف</mat-label>
+                          <mat-select formControlName="discountType">
+                            <mat-option value="percent">درصدی</mat-option>
+                            <mat-option value="fixed">مبلغ ثابت (تومان)</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 1;">
+                          <mat-label>میزان تخفیف</mat-label>
+                          <input matInput formControlName="discountValue" type="number" />
+                        </mat-form-field>
+                      </div>
+                    }
+                  </div>
                 </div>
 
               </div>
