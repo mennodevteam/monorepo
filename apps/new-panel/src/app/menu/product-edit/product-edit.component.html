@@ -97,11 +97,10 @@
             <div class="np-form-section" style="margin-top: 8px; margin-bottom: 8px; gap: 8px !important; width: 100%;">
               <span class="np-sub-section-title">اقلام پکیج</span>
               
-              <div class="bops-list-container" style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
+              <div class="bops-list-container" style="display: flex; flex-direction: column; gap: 8px; box-sizing: border-box; width: 100%;">
                 @for (item of getPackItemsFormArray().controls; track $index) {
-                  <div class="bop-item-row" style="display: flex; flex-flow: row wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; background: rgba(0,0,0,0.03); border-radius: 8px; width: 100%;">
-                    <span style="flex: 1 1 200px; font-weight: 500; font-size: 1em; min-width: 150px;">{{ item.value.productSource?.title }}</span>
-                    
+                  <div class="bop-item-row" style="display: flex; flex-flow: row wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; background: rgba(0,0,0,0.03); border-radius: 8px; box-sizing: border-box;">
+                    <span style="flex: 1 1 200px; font-weight: 500; font-size: 1em; min-width: 150px;">{{ item.value.productSource?.title }}</span>                    
                     <div style="display: flex; flex-flow: row wrap; align-items: center; justify-content: flex-end; gap: 8px; flex: 2 1 auto; min-width: 280px;">
                       @if (item.value.productSource?.variants?.length) {
                         <mat-form-field appearance="outline" style="flex: 1 1 200px; min-width: 165px; max-width: 300px;" [subscriptSizing]="'dynamic'">
@@ -163,8 +162,8 @@
               @if (form.value.type === 'pack') {
                 <div class="variants-vertical-list" style="display: flex; flex-direction: column; gap: 16px; width: 100%;">
                   @for (variant of variantsForm.controls; track $index) {
-                    <div class="variant-vertical-card" style="padding: 16px; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; background: #fff; width: 100%;">
-                      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; width: 100%;">
+                    <div class="variant-vertical-card" style="padding: 16px; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; background: #fff; box-sizing: border-box; width: 100%;">
+                      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; box-sizing: border-box; width: 100%;">
                         <span style="font-weight: 600; font-size: 1.1em;">واریانت: {{ variant.value.title }}</span>
                         
                         <div style="display: flex; align-items: center; gap: 8px;">
@@ -177,9 +176,9 @@
                         </div>
                       </div>
                       
-                      <div class="bops-list-container" style="display: flex; flex-direction: column; gap: 8px; padding-right: 12px; border-right: 2px solid rgba(0,0,0,0.05); width: 100%;">
+                      <div class="bops-list-container" style="display: flex; flex-direction: column; gap: 8px; padding-right: 12px; border-right: 2px solid rgba(0,0,0,0.05); box-sizing: border-box; width: 100%;">
                          @for (item of getPackItemsFormArray(variant).controls; track $index) {
-                          <div class="bop-item-row" style="display: flex; flex-flow: row wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; background: rgba(0,0,0,0.02); border-radius: 8px; width: 100%;">
+                          <div class="bop-item-row" style="display: flex; flex-flow: row wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; background: rgba(0,0,0,0.02); border-radius: 8px; box-sizing: border-box;">
                             <span style="flex: 1 1 200px; font-weight: 500; font-size: 0.95em; min-width: 150px;">{{ item.value.productSource?.title }}</span>
                             
                             <div style="display: flex; flex-flow: row wrap; align-items: center; justify-content: flex-end; gap: 8px; flex: 2 1 auto; min-width: 280px;">
