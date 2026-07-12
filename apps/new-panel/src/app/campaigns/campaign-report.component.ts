@@ -10,6 +10,8 @@ import { Campaign, CampaignManualCost } from '@menno/types';
 import { SHARED } from '../shared';
 import { DataLoadingComponent } from '../shared/components/data-loading/data-loading.component';
 
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 interface CampaignReport {
   campaignId: string;
   title: string;
@@ -48,6 +50,7 @@ interface CampaignReport {
     MatToolbarModule,
     MatButtonModule,
     MatCardModule,
+    MatTooltipModule,
     RouterModule,
     SHARED,
     DataLoadingComponent,
@@ -81,84 +84,84 @@ interface CampaignReport {
             </div>
           </div>
 
-          <!-- Minimal side-by-side visits & orders cards -->
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
+          <!-- Three side-by-side stats boxes with large padding -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
             
-            <mat-card style="padding: 20px; border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); text-align: center; display: flex; flex-direction: column; justify-content: center; min-height: 100px;">
-              <span style="font-size: 13px; color: #777; font-weight: 500; display: block; margin-bottom: 6px;">تعداد کل بازدیدها</span>
-              <strong style="font-size: 28px; color: #0288d1;">{{ r.visits | number }}</strong>
+            <mat-card style="padding: 28px 24px; border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); text-align: center; display: flex; flex-direction: column; justify-content: center; min-height: 110px;">
+              <span style="font-size: 13px; color: #777; font-weight: 500; display: block; margin-bottom: 8px;">تعداد کل بازدیدها</span>
+              <strong style="font-size: 26px; color: #0288d1;">{{ r.visits | number }}</strong>
             </mat-card>
 
-            <mat-card style="padding: 20px; border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); text-align: center; display: flex; flex-direction: column; justify-content: center; min-height: 100px;">
-              <span style="font-size: 13px; color: #777; font-weight: 500; display: block; margin-bottom: 6px;">تعداد کل سفارشات</span>
-              <strong style="font-size: 28px; color: #2e7d32;">{{ r.orderCount | number }}</strong>
+            <mat-card style="padding: 28px 24px; border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); text-align: center; display: flex; flex-direction: column; justify-content: center; min-height: 110px;">
+              <span style="font-size: 13px; color: #777; font-weight: 500; display: block; margin-bottom: 8px;">تعداد کل سفارشات</span>
+              <strong style="font-size: 26px; color: #2e7d32;">{{ r.orderCount | number }}</strong>
+            </mat-card>
+
+            <mat-card style="padding: 28px 24px; border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); text-align: center; display: flex; flex-direction: column; justify-content: center; min-height: 110px;">
+              <span style="font-size: 13px; color: #777; font-weight: 500; display: block; margin-bottom: 8px;">مجموع فروش کل (خالص دریافتی)</span>
+              <strong style="font-size: 24px; color: #ff9800;">{{ r.totalSales | number }} تومان</strong>
             </mat-card>
 
           </div>
 
-          <!-- Vertical Financial Statement Card (Addition / Subtraction list format) -->
-          <mat-card style="padding: 24px; border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
+          <!-- Vertical Financial Statement Card (Simplistic list format) -->
+          <mat-card style="padding: 28px; border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
             <h3 style="margin: 0 0 20px 0; font-weight: bold; border-bottom: 1px solid #f5f5f5; padding-bottom: 12px; font-size: 15px; color: #333;">
-              تراز مالی و هزینه‌های عملیاتی کمپین
+              خلاصه عملکرد مالی کمپین
             </h3>
             
-            <div style="display: flex; flex-direction: column; gap: 14px; font-size: 13px;">
+            <div style="display: flex; flex-direction: column; gap: 16px; font-size: 13px;">
               
               <!-- 1. Gross Sales -->
-              <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid #f9f9f9;">
-                <span style="color: #666;">۱. جمع فروش کل (ناخالص قبل از تخفیف‌ها):</span>
-                <span style="color: #333; font-weight: 600;">{{ (r.totalSales + r.totalCampaignDiscounts + r.totalWaivedDeliveryFee) | number }} تومان</span>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid #f9f9f9; padding-left: 8px; padding-right: 8px;">
+                <span style="color: #555;">مجموع فروش کل (خالص پرداختی فاکتورها):</span>
+                <strong style="color: #111; font-size: 14px;">{{ r.totalSales | number }} تومان</strong>
               </div>
 
               <!-- 2. Campaign Discounts -->
-              <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px dashed #eee;">
-                <span style="color: #777; padding-right: 12px;">تخفیف مستقیم روی محصولات:</span>
-                <span style="color: #d32f2f;">{{ r.totalCampaignDiscounts | number }} تومان-</span>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid #f9f9f9; padding-left: 8px; padding-right: 8px;">
+                <span style="color: #555;">مجموع تخفیف‌های مستقیم اعمال شده کمپین:</span>
+                <strong style="color: #555;">{{ r.totalCampaignDiscounts | number }} تومان</strong>
               </div>
 
-              <!-- 3. Waived Delivery -->
-              <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px dashed #eee;">
-                <span style="color: #777; padding-right: 12px;">تخفیف ارسال رایگان کمپین:</span>
-                <span style="color: #d32f2f;">{{ r.totalWaivedDeliveryFee | number }} تومان-</span>
+              <!-- 3. Sales Profit -->
+              <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid #f9f9f9; padding-left: 8px; padding-right: 8px;">
+                <span style="color: #555; display: flex; align-items: center; gap: 6px;">
+                  مجموع سود فروش سفارشات:
+                  <ng-icon name="saxInfoCircleOutline" style="color: #aaa; cursor: pointer; font-size: 1rem; vertical-align: middle;" matTooltip="مجموع سود همه سفارشات کمپین (فروش کل منهای بهای تمام‌شده مواد اولیه)"></ng-icon>
+                </span>
+                <strong style="color: #2e7d32; font-size: 14px;">{{ (r.totalSales - r.totalMaterialCost) | number }} تومان</strong>
               </div>
 
-              <!-- 4. Final Net Sales -->
-              <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid #f0f0f0; margin-top: 4px; font-weight: 500;">
-                <span style="color: #444;">۲. سود ناخالص فروش (مبلغ دریافتی فاکتورها):</span>
-                <span style="color: #111;">{{ r.totalSales | number }} تومان</span>
-              </div>
-
-              <!-- 5. Cost of Goods Sold (Material Cost) -->
-              <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px dashed #eee;">
-                <span style="color: #777; padding-right: 12px;">بهای تمام‌شده مواد اولیه سفارشات:</span>
-                <span style="color: #d32f2f;">{{ r.totalMaterialCost | number }} تومان-</span>
-              </div>
-
-              <!-- 6. Total Operating Costs -->
-              <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px dashed #eee;">
-                <span style="color: #777; padding-right: 12px;">مجموع هزینه‌های عملیاتی کمپین (ثبت دستی):</span>
-                <span style="color: #d32f2f;">{{ r.totalManualCosts | number }} تومان-</span>
+              <!-- 4. Campaign Operating Costs -->
+              <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid #f9f9f9; padding-left: 8px; padding-right: 8px;">
+                <span style="color: #555; display: flex; align-items: center; gap: 6px;">
+                  هزینه‌های عملیاتی کمپین:
+                  <ng-icon name="saxInfoCircleOutline" style="color: #aaa; cursor: pointer; font-size: 1rem; vertical-align: middle;" matTooltip="مجموع هزینه‌های متفرقه کمپین مانند تبلیغات، بلاگرها و... که در بخش ویرایش کمپین ثبت شده است"></ng-icon>
+                </span>
+                <strong style="color: #e65100; font-size: 14px;">{{ r.totalManualCosts | number }} تومان</strong>
               </div>
 
               <!-- Manual Operating Costs breakdown list -->
               @if (r.manualCosts?.length) {
-                <div style="background-color: #fafafa; padding: 12px; border-radius: 8px; margin: 4px 12px 0 0;">
-                  <span style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 6px; font-weight: 500;">ریز جزئیات هزینه‌های عملیاتی:</span>
-                  <div style="display: flex; flex-direction: column; gap: 6px; font-size: 11px;">
-                    @for (cost of r.manualCosts; track cost.title) {
-                      <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #eee; padding-bottom: 4px;">
-                        <span style="color: #555;">{{ cost.title }}:</span>
-                        <strong style="color: #d32f2f;">{{ cost.amount | number }} تومان-</strong>
-                      </div>
-                    }
-                  </div>
+                <div style="background-color: #fafafa; padding: 16px; border-radius: 12px; margin-right: 8px; margin-left: 8px; display: flex; flex-direction: column; gap: 8px;">
+                  <span style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px; font-weight: 500;">ریز هزینه‌های عملیاتی ثبت شده:</span>
+                  @for (cost of r.manualCosts; track cost.title) {
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; color: #555; border-bottom: 1px dashed #eee; padding-bottom: 6px;">
+                      <span>{{ cost.title }}:</span>
+                      <strong>{{ cost.amount | number }} تومان</strong>
+                    </div>
+                  }
                 </div>
               }
 
-              <!-- 7. Solid Final Net Profit Block -->
-              <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center; background-color: rgba(76, 175, 80, 0.06); padding: 18px 24px; border-radius: 12px; border: 1px solid rgba(76, 175, 80, 0.12);">
-                <span style="font-weight: bold; color: #2e7d32; font-size: 14px;">سود خالص نهایی کمپین:</span>
-                <strong style="font-size: 22px;" [style.color]="r.netProfit >= 0 ? '#2e7d32' : '#d32f2f'">
+              <!-- 5. Net Profit -->
+              <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center; background-color: rgba(76, 175, 80, 0.08); padding: 20px 24px; border-radius: 14px; border: 1px solid rgba(76, 175, 80, 0.15);">
+                <span style="font-weight: bold; color: #1b5e20; font-size: 15px; display: flex; align-items: center; gap: 6px;">
+                  سود خالص نهایی کمپین:
+                  <ng-icon name="saxInfoCircleOutline" style="color: #aaa; cursor: pointer; font-size: 1.1rem; vertical-align: middle;" matTooltip="سود نهایی کمپین حاصل کسر تمام هزینه‌های عملیاتی از سود فروش سفارشات"></ng-icon>
+                </span>
+                <strong style="font-size: 24px;" [style.color]="r.netProfit >= 0 ? '#1b5e20' : '#b71c1c'">
                   {{ r.netProfit | number }} تومان
                 </strong>
               </div>

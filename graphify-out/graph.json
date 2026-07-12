@@ -49,14 +49,244 @@
   },
   "nodes": [
     {
+      "label": "campaigns.service.ts",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service",
+      "community": 14,
+      "norm_label": "campaigns.service.ts"
+    },
+    {
+      "label": "CampaignsService",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "community": 14,
+      "norm_label": "campaignsservice"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_constructor",
+      "community": 14,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".validateCampaignDates()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_validatecampaigndates",
+      "community": 14,
+      "norm_label": ".validatecampaigndates()"
+    },
+    {
+      "label": ".checkOverlap()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L47",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_checkoverlap",
+      "community": 14,
+      "norm_label": ".checkoverlap()"
+    },
+    {
+      "label": ".create()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L67",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_create",
+      "community": 14,
+      "norm_label": ".create()"
+    },
+    {
+      "label": ".findAll()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L82",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findall",
+      "community": 14,
+      "norm_label": ".findall()"
+    },
+    {
+      "label": ".findOne()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L120",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone",
+      "community": 14,
+      "norm_label": ".findone()"
+    },
+    {
+      "label": ".update()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L128",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update",
+      "community": 14,
+      "norm_label": ".update()"
+    },
+    {
+      "label": ".remove()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L147",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_remove",
+      "community": 14,
+      "norm_label": ".remove()"
+    },
+    {
+      "label": ".getActiveCampaign()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L168",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaign",
+      "community": 14,
+      "norm_label": ".getactivecampaign()"
+    },
+    {
+      "label": ".getActiveCampaignByUsername()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L178",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaignbyusername",
+      "community": 14,
+      "norm_label": ".getactivecampaignbyusername()"
+    },
+    {
+      "label": ".getCampaignReport()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L189",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getcampaignreport",
+      "community": 14,
+      "norm_label": ".getcampaignreport()"
+    },
+    {
+      "label": ".handleCampaignTransitions()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L276",
+      "_origin": "ast",
+      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_handlecampaigntransitions",
+      "community": 14,
+      "norm_label": ".handlecampaigntransitions()"
+    },
+    {
+      "label": "campaign-report.component.ts",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component",
+      "community": 40,
+      "norm_label": "campaign-report.component.ts"
+    },
+    {
+      "label": "CampaignReport",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreport",
+      "community": 40,
+      "norm_label": "campaignreport"
+    },
+    {
+      "label": "CampaignReportComponent",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L222",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "community": 40,
+      "norm_label": "campaignreportcomponent"
+    },
+    {
+      "label": ".ngOnInit()",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L230",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_ngoninit",
+      "community": 40,
+      "norm_label": ".ngoninit()"
+    },
+    {
+      "label": ".getClickRate()",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L247",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getclickrate",
+      "community": 40,
+      "norm_label": ".getclickrate()"
+    },
+    {
+      "label": ".getBasketRate()",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L253",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getbasketrate",
+      "community": 40,
+      "norm_label": ".getbasketrate()"
+    },
+    {
+      "label": ".getConversionRate()",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L259",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getconversionrate",
+      "community": 40,
+      "norm_label": ".getconversionrate()"
+    },
+    {
+      "label": ".getOrderStateLabel()",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L265",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getorderstatelabel",
+      "community": 40,
+      "norm_label": ".getorderstatelabel()"
+    },
+    {
+      "label": ".goBack()",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L278",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_goback",
+      "community": 40,
+      "norm_label": ".goback()"
+    },
+    {
       "label": "orders.controller.ts",
       "file_type": "code",
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller",
       "community": 80,
-      "norm_label": "orders.controller.ts"
+      "norm_label": "orders.controller.ts",
+      "id": "apps_backend_src_app_orders_orders_controller"
     },
     {
       "label": "OrdersController",
@@ -64,9 +294,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L38",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller",
       "community": 80,
-      "norm_label": "orderscontroller"
+      "norm_label": "orderscontroller",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller"
     },
     {
       "label": ".constructor()",
@@ -74,9 +304,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L39",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_constructor",
       "community": 80,
-      "norm_label": ".constructor()"
+      "norm_label": ".constructor()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_constructor"
     },
     {
       "label": ".save()",
@@ -84,9 +314,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L51",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_save",
       "community": 80,
-      "norm_label": ".save()"
+      "norm_label": ".save()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_save"
     },
     {
       "label": ".filterPanelOrders()",
@@ -94,9 +324,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L74",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_filterpanelorders",
       "community": 80,
-      "norm_label": ".filterpanelorders()"
+      "norm_label": ".filterpanelorders()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_filterpanelorders"
     },
     {
       "label": ".filterPanelOrdersV2()",
@@ -104,9 +334,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L83",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_filterpanelordersv2",
       "community": 80,
-      "norm_label": ".filterpanelordersv2()"
+      "norm_label": ".filterpanelordersv2()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_filterpanelordersv2"
     },
     {
       "label": ".updateOrderItemMaterialCost()",
@@ -114,9 +344,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L92",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderitemmaterialcost",
       "community": 80,
-      "norm_label": ".updateorderitemmaterialcost()"
+      "norm_label": ".updateorderitemmaterialcost()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderitemmaterialcost"
     },
     {
       "label": ".updateOrderExtraCosts()",
@@ -124,9 +354,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L112",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderextracosts",
       "community": 80,
-      "norm_label": ".updateorderextracosts()"
+      "norm_label": ".updateorderextracosts()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderextracosts"
     },
     {
       "label": ".deleteOrder()",
@@ -134,9 +364,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L121",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_deleteorder",
       "community": 80,
-      "norm_label": ".deleteorder()"
+      "norm_label": ".deleteorder()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_deleteorder"
     },
     {
       "label": ".getMyOrders()",
@@ -144,9 +374,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L132",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_getmyorders",
       "community": 80,
-      "norm_label": ".getmyorders()"
+      "norm_label": ".getmyorders()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_getmyorders"
     },
     {
       "label": ".getOrderDetailsPanel()",
@@ -154,9 +384,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L149",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_getorderdetailspanel",
       "community": 80,
-      "norm_label": ".getorderdetailspanel()"
+      "norm_label": ".getorderdetailspanel()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_getorderdetailspanel"
     },
     {
       "label": ".syncMennoBalePanel()",
@@ -164,9 +394,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L190",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_syncmennobalepanel",
       "community": 80,
-      "norm_label": ".syncmennobalepanel()"
+      "norm_label": ".syncmennobalepanel()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_syncmennobalepanel"
     },
     {
       "label": ".changeState()",
@@ -174,9 +404,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L230",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_changestate",
       "community": 80,
-      "norm_label": ".changestate()"
+      "norm_label": ".changestate()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_changestate"
     },
     {
       "label": ".mergeOrders()",
@@ -184,9 +414,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L248",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_mergeorders",
       "community": 80,
-      "norm_label": ".mergeorders()"
+      "norm_label": ".mergeorders()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_mergeorders"
     },
     {
       "label": ".updateOrderDetails()",
@@ -194,9 +424,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L282",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderdetails",
       "community": 80,
-      "norm_label": ".updateorderdetails()"
+      "norm_label": ".updateorderdetails()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderdetails"
     },
     {
       "label": ".manualSettlement()",
@@ -204,9 +434,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L299",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_manualsettlement",
       "community": 80,
-      "norm_label": ".manualsettlement()"
+      "norm_label": ".manualsettlement()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_manualsettlement"
     },
     {
       "label": ".sendLinkToCustomer()",
@@ -214,9 +444,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L305",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_sendlinktocustomer",
       "community": 80,
-      "norm_label": ".sendlinktocustomer()"
+      "norm_label": ".sendlinktocustomer()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_sendlinktocustomer"
     },
     {
       "label": ".sendLinkToPeyk()",
@@ -224,9 +454,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L327",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_sendlinktopeyk",
       "community": 80,
-      "norm_label": ".sendlinktopeyk()"
+      "norm_label": ".sendlinktopeyk()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_sendlinktopeyk"
     },
     {
       "label": ".report()",
@@ -234,9 +464,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L354",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_report",
       "community": 80,
-      "norm_label": ".report()"
+      "norm_label": ".report()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_report"
     },
     {
       "label": ".setCustomer()",
@@ -244,9 +474,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L361",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_setcustomer",
       "community": 80,
-      "norm_label": ".setcustomer()"
+      "norm_label": ".setcustomer()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_setcustomer"
     },
     {
       "label": ".getProductOrderCounts()",
@@ -254,9 +484,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L367",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_getproductordercounts",
       "community": 80,
-      "norm_label": ".getproductordercounts()"
+      "norm_label": ".getproductordercounts()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_getproductordercounts"
     },
     {
       "label": ".backfillOrders()",
@@ -264,9 +494,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L411",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_backfillorders",
       "community": 80,
-      "norm_label": ".backfillorders()"
+      "norm_label": ".backfillorders()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_backfillorders"
     },
     {
       "label": ".getOrderDetailsApp()",
@@ -274,9 +504,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L470",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_getorderdetailsapp",
       "community": 80,
-      "norm_label": ".getorderdetailsapp()"
+      "norm_label": ".getorderdetailsapp()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_getorderdetailsapp"
     },
     {
       "label": ".updateOrderCampaign()",
@@ -284,9 +514,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L491",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateordercampaign",
       "community": 80,
-      "norm_label": ".updateordercampaign()"
+      "norm_label": ".updateordercampaign()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateordercampaign"
     },
     {
       "label": "orders.service.ts",
@@ -294,9 +524,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_service",
       "community": 80,
-      "norm_label": "orders.service.ts"
+      "norm_label": "orders.service.ts",
+      "id": "apps_backend_src_app_orders_orders_service"
     },
     {
       "label": "OrdersService",
@@ -304,9 +534,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L54",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_service_ordersservice",
       "community": 80,
-      "norm_label": "ordersservice"
+      "norm_label": "ordersservice",
+      "id": "apps_backend_src_app_orders_orders_service_ordersservice"
     },
     {
       "label": ".constructor()",
@@ -314,9 +544,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L55",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_service_ordersservice_constructor",
       "community": 80,
-      "norm_label": ".constructor()"
+      "norm_label": ".constructor()",
+      "id": "apps_backend_src_app_orders_orders_service_ordersservice_constructor"
     },
     {
       "label": ".dtoToOrder()",
@@ -324,9 +554,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L84",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_service_ordersservice_dtotoorder",
       "community": 80,
-      "norm_label": ".dtotoorder()"
+      "norm_label": ".dtotoorder()",
+      "id": "apps_backend_src_app_orders_orders_service_ordersservice_dtotoorder"
     },
     {
       "label": ".addOrder()",
@@ -334,9 +564,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L284",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_service_ordersservice_addorder",
       "community": 80,
-      "norm_label": ".addorder()"
+      "norm_label": ".addorder()",
+      "id": "apps_backend_src_app_orders_orders_service_ordersservice_addorder"
     },
     {
       "label": ".report()",
@@ -344,9 +574,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L334",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_service_ordersservice_report",
       "community": 80,
-      "norm_label": ".report()"
+      "norm_label": ".report()",
+      "id": "apps_backend_src_app_orders_orders_service_ordersservice_report"
     },
     {
       "label": ".editOrder()",
@@ -354,9 +584,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L489",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_service_ordersservice_editorder",
       "community": 80,
-      "norm_label": ".editorder()"
+      "norm_label": ".editorder()",
+      "id": "apps_backend_src_app_orders_orders_service_ordersservice_editorder"
     },
     {
       "label": ".filter()",
@@ -364,9 +594,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L617",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_service_ordersservice_filter",
       "community": 80,
-      "norm_label": ".filter()"
+      "norm_label": ".filter()",
+      "id": "apps_backend_src_app_orders_orders_service_ordersservice_filter"
     },
     {
       "label": ".manualSettlement()",
@@ -374,9 +604,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L730",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_service_ordersservice_manualsettlement",
       "community": 80,
-      "norm_label": ".manualsettlement()"
+      "norm_label": ".manualsettlement()",
+      "id": "apps_backend_src_app_orders_orders_service_ordersservice_manualsettlement"
     },
     {
       "label": ".setCustomer()",
@@ -384,9 +614,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L805",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_service_ordersservice_setcustomer",
       "community": 80,
-      "norm_label": ".setcustomer()"
+      "norm_label": ".setcustomer()",
+      "id": "apps_backend_src_app_orders_orders_service_ordersservice_setcustomer"
     },
     {
       "label": ".remove()",
@@ -394,9 +624,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L817",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_service_ordersservice_remove",
       "community": 80,
-      "norm_label": ".remove()"
+      "norm_label": ".remove()",
+      "id": "apps_backend_src_app_orders_orders_service_ordersservice_remove"
     },
     {
       "label": ".checkAfterUpdateOrderMessage()",
@@ -404,9 +634,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L835",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_service_ordersservice_checkafterupdateordermessage",
       "community": 80,
-      "norm_label": ".checkafterupdateordermessage()"
+      "norm_label": ".checkafterupdateordermessage()",
+      "id": "apps_backend_src_app_orders_orders_service_ordersservice_checkafterupdateordermessage"
     },
     {
       "label": ".updateOrderCampaign()",
@@ -414,9 +644,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L887",
       "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_service_ordersservice_updateordercampaign",
       "community": 80,
-      "norm_label": ".updateordercampaign()"
+      "norm_label": ".updateordercampaign()",
+      "id": "apps_backend_src_app_orders_orders_service_ordersservice_updateordercampaign"
     },
     {
       "label": "details.component.ts",
@@ -424,9 +654,9 @@
       "source_file": "apps/new-panel/src/app/orders/details/details.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_details_details_component",
       "community": 172,
-      "norm_label": "details.component.ts"
+      "norm_label": "details.component.ts",
+      "id": "apps_new_panel_src_app_orders_details_details_component"
     },
     {
       "label": "OrderDetailsComponent",
@@ -434,9 +664,9 @@
       "source_file": "apps/new-panel/src/app/orders/details/details.component.ts",
       "source_location": "L51",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent",
       "community": 172,
-      "norm_label": "orderdetailscomponent"
+      "norm_label": "orderdetailscomponent",
+      "id": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent"
     },
     {
       "label": ".changeCampaign()",
@@ -444,9 +674,9 @@
       "source_file": "apps/new-panel/src/app/orders/details/details.component.ts",
       "source_location": "L78",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_changecampaign",
       "community": 172,
-      "norm_label": ".changecampaign()"
+      "norm_label": ".changecampaign()",
+      "id": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_changecampaign"
     },
     {
       "label": ".constructor()",
@@ -454,9 +684,9 @@
       "source_file": "apps/new-panel/src/app/orders/details/details.component.ts",
       "source_location": "L99",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_constructor",
       "community": 172,
-      "norm_label": ".constructor()"
+      "norm_label": ".constructor()",
+      "id": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_constructor"
     },
     {
       "label": ".printOrder()",
@@ -464,9 +694,9 @@
       "source_file": "apps/new-panel/src/app/orders/details/details.component.ts",
       "source_location": "L115",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_printorder",
       "community": 172,
-      "norm_label": ".printorder()"
+      "norm_label": ".printorder()",
+      "id": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_printorder"
     },
     {
       "label": ".stateChange()",
@@ -474,9 +704,9 @@
       "source_file": "apps/new-panel/src/app/orders/details/details.component.ts",
       "source_location": "L122",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_statechange",
       "community": 172,
-      "norm_label": ".statechange()"
+      "norm_label": ".statechange()",
+      "id": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_statechange"
     },
     {
       "label": ".onShowCostChange()",
@@ -484,9 +714,9 @@
       "source_file": "apps/new-panel/src/app/orders/details/details.component.ts",
       "source_location": "L131",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_onshowcostchange",
       "community": 172,
-      "norm_label": ".onshowcostchange()"
+      "norm_label": ".onshowcostchange()",
+      "id": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_onshowcostchange"
     },
     {
       "label": ".syncMennoBale()",
@@ -494,9 +724,9 @@
       "source_file": "apps/new-panel/src/app/orders/details/details.component.ts",
       "source_location": "L135",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_syncmennobale",
       "community": 172,
-      "norm_label": ".syncmennobale()"
+      "norm_label": ".syncmennobale()",
+      "id": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_syncmennobale"
     },
     {
       "label": ".deleteOrder()",
@@ -504,9 +734,9 @@
       "source_file": "apps/new-panel/src/app/orders/details/details.component.ts",
       "source_location": "L141",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_deleteorder",
       "community": 172,
-      "norm_label": ".deleteorder()"
+      "norm_label": ".deleteorder()",
+      "id": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_deleteorder"
     },
     {
       "label": "list.component.ts",
@@ -514,9 +744,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/list.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_list_list_component",
       "community": 172,
-      "norm_label": "list.component.ts"
+      "norm_label": "list.component.ts",
+      "id": "apps_new_panel_src_app_orders_list_list_component"
     },
     {
       "label": "OrderListComponent",
@@ -524,9 +754,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/list.component.ts",
       "source_location": "L54",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent",
       "community": 172,
-      "norm_label": "orderlistcomponent"
+      "norm_label": "orderlistcomponent",
+      "id": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent"
     },
     {
       "label": ".constructor()",
@@ -534,9 +764,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/list.component.ts",
       "source_location": "L141",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_constructor",
       "community": 172,
-      "norm_label": ".constructor()"
+      "norm_label": ".constructor()",
+      "id": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_constructor"
     },
     {
       "label": ".clearAllFilters()",
@@ -544,9 +774,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/list.component.ts",
       "source_location": "L170",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_clearallfilters",
       "community": 172,
-      "norm_label": ".clearallfilters()"
+      "norm_label": ".clearallfilters()",
+      "id": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_clearallfilters"
     },
     {
       "label": ".openExtraFiltersDialog()",
@@ -554,9 +784,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/list.component.ts",
       "source_location": "L180",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_openextrafiltersdialog",
       "community": 172,
-      "norm_label": ".openextrafiltersdialog()"
+      "norm_label": ".openextrafiltersdialog()",
+      "id": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_openextrafiltersdialog"
     },
     {
       "label": ".pageChange()",
@@ -564,9 +794,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/list.component.ts",
       "source_location": "L208",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_pagechange",
       "community": 172,
-      "norm_label": ".pagechange()"
+      "norm_label": ".pagechange()",
+      "id": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_pagechange"
     },
     {
       "label": ".stateChange()",
@@ -574,9 +804,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/list.component.ts",
       "source_location": "L218",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_statechange",
       "community": 172,
-      "norm_label": ".statechange()"
+      "norm_label": ".statechange()",
+      "id": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_statechange"
     },
     {
       "label": ".delete()",
@@ -584,9 +814,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/list.component.ts",
       "source_location": "L227",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_delete",
       "community": 172,
-      "norm_label": ".delete()"
+      "norm_label": ".delete()",
+      "id": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_delete"
     },
     {
       "label": ".onWindowScroll()",
@@ -594,9 +824,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/list.component.ts",
       "source_location": "L236",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_onwindowscroll",
       "community": 172,
-      "norm_label": ".onwindowscroll()"
+      "norm_label": ".onwindowscroll()",
+      "id": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_onwindowscroll"
     },
     {
       "label": "order-list-extra-filters-dialog.component.ts",
@@ -604,9 +834,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/order-list-extra-filters-dialog.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component",
       "community": 172,
-      "norm_label": "order-list-extra-filters-dialog.component.ts"
+      "norm_label": "order-list-extra-filters-dialog.component.ts",
+      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component"
     },
     {
       "label": "OrderListExtraFiltersDialogData",
@@ -614,9 +844,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/order-list-extra-filters-dialog.component.ts",
       "source_location": "L19",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogdata",
       "community": 172,
-      "norm_label": "orderlistextrafiltersdialogdata"
+      "norm_label": "orderlistextrafiltersdialogdata",
+      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogdata"
     },
     {
       "label": "OrderListExtraFiltersDialogResult",
@@ -624,9 +854,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/order-list-extra-filters-dialog.component.ts",
       "source_location": "L26",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogresult",
       "community": 172,
-      "norm_label": "orderlistextrafiltersdialogresult"
+      "norm_label": "orderlistextrafiltersdialogresult",
+      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogresult"
     },
     {
       "label": "OrderListExtraFiltersDialogComponent",
@@ -634,9 +864,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/order-list-extra-filters-dialog.component.ts",
       "source_location": "L52",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent",
       "community": 172,
-      "norm_label": "orderlistextrafiltersdialogcomponent"
+      "norm_label": "orderlistextrafiltersdialogcomponent",
+      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent"
     },
     {
       "label": ".constructor()",
@@ -644,9 +874,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/order-list-extra-filters-dialog.component.ts",
       "source_location": "L73",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_constructor",
       "community": 172,
-      "norm_label": ".constructor()"
+      "norm_label": ".constructor()",
+      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_constructor"
     },
     {
       "label": ".ngAfterViewInit()",
@@ -654,9 +884,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/order-list-extra-filters-dialog.component.ts",
       "source_location": "L80",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_ngafterviewinit",
       "community": 172,
-      "norm_label": ".ngafterviewinit()"
+      "norm_label": ".ngafterviewinit()",
+      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_ngafterviewinit"
     },
     {
       "label": ".onMemberSelect()",
@@ -664,9 +894,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/order-list-extra-filters-dialog.component.ts",
       "source_location": "L86",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_onmemberselect",
       "community": 172,
-      "norm_label": ".onmemberselect()"
+      "norm_label": ".onmemberselect()",
+      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_onmemberselect"
     },
     {
       "label": ".resetStatesFilter()",
@@ -674,9 +904,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/order-list-extra-filters-dialog.component.ts",
       "source_location": "L91",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_resetstatesfilter",
       "community": 172,
-      "norm_label": ".resetstatesfilter()"
+      "norm_label": ".resetstatesfilter()",
+      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_resetstatesfilter"
     },
     {
       "label": ".apply()",
@@ -684,9 +914,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/order-list-extra-filters-dialog.component.ts",
       "source_location": "L95",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_apply",
       "community": 172,
-      "norm_label": ".apply()"
+      "norm_label": ".apply()",
+      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_apply"
     },
     {
       "label": ".cancel()",
@@ -694,9 +924,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/order-list-extra-filters-dialog.component.ts",
       "source_location": "L104",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_cancel",
       "community": 172,
-      "norm_label": ".cancel()"
+      "norm_label": ".cancel()",
+      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_cancel"
     },
     {
       "label": ".statesDifferFromDefault()",
@@ -704,9 +934,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/order-list-extra-filters-dialog.component.ts",
       "source_location": "L108",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_statesdifferfromdefault",
       "community": 172,
-      "norm_label": ".statesdifferfromdefault()"
+      "norm_label": ".statesdifferfromdefault()",
+      "id": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_statesdifferfromdefault"
     },
     {
       "label": "filter-order.dto.ts",
@@ -714,9 +944,9 @@
       "source_file": "libs/types/src/lib/filter-order.dto.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "libs_types_src_lib_filter_order_dto",
       "community": 138,
-      "norm_label": "filter-order.dto.ts"
+      "norm_label": "filter-order.dto.ts",
+      "id": "libs_types_src_lib_filter_order_dto"
     },
     {
       "label": "FilterOrderDto",
@@ -724,9 +954,9 @@
       "source_file": "libs/types/src/lib/filter-order.dto.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "id": "libs_types_src_lib_filter_order_dto_filterorderdto",
       "community": 138,
-      "norm_label": "filterorderdto"
+      "norm_label": "filterorderdto",
+      "id": "libs_types_src_lib_filter_order_dto_filterorderdto"
     },
     {
       "label": "campaigns-list.component.ts",
@@ -817,236 +1047,6 @@
       "community": 40,
       "norm_label": ".openreport()",
       "id": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent_openreport"
-    },
-    {
-      "label": "campaigns.service.ts",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": "campaigns.service.ts",
-      "id": "apps_backend_src_app_campaigns_campaigns_service"
-    },
-    {
-      "label": "CampaignsService",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L9",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": "campaignsservice",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice"
-    },
-    {
-      "label": ".constructor()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L12",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".constructor()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_constructor"
-    },
-    {
-      "label": ".validateCampaignDates()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L24",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".validatecampaigndates()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_validatecampaigndates"
-    },
-    {
-      "label": ".checkOverlap()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L47",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".checkoverlap()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_checkoverlap"
-    },
-    {
-      "label": ".create()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L67",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".create()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_create"
-    },
-    {
-      "label": ".findAll()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L82",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".findall()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findall"
-    },
-    {
-      "label": ".findOne()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L120",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".findone()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone"
-    },
-    {
-      "label": ".update()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L128",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".update()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update"
-    },
-    {
-      "label": ".remove()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L147",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".remove()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_remove"
-    },
-    {
-      "label": ".getActiveCampaign()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L168",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".getactivecampaign()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaign"
-    },
-    {
-      "label": ".getActiveCampaignByUsername()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L178",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".getactivecampaignbyusername()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaignbyusername"
-    },
-    {
-      "label": ".getCampaignReport()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L189",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".getcampaignreport()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getcampaignreport"
-    },
-    {
-      "label": ".handleCampaignTransitions()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L272",
-      "_origin": "ast",
-      "community": 14,
-      "norm_label": ".handlecampaigntransitions()",
-      "id": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_handlecampaigntransitions"
-    },
-    {
-      "label": "campaign-report.component.ts",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": "campaign-report.component.ts",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component"
-    },
-    {
-      "label": "CampaignReport",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L13",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": "campaignreport",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreport"
-    },
-    {
-      "label": "CampaignReportComponent",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L286",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": "campaignreportcomponent",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent"
-    },
-    {
-      "label": ".ngOnInit()",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L294",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": ".ngoninit()",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_ngoninit"
-    },
-    {
-      "label": ".getClickRate()",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L311",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": ".getclickrate()",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getclickrate"
-    },
-    {
-      "label": ".getBasketRate()",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L317",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": ".getbasketrate()",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getbasketrate"
-    },
-    {
-      "label": ".getConversionRate()",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L323",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": ".getconversionrate()",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getconversionrate"
-    },
-    {
-      "label": ".getOrderStateLabel()",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L329",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": ".getorderstatelabel()",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getorderstatelabel"
-    },
-    {
-      "label": ".goBack()",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L342",
-      "_origin": "ast",
-      "community": 40,
-      "norm_label": ".goback()",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_goback"
     },
     {
       "label": "shell.component.ts",
@@ -10004,7 +10004,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration.controller.ts",
       "source_location": "L1342",
       "_origin": "ast",
-      "community": 3,
+      "community": 96,
       "norm_label": ".getmaterials()",
       "id": "apps_backend_src_app_shop_integration_shop_integration_controller_shopintegrationcontroller_getmaterials"
     },
@@ -10434,7 +10434,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration.service.ts",
       "source_location": "L313",
       "_origin": "ast",
-      "community": 3,
+      "community": 96,
       "norm_label": ".getmaterials()",
       "id": "apps_backend_src_app_shop_integration_shop_integration_service_shopintegrationservice_getmaterials"
     },
@@ -28984,7 +28984,7 @@
       "source_file": "apps/new-panel/src/app/ai-chatbot/ai-chatbot.component.spec.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": "ai-chatbot.component.spec.ts",
       "id": "apps_new_panel_src_app_ai_chatbot_ai_chatbot_component_spec"
     },
@@ -29004,7 +29004,7 @@
       "source_file": "apps/new-panel/src/app/ai-chatbot/ai-chatbot.component.ts",
       "source_location": "L38",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": "aichatbotcomponent",
       "id": "apps_new_panel_src_app_ai_chatbot_ai_chatbot_component_aichatbotcomponent"
     },
@@ -29014,7 +29014,7 @@
       "source_file": "apps/new-panel/src/app/ai-chatbot/ai-chatbot.component.ts",
       "source_location": "L66",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": ".save()",
       "id": "apps_new_panel_src_app_ai_chatbot_ai_chatbot_component_aichatbotcomponent_save"
     },
@@ -29024,7 +29024,7 @@
       "source_file": "apps/new-panel/src/app/ai-chatbot/ai-chatbot.component.ts",
       "source_location": "L78",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": ".candeactivate()",
       "id": "apps_new_panel_src_app_ai_chatbot_ai_chatbot_component_aichatbotcomponent_candeactivate"
     },
@@ -29294,7 +29294,7 @@
       "source_file": "apps/new-panel/src/app/ai-hub/ai-hub.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "ai-hub.component.ts",
       "id": "apps_new_panel_src_app_ai_hub_ai_hub_component"
     },
@@ -29304,7 +29304,7 @@
       "source_file": "apps/new-panel/src/app/ai-hub/ai-hub.component.ts",
       "source_location": "L20",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "aihubcomponent",
       "id": "apps_new_panel_src_app_ai_hub_ai_hub_component_aihubcomponent"
     },
@@ -29314,7 +29314,7 @@
       "source_file": "apps/new-panel/src/app/ai-hub/ai-hub.component.ts",
       "source_location": "L23",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": ".navigateto()",
       "id": "apps_new_panel_src_app_ai_hub_ai_hub_component_aihubcomponent_navigateto"
     },
@@ -29324,7 +29324,7 @@
       "source_file": "apps/new-panel/src/app/app.component.spec.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 183,
+      "community": 232,
       "norm_label": "app.component.spec.ts",
       "id": "apps_new_panel_src_app_app_component_spec"
     },
@@ -29344,7 +29344,7 @@
       "source_file": "apps/new-panel/src/app/app.component.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 183,
+      "community": 232,
       "norm_label": "appcomponent",
       "id": "apps_new_panel_src_app_app_component_appcomponent"
     },
@@ -29354,7 +29354,7 @@
       "source_file": "apps/new-panel/src/app/app.component.ts",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 183,
+      "community": 232,
       "norm_label": ".constructor()",
       "id": "apps_new_panel_src_app_app_component_appcomponent_constructor"
     },
@@ -29824,7 +29824,7 @@
       "source_file": "apps/new-panel/src/app/club/member-list/member-filter-dialog/member-filter-dialog.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "member-filter-dialog.component.ts",
       "id": "apps_new_panel_src_app_club_member_list_member_filter_dialog_member_filter_dialog_component"
     },
@@ -29984,7 +29984,7 @@
       "source_file": "apps/new-panel/src/app/club/member-list/members-table/members-table.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 110,
       "norm_label": "members-table.component.ts",
       "id": "apps_new_panel_src_app_club_member_list_members_table_members_table_component"
     },
@@ -30084,7 +30084,7 @@
       "source_file": "apps/new-panel/src/app/core/guards/dirty-form-deactivator.guard.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": "dirty-form-deactivator.guard.ts",
       "id": "apps_new_panel_src_app_core_guards_dirty_form_deactivator_guard"
     },
@@ -30094,7 +30094,7 @@
       "source_file": "apps/new-panel/src/app/core/guards/dirty-form-deactivator.guard.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": "formcomponent",
       "id": "apps_new_panel_src_app_core_guards_dirty_form_deactivator_guard_formcomponent"
     },
@@ -30244,7 +30244,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/index.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 239,
+      "community": 183,
       "norm_label": "index.ts",
       "id": "apps_new_panel_src_app_core_providers_index"
     },
@@ -30254,7 +30254,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/jalali-date-picker.provider.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 232,
+      "community": 183,
       "norm_label": "jalali-date-picker.provider.ts",
       "id": "apps_new_panel_src_app_core_providers_jalali_date_picker_provider"
     },
@@ -30264,7 +30264,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/jalali-date-picker.provider.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 232,
+      "community": 183,
       "norm_label": "range()",
       "id": "apps_new_panel_src_app_core_providers_jalali_date_picker_provider_range"
     },
@@ -30524,7 +30524,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/jalali-date-picker.provider.ts",
       "source_location": "L239",
       "_origin": "ast",
-      "community": 232,
+      "community": 183,
       "norm_label": "jalali_moment_formats",
       "id": "apps_new_panel_src_app_core_providers_jalali_date_picker_provider_jalali_moment_formats"
     },
@@ -30534,7 +30534,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/jalali-date-picker.provider.ts",
       "source_location": "L252",
       "_origin": "ast",
-      "community": 232,
+      "community": 183,
       "norm_label": "providejalalidatepickerprovider()",
       "id": "apps_new_panel_src_app_core_providers_jalali_date_picker_provider_providejalalidatepickerprovider"
     },
@@ -30544,7 +30544,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/mat-paginator-intl.provider.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 251,
+      "community": 183,
       "norm_label": "mat-paginator-intl.provider.ts",
       "id": "apps_new_panel_src_app_core_providers_mat_paginator_intl_provider"
     },
@@ -30594,7 +30594,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/mat-paginator-intl.provider.ts",
       "source_location": "L25",
       "_origin": "ast",
-      "community": 251,
+      "community": 183,
       "norm_label": "paginatorintlprovider()",
       "id": "apps_new_panel_src_app_core_providers_mat_paginator_intl_provider_paginatorintlprovider"
     },
@@ -30734,7 +30734,7 @@
       "source_file": "apps/new-panel/src/app/core/services/files.service.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": "files.service.ts",
       "id": "apps_new_panel_src_app_core_services_files_service"
     },
@@ -30744,7 +30744,7 @@
       "source_file": "apps/new-panel/src/app/core/services/files.service.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": "filesservice",
       "id": "apps_new_panel_src_app_core_services_files_service_filesservice"
     },
@@ -30754,7 +30754,7 @@
       "source_file": "apps/new-panel/src/app/core/services/files.service.ts",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": ".constructor()",
       "id": "apps_new_panel_src_app_core_services_files_service_filesservice_constructor"
     },
@@ -30764,7 +30764,7 @@
       "source_file": "apps/new-panel/src/app/core/services/files.service.ts",
       "source_location": "L20",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": ".upload()",
       "id": "apps_new_panel_src_app_core_services_files_service_filesservice_upload"
     },
@@ -30774,7 +30774,7 @@
       "source_file": "apps/new-panel/src/app/core/services/files.service.ts",
       "source_location": "L31",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": ".savefileimage()",
       "id": "apps_new_panel_src_app_core_services_files_service_filesservice_savefileimage"
     },
@@ -30784,7 +30784,7 @@
       "source_file": "apps/new-panel/src/app/core/services/files.service.ts",
       "source_location": "L41",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": ".getfileurl()",
       "id": "apps_new_panel_src_app_core_services_files_service_filesservice_getfileurl"
     },
@@ -30894,7 +30894,7 @@
       "source_file": "apps/new-panel/src/app/developer-api/developer-api.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 20,
       "norm_label": "developer-api.component.ts",
       "id": "apps_new_panel_src_app_developer_api_developer_api_component"
     },
@@ -30964,7 +30964,7 @@
       "source_file": "apps/new-panel/src/app/discount-coupons/discount-coupon-report-dialog.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 110,
       "norm_label": "discount-coupon-report-dialog.component.ts",
       "id": "apps_new_panel_src_app_discount_coupons_discount_coupon_report_dialog_component"
     },
@@ -30974,7 +30974,7 @@
       "source_file": "apps/new-panel/src/app/discount-coupons/discount-coupon-report-dialog.component.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 29,
+      "community": 110,
       "norm_label": "couponusagereport",
       "id": "apps_new_panel_src_app_discount_coupons_discount_coupon_report_dialog_component_couponusagereport"
     },
@@ -30984,7 +30984,7 @@
       "source_file": "apps/new-panel/src/app/discount-coupons/discount-coupon-report-dialog.component.ts",
       "source_location": "L78",
       "_origin": "ast",
-      "community": 29,
+      "community": 110,
       "norm_label": "discountcouponreportdialogcomponent",
       "id": "apps_new_panel_src_app_discount_coupons_discount_coupon_report_dialog_component_discountcouponreportdialogcomponent"
     },
@@ -30994,7 +30994,7 @@
       "source_file": "apps/new-panel/src/app/discount-coupons/discount-coupon-report-dialog.component.ts",
       "source_location": "L98",
       "_origin": "ast",
-      "community": 29,
+      "community": 110,
       "norm_label": ".close()",
       "id": "apps_new_panel_src_app_discount_coupons_discount_coupon_report_dialog_component_discountcouponreportdialogcomponent_close"
     },
@@ -31094,7 +31094,7 @@
       "source_file": "apps/new-panel/src/app/discount-coupons/discount-coupons-list.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 110,
       "norm_label": "discount-coupons-list.component.ts",
       "id": "apps_new_panel_src_app_discount_coupons_discount_coupons_list_component"
     },
@@ -31804,7 +31804,7 @@
       "source_file": "apps/new-panel/src/app/home/ai-intelligence-card/ai-intelligence-card.component.ts",
       "source_location": "L40",
       "_origin": "ast",
-      "community": 20,
+      "community": 234,
       "norm_label": "aiintelligencecardcomponent",
       "id": "apps_new_panel_src_app_home_ai_intelligence_card_ai_intelligence_card_component_aiintelligencecardcomponent"
     },
@@ -31814,7 +31814,7 @@
       "source_file": "apps/new-panel/src/app/home/ai-intelligence-card/ai-intelligence-card.component.ts",
       "source_location": "L53",
       "_origin": "ast",
-      "community": 20,
+      "community": 234,
       "norm_label": ".formattokensk()",
       "id": "apps_new_panel_src_app_home_ai_intelligence_card_ai_intelligence_card_component_aiintelligencecardcomponent_formattokensk"
     },
@@ -31824,7 +31824,7 @@
       "source_file": "apps/new-panel/src/app/home/ai-intelligence-card/ai-intelligence-card.component.ts",
       "source_location": "L57",
       "_origin": "ast",
-      "community": 20,
+      "community": 234,
       "norm_label": ".buytokens()",
       "id": "apps_new_panel_src_app_home_ai_intelligence_card_ai_intelligence_card_component_aiintelligencecardcomponent_buytokens"
     },
@@ -32054,7 +32054,7 @@
       "source_file": "apps/new-panel/src/app/home/wallet-card/wallet-card.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "wallet-card.component.ts",
       "id": "apps_new_panel_src_app_home_wallet_card_wallet_card_component"
     },
@@ -32754,7 +32754,7 @@
       "source_file": "apps/new-panel/src/app/landing/creator-message-dialog.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "creator-message-dialog.component.ts",
       "id": "apps_new_panel_src_app_landing_creator_message_dialog_component"
     },
@@ -32764,7 +32764,7 @@
       "source_file": "apps/new-panel/src/app/landing/creator-message-dialog.component.ts",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "creatormessagedialogcomponent",
       "id": "apps_new_panel_src_app_landing_creator_message_dialog_component_creatormessagedialogcomponent"
     },
@@ -32774,7 +32774,7 @@
       "source_file": "apps/new-panel/src/app/landing/creator-message-dialog.component.ts",
       "source_location": "L18",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": ".close()",
       "id": "apps_new_panel_src_app_landing_creator_message_dialog_component_creatormessagedialogcomponent_close"
     },
@@ -32784,7 +32784,7 @@
       "source_file": "apps/new-panel/src/app/landing/landing.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "landing.component.ts",
       "id": "apps_new_panel_src_app_landing_landing_component"
     },
@@ -32834,7 +32834,7 @@
       "source_file": "apps/new-panel/src/app/landing/soon-dialog.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "soon-dialog.component.ts",
       "id": "apps_new_panel_src_app_landing_soon_dialog_component"
     },
@@ -32844,7 +32844,7 @@
       "source_file": "apps/new-panel/src/app/landing/soon-dialog.component.ts",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "soondialogcomponent",
       "id": "apps_new_panel_src_app_landing_soon_dialog_component_soondialogcomponent"
     },
@@ -32854,7 +32854,7 @@
       "source_file": "apps/new-panel/src/app/landing/soon-dialog.component.ts",
       "source_location": "L18",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": ".close()",
       "id": "apps_new_panel_src_app_landing_soon_dialog_component_soondialogcomponent_close"
     },
@@ -32864,7 +32864,7 @@
       "source_file": "apps/new-panel/src/app/menu/category-edit/category-edit.component.spec.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": "category-edit.component.spec.ts",
       "id": "apps_new_panel_src_app_menu_category_edit_category_edit_component_spec"
     },
@@ -32874,7 +32874,7 @@
       "source_file": "apps/new-panel/src/app/menu/category-edit/category-edit.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": "category-edit.component.ts",
       "id": "apps_new_panel_src_app_menu_category_edit_category_edit_component"
     },
@@ -32884,7 +32884,7 @@
       "source_file": "apps/new-panel/src/app/menu/category-edit/category-edit.component.ts",
       "source_location": "L22",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": "categoryimagevalue",
       "id": "apps_new_panel_src_app_menu_category_edit_category_edit_component_categoryimagevalue"
     },
@@ -33144,7 +33144,7 @@
       "source_file": "apps/new-panel/src/app/menu/cost-edit/cost-edit.component.spec.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": "cost-edit.component.spec.ts",
       "id": "apps_new_panel_src_app_menu_cost_edit_cost_edit_component_spec"
     },
@@ -33154,7 +33154,7 @@
       "source_file": "apps/new-panel/src/app/menu/cost-edit/cost-edit.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": "cost-edit.component.ts",
       "id": "apps_new_panel_src_app_menu_cost_edit_cost_edit_component"
     },
@@ -33164,7 +33164,7 @@
       "source_file": "apps/new-panel/src/app/menu/cost-edit/cost-edit.component.ts",
       "source_location": "L48",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": "costeditcomponent",
       "id": "apps_new_panel_src_app_menu_cost_edit_cost_edit_component_costeditcomponent"
     },
@@ -33174,7 +33174,7 @@
       "source_file": "apps/new-panel/src/app/menu/cost-edit/cost-edit.component.ts",
       "source_location": "L67",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": ".constructor()",
       "id": "apps_new_panel_src_app_menu_cost_edit_cost_edit_component_costeditcomponent_constructor"
     },
@@ -33184,7 +33184,7 @@
       "source_file": "apps/new-panel/src/app/menu/cost-edit/cost-edit.component.ts",
       "source_location": "L117",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": ".submit()",
       "id": "apps_new_panel_src_app_menu_cost_edit_cost_edit_component_costeditcomponent_submit"
     },
@@ -33194,7 +33194,7 @@
       "source_file": "apps/new-panel/src/app/menu/cost-edit/cost-edit.component.ts",
       "source_location": "L145",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": ".candeactivate()",
       "id": "apps_new_panel_src_app_menu_cost_edit_cost_edit_component_costeditcomponent_candeactivate"
     },
@@ -33414,7 +33414,7 @@
       "source_file": "apps/new-panel/src/app/menu/list/list.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": "list.component.ts",
       "id": "apps_new_panel_src_app_menu_list_list_component"
     },
@@ -33424,7 +33424,7 @@
       "source_file": "apps/new-panel/src/app/menu/list/list.component.ts",
       "source_location": "L40",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": "menulistcomponent",
       "id": "apps_new_panel_src_app_menu_list_list_component_menulistcomponent"
     },
@@ -33434,7 +33434,7 @@
       "source_file": "apps/new-panel/src/app/menu/list/list.component.ts",
       "source_location": "L60",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": ".settab()",
       "id": "apps_new_panel_src_app_menu_list_list_component_menulistcomponent_settab"
     },
@@ -33444,7 +33444,7 @@
       "source_file": "apps/new-panel/src/app/menu/list/list.component.ts",
       "source_location": "L65",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": ".editcategory()",
       "id": "apps_new_panel_src_app_menu_list_list_component_menulistcomponent_editcategory"
     },
@@ -33454,7 +33454,7 @@
       "source_file": "apps/new-panel/src/app/menu/list/list.component.ts",
       "source_location": "L71",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": ".gotocategories()",
       "id": "apps_new_panel_src_app_menu_list_list_component_menulistcomponent_gotocategories"
     },
@@ -33464,7 +33464,7 @@
       "source_file": "apps/new-panel/src/app/menu/menu.routes.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": "menu.routes.ts",
       "id": "apps_new_panel_src_app_menu_menu_routes"
     },
@@ -33474,7 +33474,7 @@
       "source_file": "apps/new-panel/src/app/menu/menu.routes.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": "menuroutes",
       "id": "apps_new_panel_src_app_menu_menu_routes_menuroutes"
     },
@@ -33514,7 +33514,7 @@
       "source_file": "apps/new-panel/src/app/menu/menu.service.ts",
       "source_location": "L25",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": "menuservice",
       "id": "apps_new_panel_src_app_menu_menu_service_menuservice"
     },
@@ -33674,7 +33674,7 @@
       "source_file": "apps/new-panel/src/app/menu/product-edit/product-edit.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": "product-edit.component.ts",
       "id": "apps_new_panel_src_app_menu_product_edit_product_edit_component"
     },
@@ -35284,7 +35284,7 @@
       "source_file": "apps/new-panel/src/app/reports/analytics-dashboard/analytics-dashboard.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 20,
+      "community": 110,
       "norm_label": "analytics-dashboard.component.ts",
       "id": "apps_new_panel_src_app_reports_analytics_dashboard_analytics_dashboard_component"
     },
@@ -35294,7 +35294,7 @@
       "source_file": "apps/new-panel/src/app/reports/analytics-dashboard/analytics-dashboard.component.ts",
       "source_location": "L34",
       "_origin": "ast",
-      "community": 20,
+      "community": 110,
       "norm_label": "analyticsdashboardcomponent",
       "id": "apps_new_panel_src_app_reports_analytics_dashboard_analytics_dashboard_component_analyticsdashboardcomponent"
     },
@@ -35314,7 +35314,7 @@
       "source_file": "apps/new-panel/src/app/reports/analytics-dashboard/load-menu-ref-card/load-menu-ref-card.component.ts",
       "source_location": "L31",
       "_origin": "ast",
-      "community": 20,
+      "community": 110,
       "norm_label": "loadmenurefcardcomponent",
       "id": "apps_new_panel_src_app_reports_analytics_dashboard_load_menu_ref_card_load_menu_ref_card_component_loadmenurefcardcomponent"
     },
@@ -35354,7 +35354,7 @@
       "source_file": "apps/new-panel/src/app/reports/analytics-dashboard/order-funnel-card/index.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 20,
+      "community": 110,
       "norm_label": "index.ts",
       "id": "apps_new_panel_src_app_reports_analytics_dashboard_order_funnel_card_index"
     },
@@ -35364,7 +35364,7 @@
       "source_file": "apps/new-panel/src/app/reports/analytics-dashboard/order-funnel-card/order-funnel-card.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 20,
+      "community": 110,
       "norm_label": "order-funnel-card.component.ts",
       "id": "apps_new_panel_src_app_reports_analytics_dashboard_order_funnel_card_order_funnel_card_component"
     },
@@ -35374,7 +35374,7 @@
       "source_file": "apps/new-panel/src/app/reports/analytics-dashboard/order-funnel-card/order-funnel-card.component.ts",
       "source_location": "L20",
       "_origin": "ast",
-      "community": 20,
+      "community": 110,
       "norm_label": "orderfunnelcardcomponent",
       "id": "apps_new_panel_src_app_reports_analytics_dashboard_order_funnel_card_order_funnel_card_component_orderfunnelcardcomponent"
     },
@@ -35384,7 +35384,7 @@
       "source_file": "apps/new-panel/src/app/reports/analytics-dashboard/user-stat-card/user-stat-card.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 20,
+      "community": 110,
       "norm_label": "user-stat-card.component.ts",
       "id": "apps_new_panel_src_app_reports_analytics_dashboard_user_stat_card_user_stat_card_component"
     },
@@ -35394,7 +35394,7 @@
       "source_file": "apps/new-panel/src/app/reports/analytics-dashboard/user-stat-card/user-stat-card.component.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 20,
+      "community": 110,
       "norm_label": "userstatresponse",
       "id": "apps_new_panel_src_app_reports_analytics_dashboard_user_stat_card_user_stat_card_component_userstatresponse"
     },
@@ -35404,7 +35404,7 @@
       "source_file": "apps/new-panel/src/app/reports/analytics-dashboard/user-stat-card/user-stat-card.component.ts",
       "source_location": "L34",
       "_origin": "ast",
-      "community": 20,
+      "community": 110,
       "norm_label": "userstatcardcomponent",
       "id": "apps_new_panel_src_app_reports_analytics_dashboard_user_stat_card_user_stat_card_component_userstatcardcomponent"
     },
@@ -35444,7 +35444,7 @@
       "source_file": "apps/new-panel/src/app/reports/orders-dashboard/orders-dashboard.component.ts",
       "source_location": "L35",
       "_origin": "ast",
-      "community": 20,
+      "community": 110,
       "norm_label": "ordersdashboardcomponent",
       "id": "apps_new_panel_src_app_reports_orders_dashboard_orders_dashboard_component_ordersdashboardcomponent"
     },
@@ -35454,7 +35454,7 @@
       "source_file": "apps/new-panel/src/app/reports/orders-dashboard/orders-dashboard.component.ts",
       "source_location": "L51",
       "_origin": "ast",
-      "community": 20,
+      "community": 110,
       "norm_label": ".getstartofjalalimonth()",
       "id": "apps_new_panel_src_app_reports_orders_dashboard_orders_dashboard_component_ordersdashboardcomponent_getstartofjalalimonth"
     },
@@ -35524,7 +35524,7 @@
       "source_file": "apps/new-panel/src/app/reports/reports.routes.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 20,
+      "community": 110,
       "norm_label": "reports.routes.ts",
       "id": "apps_new_panel_src_app_reports_reports_routes"
     },
@@ -35534,7 +35534,7 @@
       "source_file": "apps/new-panel/src/app/reports/reports.routes.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 20,
+      "community": 110,
       "norm_label": "reportroutes",
       "id": "apps_new_panel_src_app_reports_reports_routes_reportroutes"
     },
@@ -35554,7 +35554,7 @@
       "source_file": "apps/new-panel/src/app/settings/app-config/app-config.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 20,
       "norm_label": "app-config.component.ts",
       "id": "apps_new_panel_src_app_settings_app_config_app_config_component"
     },
@@ -36134,7 +36134,7 @@
       "source_file": "apps/new-panel/src/app/settings/domain/domain.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 20,
       "norm_label": "domain.component.ts",
       "id": "apps_new_panel_src_app_settings_domain_domain_component"
     },
@@ -37404,7 +37404,7 @@
       "source_file": "apps/new-panel/src/app/shared/components/alert/alert.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "alert.component.ts",
       "id": "apps_new_panel_src_app_shared_components_alert_alert_component"
     },
@@ -37414,7 +37414,7 @@
       "source_file": "apps/new-panel/src/app/shared/components/alert/alert.component.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "alertcomponent",
       "id": "apps_new_panel_src_app_shared_components_alert_alert_component_alertcomponent"
     },
@@ -37424,7 +37424,7 @@
       "source_file": "apps/new-panel/src/app/shared/components/alert/alert.component.ts",
       "source_location": "L22",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": ".dismiss()",
       "id": "apps_new_panel_src_app_shared_components_alert_alert_component_alertcomponent_dismiss"
     },
@@ -37434,7 +37434,7 @@
       "source_file": "apps/new-panel/src/app/shared/components/alert/alert.component.ts",
       "source_location": "L27",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": ".getdefaulticon()",
       "id": "apps_new_panel_src_app_shared_components_alert_alert_component_alertcomponent_getdefaulticon"
     },
@@ -37444,7 +37444,7 @@
       "source_file": "apps/new-panel/src/app/shared/components/data-loading/data-loading.component.spec.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 110,
       "norm_label": "data-loading.component.spec.ts",
       "id": "apps_new_panel_src_app_shared_components_data_loading_data_loading_component_spec"
     },
@@ -37454,7 +37454,7 @@
       "source_file": "apps/new-panel/src/app/shared/components/data-loading/data-loading.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 110,
       "norm_label": "data-loading.component.ts",
       "id": "apps_new_panel_src_app_shared_components_data_loading_data_loading_component"
     },
@@ -37464,7 +37464,7 @@
       "source_file": "apps/new-panel/src/app/shared/components/data-loading/data-loading.component.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 29,
+      "community": 110,
       "norm_label": "dataloadingcomponent",
       "id": "apps_new_panel_src_app_shared_components_data_loading_data_loading_component_dataloadingcomponent"
     },
@@ -38014,7 +38014,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/copy-clipboard.directive.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "copy-clipboard.directive.ts",
       "id": "apps_new_panel_src_app_shared_directives_copy_clipboard_directive"
     },
@@ -38024,7 +38024,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/copy-clipboard.directive.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "copyclipboarddirective",
       "id": "apps_new_panel_src_app_shared_directives_copy_clipboard_directive_copyclipboarddirective"
     },
@@ -38034,7 +38034,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/copy-clipboard.directive.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": ".constructor()",
       "id": "apps_new_panel_src_app_shared_directives_copy_clipboard_directive_copyclipboarddirective_constructor"
     },
@@ -38044,7 +38044,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/copy-clipboard.directive.ts",
       "source_location": "L17",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": ".onclick()",
       "id": "apps_new_panel_src_app_shared_directives_copy_clipboard_directive_copyclipboarddirective_onclick"
     },
@@ -38054,7 +38054,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/go-back.directive.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "go-back.directive.ts",
       "id": "apps_new_panel_src_app_shared_directives_go_back_directive"
     },
@@ -38064,7 +38064,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/go-back.directive.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "gobackdirective",
       "id": "apps_new_panel_src_app_shared_directives_go_back_directive_gobackdirective"
     },
@@ -38074,7 +38074,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/go-back.directive.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": ".constructor()",
       "id": "apps_new_panel_src_app_shared_directives_go_back_directive_gobackdirective_constructor"
     },
@@ -38084,7 +38084,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/go-back.directive.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": ".onclick()",
       "id": "apps_new_panel_src_app_shared_directives_go_back_directive_gobackdirective_onclick"
     },
@@ -38094,7 +38094,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/image-loader.directive.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 20,
       "norm_label": "image-loader.directive.ts",
       "id": "apps_new_panel_src_app_shared_directives_image_loader_directive"
     },
@@ -38104,7 +38104,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/image-loader.directive.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 51,
+      "community": 20,
       "norm_label": "imageplaceholder",
       "id": "apps_new_panel_src_app_shared_directives_image_loader_directive_imageplaceholder"
     },
@@ -38114,7 +38114,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/image-loader.directive.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 51,
+      "community": 29,
       "norm_label": "imageloaderdirective",
       "id": "apps_new_panel_src_app_shared_directives_image_loader_directive_imageloaderdirective"
     },
@@ -38124,7 +38124,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/image-loader.directive.ts",
       "source_location": "L52",
       "_origin": "ast",
-      "community": 51,
+      "community": 29,
       "norm_label": ".constructor()",
       "id": "apps_new_panel_src_app_shared_directives_image_loader_directive_imageloaderdirective_constructor"
     },
@@ -38134,7 +38134,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/image-loader.directive.ts",
       "source_location": "L56",
       "_origin": "ast",
-      "community": 51,
+      "community": 29,
       "norm_label": ".ngafterviewinit()",
       "id": "apps_new_panel_src_app_shared_directives_image_loader_directive_imageloaderdirective_ngafterviewinit"
     },
@@ -38144,7 +38144,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/image-loader.directive.ts",
       "source_location": "L66",
       "_origin": "ast",
-      "community": 51,
+      "community": 29,
       "norm_label": ".defaultplaceholderurl()",
       "id": "apps_new_panel_src_app_shared_directives_image_loader_directive_imageloaderdirective_defaultplaceholderurl"
     },
@@ -38154,7 +38154,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/image-loader.directive.ts",
       "source_location": "L73",
       "_origin": "ast",
-      "community": 51,
+      "community": 29,
       "norm_label": ".init()",
       "id": "apps_new_panel_src_app_shared_directives_image_loader_directive_imageloaderdirective_init"
     },
@@ -38164,7 +38164,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/image-loader.directive.ts",
       "source_location": "L108",
       "_origin": "ast",
-      "community": 51,
+      "community": 29,
       "norm_label": ".geturl()",
       "id": "apps_new_panel_src_app_shared_directives_image_loader_directive_imageloaderdirective_geturl"
     },
@@ -38174,7 +38174,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/linkify.directive.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "linkify.directive.ts",
       "id": "apps_new_panel_src_app_shared_directives_linkify_directive"
     },
@@ -38184,7 +38184,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/linkify.directive.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "linkifydirective",
       "id": "apps_new_panel_src_app_shared_directives_linkify_directive_linkifydirective"
     },
@@ -38194,7 +38194,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/linkify.directive.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": ".constructor()",
       "id": "apps_new_panel_src_app_shared_directives_linkify_directive_linkifydirective_constructor"
     },
@@ -38204,7 +38204,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/linkify.directive.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": ".ngoninit()",
       "id": "apps_new_panel_src_app_shared_directives_linkify_directive_linkifydirective_ngoninit"
     },
@@ -38214,7 +38214,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/stop-propagation.directive.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "stop-propagation.directive.ts",
       "id": "apps_new_panel_src_app_shared_directives_stop_propagation_directive"
     },
@@ -38224,7 +38224,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/stop-propagation.directive.ts",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "stoppropagationdirective",
       "id": "apps_new_panel_src_app_shared_directives_stop_propagation_directive_stoppropagationdirective"
     },
@@ -38234,7 +38234,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/stop-propagation.directive.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": ".onclick()",
       "id": "apps_new_panel_src_app_shared_directives_stop_propagation_directive_stoppropagationdirective_onclick"
     },
@@ -38244,7 +38244,7 @@
       "source_file": "apps/new-panel/src/app/shared/index.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "index.ts",
       "id": "apps_new_panel_src_app_shared_index"
     },
@@ -38284,7 +38284,7 @@
       "source_file": "apps/new-panel/src/app/shared/modules/material-angular.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "material-angular.ts",
       "id": "apps_new_panel_src_app_shared_modules_material_angular"
     },
@@ -38294,7 +38294,7 @@
       "source_file": "apps/new-panel/src/app/shared/modules/material-angular.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "common_material_angular_modules",
       "id": "apps_new_panel_src_app_shared_modules_material_angular_common_material_angular_modules"
     },
@@ -38344,7 +38344,7 @@
       "source_file": "apps/new-panel/src/app/shared/pipes/menu-currency.pipe.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": "menu-currency.pipe.ts",
       "id": "apps_new_panel_src_app_shared_pipes_menu_currency_pipe"
     },
@@ -38354,7 +38354,7 @@
       "source_file": "apps/new-panel/src/app/shared/pipes/menu-currency.pipe.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": "menucurrencypipe",
       "id": "apps_new_panel_src_app_shared_pipes_menu_currency_pipe_menucurrencypipe"
     },
@@ -38364,7 +38364,7 @@
       "source_file": "apps/new-panel/src/app/shared/pipes/menu-currency.pipe.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": ".constructor()",
       "id": "apps_new_panel_src_app_shared_pipes_menu_currency_pipe_menucurrencypipe_constructor"
     },
@@ -38374,7 +38374,7 @@
       "source_file": "apps/new-panel/src/app/shared/pipes/menu-currency.pipe.ts",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 51,
+      "community": 58,
       "norm_label": ".transform()",
       "id": "apps_new_panel_src_app_shared_pipes_menu_currency_pipe_menucurrencypipe_transform"
     },
@@ -38384,7 +38384,7 @@
       "source_file": "apps/new-panel/src/app/shared/pipes/pdate.pipe.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 110,
       "norm_label": "pdate.pipe.ts",
       "id": "apps_new_panel_src_app_shared_pipes_pdate_pipe"
     },
@@ -38394,7 +38394,7 @@
       "source_file": "apps/new-panel/src/app/shared/pipes/pdate.pipe.ts",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 29,
+      "community": 110,
       "norm_label": "pdatepipe",
       "id": "apps_new_panel_src_app_shared_pipes_pdate_pipe_pdatepipe"
     },
@@ -38404,7 +38404,7 @@
       "source_file": "apps/new-panel/src/app/shared/pipes/pdate.pipe.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 29,
+      "community": 110,
       "norm_label": ".transform()",
       "id": "apps_new_panel_src_app_shared_pipes_pdate_pipe_pdatepipe_transform"
     },
@@ -38414,7 +38414,7 @@
       "source_file": "apps/new-panel/src/app/shared/pipes/safe-html.pipe.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "safe-html.pipe.ts",
       "id": "apps_new_panel_src_app_shared_pipes_safe_html_pipe"
     },
@@ -38424,7 +38424,7 @@
       "source_file": "apps/new-panel/src/app/shared/pipes/safe-html.pipe.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": "safehtmlpipe",
       "id": "apps_new_panel_src_app_shared_pipes_safe_html_pipe_safehtmlpipe"
     },
@@ -38434,7 +38434,7 @@
       "source_file": "apps/new-panel/src/app/shared/pipes/safe-html.pipe.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": ".constructor()",
       "id": "apps_new_panel_src_app_shared_pipes_safe_html_pipe_safehtmlpipe_constructor"
     },
@@ -38444,7 +38444,7 @@
       "source_file": "apps/new-panel/src/app/shared/pipes/safe-html.pipe.ts",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 29,
+      "community": 20,
       "norm_label": ".transform()",
       "id": "apps_new_panel_src_app_shared_pipes_safe_html_pipe_safehtmlpipe_transform"
     },
@@ -38824,7 +38824,7 @@
       "source_file": "apps/new-panel/src/environments/environment.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 20,
       "norm_label": "environment.ts",
       "id": "apps_new_panel_src_environments_environment"
     },
@@ -38834,7 +38834,7 @@
       "source_file": "apps/new-panel/src/environments/environment.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 51,
+      "community": 20,
       "norm_label": "environment",
       "id": "apps_new_panel_src_environments_environment_environment"
     },
@@ -46181,14 +46181,466 @@
   ],
   "links": [
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller",
+      "target": "apps_backend_src_app_campaigns_campaigns_service"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_module",
+      "target": "apps_backend_src_app_campaigns_campaigns_service"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice"
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_constructor",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.module.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_module",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_checkoverlap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L67",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_create",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L82",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findall",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L120",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L168",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaign",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L178",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaignbyusername",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L189",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getcampaignreport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L276",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_handlecampaigntransitions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L147",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_remove",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L128",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_validatecampaigndates",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L68",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_create",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_validatecampaigndates",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L135",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_validatecampaigndates",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L69",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_create",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_checkoverlap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L136",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_checkoverlap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_create",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_create"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_findall",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findall"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_findone",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L190",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getcampaignreport",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L148",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_remove",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
+      "source_location": "L129",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_update",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L65",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_remove",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_remove"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L82",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_getactive",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaign"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L84",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_getactive",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaignbyusername"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
+      "source_location": "L72",
+      "weight": 1.0,
+      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_getreport",
+      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getcampaignreport"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L222",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns.routes.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaigns_routes",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L253",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getbasketrate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L247",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getclickrate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L259",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getconversionrate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L265",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getorderstatelabel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L278",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_goback",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L230",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_ngoninit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns.routes.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaigns_routes",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller"
     },
     {
       "relation": "imports_from",
@@ -46197,9 +46649,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L33",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller",
-      "target": "apps_backend_src_app_orders_orders_service",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_service"
     },
     {
       "relation": "imports",
@@ -46208,9 +46660,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L33",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller",
-      "target": "apps_backend_src_app_orders_orders_service_ordersservice",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_service_ordersservice"
     },
     {
       "relation": "imports_from",
@@ -46240,9 +46692,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L411",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_backfillorders",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_backfillorders"
     },
     {
       "relation": "method",
@@ -46250,9 +46702,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L230",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_changestate",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_changestate"
     },
     {
       "relation": "method",
@@ -46260,9 +46712,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L39",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_constructor",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_constructor"
     },
     {
       "relation": "method",
@@ -46270,9 +46722,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L121",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_deleteorder",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_deleteorder"
     },
     {
       "relation": "method",
@@ -46280,9 +46732,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L74",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_filterpanelorders",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_filterpanelorders"
     },
     {
       "relation": "method",
@@ -46290,9 +46742,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L83",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_filterpanelordersv2",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_filterpanelordersv2"
     },
     {
       "relation": "method",
@@ -46300,9 +46752,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L132",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_getmyorders",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_getmyorders"
     },
     {
       "relation": "method",
@@ -46310,9 +46762,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L470",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_getorderdetailsapp",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_getorderdetailsapp"
     },
     {
       "relation": "method",
@@ -46320,9 +46772,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L149",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_getorderdetailspanel",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_getorderdetailspanel"
     },
     {
       "relation": "method",
@@ -46330,9 +46782,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L367",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_getproductordercounts",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_getproductordercounts"
     },
     {
       "relation": "method",
@@ -46340,9 +46792,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L299",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_manualsettlement",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_manualsettlement"
     },
     {
       "relation": "method",
@@ -46350,9 +46802,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L248",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_mergeorders",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_mergeorders"
     },
     {
       "relation": "method",
@@ -46360,9 +46812,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L354",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_report",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_report"
     },
     {
       "relation": "method",
@@ -46370,9 +46822,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L51",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_save",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_save"
     },
     {
       "relation": "method",
@@ -46380,9 +46832,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L305",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_sendlinktocustomer",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_sendlinktocustomer"
     },
     {
       "relation": "method",
@@ -46390,9 +46842,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L327",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_sendlinktopeyk",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_sendlinktopeyk"
     },
     {
       "relation": "method",
@@ -46400,9 +46852,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L361",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_setcustomer",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_setcustomer"
     },
     {
       "relation": "method",
@@ -46410,9 +46862,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L190",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_syncmennobalepanel",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_syncmennobalepanel"
     },
     {
       "relation": "method",
@@ -46420,9 +46872,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L491",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateordercampaign",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateordercampaign"
     },
     {
       "relation": "method",
@@ -46430,9 +46882,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L282",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderdetails",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderdetails"
     },
     {
       "relation": "method",
@@ -46440,9 +46892,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L112",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderextracosts",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderextracosts"
     },
     {
       "relation": "method",
@@ -46450,9 +46902,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L92",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderitemmaterialcost",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderitemmaterialcost"
     },
     {
       "relation": "imports",
@@ -46483,9 +46935,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L39",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller_constructor",
-      "target": "apps_backend_src_app_orders_orders_service_ordersservice",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_service_ordersservice"
     },
     {
       "relation": "calls",
@@ -46592,9 +47044,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L54",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_service",
-      "target": "apps_backend_src_app_orders_orders_service_ordersservice",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_service_ordersservice"
     },
     {
       "relation": "imports_from",
@@ -46646,9 +47098,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L284",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_service_ordersservice",
-      "target": "apps_backend_src_app_orders_orders_service_ordersservice_addorder",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_service_ordersservice_addorder"
     },
     {
       "relation": "method",
@@ -46656,9 +47108,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L835",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_service_ordersservice",
-      "target": "apps_backend_src_app_orders_orders_service_ordersservice_checkafterupdateordermessage",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_service_ordersservice_checkafterupdateordermessage"
     },
     {
       "relation": "method",
@@ -46666,9 +47118,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L55",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_service_ordersservice",
-      "target": "apps_backend_src_app_orders_orders_service_ordersservice_constructor",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_service_ordersservice_constructor"
     },
     {
       "relation": "method",
@@ -46676,9 +47128,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L84",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_service_ordersservice",
-      "target": "apps_backend_src_app_orders_orders_service_ordersservice_dtotoorder",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_service_ordersservice_dtotoorder"
     },
     {
       "relation": "method",
@@ -46686,9 +47138,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L489",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_service_ordersservice",
-      "target": "apps_backend_src_app_orders_orders_service_ordersservice_editorder",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_service_ordersservice_editorder"
     },
     {
       "relation": "method",
@@ -46696,9 +47148,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L617",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_service_ordersservice",
-      "target": "apps_backend_src_app_orders_orders_service_ordersservice_filter",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_service_ordersservice_filter"
     },
     {
       "relation": "method",
@@ -46706,9 +47158,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L730",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_service_ordersservice",
-      "target": "apps_backend_src_app_orders_orders_service_ordersservice_manualsettlement",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_service_ordersservice_manualsettlement"
     },
     {
       "relation": "method",
@@ -46716,9 +47168,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L817",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_service_ordersservice",
-      "target": "apps_backend_src_app_orders_orders_service_ordersservice_remove",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_service_ordersservice_remove"
     },
     {
       "relation": "method",
@@ -46726,9 +47178,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L334",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_service_ordersservice",
-      "target": "apps_backend_src_app_orders_orders_service_ordersservice_report",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_service_ordersservice_report"
     },
     {
       "relation": "method",
@@ -46736,9 +47188,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L805",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_service_ordersservice",
-      "target": "apps_backend_src_app_orders_orders_service_ordersservice_setcustomer",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_service_ordersservice_setcustomer"
     },
     {
       "relation": "method",
@@ -46746,9 +47198,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L887",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_service_ordersservice",
-      "target": "apps_backend_src_app_orders_orders_service_ordersservice_updateordercampaign",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_service_ordersservice_updateordercampaign"
     },
     {
       "relation": "imports",
@@ -46812,9 +47264,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L285",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_service_ordersservice_addorder",
-      "target": "apps_backend_src_app_orders_orders_service_ordersservice_dtotoorder",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_service_ordersservice_dtotoorder"
     },
     {
       "relation": "calls",
@@ -46823,9 +47275,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L498",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_service_ordersservice_editorder",
-      "target": "apps_backend_src_app_orders_orders_service_ordersservice_dtotoorder",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_service_ordersservice_dtotoorder"
     },
     {
       "relation": "calls",
@@ -46834,9 +47286,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L600",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_service_ordersservice_editorder",
-      "target": "apps_backend_src_app_orders_orders_service_ordersservice_checkafterupdateordermessage",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_service_ordersservice_checkafterupdateordermessage"
     },
     {
       "relation": "calls",
@@ -46845,9 +47297,9 @@
       "source_file": "apps/backend/src/app/orders/orders.service.ts",
       "source_location": "L792",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_service_ordersservice_manualsettlement",
-      "target": "apps_backend_src_app_orders_orders_service_ordersservice_checkafterupdateordermessage",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_service_ordersservice_checkafterupdateordermessage"
     },
     {
       "relation": "contains",
@@ -46855,9 +47307,9 @@
       "source_file": "apps/new-panel/src/app/orders/details/details.component.ts",
       "source_location": "L51",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_details_details_component",
-      "target": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent"
     },
     {
       "relation": "imports_from",
@@ -46866,9 +47318,9 @@
       "source_file": "apps/new-panel/src/app/orders/details/details.component.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_details_details_component",
-      "target": "libs_types_src_lib_menu",
-      "confidence_score": 1.0
+      "target": "libs_types_src_lib_menu"
     },
     {
       "relation": "imports_from",
@@ -46887,9 +47339,9 @@
       "source_file": "apps/new-panel/src/app/orders/details/details.component.ts",
       "source_location": "L78",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent",
-      "target": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_changecampaign",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_changecampaign"
     },
     {
       "relation": "method",
@@ -46897,9 +47349,9 @@
       "source_file": "apps/new-panel/src/app/orders/details/details.component.ts",
       "source_location": "L99",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent",
-      "target": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_constructor",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_constructor"
     },
     {
       "relation": "method",
@@ -46907,9 +47359,9 @@
       "source_file": "apps/new-panel/src/app/orders/details/details.component.ts",
       "source_location": "L141",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent",
-      "target": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_deleteorder",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_deleteorder"
     },
     {
       "relation": "method",
@@ -46917,9 +47369,9 @@
       "source_file": "apps/new-panel/src/app/orders/details/details.component.ts",
       "source_location": "L131",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent",
-      "target": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_onshowcostchange",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_onshowcostchange"
     },
     {
       "relation": "method",
@@ -46927,9 +47379,9 @@
       "source_file": "apps/new-panel/src/app/orders/details/details.component.ts",
       "source_location": "L115",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent",
-      "target": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_printorder",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_printorder"
     },
     {
       "relation": "method",
@@ -46937,9 +47389,9 @@
       "source_file": "apps/new-panel/src/app/orders/details/details.component.ts",
       "source_location": "L122",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent",
-      "target": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_statechange",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_statechange"
     },
     {
       "relation": "method",
@@ -46947,9 +47399,9 @@
       "source_file": "apps/new-panel/src/app/orders/details/details.component.ts",
       "source_location": "L135",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent",
-      "target": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_syncmennobale",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_details_details_component_orderdetailscomponent_syncmennobale"
     },
     {
       "relation": "imports",
@@ -46968,9 +47420,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/list.component.ts",
       "source_location": "L54",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_list_component",
-      "target": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent"
     },
     {
       "relation": "imports_from",
@@ -46979,9 +47431,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/list.component.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_list_component",
-      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component"
     },
     {
       "relation": "imports",
@@ -46990,9 +47442,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/list.component.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_list_component",
-      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent"
     },
     {
       "relation": "imports",
@@ -47001,9 +47453,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/list.component.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_list_component",
-      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogdata",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogdata"
     },
     {
       "relation": "imports",
@@ -47012,9 +47464,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/list.component.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_list_component",
-      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogresult",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogresult"
     },
     {
       "relation": "imports_from",
@@ -47044,9 +47496,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/list.component.ts",
       "source_location": "L170",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent",
-      "target": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_clearallfilters",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_clearallfilters"
     },
     {
       "relation": "method",
@@ -47054,9 +47506,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/list.component.ts",
       "source_location": "L141",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent",
-      "target": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_constructor",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_constructor"
     },
     {
       "relation": "method",
@@ -47064,9 +47516,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/list.component.ts",
       "source_location": "L227",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent",
-      "target": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_delete",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_delete"
     },
     {
       "relation": "method",
@@ -47074,9 +47526,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/list.component.ts",
       "source_location": "L236",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent",
-      "target": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_onwindowscroll",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_onwindowscroll"
     },
     {
       "relation": "method",
@@ -47084,9 +47536,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/list.component.ts",
       "source_location": "L180",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent",
-      "target": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_openextrafiltersdialog",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_openextrafiltersdialog"
     },
     {
       "relation": "method",
@@ -47094,9 +47546,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/list.component.ts",
       "source_location": "L208",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent",
-      "target": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_pagechange",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_pagechange"
     },
     {
       "relation": "method",
@@ -47104,9 +47556,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/list.component.ts",
       "source_location": "L218",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent",
-      "target": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_statechange",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_list_component_orderlistcomponent_statechange"
     },
     {
       "relation": "imports",
@@ -47136,9 +47588,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/order-list-extra-filters-dialog.component.ts",
       "source_location": "L52",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component",
-      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent"
     },
     {
       "relation": "contains",
@@ -47146,9 +47598,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/order-list-extra-filters-dialog.component.ts",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component",
-      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogdata",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogdata"
     },
     {
       "relation": "contains",
@@ -47156,9 +47608,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/order-list-extra-filters-dialog.component.ts",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component",
-      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogresult",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogresult"
     },
     {
       "relation": "method",
@@ -47166,9 +47618,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/order-list-extra-filters-dialog.component.ts",
       "source_location": "L95",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent",
-      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_apply",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_apply"
     },
     {
       "relation": "method",
@@ -47176,9 +47628,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/order-list-extra-filters-dialog.component.ts",
       "source_location": "L104",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent",
-      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_cancel",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_cancel"
     },
     {
       "relation": "method",
@@ -47186,9 +47638,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/order-list-extra-filters-dialog.component.ts",
       "source_location": "L73",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent",
-      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_constructor",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_constructor"
     },
     {
       "relation": "method",
@@ -47196,9 +47648,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/order-list-extra-filters-dialog.component.ts",
       "source_location": "L80",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent",
-      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_ngafterviewinit",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_ngafterviewinit"
     },
     {
       "relation": "method",
@@ -47206,9 +47658,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/order-list-extra-filters-dialog.component.ts",
       "source_location": "L86",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent",
-      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_onmemberselect",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_onmemberselect"
     },
     {
       "relation": "method",
@@ -47216,9 +47668,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/order-list-extra-filters-dialog.component.ts",
       "source_location": "L91",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent",
-      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_resetstatesfilter",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_resetstatesfilter"
     },
     {
       "relation": "method",
@@ -47226,9 +47678,9 @@
       "source_file": "apps/new-panel/src/app/orders/list/order-list-extra-filters-dialog.component.ts",
       "source_location": "L108",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent",
-      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_statesdifferfromdefault",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_orders_list_order_list_extra_filters_dialog_component_orderlistextrafiltersdialogcomponent_statesdifferfromdefault"
     },
     {
       "relation": "contains",
@@ -47236,9 +47688,9 @@
       "source_file": "libs/types/src/lib/filter-order.dto.ts",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "libs_types_src_lib_filter_order_dto",
-      "target": "libs_types_src_lib_filter_order_dto_filterorderdto",
-      "confidence_score": 1.0
+      "target": "libs_types_src_lib_filter_order_dto_filterorderdto"
     },
     {
       "relation": "imports",
@@ -47385,458 +47837,6 @@
       "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_campaigns_campaigns_routes",
       "target": "apps_new_panel_src_app_campaigns_campaigns_list_component_campaignslistcomponent"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller",
-      "target": "apps_backend_src_app_campaigns_campaigns_service"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.module.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_module",
-      "target": "apps_backend_src_app_campaigns_campaigns_service"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L9",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice"
-    },
-    {
-      "relation": "references",
-      "context": "parameter_type",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L24",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_constructor",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.module.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_module",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L47",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_checkoverlap"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L12",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_constructor"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L67",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_create"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L82",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findall"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L120",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L168",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaign"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L178",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaignbyusername"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L189",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getcampaignreport"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L272",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_handlecampaigntransitions"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L147",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_remove"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L128",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L24",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_validatecampaigndates"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L68",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_create",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_validatecampaigndates"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L135",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_validatecampaigndates"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L69",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_create",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_checkoverlap"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L136",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_checkoverlap"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L33",
-      "weight": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_create",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_create"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L40",
-      "weight": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_findall",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findall"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L47",
-      "weight": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_findone",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L190",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getcampaignreport",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L148",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_remove",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/backend/src/app/campaigns/campaigns.service.ts",
-      "source_location": "L129",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_findone"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L58",
-      "weight": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_update",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_update"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L65",
-      "weight": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_remove",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_remove"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L82",
-      "weight": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_getactive",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaign"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L84",
-      "weight": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_getactive",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getactivecampaignbyusername"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "apps/backend/src/app/campaigns/campaigns.controller.ts",
-      "source_location": "L72",
-      "weight": 1.0,
-      "source": "apps_backend_src_app_campaigns_campaigns_controller_campaignscontroller_getreport",
-      "target": "apps_backend_src_app_campaigns_campaigns_service_campaignsservice_getcampaignreport"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L13",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreport"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L286",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns.routes.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaigns_routes",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L317",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getbasketrate"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L311",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getclickrate"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L323",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getconversionrate"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L329",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getorderstatelabel"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L342",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_goback"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L294",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_ngoninit"
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns.routes.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaigns_routes",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent"
     },
     {
       "relation": "imports_from",
@@ -166773,5 +166773,5 @@
       "source_file": "ARCHITECTURE.md"
     }
   ],
-  "built_at_commit": "a935c8f2c59d0bf0097d1959cb2f74d8b04af0fc"
+  "built_at_commit": "71d8fb37d5e6859ec2551dec53e4805ce3f22ea9"
 }
