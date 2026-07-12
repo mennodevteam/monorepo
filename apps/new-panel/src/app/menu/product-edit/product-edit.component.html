@@ -99,34 +99,36 @@
               
               <div class="bops-list-container" style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
                 @for (item of getPackItemsFormArray().controls; track $index) {
-                  <div class="bop-item-row" style="display: flex; align-items: center; gap: 12px; padding: 8px; background: rgba(0,0,0,0.03); border-radius: 8px; width: 100%;">
-                    <span style="flex: 1; font-weight: 500;">{{ item.value.productSource?.title }}</span>
+                  <div class="bop-item-row" style="display: flex; flex-flow: row wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; background: rgba(0,0,0,0.03); border-radius: 8px; width: 100%;">
+                    <span style="flex: 1 1 200px; font-weight: 500; font-size: 1em; min-width: 150px;">{{ item.value.productSource?.title }}</span>
                     
-                    @if (item.value.productSource?.variants?.length) {
-                      <mat-form-field appearance="outline" style="width: 150px;" [subscriptSizing]="'dynamic'">
-                        <mat-label>واریانت</mat-label>
-                        <mat-select [formControl]="$any(item).controls.variantSource">
-                          @for (v of item.value.productSource.variants; track v.id) {
-                            <mat-option [value]="v">{{ v.title }}</mat-option>
-                          }
-                        </mat-select>
+                    <div style="display: flex; flex-flow: row wrap; align-items: center; justify-content: flex-end; gap: 8px; flex: 2 1 auto; min-width: 280px;">
+                      @if (item.value.productSource?.variants?.length) {
+                        <mat-form-field appearance="outline" style="width: 160px; min-width: 130px;" [subscriptSizing]="'dynamic'">
+                          <mat-label>واریانت</mat-label>
+                          <mat-select [formControl]="$any(item).controls.variantSource">
+                            @for (v of item.value.productSource.variants; track v.id) {
+                              <mat-option [value]="v">{{ v.title }}</mat-option>
+                            }
+                          </mat-select>
+                        </mat-form-field>
+                      } @else {
+                        <span style="opacity: 0.5; font-size: 0.9em; width: 160px; text-align: center;">فاقد گزینه</span>
+                      }
+                      
+                      <mat-form-field appearance="outline" style="width: 80px;" [subscriptSizing]="'dynamic'">
+                        <mat-label>تعداد</mat-label>
+                        <input matInput type="number" [formControl]="$any(item).controls.quantity" min="0.001" step="1" />
                       </mat-form-field>
-                    } @else {
-                      <span style="opacity: 0.5; font-size: 0.9em; width: 150px;">فاقد گزینه</span>
-                    }
-                    
-                    <mat-form-field appearance="outline" style="width: 100px;" [subscriptSizing]="'dynamic'">
-                      <mat-label>تعداد</mat-label>
-                      <input matInput type="number" [formControl]="$any(item).controls.quantity" min="0.001" step="1" />
-                    </mat-form-field>
-                    
-                    <span style="width: 120px; text-align: left; font-weight: 300;">
-                      {{ getPackItemPrice(item.value) | number | menuCurrency }}
-                    </span>
-                    
-                    <button mat-icon-button type="button" (click)="removePackItemFromForm($index)">
-                      <ng-icon name="saxTrashOutline" style="color: #f44336;"></ng-icon>
-                    </button>
+                      
+                      <span style="min-width: 100px; text-align: left; font-weight: 300;">
+                        {{ getPackItemPrice(item.value) | number | menuCurrency }}
+                      </span>
+                      
+                      <button mat-icon-button type="button" (click)="removePackItemFromForm($index)">
+                        <ng-icon name="saxTrashOutline" style="color: #f44336;"></ng-icon>
+                      </button>
+                    </div>
                   </div>
                 }
                 
@@ -176,33 +178,36 @@
                       </div>
                       
                       <div class="bops-list-container" style="display: flex; flex-direction: column; gap: 8px; padding-right: 12px; border-right: 2px solid rgba(0,0,0,0.05); width: 100%;">
-                        @for (item of getPackItemsFormArray(variant).controls; track $index) {
-                          <div class="bop-item-row" style="display: flex; align-items: center; gap: 12px; padding: 6px 8px; background: rgba(0,0,0,0.02); border-radius: 8px; width: 100%;">
-                            <span style="flex: 1; font-weight: 500; font-size: 0.95em;">{{ item.value.productSource?.title }}</span>
+                         @for (item of getPackItemsFormArray(variant).controls; track $index) {
+                          <div class="bop-item-row" style="display: flex; flex-flow: row wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; background: rgba(0,0,0,0.02); border-radius: 8px; width: 100%;">
+                            <span style="flex: 1 1 200px; font-weight: 500; font-size: 0.95em; min-width: 150px;">{{ item.value.productSource?.title }}</span>
                             
-                            @if (item.value.productSource?.variants?.length) {
-                              <mat-form-field appearance="outline" style="width: 130px;" [subscriptSizing]="'dynamic'">
-                                <mat-select [formControl]="$any(item).controls.variantSource">
-                                  @for (v of item.value.productSource.variants; track v.id) {
-                                    <mat-option [value]="v">{{ v.title }}</mat-option>
-                                  }
-                                </mat-select>
+                            <div style="display: flex; flex-flow: row wrap; align-items: center; justify-content: flex-end; gap: 8px; flex: 2 1 auto; min-width: 280px;">
+                              @if (item.value.productSource?.variants?.length) {
+                                <mat-form-field appearance="outline" style="width: 160px; min-width: 130px;" [subscriptSizing]="'dynamic'">
+                                  <mat-label>واریانت</mat-label>
+                                  <mat-select [formControl]="$any(item).controls.variantSource">
+                                    @for (v of item.value.productSource.variants; track v.id) {
+                                      <mat-option [value]="v">{{ v.title }}</mat-option>
+                                    }
+                                  </mat-select>
+                                </mat-form-field>
+                              } @else {
+                                <span style="opacity: 0.5; font-size: 0.85em; width: 160px; text-align: center;">فاقد گزینه</span>
+                              }
+                              
+                              <mat-form-field appearance="outline" style="width: 80px;" [subscriptSizing]="'dynamic'">
+                                <input matInput type="number" [formControl]="$any(item).controls.quantity" min="0.001" />
                               </mat-form-field>
-                            } @else {
-                              <span style="opacity: 0.5; font-size: 0.85em; width: 130px;">فاقد گزینه</span>
-                            }
-                            
-                            <mat-form-field appearance="outline" style="width: 80px;" [subscriptSizing]="'dynamic'">
-                              <input matInput type="number" [formControl]="$any(item).controls.quantity" min="0.001" />
-                            </mat-form-field>
-                            
-                            <span style="width: 100px; text-align: left; font-size: 0.9em; font-weight: 300;">
-                              {{ getPackItemPrice(item.value) | number | menuCurrency }}
-                            </span>
-                            
-                            <button mat-icon-button type="button" (click)="removePackItemFromForm($index, variant)">
-                              <ng-icon name="saxTrashOutline" style="color: #f44336;"></ng-icon>
-                            </button>
+                              
+                              <span style="min-width: 100px; text-align: left; font-size: 0.9em; font-weight: 300;">
+                                {{ getPackItemPrice(item.value) | number | menuCurrency }}
+                              </span>
+                              
+                              <button mat-icon-button type="button" (click)="removePackItemFromForm($index, variant)">
+                                <ng-icon name="saxTrashOutline" style="color: #f44336;"></ng-icon>
+                              </button>
+                            </div>
                           </div>
                         }
                         
