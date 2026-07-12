@@ -148,16 +148,36 @@ export class Product {
     allBoms: BillOfMaterial[],
     allPackItems?: any[],
   ) {
-    const boms = allBoms.filter(
-      (bom) => bom.product?.id === product.id && bom.variant?.id === productVariant?.id,
-    );
+    const productId = typeof product === 'object' && product !== null ? product.id : product;
+    const variantId = typeof productVariant === 'object' && productVariant !== null ? productVariant.id : productVariant;
 
-    const packItems = (allPackItems && allPackItems.length > 0 && ('parentProduct' in allPackItems[0] || 'parentVariant' in allPackItems[0]))
-      ? allPackItems.filter(
-          (item) =>
-            (productVariant && item.parentVariant?.id === productVariant.id) ||
-            (!productVariant && item.parentProduct?.id === product.id),
-        )
+    const boms = allBoms.filter((bom) => {
+      const bomProductId = bom.product && typeof bom.product === 'object' ? bom.product.id : bom.product;
+      const bomVariantId = bom.variant && typeof bom.variant === 'object' ? bom.variant.id : bom.variant;
+      
+      const matchProduct = bomProductId && productId && String(bomProductId) === String(productId);
+      const matchVariant = (!bomVariantId && !variantId) || 
+                           (bomVariantId && variantId && String(bomVariantId) === String(variantId));
+      return matchProduct && matchVariant;
+    });
+
+    const packItems = (allPackItems && allPackItems.length > 0 && (
+      'parentProduct' in allPackItems[0] ||
+      'parentVariant' in allPackItems[0] ||
+      (allPackItems[0] && ('product' in allPackItems[0] || 'variant' in allPackItems[0]))
+    ))
+      ? allPackItems.filter((item) => {
+          const itemParentProductId = item.parentProduct && typeof item.parentProduct === 'object' ? item.parentProduct.id : item.parentProduct;
+          const itemParentVariantId = item.parentVariant && typeof item.parentVariant === 'object' ? item.parentVariant.id : item.parentVariant;
+
+          if (itemParentProductId || itemParentVariantId) {
+            const matchParentVariant = itemParentVariantId && variantId && String(itemParentVariantId) === String(variantId);
+            const matchParentProduct = itemParentProductId && productId && String(itemParentProductId) === String(productId);
+            return (variantId && matchParentVariant) ||
+                   (!variantId && matchParentProduct);
+          }
+          return false;
+        })
       : (productVariant ? (productVariant.packItems ?? []) : (product.packItems ?? []));
 
     if (boms.length === 0 && packItems.length === 0) return null;
@@ -185,12 +205,26 @@ export class Product {
     allPackItems?: any[],
   ) {
     const usedMaterials: { material: Material; quantity: number }[] = [];
-    const boms = allBoms.filter(
-      (bom) => bom.product?.id === product.id && bom.variant?.id === productVariant?.id,
-    );
+    
+    const productId = typeof product === 'object' && product !== null ? product.id : product;
+    const variantId = typeof productVariant === 'object' && productVariant !== null ? productVariant.id : productVariant;
+
+    const boms = allBoms.filter((bom) => {
+      const bomProductId = bom.product && typeof bom.product === 'object' ? bom.product.id : bom.product;
+      const bomVariantId = bom.variant && typeof bom.variant === 'object' ? bom.variant.id : bom.variant;
+      
+      const matchProduct = bomProductId && productId && String(bomProductId) === String(productId);
+      const matchVariant = (!bomVariantId && !variantId) || 
+                           (bomVariantId && variantId && String(bomVariantId) === String(variantId));
+      return matchProduct && matchVariant;
+    });
 
     for (const bom of boms) {
-      const existingMaterial = usedMaterials.find((x) => x.material.id === bom.material?.id);
+      const bomMaterialId = bom.material && typeof bom.material === 'object' ? bom.material.id : bom.material;
+      const existingMaterial = usedMaterials.find((x) => {
+        const existingMaterialId = x.material && typeof x.material === 'object' ? x.material.id : x.material;
+        return String(existingMaterialId) === String(bomMaterialId);
+      });
       if (existingMaterial) {
         existingMaterial.quantity += bom.quantity;
       } else {
@@ -198,12 +232,23 @@ export class Product {
       }
     }
 
-    const packItems = (allPackItems && allPackItems.length > 0 && ('parentProduct' in allPackItems[0] || 'parentVariant' in allPackItems[0]))
-      ? allPackItems.filter(
-          (item) =>
-            (productVariant && item.parentVariant?.id === productVariant.id) ||
-            (!productVariant && item.parentProduct?.id === product.id),
-        )
+    const packItems = (allPackItems && allPackItems.length > 0 && (
+      'parentProduct' in allPackItems[0] ||
+      'parentVariant' in allPackItems[0] ||
+      (allPackItems[0] && ('product' in allPackItems[0] || 'variant' in allPackItems[0]))
+    ))
+      ? allPackItems.filter((item) => {
+          const itemParentProductId = item.parentProduct && typeof item.parentProduct === 'object' ? item.parentProduct.id : item.parentProduct;
+          const itemParentVariantId = item.parentVariant && typeof item.parentVariant === 'object' ? item.parentVariant.id : item.parentVariant;
+
+          if (itemParentProductId || itemParentVariantId) {
+            const matchParentVariant = itemParentVariantId && variantId && String(itemParentVariantId) === String(variantId);
+            const matchParentProduct = itemParentProductId && productId && String(itemParentProductId) === String(productId);
+            return (variantId && matchParentVariant) ||
+                   (!variantId && matchParentProduct);
+          }
+          return false;
+        })
       : (productVariant ? (productVariant.packItems ?? []) : (product.packItems ?? []));
 
     for (const item of packItems) {
@@ -211,7 +256,11 @@ export class Product {
         try {
           const itemMaterials = Product.getAllMaterials(item.product, item.variant, allBoms, allPackItems);
           for (const material of itemMaterials) {
-            const existingMaterial = usedMaterials.find((x) => x.material.id === material.material.id);
+            const materialId = material.material && typeof material.material === 'object' ? material.material.id : material.material;
+            const existingMaterial = usedMaterials.find((x) => {
+              const existingMaterialId = x.material && typeof x.material === 'object' ? x.material.id : x.material;
+              return String(existingMaterialId) === String(materialId);
+            });
             if (existingMaterial) {
               existingMaterial.quantity += material.quantity * item.quantity;
             } else {
