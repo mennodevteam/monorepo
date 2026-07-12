@@ -765,8 +765,8 @@
     "semantic_hash": "4a56e20077f3253aaa056340a68ebefd"
   },
   "apps/backend/src/app/orders/orders.service.ts": {
-    "mtime": 1783873455.6620803,
-    "ast_hash": "91b866427c77d7b116a6f77a7ef948f0",
+    "mtime": 1783876767.075227,
+    "ast_hash": "a98c35463842061c8150d4d7d52989a3",
     "semantic_hash": ""
   },
   "apps/backend/src/app/orders/orders.subscriber.ts": {
@@ -1075,8 +1075,8 @@
     "semantic_hash": "86e488accc90b4d37de02dcfa8657fa8"
   },
   "apps/customer/src/app/app.component.ts": {
-    "mtime": 1783867709.7735286,
-    "ast_hash": "9e5d51a8911591a9703f80c33c516116",
+    "mtime": 1783877448.1691406,
+    "ast_hash": "0189cfca406f798af3f2532c99303ae2",
     "semantic_hash": ""
   },
   "apps/customer/src/app/app.config.server.ts": {
@@ -1255,8 +1255,8 @@
     "semantic_hash": "f7ba8de54913d567abaf742fc41aa7b6"
   },
   "apps/customer/src/app/core/services/menu.service.ts": {
-    "mtime": 1783868728.1687188,
-    "ast_hash": "79bd4db626d9043ce6e178930514f827",
+    "mtime": 1783876740.4251883,
+    "ast_hash": "6f850bf4ad1c4e268959d1ad6239a46c",
     "semantic_hash": ""
   },
   "apps/customer/src/app/core/services/orders.service.ts": {
@@ -5540,13 +5540,13 @@
     "semantic_hash": ""
   },
   "apps/backend/src/app/core/schemas/campaign.schema.ts": {
-    "mtime": 1783869967.4882164,
-    "ast_hash": "4316cccde1a32176a8c1e2a40c4d8cab",
+    "mtime": 1783877288.5755906,
+    "ast_hash": "137f67054d7168afd68505000a3ebb44",
     "semantic_hash": ""
   },
   "apps/customer/src/app/shared/components/campaign-welcome-dialog/campaign-welcome-dialog.component.ts": {
-    "mtime": 1783867657.782176,
-    "ast_hash": "bd2f82768c859e1a319884eb459102e2",
+    "mtime": 1783877414.8826966,
+    "ast_hash": "e0895ff5aeb205e78ae91875eddfca98",
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/campaigns/campaign-report.component.ts": {
@@ -5555,8 +5555,8 @@
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts": {
-    "mtime": 1783874558.5324597,
-    "ast_hash": "c076c23c528f026bb5270298e5d5b379",
+    "mtime": 1783877341.248323,
+    "ast_hash": "2fcaebd4f7c11a9b60f6786ce3b40aa6",
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/campaigns/campaigns-list.component.ts": {
@@ -5570,23 +5570,23 @@
     "semantic_hash": ""
   },
   "libs/types/src/lib/campaign.ts": {
-    "mtime": 1783869960.530572,
-    "ast_hash": "444ccaf4a956287803c0f5f79a658892",
+    "mtime": 1783877278.2506948,
+    "ast_hash": "c26a4ed606a7891ff1927dba0115514f",
     "semantic_hash": ""
   },
   "apps/customer/src/app/shared/components/campaign-welcome-dialog/campaign-welcome-dialog.component.html": {
-    "mtime": 1783867665.09392,
-    "ast_hash": "b49aa5b4479b5b590e8d5e01f1ab7762",
+    "mtime": 1783877420.9762433,
+    "ast_hash": "cf8b255f3fc9205e1071587d542d8a11",
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/campaigns/campaigns-edit.component.html": {
-    "mtime": 1783874565.7064905,
-    "ast_hash": "041cb7a70125c5c2e62c212b82a3c625",
+    "mtime": 1783877706.7808278,
+    "ast_hash": "07ecc6b8fae06b06d2391987a1225831",
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/campaigns/campaigns-list.component.html": {
-    "mtime": 1783875441.8247347,
-    "ast_hash": "8139bd79a306082f09c78aba2547992e",
+    "mtime": 1783877712.993387,
+    "ast_hash": "928e21a36549bdbb12b821176f0d9627",
     "semantic_hash": ""
   }
 }

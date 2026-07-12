@@ -82,3 +82,19 @@ private authService = inject(AuthService);
 
 ### 3. State Management
 State is managed reactively using Angular Signals (`signal`, `computed`, and `linkedSignal`), coupled with `@tanstack/angular-query-experimental` (v5) for caching and synchronizing server state.
+
+## Server-Side Rendering (SSR) Configuration
+
+The application runs in a hybrid SSR/CSR environment managed by Express and `@angular/ssr` (Angular Node App Engine). Routes are categorized as:
+
+### 1. Server-Side Rendered (SSR) Routes
+SEO-critical pages are pre-rendered or rendered on the server to optimize crawler indexing and initial page load:
+- Home Page (`/`)
+- Categories Listing (`/categories`)
+- Category Details (`/categories/:categoryId`)
+- Product Detail Page (`/menu/product/:id` and `/categories/:categoryId/:id`)
+
+These are explicitly configured with `RenderMode.Server` in `app.routes.server.ts` and allowed for caching in `server.ts` via `SSR_ROUTE_PREFIXES`.
+
+### 2. Client-Side Rendered (CSR) Routes
+Highly dynamic, user-specific, or state-dependent pages (such as checkout and payment pages that require browser state/cart data or perform history-based routing checks like `location.back()`) are configured to default to `RenderMode.Client` via the wildcard `**` route in `app.routes.server.ts`. This serves the raw `index.html` shell to the browser immediately, letting the client-side router handle compilation and rendering on the user's device.
