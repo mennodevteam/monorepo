@@ -1,6 +1,7 @@
 import { ProductItem } from './order.dto';
 import { Product } from './product';
 import { Status } from './status.enum';
+import { ProductPackItem } from './product-pack';
 
 export class ProductVariant {
   id: number;
@@ -12,6 +13,7 @@ export class ProductVariant {
   position?: number;
   _orderItem?: ProductItem;
   product: Product;
+  packItems?: ProductPackItem[];
   createdAt: Date;
   deletedAt?: Date;
   updatedAt?: Date;

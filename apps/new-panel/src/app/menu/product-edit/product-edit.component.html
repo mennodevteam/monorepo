@@ -30,6 +30,7 @@
             <mat-label>{{ 'app.title' | translate }}</mat-label>
             <input matInput formControlName="title" />
           </mat-form-field>
+
           <mat-form-field appearance="outline">
             <mat-label>{{ 'menu.category' | translate }}</mat-label>
             <mat-select formControlName="category">
@@ -69,52 +70,195 @@
             </mat-autocomplete>
           </mat-form-field>
 
-          <div class="np-form-toggle-wrapper">
-            <mat-slide-toggle formControlName="hasVariants">
+          <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px; margin-top: 8px; margin-bottom: 12px; width: 100%;">
+            <mat-checkbox 
+              [checked]="form.controls['type'].value === 'pack'" 
+              (change)="form.controls['type'].setValue($event.checked ? 'pack' : 'standard')">
+              این محصول یک پکیج (باندل) است
+            </mat-checkbox>
+            <span style="font-size: 0.85em; opacity: 0.6; padding-right: 28px; line-height: 1.4;">
+              پکیج محصولی ترکیبی از سایر محصولات است که قیمت مستقیم ندارد و قیمت آن بر اساس مجموع اقلام زیرمجموعه‌اش محاسبه می‌شود.
+            </span>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px; margin-top: 8px; margin-bottom: 12px; width: 100%;">
+            <mat-checkbox formControlName="hasVariants">
               {{ 'productEdit.hasVariants' | translate }}
-            </mat-slide-toggle>
+            </mat-checkbox>
           </div>
 
-          @if (!form.value.hasVariants) {
+          @if (form.value.type !== 'pack' && !form.value.hasVariants) {
             <mat-form-field appearance="outline">
               <mat-label>{{ 'app.price' | translate }}</mat-label>
               <input matInput formControlName="price" type="number" />
               <mat-hint>{{ form.value.price | number | menuCurrency }} </mat-hint>
             </mat-form-field>
           }
-
-          @if (form.value.hasVariants) {
-            <div class="np-form-section" style="margin-top: 8px; margin-bottom: 8px; gap: 8px !important;">
-              <span class="np-sub-section-title">
-                {{ 'productEdit.variantSection' | translate: { value: '' } }}
-              </span>
+          @if (form.value.type === 'pack' && !form.value.hasVariants) {
+            <div class="np-form-section" style="margin-top: 8px; margin-bottom: 8px; gap: 8px !important; width: 100%;">
+              <span class="np-sub-section-title">اقلام پکیج</span>
               
-              <div class="variants-list-container" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="moveVariants($event)">
-                @for (variant of variantsForm.controls; track $index) {
-                  <div class="variant-item-card" cdkDrag (click)="editVariant(variant)">
-                    <div class="variant-drag-handle" cdkDragHandle (click)="$event.stopPropagation()">
-                      <ng-icon name="saxRowVerticalOutline"></ng-icon>
-                    </div>
-                    <div class="variant-info">
-                      <span class="variant-title">{{ variant.value.title }}</span>
-                      <span class="variant-price">{{ variant.value.price | number | menuCurrency }}</span>
-                    </div>
-                    <button type="button" class="variant-delete-btn" (click)="deleteVariant($index); $event.stopPropagation()">
-                      <ng-icon name="saxTrashOutline"></ng-icon>
+              <div class="bops-list-container" style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
+                @for (item of getPackItemsFormArray().controls; track $index) {
+                  <div class="bop-item-row" style="display: flex; align-items: center; gap: 12px; padding: 8px; background: rgba(0,0,0,0.03); border-radius: 8px; width: 100%;">
+                    <span style="flex: 1; font-weight: 500;">{{ item.value.productSource?.title }}</span>
+                    
+                    @if (item.value.productSource?.variants?.length) {
+                      <mat-form-field appearance="outline" style="width: 150px;" [subscriptSizing]="'dynamic'">
+                        <mat-label>واریانت</mat-label>
+                        <mat-select [formControl]="$any(item).controls.variantSource">
+                          @for (v of item.value.productSource.variants; track v.id) {
+                            <mat-option [value]="v">{{ v.title }}</mat-option>
+                          }
+                        </mat-select>
+                      </mat-form-field>
+                    } @else {
+                      <span style="opacity: 0.5; font-size: 0.9em; width: 150px;">فاقد گزینه</span>
+                    }
+                    
+                    <mat-form-field appearance="outline" style="width: 100px;" [subscriptSizing]="'dynamic'">
+                      <mat-label>تعداد</mat-label>
+                      <input matInput type="number" [formControl]="$any(item).controls.quantity" min="0.001" step="1" />
+                    </mat-form-field>
+                    
+                    <span style="width: 120px; text-align: left; font-weight: 300;">
+                      {{ getPackItemPrice(item.value) | number | menuCurrency }}
+                    </span>
+                    
+                    <button mat-icon-button type="button" (click)="removePackItemFromForm($index)">
+                      <ng-icon name="saxTrashOutline" style="color: #f44336;"></ng-icon>
                     </button>
                   </div>
                 }
                 
-                <div class="add-variant-box" (click)="editVariant()">
-                  <ng-icon name="saxAddOutline"></ng-icon>
-                  <span>{{ 'app.add' | translate }}</span>
+                <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="margin-top: 8px; width: 100%;">
+                  <mat-label>جستجو و افزودن محصول به پکیج...</mat-label>
+                  <input matInput #packSearchInput placeholder="نام محصول را تایپ کنید..." [matAutocomplete]="packItemAuto" />
+                  <mat-autocomplete #packItemAuto="matAutocomplete" (optionSelected)="addPackItemFromAutocomplete($event.option.value); packSearchInput.value = ''">
+                    @for (p of filteredProductsForSearch(packSearchInput.value); track p.id) {
+                      <mat-option [value]="p">
+                        {{ p.title }}
+                      </mat-option>
+                    }
+                  </mat-autocomplete>
+                </mat-form-field>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-weight: 500; width: 100%;">
+                  <span>قیمت کل پکیج (محاسبه‌شده):</span>
+                  <span style="color: #6200ee; font-size: 1.1em; font-weight: bold;">
+                    {{ getPackItemsTotalPrice(getPackItemsFormArray()) | number | menuCurrency }}
+                  </span>
                 </div>
               </div>
             </div>
           }
+
+          @if (form.value.hasVariants) {
+            <div class="np-form-section" style="margin-top: 8px; margin-bottom: 8px; gap: 8px !important; width: 100%;">
+              <span class="np-sub-section-title">
+                {{ 'productEdit.variantSection' | translate: { value: '' } }}
+              </span>
+              
+              @if (form.value.type === 'pack') {
+                <div class="variants-vertical-list" style="display: flex; flex-direction: column; gap: 16px; width: 100%;">
+                  @for (variant of variantsForm.controls; track $index) {
+                    <div class="variant-vertical-card" style="padding: 16px; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; background: #fff; width: 100%;">
+                      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; width: 100%;">
+                        <span style="font-weight: 600; font-size: 1.1em;">واریانت: {{ variant.value.title }}</span>
+                        
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                          <button mat-icon-button type="button" (click)="editVariant(variant)" matTooltip="ویرایش نام واریانت">
+                            <ng-icon name="saxEditOutline"></ng-icon>
+                          </button>
+                          <button mat-icon-button type="button" (click)="deleteVariant($index)" style="color: #f44336;">
+                            <ng-icon name="saxTrashOutline"></ng-icon>
+                          </button>
+                        </div>
+                      </div>
+                      
+                      <div class="bops-list-container" style="display: flex; flex-direction: column; gap: 8px; padding-right: 12px; border-right: 2px solid rgba(0,0,0,0.05); width: 100%;">
+                        @for (item of getPackItemsFormArray(variant).controls; track $index) {
+                          <div class="bop-item-row" style="display: flex; align-items: center; gap: 12px; padding: 6px 8px; background: rgba(0,0,0,0.02); border-radius: 8px; width: 100%;">
+                            <span style="flex: 1; font-weight: 500; font-size: 0.95em;">{{ item.value.productSource?.title }}</span>
+                            
+                            @if (item.value.productSource?.variants?.length) {
+                              <mat-form-field appearance="outline" style="width: 130px;" [subscriptSizing]="'dynamic'">
+                                <mat-select [formControl]="$any(item).controls.variantSource">
+                                  @for (v of item.value.productSource.variants; track v.id) {
+                                    <mat-option [value]="v">{{ v.title }}</mat-option>
+                                  }
+                                </mat-select>
+                              </mat-form-field>
+                            } @else {
+                              <span style="opacity: 0.5; font-size: 0.85em; width: 130px;">فاقد گزینه</span>
+                            }
+                            
+                            <mat-form-field appearance="outline" style="width: 80px;" [subscriptSizing]="'dynamic'">
+                              <input matInput type="number" [formControl]="$any(item).controls.quantity" min="0.001" />
+                            </mat-form-field>
+                            
+                            <span style="width: 100px; text-align: left; font-size: 0.9em; font-weight: 300;">
+                              {{ getPackItemPrice(item.value) | number | menuCurrency }}
+                            </span>
+                            
+                            <button mat-icon-button type="button" (click)="removePackItemFromForm($index, variant)">
+                              <ng-icon name="saxTrashOutline" style="color: #f44336;"></ng-icon>
+                            </button>
+                          </div>
+                        }
+                        
+                        <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="margin-top: 4px; width: 100%;">
+                          <input matInput #variantPackSearchInput placeholder="افزودن محصول به این واریانت..." [matAutocomplete]="variantPackItemAuto" />
+                          <mat-autocomplete #variantPackItemAuto="matAutocomplete" (optionSelected)="addPackItemFromAutocomplete($event.option.value, variant); variantPackSearchInput.value = ''">
+                            @for (p of filteredProductsForSearch(variantPackSearchInput.value); track p.id) {
+                              <mat-option [value]="p">
+                                {{ p.title }}
+                              </mat-option>
+                            }
+                          </mat-autocomplete>
+                        </mat-form-field>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; font-weight: 500; font-size: 0.9em; width: 100%;">
+                          <span>قیمت کل واریانت (محاسبه‌شده):</span>
+                          <span style="color: #6200ee; font-weight: bold;">
+                            {{ getPackItemsTotalPrice(getPackItemsFormArray(variant)) | number | menuCurrency }}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                  
+                  <button mat-stroked-button type="button" (click)="editVariant()" style="height: 48px; border-style: dashed; border-radius: 12px; margin-top: 8px; width: 100%;">
+                    <ng-icon name="saxAddOutline" style="margin-left: 4px; vertical-align: middle;"></ng-icon>
+                    افزودن واریانت جدید
+                  </button>
+                </div>
+              } @else {
+                <div class="variants-list-container" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="moveVariants($event)">
+                  @for (variant of variantsForm.controls; track $index) {
+                    <div class="variant-item-card" cdkDrag (click)="editVariant(variant)">
+                      <div class="variant-drag-handle" cdkDragHandle (click)="$event.stopPropagation()">
+                        <ng-icon name="saxRowVerticalOutline"></ng-icon>
+                      </div>
+                      <div class="variant-info">
+                        <span class="variant-title">{{ variant.value.title }}</span>
+                        <span class="variant-price">{{ variant.value.price | number | menuCurrency }}</span>
+                      </div>
+                      <button type="button" class="variant-delete-btn" (click)="deleteVariant($index); $event.stopPropagation()">
+                        <ng-icon name="saxTrashOutline"></ng-icon>
+                      </button>
+                    </div>
+                  }
+                  
+                  <div class="add-variant-box" (click)="editVariant()">
+                    <ng-icon name="saxAddOutline"></ng-icon>
+                    <span>{{ 'app.add' | translate }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          }
         </div>
       </div>
-
       <!-- Photo Section -->
       <div class="np-form-section">
         <h3 class="np-section-title">

@@ -6,6 +6,12 @@ import { ProductItem } from './order.dto';
 import { ProductVariant } from './product-variant';
 import { Image } from './image';
 import { BillOfMaterial, BillOfProduct, Material } from './inventory';
+import { ProductPackItem } from './product-pack';
+
+export enum ProductType {
+  Standard = 'standard',
+  Pack = 'pack',
+}
 
 export class Product {
   id: string;
@@ -13,13 +19,14 @@ export class Product {
   description?: string;
   subcategories?: string[];
   price: number;
+  type?: ProductType;
   status: Status;
   position?: number;
   category: ProductCategory;
   images?: string[];
   imageFiles?: Image[] | Image;
   orderTypes: OrderType[];
-  packItems: string[];
+  packItems?: ProductPackItem[];
   details: any;
   stock?: number | null;
   costs?: MenuCost[];
@@ -48,9 +55,21 @@ export class Product {
     });
   }
 
+  static getPackPrice(product: Product, productVariant?: ProductVariant): number {
+    const packItems = productVariant ? (productVariant.packItems ?? []) : (product.packItems ?? []);
+    if (packItems.length === 0) return 0;
+    return packItems.reduce((acc, item) => {
+      const price = item.variant ? item.variant.price : (item.product?.price || 0);
+      return acc + (price || 0) * item.quantity;
+    }, 0);
+  }
+
   static realPrice(product: Product, productVariant?: ProductVariant, round = 500) {
     let cost = 0;
-    const price = productVariant ? productVariant.price : product.price;
+    let price = productVariant ? productVariant.price : product.price;
+    if (product.type === ProductType.Pack) {
+      price = Product.getPackPrice(product, productVariant);
+    }
     const showCosts = product.costs?.filter((x) => x.showOnItem && (x.fixedCost > 0 || x.percentageCost > 0));
     if (showCosts) {
       for (const c of showCosts) {
@@ -71,7 +90,10 @@ export class Product {
 
   static totalPrice(product: Product, productVariant?: ProductVariant, round = 500) {
     let cost = 0;
-    const price = productVariant ? productVariant.price : product.price;
+    let price = productVariant ? productVariant.price : product.price;
+    if (product.type === ProductType.Pack) {
+      price = Product.getPackPrice(product, productVariant);
+    }
     const showCosts = product.costs?.filter((x) => x.showOnItem);
     if (showCosts) {
       for (const c of showCosts) {
@@ -120,43 +142,47 @@ export class Product {
     if (Product.totalPrice(product, productVariant) < Product.realPrice(product, productVariant)) return true;
     return false;
   }
-
   static calculateCost(
     product: Product,
     productVariant: ProductVariant | undefined | null,
     allBoms: BillOfMaterial[],
-    allBops: BillOfProduct[],
+    allPackItems?: any[],
   ) {
-    const bops = allBops.filter(
-      (bop) => bop.product?.id === product.id && bop.variant?.id === productVariant?.id,
-    );
     const boms = allBoms.filter(
       (bom) => bom.product?.id === product.id && bom.variant?.id === productVariant?.id,
     );
 
-    if (bops.length === 0 && boms.length === 0) return null;
+    const packItems = (allPackItems && allPackItems.length > 0 && ('parentProduct' in allPackItems[0] || 'parentVariant' in allPackItems[0]))
+      ? allPackItems.filter(
+          (item) =>
+            (productVariant && item.parentVariant?.id === productVariant.id) ||
+            (!productVariant && item.parentProduct?.id === product.id),
+        )
+      : (productVariant ? (productVariant.packItems ?? []) : (product.packItems ?? []));
+
+    if (boms.length === 0 && packItems.length === 0) return null;
 
     const bomsCost = boms.length ? BillOfMaterial.calculateCost(boms) : 0;
     if (bomsCost === null) return null;
 
-    let bopsCost = 0;
-    for (const bop of bops) {
+    let packCost = 0;
+    for (const item of packItems) {
       try {
-        const bopCost = Product.calculateCost(bop.productSource, bop.variantSource, allBoms, allBops);
-        if (bopCost === null) return null;
-        bopsCost += bopCost * bop.quantity;
+        const itemCost = Product.calculateCost(item.product, item.variant, allBoms, allPackItems);
+        if (itemCost === null) return null;
+        packCost += itemCost * item.quantity;
       } catch (error) {
         return null;
       }
     }
-    return bomsCost + bopsCost;
+    return bomsCost + packCost;
   }
 
   static getAllMaterials(
     product: Product,
     productVariant: ProductVariant | undefined | null,
     allBoms: BillOfMaterial[],
-    allBops: BillOfProduct[],
+    allPackItems?: any[],
   ) {
     const usedMaterials: { material: Material; quantity: number }[] = [];
     const boms = allBoms.filter(
@@ -172,23 +198,29 @@ export class Product {
       }
     }
 
-    const bops = allBops.filter(
-      (bop) => bop.product?.id === product.id && bop.variant?.id === productVariant?.id,
-    );
+    const packItems = (allPackItems && allPackItems.length > 0 && ('parentProduct' in allPackItems[0] || 'parentVariant' in allPackItems[0]))
+      ? allPackItems.filter(
+          (item) =>
+            (productVariant && item.parentVariant?.id === productVariant.id) ||
+            (!productVariant && item.parentProduct?.id === product.id),
+        )
+      : (productVariant ? (productVariant.packItems ?? []) : (product.packItems ?? []));
 
-    for (const bop of bops) {
-      try {
-        const bopMaterials = Product.getAllMaterials(bop.productSource, bop.variantSource, allBoms, allBops);
-        for (const material of bopMaterials) {
-          const existingMaterial = usedMaterials.find((x) => x.material.id === material.material.id);
-          if (existingMaterial) {
-            existingMaterial.quantity += material.quantity;
-          } else {
-            usedMaterials.push({ material: material.material, quantity: material.quantity });
+    for (const item of packItems) {
+      if (item.product) {
+        try {
+          const itemMaterials = Product.getAllMaterials(item.product, item.variant, allBoms, allPackItems);
+          for (const material of itemMaterials) {
+            const existingMaterial = usedMaterials.find((x) => x.material.id === material.material.id);
+            if (existingMaterial) {
+              existingMaterial.quantity += material.quantity * item.quantity;
+            } else {
+              usedMaterials.push({ material: material.material, quantity: material.quantity * item.quantity });
+            }
           }
+        } catch (error) {
+          // Ignore
         }
-      } catch (error) {
-        return [];
       }
     }
     return usedMaterials;

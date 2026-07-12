@@ -9,9 +9,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 import {
   AbstractControl,
   FormArray,
@@ -23,7 +25,7 @@ import {
 } from '@angular/forms';
 import { MenuService } from '../menu.service';
 import { ActivatedRoute } from '@angular/router';
-import { Menu, Product, ProductCategory } from '@menno/types';
+import { Menu, Product, ProductCategory, ProductType, BillOfProduct, ProductVariant } from '@menno/types';
 import { DialogService } from '../../core/services/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
 import { CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray, CdkDragHandle } from '@angular/cdk/drag-drop';
@@ -55,6 +57,7 @@ import { startWith } from 'rxjs';
     MatTooltipModule,
     CdkDragHandle,
     MatSlideToggleModule,
+    MatCheckboxModule,
   ],
   templateUrl: './product-edit.component.html',
   styleUrl: './product-edit.component.scss',
@@ -100,6 +103,7 @@ export class ProductEditComponent implements FormComponent {
           category = this.menuService.categories()?.find((x) => x.id.toString() === this.categoryId);
         }
 
+
         this.variantsForm = this.fb.array(
           product?.variants?.map((item) =>
             this.fb.group({
@@ -107,7 +111,17 @@ export class ProductEditComponent implements FormComponent {
               status: [item.status],
               position: [item.position],
               title: [item.title, Validators.required],
-              price: [item.price, Validators.required],
+              price: [item.price],
+              packItems: this.fb.array(
+                item.packItems?.map((packItem) =>
+                  this.fb.group({
+                    id: [packItem.id],
+                    productSource: [packItem.product, Validators.required],
+                    variantSource: [packItem.variant],
+                    quantity: [packItem.quantity ?? 1, [Validators.required, Validators.min(0.001)]],
+                  })
+                ) || []
+              ),
             }),
           ) || [],
         );
@@ -128,8 +142,9 @@ export class ProductEditComponent implements FormComponent {
         this.form = this.fb.group({
           title: [product?.title, Validators.required],
           description: [product?.description],
+          type: [product?.type ?? ProductType.Standard, Validators.required],
           subcategories: [this.cleanSubcategories(product?.subcategories || [])],
-          price: [product?.price ?? '', hasInitVariants ? [] : [Validators.required]],
+          price: [product?.price ?? '', hasInitVariants || product?.type === ProductType.Pack ? [] : [Validators.required]],
           category: [category, Validators.required],
           hasVariants: [hasInitVariants],
           slug: [
@@ -146,6 +161,16 @@ export class ProductEditComponent implements FormComponent {
           imageFiles: this.imagesForm,
           maxBasket: [product?.maxBasket],
           relatedProductIds: [product?.relatedProductIds ?? []],
+          packItems: this.fb.array(
+            product?.packItems?.map((packItem) =>
+              this.fb.group({
+                id: [packItem.id],
+                productSource: [packItem.product, Validators.required],
+                variantSource: [packItem.variant],
+                quantity: [packItem.quantity ?? 1, [Validators.required, Validators.min(0.001)]],
+              })
+            ) || []
+          ),
         });
 
         // Setup slug value changes handler
@@ -158,17 +183,31 @@ export class ProductEditComponent implements FormComponent {
           }
         });
 
-        // Setup dynamic validators for price based on hasVariants checkbox
+        // Setup dynamic validators for price based on hasVariants checkbox and product type
+        const updatePriceValidators = () => {
+          const priceCtrl = this.form.controls['price'];
+          const hasVariants = this.form.controls['hasVariants'].value;
+          const type = this.form.controls['type'].value;
+
+          if (hasVariants || type === ProductType.Pack) {
+            priceCtrl.clearValidators();
+          } else {
+            priceCtrl.setValidators(Validators.required);
+          }
+          priceCtrl.updateValueAndValidity();
+        };
+
         this.form.controls['hasVariants'].valueChanges
           .pipe(takeUntilDestroyed(this.destroyRef))
-          .subscribe((hasVariants) => {
-            const priceCtrl = this.form.controls['price'];
-            if (hasVariants) {
-              priceCtrl.clearValidators();
-            } else {
-              priceCtrl.setValidators(Validators.required);
-            }
-            priceCtrl.updateValueAndValidity();
+          .subscribe(() => {
+            updatePriceValidators();
+            this.form.markAsDirty();
+          });
+
+        this.form.controls['type'].valueChanges
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe(() => {
+            updatePriceValidators();
             this.form.markAsDirty();
           });
 
@@ -281,28 +320,112 @@ export class ProductEditComponent implements FormComponent {
   }
 
   editVariant(variant?: AbstractControl) {
+    const isPack = this.form.controls['type'].value === ProductType.Pack;
+    const prompts: any = {
+      title: {
+        control: new FormControl(variant?.value.title, Validators.required),
+        label: this.t.instant('app.title'),
+      },
+    };
+    if (!isPack) {
+      prompts.price = {
+        control: new FormControl(variant?.value.price, Validators.required),
+        label: this.t.instant('app.price'),
+      };
+    }
+
     this.dialog
-      .prompt(variant?.value.title || this.t.instant('app.add'), {
-        title: {
-          control: new FormControl(variant?.value.title, Validators.required),
-          label: this.t.instant('app.title'),
-        },
-        price: {
-          control: new FormControl(variant?.value.price, Validators.required),
-          label: this.t.instant('app.price'),
-        },
-      })
+      .prompt(variant?.value.title || this.t.instant('app.add'), prompts)
       .then((dto) => {
-        if (variant) variant.setValue({ ...variant.value, ...dto });
-        else
+        if (variant) {
+          variant.setValue({ ...variant.value, ...dto });
+        } else {
           this.variantsForm.push(
             this.fb.group({
               title: [dto.title, Validators.required],
-              price: [dto.price, Validators.required],
+              price: [isPack ? 0 : dto.price, isPack ? [] : [Validators.required]],
+              packItems: this.fb.array([]),
             }),
           );
+        }
+        this.variantsForm.markAsDirty();
+        this.form.markAsDirty();
       });
-    this.variantsForm.markAsDirty();
+  }
+
+  getPackItemsFormArray(variant?: AbstractControl): FormArray {
+    if (variant) {
+      return variant.get('packItems') as FormArray;
+    }
+    return this.form.get('packItems') as FormArray;
+  }
+
+  addPackItemFromAutocomplete(product: Product, variantControl?: AbstractControl) {
+    const childVariant = product.variants?.length ? product.variants[0] : undefined;
+    this.addPackItemToForm(product, childVariant, variantControl);
+  }
+
+  addPackItemToForm(product: Product, childVariant?: ProductVariant, variantControl?: AbstractControl) {
+    const packItemsArray = this.getPackItemsFormArray(variantControl);
+    const exists = packItemsArray.controls.some((c) => {
+      const pSrc = c.value.productSource;
+      const vSrc = c.value.variantSource;
+      return pSrc?.id === product.id && vSrc?.id === childVariant?.id;
+    });
+
+    if (exists) return;
+
+    packItemsArray.push(
+      this.fb.group({
+        productSource: [product, Validators.required],
+        variantSource: [childVariant],
+        quantity: [1, [Validators.required, Validators.min(0.001)]],
+      })
+    );
+    packItemsArray.markAsDirty();
+    this.form.markAsDirty();
+  }
+
+  removePackItemFromForm(index: number, variantControl?: AbstractControl) {
+    const packItemsArray = this.getPackItemsFormArray(variantControl);
+    packItemsArray.removeAt(index);
+    packItemsArray.markAsDirty();
+    this.form.markAsDirty();
+  }
+
+  getAvailableProductsForPack(): Product[] {
+    const menu = this.menuService.data();
+    if (!menu?.categories) return [];
+    const currentProductId = this.product()?.id;
+    const list: Product[] = [];
+    for (const cat of menu.categories) {
+      if (cat.products) {
+        for (const p of cat.products) {
+          if (p.id !== currentProductId) {
+            list.push(p);
+          }
+        }
+      }
+    }
+    return list;
+  }
+
+  filteredProductsForSearch(query: string): Product[] {
+    const q = (query || '').toLowerCase().trim();
+    const all = this.getAvailableProductsForPack();
+    if (!q) return all.slice(0, 10);
+    return all.filter((p) => p.title.toLowerCase().includes(q));
+  }
+
+  getPackItemPrice(itemVal: any): number {
+    const p = itemVal.productSource;
+    if (!p) return 0;
+    const v = itemVal.variantSource;
+    return v ? (v.price || 0) : (p.price || 0);
+  }
+
+  getPackItemsTotalPrice(packItemsArray: FormArray): number {
+    return packItemsArray.controls.reduce((acc, c) => acc + this.getPackItemPrice(c.value) * (c.value.quantity || 0), 0);
   }
 
   addImage() {
@@ -313,7 +436,6 @@ export class ProductEditComponent implements FormComponent {
       }
     });
   }
-
   moveVariants(event: CdkDragDrop<AbstractControl[]>) {
     moveItemInArray(this.variantsForm.controls, event.previousIndex, event.currentIndex);
     for (let i = 0; i < this.variantsForm.controls.length; i++) {
@@ -360,18 +482,47 @@ export class ProductEditComponent implements FormComponent {
 
   async submit() {
     const hasVariants = this.form.controls['hasVariants'].value;
-    if (hasVariants) {
+    const isPack = this.form.controls['type'].value === ProductType.Pack;
+    if (hasVariants || isPack) {
       this.form.controls['price'].setValue(0);
     } else {
       if (!this.form.controls['price'].value) this.form.controls['price'].setValue(0);
     }
     if (this.form.invalid) return;
     const fv = this.form.getRawValue();
-    if (hasVariants) {
+
+    const mapPackItems = (itemsList: any[]) => {
+      return (itemsList || []).map((b) => ({
+        id: b.id,
+        product: { id: b.productSource.id },
+        variant: b.variantSource ? { id: b.variantSource.id } : null,
+        quantity: Number(b.quantity),
+      }));
+    };
+
+    if (isPack) {
       fv.price = 0;
+      if (hasVariants) {
+        fv.packItems = [];
+        for (const v of fv.variants) {
+          v.price = 0;
+          v.packItems = mapPackItems(v.packItems);
+        }
+      } else {
+        fv.variants = [];
+        fv.packItems = mapPackItems(fv.packItems);
+      }
     } else {
-      fv.variants = [];
+      fv.packItems = [];
+      if (hasVariants) {
+        for (const v of fv.variants) {
+          v.packItems = [];
+        }
+      } else {
+        fv.variants = [];
+      }
     }
+
     if (this.productId) fv.id = this.productId;
     fv.category = { id: fv.category.id };
     fv.slug = this.buildFinalSlug(fv.slug) ?? null;

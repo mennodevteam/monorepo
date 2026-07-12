@@ -1,4 +1,4 @@
-import { OrderType, Product, Status } from '@menno/types';
+import { OrderType, Product, Status, ProductType } from '@menno/types';
 import { EntitySchema } from 'typeorm';
 
 export const ProductSchema = new EntitySchema<Product>({
@@ -17,6 +17,11 @@ export const ProductSchema = new EntitySchema<Product>({
       type: 'enum',
       enum: Status,
       default: Status.Active,
+    },
+    type: {
+      type: 'enum',
+      enum: ProductType,
+      default: ProductType.Standard,
     },
     position: {
       type: Number,
@@ -103,6 +108,12 @@ export const ProductSchema = new EntitySchema<Product>({
       type: 'one-to-many',
       target: 'ProductVariant',
       inverseSide: 'product',
+      cascade: ['insert', 'update', 'soft-remove'],
+    },
+    packItems: {
+      type: 'one-to-many',
+      target: 'ProductPackItem',
+      inverseSide: 'parentProduct',
       cascade: ['insert', 'update', 'soft-remove'],
     },
   },

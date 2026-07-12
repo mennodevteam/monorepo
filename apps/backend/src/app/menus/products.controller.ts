@@ -24,6 +24,7 @@ export class ProductsController {
   async save(@Body() dto: Product, @LoginUser() user: AuthPayload): Promise<Product> {
     const shop = await this.auth.getPanelUserShop(user);
 
+
     const newRelatedIds = (dto.relatedProductIds ?? []).filter((id): id is string => !!id);
     const currentProductId = dto.id;
 

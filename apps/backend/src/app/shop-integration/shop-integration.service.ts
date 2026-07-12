@@ -17,6 +17,7 @@ import {
   Material,
   BillOfMaterial,
   BillOfProduct,
+  ProductPackItem,
   InventoryTransaction,
   InventoryTransactionType,
   CostUpdateStrategy,
@@ -59,6 +60,8 @@ export class ShopIntegrationService {
     private bomRepo: Repository<BillOfMaterial>,
     @InjectRepository(BillOfProduct)
     private bopRepo: Repository<BillOfProduct>,
+    @InjectRepository(ProductPackItem)
+    private productPackItemRepository: Repository<ProductPackItem>,
     @InjectRepository(InventoryTransaction)
     private inventoryTransactionRepo: Repository<InventoryTransaction>,
     @InjectRepository(MenuCost)
@@ -431,9 +434,13 @@ export class ShopIntegrationService {
       relations: ['material', 'product', 'variant'],
     });
 
-    const bops = await this.bopRepo.find({
-      where: { shop: { id: shopId } },
-      relations: ['productSource', 'variantSource', 'product', 'variant'],
+    const menuId = shop.menu.id;
+    const packItems = await this.productPackItemRepository.find({
+      where: [
+        { parentProduct: { category: { menu: { id: menuId } } } },
+        { parentVariant: { product: { category: { menu: { id: menuId } } } } },
+      ],
+      relations: ['product', 'variant', 'parentProduct', 'parentVariant'],
     });
 
     const result: Array<{
@@ -453,7 +460,7 @@ export class ShopIntegrationService {
           for (const product of cat.products) {
             if (product.variants && product.variants.length > 0) {
               for (const variant of product.variants) {
-                const cost = Product.calculateCost(product, variant, boms, bops);
+                const cost = Product.calculateCost(product, variant, boms, packItems);
                 const salesPrice = variant.price;
                 const grossProfit = cost !== null ? salesPrice - cost : null;
                 const profitMarginPercent = (cost !== null && salesPrice > 0) ? Math.round((grossProfit / salesPrice) * 100) : null;
@@ -470,7 +477,7 @@ export class ShopIntegrationService {
                 });
               }
             } else {
-              const cost = Product.calculateCost(product, null, boms, bops);
+              const cost = Product.calculateCost(product, null, boms, packItems);
               const salesPrice = product.price;
               const grossProfit = cost !== null ? salesPrice - cost : null;
               const profitMarginPercent = (cost !== null && salesPrice > 0) ? Math.round((grossProfit / salesPrice) * 100) : null;

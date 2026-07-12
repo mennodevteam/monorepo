@@ -19,6 +19,7 @@ import {
   InventoryTransactionType,
   BillOfProduct,
   Product,
+  ProductPackItem,
 } from '@menno/types';
 import { Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -70,6 +71,8 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
     private billOfMaterialRepository: Repository<BillOfMaterial>,
     @InjectRepository(BillOfProduct)
     private billOfProductRepository: Repository<BillOfProduct>,
+    @InjectRepository(ProductPackItem)
+    private productPackItemRepository: Repository<ProductPackItem>,
     private webPush: WebPushNotificationsService,
     private printersService: PrintersService,
     private smsService: SmsService,
@@ -290,16 +293,25 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
       },
       relations: ['material', 'product', 'variant'],
     });
-    const bops = await this.billOfProductRepository.find({
-      where: {
-        shop: { id: order.shop.id },
-      },
-      relations: ['productSource', 'variantSource', 'product', 'variant'],
+
+    const shop = await this.shopsRepo.findOne({
+      where: { id: order.shop.id },
+      relations: ['menu'],
     });
+    const menuId = shop?.menu?.id;
+    const packItems = menuId
+      ? await this.productPackItemRepository.find({
+          where: [
+            { parentProduct: { category: { menu: { id: menuId } } } },
+            { parentVariant: { product: { category: { menu: { id: menuId } } } } },
+          ],
+          relations: ['product', 'variant', 'parentProduct', 'parentVariant'],
+        })
+      : [];
 
     const usedMaterials: { material: Material; quantity: number }[] = [];
     for (const item of items) {
-      const materials = Product.getAllMaterials(item.product, item.productVariant, boms, bops);
+      const materials = Product.getAllMaterials(item.product, item.productVariant, boms, packItems);
       for (const material of materials) {
         const existingMaterial = usedMaterials.find((x) => x.material.id === material.material.id);
         if (existingMaterial) {

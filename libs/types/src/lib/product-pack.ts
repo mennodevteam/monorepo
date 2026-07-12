@@ -21,4 +21,6 @@ export class ProductPackItem {
   product: Product;
   variant?: ProductVariant;
   quantity: number;
+  parentProduct?: Product;
+  parentVariant?: ProductVariant;
 }

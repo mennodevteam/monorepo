@@ -56,5 +56,4 @@ export * from './purchase-invoice.schema';
 export * from './purchase-invoice-item.schema';
 export * from './stocktaking.schema';
 export * from './stocktaking-item.schema';
-
-
+export * from './product-pack-item.schema';

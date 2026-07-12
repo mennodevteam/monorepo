@@ -91,18 +91,20 @@ export class RedisService {
         where: { id: shopId },
         relations: [
           'menu.categories.products.variants',
+          'menu.categories.products.packItems.product.variants',
+          'menu.categories.products.packItems.variant',
+          'menu.categories.products.variants.packItems.product.variants',
+          'menu.categories.products.variants.packItems.variant',
           'menu.costs',
           'menu.costs.includeProductCategory',
           'menu.costs.includeProduct',
         ],
       });
-
       if (shop.menu) {
         const shopMenuRedisKey = this.key(RedisKey.PanelMenu, shop.id);
         await this.client.set(shopMenuRedisKey, JSON.stringify(shop.menu));
         this.client.expire(shopMenuRedisKey, 3600 * 12);
         // this.http
-        //   .request({
         //     url: `https://api.menno.pro/menus/${shop.username}`,
         //     method: 'PURGE',
         //     headers: { 'X-Purge-Method': 'PURGE' },

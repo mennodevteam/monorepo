@@ -27,9 +27,9 @@ import {
   Wallet,
   Material,
   BillOfMaterial,
-  InventoryTransactionType,
   InventoryTransaction,
-  BillOfProduct,
+  InventoryTransactionType,
+  ProductPackItem,
 } from '@menno/types';
 import { groupBy, groupBySum } from '@menno/utils';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -69,8 +69,8 @@ export class OrdersService {
     private materialsRepo: Repository<Material>,
     @InjectRepository(BillOfMaterial)
     private billOfMaterialRepository: Repository<BillOfMaterial>,
-    @InjectRepository(BillOfProduct)
-    private billOfProductRepository: Repository<BillOfProduct>,
+    @InjectRepository(ProductPackItem)
+    private productPackItemRepository: Repository<ProductPackItem>,
     @InjectRepository(InventoryTransaction)
     private inventoryTransactionRepository: Repository<InventoryTransaction>,
     private smsService: SmsService,
@@ -118,26 +118,29 @@ export class OrdersService {
     const menu = shop.menu;
     Menu.setRefsAndSort(menu, dto.type, true, true, undefined, dto.isManual ? true : false);
     order.items = [...OrderDto.productItems(dto, menu), ...OrderDto.abstractItems(dto, menu)];
-
     const allBoms = await this.billOfMaterialRepository.find({
       where: {
         material: { shop: { id: order.shop.id } },
       },
       relations: ['material', 'product', 'variant'],
     });
-    const allBops = await this.billOfProductRepository.find({
-      where: {
-        shop: { id: order.shop.id },
-      },
-      relations: ['productSource', 'variantSource', 'product', 'variant'],
-    });
+    const menuId = shop?.menu?.id;
+    const allPackItems = menuId
+      ? await this.productPackItemRepository.find({
+          where: [
+            { parentProduct: { category: { menu: { id: menuId } } } },
+            { parentVariant: { product: { category: { menu: { id: menuId } } } } },
+          ],
+          relations: ['product', 'variant', 'parentProduct', 'parentVariant'],
+        })
+      : [];
 
     order.materialCost = 0;
     for (const item of order.items) {
       if (item.product) item.product = { id: item.product.id } as Product;
       if (item.productVariant) item.productVariant = { id: item.productVariant.id } as ProductVariant;
       if (item.product) {
-        item.materialCost = Product.calculateCost(item.product, item.productVariant, allBoms, allBops);
+        item.materialCost = Product.calculateCost(item.product, item.productVariant, allBoms, allPackItems);
         if (item.materialCost === null) {
           order.materialCost = undefined;
         } else if (order.materialCost !== undefined) {
@@ -397,13 +400,20 @@ export class OrdersService {
       },
       relations: ['material', 'product', 'variant'],
     });
-
-    const bops = await this.billOfProductRepository.find({
-      where: {
-        shop: { id: order.shop.id },
-      },
-      relations: ['productSource', 'variantSource', 'product', 'variant'],
+    const shop = await this.shopsRepo.findOne({
+      where: { id: order.shop.id },
+      relations: ['menu'],
     });
+    const menuId = shop?.menu?.id;
+    const packItems = menuId
+      ? await this.productPackItemRepository.find({
+          where: [
+            { parentProduct: { category: { menu: { id: menuId } } } },
+            { parentVariant: { product: { category: { menu: { id: menuId } } } } },
+          ],
+          relations: ['product', 'variant', 'parentProduct', 'parentVariant'],
+        })
+      : [];
 
     const usedMaterials: { material: Material; quantity: number }[] = [];
     for (const item of order.items) {
@@ -417,7 +427,7 @@ export class OrdersService {
         changes.push({ title: item.title, change: dtoItem.quantity - item.quantity });
       }
 
-      const itemMaterials = Product.getAllMaterials(item.product, item.productVariant, boms, bops);
+      const itemMaterials = Product.getAllMaterials(item.product, item.productVariant, boms, packItems);
       if (itemMaterials.length > 0 && (!dtoItem || dtoItem.quantity != item.quantity)) {
         for (const material of itemMaterials) {
           const quantity = !dtoItem
@@ -442,7 +452,7 @@ export class OrdersService {
     );
     for (const item of newProductItems) {
       changes.push({ title: item.title, change: item.quantity });
-      const itemMaterials = Product.getAllMaterials(item.product, item.productVariant, boms, bops);
+      const itemMaterials = Product.getAllMaterials(item.product, item.productVariant, boms, packItems);
       if (itemMaterials.length > 0) {
         for (const material of itemMaterials) {
           const quantity = material.quantity * item.quantity;

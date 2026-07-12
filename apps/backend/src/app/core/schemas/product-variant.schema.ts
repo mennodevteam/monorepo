@@ -58,5 +58,11 @@ export const ProductVariantSchema = new EntitySchema<ProductVariant>({
       target: 'Product',
       inverseSide: 'variants',
     },
+    packItems: {
+      type: 'one-to-many',
+      target: 'ProductPackItem',
+      inverseSide: 'parentVariant',
+      cascade: ['insert', 'update', 'soft-remove'],
+    },
   },
 });
