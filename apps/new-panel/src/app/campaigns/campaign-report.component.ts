@@ -59,7 +59,7 @@ interface CampaignReport {
       </button>
     </mat-toolbar>
 
-    <main p-md w-md class="np-form-container" style="font-family: 'Estedad'; direction: rtl;">
+    <main p-md w-lg class="np-form-container" style="font-family: 'Estedad'; direction: rtl;">
       @if (loading()) {
         <app-data-loading />
       } @else if (report()) {

@@ -146,13 +146,18 @@ export class CampaignsService {
 
   async remove(id: string, shopId: string) {
     const campaign = await this.findOne(id, shopId);
-    const now = new Date();
-    if (new Date(campaign.startDate) <= now) {
-      throw new HttpException(
-        'کمپین‌های شروع شده یا پایان یافته قابل حذف نیستند. می‌توانید کمپین در حال اجرا را غیرفعال کنید.',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
+
+    // Nullify references in orders and menu stats to avoid deleting orders
+    await this.ordersRepo.update(
+      { campaign: { id } },
+      { campaign: null }
+    );
+
+    await this.menuStatsRepo.update(
+      { campaignRef: { id } },
+      { campaignRef: null }
+    );
+
     await this.campaignsRepo.softRemove(campaign);
 
     await this.redisService.clearCustomerSsrCache(shopId);

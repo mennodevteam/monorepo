@@ -64,6 +64,9 @@ export class CampaignsListComponent {
   isEmptyData = computed(() => this.data()?.length === 0);
 
   getCampaignStatus(campaign: Campaign): { label: string; color: string } {
+    if (!campaign.enabled) {
+      return { label: 'غیرفعال', color: 'gray' };
+    }
     const now = new Date();
     const start = new Date(campaign.startDate);
     const end = new Date(campaign.endDate);
@@ -86,7 +89,7 @@ export class CampaignsListComponent {
   }
 
   isDeletable(campaign: Campaign): boolean {
-    return new Date(campaign.startDate) > new Date();
+    return true;
   }
 
   async toggleEnable(campaign: Campaign, checked: boolean) {
@@ -103,8 +106,8 @@ export class CampaignsListComponent {
 
   async deleteCampaign(campaign: Campaign) {
     const confirmed = await this.dialog.alert(
-      this.t.instant('app.confirmDelete'),
-      this.t.instant('app.deleteConfirmMessage', { value: campaign.title }),
+      'حذف کمپین',
+      `توجه: حذف این کمپین باعث می‌شود تمامی آمارها و تحلیل‌های مربوط به آن از دست برود (سفارشات حذف نخواهند شد). آیا از حذف کمپین "${campaign.title}" اطمینان دارید؟`,
     );
 
     if (confirmed) {

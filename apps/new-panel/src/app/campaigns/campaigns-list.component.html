@@ -7,7 +7,7 @@
   </button>
 </mat-toolbar>
 
-<main p-md w-md>
+<main p-md w-lg>
   <!-- Educational Promo Banner -->
   <mat-card class="promo-card blue">
     <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
@@ -91,7 +91,7 @@
             <button mat-icon-button (click)="editCampaign(element)" matTooltip="ویرایش">
               <ng-icon name="saxSetting2Outline"></ng-icon>
             </button>
-            <button mat-icon-button (click)="deleteCampaign(element)" [disabled]="!isDeletable(element)" style="color: var(--red-color, #f44336);" matTooltip="حذف (فقط قبل از شروع کمپین)">
+            <button mat-icon-button (click)="deleteCampaign(element)" style="color: var(--red-color, #f44336);" matTooltip="حذف کمپین">
               <ng-icon name="saxTrashOutline"></ng-icon>
             </button>
           </mat-cell>
