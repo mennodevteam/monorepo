@@ -3550,8 +3550,8 @@
     "semantic_hash": "7c1990ede363f89fd6ae662a182ce859"
   },
   "apps/new-panel/src/app/shell/shell.component.ts": {
-    "mtime": 1783867851.2136827,
-    "ast_hash": "f4deab48b5f2ef3e3d9059948a8a07d5",
+    "mtime": 1783870659.4445236,
+    "ast_hash": "c632f264b04cdb286ba1ceaee40583ba",
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/shop/shop.service.ts": {
@@ -5260,8 +5260,8 @@
     "semantic_hash": "94550641ffcad9ee495c937fa1af13be"
   },
   "apps/new-panel/src/app/shell/shell.component.html": {
-    "mtime": 1783867848.6742632,
-    "ast_hash": "f38e12a6e14aba49e5b3912be4eb4699",
+    "mtime": 1783870665.109346,
+    "ast_hash": "dce6732127054b8e9651e79556ebd3e5",
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/sms-group/sms-group.component.html": {
@@ -5585,8 +5585,8 @@
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/campaigns/campaigns-list.component.html": {
-    "mtime": 1783870047.1602995,
-    "ast_hash": "b62268da8031bc72dcb65e6b740d5aab",
+    "mtime": 1783870670.6501966,
+    "ast_hash": "6a29fcdf37b63beb04e2bcb1b950c430",
     "semantic_hash": ""
   }
 }

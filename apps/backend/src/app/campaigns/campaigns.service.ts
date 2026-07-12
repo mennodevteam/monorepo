@@ -29,13 +29,18 @@ export class CampaignsService {
       throw new HttpException('تاریخ شروع باید قبل از تاریخ پایان باشد', HttpStatus.BAD_REQUEST);
     }
 
-    // Minutes must be multiples of 15, seconds & ms must be 0
-    if (start.getMinutes() % 15 !== 0 || start.getSeconds() !== 0 || start.getMilliseconds() !== 0) {
-      throw new HttpException('زمان شروع باید روی مضارب ۱۵ دقیقه تنظیم شده باشد (ثانیه و میلی‌ثانیه صفر)', HttpStatus.BAD_REQUEST);
+    // Truncate seconds and milliseconds to 0
+    start.setSeconds(0);
+    start.setMilliseconds(0);
+    end.setSeconds(0);
+    end.setMilliseconds(0);
+
+    if (start.getUTCMinutes() % 15 !== 0) {
+      throw new HttpException('زمان شروع باید روی مضارب ۱۵ دقیقه تنظیم شده باشد', HttpStatus.BAD_REQUEST);
     }
 
-    if (end.getMinutes() % 15 !== 0 || end.getSeconds() !== 0 || end.getMilliseconds() !== 0) {
-      throw new HttpException('زمان پایان باید روی مضارب ۱۵ دقیقه تنظیم شده باشد (ثانیه و میلی‌ثانیه صفر)', HttpStatus.BAD_REQUEST);
+    if (end.getUTCMinutes() % 15 !== 0) {
+      throw new HttpException('زمان پایان باید روی مضارب ۱۵ دقیقه تنظیم شده باشد', HttpStatus.BAD_REQUEST);
     }
   }
 

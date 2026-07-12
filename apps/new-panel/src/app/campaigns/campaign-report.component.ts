@@ -66,108 +66,149 @@ interface CampaignReport {
         @let r = report()!;
         <div style="display: flex; flex-direction: column; gap: 24px;">
           
-          <!-- General Header Info -->
-          <div style="background-color: var(--background-secondary, #fafafa); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color, #eee);">
-            <h2 style="margin: 0 0 8px 0; font-weight: bold; color: var(--text-primary);">{{ r.title }}</h2>
+          <!-- Sleek Header Info (No bulky background box) -->
+          <div style="padding: 8px 4px;">
+            <h2 style="margin: 0 0 6px 0; font-weight: 800; font-size: 20px; color: var(--text-primary);">
+              گزارش عملکرد: {{ r.title }}
+            </h2>
             <div style="font-size: 13px; color: var(--text-secondary); display: flex; gap: 24px; flex-wrap: wrap;">
-              <span><strong>تاریخ شروع:</strong> {{ r.startDate | pdate: true }}</span>
-              <span><strong>تاریخ پایان:</strong> {{ r.endDate | pdate: true }}</span>
+              <span>📅 <strong>تاریخ شروع:</strong> {{ r.startDate | pdate: true }}</span>
+              <span>🏁 <strong>تاریخ پایان:</strong> {{ r.endDate | pdate: true }}</span>
             </div>
           </div>
 
-          <!-- Top Level Financial Metrics Grid -->
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
-            <mat-card style="padding: 20px; text-align: center; border-bottom: 4px solid var(--primary-color);">
-              <span style="font-size: 12px; color: var(--text-muted, #777); display: block; margin-bottom: 8px;">سود خالص دریافتی</span>
-              <strong style="font-size: 22px;" [style.color]="r.netProfit >= 0 ? '#2e7d32' : '#d32f2f'">{{ r.netProfit | number }} تومان</strong>
-            </mat-card>
+          <!-- Unified Premium Financial Metrics Card -->
+          <mat-card style="padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: none; border-radius: 16px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; text-align: center;">
+              
+              <div>
+                <span style="font-size: 12px; color: #888; display: block; margin-bottom: 6px; font-weight: 500;">سود خالص نهایی</span>
+                <strong style="font-size: 24px;" [style.color]="r.netProfit >= 0 ? '#2e7d32' : '#d32f2f'">
+                  {{ r.netProfit | number }} تومان
+                </strong>
+              </div>
 
-            <mat-card style="padding: 20px; text-align: center; border-bottom: 4px solid #00bcd4;">
-              <span style="font-size: 12px; color: var(--text-muted, #777); display: block; margin-bottom: 8px;">فروش ناخالص تقریبی</span>
-              <strong style="font-size: 22px; color: var(--text-primary);">{{ (r.totalSales + r.totalCampaignDiscounts + r.totalWaivedDeliveryFee) | number }} تومان</strong>
-            </mat-card>
+              <div style="border-right: 1px solid #f0f0f0; border-left: 1px solid #f0f0f0; padding: 0 12px;">
+                <span style="font-size: 12px; color: #888; display: block; margin-bottom: 6px; font-weight: 500;">فروش ناخالص تقریبی</span>
+                <strong style="font-size: 24px; color: #333;">
+                  {{ (r.totalSales + r.totalCampaignDiscounts + r.totalWaivedDeliveryFee) | number }} تومان
+                </strong>
+              </div>
 
-            <mat-card style="padding: 20px; text-align: center; border-bottom: 4px solid #ff9800;">
-              <span style="font-size: 12px; color: var(--text-muted, #777); display: block; margin-bottom: 8px;">تعداد سفارشات</span>
-              <strong style="font-size: 22px; color: var(--text-primary);">{{ r.orderCount | number }}</strong>
-            </mat-card>
-          </div>
+              <div>
+                <span style="font-size: 12px; color: #888; display: block; margin-bottom: 6px; font-weight: 500;">تعداد سفارشات</span>
+                <strong style="font-size: 24px; color: #0288d1;">
+                  {{ r.orderCount | number }}
+                </strong>
+              </div>
+
+            </div>
+          </mat-card>
 
           <!-- Bottom detailed section -->
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex-wrap: wrap;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
             
-            <!-- Funnel / Analytics Card -->
-            <mat-card style="padding: 24px;">
-              <h3 style="margin: 0 0 16px 0; font-weight: bold; border-bottom: 1px solid #eee; padding-bottom: 12px;">قیف فروش و رفتار مشتریان (Funnel)</h3>
+            <!-- Modern Timeline Funnel Card -->
+            <mat-card style="padding: 24px; border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+              <h3 style="margin: 0 0 24px 0; font-weight: bold; border-bottom: 1px solid #f5f5f5; padding-bottom: 12px; font-size: 15px; color: #333;">
+                قیف رفتار مشتریان (Funnel)
+              </h3>
               
-              <div style="display: flex; flex-direction: column; gap: 16px;">
-                <div style="background-color: #fafafa; padding: 16px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
-                  <div>
-                    <span style="color: #666; font-size: 13px; display: block;">بازدید از منو</span>
-                    <strong style="font-size: 18px;">{{ r.visits | number }}</strong>
+              <div style="position: relative; display: flex; flex-direction: column; gap: 24px; padding: 4px 0;">
+                <!-- Vertical timeline line -->
+                <div style="position: absolute; right: 18px; top: 12px; bottom: 12px; width: 2px; background: #e0e0e0; z-index: 1;"></div>
+
+                <!-- Step 1: Load Menu -->
+                <div style="position: relative; display: flex; align-items: center; justify-content: space-between; z-index: 2; padding-right: 42px; min-height: 48px;">
+                  <!-- Timeline dot -->
+                  <div style="position: absolute; right: 7px; width: 24px; height: 24px; border-radius: 50%; background: #00bcd4; color: white; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; box-shadow: 0 2px 6px rgba(0,188,212,0.3);">
+                    ۱
                   </div>
-                  <div style="text-align: left; font-size: 12px; color: var(--text-muted);">نرخ پایه</div>
+                  <div>
+                    <span style="color: #666; font-size: 12px; display: block;">بازدید از منو</span>
+                    <strong style="font-size: 16px; color: #111;">{{ r.visits | number }}</strong>
+                  </div>
+                  <span style="font-size: 11px; padding: 4px 10px; border-radius: 12px; background-color: #e0f7fa; color: #00838f; font-weight: 500;">
+                    مبنای ۱۰۰٪
+                  </span>
                 </div>
 
-                <div style="background-color: #fafafa; padding: 16px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                <!-- Step 2: Click Product -->
+                <div style="position: relative; display: flex; align-items: center; justify-content: space-between; z-index: 2; padding-right: 42px; min-height: 48px;">
+                  <!-- Timeline dot -->
+                  <div style="position: absolute; right: 7px; width: 24px; height: 24px; border-radius: 50%; background: #0288d1; color: white; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; box-shadow: 0 2px 6px rgba(2,136,209,0.3);">
+                    ۲
+                  </div>
                   <div>
-                    <span style="color: #666; font-size: 13px; display: block;">مشاهده و کلیک محصولات</span>
-                    <strong style="font-size: 18px;">{{ r.clicks | number }}</strong>
+                    <span style="color: #666; font-size: 12px; display: block;">کلیک محصولات</span>
+                    <strong style="font-size: 16px; color: #111;">{{ r.clicks | number }}</strong>
                   </div>
-                  <div style="text-align: left; font-size: 12px; color: #0288d1; font-weight: 500;">
-                    نرخ کلیک: {{ getClickRate() }}%
-                  </div>
+                  <span style="font-size: 11px; padding: 4px 10px; border-radius: 12px; background-color: #e1f5fe; color: #0277bd; font-weight: 500;">
+                    نرخ کلیک: {{ getClickRate() }}٪
+                  </span>
                 </div>
 
-                <div style="background-color: #fafafa; padding: 16px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                <!-- Step 3: Add to Cart -->
+                <div style="position: relative; display: flex; align-items: center; justify-content: space-between; z-index: 2; padding-right: 42px; min-height: 48px;">
+                  <!-- Timeline dot -->
+                  <div style="position: absolute; right: 7px; width: 24px; height: 24px; border-radius: 50%; background: #ff9800; color: white; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; box-shadow: 0 2px 6px rgba(255,152,0,0.3);">
+                    ۳
+                  </div>
                   <div>
-                    <span style="color: #666; font-size: 13px; display: block;">افزودن کالا به سبد</span>
-                    <strong style="font-size: 18px;">{{ r.basketAdds | number }}</strong>
+                    <span style="color: #666; font-size: 12px; display: block;">افزودن به سبد</span>
+                    <strong style="font-size: 16px; color: #111;">{{ r.basketAdds | number }}</strong>
                   </div>
-                  <div style="text-align: left; font-size: 12px; color: #ff8f00; font-weight: 500;">
-                    نرخ علاقه خرید: {{ getBasketRate() }}%
-                  </div>
+                  <span style="font-size: 11px; padding: 4px 10px; border-radius: 12px; background-color: #fff3e0; color: #ef6c00; font-weight: 500;">
+                    نرخ علاقه: {{ getBasketRate() }}٪
+                  </span>
                 </div>
 
-                <div style="background-color: #e8f5e9; padding: 16px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #c8e6c9;">
+                <!-- Step 4: Finished Purchase -->
+                <div style="position: relative; display: flex; align-items: center; justify-content: space-between; z-index: 2; padding-right: 42px; min-height: 48px;">
+                  <!-- Timeline dot -->
+                  <div style="position: absolute; right: 7px; width: 24px; height: 24px; border-radius: 50%; background: #2e7d32; color: white; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; box-shadow: 0 2px 6px rgba(46,125,50,0.3);">
+                    ۴
+                  </div>
                   <div>
-                    <span style="color: #2e7d32; font-size: 13px; display: block; font-weight: 500;">خرید نهایی (فاکتور)</span>
-                    <strong style="font-size: 20px; color: #2e7d32;">{{ r.orderCount | number }}</strong>
+                    <span style="color: #666; font-size: 12px; display: block; font-weight: 500;">ثبت سفارش نهایی</span>
+                    <strong style="font-size: 17px; color: #2e7d32;">{{ r.orderCount | number }}</strong>
                   </div>
-                  <div style="text-align: left; font-size: 12px; color: #2e7d32; font-weight: bold;">
-                    نرخ تبدیل کلی کمپین: {{ getConversionRate() }}%
-                  </div>
+                  <span style="font-size: 11px; padding: 4px 10px; border-radius: 12px; background-color: #e8f5e9; color: #2e7d32; font-weight: bold;">
+                    نرخ تبدیل: {{ getConversionRate() }}٪
+                  </span>
                 </div>
               </div>
             </mat-card>
 
             <!-- Detailed Costs & Expenses Card -->
-            <mat-card style="padding: 24px;">
-              <h3 style="margin: 0 0 16px 0; font-weight: bold; border-bottom: 1px solid #eee; padding-bottom: 12px;">تخفیف‌ها و هزینه‌ها</h3>
+            <mat-card style="padding: 24px; border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+              <h3 style="margin: 0 0 20px 0; font-weight: bold; border-bottom: 1px solid #f5f5f5; padding-bottom: 12px; font-size: 15px; color: #333;">
+                تخفیف‌ها و هزینه‌ها
+              </h3>
               
-              <div style="display: flex; flex-direction: column; gap: 16px; font-size: 14px;">
+              <div style="display: flex; flex-direction: column; gap: 16px; font-size: 13px;">
                 <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px dashed #eee;">
-                  <span>تخفیف مستقیم روی محصولات:</span>
+                  <span style="color: #666;">تخفیف مستقیم روی محصولات:</span>
                   <span style="color: #f44336; font-weight: 500;">{{ r.totalCampaignDiscounts | number }} تومان-</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px dashed #eee;">
-                  <span>هزینه ارسال هدیه (رایگان):</span>
+                  <span style="color: #666;">هزینه ارسال هدیه (رایگان):</span>
                   <span style="color: #f44336; font-weight: 500;">{{ r.totalWaivedDeliveryFee | number }} تومان-</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px dashed #eee;">
-                  <span>بهای تمام‌شده مواد اولیه سفارشات:</span>
+                  <span style="color: #666;">بهای تمام‌شده مواد اولیه سفارشات:</span>
                   <span style="color: #f44336; font-weight: 500;">{{ r.totalMaterialCost | number }} تومان-</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px dashed #eee;">
-                  <span>مجموع هزینه‌های مازاد دستی کمپین:</span>
+                  <span style="color: #666;">مجموع هزینه‌های مازاد دستی کمپین:</span>
                   <span style="color: #f44336; font-weight: 500;">{{ r.totalManualCosts | number }} تومان-</span>
                 </div>
 
                 <!-- Manual Costs breakdown list -->
                 @if (r.manualCosts?.length) {
                   <div style="background-color: #fafafa; padding: 12px; border-radius: 8px; margin-top: 4px;">
-                    <span style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 8px;">جزئیات هزینه‌های ثبت شده دستی:</span>
-                    <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12px;">
+                    <span style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 8px; font-weight: 500;">جزئیات هزینه‌های دستی:</span>
+                    <div style="display: flex; flex-direction: column; gap: 6px; font-size: 11px;">
                       @for (cost of r.manualCosts; track cost.title) {
                         <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #eee; padding-bottom: 4px;">
                           <span style="color: #555;">{{ cost.title }}:</span>
@@ -178,9 +219,11 @@ interface CampaignReport {
                   </div>
                 }
 
-                <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center; background-color: rgba(76, 175, 80, 0.08); padding: 16px; border-radius: 8px; border: 1px solid rgba(76, 175, 80, 0.15);">
-                  <span style="font-weight: bold; color: #2e7d32; font-size: 15px;">سود خالص نهایی کمپین:</span>
-                  <strong style="font-size: 22px;" [style.color]="r.netProfit >= 0 ? '#2e7d32' : '#d32f2f'">{{ r.netProfit | number }} تومان</strong>
+                <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center; background-color: rgba(76, 175, 80, 0.06); padding: 16px; border-radius: 12px; border: 1px solid rgba(76, 175, 80, 0.12);">
+                  <span style="font-weight: bold; color: #2e7d32; font-size: 14px;">سود خالص نهایی کمپین:</span>
+                  <strong style="font-size: 20px;" [style.color]="r.netProfit >= 0 ? '#2e7d32' : '#d32f2f'">
+                    {{ r.netProfit | number }} تومان
+                  </strong>
                 </div>
               </div>
             </mat-card>
@@ -188,25 +231,27 @@ interface CampaignReport {
           </div>
 
           <!-- Campaign Orders List Card -->
-          <mat-card style="padding: 24px;">
-            <h3 style="margin: 0 0 16px 0; font-weight: bold; border-bottom: 1px solid #eee; padding-bottom: 12px;">سفارشات ثبت شده در بازه کمپین</h3>
+          <mat-card style="padding: 24px; border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+            <h3 style="margin: 0 0 16px 0; font-weight: bold; border-bottom: 1px solid #f5f5f5; padding-bottom: 12px; font-size: 15px; color: #333;">
+              سفارشات ثبت شده در بازه کمپین
+            </h3>
             @if (r.orders?.length) {
               <div style="max-height: 400px; overflow-y: auto;">
                 <table style="width: 100%; border-collapse: collapse; text-align: right; font-size: 13px;">
                   <thead>
-                    <tr style="border-bottom: 2px solid #eee; color: var(--text-secondary); height: 40px;">
-                      <th style="padding: 8px; font-weight: 500;">کد رهگیری</th>
-                      <th style="padding: 8px; font-weight: 500;">تاریخ ثبت</th>
-                      <th style="padding: 8px; font-weight: 500;">مبلغ فاکتور</th>
-                      <th style="padding: 8px; font-weight: 500;">بهای مواد اولیه</th>
-                      <th style="padding: 8px; font-weight: 500;">وضعیت فاکتور</th>
+                    <tr style="border-bottom: 2px solid #f5f5f5; color: var(--text-secondary); height: 40px;">
+                      <th style="padding: 8px; font-weight: 600;">کد رهگیری</th>
+                      <th style="padding: 8px; font-weight: 600;">تاریخ ثبت</th>
+                      <th style="padding: 8px; font-weight: 600;">مبلغ فاکتور</th>
+                      <th style="padding: 8px; font-weight: 600;">بهای مواد اولیه</th>
+                      <th style="padding: 8px; font-weight: 600;">وضعیت فاکتور</th>
                     </tr>
                   </thead>
                   <tbody>
                     @for (order of r.orders; track order.id) {
-                      <tr style="border-bottom: 1px solid #eee; height: 48px;">
+                      <tr style="border-bottom: 1px solid #f5f5f5; height: 48px;">
                         <td style="padding: 8px;">
-                          <a [routerLink]="['/admin/orders/details', order.id]" style="color: var(--primary-color); font-weight: 500; text-decoration: none;">
+                          <a [routerLink]="['/admin/orders/details', order.id]" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">
                             {{ order.trackingCode || '—' }}
                           </a>
                         </td>
@@ -214,7 +259,7 @@ interface CampaignReport {
                         <td style="padding: 8px; font-weight: 500;">{{ order.totalPrice | number }} تومان</td>
                         <td style="padding: 8px; color: #666;">{{ (order.materialCost || 0) | number }} تومان</td>
                         <td style="padding: 8px;">
-                          <span style="font-size: 11px; padding: 4px 8px; border-radius: 4px; background-color: #f0f0f0;">
+                          <span style="font-size: 11px; padding: 4px 8px; border-radius: 4px; background-color: #f5f5f5; color: #555;">
                             {{ getOrderStateLabel(order.state) }}
                           </span>
                         </td>

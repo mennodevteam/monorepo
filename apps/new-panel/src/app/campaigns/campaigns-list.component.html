@@ -54,6 +54,13 @@
           </mat-cell>
         </ng-container>
 
+        <ng-container matColumnDef="orderCount">
+          <mat-header-cell *matHeaderCellDef>تعداد سفارش</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{ (element.summary?.orderCount || 0) | number }}
+          </mat-cell>
+        </ng-container>
+
         <ng-container matColumnDef="totalSales">
           <mat-header-cell *matHeaderCellDef>فروش کل</mat-header-cell>
           <mat-cell *matCellDef="let element">

@@ -39,7 +39,7 @@ export class CampaignsListComponent {
   private readonly router = inject(Router);
   private readonly queryClient = injectQueryClient();
 
-  readonly displayedColumns = ['index', 'title', 'startDate', 'endDate', 'status', 'totalSales', 'netProfit', 'enabled', 'actions'];
+  readonly displayedColumns = ['index', 'title', 'startDate', 'endDate', 'status', 'orderCount', 'totalSales', 'netProfit', 'enabled', 'actions'];
 
   query = injectQuery(() => ({
     queryKey: ['campaigns'],
