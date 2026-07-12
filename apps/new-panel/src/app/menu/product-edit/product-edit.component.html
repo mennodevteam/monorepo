@@ -104,7 +104,7 @@
                     
                     <div style="display: flex; flex-flow: row wrap; align-items: center; justify-content: flex-end; gap: 8px; flex: 2 1 auto; min-width: 280px;">
                       @if (item.value.productSource?.variants?.length) {
-                        <mat-form-field appearance="outline" style="width: 160px; min-width: 130px;" [subscriptSizing]="'dynamic'">
+                        <mat-form-field appearance="outline" style="flex: 1 1 200px; min-width: 165px; max-width: 300px;" [subscriptSizing]="'dynamic'">
                           <mat-label>واریانت</mat-label>
                           <mat-select [formControl]="$any(item).controls.variantSource">
                             @for (v of item.value.productSource.variants; track v.id) {
@@ -113,7 +113,7 @@
                           </mat-select>
                         </mat-form-field>
                       } @else {
-                        <span style="opacity: 0.5; font-size: 0.9em; width: 160px; text-align: center;">فاقد گزینه</span>
+                        <span style="opacity: 0.5; font-size: 0.9em; flex: 1 1 200px; min-width: 165px; max-width: 300px; text-align: center; line-height: 48px;">فاقد گزینه</span>
                       }
                       
                       <mat-form-field appearance="outline" style="width: 80px;" [subscriptSizing]="'dynamic'">
@@ -184,7 +184,7 @@
                             
                             <div style="display: flex; flex-flow: row wrap; align-items: center; justify-content: flex-end; gap: 8px; flex: 2 1 auto; min-width: 280px;">
                               @if (item.value.productSource?.variants?.length) {
-                                <mat-form-field appearance="outline" style="width: 160px; min-width: 130px;" [subscriptSizing]="'dynamic'">
+                                <mat-form-field appearance="outline" style="flex: 1 1 200px; min-width: 165px; max-width: 300px;" [subscriptSizing]="'dynamic'">
                                   <mat-label>واریانت</mat-label>
                                   <mat-select [formControl]="$any(item).controls.variantSource">
                                     @for (v of item.value.productSource.variants; track v.id) {
@@ -193,13 +193,13 @@
                                   </mat-select>
                                 </mat-form-field>
                               } @else {
-                                <span style="opacity: 0.5; font-size: 0.85em; width: 160px; text-align: center;">فاقد گزینه</span>
+                                <span style="opacity: 0.5; font-size: 0.85em; flex: 1 1 200px; min-width: 165px; max-width: 300px; text-align: center; line-height: 48px;">فاقد گزینه</span>
                               }
                               
                               <mat-form-field appearance="outline" style="width: 80px;" [subscriptSizing]="'dynamic'">
+                                <mat-label>تعداد</mat-label>
                                 <input matInput type="number" [formControl]="$any(item).controls.quantity" min="0.001" />
-                              </mat-form-field>
-                              
+                              </mat-form-field>                              
                               <span style="min-width: 100px; text-align: left; font-size: 0.9em; font-weight: 300;">
                                 {{ getPackItemPrice(item.value) | number | menuCurrency }}
                               </span>
