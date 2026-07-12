@@ -18,6 +18,7 @@ This skill enforces strict documentation standards and clear user communication 
 ## 1. Reading Documentation First
 
 Before starting any implementation, bug fix, or refactoring task:
+- **Use graphify:** Check if `graphify-out/graph.json` exists in the project root. If it does, always check the graph first using `graphify query "<question>"` to understand the dependencies, architecture, and code flow related to the task before writing code or running broad searches.
 - Locate relevant files in the workspace (e.g., `README.md`, `ARCHITECTURE.md`, `.agent/rules/*.md`, `.agent/skills/*`).
 - Check existing `knowledge/` items or conversation summaries to learn about past decisions.
 - Read through files to align with existing design systems, directory structures, and code patterns.
