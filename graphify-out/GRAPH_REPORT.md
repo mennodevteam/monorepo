@@ -1,16 +1,16 @@
 # Graph Report - monorepo  (2026-07-12)
 
 ## Corpus Check
-- 868 files · ~386,056 words
+- 868 files · ~386,087 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 4600 nodes · 11294 edges · 259 communities (174 shown, 85 thin omitted)
+- 4600 nodes · 11294 edges · 257 communities (173 shown, 84 thin omitted)
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 470 edges (avg confidence: 0.63)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `83b7e268`
+- Built from commit: `5e35188f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -125,7 +125,6 @@
 - [[_COMMUNITY_Module options, assets|Module: options, assets]]
 - [[_COMMUNITY_Module ai-chat-history.component.t...|Module: ai-chat-history.component.t...]]
 - [[_COMMUNITY_Module ai-chatbot.service.ts, AiUsage|Module: ai-chatbot.service.ts, AiUsage]]
-- [[_COMMUNITY_Module .getProductById(), CartComp...|Module: .getProductById(), CartComp...]]
 - [[_COMMUNITY_Module production, port|Module: production, port]]
 - [[_COMMUNITY_Module ChatsComponent, .backToList()|Module: ChatsComponent, .backToList()]]
 - [[_COMMUNITY_Module chunk-array.ts, chunkArray()|Module: chunk-array.ts, chunkArray()]]
@@ -243,7 +242,6 @@
 - [[_COMMUNITY_RolesGuard|RolesGuard]]
 - [[_COMMUNITY_AiChatHistoryComponent|AiChatHistoryComponent]]
 - [[_COMMUNITY_PricingComponent|PricingComponent]]
-- [[_COMMUNITY_jalali-date-picker.provider.ts|jalali-date-picker.provider.ts]]
 - [[_COMMUNITY_MennoBaleOrdersComponent|MennoBaleOrdersComponent]]
 - [[_COMMUNITY_InitialParamsService|InitialParamsService]]
 - [[_COMMUNITY_BuyDaysDialogComponent|BuyDaysDialogComponent]]
@@ -299,7 +297,7 @@
 - **new-panel UI/UX Guidelines** — _agent_apps_new_panel_design_rules_m3_integration, _agent_apps_new_panel_design_rules_spacing_typography, _agent_apps_new_panel_design_rules_control_standardization, _agent_skills_new_panel_market_fit_skill_empty_states, _agent_skills_new_panel_market_fit_skill_onboarding [INFERRED 0.95]
 - **E-Commerce Frontend Core Flow and Analytics** — _agent_apps_customer_architecture_overview, _agent_apps_customer_event_tracking_overview, apps_new_app_src_app_miscellaneous_readme_overview [INFERRED 0.85]
 
-## Communities (259 total, 85 thin omitted)
+## Communities (257 total, 84 thin omitted)
 
 ### Community 0 - "Utility Helper Methods"
 Cohesion: 0.03
@@ -331,15 +329,15 @@ Nodes (20): ClubsController, DiscountsCouponController, MissionsController, Miss
 
 ### Community 7 - "Frontend Dialogs and Guards"
 Cohesion: 0.08
-Nodes (29): AppConfigSchema, DiscountCouponSchema, MenuCostSchema, OrderCustomerMessageSchema, OrderMessageSchema, ProductCategorySchema, ProductSchema, ProductVariantSchema (+21 more)
+Nodes (23): AppConfigSchema, DiscountCouponSchema, OrderCustomerMessageSchema, OrderMessageSchema, ProductCategorySchema, OrderMessagesController, OrderStatePipe, ORDER_LIST_DEFAULT_STATES (+15 more)
 
 ### Community 8 - "Minified Utility Assets"
 Cohesion: 0.14
 Nodes (73): A(), ah(), b(), bh(), c(), ch(), d(), Dc() (+65 more)
 
 ### Community 9 - "BOM and Product UI Components"
-Cohesion: 0.07
-Nodes (8): HomeComponent, CategoryListComponent, ProductCarouselItemComponent, ProductCarouselViewComponent, CategoryListEditComponent, CategoryListComponent, MenuListComponent, ProductCategory
+Cohesion: 0.05
+Nodes (9): MenusService, ProductCategoriesController, ProductsController, HomeComponent, CategoryListComponent, CategoryListEditComponent, CategoryListComponent, MenuListComponent (+1 more)
 
 ### Community 11 - "Address UI Components and Regions"
 Cohesion: 0.11
@@ -394,8 +392,8 @@ Cohesion: 0.05
 Nodes (13): AddressEditComponent, AddressListComponent, addressRoutes, DEFAULT_LOCATION, MapComponent, SearchComponent, SearchResult, ImagePlaceholder (+5 more)
 
 ### Community 25 - "Module: menu-cost.schema.ts, produc..."
-Cohesion: 0.26
-Nodes (5): Campaign, CampaignAction, CampaignManualCost, ProductItem, OrderDetails
+Cohesion: 0.20
+Nodes (7): ProductSchema, Campaign, CampaignAction, CampaignManualCost, ProductItem, OrderDetails, ProductType
 
 ### Community 26 - "Module: addresses.controller.ts, ai..."
 Cohesion: 0.15
@@ -431,7 +429,7 @@ Nodes (41): Dependency Injection via inject(), Lazy Loading Pattern, Customer Ap
 
 ### Community 35 - "Module: cart.component.ts, CartComp..."
 Cohesion: 0.06
-Nodes (10): productHasMainImage(), ProductListComponent, CategoryItem, ProductTableComponent, AvailabilityItem, ProductAvailabilityComponent, PricingComponent, PricingItem (+2 more)
+Nodes (12): productHasMainImage(), ProductListComponent, ProductCarouselItemComponent, ProductCarouselViewComponent, CategoryItem, ProductTableComponent, AvailabilityItem, ProductAvailabilityComponent (+4 more)
 
 ### Community 36 - "Module: discount-coupon-modal.compo..."
 Cohesion: 0.09
@@ -625,10 +623,6 @@ Nodes (6): buildSitemapXml(), fetchMenu(), fetchMenuForHost(), generateSitemapXm
 Cohesion: 0.14
 Nodes (18): Be(), De(), Ee(), er(), fe(), ie(), je(), ke() (+10 more)
 
-### Community 96 - "Module: home.component.ts, HomeComp..."
-Cohesion: 0.27
-Nodes (3): OrderMessagesController, AutoSmsSettingComponent, OrderMessage
-
 ### Community 98 - "Module: .mapAiChatToPanelItem(), .c..."
 Cohesion: 0.17
 Nodes (23): as(), Ba(), es(), Fa(), ga(), ha(), is(), ja() (+15 more)
@@ -722,8 +716,8 @@ Cohesion: 0.14
 Nodes (8): getLiaraS3ClientConfiguration(), normalizeLiaraEndpoint(), FilesController, FilesModule, FilesService, MenusModule, ShopsModule, UsersModule
 
 ### Community 125 - "Module: PaymentMethodsComponent, .a..."
-Cohesion: 0.22
-Nodes (5): AppComponent, appConfig, appRoutes, config, provideTranslation()
+Cohesion: 0.17
+Nodes (7): appConfig, appRoutes, JALALI_MOMENT_FORMATS, provideJalaliDatePickerProvider(), paginatorIntlProvider(), config, provideTranslation()
 
 ### Community 128 - "Module: tsconfig.spec.json, compile..."
 Cohesion: 0.22
@@ -758,7 +752,7 @@ Cohesion: 0.25
 Nodes (8): development, buildOptimizer, buildTarget, extractLicenses, namedChunks, optimization, sourceMap, vendorChunk
 
 ### Community 137 - "Module: ProductListEditComponent, ...."
-Cohesion: 0.31
+Cohesion: 0.36
 Nodes (4): ApiInterceptor, apiInterceptorProvider(), IGNORE_CASES, AlertDialogComponent
 
 ### Community 138 - "Module: .addSubcategory(), .addSubc..."
@@ -922,8 +916,8 @@ Cohesion: 0.50
 Nodes (3): name, type, version
 
 ### Community 225 - "OrderDetailsComponent"
-Cohesion: 0.09
-Nodes (6): MenuSchema, MenusService, MenusController, ProductCategoriesController, ProductsController, Menu
+Cohesion: 0.10
+Nodes (10): MenuCostSchema, MenuSchema, ProductVariantSchema, MenusController, CostListComponent, Image, MenuCost, Menu (+2 more)
 
 ### Community 227 - "Documentation Alignment & User Clarity Skill"
 Cohesion: 0.33
@@ -936,17 +930,17 @@ Nodes (14): isLocalDevHost(), isMennoSubdomainHost(), isShopLocalSubdomainHost()
 ## Knowledge Gaps
 - **847 isolated node(s):** `CampaignReport`, `SignalProductItem`, `campaignsRoutes`, `CampaignAction`, `CampaignManualCost` (+842 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **85 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **84 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `dependencies` connect `Workspace Dependencies` to `Module: package.json, engines`?**
-  _High betweenness centrality (0.069) - this node is a cross-community bridge._
+  _High betweenness centrality (0.068) - this node is a cross-community bridge._
 - **Why does `kavenegar` connect `Workspace Dependencies` to `Module: ai-chat-history.component.t...`, `Module: MissionsService, .activeMis...`?**
   _High betweenness centrality (0.067) - this node is a cross-community bridge._
-- **Why does `Shop` connect `Module: AiChatbotController, .chat()` to `User and Address Controllers`, `Shop Integration Controllers`, `NestJS App Modules`, `Order System and Schemas`, `Frontend Dialogs and Guards`, `BOM and Product UI Components`, `Inventory and Shop Services`, `Module: .addSubcategory(), .addSubc...`, `Address UI Components and Regions`, `Module: .constructor(), admin-local...`, `Module: image-loader.directive.ts, ...`, `Module: .constructor(), shop-user.s...`, `Module: .save(), login.component.ts`, `Module: address-edit.component.ts, ...`, `Module: menu-cost.schema.ts, produc...`, `Module: addresses.controller.ts, ai...`, `Module: .updateAiChatbot(), AppConf...`, `Module: app-redirect.controller.ts,...`, `Module: basalam.controller.ts, Basa...`, `Module: cost-summary.component.ts, ...`, `Module: BaleBotsService, .buildInli...`, `Module: discount-coupon-modal.compo...`, `Module: AuthController, .changePane...`, `Module: .key(), print-action.schema.ts`, `Module: config-modal.component.ts, ...`, `Module: index.ts, footer.component.ts`, `Module: .constructor(), OrdersSubsc...`, `Module: HomeSectionsController, .co...`, `Module: app.component.ts, index.ts`, `Module: MissionsController, .constr...`, `Module: orders.service.ts, OrdersSe...`, `Module: PaymentGatewaysController, ...`, `Module: .getCategoryIcon(), categor...`, `Module: api-key-auth.guard.ts, ApiK...`, `Module: .addPackItemFromAutocomplet...`, `Module: BuyDaysDialogComponent, .fo...`, `Module: index.ts, order-type-bottom...`, `Module: .filterDiscountCoupons(), D...`, `Module: .updateMenu(), MenuCostsCon...`, `Module: AiChatbotService, .buildMes...`, `Module: ensureRedisConnected(), get...`, `Module: DingController, .constructor()`, `Module: app.routes.ts, appRoutes`, `Module: .completeMission(), Wallets...`, `Module: shop.schema.ts, auth.compon...`, `Module: ssr-data.provider.ts, HOME_...`, `Module: get-file-url.ts, web-app-ma...`, `Module: resolve-shop-username.ts, i...`, `Module: home.component.ts, HomeComp...`, `OrderDetailsComponent`, `Module: PageSeoConfig, SeoService`, `.createMaterial`, `Module: ai-chat-history.component.t...`, `Module: MissionsService, .activeMis...`?**
-  _High betweenness centrality (0.063) - this node is a cross-community bridge._
+- **Why does `Shop` connect `Module: AiChatbotController, .chat()` to `User and Address Controllers`, `Shop Integration Controllers`, `NestJS App Modules`, `Order System and Schemas`, `Frontend Dialogs and Guards`, `BOM and Product UI Components`, `Inventory and Shop Services`, `Module: .addSubcategory(), .addSubc...`, `Address UI Components and Regions`, `Module: .constructor(), admin-local...`, `Module: image-loader.directive.ts, ...`, `Module: .constructor(), shop-user.s...`, `Module: .save(), login.component.ts`, `Module: address-edit.component.ts, ...`, `Module: menu-cost.schema.ts, produc...`, `Module: addresses.controller.ts, ai...`, `Module: .updateAiChatbot(), AppConf...`, `Module: app-redirect.controller.ts,...`, `Module: basalam.controller.ts, Basa...`, `Module: cost-summary.component.ts, ...`, `Module: BaleBotsService, .buildInli...`, `Module: discount-coupon-modal.compo...`, `Module: AuthController, .changePane...`, `Module: .key(), print-action.schema.ts`, `Module: config-modal.component.ts, ...`, `Module: index.ts, footer.component.ts`, `Module: .constructor(), OrdersSubsc...`, `Module: HomeSectionsController, .co...`, `Module: app.component.ts, index.ts`, `Module: MissionsController, .constr...`, `Module: orders.service.ts, OrdersSe...`, `Module: PaymentGatewaysController, ...`, `Module: .getCategoryIcon(), categor...`, `Module: api-key-auth.guard.ts, ApiK...`, `Module: .addPackItemFromAutocomplet...`, `Module: BuyDaysDialogComponent, .fo...`, `Module: index.ts, order-type-bottom...`, `Module: .filterDiscountCoupons(), D...`, `Module: .updateMenu(), MenuCostsCon...`, `Module: AiChatbotService, .buildMes...`, `Module: ensureRedisConnected(), get...`, `Module: DingController, .constructor()`, `Module: app.routes.ts, appRoutes`, `Module: .completeMission(), Wallets...`, `Module: shop.schema.ts, auth.compon...`, `Module: ssr-data.provider.ts, HOME_...`, `Module: get-file-url.ts, web-app-ma...`, `Module: resolve-shop-username.ts, i...`, `OrderDetailsComponent`, `Module: PageSeoConfig, SeoService`, `.createMaterial`, `Module: ai-chat-history.component.t...`, `Module: MissionsService, .activeMis...`?**
+  _High betweenness centrality (0.062) - this node is a cross-community bridge._
 - **What connects `CampaignReport`, `SignalProductItem`, `campaignsRoutes` to the rest of the system?**
   _847 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Utility Helper Methods` be split into smaller, more focused modules?**

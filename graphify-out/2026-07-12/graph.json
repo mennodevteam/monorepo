@@ -49,246 +49,6 @@
   },
   "nodes": [
     {
-      "label": "orders.controller.ts",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller",
-      "community": 80,
-      "norm_label": "orders.controller.ts"
-    },
-    {
-      "label": "OrdersController",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L38",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "community": 80,
-      "norm_label": "orderscontroller"
-    },
-    {
-      "label": ".constructor()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L39",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_constructor",
-      "community": 80,
-      "norm_label": ".constructor()"
-    },
-    {
-      "label": ".save()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L51",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_save",
-      "community": 80,
-      "norm_label": ".save()"
-    },
-    {
-      "label": ".filterPanelOrders()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L74",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_filterpanelorders",
-      "community": 80,
-      "norm_label": ".filterpanelorders()"
-    },
-    {
-      "label": ".filterPanelOrdersV2()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L83",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_filterpanelordersv2",
-      "community": 80,
-      "norm_label": ".filterpanelordersv2()"
-    },
-    {
-      "label": ".updateOrderItemMaterialCost()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L92",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderitemmaterialcost",
-      "community": 80,
-      "norm_label": ".updateorderitemmaterialcost()"
-    },
-    {
-      "label": ".updateOrderExtraCosts()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L112",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderextracosts",
-      "community": 80,
-      "norm_label": ".updateorderextracosts()"
-    },
-    {
-      "label": ".deleteOrder()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L121",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_deleteorder",
-      "community": 80,
-      "norm_label": ".deleteorder()"
-    },
-    {
-      "label": ".getMyOrders()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L132",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_getmyorders",
-      "community": 80,
-      "norm_label": ".getmyorders()"
-    },
-    {
-      "label": ".getOrderDetailsPanel()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L149",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_getorderdetailspanel",
-      "community": 80,
-      "norm_label": ".getorderdetailspanel()"
-    },
-    {
-      "label": ".syncMennoBalePanel()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L191",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_syncmennobalepanel",
-      "community": 80,
-      "norm_label": ".syncmennobalepanel()"
-    },
-    {
-      "label": ".changeState()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L231",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_changestate",
-      "community": 80,
-      "norm_label": ".changestate()"
-    },
-    {
-      "label": ".mergeOrders()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L249",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_mergeorders",
-      "community": 80,
-      "norm_label": ".mergeorders()"
-    },
-    {
-      "label": ".updateOrderDetails()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L283",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderdetails",
-      "community": 80,
-      "norm_label": ".updateorderdetails()"
-    },
-    {
-      "label": ".manualSettlement()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L300",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_manualsettlement",
-      "community": 80,
-      "norm_label": ".manualsettlement()"
-    },
-    {
-      "label": ".sendLinkToCustomer()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L306",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_sendlinktocustomer",
-      "community": 80,
-      "norm_label": ".sendlinktocustomer()"
-    },
-    {
-      "label": ".sendLinkToPeyk()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L328",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_sendlinktopeyk",
-      "community": 80,
-      "norm_label": ".sendlinktopeyk()"
-    },
-    {
-      "label": ".report()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L355",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_report",
-      "community": 80,
-      "norm_label": ".report()"
-    },
-    {
-      "label": ".setCustomer()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L362",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_setcustomer",
-      "community": 80,
-      "norm_label": ".setcustomer()"
-    },
-    {
-      "label": ".getProductOrderCounts()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L368",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_getproductordercounts",
-      "community": 80,
-      "norm_label": ".getproductordercounts()"
-    },
-    {
-      "label": ".backfillOrders()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L412",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_backfillorders",
-      "community": 80,
-      "norm_label": ".backfillorders()"
-    },
-    {
-      "label": ".getOrderDetailsApp()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L471",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_getorderdetailsapp",
-      "community": 80,
-      "norm_label": ".getorderdetailsapp()"
-    },
-    {
-      "label": ".updateOrderCampaign()",
-      "file_type": "code",
-      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
-      "source_location": "L492",
-      "_origin": "ast",
-      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateordercampaign",
-      "community": 80,
-      "norm_label": ".updateordercampaign()"
-    },
-    {
       "label": "campaign-report.component.ts",
       "file_type": "code",
       "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
@@ -302,7 +62,7 @@
       "label": "CampaignReport",
       "file_type": "code",
       "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L18",
+      "source_location": "L19",
       "_origin": "ast",
       "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreport",
       "community": 40,
@@ -312,27 +72,17 @@
       "label": "CampaignReportComponent",
       "file_type": "code",
       "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L265",
+      "source_location": "L289",
       "_origin": "ast",
       "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
       "community": 40,
       "norm_label": "campaignreportcomponent"
     },
     {
-      "label": ".manualCostsArray()",
-      "file_type": "code",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L280",
-      "_origin": "ast",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_manualcostsarray",
-      "community": 40,
-      "norm_label": ".manualcostsarray()"
-    },
-    {
       "label": ".ngOnInit()",
       "file_type": "code",
       "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L284",
+      "source_location": "L308",
       "_origin": "ast",
       "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_ngoninit",
       "community": 40,
@@ -342,47 +92,57 @@
       "label": ".loadReport()",
       "file_type": "code",
       "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L288",
+      "source_location": "L312",
       "_origin": "ast",
       "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_loadreport",
       "community": 40,
       "norm_label": ".loadreport()"
     },
     {
-      "label": ".addManualCost()",
+      "label": ".openAddCostDialog()",
       "file_type": "code",
       "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L319",
+      "source_location": "L331",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_addmanualcost",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_openaddcostdialog",
       "community": 40,
-      "norm_label": ".addmanualcost()"
+      "norm_label": ".openaddcostdialog()"
     },
     {
-      "label": ".removeManualCost()",
+      "label": ".closeDialog()",
       "file_type": "code",
       "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L328",
+      "source_location": "L340",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_removemanualcost",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_closedialog",
       "community": 40,
-      "norm_label": ".removemanualcost()"
+      "norm_label": ".closedialog()"
     },
     {
-      "label": ".saveManualCosts()",
+      "label": ".submitNewCost()",
       "file_type": "code",
       "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L332",
+      "source_location": "L344",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_savemanualcosts",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_submitnewcost",
       "community": 40,
-      "norm_label": ".savemanualcosts()"
+      "norm_label": ".submitnewcost()"
+    },
+    {
+      "label": ".deleteCost()",
+      "file_type": "code",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L372",
+      "_origin": "ast",
+      "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_deletecost",
+      "community": 40,
+      "norm_label": ".deletecost()"
     },
     {
       "label": ".getClickRate()",
       "file_type": "code",
       "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L356",
+      "source_location": "L396",
       "_origin": "ast",
       "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getclickrate",
       "community": 40,
@@ -392,7 +152,7 @@
       "label": ".getBasketRate()",
       "file_type": "code",
       "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L362",
+      "source_location": "L402",
       "_origin": "ast",
       "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getbasketrate",
       "community": 40,
@@ -402,7 +162,7 @@
       "label": ".getConversionRate()",
       "file_type": "code",
       "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L368",
+      "source_location": "L408",
       "_origin": "ast",
       "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getconversionrate",
       "community": 40,
@@ -412,7 +172,7 @@
       "label": ".getOrderStateLabel()",
       "file_type": "code",
       "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L374",
+      "source_location": "L414",
       "_origin": "ast",
       "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getorderstatelabel",
       "community": 40,
@@ -422,11 +182,251 @@
       "label": ".goBack()",
       "file_type": "code",
       "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L387",
+      "source_location": "L427",
       "_origin": "ast",
       "id": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_goback",
       "community": 40,
       "norm_label": ".goback()"
+    },
+    {
+      "label": "orders.controller.ts",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": "orders.controller.ts",
+      "id": "apps_backend_src_app_orders_orders_controller"
+    },
+    {
+      "label": "OrdersController",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L38",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": "orderscontroller",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L39",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".constructor()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_constructor"
+    },
+    {
+      "label": ".save()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L51",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".save()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_save"
+    },
+    {
+      "label": ".filterPanelOrders()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L74",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".filterpanelorders()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_filterpanelorders"
+    },
+    {
+      "label": ".filterPanelOrdersV2()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L83",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".filterpanelordersv2()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_filterpanelordersv2"
+    },
+    {
+      "label": ".updateOrderItemMaterialCost()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L92",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".updateorderitemmaterialcost()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderitemmaterialcost"
+    },
+    {
+      "label": ".updateOrderExtraCosts()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L112",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".updateorderextracosts()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderextracosts"
+    },
+    {
+      "label": ".deleteOrder()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L121",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".deleteorder()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_deleteorder"
+    },
+    {
+      "label": ".getMyOrders()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L132",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".getmyorders()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_getmyorders"
+    },
+    {
+      "label": ".getOrderDetailsPanel()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L149",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".getorderdetailspanel()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_getorderdetailspanel"
+    },
+    {
+      "label": ".syncMennoBalePanel()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L191",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".syncmennobalepanel()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_syncmennobalepanel"
+    },
+    {
+      "label": ".changeState()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L231",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".changestate()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_changestate"
+    },
+    {
+      "label": ".mergeOrders()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L249",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".mergeorders()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_mergeorders"
+    },
+    {
+      "label": ".updateOrderDetails()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L283",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".updateorderdetails()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderdetails"
+    },
+    {
+      "label": ".manualSettlement()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L300",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".manualsettlement()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_manualsettlement"
+    },
+    {
+      "label": ".sendLinkToCustomer()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L306",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".sendlinktocustomer()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_sendlinktocustomer"
+    },
+    {
+      "label": ".sendLinkToPeyk()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L328",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".sendlinktopeyk()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_sendlinktopeyk"
+    },
+    {
+      "label": ".report()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L355",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".report()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_report"
+    },
+    {
+      "label": ".setCustomer()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L362",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".setcustomer()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_setcustomer"
+    },
+    {
+      "label": ".getProductOrderCounts()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L368",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".getproductordercounts()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_getproductordercounts"
+    },
+    {
+      "label": ".backfillOrders()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L412",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".backfillorders()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_backfillorders"
+    },
+    {
+      "label": ".getOrderDetailsApp()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L471",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".getorderdetailsapp()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_getorderdetailsapp"
+    },
+    {
+      "label": ".updateOrderCampaign()",
+      "file_type": "code",
+      "source_file": "apps/backend/src/app/orders/orders.controller.ts",
+      "source_location": "L492",
+      "_origin": "ast",
+      "community": 80,
+      "norm_label": ".updateordercampaign()",
+      "id": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateordercampaign"
     },
     {
       "label": "campaigns-edit.component.ts",
@@ -434,9 +434,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component",
       "community": 40,
-      "norm_label": "campaigns-edit.component.ts"
+      "norm_label": "campaigns-edit.component.ts",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component"
     },
     {
       "label": "CampaignsEditComponent",
@@ -444,9 +444,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L43",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent",
       "community": 40,
-      "norm_label": "campaignseditcomponent"
+      "norm_label": "campaignseditcomponent",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent"
     },
     {
       "label": ".actions()",
@@ -454,9 +454,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L69",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_actions",
       "community": 40,
-      "norm_label": ".actions()"
+      "norm_label": ".actions()",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_actions"
     },
     {
       "label": ".constructor()",
@@ -464,9 +464,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L73",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_constructor",
       "community": 40,
-      "norm_label": ".constructor()"
+      "norm_label": ".constructor()",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_constructor"
     },
     {
       "label": ".ngOnInit()",
@@ -474,9 +474,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L99",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_ngoninit",
       "community": 40,
-      "norm_label": ".ngoninit()"
+      "norm_label": ".ngoninit()",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_ngoninit"
     },
     {
       "label": ".getProductVariants()",
@@ -484,9 +484,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L139",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_getproductvariants",
       "community": 40,
-      "norm_label": ".getproductvariants()"
+      "norm_label": ".getproductvariants()",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_getproductvariants"
     },
     {
       "label": ".addAction()",
@@ -494,9 +494,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L144",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_addaction",
       "community": 40,
-      "norm_label": ".addaction()"
+      "norm_label": ".addaction()",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_addaction"
     },
     {
       "label": ".removeAction()",
@@ -504,9 +504,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L159",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_removeaction",
       "community": 40,
-      "norm_label": ".removeaction()"
+      "norm_label": ".removeaction()",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_removeaction"
     },
     {
       "label": ".combineDateAndTime()",
@@ -514,9 +514,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L163",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_combinedateandtime",
       "community": 40,
-      "norm_label": ".combinedateandtime()"
+      "norm_label": ".combinedateandtime()",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_combinedateandtime"
     },
     {
       "label": ".uploadWelcomeImage()",
@@ -524,9 +524,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L173",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_uploadwelcomeimage",
       "community": 40,
-      "norm_label": ".uploadwelcomeimage()"
+      "norm_label": ".uploadwelcomeimage()",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_uploadwelcomeimage"
     },
     {
       "label": ".clearWelcomeImage()",
@@ -534,9 +534,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L196",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_clearwelcomeimage",
       "community": 40,
-      "norm_label": ".clearwelcomeimage()"
+      "norm_label": ".clearwelcomeimage()",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_clearwelcomeimage"
     },
     {
       "label": ".save()",
@@ -544,9 +544,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L201",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_save",
       "community": 40,
-      "norm_label": ".save()"
+      "norm_label": ".save()",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_save"
     },
     {
       "label": ".cancel()",
@@ -554,9 +554,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L246",
       "_origin": "ast",
-      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_cancel",
       "community": 40,
-      "norm_label": ".cancel()"
+      "norm_label": ".cancel()",
+      "id": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_cancel"
     },
     {
       "label": "campaigns.service.ts",
@@ -1234,7 +1234,7 @@
       "source_file": "apps/new-panel/src/app/shell/shell.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 17,
+      "community": 174,
       "norm_label": "shell.component.ts",
       "id": "apps_new_panel_src_app_shell_shell_component"
     },
@@ -1244,7 +1244,7 @@
       "source_file": "apps/new-panel/src/app/shell/shell.component.ts",
       "source_location": "L112",
       "_origin": "ast",
-      "community": 17,
+      "community": 174,
       "norm_label": "shellcomponent",
       "id": "apps_new_panel_src_app_shell_shell_component_shellcomponent"
     },
@@ -1254,7 +1254,7 @@
       "source_file": "apps/new-panel/src/app/shell/shell.component.ts",
       "source_location": "L126",
       "_origin": "ast",
-      "community": 17,
+      "community": 174,
       "norm_label": ".isbigdatapage()",
       "id": "apps_new_panel_src_app_shell_shell_component_shellcomponent_isbigdatapage"
     },
@@ -1264,7 +1264,7 @@
       "source_file": "apps/new-panel/src/app/shell/shell.component.ts",
       "source_location": "L139",
       "_origin": "ast",
-      "community": 17,
+      "community": 174,
       "norm_label": ".constructor()",
       "id": "apps_new_panel_src_app_shell_shell_component_shellcomponent_constructor"
     },
@@ -1274,7 +1274,7 @@
       "source_file": "apps/new-panel/src/app/shell/shell.component.ts",
       "source_location": "L149",
       "_origin": "ast",
-      "community": 17,
+      "community": 174,
       "norm_label": ".togglesection()",
       "id": "apps_new_panel_src_app_shell_shell_component_shellcomponent_togglesection"
     },
@@ -1284,7 +1284,7 @@
       "source_file": "apps/new-panel/src/app/shell/shell.component.ts",
       "source_location": "L153",
       "_origin": "ast",
-      "community": 17,
+      "community": 174,
       "norm_label": ".logout()",
       "id": "apps_new_panel_src_app_shell_shell_component_shellcomponent_logout"
     },
@@ -2044,7 +2044,7 @@
       "source_file": "apps/new-panel/src/app/app.routes.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 17,
+      "community": 174,
       "norm_label": "app.routes.ts",
       "id": "apps_new_panel_src_app_app_routes"
     },
@@ -2054,7 +2054,7 @@
       "source_file": "apps/new-panel/src/app/app.routes.ts",
       "source_location": "L30",
       "_origin": "ast",
-      "community": 17,
+      "community": 125,
       "norm_label": "approutes",
       "id": "apps_new_panel_src_app_app_routes_approutes"
     },
@@ -3384,7 +3384,7 @@
       "source_file": "apps/backend/src/app/ai-chatbot/ai-chatbot.controller.ts",
       "source_location": "L106",
       "_origin": "ast",
-      "community": 67,
+      "community": 27,
       "norm_label": ".updateaichatbot()",
       "id": "apps_backend_src_app_ai_chatbot_ai_chatbot_controller_aichatbotcontroller_updateaichatbot"
     },
@@ -3564,7 +3564,7 @@
       "source_file": "apps/backend/src/app/ai-chatbot/ai-chatbot.service.ts",
       "source_location": "L328",
       "_origin": "ast",
-      "community": 231,
+      "community": 46,
       "norm_label": ".mapaichattopanelitem()",
       "id": "apps_backend_src_app_ai_chatbot_ai_chatbot_service_aichatbotservice_mapaichattopanelitem"
     },
@@ -4064,7 +4064,7 @@
       "source_file": "apps/backend/src/app/auth/admin-local.strategy.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 38,
+      "community": 15,
       "norm_label": "admin-local.strategy.ts",
       "id": "apps_backend_src_app_auth_admin_local_strategy"
     },
@@ -4074,7 +4074,7 @@
       "source_file": "apps/backend/src/app/auth/admin-local.strategy.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 38,
+      "community": 15,
       "norm_label": "adminlocalstrategy",
       "id": "apps_backend_src_app_auth_admin_local_strategy_adminlocalstrategy"
     },
@@ -4084,7 +4084,7 @@
       "source_file": "apps/backend/src/app/auth/admin-local.strategy.ts",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 38,
+      "community": 15,
       "norm_label": ".constructor()",
       "id": "apps_backend_src_app_auth_admin_local_strategy_adminlocalstrategy_constructor"
     },
@@ -4094,7 +4094,7 @@
       "source_file": "apps/backend/src/app/auth/admin-local.strategy.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 38,
+      "community": 15,
       "norm_label": ".validate()",
       "id": "apps_backend_src_app_auth_admin_local_strategy_adminlocalstrategy_validate"
     },
@@ -4394,7 +4394,7 @@
       "source_file": "apps/backend/src/app/auth/auth.service.ts",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 26,
+      "community": 15,
       "norm_label": "authservice",
       "id": "apps_backend_src_app_auth_auth_service_authservice"
     },
@@ -4404,7 +4404,7 @@
       "source_file": "apps/backend/src/app/auth/auth.service.ts",
       "source_location": "L27",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": ".constructor()",
       "id": "apps_backend_src_app_auth_auth_service_authservice_constructor"
     },
@@ -4494,7 +4494,7 @@
       "source_file": "apps/backend/src/app/auth/auth.service.ts",
       "source_location": "L141",
       "_origin": "ast",
-      "community": 26,
+      "community": 15,
       "norm_label": ".sendtoken()",
       "id": "apps_backend_src_app_auth_auth_service_authservice_sendtoken"
     },
@@ -4514,7 +4514,7 @@
       "source_file": "apps/backend/src/app/auth/auth.service.ts",
       "source_location": "L180",
       "_origin": "ast",
-      "community": 26,
+      "community": 15,
       "norm_label": ".changepanelpassword()",
       "id": "apps_backend_src_app_auth_auth_service_authservice_changepanelpassword"
     },
@@ -4584,7 +4584,7 @@
       "source_file": "apps/backend/src/app/auth/auth.service.ts",
       "source_location": "L261",
       "_origin": "ast",
-      "community": 26,
+      "community": 15,
       "norm_label": ".lookup()",
       "id": "apps_backend_src_app_auth_auth_service_authservice_lookup"
     },
@@ -4694,7 +4694,7 @@
       "source_file": "apps/backend/src/app/auth/panel-local.strategy.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 38,
+      "community": 15,
       "norm_label": "panel-local.strategy.ts",
       "id": "apps_backend_src_app_auth_panel_local_strategy"
     },
@@ -4704,7 +4704,7 @@
       "source_file": "apps/backend/src/app/auth/panel-local.strategy.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 38,
+      "community": 15,
       "norm_label": "panellocalstrategy",
       "id": "apps_backend_src_app_auth_panel_local_strategy_panellocalstrategy"
     },
@@ -4714,7 +4714,7 @@
       "source_file": "apps/backend/src/app/auth/panel-local.strategy.ts",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 38,
+      "community": 15,
       "norm_label": ".constructor()",
       "id": "apps_backend_src_app_auth_panel_local_strategy_panellocalstrategy_constructor"
     },
@@ -4724,7 +4724,7 @@
       "source_file": "apps/backend/src/app/auth/panel-local.strategy.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 38,
+      "community": 15,
       "norm_label": ".validate()",
       "id": "apps_backend_src_app_auth_panel_local_strategy_panellocalstrategy_validate"
     },
@@ -5374,7 +5374,7 @@
       "source_file": "apps/backend/src/app/clubs/clubs.service.ts",
       "source_location": "L203",
       "_origin": "ast",
-      "community": 125,
+      "community": 3,
       "norm_label": ".filtermembersv2()",
       "id": "apps_backend_src_app_clubs_clubs_service_clubsservice_filtermembersv2"
     },
@@ -5584,7 +5584,7 @@
       "source_file": "apps/backend/src/app/clubs/members.controller.ts",
       "source_location": "L80",
       "_origin": "ast",
-      "community": 125,
+      "community": 3,
       "norm_label": ".filtermembersv2sms()",
       "id": "apps_backend_src_app_clubs_members_controller_memberscontroller_filtermembersv2sms"
     },
@@ -5694,7 +5694,7 @@
       "source_file": "apps/backend/src/app/clubs/missions.service.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 38,
+      "community": 6,
       "norm_label": "missions.service.ts",
       "id": "apps_backend_src_app_clubs_missions_service"
     },
@@ -5704,7 +5704,7 @@
       "source_file": "apps/backend/src/app/clubs/missions.service.ts",
       "source_location": "L26",
       "_origin": "ast",
-      "community": 119,
+      "community": 6,
       "norm_label": "missionsservice",
       "id": "apps_backend_src_app_clubs_missions_service_missionsservice"
     },
@@ -5724,7 +5724,7 @@
       "source_file": "apps/backend/src/app/clubs/missions.service.ts",
       "source_location": "L40",
       "_origin": "ast",
-      "community": 119,
+      "community": 6,
       "norm_label": ".checkformmission()",
       "id": "apps_backend_src_app_clubs_missions_service_missionsservice_checkformmission"
     },
@@ -5734,7 +5734,7 @@
       "source_file": "apps/backend/src/app/clubs/missions.service.ts",
       "source_location": "L114",
       "_origin": "ast",
-      "community": 119,
+      "community": 6,
       "norm_label": ".activemissions()",
       "id": "apps_backend_src_app_clubs_missions_service_missionsservice_activemissions"
     },
@@ -5744,7 +5744,7 @@
       "source_file": "apps/backend/src/app/clubs/missions.service.ts",
       "source_location": "L125",
       "_origin": "ast",
-      "community": 119,
+      "community": 6,
       "norm_label": ".completemission()",
       "id": "apps_backend_src_app_clubs_missions_service_missionsservice_completemission"
     },
@@ -5754,7 +5754,7 @@
       "source_file": "apps/backend/src/app/clubs/orders.subscriber.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 119,
+      "community": 6,
       "norm_label": "orders.subscriber.ts",
       "id": "apps_backend_src_app_clubs_orders_subscriber"
     },
@@ -5764,7 +5764,7 @@
       "source_file": "apps/backend/src/app/clubs/orders.subscriber.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 119,
+      "community": 6,
       "norm_label": "orderssubscriber",
       "id": "apps_backend_src_app_clubs_orders_subscriber_orderssubscriber"
     },
@@ -5774,7 +5774,7 @@
       "source_file": "apps/backend/src/app/clubs/orders.subscriber.ts",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 119,
+      "community": 6,
       "norm_label": ".constructor()",
       "id": "apps_backend_src_app_clubs_orders_subscriber_orderssubscriber_constructor"
     },
@@ -5784,7 +5784,7 @@
       "source_file": "apps/backend/src/app/clubs/orders.subscriber.ts",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 119,
+      "community": 6,
       "norm_label": ".listento()",
       "id": "apps_backend_src_app_clubs_orders_subscriber_orderssubscriber_listento"
     },
@@ -5794,7 +5794,7 @@
       "source_file": "apps/backend/src/app/clubs/orders.subscriber.ts",
       "source_location": "L28",
       "_origin": "ast",
-      "community": 119,
+      "community": 6,
       "norm_label": ".afterinsert()",
       "id": "apps_backend_src_app_clubs_orders_subscriber_orderssubscriber_afterinsert"
     },
@@ -5804,7 +5804,7 @@
       "source_file": "apps/backend/src/app/clubs/orders.subscriber.ts",
       "source_location": "L45",
       "_origin": "ast",
-      "community": 119,
+      "community": 6,
       "norm_label": ".afterupdate()",
       "id": "apps_backend_src_app_clubs_orders_subscriber_orderssubscriber_afterupdate"
     },
@@ -5874,7 +5874,7 @@
       "source_file": "apps/backend/src/app/clubs/wallets.controller.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 26,
+      "community": 38,
       "norm_label": "wallets.controller.ts",
       "id": "apps_backend_src_app_clubs_wallets_controller"
     },
@@ -6084,7 +6084,7 @@
       "source_file": "apps/backend/src/app/core/redis.service.ts",
       "source_location": "L23",
       "_origin": "ast",
-      "community": 3,
+      "community": 70,
       "norm_label": ".constructor()",
       "id": "apps_backend_src_app_core_redis_service_redisservice_constructor"
     },
@@ -6104,7 +6104,7 @@
       "source_file": "apps/backend/src/app/core/redis.service.ts",
       "source_location": "L35",
       "_origin": "ast",
-      "community": 39,
+      "community": 27,
       "norm_label": ".key()",
       "id": "apps_backend_src_app_core_redis_service_redisservice_key"
     },
@@ -6324,7 +6324,7 @@
       "source_file": "apps/backend/src/app/core/schemas/chat.schema.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 78,
       "norm_label": "chat.schema.ts",
       "id": "apps_backend_src_app_core_schemas_chat_schema"
     },
@@ -6334,7 +6334,7 @@
       "source_file": "apps/backend/src/app/core/schemas/chat.schema.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 2,
+      "community": 78,
       "norm_label": "chatschema",
       "id": "apps_backend_src_app_core_schemas_chat_schema_chatschema"
     },
@@ -6884,7 +6884,7 @@
       "source_file": "apps/backend/src/app/core/schemas/region.schema.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": "region.schema.ts",
       "id": "apps_backend_src_app_core_schemas_region_schema"
     },
@@ -6894,7 +6894,7 @@
       "source_file": "apps/backend/src/app/core/schemas/region.schema.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": "regionschema",
       "id": "apps_backend_src_app_core_schemas_region_schema_regionschema"
     },
@@ -7004,7 +7004,7 @@
       "source_file": "apps/backend/src/app/core/schemas/shop-user.schema.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": "shop-user.schema.ts",
       "id": "apps_backend_src_app_core_schemas_shop_user_schema"
     },
@@ -7014,7 +7014,7 @@
       "source_file": "apps/backend/src/app/core/schemas/shop-user.schema.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": "shopuserschema",
       "id": "apps_backend_src_app_core_schemas_shop_user_schema_shopuserschema"
     },
@@ -7044,7 +7044,7 @@
       "source_file": "apps/backend/src/app/core/schemas/sms-account.schema.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": "sms-account.schema.ts",
       "id": "apps_backend_src_app_core_schemas_sms_account_schema"
     },
@@ -7054,7 +7054,7 @@
       "source_file": "apps/backend/src/app/core/schemas/sms-account.schema.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": "smsaccountschema",
       "id": "apps_backend_src_app_core_schemas_sms_account_schema_smsaccountschema"
     },
@@ -7064,7 +7064,7 @@
       "source_file": "apps/backend/src/app/core/schemas/sms-group.schema.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": "sms-group.schema.ts",
       "id": "apps_backend_src_app_core_schemas_sms_group_schema"
     },
@@ -7074,7 +7074,7 @@
       "source_file": "apps/backend/src/app/core/schemas/sms-group.schema.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": "smsgroupschema",
       "id": "apps_backend_src_app_core_schemas_sms_group_schema_smsgroupschema"
     },
@@ -7104,7 +7104,7 @@
       "source_file": "apps/backend/src/app/core/schemas/sms.schema.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": "sms.schema.ts",
       "id": "apps_backend_src_app_core_schemas_sms_schema"
     },
@@ -7114,7 +7114,7 @@
       "source_file": "apps/backend/src/app/core/schemas/sms.schema.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": "smsschema",
       "id": "apps_backend_src_app_core_schemas_sms_schema_smsschema"
     },
@@ -7834,7 +7834,7 @@
       "source_file": "apps/backend/src/app/health/health.controller.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": "health.controller.ts",
       "id": "apps_backend_src_app_health_health_controller"
     },
@@ -7844,7 +7844,7 @@
       "source_file": "apps/backend/src/app/health/health.controller.ts",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": "healthcontroller",
       "id": "apps_backend_src_app_health_health_controller_healthcontroller"
     },
@@ -7854,7 +7854,7 @@
       "source_file": "apps/backend/src/app/health/health.controller.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": ".constructor()",
       "id": "apps_backend_src_app_health_health_controller_healthcontroller_constructor"
     },
@@ -7864,7 +7864,7 @@
       "source_file": "apps/backend/src/app/health/health.controller.ts",
       "source_location": "L20",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": ".check()",
       "id": "apps_backend_src_app_health_health_controller_healthcontroller_check"
     },
@@ -7874,7 +7874,7 @@
       "source_file": "apps/backend/src/app/health/health.module.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": "health.module.ts",
       "id": "apps_backend_src_app_health_health_module"
     },
@@ -7884,7 +7884,7 @@
       "source_file": "apps/backend/src/app/health/health.module.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": "healthmodule",
       "id": "apps_backend_src_app_health_health_module_healthmodule"
     },
@@ -8414,7 +8414,7 @@
       "source_file": "apps/backend/src/app/menus/menu-costs.controller.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 26,
+      "community": 1,
       "norm_label": ".constructor()",
       "id": "apps_backend_src_app_menus_menu_costs_controller_menucostscontroller_constructor"
     },
@@ -8924,7 +8924,7 @@
       "source_file": "apps/backend/src/app/orders/orders.subscriber.ts",
       "source_location": "L50",
       "_origin": "ast",
-      "community": 46,
+      "community": 39,
       "norm_label": ".constructor()",
       "id": "apps_backend_src_app_orders_orders_subscriber_orderssubscriber_constructor"
     },
@@ -9054,7 +9054,7 @@
       "source_file": "apps/backend/src/app/panel-notifications/panel-notifications.controller.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 174,
+      "community": 75,
       "norm_label": "panelnotificationscontroller",
       "id": "apps_backend_src_app_panel_notifications_panel_notifications_controller_panelnotificationscontroller"
     },
@@ -9064,7 +9064,7 @@
       "source_file": "apps/backend/src/app/panel-notifications/panel-notifications.controller.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 174,
+      "community": 75,
       "norm_label": ".constructor()",
       "id": "apps_backend_src_app_panel_notifications_panel_notifications_controller_panelnotificationscontroller_constructor"
     },
@@ -9074,7 +9074,7 @@
       "source_file": "apps/backend/src/app/panel-notifications/panel-notifications.controller.ts",
       "source_location": "L18",
       "_origin": "ast",
-      "community": 174,
+      "community": 75,
       "norm_label": ".getnotifications()",
       "id": "apps_backend_src_app_panel_notifications_panel_notifications_controller_panelnotificationscontroller_getnotifications"
     },
@@ -9124,7 +9124,7 @@
       "source_file": "apps/backend/src/app/panel-notifications/panel-notifications.service.ts",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 174,
+      "community": 75,
       "norm_label": "panelnotificationsservice",
       "id": "apps_backend_src_app_panel_notifications_panel_notifications_service_panelnotificationsservice"
     },
@@ -9134,7 +9134,7 @@
       "source_file": "apps/backend/src/app/panel-notifications/panel-notifications.service.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 174,
+      "community": 75,
       "norm_label": ".constructor()",
       "id": "apps_backend_src_app_panel_notifications_panel_notifications_service_panelnotificationsservice_constructor"
     },
@@ -9144,7 +9144,7 @@
       "source_file": "apps/backend/src/app/panel-notifications/panel-notifications.service.ts",
       "source_location": "L21",
       "_origin": "ast",
-      "community": 174,
+      "community": 75,
       "norm_label": ".getnotifications()",
       "id": "apps_backend_src_app_panel_notifications_panel_notifications_service_panelnotificationsservice_getnotifications"
     },
@@ -9154,7 +9154,7 @@
       "source_file": "apps/backend/src/app/panel-notifications/panel-notifications.service.ts",
       "source_location": "L41",
       "_origin": "ast",
-      "community": 174,
+      "community": 75,
       "norm_label": ".getordernotifications()",
       "id": "apps_backend_src_app_panel_notifications_panel_notifications_service_panelnotificationsservice_getordernotifications"
     },
@@ -9164,7 +9164,7 @@
       "source_file": "apps/backend/src/app/panel-notifications/panel-notifications.service.ts",
       "source_location": "L55",
       "_origin": "ast",
-      "community": 174,
+      "community": 75,
       "norm_label": ".getchatnotifications()",
       "id": "apps_backend_src_app_panel_notifications_panel_notifications_service_panelnotificationsservice_getchatnotifications"
     },
@@ -9584,7 +9584,7 @@
       "source_file": "apps/backend/src/app/printers/printers.controller.ts",
       "source_location": "L101",
       "_origin": "ast",
-      "community": 39,
+      "community": 27,
       "norm_label": ".findprintactionsbyshopid()",
       "id": "apps_backend_src_app_printers_printers_controller_printerscontroller_findprintactionsbyshopid"
     },
@@ -9704,7 +9704,7 @@
       "source_file": "apps/backend/src/app/regions/regions.controller.ts",
       "source_location": "L8",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": "regionscontroller",
       "id": "apps_backend_src_app_regions_regions_controller_regionscontroller"
     },
@@ -9714,7 +9714,7 @@
       "source_file": "apps/backend/src/app/regions/regions.controller.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": ".constructor()",
       "id": "apps_backend_src_app_regions_regions_controller_regionscontroller_constructor"
     },
@@ -9724,7 +9724,7 @@
       "source_file": "apps/backend/src/app/regions/regions.controller.ts",
       "source_location": "L20",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": ".find()",
       "id": "apps_backend_src_app_regions_regions_controller_regionscontroller_find"
     },
@@ -9734,7 +9734,7 @@
       "source_file": "apps/backend/src/app/regions/regions.controller.ts",
       "source_location": "L30",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": ".reset()",
       "id": "apps_backend_src_app_regions_regions_controller_regionscontroller_reset"
     },
@@ -9764,7 +9764,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration-mcp.controller.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 3,
+      "community": 70,
       "norm_label": "shop-integration-mcp.controller.ts",
       "id": "apps_backend_src_app_shop_integration_shop_integration_mcp_controller"
     },
@@ -9774,7 +9774,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration-mcp.controller.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 3,
+      "community": 70,
       "norm_label": "mcpsession",
       "id": "apps_backend_src_app_shop_integration_shop_integration_mcp_controller_mcpsession"
     },
@@ -9784,7 +9784,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration-mcp.controller.ts",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 3,
+      "community": 59,
       "norm_label": "shopintegrationmcpcontroller",
       "id": "apps_backend_src_app_shop_integration_shop_integration_mcp_controller_shopintegrationmcpcontroller"
     },
@@ -9814,7 +9814,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration-mcp.controller.ts",
       "source_location": "L121",
       "_origin": "ast",
-      "community": 3,
+      "community": 59,
       "norm_label": ".sse()",
       "id": "apps_backend_src_app_shop_integration_shop_integration_mcp_controller_shopintegrationmcpcontroller_sse"
     },
@@ -9824,7 +9824,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration-mcp.controller.ts",
       "source_location": "L161",
       "_origin": "ast",
-      "community": 3,
+      "community": 59,
       "norm_label": ".messages()",
       "id": "apps_backend_src_app_shop_integration_shop_integration_mcp_controller_shopintegrationmcpcontroller_messages"
     },
@@ -9834,7 +9834,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration-mcp.controller.ts",
       "source_location": "L234",
       "_origin": "ast",
-      "community": 3,
+      "community": 59,
       "norm_label": ".authenticatetoken()",
       "id": "apps_backend_src_app_shop_integration_shop_integration_mcp_controller_shopintegrationmcpcontroller_authenticatetoken"
     },
@@ -9844,7 +9844,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration-mcp.controller.ts",
       "source_location": "L253",
       "_origin": "ast",
-      "community": 3,
+      "community": 59,
       "norm_label": ".gettoolslist()",
       "id": "apps_backend_src_app_shop_integration_shop_integration_mcp_controller_shopintegrationmcpcontroller_gettoolslist"
     },
@@ -9994,7 +9994,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration.controller.ts",
       "source_location": "L1317",
       "_origin": "ast",
-      "community": 125,
+      "community": 3,
       "norm_label": ".filtercustomers()",
       "id": "apps_backend_src_app_shop_integration_shop_integration_controller_shopintegrationcontroller_filtercustomers"
     },
@@ -10014,7 +10014,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration.controller.ts",
       "source_location": "L1331",
       "_origin": "ast",
-      "community": 125,
+      "community": 3,
       "norm_label": ".sendcustomersms()",
       "id": "apps_backend_src_app_shop_integration_shop_integration_controller_shopintegrationcontroller_sendcustomersms"
     },
@@ -10224,7 +10224,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration.controller.ts",
       "source_location": "L1497",
       "_origin": "ast",
-      "community": 3,
+      "community": 52,
       "norm_label": ".createorder()",
       "id": "apps_backend_src_app_shop_integration_shop_integration_controller_shopintegrationcontroller_createorder"
     },
@@ -10424,7 +10424,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration.service.ts",
       "source_location": "L233",
       "_origin": "ast",
-      "community": 125,
+      "community": 3,
       "norm_label": ".getcustomers()",
       "id": "apps_backend_src_app_shop_integration_shop_integration_service_shopintegrationservice_getcustomers"
     },
@@ -10444,7 +10444,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration.service.ts",
       "source_location": "L268",
       "_origin": "ast",
-      "community": 125,
+      "community": 3,
       "norm_label": ".sendcustomersms()",
       "id": "apps_backend_src_app_shop_integration_shop_integration_service_shopintegrationservice_sendcustomersms"
     },
@@ -10654,7 +10654,7 @@
       "source_file": "apps/backend/src/app/shop-integration/shop-integration.service.ts",
       "source_location": "L745",
       "_origin": "ast",
-      "community": 3,
+      "community": 52,
       "norm_label": ".createorder()",
       "id": "apps_backend_src_app_shop_integration_shop_integration_service_shopintegrationservice_createorder"
     },
@@ -10954,7 +10954,7 @@
       "source_file": "apps/backend/src/app/shops/shop-users.controller.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": "shopuserscontroller",
       "id": "apps_backend_src_app_shops_shop_users_controller_shopuserscontroller"
     },
@@ -10964,7 +10964,7 @@
       "source_file": "apps/backend/src/app/shops/shop-users.controller.ts",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": ".constructor()",
       "id": "apps_backend_src_app_shops_shop_users_controller_shopuserscontroller_constructor"
     },
@@ -10974,7 +10974,7 @@
       "source_file": "apps/backend/src/app/shops/shop-users.controller.ts",
       "source_location": "L20",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": ".getall()",
       "id": "apps_backend_src_app_shops_shop_users_controller_shopuserscontroller_getall"
     },
@@ -10984,7 +10984,7 @@
       "source_file": "apps/backend/src/app/shops/shop-users.controller.ts",
       "source_location": "L29",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": ".myinfo()",
       "id": "apps_backend_src_app_shops_shop_users_controller_shopuserscontroller_myinfo"
     },
@@ -10994,7 +10994,7 @@
       "source_file": "apps/backend/src/app/shops/shop-users.controller.ts",
       "source_location": "L38",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": ".save()",
       "id": "apps_backend_src_app_shops_shop_users_controller_shopuserscontroller_save"
     },
@@ -11004,7 +11004,7 @@
       "source_file": "apps/backend/src/app/shops/shop-users.controller.ts",
       "source_location": "L46",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": ".remove()",
       "id": "apps_backend_src_app_shops_shop_users_controller_shopuserscontroller_remove"
     },
@@ -11134,7 +11134,7 @@
       "source_file": "apps/backend/src/app/shops/shops.controller.ts",
       "source_location": "L216",
       "_origin": "ast",
-      "community": 77,
+      "community": 10,
       "norm_label": ".sendlink()",
       "id": "apps_backend_src_app_shops_shops_controller_shopscontroller_sendlink"
     },
@@ -11224,7 +11224,7 @@
       "source_file": "apps/backend/src/app/shops/shops.service.ts",
       "source_location": "L70",
       "_origin": "ast",
-      "community": 77,
+      "community": 10,
       "norm_label": ".sendshoplink()",
       "id": "apps_backend_src_app_shops_shops_service_shopsservice_sendshoplink"
     },
@@ -11294,7 +11294,7 @@
       "source_file": "apps/backend/src/app/sms/sms-accounts.controller.ts",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 77,
+      "community": 1,
       "norm_label": "smsaccountscontroller",
       "id": "apps_backend_src_app_sms_sms_accounts_controller_smsaccountscontroller"
     },
@@ -11304,7 +11304,7 @@
       "source_file": "apps/backend/src/app/sms/sms-accounts.controller.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 77,
+      "community": 1,
       "norm_label": ".constructor()",
       "id": "apps_backend_src_app_sms_sms_accounts_controller_smsaccountscontroller_constructor"
     },
@@ -11314,7 +11314,7 @@
       "source_file": "apps/backend/src/app/sms/sms-accounts.controller.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 77,
+      "community": 1,
       "norm_label": ".find()",
       "id": "apps_backend_src_app_sms_sms_accounts_controller_smsaccountscontroller_find"
     },
@@ -11434,7 +11434,7 @@
       "source_file": "apps/backend/src/app/sms/sms.controller.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 77,
+      "community": 26,
       "norm_label": "sms.controller.ts",
       "id": "apps_backend_src_app_sms_sms_controller"
     },
@@ -11524,7 +11524,7 @@
       "source_file": "apps/backend/src/app/sms/sms.service.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 77,
+      "community": 63,
       "norm_label": "sms.service.ts",
       "id": "apps_backend_src_app_sms_sms_service"
     },
@@ -11544,7 +11544,7 @@
       "source_file": "apps/backend/src/app/sms/sms.service.ts",
       "source_location": "L23",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": ".constructor()",
       "id": "apps_backend_src_app_sms_sms_service_smsservice_constructor"
     },
@@ -11624,7 +11624,7 @@
       "source_file": "apps/backend/src/app/sms/sms.subscriber.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": "sms.subscriber.ts",
       "id": "apps_backend_src_app_sms_sms_subscriber"
     },
@@ -11634,7 +11634,7 @@
       "source_file": "apps/backend/src/app/sms/sms.subscriber.ts",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": "smssubscriber",
       "id": "apps_backend_src_app_sms_sms_subscriber_smssubscriber"
     },
@@ -11644,7 +11644,7 @@
       "source_file": "apps/backend/src/app/sms/sms.subscriber.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": ".constructor()",
       "id": "apps_backend_src_app_sms_sms_subscriber_smssubscriber_constructor"
     },
@@ -11654,7 +11654,7 @@
       "source_file": "apps/backend/src/app/sms/sms.subscriber.ts",
       "source_location": "L22",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": ".listento()",
       "id": "apps_backend_src_app_sms_sms_subscriber_smssubscriber_listento"
     },
@@ -11664,7 +11664,7 @@
       "source_file": "apps/backend/src/app/sms/sms.subscriber.ts",
       "source_location": "L26",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": ".afterinsert()",
       "id": "apps_backend_src_app_sms_sms_subscriber_smssubscriber_afterinsert"
     },
@@ -11674,7 +11674,7 @@
       "source_file": "apps/backend/src/app/sms/sms.subscriber.ts",
       "source_location": "L30",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": ".afterupdate()",
       "id": "apps_backend_src_app_sms_sms_subscriber_smssubscriber_afterupdate"
     },
@@ -11684,7 +11684,7 @@
       "source_file": "apps/backend/src/app/third-parties/bale-bots.service.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 38,
+      "community": 15,
       "norm_label": "bale-bots.service.ts",
       "id": "apps_backend_src_app_third_parties_bale_bots_service"
     },
@@ -11694,7 +11694,7 @@
       "source_file": "apps/backend/src/app/third-parties/bale-bots.service.ts",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 38,
+      "community": 15,
       "norm_label": "balebotruntime",
       "id": "apps_backend_src_app_third_parties_bale_bots_service_balebotruntime"
     },
@@ -11704,7 +11704,7 @@
       "source_file": "apps/backend/src/app/third-parties/bale-bots.service.ts",
       "source_location": "L20",
       "_origin": "ast",
-      "community": 38,
+      "community": 15,
       "norm_label": "balefrom",
       "id": "apps_backend_src_app_third_parties_bale_bots_service_balefrom"
     },
@@ -11714,7 +11714,7 @@
       "source_file": "apps/backend/src/app/third-parties/bale-bots.service.ts",
       "source_location": "L27",
       "_origin": "ast",
-      "community": 38,
+      "community": 15,
       "norm_label": "balecontact",
       "id": "apps_backend_src_app_third_parties_bale_bots_service_balecontact"
     },
@@ -11724,7 +11724,7 @@
       "source_file": "apps/backend/src/app/third-parties/bale-bots.service.ts",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 38,
+      "community": 15,
       "norm_label": "balemessage",
       "id": "apps_backend_src_app_third_parties_bale_bots_service_balemessage"
     },
@@ -11734,7 +11734,7 @@
       "source_file": "apps/backend/src/app/third-parties/bale-bots.service.ts",
       "source_location": "L38",
       "_origin": "ast",
-      "community": 38,
+      "community": 15,
       "norm_label": "balechat",
       "id": "apps_backend_src_app_third_parties_bale_bots_service_balechat"
     },
@@ -11744,7 +11744,7 @@
       "source_file": "apps/backend/src/app/third-parties/bale-bots.service.ts",
       "source_location": "L42",
       "_origin": "ast",
-      "community": 38,
+      "community": 15,
       "norm_label": "baleupdate",
       "id": "apps_backend_src_app_third_parties_bale_bots_service_baleupdate"
     },
@@ -11754,7 +11754,7 @@
       "source_file": "apps/backend/src/app/third-parties/bale-bots.service.ts",
       "source_location": "L50",
       "_origin": "ast",
-      "community": 38,
+      "community": 15,
       "norm_label": "baletelegramresponse",
       "id": "apps_backend_src_app_third_parties_bale_bots_service_baletelegramresponse"
     },
@@ -12264,7 +12264,7 @@
       "source_file": "apps/backend/src/app/third-parties/menno-bale-order-notifications.service.ts",
       "source_location": "L70",
       "_origin": "ast",
-      "community": 117,
+      "community": 42,
       "norm_label": ".constructor()",
       "id": "apps_backend_src_app_third_parties_menno_bale_order_notifications_service_mennobaleordernotificationsservice_constructor"
     },
@@ -25894,7 +25894,7 @@
       "source_file": "apps/new-app/src/app/core/services/cart.service.ts",
       "source_location": "L414",
       "_origin": "ast",
-      "community": 3,
+      "community": 70,
       "norm_label": ".ispaymentavailable()",
       "id": "apps_new_app_src_app_core_services_cart_service_cartservice_ispaymentavailable"
     },
@@ -26504,7 +26504,7 @@
       "source_file": "apps/new-app/src/app/core/services/shop.service.ts",
       "source_location": "L98",
       "_origin": "ast",
-      "community": 3,
+      "community": 70,
       "norm_label": ".isclosetime()",
       "id": "apps_new_app_src_app_core_services_shop_service_shopservice_isclosetime"
     },
@@ -28884,7 +28884,7 @@
       "source_file": "apps/new-panel/src/app/ai-chat-history/ai-chat-history.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 20,
+      "community": 2,
       "norm_label": "ai-chat-history.component.ts",
       "id": "apps_new_panel_src_app_ai_chat_history_ai_chat_history_component"
     },
@@ -28894,7 +28894,7 @@
       "source_file": "apps/new-panel/src/app/ai-chat-history/ai-chat-history.component.ts",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 20,
+      "community": 2,
       "norm_label": "panelchatmessage",
       "id": "apps_new_panel_src_app_ai_chat_history_ai_chat_history_component_panelchatmessage"
     },
@@ -28904,7 +28904,7 @@
       "source_file": "apps/new-panel/src/app/ai-chat-history/ai-chat-history.component.ts",
       "source_location": "L29",
       "_origin": "ast",
-      "community": 20,
+      "community": 2,
       "norm_label": "panelchatcustomer",
       "id": "apps_new_panel_src_app_ai_chat_history_ai_chat_history_component_panelchatcustomer"
     },
@@ -28914,7 +28914,7 @@
       "source_file": "apps/new-panel/src/app/ai-chat-history/ai-chat-history.component.ts",
       "source_location": "L35",
       "_origin": "ast",
-      "community": 20,
+      "community": 2,
       "norm_label": "panelchat",
       "id": "apps_new_panel_src_app_ai_chat_history_ai_chat_history_component_panelchat"
     },
@@ -28924,7 +28924,7 @@
       "source_file": "apps/new-panel/src/app/ai-chat-history/ai-chat-history.component.ts",
       "source_location": "L43",
       "_origin": "ast",
-      "community": 20,
+      "community": 2,
       "norm_label": "panelchatspageresponse",
       "id": "apps_new_panel_src_app_ai_chat_history_ai_chat_history_component_panelchatspageresponse"
     },
@@ -28934,7 +28934,7 @@
       "source_file": "apps/new-panel/src/app/ai-chat-history/ai-chat-history.component.ts",
       "source_location": "L51",
       "_origin": "ast",
-      "community": 20,
+      "community": 2,
       "norm_label": "daygroup",
       "id": "apps_new_panel_src_app_ai_chat_history_ai_chat_history_component_daygroup"
     },
@@ -29054,7 +29054,7 @@
       "source_file": "apps/new-panel/src/app/ai-data-export/ai-data-export.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 20,
       "norm_label": "ai-data-export.component.ts",
       "id": "apps_new_panel_src_app_ai_data_export_ai_data_export_component"
     },
@@ -29264,7 +29264,7 @@
       "source_file": "apps/new-panel/src/app/ai-data-export/date-range-dialog/date-range-dialog.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 20,
       "norm_label": "date-range-dialog.component.ts",
       "id": "apps_new_panel_src_app_ai_data_export_date_range_dialog_date_range_dialog_component"
     },
@@ -29274,7 +29274,7 @@
       "source_file": "apps/new-panel/src/app/ai-data-export/date-range-dialog/date-range-dialog.component.ts",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 2,
+      "community": 20,
       "norm_label": "daterangedialogdata",
       "id": "apps_new_panel_src_app_ai_data_export_date_range_dialog_date_range_dialog_component_daterangedialogdata"
     },
@@ -29284,7 +29284,7 @@
       "source_file": "apps/new-panel/src/app/ai-data-export/date-range-dialog/date-range-dialog.component.ts",
       "source_location": "L17",
       "_origin": "ast",
-      "community": 2,
+      "community": 20,
       "norm_label": "daterangedialogresult",
       "id": "apps_new_panel_src_app_ai_data_export_date_range_dialog_date_range_dialog_component_daterangedialogresult"
     },
@@ -29294,7 +29294,7 @@
       "source_file": "apps/new-panel/src/app/ai-data-export/date-range-dialog/date-range-dialog.component.ts",
       "source_location": "L37",
       "_origin": "ast",
-      "community": 2,
+      "community": 20,
       "norm_label": "daterangedialogcomponent",
       "id": "apps_new_panel_src_app_ai_data_export_date_range_dialog_date_range_dialog_component_daterangedialogcomponent"
     },
@@ -29304,7 +29304,7 @@
       "source_file": "apps/new-panel/src/app/ai-data-export/date-range-dialog/date-range-dialog.component.ts",
       "source_location": "L46",
       "_origin": "ast",
-      "community": 2,
+      "community": 20,
       "norm_label": ".submit()",
       "id": "apps_new_panel_src_app_ai_data_export_date_range_dialog_date_range_dialog_component_daterangedialogcomponent_submit"
     },
@@ -29344,7 +29344,7 @@
       "source_file": "apps/new-panel/src/app/app.component.spec.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 12,
+      "community": 125,
       "norm_label": "app.component.spec.ts",
       "id": "apps_new_panel_src_app_app_component_spec"
     },
@@ -29354,7 +29354,7 @@
       "source_file": "apps/new-panel/src/app/app.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 12,
+      "community": 58,
       "norm_label": "app.component.ts",
       "id": "apps_new_panel_src_app_app_component"
     },
@@ -29364,7 +29364,7 @@
       "source_file": "apps/new-panel/src/app/app.component.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 12,
+      "community": 125,
       "norm_label": "appcomponent",
       "id": "apps_new_panel_src_app_app_component_appcomponent"
     },
@@ -29374,7 +29374,7 @@
       "source_file": "apps/new-panel/src/app/app.component.ts",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 12,
+      "community": 125,
       "norm_label": ".constructor()",
       "id": "apps_new_panel_src_app_app_component_appcomponent_constructor"
     },
@@ -29384,7 +29384,7 @@
       "source_file": "apps/new-panel/src/app/app.config.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 17,
+      "community": 125,
       "norm_label": "app.config.ts",
       "id": "apps_new_panel_src_app_app_config"
     },
@@ -29394,7 +29394,7 @@
       "source_file": "apps/new-panel/src/app/app.config.ts",
       "source_location": "L114",
       "_origin": "ast",
-      "community": 17,
+      "community": 125,
       "norm_label": "appconfig",
       "id": "apps_new_panel_src_app_app_config_appconfig"
     },
@@ -29614,7 +29614,7 @@
       "source_file": "apps/new-panel/src/app/auth/login/login.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 12,
+      "community": 79,
       "norm_label": "login.component.ts",
       "id": "apps_new_panel_src_app_auth_login_login_component"
     },
@@ -29704,7 +29704,7 @@
       "source_file": "apps/new-panel/src/app/chats/chats.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 78,
       "norm_label": "chats.component.ts",
       "id": "apps_new_panel_src_app_chats_chats_component"
     },
@@ -29844,7 +29844,7 @@
       "source_file": "apps/new-panel/src/app/club/member-list/member-filter-dialog/member-filter-dialog.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 20,
+      "community": 29,
       "norm_label": "member-filter-dialog.component.ts",
       "id": "apps_new_panel_src_app_club_member_list_member_filter_dialog_member_filter_dialog_component"
     },
@@ -29854,7 +29854,7 @@
       "source_file": "apps/new-panel/src/app/club/member-list/member-filter-dialog/member-filter-dialog.component.ts",
       "source_location": "L29",
       "_origin": "ast",
-      "community": 20,
+      "community": 29,
       "norm_label": "memberfilterdialogcomponent",
       "id": "apps_new_panel_src_app_club_member_list_member_filter_dialog_member_filter_dialog_component_memberfilterdialogcomponent"
     },
@@ -29864,7 +29864,7 @@
       "source_file": "apps/new-panel/src/app/club/member-list/member-filter-dialog/member-filter-dialog.component.ts",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 20,
+      "community": 29,
       "norm_label": ".constructor()",
       "id": "apps_new_panel_src_app_club_member_list_member_filter_dialog_member_filter_dialog_component_memberfilterdialogcomponent_constructor"
     },
@@ -29874,7 +29874,7 @@
       "source_file": "apps/new-panel/src/app/club/member-list/member-filter-dialog/member-filter-dialog.component.ts",
       "source_location": "L56",
       "_origin": "ast",
-      "community": 20,
+      "community": 29,
       "norm_label": ".onapply()",
       "id": "apps_new_panel_src_app_club_member_list_member_filter_dialog_member_filter_dialog_component_memberfilterdialogcomponent_onapply"
     },
@@ -29884,7 +29884,7 @@
       "source_file": "apps/new-panel/src/app/club/member-list/member-list.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 29,
       "norm_label": "member-list.component.ts",
       "id": "apps_new_panel_src_app_club_member_list_member_list_component"
     },
@@ -30214,7 +30214,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/api.provider.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 17,
+      "community": 137,
       "norm_label": "api.provider.ts",
       "id": "apps_new_panel_src_app_core_providers_api_provider"
     },
@@ -30224,7 +30224,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/api.provider.ts",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 17,
+      "community": 137,
       "norm_label": "ignore_cases",
       "id": "apps_new_panel_src_app_core_providers_api_provider_ignore_cases"
     },
@@ -30234,7 +30234,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/api.provider.ts",
       "source_location": "L17",
       "_origin": "ast",
-      "community": 17,
+      "community": 137,
       "norm_label": "apiinterceptor",
       "id": "apps_new_panel_src_app_core_providers_api_provider_apiinterceptor"
     },
@@ -30244,7 +30244,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/api.provider.ts",
       "source_location": "L21",
       "_origin": "ast",
-      "community": 17,
+      "community": 137,
       "norm_label": ".intercept()",
       "id": "apps_new_panel_src_app_core_providers_api_provider_apiinterceptor_intercept"
     },
@@ -30254,7 +30254,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/api.provider.ts",
       "source_location": "L83",
       "_origin": "ast",
-      "community": 17,
+      "community": 137,
       "norm_label": "apiinterceptorprovider()",
       "id": "apps_new_panel_src_app_core_providers_api_provider_apiinterceptorprovider"
     },
@@ -30264,7 +30264,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/index.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 17,
+      "community": 137,
       "norm_label": "index.ts",
       "id": "apps_new_panel_src_app_core_providers_index"
     },
@@ -30274,7 +30274,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/jalali-date-picker.provider.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 17,
+      "community": 243,
       "norm_label": "jalali-date-picker.provider.ts",
       "id": "apps_new_panel_src_app_core_providers_jalali_date_picker_provider"
     },
@@ -30284,7 +30284,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/jalali-date-picker.provider.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 17,
+      "community": 243,
       "norm_label": "range()",
       "id": "apps_new_panel_src_app_core_providers_jalali_date_picker_provider_range"
     },
@@ -30544,7 +30544,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/jalali-date-picker.provider.ts",
       "source_location": "L239",
       "_origin": "ast",
-      "community": 17,
+      "community": 243,
       "norm_label": "jalali_moment_formats",
       "id": "apps_new_panel_src_app_core_providers_jalali_date_picker_provider_jalali_moment_formats"
     },
@@ -30554,7 +30554,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/jalali-date-picker.provider.ts",
       "source_location": "L252",
       "_origin": "ast",
-      "community": 17,
+      "community": 243,
       "norm_label": "providejalalidatepickerprovider()",
       "id": "apps_new_panel_src_app_core_providers_jalali_date_picker_provider_providejalalidatepickerprovider"
     },
@@ -30564,7 +30564,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/mat-paginator-intl.provider.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 17,
+      "community": 231,
       "norm_label": "mat-paginator-intl.provider.ts",
       "id": "apps_new_panel_src_app_core_providers_mat_paginator_intl_provider"
     },
@@ -30574,7 +30574,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/mat-paginator-intl.provider.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 17,
+      "community": 231,
       "norm_label": "paginatorintl",
       "id": "apps_new_panel_src_app_core_providers_mat_paginator_intl_provider_paginatorintl"
     },
@@ -30584,7 +30584,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/mat-paginator-intl.provider.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 17,
+      "community": 231,
       "norm_label": ".constructor()",
       "id": "apps_new_panel_src_app_core_providers_mat_paginator_intl_provider_paginatorintl_constructor"
     },
@@ -30594,7 +30594,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/mat-paginator-intl.provider.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 17,
+      "community": 231,
       "norm_label": ".getandinittranslations()",
       "id": "apps_new_panel_src_app_core_providers_mat_paginator_intl_provider_paginatorintl_getandinittranslations"
     },
@@ -30604,7 +30604,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/mat-paginator-intl.provider.ts",
       "source_location": "L20",
       "_origin": "ast",
-      "community": 17,
+      "community": 231,
       "norm_label": ".getrangelabel()",
       "id": "apps_new_panel_src_app_core_providers_mat_paginator_intl_provider_paginatorintl_getrangelabel"
     },
@@ -30614,7 +30614,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/mat-paginator-intl.provider.ts",
       "source_location": "L25",
       "_origin": "ast",
-      "community": 17,
+      "community": 231,
       "norm_label": "paginatorintlprovider()",
       "id": "apps_new_panel_src_app_core_providers_mat_paginator_intl_provider_paginatorintlprovider"
     },
@@ -30624,7 +30624,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/translate-module.provider.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 17,
+      "community": 125,
       "norm_label": "translate-module.provider.ts",
       "id": "apps_new_panel_src_app_core_providers_translate_module_provider"
     },
@@ -30634,7 +30634,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/translate-module.provider.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 17,
+      "community": 125,
       "norm_label": "httploaderfactory()",
       "id": "apps_new_panel_src_app_core_providers_translate_module_provider_httploaderfactory"
     },
@@ -30644,7 +30644,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/translate-module.provider.ts",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 17,
+      "community": 125,
       "norm_label": "config",
       "id": "apps_new_panel_src_app_core_providers_translate_module_provider_config"
     },
@@ -30654,7 +30654,7 @@
       "source_file": "apps/new-panel/src/app/core/providers/translate-module.provider.ts",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 17,
+      "community": 125,
       "norm_label": "providetranslation()",
       "id": "apps_new_panel_src_app_core_providers_translate_module_provider_providetranslation"
     },
@@ -30664,7 +30664,7 @@
       "source_file": "apps/new-panel/src/app/core/services/club.service.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 78,
       "norm_label": "club.service.ts",
       "id": "apps_new_panel_src_app_core_services_club_service"
     },
@@ -30684,7 +30684,7 @@
       "source_file": "apps/new-panel/src/app/core/services/club.service.ts",
       "source_location": "L52",
       "_origin": "ast",
-      "community": 231,
+      "community": 46,
       "norm_label": ".editmemberdialog()",
       "id": "apps_new_panel_src_app_core_services_club_service_clubservice_editmemberdialog"
     },
@@ -30874,7 +30874,7 @@
       "source_file": "apps/new-panel/src/app/core/services/sms.service.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 18,
       "norm_label": "sms.service.ts",
       "id": "apps_new_panel_src_app_core_services_sms_service"
     },
@@ -30884,7 +30884,7 @@
       "source_file": "apps/new-panel/src/app/core/services/sms.service.ts",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 2,
+      "community": 29,
       "norm_label": "smsservice",
       "id": "apps_new_panel_src_app_core_services_sms_service_smsservice"
     },
@@ -30894,7 +30894,7 @@
       "source_file": "apps/new-panel/src/app/core/services/sms.service.ts",
       "source_location": "L34",
       "_origin": "ast",
-      "community": 231,
+      "community": 46,
       "norm_label": ".newsms()",
       "id": "apps_new_panel_src_app_core_services_sms_service_smsservice_newsms"
     },
@@ -30904,7 +30904,7 @@
       "source_file": "apps/new-panel/src/app/core/services/sms.service.ts",
       "source_location": "L58",
       "_origin": "ast",
-      "community": 2,
+      "community": 29,
       "norm_label": ".newtemplate()",
       "id": "apps_new_panel_src_app_core_services_sms_service_smsservice_newtemplate"
     },
@@ -30914,7 +30914,7 @@
       "source_file": "apps/new-panel/src/app/developer-api/developer-api.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 18,
+      "community": 51,
       "norm_label": "developer-api.component.ts",
       "id": "apps_new_panel_src_app_developer_api_developer_api_component"
     },
@@ -30984,7 +30984,7 @@
       "source_file": "apps/new-panel/src/app/discount-coupons/discount-coupon-report-dialog.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 110,
       "norm_label": "discount-coupon-report-dialog.component.ts",
       "id": "apps_new_panel_src_app_discount_coupons_discount_coupon_report_dialog_component"
     },
@@ -30994,7 +30994,7 @@
       "source_file": "apps/new-panel/src/app/discount-coupons/discount-coupon-report-dialog.component.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 29,
+      "community": 110,
       "norm_label": "couponusagereport",
       "id": "apps_new_panel_src_app_discount_coupons_discount_coupon_report_dialog_component_couponusagereport"
     },
@@ -31004,7 +31004,7 @@
       "source_file": "apps/new-panel/src/app/discount-coupons/discount-coupon-report-dialog.component.ts",
       "source_location": "L78",
       "_origin": "ast",
-      "community": 29,
+      "community": 110,
       "norm_label": "discountcouponreportdialogcomponent",
       "id": "apps_new_panel_src_app_discount_coupons_discount_coupon_report_dialog_component_discountcouponreportdialogcomponent"
     },
@@ -31014,7 +31014,7 @@
       "source_file": "apps/new-panel/src/app/discount-coupons/discount-coupon-report-dialog.component.ts",
       "source_location": "L98",
       "_origin": "ast",
-      "community": 29,
+      "community": 110,
       "norm_label": ".close()",
       "id": "apps_new_panel_src_app_discount_coupons_discount_coupon_report_dialog_component_discountcouponreportdialogcomponent_close"
     },
@@ -31024,7 +31024,7 @@
       "source_file": "apps/new-panel/src/app/discount-coupons/discount-coupons-edit.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 78,
       "norm_label": "discount-coupons-edit.component.ts",
       "id": "apps_new_panel_src_app_discount_coupons_discount_coupons_edit_component"
     },
@@ -31114,7 +31114,7 @@
       "source_file": "apps/new-panel/src/app/discount-coupons/discount-coupons-list.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 110,
       "norm_label": "discount-coupons-list.component.ts",
       "id": "apps_new_panel_src_app_discount_coupons_discount_coupons_list_component"
     },
@@ -31194,7 +31194,7 @@
       "source_file": "apps/new-panel/src/app/discount-coupons/discount-coupons.routes.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 51,
+      "community": 110,
       "norm_label": "discount-coupons.routes.ts",
       "id": "apps_new_panel_src_app_discount_coupons_discount_coupons_routes"
     },
@@ -31204,7 +31204,7 @@
       "source_file": "apps/new-panel/src/app/discount-coupons/discount-coupons.routes.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 51,
+      "community": 110,
       "norm_label": "discountcouponsroutes",
       "id": "apps_new_panel_src_app_discount_coupons_discount_coupons_routes_discountcouponsroutes"
     },
@@ -33224,7 +33224,7 @@
       "source_file": "apps/new-panel/src/app/menu/cost-list/cost-list.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 58,
       "norm_label": "cost-list.component.ts",
       "id": "apps_new_panel_src_app_menu_cost_list_cost_list_component"
     },
@@ -33234,7 +33234,7 @@
       "source_file": "apps/new-panel/src/app/menu/cost-list/cost-list.component.ts",
       "source_location": "L18",
       "_origin": "ast",
-      "community": 2,
+      "community": 58,
       "norm_label": "cols",
       "id": "apps_new_panel_src_app_menu_cost_list_cost_list_component_cols"
     },
@@ -33284,7 +33284,7 @@
       "source_file": "apps/new-panel/src/app/menu/list/category/category.component.spec.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 58,
       "norm_label": "category.component.spec.ts",
       "id": "apps_new_panel_src_app_menu_list_category_category_component_spec"
     },
@@ -33294,7 +33294,7 @@
       "source_file": "apps/new-panel/src/app/menu/list/category/category.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 58,
       "norm_label": "category.component.ts",
       "id": "apps_new_panel_src_app_menu_list_category_category_component"
     },
@@ -33554,7 +33554,7 @@
       "source_file": "apps/new-panel/src/app/menu/product-availability/product-availability.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 58,
       "norm_label": "product-availability.component.ts",
       "id": "apps_new_panel_src_app_menu_product_availability_product_availability_component"
     },
@@ -33574,7 +33574,7 @@
       "source_file": "apps/new-panel/src/app/menu/product-availability/product-availability.component.ts",
       "source_location": "L35",
       "_origin": "ast",
-      "community": 2,
+      "community": 58,
       "norm_label": "materialavailability",
       "id": "apps_new_panel_src_app_menu_product_availability_product_availability_component_materialavailability"
     },
@@ -34274,7 +34274,7 @@
       "source_file": "apps/new-panel/src/app/orders/details/chat/order-chat.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 18,
       "norm_label": "order-chat.component.ts",
       "id": "apps_new_panel_src_app_orders_details_chat_order_chat_component"
     },
@@ -34394,7 +34394,7 @@
       "source_file": "apps/new-panel/src/app/orders/details/table/table.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 109,
+      "community": 32,
       "norm_label": "table.component.ts",
       "id": "apps_new_panel_src_app_orders_details_table_table_component"
     },
@@ -34404,7 +34404,7 @@
       "source_file": "apps/new-panel/src/app/orders/details/table/table.component.ts",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 109,
+      "community": 32,
       "norm_label": "orderitemtablecomponent",
       "id": "apps_new_panel_src_app_orders_details_table_table_component_orderitemtablecomponent"
     },
@@ -34414,7 +34414,7 @@
       "source_file": "apps/new-panel/src/app/orders/details/table/table.component.ts",
       "source_location": "L41",
       "_origin": "ast",
-      "community": 109,
+      "community": 32,
       "norm_label": ".constructor()",
       "id": "apps_new_panel_src_app_orders_details_table_table_component_orderitemtablecomponent_constructor"
     },
@@ -34424,7 +34424,7 @@
       "source_file": "apps/new-panel/src/app/orders/details/table/table.component.ts",
       "source_location": "L47",
       "_origin": "ast",
-      "community": 109,
+      "community": 32,
       "norm_label": ".setmaterialcost()",
       "id": "apps_new_panel_src_app_orders_details_table_table_component_orderitemtablecomponent_setmaterialcost"
     },
@@ -34854,7 +34854,7 @@
       "source_file": "apps/new-panel/src/app/orders/new/new-order.service.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 78,
+      "community": 18,
       "norm_label": "new-order.service.ts",
       "id": "apps_new_panel_src_app_orders_new_new_order_service"
     },
@@ -35104,7 +35104,7 @@
       "source_file": "apps/new-panel/src/app/orders/new/order-type/order-type.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 78,
+      "community": 18,
       "norm_label": "order-type.component.ts",
       "id": "apps_new_panel_src_app_orders_new_order_type_order_type_component"
     },
@@ -35134,7 +35134,7 @@
       "source_file": "apps/new-panel/src/app/orders/order.service.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 78,
+      "community": 32,
       "norm_label": "order.service.ts",
       "id": "apps_new_panel_src_app_orders_order_service"
     },
@@ -35144,7 +35144,7 @@
       "source_file": "apps/new-panel/src/app/orders/order.service.ts",
       "source_location": "L17",
       "_origin": "ast",
-      "community": 78,
+      "community": 32,
       "norm_label": "mennobalepanelsyncresponse",
       "id": "apps_new_panel_src_app_orders_order_service_mennobalepanelsyncresponse"
     },
@@ -35154,7 +35154,7 @@
       "source_file": "apps/new-panel/src/app/orders/order.service.ts",
       "source_location": "L34",
       "_origin": "ast",
-      "community": 78,
+      "community": 32,
       "norm_label": "ordersservice",
       "id": "apps_new_panel_src_app_orders_order_service_ordersservice"
     },
@@ -35184,7 +35184,7 @@
       "source_file": "apps/new-panel/src/app/orders/print-order.helper.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 109,
+      "community": 32,
       "norm_label": "print-order.helper.ts",
       "id": "apps_new_panel_src_app_orders_print_order_helper"
     },
@@ -35194,7 +35194,7 @@
       "source_file": "apps/new-panel/src/app/orders/print-order.helper.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 109,
+      "community": 32,
       "norm_label": "printorder()",
       "id": "apps_new_panel_src_app_orders_print_order_helper_printorder"
     },
@@ -35404,7 +35404,7 @@
       "source_file": "apps/new-panel/src/app/reports/analytics-dashboard/user-stat-card/user-stat-card.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 20,
+      "community": 110,
       "norm_label": "user-stat-card.component.ts",
       "id": "apps_new_panel_src_app_reports_analytics_dashboard_user_stat_card_user_stat_card_component"
     },
@@ -35414,7 +35414,7 @@
       "source_file": "apps/new-panel/src/app/reports/analytics-dashboard/user-stat-card/user-stat-card.component.ts",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 20,
+      "community": 110,
       "norm_label": "userstatresponse",
       "id": "apps_new_panel_src_app_reports_analytics_dashboard_user_stat_card_user_stat_card_component_userstatresponse"
     },
@@ -35424,7 +35424,7 @@
       "source_file": "apps/new-panel/src/app/reports/analytics-dashboard/user-stat-card/user-stat-card.component.ts",
       "source_location": "L34",
       "_origin": "ast",
-      "community": 20,
+      "community": 110,
       "norm_label": "userstatcardcomponent",
       "id": "apps_new_panel_src_app_reports_analytics_dashboard_user_stat_card_user_stat_card_component_userstatcardcomponent"
     },
@@ -35434,7 +35434,7 @@
       "source_file": "apps/new-panel/src/app/reports/orders-dashboard/order-details/order-details.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 20,
+      "community": 18,
       "norm_label": "order-details.component.ts",
       "id": "apps_new_panel_src_app_reports_orders_dashboard_order_details_order_details_component"
     },
@@ -35444,7 +35444,7 @@
       "source_file": "apps/new-panel/src/app/reports/orders-dashboard/order-details/order-details.component.ts",
       "source_location": "L20",
       "_origin": "ast",
-      "community": 20,
+      "community": 18,
       "norm_label": "orderdetailscomponent",
       "id": "apps_new_panel_src_app_reports_orders_dashboard_order_details_order_details_component_orderdetailscomponent"
     },
@@ -35454,7 +35454,7 @@
       "source_file": "apps/new-panel/src/app/reports/orders-dashboard/orders-dashboard.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 20,
+      "community": 18,
       "norm_label": "orders-dashboard.component.ts",
       "id": "apps_new_panel_src_app_reports_orders_dashboard_orders_dashboard_component"
     },
@@ -35484,7 +35484,7 @@
       "source_file": "apps/new-panel/src/app/reports/orders-dashboard/orders-per-day-chart/orders-per-day-chart.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 20,
+      "community": 18,
       "norm_label": "orders-per-day-chart.component.ts",
       "id": "apps_new_panel_src_app_reports_orders_dashboard_orders_per_day_chart_orders_per_day_chart_component"
     },
@@ -35494,7 +35494,7 @@
       "source_file": "apps/new-panel/src/app/reports/orders-dashboard/orders-per-day-chart/orders-per-day-chart.component.ts",
       "source_location": "L21",
       "_origin": "ast",
-      "community": 20,
+      "community": 18,
       "norm_label": "ordersperdaychartcomponent",
       "id": "apps_new_panel_src_app_reports_orders_dashboard_orders_per_day_chart_orders_per_day_chart_component_ordersperdaychartcomponent"
     },
@@ -35504,7 +35504,7 @@
       "source_file": "apps/new-panel/src/app/reports/orders-dashboard/top-products-card/top-products-card.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 20,
+      "community": 18,
       "norm_label": "top-products-card.component.ts",
       "id": "apps_new_panel_src_app_reports_orders_dashboard_top_products_card_top_products_card_component"
     },
@@ -35514,7 +35514,7 @@
       "source_file": "apps/new-panel/src/app/reports/orders-dashboard/top-products-card/top-products-card.component.ts",
       "source_location": "L23",
       "_origin": "ast",
-      "community": 20,
+      "community": 18,
       "norm_label": "topproductscardcomponent",
       "id": "apps_new_panel_src_app_reports_orders_dashboard_top_products_card_top_products_card_component_topproductscardcomponent"
     },
@@ -35524,7 +35524,7 @@
       "source_file": "apps/new-panel/src/app/reports/orders-dashboard/top-products-card/top-products-card.component.ts",
       "source_location": "L127",
       "_origin": "ast",
-      "community": 20,
+      "community": 18,
       "norm_label": ".generatefillcolors()",
       "id": "apps_new_panel_src_app_reports_orders_dashboard_top_products_card_top_products_card_component_topproductscardcomponent_generatefillcolors"
     },
@@ -35534,7 +35534,7 @@
       "source_file": "apps/new-panel/src/app/reports/orders-dashboard/top-products-card/top-products-card.component.ts",
       "source_location": "L155",
       "_origin": "ast",
-      "community": 20,
+      "community": 18,
       "norm_label": ".gotopage()",
       "id": "apps_new_panel_src_app_reports_orders_dashboard_top_products_card_top_products_card_component_topproductscardcomponent_gotopage"
     },
@@ -35564,7 +35564,7 @@
       "source_file": "apps/new-panel/src/app/settings/app-config/app-config.component.spec.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 18,
+      "community": 51,
       "norm_label": "app-config.component.spec.ts",
       "id": "apps_new_panel_src_app_settings_app_config_app_config_component_spec"
     },
@@ -35574,7 +35574,7 @@
       "source_file": "apps/new-panel/src/app/settings/app-config/app-config.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 18,
+      "community": 51,
       "norm_label": "app-config.component.ts",
       "id": "apps_new_panel_src_app_settings_app_config_app_config_component"
     },
@@ -35584,7 +35584,7 @@
       "source_file": "apps/new-panel/src/app/settings/app-config/app-config.component.ts",
       "source_location": "L21",
       "_origin": "ast",
-      "community": 18,
+      "community": 51,
       "norm_label": "appconfigcomponent",
       "id": "apps_new_panel_src_app_settings_app_config_app_config_component_appconfigcomponent"
     },
@@ -35594,7 +35594,7 @@
       "source_file": "apps/new-panel/src/app/settings/app-config/app-config.component.ts",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 18,
+      "community": 51,
       "norm_label": ".selectedcolor()",
       "id": "apps_new_panel_src_app_settings_app_config_app_config_component_appconfigcomponent_selectedcolor"
     },
@@ -35614,7 +35614,7 @@
       "source_file": "apps/new-panel/src/app/settings/app-config/app-config.component.ts",
       "source_location": "L41",
       "_origin": "ast",
-      "community": 18,
+      "community": 51,
       "norm_label": ".appconfig()",
       "id": "apps_new_panel_src_app_settings_app_config_app_config_component_appconfigcomponent_appconfig"
     },
@@ -35624,7 +35624,7 @@
       "source_file": "apps/new-panel/src/app/settings/app-config/app-config.component.ts",
       "source_location": "L49",
       "_origin": "ast",
-      "community": 18,
+      "community": 51,
       "norm_label": ".save()",
       "id": "apps_new_panel_src_app_settings_app_config_app_config_component_appconfigcomponent_save"
     },
@@ -35634,7 +35634,7 @@
       "source_file": "apps/new-panel/src/app/settings/app-config/app-config.component.ts",
       "source_location": "L62",
       "_origin": "ast",
-      "community": 18,
+      "community": 51,
       "norm_label": ".candeactivate()",
       "id": "apps_new_panel_src_app_settings_app_config_app_config_component_appconfigcomponent_candeactivate"
     },
@@ -35654,7 +35654,7 @@
       "source_file": "apps/new-panel/src/app/settings/delivery-area/delivery-area-edit-dialog/delivery-area-edit-dialog.component.ts",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": "deliveryareaeditdialogcomponent",
       "id": "apps_new_panel_src_app_settings_delivery_area_delivery_area_edit_dialog_delivery_area_edit_dialog_component_deliveryareaeditdialogcomponent"
     },
@@ -35664,7 +35664,7 @@
       "source_file": "apps/new-panel/src/app/settings/delivery-area/delivery-area-edit-dialog/delivery-area-edit-dialog.component.ts",
       "source_location": "L49",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": ".constructor()",
       "id": "apps_new_panel_src_app_settings_delivery_area_delivery_area_edit_dialog_delivery_area_edit_dialog_component_deliveryareaeditdialogcomponent_constructor"
     },
@@ -35674,7 +35674,7 @@
       "source_file": "apps/new-panel/src/app/settings/delivery-area/delivery-area-edit-dialog/delivery-area-edit-dialog.component.ts",
       "source_location": "L73",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": ".filteredregions()",
       "id": "apps_new_panel_src_app_settings_delivery_area_delivery_area_edit_dialog_delivery_area_edit_dialog_component_deliveryareaeditdialogcomponent_filteredregions"
     },
@@ -35684,7 +35684,7 @@
       "source_file": "apps/new-panel/src/app/settings/delivery-area/delivery-area-edit-dialog/delivery-area-edit-dialog.component.ts",
       "source_location": "L79",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": ".onareatypechange()",
       "id": "apps_new_panel_src_app_settings_delivery_area_delivery_area_edit_dialog_delivery_area_edit_dialog_component_deliveryareaeditdialogcomponent_onareatypechange"
     },
@@ -35694,7 +35694,7 @@
       "source_file": "apps/new-panel/src/app/settings/delivery-area/delivery-area-edit-dialog/delivery-area-edit-dialog.component.ts",
       "source_location": "L88",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": ".onstatechange()",
       "id": "apps_new_panel_src_app_settings_delivery_area_delivery_area_edit_dialog_delivery_area_edit_dialog_component_deliveryareaeditdialogcomponent_onstatechange"
     },
@@ -35704,7 +35704,7 @@
       "source_file": "apps/new-panel/src/app/settings/delivery-area/delivery-area-edit-dialog/delivery-area-edit-dialog.component.ts",
       "source_location": "L96",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": ".save()",
       "id": "apps_new_panel_src_app_settings_delivery_area_delivery_area_edit_dialog_delivery_area_edit_dialog_component_deliveryareaeditdialogcomponent_save"
     },
@@ -35714,7 +35714,7 @@
       "source_file": "apps/new-panel/src/app/settings/delivery-area/delivery-area-edit-dialog/delivery-area-edit-dialog.component.ts",
       "source_location": "L135",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": ".cancel()",
       "id": "apps_new_panel_src_app_settings_delivery_area_delivery_area_edit_dialog_delivery_area_edit_dialog_component_deliveryareaeditdialogcomponent_cancel"
     },
@@ -35864,7 +35864,7 @@
       "source_file": "apps/new-panel/src/app/settings/delivery-area/delivery-area-table/delivery-area-table.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 58,
       "norm_label": "delivery-area-table.component.ts",
       "id": "apps_new_panel_src_app_settings_delivery_area_delivery_area_table_delivery_area_table_component"
     },
@@ -36154,7 +36154,7 @@
       "source_file": "apps/new-panel/src/app/settings/domain/domain.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 18,
+      "community": 51,
       "norm_label": "domain.component.ts",
       "id": "apps_new_panel_src_app_settings_domain_domain_component"
     },
@@ -36164,7 +36164,7 @@
       "source_file": "apps/new-panel/src/app/settings/domain/domain.component.ts",
       "source_location": "L32",
       "_origin": "ast",
-      "community": 43,
+      "community": 51,
       "norm_label": "domainsettingcomponent",
       "id": "apps_new_panel_src_app_settings_domain_domain_component_domainsettingcomponent"
     },
@@ -36174,7 +36174,7 @@
       "source_file": "apps/new-panel/src/app/settings/domain/domain.component.ts",
       "source_location": "L51",
       "_origin": "ast",
-      "community": 43,
+      "community": 51,
       "norm_label": ".appdomain()",
       "id": "apps_new_panel_src_app_settings_domain_domain_component_domainsettingcomponent_appdomain"
     },
@@ -36184,7 +36184,7 @@
       "source_file": "apps/new-panel/src/app/settings/domain/domain.component.ts",
       "source_location": "L62",
       "_origin": "ast",
-      "community": 43,
+      "community": 51,
       "norm_label": ".ngoninit()",
       "id": "apps_new_panel_src_app_settings_domain_domain_component_domainsettingcomponent_ngoninit"
     },
@@ -36194,7 +36194,7 @@
       "source_file": "apps/new-panel/src/app/settings/domain/domain.component.ts",
       "source_location": "L71",
       "_origin": "ast",
-      "community": 43,
+      "community": 51,
       "norm_label": ".candeactivate()",
       "id": "apps_new_panel_src_app_settings_domain_domain_component_domainsettingcomponent_candeactivate"
     },
@@ -36204,7 +36204,7 @@
       "source_file": "apps/new-panel/src/app/settings/domain/domain.component.ts",
       "source_location": "L75",
       "_origin": "ast",
-      "community": 43,
+      "community": 51,
       "norm_label": ".submit()",
       "id": "apps_new_panel_src_app_settings_domain_domain_component_domainsettingcomponent_submit"
     },
@@ -36214,7 +36214,7 @@
       "source_file": "apps/new-panel/src/app/settings/order-config/order-config.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 43,
+      "community": 18,
       "norm_label": "order-config.component.ts",
       "id": "apps_new_panel_src_app_settings_order_config_order_config_component"
     },
@@ -36284,7 +36284,7 @@
       "source_file": "apps/new-panel/src/app/settings/settings-home/settings-home.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 43,
+      "community": 51,
       "norm_label": "settings-home.component.ts",
       "id": "apps_new_panel_src_app_settings_settings_home_settings_home_component"
     },
@@ -36294,7 +36294,7 @@
       "source_file": "apps/new-panel/src/app/settings/settings-home/settings-home.component.ts",
       "source_location": "L55",
       "_origin": "ast",
-      "community": 43,
+      "community": 51,
       "norm_label": "settingshomecomponent",
       "id": "apps_new_panel_src_app_settings_settings_home_settings_home_component_settingshomecomponent"
     },
@@ -36304,7 +36304,7 @@
       "source_file": "apps/new-panel/src/app/settings/settings-home/settings-home.component.ts",
       "source_location": "L124",
       "_origin": "ast",
-      "community": 43,
+      "community": 51,
       "norm_label": ".navigateto()",
       "id": "apps_new_panel_src_app_settings_settings_home_settings_home_component_settingshomecomponent_navigateto"
     },
@@ -36314,7 +36314,7 @@
       "source_file": "apps/new-panel/src/app/settings/settings.component.spec.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 43,
+      "community": 51,
       "norm_label": "settings.component.spec.ts",
       "id": "apps_new_panel_src_app_settings_settings_component_spec"
     },
@@ -36324,7 +36324,7 @@
       "source_file": "apps/new-panel/src/app/settings/settings.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 43,
+      "community": 51,
       "norm_label": "settings.component.ts",
       "id": "apps_new_panel_src_app_settings_settings_component"
     },
@@ -36334,7 +36334,7 @@
       "source_file": "apps/new-panel/src/app/settings/settings.component.ts",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 43,
+      "community": 51,
       "norm_label": "settingscomponent",
       "id": "apps_new_panel_src_app_settings_settings_component_settingscomponent"
     },
@@ -36344,7 +36344,7 @@
       "source_file": "apps/new-panel/src/app/settings/settings.routes.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 43,
+      "community": 51,
       "norm_label": "settings.routes.ts",
       "id": "apps_new_panel_src_app_settings_settings_routes"
     },
@@ -36354,7 +36354,7 @@
       "source_file": "apps/new-panel/src/app/settings/settings.routes.ts",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 43,
+      "community": 51,
       "norm_label": "settingsroutes",
       "id": "apps_new_panel_src_app_settings_settings_routes_settingsroutes"
     },
@@ -36574,7 +36574,7 @@
       "source_file": "apps/new-panel/src/app/settings/sms/sms.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 29,
       "norm_label": "sms.component.ts",
       "id": "apps_new_panel_src_app_settings_sms_sms_component"
     },
@@ -36624,7 +36624,7 @@
       "source_file": "apps/new-panel/src/app/settings/sms/table/table.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 29,
       "norm_label": "table.component.ts",
       "id": "apps_new_panel_src_app_settings_sms_table_table_component"
     },
@@ -36634,7 +36634,7 @@
       "source_file": "apps/new-panel/src/app/settings/sms/table/table.component.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 2,
+      "community": 29,
       "norm_label": "cols",
       "id": "apps_new_panel_src_app_settings_sms_table_table_component_cols"
     },
@@ -36644,7 +36644,7 @@
       "source_file": "apps/new-panel/src/app/settings/sms/table/table.component.ts",
       "source_location": "L18",
       "_origin": "ast",
-      "community": 2,
+      "community": 29,
       "norm_label": "ordermessagestablecomponent",
       "id": "apps_new_panel_src_app_settings_sms_table_table_component_ordermessagestablecomponent"
     },
@@ -36714,7 +36714,7 @@
       "source_file": "apps/new-panel/src/app/settings/third-parties/bale/bale.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 18,
+      "community": 2,
       "norm_label": "bale.component.ts",
       "id": "apps_new_panel_src_app_settings_third_parties_bale_bale_component"
     },
@@ -37164,7 +37164,7 @@
       "source_file": "apps/new-panel/src/app/settings/user-management/user-management-table/user-management-table.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": "user-management-table.component.ts",
       "id": "apps_new_panel_src_app_settings_user_management_user_management_table_user_management_table_component"
     },
@@ -37174,7 +37174,7 @@
       "source_file": "apps/new-panel/src/app/settings/user-management/user-management-table/user-management-table.component.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": "imports",
       "id": "apps_new_panel_src_app_settings_user_management_user_management_table_user_management_table_component_imports"
     },
@@ -37184,7 +37184,7 @@
       "source_file": "apps/new-panel/src/app/settings/user-management/user-management-table/user-management-table.component.ts",
       "source_location": "L29",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": "usermanagementtablecomponent",
       "id": "apps_new_panel_src_app_settings_user_management_user_management_table_user_management_table_component_usermanagementtablecomponent"
     },
@@ -37194,7 +37194,7 @@
       "source_file": "apps/new-panel/src/app/settings/user-management/user-management-table/user-management-table.component.ts",
       "source_location": "L41",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": ".getelementuser()",
       "id": "apps_new_panel_src_app_settings_user_management_user_management_table_user_management_table_component_usermanagementtablecomponent_getelementuser"
     },
@@ -37204,7 +37204,7 @@
       "source_file": "apps/new-panel/src/app/settings/user-management/user-management-table/user-management-table.component.ts",
       "source_location": "L45",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": ".getelementactions()",
       "id": "apps_new_panel_src_app_settings_user_management_user_management_table_user_management_table_component_usermanagementtablecomponent_getelementactions"
     },
@@ -37214,7 +37214,7 @@
       "source_file": "apps/new-panel/src/app/settings/user-management/user-management-table/user-management-table.component.ts",
       "source_location": "L49",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": ".iscurrentuser()",
       "id": "apps_new_panel_src_app_settings_user_management_user_management_table_user_management_table_component_usermanagementtablecomponent_iscurrentuser"
     },
@@ -37224,7 +37224,7 @@
       "source_file": "apps/new-panel/src/app/settings/user-management/user-management-table/user-management-table.component.ts",
       "source_location": "L53",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": ".edit()",
       "id": "apps_new_panel_src_app_settings_user_management_user_management_table_user_management_table_component_usermanagementtablecomponent_edit"
     },
@@ -37234,7 +37234,7 @@
       "source_file": "apps/new-panel/src/app/settings/user-management/user-management-table/user-management-table.component.ts",
       "source_location": "L57",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": ".removeshopusers()",
       "id": "apps_new_panel_src_app_settings_user_management_user_management_table_user_management_table_component_usermanagementtablecomponent_removeshopusers"
     },
@@ -37254,7 +37254,7 @@
       "source_file": "apps/new-panel/src/app/settings/user-management/user-management.component.ts",
       "source_location": "L31",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": "usermanagementcomponent",
       "id": "apps_new_panel_src_app_settings_user_management_user_management_component_usermanagementcomponent"
     },
@@ -37264,7 +37264,7 @@
       "source_file": "apps/new-panel/src/app/settings/user-management/user-management.component.ts",
       "source_location": "L64",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": ".openaddshopusersdialog()",
       "id": "apps_new_panel_src_app_settings_user_management_user_management_component_usermanagementcomponent_openaddshopusersdialog"
     },
@@ -37274,7 +37274,7 @@
       "source_file": "apps/new-panel/src/app/settings/user-management/user-management.component.ts",
       "source_location": "L133",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": ".removeshopusers()",
       "id": "apps_new_panel_src_app_settings_user_management_user_management_component_usermanagementcomponent_removeshopusers"
     },
@@ -37284,7 +37284,7 @@
       "source_file": "apps/new-panel/src/app/settings/web-scripts/web-scripts.component.spec.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 43,
+      "community": 2,
       "norm_label": "web-scripts.component.spec.ts",
       "id": "apps_new_panel_src_app_settings_web_scripts_web_scripts_component_spec"
     },
@@ -37304,7 +37304,7 @@
       "source_file": "apps/new-panel/src/app/settings/web-scripts/web-scripts.component.ts",
       "source_location": "L37",
       "_origin": "ast",
-      "community": 43,
+      "community": 2,
       "norm_label": "webscriptscomponent",
       "id": "apps_new_panel_src_app_settings_web_scripts_web_scripts_component_webscriptscomponent"
     },
@@ -37314,7 +37314,7 @@
       "source_file": "apps/new-panel/src/app/settings/web-scripts/web-scripts.component.ts",
       "source_location": "L48",
       "_origin": "ast",
-      "community": 43,
+      "community": 2,
       "norm_label": ".addscript()",
       "id": "apps_new_panel_src_app_settings_web_scripts_web_scripts_component_webscriptscomponent_addscript"
     },
@@ -37324,7 +37324,7 @@
       "source_file": "apps/new-panel/src/app/settings/web-scripts/web-scripts.component.ts",
       "source_location": "L100",
       "_origin": "ast",
-      "community": 43,
+      "community": 2,
       "norm_label": ".editscript()",
       "id": "apps_new_panel_src_app_settings_web_scripts_web_scripts_component_webscriptscomponent_editscript"
     },
@@ -37334,7 +37334,7 @@
       "source_file": "apps/new-panel/src/app/settings/web-scripts/web-scripts.component.ts",
       "source_location": "L154",
       "_origin": "ast",
-      "community": 43,
+      "community": 2,
       "norm_label": ".deletescript()",
       "id": "apps_new_panel_src_app_settings_web_scripts_web_scripts_component_webscriptscomponent_deletescript"
     },
@@ -37344,7 +37344,7 @@
       "source_file": "apps/new-panel/src/app/settings/web-scripts/web-scripts.component.ts",
       "source_location": "L172",
       "_origin": "ast",
-      "community": 43,
+      "community": 2,
       "norm_label": ".togglescript()",
       "id": "apps_new_panel_src_app_settings_web_scripts_web_scripts_component_webscriptscomponent_togglescript"
     },
@@ -37354,7 +37354,7 @@
       "source_file": "apps/new-panel/src/app/settings/welcome-message/index.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 43,
+      "community": 51,
       "norm_label": "index.ts",
       "id": "apps_new_panel_src_app_settings_welcome_message_index"
     },
@@ -37364,7 +37364,7 @@
       "source_file": "apps/new-panel/src/app/settings/welcome-message/welcome-message.component.spec.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 43,
+      "community": 51,
       "norm_label": "welcome-message.component.spec.ts",
       "id": "apps_new_panel_src_app_settings_welcome_message_welcome_message_component_spec"
     },
@@ -37374,7 +37374,7 @@
       "source_file": "apps/new-panel/src/app/settings/welcome-message/welcome-message.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 43,
+      "community": 51,
       "norm_label": "welcome-message.component.ts",
       "id": "apps_new_panel_src_app_settings_welcome_message_welcome_message_component"
     },
@@ -37384,7 +37384,7 @@
       "source_file": "apps/new-panel/src/app/settings/welcome-message/welcome-message.component.ts",
       "source_location": "L33",
       "_origin": "ast",
-      "community": 43,
+      "community": 51,
       "norm_label": "welcomemessagecomponent",
       "id": "apps_new_panel_src_app_settings_welcome_message_welcome_message_component_welcomemessagecomponent"
     },
@@ -37394,7 +37394,7 @@
       "source_file": "apps/new-panel/src/app/settings/welcome-message/welcome-message.component.ts",
       "source_location": "L54",
       "_origin": "ast",
-      "community": 43,
+      "community": 51,
       "norm_label": ".constructor()",
       "id": "apps_new_panel_src_app_settings_welcome_message_welcome_message_component_welcomemessagecomponent_constructor"
     },
@@ -37404,7 +37404,7 @@
       "source_file": "apps/new-panel/src/app/settings/welcome-message/welcome-message.component.ts",
       "source_location": "L87",
       "_origin": "ast",
-      "community": 43,
+      "community": 51,
       "norm_label": ".save()",
       "id": "apps_new_panel_src_app_settings_welcome_message_welcome_message_component_welcomemessagecomponent_save"
     },
@@ -37414,7 +37414,7 @@
       "source_file": "apps/new-panel/src/app/settings/welcome-message/welcome-message.component.ts",
       "source_location": "L94",
       "_origin": "ast",
-      "community": 43,
+      "community": 51,
       "norm_label": ".candeactivate()",
       "id": "apps_new_panel_src_app_settings_welcome_message_welcome_message_component_welcomemessagecomponent_candeactivate"
     },
@@ -37464,7 +37464,7 @@
       "source_file": "apps/new-panel/src/app/shared/components/data-loading/data-loading.component.spec.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 110,
       "norm_label": "data-loading.component.spec.ts",
       "id": "apps_new_panel_src_app_shared_components_data_loading_data_loading_component_spec"
     },
@@ -37474,7 +37474,7 @@
       "source_file": "apps/new-panel/src/app/shared/components/data-loading/data-loading.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 110,
       "norm_label": "data-loading.component.ts",
       "id": "apps_new_panel_src_app_shared_components_data_loading_data_loading_component"
     },
@@ -37484,7 +37484,7 @@
       "source_file": "apps/new-panel/src/app/shared/components/data-loading/data-loading.component.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 29,
+      "community": 110,
       "norm_label": "dataloadingcomponent",
       "id": "apps_new_panel_src_app_shared_components_data_loading_data_loading_component_dataloadingcomponent"
     },
@@ -37564,7 +37564,7 @@
       "source_file": "apps/new-panel/src/app/shared/components/region-autocomplete/region-autocomplete.component.ts",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": "regionautocompletecomponent",
       "id": "apps_new_panel_src_app_shared_components_region_autocomplete_region_autocomplete_component_regionautocompletecomponent"
     },
@@ -37574,7 +37574,7 @@
       "source_file": "apps/new-panel/src/app/shared/components/region-autocomplete/region-autocomplete.component.ts",
       "source_location": "L37",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": ".constructor()",
       "id": "apps_new_panel_src_app_shared_components_region_autocomplete_region_autocomplete_component_regionautocompletecomponent_constructor"
     },
@@ -37584,7 +37584,7 @@
       "source_file": "apps/new-panel/src/app/shared/components/region-autocomplete/region-autocomplete.component.ts",
       "source_location": "L47",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": ".displayfn()",
       "id": "apps_new_panel_src_app_shared_components_region_autocomplete_region_autocomplete_component_regionautocompletecomponent_displayfn"
     },
@@ -37594,7 +37594,7 @@
       "source_file": "apps/new-panel/src/app/shared/components/region-autocomplete/region-autocomplete.component.ts",
       "source_location": "L54",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": ".select()",
       "id": "apps_new_panel_src_app_shared_components_region_autocomplete_region_autocomplete_component_regionautocompletecomponent_select"
     },
@@ -37674,7 +37674,7 @@
       "source_file": "apps/new-panel/src/app/shared/components/status-chip/status-chip.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 58,
       "norm_label": "status-chip.component.ts",
       "id": "apps_new_panel_src_app_shared_components_status_chip_status_chip_component"
     },
@@ -37684,7 +37684,7 @@
       "source_file": "apps/new-panel/src/app/shared/components/status-chip/status-chip.component.ts",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 2,
+      "community": 58,
       "norm_label": "statuschipcomponent",
       "id": "apps_new_panel_src_app_shared_components_status_chip_status_chip_component_statuschipcomponent"
     },
@@ -37734,7 +37734,7 @@
       "source_file": "apps/new-panel/src/app/shared/dialogs/alert-dialog/alert-dialog.component.spec.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 17,
+      "community": 137,
       "norm_label": "alert-dialog.component.spec.ts",
       "id": "apps_new_panel_src_app_shared_dialogs_alert_dialog_alert_dialog_component_spec"
     },
@@ -37744,7 +37744,7 @@
       "source_file": "apps/new-panel/src/app/shared/dialogs/alert-dialog/alert-dialog.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 17,
+      "community": 137,
       "norm_label": "alert-dialog.component.ts",
       "id": "apps_new_panel_src_app_shared_dialogs_alert_dialog_alert_dialog_component"
     },
@@ -37754,7 +37754,7 @@
       "source_file": "apps/new-panel/src/app/shared/dialogs/alert-dialog/alert-dialog.component.ts",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 17,
+      "community": 137,
       "norm_label": "alertdialogcomponent",
       "id": "apps_new_panel_src_app_shared_dialogs_alert_dialog_alert_dialog_component_alertdialogcomponent"
     },
@@ -37814,7 +37814,7 @@
       "source_file": "apps/new-panel/src/app/shared/dialogs/image-cropper-dialog/image-cropper-dialog.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 20,
+      "community": 2,
       "norm_label": "image-cropper-dialog.component.ts",
       "id": "apps_new_panel_src_app_shared_dialogs_image_cropper_dialog_image_cropper_dialog_component"
     },
@@ -37824,7 +37824,7 @@
       "source_file": "apps/new-panel/src/app/shared/dialogs/image-cropper-dialog/image-cropper-dialog.component.ts",
       "source_location": "L15",
       "_origin": "ast",
-      "community": 20,
+      "community": 2,
       "norm_label": "imagecropperdialogcomponent",
       "id": "apps_new_panel_src_app_shared_dialogs_image_cropper_dialog_image_cropper_dialog_component_imagecropperdialogcomponent"
     },
@@ -37834,7 +37834,7 @@
       "source_file": "apps/new-panel/src/app/shared/dialogs/image-cropper-dialog/image-cropper-dialog.component.ts",
       "source_location": "L20",
       "_origin": "ast",
-      "community": 20,
+      "community": 2,
       "norm_label": ".constructor()",
       "id": "apps_new_panel_src_app_shared_dialogs_image_cropper_dialog_image_cropper_dialog_component_imagecropperdialogcomponent_constructor"
     },
@@ -37844,7 +37844,7 @@
       "source_file": "apps/new-panel/src/app/shared/dialogs/image-cropper-dialog/image-cropper-dialog.component.ts",
       "source_location": "L29",
       "_origin": "ast",
-      "community": 20,
+      "community": 2,
       "norm_label": ".ngafterviewinit()",
       "id": "apps_new_panel_src_app_shared_dialogs_image_cropper_dialog_image_cropper_dialog_component_imagecropperdialogcomponent_ngafterviewinit"
     },
@@ -37854,7 +37854,7 @@
       "source_file": "apps/new-panel/src/app/shared/dialogs/image-cropper-dialog/image-cropper-dialog.component.ts",
       "source_location": "L39",
       "_origin": "ast",
-      "community": 20,
+      "community": 2,
       "norm_label": ".filechangeevent()",
       "id": "apps_new_panel_src_app_shared_dialogs_image_cropper_dialog_image_cropper_dialog_component_imagecropperdialogcomponent_filechangeevent"
     },
@@ -37864,7 +37864,7 @@
       "source_file": "apps/new-panel/src/app/shared/dialogs/image-cropper-dialog/image-cropper-dialog.component.ts",
       "source_location": "L64",
       "_origin": "ast",
-      "community": 20,
+      "community": 2,
       "norm_label": ".imagecropped()",
       "id": "apps_new_panel_src_app_shared_dialogs_image_cropper_dialog_image_cropper_dialog_component_imagecropperdialogcomponent_imagecropped"
     },
@@ -37934,7 +37934,7 @@
       "source_file": "apps/new-panel/src/app/shared/dialogs/sort-dialog/sort-dialog.component.spec.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 58,
       "norm_label": "sort-dialog.component.spec.ts",
       "id": "apps_new_panel_src_app_shared_dialogs_sort_dialog_sort_dialog_component_spec"
     },
@@ -37944,7 +37944,7 @@
       "source_file": "apps/new-panel/src/app/shared/dialogs/sort-dialog/sort-dialog.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 58,
       "norm_label": "sort-dialog.component.ts",
       "id": "apps_new_panel_src_app_shared_dialogs_sort_dialog_sort_dialog_component"
     },
@@ -37964,7 +37964,7 @@
       "source_file": "apps/new-panel/src/app/shared/dialogs/sort-dialog/sort-dialog.component.ts",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 2,
+      "community": 58,
       "norm_label": "sortdialogcomponent",
       "id": "apps_new_panel_src_app_shared_dialogs_sort_dialog_sort_dialog_component_sortdialogcomponent"
     },
@@ -37974,7 +37974,7 @@
       "source_file": "apps/new-panel/src/app/shared/dialogs/sort-dialog/sort-dialog.component.ts",
       "source_location": "L22",
       "_origin": "ast",
-      "community": 2,
+      "community": 58,
       "norm_label": ".drop()",
       "id": "apps_new_panel_src_app_shared_dialogs_sort_dialog_sort_dialog_component_sortdialogcomponent_drop"
     },
@@ -38114,7 +38114,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/image-loader.directive.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 18,
+      "community": 51,
       "norm_label": "image-loader.directive.ts",
       "id": "apps_new_panel_src_app_shared_directives_image_loader_directive"
     },
@@ -38124,7 +38124,7 @@
       "source_file": "apps/new-panel/src/app/shared/directives/image-loader.directive.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 18,
+      "community": 51,
       "norm_label": "imageplaceholder",
       "id": "apps_new_panel_src_app_shared_directives_image_loader_directive_imageplaceholder"
     },
@@ -38284,7 +38284,7 @@
       "source_file": "apps/new-panel/src/app/shared/modules/index.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 29,
+      "community": 58,
       "norm_label": "index.ts",
       "id": "apps_new_panel_src_app_shared_modules_index"
     },
@@ -38294,7 +38294,7 @@
       "source_file": "apps/new-panel/src/app/shared/modules/index.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 29,
+      "community": 58,
       "norm_label": "shared_modules",
       "id": "apps_new_panel_src_app_shared_modules_index_shared_modules"
     },
@@ -38504,7 +38504,7 @@
       "source_file": "apps/new-panel/src/app/shell/shell.component.spec.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 17,
+      "community": 174,
       "norm_label": "shell.component.spec.ts",
       "id": "apps_new_panel_src_app_shell_shell_component_spec"
     },
@@ -38564,7 +38564,7 @@
       "source_file": "apps/new-panel/src/app/shop/shop.service.ts",
       "source_location": "L129",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": ".getshopusers()",
       "id": "apps_new_panel_src_app_shop_shop_service_shopservice_getshopusers"
     },
@@ -38574,7 +38574,7 @@
       "source_file": "apps/new-panel/src/app/shop/shop.service.ts",
       "source_location": "L133",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": ".saveshopuser()",
       "id": "apps_new_panel_src_app_shop_shop_service_shopservice_saveshopuser"
     },
@@ -38594,7 +38594,7 @@
       "source_file": "apps/new-panel/src/app/sms-group/sms-group.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 137,
+      "community": 20,
       "norm_label": "sms-group.component.ts",
       "id": "apps_new_panel_src_app_sms_group_sms_group_component"
     },
@@ -38604,7 +38604,7 @@
       "source_file": "apps/new-panel/src/app/sms-group/sms-group.component.ts",
       "source_location": "L35",
       "_origin": "ast",
-      "community": 137,
+      "community": 20,
       "norm_label": "smsgroupcomponent",
       "id": "apps_new_panel_src_app_sms_group_sms_group_component_smsgroupcomponent"
     },
@@ -38614,7 +38614,7 @@
       "source_file": "apps/new-panel/src/app/sms-group/sms-group.component.ts",
       "source_location": "L59",
       "_origin": "ast",
-      "community": 137,
+      "community": 20,
       "norm_label": ".smsgroups()",
       "id": "apps_new_panel_src_app_sms_group_sms_group_component_smsgroupcomponent_smsgroups"
     },
@@ -38624,7 +38624,7 @@
       "source_file": "apps/new-panel/src/app/sms-group/sms-group.component.ts",
       "source_location": "L68",
       "_origin": "ast",
-      "community": 137,
+      "community": 20,
       "norm_label": ".loadmore()",
       "id": "apps_new_panel_src_app_sms_group_sms_group_component_smsgroupcomponent_loadmore"
     },
@@ -38634,7 +38634,7 @@
       "source_file": "apps/new-panel/src/app/sms-group/sms-list/sms-list.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 137,
+      "community": 20,
       "norm_label": "sms-list.component.ts",
       "id": "apps_new_panel_src_app_sms_group_sms_list_sms_list_component"
     },
@@ -38644,7 +38644,7 @@
       "source_file": "apps/new-panel/src/app/sms-group/sms-list/sms-list.component.ts",
       "source_location": "L30",
       "_origin": "ast",
-      "community": 137,
+      "community": 20,
       "norm_label": "smslistcomponent",
       "id": "apps_new_panel_src_app_sms_group_sms_list_sms_list_component_smslistcomponent"
     },
@@ -38654,7 +38654,7 @@
       "source_file": "apps/new-panel/src/app/sms-group/sms-list/sms-list.component.ts",
       "source_location": "L45",
       "_origin": "ast",
-      "community": 137,
+      "community": 20,
       "norm_label": ".smsgroup()",
       "id": "apps_new_panel_src_app_sms_group_sms_list_sms_list_component_smslistcomponent_smsgroup"
     },
@@ -38664,7 +38664,7 @@
       "source_file": "apps/new-panel/src/app/sms-group/sms-list/sms-list.component.ts",
       "source_location": "L49",
       "_origin": "ast",
-      "community": 137,
+      "community": 20,
       "norm_label": ".loading()",
       "id": "apps_new_panel_src_app_sms_group_sms_list_sms_list_component_smslistcomponent_loading"
     },
@@ -38674,7 +38674,7 @@
       "source_file": "apps/new-panel/src/app/sms-group/sms-list/sms-list.component.ts",
       "source_location": "L53",
       "_origin": "ast",
-      "community": 137,
+      "community": 20,
       "norm_label": ".sortedsmslist()",
       "id": "apps_new_panel_src_app_sms_group_sms_list_sms_list_component_smslistcomponent_sortedsmslist"
     },
@@ -38684,7 +38684,7 @@
       "source_file": "apps/new-panel/src/app/sms-group/sms.routes.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 137,
+      "community": 20,
       "norm_label": "sms.routes.ts",
       "id": "apps_new_panel_src_app_sms_group_sms_routes"
     },
@@ -38694,7 +38694,7 @@
       "source_file": "apps/new-panel/src/app/sms-group/sms.routes.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 137,
+      "community": 20,
       "norm_label": "smsroutes",
       "id": "apps_new_panel_src_app_sms_group_sms_routes_smsroutes"
     },
@@ -38704,7 +38704,7 @@
       "source_file": "apps/new-panel/src/app/welcome-setup/phone-verification/phone-verification.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 20,
+      "community": 12,
       "norm_label": "phone-verification.component.ts",
       "id": "apps_new_panel_src_app_welcome_setup_phone_verification_phone_verification_component"
     },
@@ -38714,7 +38714,7 @@
       "source_file": "apps/new-panel/src/app/welcome-setup/phone-verification/phone-verification.component.ts",
       "source_location": "L21",
       "_origin": "ast",
-      "community": 20,
+      "community": 12,
       "norm_label": "verificationstep",
       "id": "apps_new_panel_src_app_welcome_setup_phone_verification_phone_verification_component_verificationstep"
     },
@@ -38794,7 +38794,7 @@
       "source_file": "apps/new-panel/src/app/welcome-setup/welcome-setup.component.spec.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 20,
+      "community": 12,
       "norm_label": "welcome-setup.component.spec.ts",
       "id": "apps_new_panel_src_app_welcome_setup_welcome_setup_component_spec"
     },
@@ -38804,7 +38804,7 @@
       "source_file": "apps/new-panel/src/app/welcome-setup/welcome-setup.component.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 20,
+      "community": 12,
       "norm_label": "welcome-setup.component.ts",
       "id": "apps_new_panel_src_app_welcome_setup_welcome_setup_component"
     },
@@ -38814,7 +38814,7 @@
       "source_file": "apps/new-panel/src/app/welcome-setup/welcome-setup.component.ts",
       "source_location": "L13",
       "_origin": "ast",
-      "community": 20,
+      "community": 12,
       "norm_label": "welcomesetupcomponent",
       "id": "apps_new_panel_src_app_welcome_setup_welcome_setup_component_welcomesetupcomponent"
     },
@@ -38844,7 +38844,7 @@
       "source_file": "apps/new-panel/src/environments/environment.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 18,
+      "community": 51,
       "norm_label": "environment.ts",
       "id": "apps_new_panel_src_environments_environment"
     },
@@ -38854,7 +38854,7 @@
       "source_file": "apps/new-panel/src/environments/environment.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 18,
+      "community": 51,
       "norm_label": "environment",
       "id": "apps_new_panel_src_environments_environment_environment"
     },
@@ -38864,7 +38864,7 @@
       "source_file": "apps/new-panel/src/main.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 17,
+      "community": 125,
       "norm_label": "main.ts",
       "id": "apps_new_panel_src_main"
     },
@@ -39664,7 +39664,7 @@
       "source_file": "libs/types/src/index.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
+      "community": 18,
       "norm_label": "index.ts",
       "id": "libs_types_src_index"
     },
@@ -39674,7 +39674,7 @@
       "source_file": "libs/types/src/lib/address.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": "address.ts",
       "id": "libs_types_src_lib_address"
     },
@@ -39704,7 +39704,7 @@
       "source_file": "libs/types/src/lib/ai-chatbot.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 67,
+      "community": 119,
       "norm_label": "ai-chatbot.ts",
       "id": "libs_types_src_lib_ai_chatbot"
     },
@@ -39834,7 +39834,7 @@
       "source_file": "libs/types/src/lib/chat.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 2,
+      "community": 78,
       "norm_label": "chattype",
       "id": "libs_types_src_lib_chat_chattype"
     },
@@ -39904,7 +39904,7 @@
       "source_file": "libs/types/src/lib/delivery-area.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": "delivery-area.ts",
       "id": "libs_types_src_lib_delivery_area"
     },
@@ -40034,7 +40034,7 @@
       "source_file": "libs/types/src/lib/filter-discount-coupons.dto.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 6,
+      "community": 63,
       "norm_label": "filter-discount-coupons.dto.ts",
       "id": "libs_types_src_lib_filter_discount_coupons_dto"
     },
@@ -40044,7 +40044,7 @@
       "source_file": "libs/types/src/lib/filter-discount-coupons.dto.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 6,
+      "community": 63,
       "norm_label": "filterdiscountcouponsdto",
       "id": "libs_types_src_lib_filter_discount_coupons_dto_filterdiscountcouponsdto"
     },
@@ -40094,7 +40094,7 @@
       "source_file": "libs/types/src/lib/filter-member.dto.ts",
       "source_location": "L21",
       "_origin": "ast",
-      "community": 125,
+      "community": 3,
       "norm_label": "filtermemberv2dto",
       "id": "libs_types_src_lib_filter_member_dto_filtermemberv2dto"
     },
@@ -40194,7 +40194,7 @@
       "source_file": "libs/types/src/lib/filter-smsTemplate.dto.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": "filter-smstemplate.dto.ts",
       "id": "libs_types_src_lib_filter_smstemplate_dto"
     },
@@ -40204,7 +40204,7 @@
       "source_file": "libs/types/src/lib/filter-smsTemplate.dto.ts",
       "source_location": "L3",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": "filtersmstemplate",
       "id": "libs_types_src_lib_filter_smstemplate_dto_filtersmstemplate"
     },
@@ -40854,7 +40854,7 @@
       "source_file": "libs/types/src/lib/order-item.ts",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 109,
+      "community": 32,
       "norm_label": "getorderitemaddindex()",
       "id": "libs_types_src_lib_order_item_getorderitemaddindex"
     },
@@ -40864,7 +40864,7 @@
       "source_file": "libs/types/src/lib/order-item.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "community": 109,
+      "community": 32,
       "norm_label": "sortorderitemsbyaddindex()",
       "id": "libs_types_src_lib_order_item_sortorderitemsbyaddindex"
     },
@@ -41254,7 +41254,7 @@
       "source_file": "libs/types/src/lib/region.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": "region.ts",
       "id": "libs_types_src_lib_region"
     },
@@ -41264,7 +41264,7 @@
       "source_file": "libs/types/src/lib/region.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": "region",
       "id": "libs_types_src_lib_region_region"
     },
@@ -41274,7 +41274,7 @@
       "source_file": "libs/types/src/lib/region.ts",
       "source_location": "L9",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": ".states()",
       "id": "libs_types_src_lib_region_region_states"
     },
@@ -41284,7 +41284,7 @@
       "source_file": "libs/types/src/lib/region.ts",
       "source_location": "L28",
       "_origin": "ast",
-      "community": 11,
+      "community": 43,
       "norm_label": ".haversine()",
       "id": "libs_types_src_lib_region_region_haversine"
     },
@@ -41464,7 +41464,7 @@
       "source_file": "libs/types/src/lib/shop-user-role.enum.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": "shop-user-role.enum.ts",
       "id": "libs_types_src_lib_shop_user_role_enum"
     },
@@ -41474,7 +41474,7 @@
       "source_file": "libs/types/src/lib/shop-user-role.enum.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": "shopuserrole",
       "id": "libs_types_src_lib_shop_user_role_enum_shopuserrole"
     },
@@ -41484,7 +41484,7 @@
       "source_file": "libs/types/src/lib/shop-user.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": "shop-user.ts",
       "id": "libs_types_src_lib_shop_user"
     },
@@ -41504,7 +41504,7 @@
       "source_file": "libs/types/src/lib/shop-user.ts",
       "source_location": "L19",
       "_origin": "ast",
-      "community": 15,
+      "community": 109,
       "norm_label": "shopuser",
       "id": "libs_types_src_lib_shop_user_shopuser"
     },
@@ -41574,7 +41574,7 @@
       "source_file": "libs/types/src/lib/shop.ts",
       "source_location": "L61",
       "_origin": "ast",
-      "community": 3,
+      "community": 70,
       "norm_label": "shop",
       "id": "libs_types_src_lib_shop_shop"
     },
@@ -41584,7 +41584,7 @@
       "source_file": "libs/types/src/lib/shop.ts",
       "source_location": "L106",
       "_origin": "ast",
-      "community": 3,
+      "community": 70,
       "norm_label": ".isopen()",
       "id": "libs_types_src_lib_shop_shop_isopen"
     },
@@ -41594,7 +41594,7 @@
       "source_file": "libs/types/src/lib/shop.ts",
       "source_location": "L132",
       "_origin": "ast",
-      "community": 3,
+      "community": 70,
       "norm_label": ".isrestaurantorcoffeeshop()",
       "id": "libs_types_src_lib_shop_shop_isrestaurantorcoffeeshop"
     },
@@ -41634,7 +41634,7 @@
       "source_file": "libs/types/src/lib/shop.ts",
       "source_location": "L155",
       "_origin": "ast",
-      "community": 3,
+      "community": 70,
       "norm_label": ".ispaymentavailable()",
       "id": "libs_types_src_lib_shop_shop_ispaymentavailable"
     },
@@ -41644,7 +41644,7 @@
       "source_file": "libs/types/src/lib/sms-account.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": "sms-account.ts",
       "id": "libs_types_src_lib_sms_account"
     },
@@ -41654,7 +41654,7 @@
       "source_file": "libs/types/src/lib/sms-account.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": "smsaccount",
       "id": "libs_types_src_lib_sms_account_smsaccount"
     },
@@ -41664,7 +41664,7 @@
       "source_file": "libs/types/src/lib/sms-group.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": "sms-group.ts",
       "id": "libs_types_src_lib_sms_group"
     },
@@ -41674,7 +41674,7 @@
       "source_file": "libs/types/src/lib/sms-group.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": "smsgroup",
       "id": "libs_types_src_lib_sms_group_smsgroup"
     },
@@ -41684,7 +41684,7 @@
       "source_file": "libs/types/src/lib/sms-status.enum.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": "sms-status.enum.ts",
       "id": "libs_types_src_lib_sms_status_enum"
     },
@@ -41694,7 +41694,7 @@
       "source_file": "libs/types/src/lib/sms-status.enum.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": "smsstatus",
       "id": "libs_types_src_lib_sms_status_enum_smsstatus"
     },
@@ -41704,7 +41704,7 @@
       "source_file": "libs/types/src/lib/sms-template.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": "sms-template.ts",
       "id": "libs_types_src_lib_sms_template"
     },
@@ -41734,7 +41734,7 @@
       "source_file": "libs/types/src/lib/sms.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": "sms.ts",
       "id": "libs_types_src_lib_sms"
     },
@@ -41744,7 +41744,7 @@
       "source_file": "libs/types/src/lib/sms.ts",
       "source_location": "L5",
       "_origin": "ast",
-      "community": 77,
+      "community": 119,
       "norm_label": "sms",
       "id": "libs_types_src_lib_sms_sms"
     },
@@ -41904,7 +41904,7 @@
       "source_file": "libs/types/src/lib/user.ts",
       "source_location": "L38",
       "_origin": "ast",
-      "community": 231,
+      "community": 46,
       "norm_label": ".fullname()",
       "id": "libs_types_src_lib_user_user_fullname"
     },
@@ -42684,7 +42684,7 @@
       "source_file": "libs/utils/src/index.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 38,
+      "community": 15,
       "norm_label": "index.ts",
       "id": "libs_utils_src_index"
     },
@@ -42734,7 +42734,7 @@
       "source_file": "libs/utils/src/lib/functions/random-characters.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 38,
+      "community": 6,
       "norm_label": "randomcharacters()",
       "id": "libs_utils_src_lib_functions_random_characters_randomcharacters"
     },
@@ -42844,7 +42844,7 @@
       "source_file": "libs/utils/src/lib/persian-number.service.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "community": 38,
+      "community": 15,
       "norm_label": "persiannumberservice",
       "id": "libs_utils_src_lib_persian_number_service_persiannumberservice"
     },
@@ -46203,12 +46203,208 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L289",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns.routes.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaigns_routes",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L340",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_closedialog",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L372",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_deletecost",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L402",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getbasketrate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L396",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getclickrate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L408",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getconversionrate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L414",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getorderstatelabel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L427",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_goback",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L312",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_loadreport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L308",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_ngoninit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L331",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_openaddcostdialog",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L344",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_submitnewcost",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaigns.routes.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaigns_routes",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L309",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_ngoninit",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_loadreport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L389",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_deletecost",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_loadreport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L363",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_submitnewcost",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_loadreport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
+      "source_location": "L362",
+      "weight": 1.0,
+      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_submitnewcost",
+      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_closedialog",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller"
     },
     {
       "relation": "imports_from",
@@ -46238,9 +46434,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L412",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_backfillorders",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_backfillorders"
     },
     {
       "relation": "method",
@@ -46248,9 +46444,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L231",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_changestate",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_changestate"
     },
     {
       "relation": "method",
@@ -46258,9 +46454,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L39",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_constructor",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_constructor"
     },
     {
       "relation": "method",
@@ -46268,9 +46464,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L121",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_deleteorder",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_deleteorder"
     },
     {
       "relation": "method",
@@ -46278,9 +46474,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L74",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_filterpanelorders",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_filterpanelorders"
     },
     {
       "relation": "method",
@@ -46288,9 +46484,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L83",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_filterpanelordersv2",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_filterpanelordersv2"
     },
     {
       "relation": "method",
@@ -46298,9 +46494,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L132",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_getmyorders",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_getmyorders"
     },
     {
       "relation": "method",
@@ -46308,9 +46504,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L471",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_getorderdetailsapp",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_getorderdetailsapp"
     },
     {
       "relation": "method",
@@ -46318,9 +46514,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L149",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_getorderdetailspanel",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_getorderdetailspanel"
     },
     {
       "relation": "method",
@@ -46328,9 +46524,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L368",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_getproductordercounts",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_getproductordercounts"
     },
     {
       "relation": "method",
@@ -46338,9 +46534,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L300",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_manualsettlement",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_manualsettlement"
     },
     {
       "relation": "method",
@@ -46348,9 +46544,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L249",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_mergeorders",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_mergeorders"
     },
     {
       "relation": "method",
@@ -46358,9 +46554,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L355",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_report",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_report"
     },
     {
       "relation": "method",
@@ -46368,9 +46564,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L51",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_save",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_save"
     },
     {
       "relation": "method",
@@ -46378,9 +46574,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L306",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_sendlinktocustomer",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_sendlinktocustomer"
     },
     {
       "relation": "method",
@@ -46388,9 +46584,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L328",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_sendlinktopeyk",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_sendlinktopeyk"
     },
     {
       "relation": "method",
@@ -46398,9 +46594,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L362",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_setcustomer",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_setcustomer"
     },
     {
       "relation": "method",
@@ -46408,9 +46604,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L191",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_syncmennobalepanel",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_syncmennobalepanel"
     },
     {
       "relation": "method",
@@ -46418,9 +46614,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L492",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateordercampaign",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateordercampaign"
     },
     {
       "relation": "method",
@@ -46428,9 +46624,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L283",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderdetails",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderdetails"
     },
     {
       "relation": "method",
@@ -46438,9 +46634,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L112",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderextracosts",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderextracosts"
     },
     {
       "relation": "method",
@@ -46448,9 +46644,9 @@
       "source_file": "apps/backend/src/app/orders/orders.controller.ts",
       "source_location": "L92",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_backend_src_app_orders_orders_controller_orderscontroller",
-      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderitemmaterialcost",
-      "confidence_score": 1.0
+      "target": "apps_backend_src_app_orders_orders_controller_orderscontroller_updateorderitemmaterialcost"
     },
     {
       "relation": "imports",
@@ -46477,186 +46673,12 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L18",
-      "weight": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreport",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L265",
-      "weight": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns.routes.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaigns_routes",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L319",
-      "weight": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_addmanualcost",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L362",
-      "weight": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getbasketrate",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L356",
-      "weight": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getclickrate",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L368",
-      "weight": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getconversionrate",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L374",
-      "weight": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_getorderstatelabel",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L387",
-      "weight": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_goback",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L288",
-      "weight": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_loadreport",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L280",
-      "weight": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_manualcostsarray",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L284",
-      "weight": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_ngoninit",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L328",
-      "weight": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_removemanualcost",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L332",
-      "weight": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_savemanualcosts",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaigns.routes.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaigns_routes",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L285",
-      "weight": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_ngoninit",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_loadreport",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/new-panel/src/app/campaigns/campaign-report.component.ts",
-      "source_location": "L347",
-      "weight": 1.0,
-      "source": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_savemanualcosts",
-      "target": "apps_new_panel_src_app_campaigns_campaign_report_component_campaignreportcomponent_loadreport",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_campaigns_campaigns_edit_component",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent"
     },
     {
       "relation": "imports_from",
@@ -46675,9 +46697,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L69",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_actions",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_actions"
     },
     {
       "relation": "method",
@@ -46685,9 +46707,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L144",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_addaction",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_addaction"
     },
     {
       "relation": "method",
@@ -46695,9 +46717,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L246",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_cancel",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_cancel"
     },
     {
       "relation": "method",
@@ -46705,9 +46727,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L196",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_clearwelcomeimage",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_clearwelcomeimage"
     },
     {
       "relation": "method",
@@ -46715,9 +46737,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L163",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_combinedateandtime",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_combinedateandtime"
     },
     {
       "relation": "method",
@@ -46725,9 +46747,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L73",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_constructor",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_constructor"
     },
     {
       "relation": "method",
@@ -46735,9 +46757,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L139",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_getproductvariants",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_getproductvariants"
     },
     {
       "relation": "method",
@@ -46745,9 +46767,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L99",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_ngoninit",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_ngoninit"
     },
     {
       "relation": "method",
@@ -46755,9 +46777,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L159",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_removeaction",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_removeaction"
     },
     {
       "relation": "method",
@@ -46765,9 +46787,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L201",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_save",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_save"
     },
     {
       "relation": "method",
@@ -46775,9 +46797,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L173",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_uploadwelcomeimage",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_uploadwelcomeimage"
     },
     {
       "relation": "imports",
@@ -46797,9 +46819,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L130",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_ngoninit",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_addaction",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_addaction"
     },
     {
       "relation": "calls",
@@ -46808,9 +46830,9 @@
       "source_file": "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts",
       "source_location": "L208",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_save",
-      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_combinedateandtime",
-      "confidence_score": 1.0
+      "target": "apps_new_panel_src_app_campaigns_campaigns_edit_component_campaignseditcomponent_combinedateandtime"
     },
     {
       "relation": "imports_from",
@@ -166703,5 +166725,5 @@
       "source_file": "ARCHITECTURE.md"
     }
   ],
-  "built_at_commit": "1ea1c5ef326b28bfb1ef0d22e1ab442ade1a8fb6"
+  "built_at_commit": "83b7e26865956e430e3a67c5cf5236cbd549999f"
 }

@@ -225,9 +225,9 @@ interface CampaignReport {
                     </thead>
                     <tbody>
                       @for (order of r.orders; track order.id) {
-                        <tr style="border-bottom: 1px solid #f5f5f5; height: 48px;">
+                        <tr (click)="goToOrderDetails(order.id)" style="border-bottom: 1px solid #f5f5f5; height: 48px; cursor: pointer; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#fafafa'" onmouseout="this.style.backgroundColor='transparent'">
                           <td style="padding: 8px;">
-                            <a [routerLink]="['/admin/orders/details', order.id]" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">
+                            <a [routerLink]="['/admin/orders/details', order.id]" (click)="$event.stopPropagation()" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">
                               @if (order.customer) {
                                 {{ order.customer.firstName || '' }} {{ order.customer.lastName || '' }}
                               } @else {
@@ -425,6 +425,10 @@ export class CampaignReportComponent implements OnInit {
       case 'sent': return 'ارسال شده';
       default: return state;
     }
+  }
+
+  goToOrderDetails(orderId: string) {
+    this.router.navigate(['/admin/orders/details', orderId]);
   }
 
   goBack() {
