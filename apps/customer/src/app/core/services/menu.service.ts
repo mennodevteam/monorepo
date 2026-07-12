@@ -5,6 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { Menu, Product } from '@menno/types';
 import { resolveShopUsername } from '../functions';
 import { ensureMenuPrepared } from '../utils/prepare-menu';
+import { serializeCircularForTransfer } from '../utils/serialize-for-transfer';
 import { CampaignService } from './campaign.service';
 import { AuthService } from './auth.service';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
@@ -53,7 +54,7 @@ export class MenuService {
     const campaign = this.campaign.activeCampaign();
     if (!campaign) return menu;
 
-    const cloned: Menu = JSON.parse(JSON.stringify(menu));
+    const cloned: Menu = serializeCircularForTransfer(menu);
     if (campaign.actions) {
       for (const action of campaign.actions) {
         if (action.type === 'product_discount') {
