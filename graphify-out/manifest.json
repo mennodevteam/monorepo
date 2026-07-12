@@ -5560,8 +5560,8 @@
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/campaigns/campaigns-list.component.ts": {
-    "mtime": 1783872590.1687658,
-    "ast_hash": "4fa5fe725e3ea3f0cbb9199890a76056",
+    "mtime": 1783872643.9008944,
+    "ast_hash": "75402622fbc9d7d57150b69fbfd52053",
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/campaigns/campaigns.routes.ts": {

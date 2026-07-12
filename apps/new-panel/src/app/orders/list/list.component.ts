@@ -107,7 +107,7 @@ export class OrderListComponent {
     withCount: true,
     ...this.dateFilter(),
     detailsReferrer: this.referrerFilter().trim() || undefined,
-    detailsCampaign: this.campaignFilter().trim() || undefined,
+    campaignId: this.campaignFilter().trim() || undefined,
   }));
 
   /** Badge on «more filters»: customer, attribution, or non-default states (not date range) */

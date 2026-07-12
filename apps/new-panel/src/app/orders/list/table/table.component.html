@@ -42,8 +42,8 @@
     <ng-container matColumnDef="campaign">
       <th mat-header-cell *matHeaderCellDef>{{ 'order.campaignColumn' | translate }}</th>
       <td mat-cell *matCellDef="let order" class="order-table-attr-cell">
-        @if (order.details?.campaign) {
-          <span class="table-cell-ellipsis" [matTooltip]="order.details.campaign">{{ order.details.campaign }}</span>
+        @if (order.campaign) {
+          <span class="table-cell-ellipsis" [matTooltip]="order.campaign.title">{{ order.campaign.title }}</span>
         } @else {
           —
         }

@@ -5,11 +5,16 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Member, OrderState } from '@menno/types';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { Member, OrderState, Campaign } from '@menno/types';
 import { TranslateModule } from '@ngx-translate/core';
 import { SearchMemberAutocompleteComponent } from '../../shared/components/search-member-autocomplete/search-member-autocomplete.component';
 import { SHARED } from '../../shared';
 import { ORDER_LIST_DEFAULT_STATES } from './order-list-default-states';
+import { injectQuery } from '@tanstack/angular-query-experimental';
+import { HttpClient } from '@angular/common/http';
+import { lastValueFrom } from 'rxjs';
 
 export interface OrderListExtraFiltersDialogData {
   customerId?: string;
@@ -34,6 +39,8 @@ export interface OrderListExtraFiltersDialogResult {
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
+    MatOptionModule,
     MatChipsModule,
     FormsModule,
     TranslateModule,
@@ -43,10 +50,16 @@ export interface OrderListExtraFiltersDialogResult {
   styleUrl: './order-list-extra-filters-dialog.component.scss',
 })
 export class OrderListExtraFiltersDialogComponent implements AfterViewInit {
+  private readonly http = inject(HttpClient);
   readonly dialogRef = inject(
     MatDialogRef<OrderListExtraFiltersDialogComponent, OrderListExtraFiltersDialogResult | undefined>,
   );
   private readonly data = inject<OrderListExtraFiltersDialogData>(MAT_DIALOG_DATA);
+
+  campaignsQuery = injectQuery(() => ({
+    queryKey: ['campaigns'],
+    queryFn: () => lastValueFrom(this.http.get<Campaign[]>('/campaigns')),
+  }));
 
   DEFAULT_STATES = ORDER_LIST_DEFAULT_STATES;
   OrderState = OrderState;

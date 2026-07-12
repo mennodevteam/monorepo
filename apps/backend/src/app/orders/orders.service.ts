@@ -616,7 +616,7 @@ export class OrdersService {
 
   async filter(
     dto: FilterOrderDto,
-    relations: string[] = ['items', 'mergeTo', 'mergeFrom', 'customer', 'creator', 'waiter'],
+    relations: string[] = ['items', 'mergeTo', 'mergeFrom', 'customer', 'creator', 'waiter', 'campaign'],
   ) {
     const idsQuery = this.ordersRepo
       .createQueryBuilder('order')
@@ -677,12 +677,8 @@ export class OrdersService {
         { detailsReferrer: `${ref}` },
       );
     }
-    const camp = dto.detailsCampaign?.trim();
-    if (camp) {
-      idsQuery.andWhere(
-        `order.details IS NOT NULL AND trim(order.details::text) <> '' AND (order.details::jsonb ->> 'campaign') ILIKE :detailsCampaign`,
-        { detailsCampaign: `${camp}` },
-      );
+    if (dto.campaignId) {
+      idsQuery.andWhere('order.campaign = :campaignId', { campaignId: dto.campaignId });
     }
 
     if (dto.skip !== undefined) idsQuery.skip(dto.skip);
@@ -886,5 +882,30 @@ export class OrdersService {
           }
         });
     }
+  }
+
+  async updateOrderCampaign(orderId: string, shopId: string, campaignId: string | null) {
+    const order = await this.ordersRepo.findOne({
+      where: { id: orderId, shop: { id: shopId } },
+      relations: ['campaign'],
+    });
+
+    if (!order) {
+      throw new HttpException('order not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (campaignId) {
+      const campaign = await this.campaignsRepo.findOne({
+        where: { id: campaignId, shop: { id: shopId } },
+      });
+      if (!campaign) {
+        throw new HttpException('campaign not found', HttpStatus.NOT_FOUND);
+      }
+      order.campaign = campaign;
+    } else {
+      order.campaign = null;
+    }
+
+    return this.ordersRepo.save(order);
   }
 }

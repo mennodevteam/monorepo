@@ -485,4 +485,15 @@ export class OrdersController {
       ],
     });
   }
+
+  @Roles(UserRole.Panel)
+  @Put(':id/campaign')
+  async updateOrderCampaign(
+    @Param('id') id: string,
+    @Body('campaignId') campaignId: string | null,
+    @LoginUser() user: AuthPayload,
+  ) {
+    const shop = await this.auth.getPanelUserShop(user);
+    return this.ordersService.updateOrderCampaign(id, shop.id, campaignId);
+  }
 }

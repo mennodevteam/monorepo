@@ -8,13 +8,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { MennoBaleOrderKeys, Order, OrderState, OrderType, ThirdPartyApp, User } from '@menno/types';
+import { MennoBaleOrderKeys, Order, OrderState, OrderType, ThirdPartyApp, User, Campaign } from '@menno/types';
 import { OrderItemTableComponent } from './table/table.component';
 import { OrderStateChipComponent } from '../state-chip/state-chip.component';
 import { OrdersService } from '../order.service';
 import { OrderChatComponent } from './chat/order-chat.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { FormsModule } from '@angular/forms';
 import { CostSummaryComponent } from './cost-summary/cost-summary.component';
@@ -38,6 +40,8 @@ import { ShopService } from '../../shop/shop.service';
     OrderChatComponent,
     MatTooltipModule,
     MatCheckboxModule,
+    MatSelectModule,
+    MatOptionModule,
     FormsModule,
     CostSummaryComponent,
   ],
@@ -60,11 +64,28 @@ export class OrderDetailsComponent {
 
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly translate = inject(TranslateService);
+  campaignsQuery = injectQuery(() => ({
+    queryKey: ['campaigns'],
+    queryFn: () => lastValueFrom(this.http.get<Campaign[]>('/campaigns')),
+  }));
+
   query = injectQuery(() => ({
     queryKey: ['orderDetails', this.orderId()],
     queryFn: () => lastValueFrom(this.http.get<Order>(`/orders/panel/${this.orderId()}`)),
     enabled: !!this.orderId(),
   }));
+
+  changeCampaign(campaignId: string | null) {
+    const id = this.orderId();
+    if (!id) return;
+
+    lastValueFrom(
+      this.http.put(`/orders/${id}/campaign`, { campaignId: campaignId || null })
+    ).then(() => {
+      this.queryClient.invalidateQueries({ queryKey: ['orderDetails', id] });
+    });
+  }
+
   order = computed<Order | undefined>(() => {
     return this.query.data() || this.router.currentNavigation()?.extras?.state?.['order'];
   });
