@@ -2,8 +2,9 @@ import { Component, computed, inject, OnInit, OnDestroy, signal } from '@angular
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { CampaignService } from '../../../core/services/campaign.service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { getFileUrl } from '../../../core/functions';
 
 @Component({
   selector: 'app-campaign-welcome-dialog',
@@ -14,7 +15,10 @@ import { CommonModule } from '@angular/common';
 })
 export class CampaignWelcomeDialogComponent implements OnInit, OnDestroy {
   private readonly campaignService = inject(CampaignService);
+  private readonly router = inject(Router);
+
   readonly campaign = computed(() => this.campaignService.activeCampaign());
+  readonly getFileUrl = getFileUrl;
 
   timeLeft = signal<string>('');
   private timerId?: any;
@@ -26,6 +30,49 @@ export class CampaignWelcomeDialogComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.timerId) clearInterval(this.timerId);
+  }
+
+  onCtaClick() {
+    const c = this.campaign();
+    if (!c) return;
+
+    const linkType = c.welcomeCtaLinkType;
+    const linkValue = c.welcomeCtaLinkValue;
+
+    // Fallback to legacy welcomeCtaUrl if welcomeCtaLinkType is not set
+    if (!linkType) {
+      if (c.welcomeCtaUrl) {
+        this.navigateByStringUrl(c.welcomeCtaUrl);
+      }
+      return;
+    }
+
+    if (linkType === 'External') {
+      if (linkValue) {
+        if (linkValue.startsWith('http://') || linkValue.startsWith('https://')) {
+          window.open(linkValue, '_blank');
+        } else {
+          // If it's a relative link, prepend protocol or navigate
+          window.open('https://' + linkValue, '_blank');
+        }
+      }
+    } else if (linkType === 'Category') {
+      if (linkValue) {
+        this.router.navigate(['/categories', linkValue]);
+      }
+    } else if (linkType === 'Product') {
+      if (linkValue) {
+        this.router.navigate(['/menu/product', linkValue]);
+      }
+    }
+  }
+
+  private navigateByStringUrl(url: string) {
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      window.open(url, '_blank');
+    } else {
+      this.router.navigateByUrl(url);
+    }
   }
 
   private updateCountdown() {

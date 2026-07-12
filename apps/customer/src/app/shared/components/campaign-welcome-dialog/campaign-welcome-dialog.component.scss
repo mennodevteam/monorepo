@@ -2,18 +2,29 @@
   width: 100%;
   max-height: 200px;
   object-fit: cover;
-  border-radius: 8px 8px 0 0;
+  border-radius: 20px 20px 0 0;
+}
+
+h3[mat-dialog-title] {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--shop-on-background-color);
+  padding: 16px 16px 8px;
+  margin: 0;
 }
 
 .campaign-content {
-  padding: 16px;
+  padding: 8px 16px 16px;
   
   .description {
     font-size: 14px;
     line-height: 1.6;
-    color: var(--text-primary, #333);
+    color: var(--shop-on-surface-color);
+    opacity: 0.85;
     margin-bottom: 16px;
     word-break: break-word;
+    text-align: center;
   }
 
   .countdown-container {
@@ -21,23 +32,27 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: var(--background-secondary, #f5f5f5);
-    border-radius: 8px;
-    padding: 12px;
-    margin-top: 16px;
-    border: 1px dashed var(--border-color, #ccc);
+    background-color: var(--shop-surface-low-color);
+    border: 1px solid var(--shop-outline-variant-color);
+    border-radius: 16px;
+    padding: 16px;
+    margin-top: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
 
     .countdown-label {
       font-size: 12px;
-      color: var(--text-secondary, #666);
-      margin-bottom: 4px;
+      color: var(--shop-on-surface-color);
+      opacity: 0.7;
+      font-weight: 500;
+      margin-bottom: 6px;
     }
 
     .countdown-timer {
-      font-size: 20px;
-      font-weight: bold;
-      color: var(--primary-color, #e91e63);
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--shop-main-color);
       font-variant-numeric: tabular-nums;
+      letter-spacing: 0.5px;
     }
   }
 }
@@ -49,7 +64,20 @@ div[mat-dialog-actions] {
   align-items: center;
   gap: 8px;
 
-  a[mat-flat-button] {
+  a[mat-flat-button], button[mat-flat-button] {
     flex: 1;
+    height: 44px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-family: inherit;
+  }
+
+  button[mat-button] {
+    height: 44px;
+    border-radius: 12px;
+    font-weight: 500;
+    font-family: inherit;
+    color: var(--shop-on-surface-color);
+    opacity: 0.8;
   }
 }

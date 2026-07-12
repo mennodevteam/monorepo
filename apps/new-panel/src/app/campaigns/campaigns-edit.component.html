@@ -24,7 +24,7 @@
   </mat-toolbar>
 
   <main p-md w-md class="np-form-container">
-    <div class="np-form-container" style="gap: 24px !important; display: flex; flex-direction: column;">
+    <div class="np-form-container" style="gap: 40px !important; display: flex; flex-direction: column;">
       
       <!-- Basic Information -->
       <div class="np-form-section">
@@ -103,7 +103,7 @@
               <span style="font-size: 13px; color: var(--text-secondary); display: block; margin-bottom: 8px;">تصویر بنر خوش‌آمدگویی</span>
               @if (form.get('welcomeImageUrl')?.value) {
                 <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
-                  <img [src]="form.get('welcomeImageUrl')?.value" style="max-height: 180px; max-width: 100%; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-color, #eee);" />
+                  <img [src]="getFileUrl(form.get('welcomeImageUrl')?.value)" style="max-height: 180px; max-width: 100%; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-color, #eee);" />
                   <button mat-stroked-button type="button" color="warn" (click)="clearWelcomeImage()" style="align-self: start;">حذف تصویر</button>
                 </div>
               } @else {
@@ -114,16 +114,51 @@
               }
             </div>
 
-            <div style="display: flex; gap: 16px;">
-              <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 1;">
+            <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 12px;">
+              <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 1; min-width: 200px;">
                 <mat-label>متن دکمه (CTA)</mat-label>
                 <input matInput formControlName="welcomeCtaText" placeholder="مثال: مشاهده تخفیف‌ها" />
               </mat-form-field>
 
-              <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 2;">
-                <mat-label>لینک دکمه (CTA Link)</mat-label>
-                <input matInput formControlName="welcomeCtaUrl" placeholder="مثال: /categories/1" />
+              <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 1; min-width: 200px;">
+                <mat-label>نوع لینک دکمه</mat-label>
+                <mat-select formControlName="welcomeCtaLinkType" (selectionChange)="form.get('welcomeCtaLinkValue')?.reset()">
+                  <mat-option value="External">لینک خارجی</mat-option>
+                  <mat-option value="Category">دسته بندی</mat-option>
+                  <mat-option value="Product">محصول</mat-option>
+                </mat-select>
               </mat-form-field>
+
+              @let linkType = form.get('welcomeCtaLinkType')?.value;
+
+              @if (linkType === 'External') {
+                <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 2; min-width: 250px;">
+                  <mat-label>آدرس لینک خارجی</mat-label>
+                  <input matInput formControlName="welcomeCtaLinkValue" placeholder="مثال: https://google.com" />
+                </mat-form-field>
+              }
+
+              @if (linkType === 'Category') {
+                <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 2; min-width: 250px;">
+                  <mat-label>انتخاب دسته بندی</mat-label>
+                  <mat-select formControlName="welcomeCtaLinkValue">
+                    @for (c of allCategories(); track c.id) {
+                      <mat-option [value]="c.id">{{ c.title }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              }
+
+              @if (linkType === 'Product') {
+                <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 2; min-width: 250px;">
+                  <mat-label>انتخاب محصول</mat-label>
+                  <mat-select formControlName="welcomeCtaLinkValue">
+                    @for (p of allProducts(); track p.id) {
+                      <mat-option [value]="p.id">{{ p.title }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              }
             </div>
 
             <mat-checkbox formControlName="showCountdown">نمایش تایمر معکوس تا انتهای کمپین</mat-checkbox>
@@ -133,7 +168,7 @@
 
       <!-- Campaign Actions -->
       <div class="np-form-section">
-        <h3 class="np-section-title">اکشن‌ها و آفرها</h3>
+        <h3 class="np-section-title">آفرها</h3>
         <p class="np-section-desc">تخفیف‌ها یا مزایایی که در طول کمپین به مشتری تعلق می‌گیرد را تعریف کنید.</p>
         
         <div class="np-form-inputs" style="display: flex; flex-direction: column; gap: 16px;">
@@ -142,7 +177,7 @@
               <div [formGroupName]="idx" class="action-card" style="border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; position: relative; background-color: var(--background-secondary, #fafafa);">
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                  <h4 style="margin: 0; font-weight: 500;">اکشن شماره {{ idx + 1 }}</h4>
+                  <h4 style="margin: 0; font-weight: 500;">آفر شماره {{ idx + 1 }}</h4>
                   <button mat-icon-button type="button" (click)="removeAction(idx)" style="color: var(--red-color, #f44336);">
                     <ng-icon name="saxTrashOutline"></ng-icon>
                   </button>
@@ -242,7 +277,7 @@
 
           <button mat-stroked-button type="button" (click)="addAction()" style="width: 100%; border-style: dashed; border-color: var(--primary-color);">
             <ng-icon name="saxAddOutline"></ng-icon>
-            اضافه کردن اکشن جدید
+            اضافه کردن آفر جدید
           </button>
         </div>
       </div>

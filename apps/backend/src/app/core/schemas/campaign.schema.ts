@@ -55,6 +55,14 @@ export const CampaignSchema = new EntitySchema<Campaign>({
       type: String,
       nullable: true,
     },
+    welcomeCtaLinkType: {
+      type: String,
+      nullable: true,
+    },
+    welcomeCtaLinkValue: {
+      type: String,
+      nullable: true,
+    },
     showCountdown: {
       type: Boolean,
       default: false,

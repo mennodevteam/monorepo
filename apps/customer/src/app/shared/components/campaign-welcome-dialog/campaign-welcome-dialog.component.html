@@ -1,7 +1,7 @@
 @if (campaign()) {
   @if (campaign()?.welcomeImageUrl) {
     <img
-      [src]="campaign()?.welcomeImageUrl"
+      [src]="getFileUrl(campaign()?.welcomeImageUrl)"
       id="campaign-banner"
       alt="{{ campaign()?.title }}"
     />
@@ -12,16 +12,16 @@
 
     @if (campaign()?.showCountdown && timeLeft()) {
       <div class="countdown-container">
-        <span class="countdown-label">زمان باقی‌مانده تا پایان کمپین:</span>
+        <span class="countdown-label">زمان باقی‌مانده تا پایان کمپین</span>
         <span class="countdown-timer">{{ timeLeft() }}</span>
       </div>
     }
   </div>
   <div mat-dialog-actions>
-    @if (campaign()?.welcomeCtaText && campaign()?.welcomeCtaUrl) {
-      <a mat-flat-button color="primary" [href]="campaign()?.welcomeCtaUrl" mat-dialog-close>
+    @if (campaign()?.welcomeCtaText && (campaign()?.welcomeCtaLinkType || campaign()?.welcomeCtaUrl)) {
+      <button mat-flat-button color="primary" (click)="onCtaClick()" mat-dialog-close>
         {{ campaign()?.welcomeCtaText }}
-      </a>
+      </button>
     }
     <button mat-button mat-dialog-close>بستن</button>
   </div>

@@ -96,6 +96,8 @@ export class CampaignsEditComponent implements OnInit {
       welcomeImageUrl: [''],
       welcomeCtaText: [''],
       welcomeCtaUrl: [''],
+      welcomeCtaLinkType: ['External'],
+      welcomeCtaLinkValue: [''],
       showCountdown: [false],
     });
   }
@@ -126,6 +128,8 @@ export class CampaignsEditComponent implements OnInit {
           welcomeImageUrl: campaign.welcomeImageUrl,
           welcomeCtaText: campaign.welcomeCtaText,
           welcomeCtaUrl: campaign.welcomeCtaUrl,
+          welcomeCtaLinkType: campaign.welcomeCtaLinkType || 'External',
+          welcomeCtaLinkValue: campaign.welcomeCtaLinkValue || '',
           showCountdown: campaign.showCountdown,
         });
 
@@ -175,6 +179,12 @@ export class CampaignsEditComponent implements OnInit {
     return d;
   }
 
+  getFileUrl(key: string): string {
+    if (!key) return '';
+    if (key.startsWith('http')) return key;
+    return this.filesService.getFileUrl(key);
+  }
+
   async uploadWelcomeImage() {
     const res = await this.dialog.imageCropper({
       maintainAspectRatio: false,
@@ -188,8 +198,7 @@ export class CampaignsEditComponent implements OnInit {
         this.snack.open('خطا در آپلود فایل', '', { duration: 3000 });
         return;
       }
-      const url = (saved.url?.trim() || this.filesService.getFileUrl(saved.key)).trim();
-      this.form.patchValue({ welcomeImageUrl: url });
+      this.form.patchValue({ welcomeImageUrl: saved.key });
       this.form.markAsDirty();
     } catch (err) {
       this.snack.open('خطا در آپلود فایل بنر', 'بستن', { duration: 3000 });
@@ -230,6 +239,8 @@ export class CampaignsEditComponent implements OnInit {
       welcomeImageUrl: val.welcomeImageUrl,
       welcomeCtaText: val.welcomeCtaText,
       welcomeCtaUrl: val.welcomeCtaUrl,
+      welcomeCtaLinkType: val.welcomeCtaLinkType,
+      welcomeCtaLinkValue: val.welcomeCtaLinkValue,
       showCountdown: val.showCountdown,
     };
 

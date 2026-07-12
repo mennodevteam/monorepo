@@ -124,18 +124,9 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    const key = `campaign_welcome_seen_${campaign.id}`;
-    if (typeof window !== 'undefined' && localStorage.getItem(key)) {
-      return;
-    }
-
     this.hasShownCampaignWelcomePopup = true;
     this.dialog.open(CampaignWelcomeDialogComponent, {
       panelClass: 'visible-overflow',
-    }).afterClosed().subscribe(() => {
-      if (typeof window !== 'undefined') {
-        localStorage.setItem(key, 'true');
-      }
     });
   }
 

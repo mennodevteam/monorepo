@@ -34,6 +34,8 @@ export class Campaign {
   welcomeImageUrl?: string;
   welcomeCtaText?: string;
   welcomeCtaUrl?: string;
+  welcomeCtaLinkType?: 'Category' | 'Product' | 'External';
+  welcomeCtaLinkValue?: string;
   showCountdown?: boolean;
 
   createdAt: Date;
