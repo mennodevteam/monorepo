@@ -66,6 +66,10 @@ export class CampaignsEditComponent implements OnInit {
     return list;
   });
 
+  readonly allCategories = computed(() => {
+    return this.menuService.data()?.categories || [];
+  });
+
   get actions(): FormArray {
     return this.form.get('actions') as FormArray;
   }
@@ -149,6 +153,7 @@ export class CampaignsEditComponent implements OnInit {
         minOrderValue: [payload?.minOrderValue || 0],
         productId: [payload?.productId || ''],
         variantId: [payload?.variantId || ''],
+        categoryId: [payload?.categoryId || ''],
         discountType: [payload?.discountType || 'percent'],
         discountValue: [payload?.discountValue || 0],
       }),

@@ -154,6 +154,7 @@
                     <mat-select formControlName="type" (selectionChange)="action.get('payload')?.reset()">
                       <mat-option value="free_delivery">ارسال رایگان</mat-option>
                       <mat-option value="product_discount">تخفیف روی محصول خاص</mat-option>
+                      <mat-option value="category_discount">تخفیف روی کل دسته بندی</mat-option>
                     </mat-select>
                   </mat-form-field>
 
@@ -189,6 +190,33 @@
                           </mat-select>
                         </mat-form-field>
                       }
+
+                      <div style="display: flex; gap: 16px;">
+                        <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 1;">
+                          <mat-label>نوع تخفیف</mat-label>
+                          <mat-select formControlName="discountType">
+                            <mat-option value="percent">درصدی</mat-option>
+                            <mat-option value="fixed">مبلغ ثابت (تومان)</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 1;">
+                          <mat-label>میزان تخفیف</mat-label>
+                          <input matInput formControlName="discountValue" type="number" />
+                        </mat-form-field>
+                      </div>
+                    }
+
+                    <!-- Category Discount payload fields -->
+                    @if (action.get('type')?.value === 'category_discount') {
+                      <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+                        <mat-label>انتخاب دسته بندی</mat-label>
+                        <mat-select formControlName="categoryId">
+                          @for (c of allCategories(); track c.id) {
+                            <mat-option [value]="c.id">{{ c.title }}</mat-option>
+                          }
+                        </mat-select>
+                      </mat-form-field>
 
                       <div style="display: flex; gap: 16px;">
                         <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 1;">

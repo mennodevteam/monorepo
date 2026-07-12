@@ -1,11 +1,12 @@
 import { Shop } from './shop';
 
 export interface CampaignAction {
-  type: 'free_delivery' | 'product_discount';
+  type: 'free_delivery' | 'product_discount' | 'category_discount';
   payload: {
     minOrderValue?: number;
     productId?: string;
     variantId?: number;
+    categoryId?: string;
     discountType?: 'percent' | 'fixed';
     discountValue?: number;
   };

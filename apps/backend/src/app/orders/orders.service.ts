@@ -140,34 +140,65 @@ export class OrdersService {
         dto.campaign = order.campaign = activeCampaign;
         if (activeCampaign.actions) {
           for (const action of activeCampaign.actions) {
-            if (action.type === 'product_discount') {
-              const { productId, variantId, discountType, discountValue } = action.payload;
-              const product = menu.categories
-                ?.flatMap((c) => c.products || [])
-                .find((p) => p.id === productId);
-              if (product) {
-                if (variantId) {
-                  const variant = product.variants?.find((v) => v.id === variantId);
-                  if (variant) {
-                    if (!variant.details) variant.details = {};
-                    if (variant.details.originalPrice === undefined) {
-                      variant.details.originalPrice = variant.price;
+            if (action.type === 'product_discount' || action.type === 'category_discount') {
+              const { discountType, discountValue } = action.payload;
+
+              const applyProductDiscount = (prod: any) => {
+                if (!prod) return;
+                if (!prod.details) prod.details = {};
+                if (prod.details.originalPrice === undefined) {
+                  prod.details.originalPrice = prod.price;
+                }
+                if (discountType === 'percent') {
+                  prod.price = Math.max(0, prod.details.originalPrice * (1 - discountValue / 100));
+                } else {
+                  prod.price = Math.max(0, prod.details.originalPrice - discountValue);
+                }
+
+                if (prod.variants?.length) {
+                  for (const v of prod.variants) {
+                    if (!v.details) v.details = {};
+                    if (v.details.originalPrice === undefined) {
+                      v.details.originalPrice = v.price;
                     }
                     if (discountType === 'percent') {
-                      variant.price = Math.max(0, variant.details.originalPrice * (1 - discountValue / 100));
+                      v.price = Math.max(0, v.details.originalPrice * (1 - discountValue / 100));
                     } else {
-                      variant.price = Math.max(0, variant.details.originalPrice - discountValue);
+                      v.price = Math.max(0, v.details.originalPrice - discountValue);
                     }
                   }
-                } else {
-                  if (!product.details) product.details = {};
-                  if (product.details.originalPrice === undefined) {
-                    product.details.originalPrice = product.price;
-                  }
-                  if (discountType === 'percent') {
-                    product.price = Math.max(0, product.details.originalPrice * (1 - discountValue / 100));
+                }
+              };
+
+              if (action.type === 'product_discount') {
+                const { productId, variantId } = action.payload;
+                const product = menu.categories
+                  ?.flatMap((c) => c.products || [])
+                  .find((p) => p.id === productId);
+                if (product) {
+                  if (variantId) {
+                    const variant = product.variants?.find((v) => v.id === variantId);
+                    if (variant) {
+                      if (!variant.details) variant.details = {};
+                      if (variant.details.originalPrice === undefined) {
+                        variant.details.originalPrice = variant.price;
+                      }
+                      if (discountType === 'percent') {
+                        variant.price = Math.max(0, variant.details.originalPrice * (1 - discountValue / 100));
+                      } else {
+                        variant.price = Math.max(0, variant.details.originalPrice - discountValue);
+                      }
+                    }
                   } else {
-                    product.price = Math.max(0, product.details.originalPrice - discountValue);
+                    applyProductDiscount(product);
+                  }
+                }
+              } else if (action.type === 'category_discount') {
+                const { categoryId } = action.payload;
+                const category = menu.categories?.find((c) => c.id?.toString() === categoryId?.toString());
+                if (category && category.products) {
+                  for (const product of category.products) {
+                    applyProductDiscount(product);
                   }
                 }
               }
@@ -187,11 +218,16 @@ export class OrdersService {
         // Record campaign discount on items
         for (const item of order.items) {
           if (!item.isAbstract && item.product) {
+            const category = menu.categories?.find((c) =>
+              c.products?.some((p) => p.id === item.product.id)
+            );
             const action = activeCampaign.actions?.find(
               (a) =>
-                a.type === 'product_discount' &&
-                a.payload.productId === item.product.id &&
-                (!a.payload.variantId || a.payload.variantId === item.productVariant?.id),
+                (a.type === 'product_discount' &&
+                  a.payload.productId === item.product.id &&
+                  (!a.payload.variantId || a.payload.variantId === item.productVariant?.id)) ||
+                (a.type === 'category_discount' &&
+                  category && category.id?.toString() === a.payload.categoryId?.toString())
             );
             if (action) {
               const originalPrice = item.productVariant?.details?.originalPrice ?? item.product?.details?.originalPrice;
