@@ -17,6 +17,8 @@ import { getProductPath } from '../../core/seo/seo-paths';
 import { ImageLoaderDirective } from '../../shared/directives/image-loader.directive';
 import { QuantitySelectorComponent } from '../../shared/components/quantity-selector/quantity-selector.component';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
+import { MatDialogModule, MatDialog } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-product',
@@ -30,6 +32,8 @@ import { ProductCardComponent } from '../../shared/components/product-card/produ
     MatRippleModule,
     QuantitySelectorComponent,
     ProductCardComponent,
+    MatDialogModule,
+    MatButtonModule,
   ],
   templateUrl: './product.component.html',
   styleUrl: './product.component.scss',
@@ -43,6 +47,9 @@ export class ProductComponent implements OnDestroy {
   private readonly seoService = inject(SeoService);
   private readonly shopService = inject(ShopService);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly dialog = inject(MatDialog);
+
+  readonly dialogPackItems = signal<any[]>([]);
 
   private readonly productIdParam = toSignal(this.route.paramMap.pipe(map((params) => params.get('id'))), {
     initialValue: this.route.snapshot.paramMap.get('id'),
@@ -295,5 +302,14 @@ export class ProductComponent implements OnDestroy {
 
   toggleDescription() {
     this.isExpanded.update((v) => !v);
+  }
+
+  openPackDetails(items: any[] | undefined, templateRef: any) {
+    this.dialogPackItems.set(items || []);
+    this.dialog.open(templateRef, {
+      width: '320px',
+      maxWidth: '95vw',
+      panelClass: 'pack-details-dialog',
+    });
   }
 }
