@@ -19,6 +19,7 @@ import { QuantitySelectorComponent } from '../../shared/components/quantity-sele
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-product',
@@ -34,6 +35,7 @@ import { MatButtonModule } from '@angular/material/button';
     ProductCardComponent,
     MatDialogModule,
     MatButtonModule,
+    MatIconModule,
   ],
   templateUrl: './product.component.html',
   styleUrl: './product.component.scss',

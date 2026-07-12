@@ -92,13 +92,7 @@
               <div style="display: flex; align-items: center; gap: 8px;">
                 <app-quantity-selector [product]="product" [variant]="variant" />
                 @if (product.type === 'pack' && variant.packItems?.length) {
-                  <span style="color: var(--mat-sys-primary, #6200ee); display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; background: rgba(0,0,0,0.03); border-radius: 50%;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <line x1="12" y1="16" x2="12" y2="12"></line>
-                      <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                    </svg>
-                  </span>
+                  <mat-icon style="color: var(--mat-sys-primary, #6200ee); font-size: 20px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;">info_outline</mat-icon>
                 }
               </div>
             </div>
