@@ -26,6 +26,8 @@ interface CampaignReport {
   totalMaterialCost: number;
   totalCampaignDiscounts: number;
   totalWaivedDeliveryFee: number;
+  totalOrderExtraCosts: number;
+  totalSalesProfit: number;
   totalManualCosts: number;
   netProfit: number;
   visits: number;
@@ -37,6 +39,7 @@ interface CampaignReport {
     trackingCode?: string;
     totalPrice: number;
     materialCost?: number;
+    extraCosts?: number;
     createdAt: string;
     state: string;
     customer?: {
@@ -136,9 +139,9 @@ interface CampaignReport {
                 <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid #f9f9f9; padding-left: 8px; padding-right: 8px;">
                   <span style="color: var(--text-secondary); display: flex; align-items: center; gap: 6px;">
                     مجموع سود فروش سفارشات:
-                    <ng-icon name="saxInfoCircleOutline" style="color: var(--text-muted); cursor: pointer; font-size: 1rem; vertical-align: middle;" matTooltip="مجموع سود همه سفارشات کمپین (فروش کل منهای بهای تمام‌شده مواد اولیه)"></ng-icon>
+                    <ng-icon name="saxInfoCircleOutline" style="color: var(--text-muted); cursor: pointer; font-size: 1rem; vertical-align: middle;" matTooltip="مجموع سود همه سفارشات کمپین (فروش کل منهای بهای تمام‌شده مواد اولیه و هزینه‌های مازاد سفارشات)"></ng-icon>
                   </span>
-                  <strong style="color: var(--text-primary); font-size: 14px;">{{ (r.totalSales - r.totalMaterialCost) | number }} تومان</strong>
+                  <strong style="color: var(--text-primary); font-size: 14px;">{{ r.totalSalesProfit | number }} تومان</strong>
                 </div>
 
                 <!-- 4. Campaign Operating Costs -->
@@ -235,7 +238,7 @@ interface CampaignReport {
                           <td style="padding: 8px; color: var(--text-secondary);">{{ order.createdAt | pdate: true }}</td>
                           <td style="padding: 8px; font-weight: 500;">{{ order.totalPrice | number }} تومان</td>
                           <td style="padding: 8px; font-weight: 500; color: var(--text-primary);">
-                            {{ (order.totalPrice - (order.materialCost || 0)) | number }} تومان
+                            {{ (order.totalPrice - (order.materialCost || 0) - (order.extraCosts || 0)) | number }} تومان
                           </td>
                         </tr>
                       }

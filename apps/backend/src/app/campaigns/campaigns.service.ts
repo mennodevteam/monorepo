@@ -202,10 +202,12 @@ export class CampaignsService {
     let totalMaterialCost = 0;
     let totalCampaignDiscounts = 0;
     let totalWaivedDeliveryFee = 0;
+    let totalOrderExtraCosts = 0;
 
     for (const order of orders) {
       totalSales += order.totalPrice;
       totalMaterialCost += order.materialCost || 0;
+      totalOrderExtraCosts += order.extraCosts || 0;
       if (order.details?.campaignDeliveryDiscount) {
         totalWaivedDeliveryFee += order.details.campaignDeliveryDiscount;
       }
@@ -217,7 +219,8 @@ export class CampaignsService {
     }
 
     const totalManualCosts = campaign.manualCosts?.reduce((sum, cost) => sum + (cost.amount || 0), 0) || 0;
-    const netProfit = totalSales - totalMaterialCost - totalManualCosts;
+    const totalSalesProfit = totalSales - totalMaterialCost - totalOrderExtraCosts;
+    const netProfit = totalSalesProfit - totalManualCosts;
 
     const visits = await this.menuStatsRepo.count({
       where: {
@@ -250,6 +253,8 @@ export class CampaignsService {
       totalMaterialCost, // COGS
       totalCampaignDiscounts, // Product campaign discounts
       totalWaivedDeliveryFee, // Delivery fee discounts
+      totalOrderExtraCosts,
+      totalSalesProfit,
       totalManualCosts,
       netProfit, 
       visits,
@@ -261,6 +266,7 @@ export class CampaignsService {
         trackingCode: o.trackingCode,
         totalPrice: o.totalPrice,
         materialCost: o.materialCost,
+        extraCosts: o.extraCosts,
         createdAt: o.createdAt,
         state: o.state,
         customer: o.customer ? {
