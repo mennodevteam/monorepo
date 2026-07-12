@@ -12,6 +12,8 @@ import { resolveShopUsername } from './core/functions';
 import { isCrawlablePathname } from './core/seo/crawlable-paths';
 import { SeoService } from './core/services/seo.service';
 import { WelcomeMessageDialogComponent } from './shared/components/welcome-message-dialog/welcome-message-dialog.component';
+import { CampaignService } from './core/services/campaign.service';
+import { CampaignWelcomeDialogComponent } from './shared/components/campaign-welcome-dialog/campaign-welcome-dialog.component';
 
 @Component({
   standalone: true,
@@ -25,6 +27,7 @@ export class AppComponent implements OnInit {
   private readonly menuService = inject(MenuService);
   private readonly shopService = inject(ShopService);
   private readonly themeService = inject(ThemeService);
+  private readonly campaignService = inject(CampaignService);
   private readonly router = inject(Router);
   private readonly seo = inject(SeoService);
   private readonly dialog = inject(MatDialog);
@@ -32,6 +35,7 @@ export class AppComponent implements OnInit {
 
   private welcomeTimerId: ReturnType<typeof setTimeout> | undefined;
   private hasShownWelcomePopup = false;
+  private hasShownCampaignWelcomePopup = false;
 
   constructor() {
     effect(() => {
@@ -44,6 +48,7 @@ export class AppComponent implements OnInit {
         });
       }
       this.tryShowWelcomePopup();
+      this.tryShowCampaignWelcomePopup();
     });
   }
 
@@ -63,10 +68,12 @@ export class AppComponent implements OnInit {
       .subscribe(() => {
         this.updateRobotsMeta();
         this.tryShowWelcomePopup();
+        this.tryShowCampaignWelcomePopup();
       });
 
     this.updateRobotsMeta();
     this.tryShowWelcomePopup();
+    this.tryShowCampaignWelcomePopup();
   }
 
   private updateRobotsMeta(): void {
@@ -104,6 +111,31 @@ export class AppComponent implements OnInit {
     this.hasShownWelcomePopup = true;
     this.dialog.open(WelcomeMessageDialogComponent, {
       panelClass: 'visible-overflow',
+    });
+  }
+
+  private tryShowCampaignWelcomePopup() {
+    if (this.hasShownCampaignWelcomePopup || !this.isWelcomeRoute(this.currentPath())) {
+      return;
+    }
+
+    const campaign = this.campaignService.activeCampaign();
+    if (!campaign || !campaign.showWelcomeDialog) {
+      return;
+    }
+
+    const key = `campaign_welcome_seen_${campaign.id}`;
+    if (typeof window !== 'undefined' && localStorage.getItem(key)) {
+      return;
+    }
+
+    this.hasShownCampaignWelcomePopup = true;
+    this.dialog.open(CampaignWelcomeDialogComponent, {
+      panelClass: 'visible-overflow',
+    }).afterClosed().subscribe(() => {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(key, 'true');
+      }
     });
   }
 

@@ -129,6 +129,7 @@ export class ShellComponent {
            url.includes('/club') || 
            url.includes('/reports') || 
            url.includes('/coupons') || 
+           url.includes('/campaigns') || 
            url.includes('/sms') ||
            url.includes('/pricing');
   }

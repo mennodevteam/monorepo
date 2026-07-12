@@ -1,6 +1,7 @@
 import { Menu } from './menu';
 import { Product } from './product';
 import { User } from './user';
+import { Campaign } from './campaign';
 
 export enum StatAction {
   LoadMenu = 'LOAD_MENU',
@@ -27,6 +28,7 @@ export class MenuStat {
   menu: Menu;
   product?: Product;
   value?: number;
+  campaignRef?: Campaign;
 }
 
 export class MenuStatDto {

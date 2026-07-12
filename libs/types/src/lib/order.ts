@@ -8,6 +8,7 @@ import { OrderType } from './order-type.enum';
 import { Payment } from './payment';
 import { Shop } from './shop';
 import { User } from './user';
+import { Campaign } from './campaign';
 export interface OrderDetails {
   customerPhone?: string;
   table?: string;
@@ -24,6 +25,7 @@ export interface OrderDetails {
     change: number;
   }[][];
   estimateCompletedAt?: Date;
+  campaignDeliveryDiscount?: number;
 }
 
 export class Order {
@@ -50,6 +52,7 @@ export class Order {
   payment?: Payment;
   details: OrderDetails;
   useWallet?: number;
+  campaign?: Campaign;
   materialCost?: number;
   excludeFromReports?: boolean;
   extraCosts?: number;

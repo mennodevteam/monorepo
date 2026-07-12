@@ -1,0 +1,28 @@
+@if (campaign()) {
+  @if (campaign()?.welcomeImageUrl) {
+    <img
+      [src]="campaign()?.welcomeImageUrl"
+      id="campaign-banner"
+      alt="{{ campaign()?.title }}"
+    />
+  }
+  <h3 mat-dialog-title>{{ campaign()?.welcomeTitle || campaign()?.title }}</h3>
+  <div mat-dialog-content class="campaign-content">
+    <p class="description">{{ campaign()?.welcomeDescription }}</p>
+
+    @if (campaign()?.showCountdown && timeLeft()) {
+      <div class="countdown-container">
+        <span class="countdown-label">زمان باقی‌مانده تا پایان کمپین:</span>
+        <span class="countdown-timer">{{ timeLeft() }}</span>
+      </div>
+    }
+  </div>
+  <div mat-dialog-actions>
+    @if (campaign()?.welcomeCtaText && campaign()?.welcomeCtaUrl) {
+      <a mat-flat-button color="primary" [href]="campaign()?.welcomeCtaUrl" mat-dialog-close>
+        {{ campaign()?.welcomeCtaText }}
+      </a>
+    }
+    <button mat-button mat-dialog-close>بستن</button>
+  </div>
+}

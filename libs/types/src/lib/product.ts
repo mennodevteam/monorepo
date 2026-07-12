@@ -66,7 +66,9 @@ export class Product {
 
   static realPrice(product: Product, productVariant?: ProductVariant, round = 500) {
     let cost = 0;
-    let price = productVariant ? productVariant.price : product.price;
+    let price = productVariant
+      ? (productVariant.details?.originalPrice ?? productVariant.price)
+      : (product.details?.originalPrice ?? product.price);
     if (product.type === ProductType.Pack) {
       price = Product.getPackPrice(product, productVariant);
     }

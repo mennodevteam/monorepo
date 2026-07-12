@@ -14,6 +14,7 @@ export class ProductVariant {
   _orderItem?: ProductItem;
   product: Product;
   packItems?: ProductPackItem[];
+  details?: any;
   createdAt: Date;
   deletedAt?: Date;
   updatedAt?: Date;

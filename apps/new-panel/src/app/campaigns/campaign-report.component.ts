@@ -1,0 +1,300 @@
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { lastValueFrom } from 'rxjs';
+import { Campaign, CampaignManualCost } from '@menno/types';
+import { SHARED } from '../shared';
+import { DataLoadingComponent } from '../shared/components/data-loading/data-loading.component';
+
+interface CampaignReport {
+  campaignId: string;
+  title: string;
+  startDate: string;
+  endDate: string;
+  orderCount: number;
+  totalSales: number;
+  totalMaterialCost: number;
+  totalCampaignDiscounts: number;
+  totalWaivedDeliveryFee: number;
+  totalManualCosts: number;
+  netProfit: number;
+  visits: number;
+  clicks: number;
+  basketAdds: number;
+  manualCosts: CampaignManualCost[];
+  orders: {
+    id: string;
+    trackingCode?: string;
+    totalPrice: number;
+    materialCost?: number;
+    createdAt: string;
+    state: string;
+  }[];
+}
+
+@Component({
+  selector: 'app-campaign-report',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatCardModule,
+    RouterModule,
+    SHARED,
+    DataLoadingComponent,
+  ],
+  template: `
+    <mat-toolbar class="content-toolbar" fxLayout="row" fxLayoutGap="8px">
+      <button mat-icon-button type="button" (click)="goBack()">
+        <ng-icon name="saxArrowRight3Bold"></ng-icon>
+      </button>
+      <h1 fxFlex>گزارش عملکرد کمپین</h1>
+      <button mat-button type="button" (click)="goBack()">
+        بازگشت به لیست
+      </button>
+    </mat-toolbar>
+
+    <main p-md w-md class="np-form-container" style="font-family: 'Estedad'; direction: rtl;">
+      @if (loading()) {
+        <app-data-loading />
+      } @else if (report()) {
+        @let r = report()!;
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+          
+          <!-- General Header Info -->
+          <div style="background-color: var(--background-secondary, #fafafa); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color, #eee);">
+            <h2 style="margin: 0 0 8px 0; font-weight: bold; color: var(--text-primary);">{{ r.title }}</h2>
+            <div style="font-size: 13px; color: var(--text-secondary); display: flex; gap: 24px; flex-wrap: wrap;">
+              <span><strong>تاریخ شروع:</strong> {{ r.startDate | pdate: true }}</span>
+              <span><strong>تاریخ پایان:</strong> {{ r.endDate | pdate: true }}</span>
+            </div>
+          </div>
+
+          <!-- Top Level Financial Metrics Grid -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+            <mat-card style="padding: 20px; text-align: center; border-bottom: 4px solid var(--primary-color);">
+              <span style="font-size: 12px; color: var(--text-muted, #777); display: block; margin-bottom: 8px;">سود خالص دریافتی</span>
+              <strong style="font-size: 22px;" [style.color]="r.netProfit >= 0 ? '#2e7d32' : '#d32f2f'">{{ r.netProfit | number }} تومان</strong>
+            </mat-card>
+
+            <mat-card style="padding: 20px; text-align: center; border-bottom: 4px solid #00bcd4;">
+              <span style="font-size: 12px; color: var(--text-muted, #777); display: block; margin-bottom: 8px;">فروش ناخالص تقریبی</span>
+              <strong style="font-size: 22px; color: var(--text-primary);">{{ (r.totalSales + r.totalCampaignDiscounts + r.totalWaivedDeliveryFee) | number }} تومان</strong>
+            </mat-card>
+
+            <mat-card style="padding: 20px; text-align: center; border-bottom: 4px solid #ff9800;">
+              <span style="font-size: 12px; color: var(--text-muted, #777); display: block; margin-bottom: 8px;">تعداد سفارشات</span>
+              <strong style="font-size: 22px; color: var(--text-primary);">{{ r.orderCount | number }}</strong>
+            </mat-card>
+          </div>
+
+          <!-- Bottom detailed section -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex-wrap: wrap;">
+            
+            <!-- Funnel / Analytics Card -->
+            <mat-card style="padding: 24px;">
+              <h3 style="margin: 0 0 16px 0; font-weight: bold; border-bottom: 1px solid #eee; padding-bottom: 12px;">قیف فروش و رفتار مشتریان (Funnel)</h3>
+              
+              <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="background-color: #fafafa; padding: 16px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <span style="color: #666; font-size: 13px; display: block;">بازدید از منو</span>
+                    <strong style="font-size: 18px;">{{ r.visits | number }}</strong>
+                  </div>
+                  <div style="text-align: left; font-size: 12px; color: var(--text-muted);">نرخ پایه</div>
+                </div>
+
+                <div style="background-color: #fafafa; padding: 16px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <span style="color: #666; font-size: 13px; display: block;">مشاهده و کلیک محصولات</span>
+                    <strong style="font-size: 18px;">{{ r.clicks | number }}</strong>
+                  </div>
+                  <div style="text-align: left; font-size: 12px; color: #0288d1; font-weight: 500;">
+                    نرخ کلیک: {{ getClickRate() }}%
+                  </div>
+                </div>
+
+                <div style="background-color: #fafafa; padding: 16px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <span style="color: #666; font-size: 13px; display: block;">افزودن کالا به سبد</span>
+                    <strong style="font-size: 18px;">{{ r.basketAdds | number }}</strong>
+                  </div>
+                  <div style="text-align: left; font-size: 12px; color: #ff8f00; font-weight: 500;">
+                    نرخ علاقه خرید: {{ getBasketRate() }}%
+                  </div>
+                </div>
+
+                <div style="background-color: #e8f5e9; padding: 16px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #c8e6c9;">
+                  <div>
+                    <span style="color: #2e7d32; font-size: 13px; display: block; font-weight: 500;">خرید نهایی (فاکتور)</span>
+                    <strong style="font-size: 20px; color: #2e7d32;">{{ r.orderCount | number }}</strong>
+                  </div>
+                  <div style="text-align: left; font-size: 12px; color: #2e7d32; font-weight: bold;">
+                    نرخ تبدیل کلی کمپین: {{ getConversionRate() }}%
+                  </div>
+                </div>
+              </div>
+            </mat-card>
+
+            <!-- Detailed Costs & Expenses Card -->
+            <mat-card style="padding: 24px;">
+              <h3 style="margin: 0 0 16px 0; font-weight: bold; border-bottom: 1px solid #eee; padding-bottom: 12px;">تخفیف‌ها و هزینه‌ها</h3>
+              
+              <div style="display: flex; flex-direction: column; gap: 16px; font-size: 14px;">
+                <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px dashed #eee;">
+                  <span>تخفیف مستقیم روی محصولات:</span>
+                  <span style="color: #f44336; font-weight: 500;">{{ r.totalCampaignDiscounts | number }} تومان-</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px dashed #eee;">
+                  <span>هزینه ارسال هدیه (رایگان):</span>
+                  <span style="color: #f44336; font-weight: 500;">{{ r.totalWaivedDeliveryFee | number }} تومان-</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px dashed #eee;">
+                  <span>بهای تمام‌شده مواد اولیه سفارشات:</span>
+                  <span style="color: #f44336; font-weight: 500;">{{ r.totalMaterialCost | number }} تومان-</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px dashed #eee;">
+                  <span>مجموع هزینه‌های مازاد دستی کمپین:</span>
+                  <span style="color: #f44336; font-weight: 500;">{{ r.totalManualCosts | number }} تومان-</span>
+                </div>
+
+                <!-- Manual Costs breakdown list -->
+                @if (r.manualCosts?.length) {
+                  <div style="background-color: #fafafa; padding: 12px; border-radius: 8px; margin-top: 4px;">
+                    <span style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 8px;">جزئیات هزینه‌های ثبت شده دستی:</span>
+                    <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12px;">
+                      @for (cost of r.manualCosts; track cost.title) {
+                        <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #eee; padding-bottom: 4px;">
+                          <span style="color: #555;">{{ cost.title }}:</span>
+                          <strong style="color: #d32f2f;">{{ cost.amount | number }} تومان-</strong>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+
+                <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center; background-color: rgba(76, 175, 80, 0.08); padding: 16px; border-radius: 8px; border: 1px solid rgba(76, 175, 80, 0.15);">
+                  <span style="font-weight: bold; color: #2e7d32; font-size: 15px;">سود خالص نهایی کمپین:</span>
+                  <strong style="font-size: 22px;" [style.color]="r.netProfit >= 0 ? '#2e7d32' : '#d32f2f'">{{ r.netProfit | number }} تومان</strong>
+                </div>
+              </div>
+            </mat-card>
+
+          </div>
+
+          <!-- Campaign Orders List Card -->
+          <mat-card style="padding: 24px;">
+            <h3 style="margin: 0 0 16px 0; font-weight: bold; border-bottom: 1px solid #eee; padding-bottom: 12px;">سفارشات ثبت شده در بازه کمپین</h3>
+            @if (r.orders?.length) {
+              <div style="max-height: 400px; overflow-y: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: right; font-size: 13px;">
+                  <thead>
+                    <tr style="border-bottom: 2px solid #eee; color: var(--text-secondary); height: 40px;">
+                      <th style="padding: 8px; font-weight: 500;">کد رهگیری</th>
+                      <th style="padding: 8px; font-weight: 500;">تاریخ ثبت</th>
+                      <th style="padding: 8px; font-weight: 500;">مبلغ فاکتور</th>
+                      <th style="padding: 8px; font-weight: 500;">بهای مواد اولیه</th>
+                      <th style="padding: 8px; font-weight: 500;">وضعیت فاکتور</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (order of r.orders; track order.id) {
+                      <tr style="border-bottom: 1px solid #eee; height: 48px;">
+                        <td style="padding: 8px;">
+                          <a [routerLink]="['/admin/orders/details', order.id]" style="color: var(--primary-color); font-weight: 500; text-decoration: none;">
+                            {{ order.trackingCode || '—' }}
+                          </a>
+                        </td>
+                        <td style="padding: 8px; color: #666;">{{ order.createdAt | pdate: true }}</td>
+                        <td style="padding: 8px; font-weight: 500;">{{ order.totalPrice | number }} تومان</td>
+                        <td style="padding: 8px; color: #666;">{{ (order.materialCost || 0) | number }} تومان</td>
+                        <td style="padding: 8px;">
+                          <span style="font-size: 11px; padding: 4px 8px; border-radius: 4px; background-color: #f0f0f0;">
+                            {{ getOrderStateLabel(order.state) }}
+                          </span>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            } @else {
+              <p style="text-align: center; color: var(--text-muted); margin: 20px 0; font-size: 13px;">هیچ سفارشی برای این کمپین ثبت نشده است.</p>
+            }
+          </mat-card>
+
+        </div>
+      } @else {
+        <div style="text-align: center; padding: 40px;">
+          <p style="color: var(--red-color); font-size: 16px;">خطا در دریافت اطلاعات گزارش کمپین</p>
+          <button mat-flat-button color="primary" (click)="goBack()" style="margin-top: 12px;">بازگشت به لیست</button>
+        </div>
+      }
+    </main>
+  `,
+})
+export class CampaignReportComponent implements OnInit {
+  private readonly http = inject(HttpClient);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+
+  loading = signal(true);
+  report = signal<CampaignReport | null>(null);
+
+  async ngOnInit() {
+    const id = this.route.snapshot.queryParamMap.get('id');
+    if (!id) {
+      this.router.navigate(['/admin/campaigns']);
+      return;
+    }
+
+    try {
+      const data = await lastValueFrom(this.http.get<CampaignReport>(`/campaigns/${id}/report`));
+      this.report.set(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  getClickRate(): string {
+    const r = this.report();
+    if (!r || !r.visits) return '0';
+    return ((r.clicks / r.visits) * 100).toFixed(1);
+  }
+
+  getBasketRate(): string {
+    const r = this.report();
+    if (!r || !r.clicks) return '0';
+    return ((r.basketAdds / r.clicks) * 100).toFixed(1);
+  }
+
+  getConversionRate(): string {
+    const r = this.report();
+    if (!r || !r.visits) return '0';
+    return ((r.orderCount / r.visits) * 100).toFixed(1);
+  }
+
+  getOrderStateLabel(state: string): string {
+    switch (state) {
+      case 'canceled': return 'لغو شده';
+      case 'delivered': return 'تحویل داده شده';
+      case 'processing': return 'در حال پردازش';
+      case 'pending': return 'در انتظار تایید';
+      case 'completed': return 'تکمیل شده';
+      case 'ready': return 'آماده تحویل';
+      case 'sent': return 'ارسال شده';
+      default: return state;
+    }
+  }
+
+  goBack() {
+    this.router.navigate(['/admin/campaigns']);
+  }
+}

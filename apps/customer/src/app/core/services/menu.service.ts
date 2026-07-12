@@ -47,7 +47,53 @@ export class MenuService {
     });
   }
 
-  readonly data = computed(() => this.menuQuery.data());
+  readonly data = computed(() => {
+    const menu = this.menuQuery.data();
+    if (!menu) return undefined;
+    const campaign = this.campaign.activeCampaign();
+    if (!campaign) return menu;
+
+    const cloned: Menu = JSON.parse(JSON.stringify(menu));
+    if (campaign.actions) {
+      for (const action of campaign.actions) {
+        if (action.type === 'product_discount') {
+          const { productId, variantId, discountType } = action.payload;
+          const discountValue = action.payload.discountValue ?? 0;
+          const product = cloned.categories
+            ?.flatMap((c) => c.products || [])
+            .find((p) => p.id === productId);
+          if (product) {
+            if (variantId) {
+              const variant = product.variants?.find((v) => v.id === variantId);
+              if (variant) {
+                if (!variant.details) variant.details = {};
+                if (variant.details.originalPrice === undefined) {
+                  variant.details.originalPrice = variant.price;
+                }
+                if (discountType === 'percent') {
+                  variant.price = Math.max(0, variant.details.originalPrice * (1 - discountValue / 100));
+                } else {
+                  variant.price = Math.max(0, variant.details.originalPrice - discountValue);
+                }
+              }
+            } else {
+              if (!product.details) product.details = {};
+              if (product.details.originalPrice === undefined) {
+                product.details.originalPrice = product.price;
+              }
+              if (discountType === 'percent') {
+                product.price = Math.max(0, product.details.originalPrice * (1 - discountValue / 100));
+              } else {
+                product.price = Math.max(0, product.details.originalPrice - discountValue);
+              }
+            }
+          }
+        }
+      }
+    }
+    Menu.setRefsAndSort(cloned, undefined, false, false);
+    return cloned;
+  });
 
   private async fetchMenu(username: string): Promise<Menu> {
     const menu = await firstValueFrom(

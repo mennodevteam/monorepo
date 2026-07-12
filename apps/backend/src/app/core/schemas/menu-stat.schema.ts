@@ -46,5 +46,10 @@ export const MenuStatSchema = new EntitySchema<MenuStat>({
       target: 'Product',
       nullable: true,
     },
+    campaignRef: {
+      type: 'many-to-one',
+      target: 'Campaign',
+      nullable: true,
+    },
   },
 });

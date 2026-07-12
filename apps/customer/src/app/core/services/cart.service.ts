@@ -75,6 +75,7 @@ export class CartService {
       note: this.note(),
       useWallet: this.useWallet(),
       discountCoupon: this.coupon(),
+      campaign: this.campaign.activeCampaign(),
       details,
     } as OrderDto;
   });

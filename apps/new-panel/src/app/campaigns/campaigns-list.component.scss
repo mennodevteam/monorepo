@@ -1,0 +1,34 @@
+.status-chip {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+
+  &.green {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: #4caf50;
+  }
+
+  &.blue {
+    background-color: rgba(33, 150, 243, 0.1);
+    color: #2196f3;
+  }
+
+  &.red {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: #f44336;
+  }
+}
+
+mat-table {
+  background: transparent;
+}
+
+mat-cell {
+  font-size: 13px;
+}
+
+mat-header-cell {
+  font-size: 12px;
+  font-weight: bold;
+}

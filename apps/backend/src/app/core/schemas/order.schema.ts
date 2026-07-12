@@ -179,6 +179,11 @@ export const OrderSchema = new EntitySchema<Order>({
       target: 'Payment',
       nullable: true,
     },
+    campaign: {
+      type: 'many-to-one',
+      target: 'Campaign',
+      nullable: true,
+    },
     reviews: {
       type: 'one-to-many',
       target: 'OrderReview',

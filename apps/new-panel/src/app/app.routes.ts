@@ -128,6 +128,12 @@ export const appRoutes: Route[] = [
                 data: { userActions: [UserAction.Coupons] },
               },
               {
+                path: 'campaigns',
+                loadChildren: () => import('./campaigns/campaigns.routes').then((m) => m.campaignsRoutes),
+                canActivate: [userActionsGuard],
+                data: { userActions: [UserAction.Marketing] },
+              },
+              {
                 path: 'sms',
                 children: smsRoutes,
                 canActivate: [userActionsGuard],

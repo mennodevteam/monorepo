@@ -1,0 +1,107 @@
+@let isEmpty = isEmptyData();
+<mat-toolbar class="content-toolbar" fxLayoutGap="8px">
+  <h1 fxFlex>{{ 'nav.campaigns' | translate }}</h1>
+  @if (!isEmpty) {
+    <button mat-flat-button (click)="addCampaign()">
+      <ng-icon name="saxAddOutline"></ng-icon>
+      ایجاد کمپین جدید
+    </button>
+  }
+</mat-toolbar>
+
+<main p-md w-md>
+  <!-- Educational Promo Banner -->
+  <mat-card class="promo-card blue">
+    <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+      <div class="np-icon-badge"><ng-icon name="saxInfoCircleOutline"></ng-icon></div>
+      <div fxFlex>
+        <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
+          <p style="margin: 0 0 6px 0;">در این بخش می‌توانید کمپین‌های فروش با بازه زمانی مشخص ایجاد کنید. همه سفارشاتی که در این بازه زمانی ثبت شوند، به کمپین مرتبط شده و شما می‌توانید گزارش فروش، سود و زیان دقیق کمپین را در این بخش مشاهده نمایید.</p>
+          <p style="margin: 0;">هر کمپین می‌تواند شامل اکشن‌هایی چون ارسال رایگان، تخفیف روی محصولات خاص و یا نمایش دیالوگ خوش‌آمدگویی باشد.</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  @if (query.isLoading()) {
+    <app-data-loading />
+  } @else if (!isEmpty) {
+    <mat-card style="margin-top: 16px;">
+      <mat-table [dataSource]="data()">
+        <ng-container matColumnDef="index">
+          <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+          <mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="title">
+          <mat-header-cell *matHeaderCellDef>عنوان کمپین</mat-header-cell>
+          <mat-cell *matCellDef="let element" style="font-weight: 500;">{{ element.title }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="startDate">
+          <mat-header-cell *matHeaderCellDef>تاریخ شروع</mat-header-cell>
+          <mat-cell *matCellDef="let element">{{ element.startDate | pdate: true }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="endDate">
+          <mat-header-cell *matHeaderCellDef>تاریخ پایان</mat-header-cell>
+          <mat-cell *matCellDef="let element">{{ element.endDate | pdate: true }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <mat-header-cell *matHeaderCellDef>وضعیت</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            @let status = getCampaignStatus(element);
+            <span class="status-chip {{ status.color }}">{{ status.label }}</span>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="totalSales">
+          <mat-header-cell *matHeaderCellDef>فروش کل</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{ (element.summary?.totalSales || 0) | number }} تومان
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="netProfit">
+          <mat-header-cell *matHeaderCellDef>سود خالص</mat-header-cell>
+          <mat-cell *matCellDef="let element" [style.color]="(element.summary?.netProfit || 0) >= 0 ? '#2e7d32' : '#f44336'" style="font-weight: 500;">
+            {{ (element.summary?.netProfit || 0) | number }} تومان
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="enabled">
+          <mat-header-cell *matHeaderCellDef>فعال/غیرفعال</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <mat-slide-toggle [checked]="element.enabled" (change)="toggleEnable(element, $event.checked)"></mat-slide-toggle>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let element" fxLayoutGap="8px">
+            <button mat-icon-button (click)="openReport(element)" matTooltip="گزارش سود و زیان" style="color: var(--primary-color);">
+              <ng-icon name="saxChart2Outline"></ng-icon>
+            </button>
+            <button mat-icon-button (click)="editCampaign(element)" matTooltip="ویرایش">
+              <ng-icon name="saxSetting2Outline"></ng-icon>
+            </button>
+            <button mat-icon-button (click)="deleteCampaign(element)" [disabled]="!isDeletable(element)" style="color: var(--red-color, #f44336);" matTooltip="حذف (فقط قبل از شروع کمپین)">
+              <ng-icon name="saxTrashOutline"></ng-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </mat-card>
+  } @else {
+    <app-empty-state
+      title="هنوز کمپینی ثبت نکرده‌اید"
+      description="با ایجاد اولین کمپین خود، فروش ویژه و هدفمند را در بازه‌های زمانی دلخواه آغاز کنید."
+      (action)="addCampaign()"
+      actionLabel="ایجاد کمپین"
+    />
+  }
+</main>

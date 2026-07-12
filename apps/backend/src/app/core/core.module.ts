@@ -60,6 +60,7 @@ import {
   StocktakingSchema,
   StocktakingItemSchema,
   ProductPackItemSchema,
+  CampaignSchema,
 } from './schemas';
 import { RedisService } from './redis.service';
 import { HttpModule } from '@nestjs/axios';
@@ -129,6 +130,7 @@ import { ChatSchema } from './schemas/chat.schema';
       StocktakingSchema,
       StocktakingItemSchema,
       ProductPackItemSchema,
+      CampaignSchema,
     ]),
   ],
   providers: [RedisService],

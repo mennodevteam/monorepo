@@ -4250,9 +4250,9 @@
     "semantic_hash": "4c51171a9ebcc46998026ae8b9958c9c"
   },
   ".agent/skills/doc-sync-and-clarity/SKILL.md": {
-    "mtime": 1781782961.3450532,
-    "ast_hash": "1d7b9e8a58174603a3378a606855c4d6",
-    "semantic_hash": "1d7b9e8a58174603a3378a606855c4d6"
+    "mtime": 1783866275.6597533,
+    "ast_hash": "a07339bbb3796ecf5d9c744ea323dd74",
+    "semantic_hash": ""
   },
   ".agent/skills/new-panel-market-fit/SKILL.md": {
     "mtime": 1781962126.1192777,
@@ -5518,5 +5518,10 @@
     "mtime": 1751416864.0186734,
     "ast_hash": "3e34f88b31f750f6e9df83f7daa426f0",
     "semantic_hash": "3e34f88b31f750f6e9df83f7daa426f0"
+  },
+  ".agents/AGENTS.md": {
+    "mtime": 1783866281.3793745,
+    "ast_hash": "eed7db33ac7a86c3976d52a344f97d7a",
+    "semantic_hash": ""
   }
 }

@@ -9,6 +9,7 @@ import { OrderType } from './order-type.enum';
 import { Payment } from './payment';
 import { Product } from './product';
 import { ProductVariant } from './product-variant';
+import { Campaign } from './campaign';
 
 const FLOOR = 500;
 export const MANUAL_DISCOUNT_TITLE = 'تخفیف دستی';
@@ -28,6 +29,7 @@ export class OrderDto {
   date?: Date;
   excludeFromReports?: boolean;
   extraCosts?: number;
+  campaign?: Campaign;
   shopId: string;
   customerId?: string;
   creatorId?: string;
@@ -70,6 +72,15 @@ export class OrderDto {
   }
 
   static deliveryCost(dto: OrderDto, menu: Menu) {
+    const freeDeliveryAction = dto.campaign?.actions?.find((a) => a.type === 'free_delivery');
+    if (freeDeliveryAction) {
+      const minOrderValue = freeDeliveryAction.payload?.minOrderValue || 0;
+      const sum = OrderDto.sum(dto, menu);
+      if (sum >= minOrderValue) {
+        return 0;
+      }
+    }
+
     const sum = OrderDto.sum(dto, menu);
     if (dto.address && dto.address.deliveryArea) {
       const area = dto.address.deliveryArea;
@@ -161,16 +172,28 @@ export class OrderDto {
     if (dto.address && dto.address.deliveryArea) {
       const area = dto.address.deliveryArea;
       if (!area.minPriceForFree || area.minPriceForFree > OrderDto.sum(dto, menu)) {
-        let price = area.price;
-        if (area.percentagePrice) {
-          price += (sum * area.percentagePrice) / 100;
+        const freeDeliveryAction = dto.campaign?.actions?.find((a) => a.type === 'free_delivery');
+        let isFreeByCampaign = false;
+        if (freeDeliveryAction) {
+          const minOrderValue = freeDeliveryAction.payload?.minOrderValue || 0;
+          const sum = OrderDto.sum(dto, menu);
+          if (sum >= minOrderValue) {
+            isFreeByCampaign = true;
+          }
         }
-        abstractItems.push(<OrderItem>{
-          isAbstract: true,
-          quantity: 1,
-          price: Math.floor(price / FLOOR) * FLOOR,
-          title: DELIVERY_COST_TITLE,
-        });
+
+        if (!isFreeByCampaign) {
+          let price = area.price;
+          if (area.percentagePrice) {
+            price += (sum * area.percentagePrice) / 100;
+          }
+          abstractItems.push(<OrderItem>{
+            isAbstract: true,
+            quantity: 1,
+            price: Math.floor(price / FLOOR) * FLOOR,
+            title: DELIVERY_COST_TITLE,
+          });
+        }
       }
     }
 

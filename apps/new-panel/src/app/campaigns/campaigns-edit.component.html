@@ -1,0 +1,255 @@
+<form [formGroup]="form" (ngSubmit)="save()">
+  <mat-toolbar class="content-toolbar" fxLayout="row" fxLayoutGap="8px">
+    <button mat-icon-button type="button" (click)="cancel()">
+      <ng-icon name="saxArrowRight3Bold"></ng-icon>
+    </button>
+    <h1 fxFlex>
+      @if (campaignId()) {
+        ویرایش کمپین
+      } @else {
+        کمپین جدید
+      }
+    </h1>
+    <button mat-button type="button" (click)="cancel()">
+      انصراف
+    </button>
+    <button
+      mat-flat-button
+      color="primary"
+      type="submit"
+      [disabled]="form.invalid"
+    >
+      ذخیره
+    </button>
+  </mat-toolbar>
+
+  <main p-md w-md class="np-form-container">
+    <div class="np-form-container" style="gap: 24px !important; display: flex; flex-direction: column;">
+      
+      <!-- Basic Information -->
+      <div class="np-form-section">
+        <h3 class="np-section-title">اطلاعات پایه</h3>
+        <p class="np-section-desc">نام کمپین و زمان‌بندی دقیق اجرای آن را تعیین کنید.</p>
+        
+        <div class="np-form-inputs" style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+            <span style="font-size: 13px; color: var(--text-secondary);">وضعیت فعال بودن کمپین:</span>
+            <mat-slide-toggle formControlName="enabled">فعال</mat-slide-toggle>
+          </div>
+
+          <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+            <mat-label>عنوان کمپین</mat-label>
+            <input matInput formControlName="title" required placeholder="مثال: کمپین یلدا، فروش ویژه آخر هفته" />
+          </mat-form-field>
+
+          <div style="display: flex; gap: 16px; align-items: center;">
+            <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 1;">
+              <mat-label>تاریخ شروع</mat-label>
+              <input matInput [matDatepicker]="startPicker" formControlName="startDate" required />
+              <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+              <mat-datepicker #startPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="width: 120px;">
+              <mat-label>ساعت شروع</mat-label>
+              <mat-select formControlName="startTime" required>
+                @for (time of timeOptions; track time) {
+                  <mat-option [value]="time">{{ time }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div style="display: flex; gap: 16px; align-items: center;">
+            <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 1;">
+              <mat-label>تاریخ پایان</mat-label>
+              <input matInput [matDatepicker]="endPicker" formControlName="endDate" required />
+              <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+              <mat-datepicker #endPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="width: 120px;">
+              <mat-label>ساعت پایان</mat-label>
+              <mat-select formControlName="endTime" required>
+                @for (time of timeOptions; track time) {
+                  <mat-option [value]="time">{{ time }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <!-- Welcome Dialog Setup -->
+      <div class="np-form-section">
+        <h3 class="np-section-title">پاپ‌آپ خوش‌آمدگویی (Welcome Dialog)</h3>
+        <p class="np-section-desc">نمایش دیالوگ پاپ‌آپ جذاب به محض ورود مشتری به فروشگاه.</p>
+        
+        <div class="np-form-inputs" style="display: flex; flex-direction: column; gap: 16px;">
+          <mat-checkbox formControlName="showWelcomeDialog">نمایش دیالوگ خوش‌آمدگویی کمپین</mat-checkbox>
+
+          @if (form.get('showWelcomeDialog')?.value) {
+            <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+              <mat-label>عنوان دیالوگ</mat-label>
+              <input matInput formControlName="welcomeTitle" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+              <mat-label>توضیحات دیالوگ</mat-label>
+              <textarea matInput formControlName="welcomeDescription" rows="3"></textarea>
+            </mat-form-field>
+
+            <div style="margin-bottom: 8px;">
+              <span style="font-size: 13px; color: var(--text-secondary); display: block; margin-bottom: 8px;">تصویر بنر خوش‌آمدگویی</span>
+              @if (form.get('welcomeImageUrl')?.value) {
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+                  <img [src]="form.get('welcomeImageUrl')?.value" style="max-height: 180px; max-width: 100%; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-color, #eee);" />
+                  <button mat-stroked-button type="button" color="warn" (click)="clearWelcomeImage()" style="align-self: start;">حذف تصویر</button>
+                </div>
+              } @else {
+                <button mat-stroked-button type="button" (click)="uploadWelcomeImage()" style="margin-bottom: 12px;">
+                  <ng-icon name="saxDocumentUploadOutline" style="margin-inline-end: 8px; vertical-align: middle;"></ng-icon>
+                  آپلود تصویر بنر
+                </button>
+              }
+            </div>
+
+            <div style="display: flex; gap: 16px;">
+              <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 1;">
+                <mat-label>متن دکمه (CTA)</mat-label>
+                <input matInput formControlName="welcomeCtaText" placeholder="مثال: مشاهده تخفیف‌ها" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 2;">
+                <mat-label>لینک دکمه (CTA Link)</mat-label>
+                <input matInput formControlName="welcomeCtaUrl" placeholder="مثال: /categories/1" />
+              </mat-form-field>
+            </div>
+
+            <mat-checkbox formControlName="showCountdown">نمایش تایمر معکوس تا انتهای کمپین</mat-checkbox>
+          }
+        </div>
+      </div>
+
+      <!-- Campaign Actions -->
+      <div class="np-form-section">
+        <h3 class="np-section-title">اکشن‌ها و آفرها</h3>
+        <p class="np-section-desc">تخفیف‌ها یا مزایایی که در طول کمپین به مشتری تعلق می‌گیرد را تعریف کنید.</p>
+        
+        <div class="np-form-inputs" style="display: flex; flex-direction: column; gap: 16px;">
+          <div formArrayName="actions" style="display: flex; flex-direction: column; gap: 16px;">
+            @for (action of actions.controls; track action; let idx = $index) {
+              <div [formGroupName]="idx" class="action-card" style="border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; position: relative; background-color: var(--background-secondary, #fafafa);">
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                  <h4 style="margin: 0; font-weight: 500;">اکشن شماره {{ idx + 1 }}</h4>
+                  <button mat-icon-button type="button" (click)="removeAction(idx)" style="color: var(--red-color, #f44336);">
+                    <ng-icon name="saxTrashOutline"></ng-icon>
+                  </button>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 16px;" formGroupName="payload">
+                  <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+                    <mat-label>نوع آفر</mat-label>
+                    <mat-select formControlName="type" (selectionChange)="action.get('payload')?.reset()">
+                      <mat-option value="free_delivery">ارسال رایگان</mat-option>
+                      <mat-option value="product_discount">تخفیف روی محصول خاص</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <!-- Free Delivery payload fields -->
+                  @if (action.get('type')?.value === 'free_delivery') {
+                    <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+                      <mat-label>حداقل مبلغ خرید (تومان)</mat-label>
+                      <input matInput formControlName="minOrderValue" type="number" />
+                    </mat-form-field>
+                  }
+
+                  <!-- Product Discount payload fields -->
+                  @if (action.get('type')?.value === 'product_discount') {
+                    <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+                      <mat-label>انتخاب محصول</mat-label>
+                      <mat-select formControlName="productId">
+                        @for (p of allProducts(); track p.id) {
+                          <mat-option [value]="p.id">{{ p.title }}</mat-option>
+                        }
+                      </mat-select>
+                    </mat-form-field>
+
+                    @let selectedProductId = action.get('payload.productId')?.value;
+                    @if (selectedProductId && getProductVariants(selectedProductId).length > 0) {
+                      <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
+                        <mat-label>انتخاب تنوع محصول</mat-label>
+                        <mat-select formControlName="variantId">
+                          <mat-option value="">همه تنوع‌ها</mat-option>
+                          @for (v of getProductVariants(selectedProductId); track v.id) {
+                            <mat-option [value]="v.id">{{ v.title }}</mat-option>
+                          }
+                        </mat-select>
+                      </mat-form-field>
+                    }
+
+                    <div style="display: flex; gap: 16px;">
+                      <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 1;">
+                        <mat-label>نوع تخفیف</mat-label>
+                        <mat-select formControlName="discountType">
+                          <mat-option value="percent">درصدی</mat-option>
+                          <mat-option value="fixed">مبلغ ثابت (تومان)</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 1;">
+                        <mat-label>میزان تخفیف</mat-label>
+                        <input matInput formControlName="discountValue" type="number" />
+                      </mat-form-field>
+                    </div>
+                  }
+                </div>
+
+              </div>
+            }
+          </div>
+
+          <button mat-stroked-button type="button" (click)="addAction()" style="width: 100%; border-style: dashed; border-color: var(--primary-color);">
+            <ng-icon name="saxAddOutline"></ng-icon>
+            اضافه کردن اکشن جدید
+          </button>
+        </div>
+      </div>
+
+      <!-- Campaign Manual Extra Costs -->
+      <div class="np-form-section">
+        <h3 class="np-section-title">هزینه‌های مازاد کمپین</h3>
+        <p class="np-section-desc">هزینه‌های جانبی مانند تبلیغات، اینفلوئنسر یا ارسال‌های متفرقه مربوط به این کمپین را برای محاسبه دقیق سود و زیان وارد کنید.</p>
+        
+        <div class="np-form-inputs" style="display: flex; flex-direction: column; gap: 16px;">
+          <div formArrayName="manualCosts" style="display: flex; flex-direction: column; gap: 12px;">
+            @for (cost of manualCosts.controls; track cost; let idx = $index) {
+              <div [formGroupName]="idx" style="display: flex; gap: 16px; align-items: center;">
+                <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 2;">
+                  <mat-label>عنوان هزینه (مثلا: تبلیغات اینستاگرام)</mat-label>
+                  <input matInput formControlName="title" required />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'" style="flex: 1;">
+                  <mat-label>مبلغ هزینه (تومان)</mat-label>
+                  <input matInput formControlName="amount" type="number" required />
+                </mat-form-field>
+
+                <button mat-icon-button type="button" (click)="removeManualCost(idx)" style="color: var(--red-color, #f44336);">
+                  <ng-icon name="saxTrashOutline"></ng-icon>
+                </button>
+              </div>
+            }
+          </div>
+
+          <button mat-stroked-button type="button" (click)="addManualCost()" style="width: 100%; border-style: dashed; border-color: var(--primary-color);">
+            <ng-icon name="saxAddOutline"></ng-icon>
+            اضافه کردن ردیف هزینه جدید
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</form>

@@ -10,6 +10,7 @@ import {
   OrderItem,
   OrderPaymentType,
   OrderReportDto,
+  OrderType,
   Product,
   ProductCategory,
   Shop,
@@ -30,6 +31,7 @@ import {
   InventoryTransaction,
   InventoryTransactionType,
   ProductPackItem,
+  Campaign,
 } from '@menno/types';
 import { groupBy, groupBySum } from '@menno/utils';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -73,6 +75,8 @@ export class OrdersService {
     private productPackItemRepository: Repository<ProductPackItem>,
     @InjectRepository(InventoryTransaction)
     private inventoryTransactionRepository: Repository<InventoryTransaction>,
+    @InjectRepository(Campaign)
+    private campaignsRepo: Repository<Campaign>,
     private smsService: SmsService,
     private walletsService: WalletsService,
   ) {}
@@ -120,8 +124,117 @@ export class OrdersService {
     }
 
     const menu = shop.menu;
+
+    // Fetch active campaign
+    let activeCampaign = null;
+    try {
+      const now = dto.date || new Date();
+      activeCampaign = await this.campaignsRepo
+        .createQueryBuilder('campaign')
+        .where('campaign.shop = :shopId', { shopId: dto.shopId })
+        .andWhere('campaign.startDate <= :now AND campaign.endDate >= :now', { now })
+        .andWhere('campaign.enabled = :enabled', { enabled: true })
+        .getOne();
+
+      if (activeCampaign) {
+        dto.campaign = order.campaign = activeCampaign;
+        if (activeCampaign.actions) {
+          for (const action of activeCampaign.actions) {
+            if (action.type === 'product_discount') {
+              const { productId, variantId, discountType, discountValue } = action.payload;
+              const product = menu.categories
+                ?.flatMap((c) => c.products || [])
+                .find((p) => p.id === productId);
+              if (product) {
+                if (variantId) {
+                  const variant = product.variants?.find((v) => v.id === variantId);
+                  if (variant) {
+                    if (!variant.details) variant.details = {};
+                    if (variant.details.originalPrice === undefined) {
+                      variant.details.originalPrice = variant.price;
+                    }
+                    if (discountType === 'percent') {
+                      variant.price = Math.max(0, variant.details.originalPrice * (1 - discountValue / 100));
+                    } else {
+                      variant.price = Math.max(0, variant.details.originalPrice - discountValue);
+                    }
+                  }
+                } else {
+                  if (!product.details) product.details = {};
+                  if (product.details.originalPrice === undefined) {
+                    product.details.originalPrice = product.price;
+                  }
+                  if (discountType === 'percent') {
+                    product.price = Math.max(0, product.details.originalPrice * (1 - discountValue / 100));
+                  } else {
+                    product.price = Math.max(0, product.details.originalPrice - discountValue);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    } catch (err) {
+      console.error('Error applying active campaign matching:', err);
+    }
+
     Menu.setRefsAndSort(menu, dto.type, true, true, undefined, dto.isManual ? true : false);
     order.items = [...OrderDto.productItems(dto, menu), ...OrderDto.abstractItems(dto, menu)];
+
+    try {
+      if (activeCampaign) {
+        // Record campaign discount on items
+        for (const item of order.items) {
+          if (!item.isAbstract && item.product) {
+            const action = activeCampaign.actions?.find(
+              (a) =>
+                a.type === 'product_discount' &&
+                a.payload.productId === item.product.id &&
+                (!a.payload.variantId || a.payload.variantId === item.productVariant?.id),
+            );
+            if (action) {
+              const originalPrice = item.productVariant?.details?.originalPrice ?? item.product?.details?.originalPrice;
+              if (originalPrice !== undefined) {
+                const discountPerUnit = originalPrice - item.price;
+                if (discountPerUnit > 0) {
+                  item.details = {
+                    ...(item.details || {}),
+                    campaignDiscount: discountPerUnit * item.quantity,
+                  };
+                }
+              }
+            }
+          }
+        }
+
+        // Record waived delivery fee
+        const freeDeliveryAction = activeCampaign.actions?.find((a) => a.type === 'free_delivery');
+        if (freeDeliveryAction && order.type === OrderType.Delivery && dto.address?.deliveryArea) {
+          const minOrderValue = freeDeliveryAction.payload?.minOrderValue || 0;
+          const sum = OrderDto.sum(dto, menu);
+          if (sum >= minOrderValue) {
+            const area = dto.address.deliveryArea;
+            if (!area.minPriceForFree || area.minPriceForFree > sum) {
+              let originalDeliveryFee = area.price;
+              if (area.percentagePrice) {
+                originalDeliveryFee += (sum * area.percentagePrice) / 100;
+              }
+              originalDeliveryFee = Math.floor(originalDeliveryFee / 500) * 500;
+              if (originalDeliveryFee > 0) {
+                order.details = {
+                  ...(order.details || {}),
+                  campaignDeliveryDiscount: originalDeliveryFee,
+                };
+              }
+            }
+          }
+        }
+      }
+    } catch (err) {
+      console.error('Error applying active campaign discounts:', err);
+    }
+
     const allBoms = await this.billOfMaterialRepository.find({
       where: {
         material: { shop: { id: order.shop.id } },
