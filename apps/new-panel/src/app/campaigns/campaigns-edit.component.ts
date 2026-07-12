@@ -70,10 +70,6 @@ export class CampaignsEditComponent implements OnInit {
     return this.form.get('actions') as FormArray;
   }
 
-  get manualCosts(): FormArray {
-    return this.form.get('manualCosts') as FormArray;
-  }
-
   constructor() {
     for (let h = 0; h < 24; h++) {
       for (const m of ['00', '15', '30', '45']) {
@@ -90,7 +86,6 @@ export class CampaignsEditComponent implements OnInit {
       endTime: ['00:00', Validators.required],
       enabled: [true],
       actions: this.fb.array([]),
-      manualCosts: this.fb.array([]),
       showWelcomeDialog: [false],
       welcomeTitle: [''],
       welcomeDescription: [''],
@@ -135,11 +130,6 @@ export class CampaignsEditComponent implements OnInit {
             this.addAction(action);
           }
         }
-        if (campaign.manualCosts) {
-          for (const cost of campaign.manualCosts) {
-            this.addManualCost(cost);
-          }
-        }
       } catch (error) {
         this.snack.open('خطا در لود کمپین', 'بستن', { duration: 3000 });
       }
@@ -168,18 +158,6 @@ export class CampaignsEditComponent implements OnInit {
 
   removeAction(index: number) {
     this.actions.removeAt(index);
-  }
-
-  addManualCost(cost?: any) {
-    const costForm = this.fb.group({
-      title: [cost?.title || '', Validators.required],
-      amount: [cost?.amount || 0, [Validators.required, Validators.min(0)]],
-    });
-    this.manualCosts.push(costForm);
-  }
-
-  removeManualCost(index: number) {
-    this.manualCosts.removeAt(index);
   }
 
   private combineDateAndTime(dateVal: any, timeStr: string): Date {
@@ -241,7 +219,6 @@ export class CampaignsEditComponent implements OnInit {
       endDate: end,
       enabled: val.enabled,
       actions: val.actions,
-      manualCosts: val.manualCosts,
       showWelcomeDialog: val.showWelcomeDialog,
       welcomeTitle: val.welcomeTitle,
       welcomeDescription: val.welcomeDescription,

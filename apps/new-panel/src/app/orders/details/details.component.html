@@ -84,27 +84,6 @@
 
     <!-- Left Column (Customer Card + Order details Card) -->
     <div fxFlex="35" fxFlex.lt-md="100" fxLayout="column" fxLayoutGap="24px">
-      <!-- Campaign Card -->
-      <mat-card appearance="outlined" class="details-card">
-        <mat-card-header style="border-bottom: 1px solid var(--border-color); padding: 12px 16px;">
-          <mat-card-title style="font-size: 0.95rem; font-weight: 500; display: flex; align-items: center; gap: 8px; font-family: 'Estedad'; margin: 0;">
-            <ng-icon name="saxGiftOutline" style="font-size: 1.2rem; color: var(--text-muted);"></ng-icon>
-            {{ 'order.campaignColumn' | translate }}
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content style="padding: 16px; padding-top: 16px !important;">
-          <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 0;">
-            <mat-label>انتخاب کمپین</mat-label>
-            <mat-select [value]="order()?.campaign?.id || ''" (selectionChange)="changeCampaign($event.value)">
-              <mat-option value="">— (بدون کمپین)</mat-option>
-              @for (c of campaignsQuery.data(); track c.id) {
-                <mat-option [value]="c.id">{{ c.title }}</mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-        </mat-card-content>
-      </mat-card>
-
       <!-- Customer Card -->
       <mat-card appearance="outlined" class="details-card">
         <mat-card-header style="border-bottom: 1px solid var(--border-color); padding: 12px 16px;">
@@ -192,6 +171,27 @@
               {{ 'order.type.' + order()?.type | translate }}
             </div>
           }
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Campaign Card -->
+      <mat-card appearance="outlined" class="details-card">
+        <mat-card-header style="border-bottom: 1px solid var(--border-color); padding: 12px 16px;">
+          <mat-card-title style="font-size: 0.95rem; font-weight: 500; display: flex; align-items: center; gap: 8px; font-family: 'Estedad'; margin: 0;">
+            <ng-icon name="saxGiftOutline" style="font-size: 1.2rem; color: var(--text-muted);"></ng-icon>
+            {{ 'order.campaignColumn' | translate }}
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content style="padding: 16px; padding-top: 16px !important;">
+          <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 0;">
+            <mat-label>انتخاب کمپین</mat-label>
+            <mat-select [value]="order()?.campaign?.id || ''" (selectionChange)="changeCampaign($event.value)">
+              <mat-option value="">— (بدون کمپین)</mat-option>
+              @for (c of campaignsQuery.data(); track c.id) {
+                <mat-option [value]="c.id">{{ c.title }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
         </mat-card-content>
       </mat-card>
 

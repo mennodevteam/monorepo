@@ -1,16 +1,16 @@
 # Graph Report - monorepo  (2026-07-12)
 
 ## Corpus Check
-- 868 files · ~385,672 words
+- 868 files · ~385,754 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 4598 nodes · 11300 edges · 257 communities (174 shown, 83 thin omitted)
+- 4598 nodes · 11300 edges · 256 communities (175 shown, 81 thin omitted)
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 470 edges (avg confidence: 0.63)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `71d8fb37`
+- Built from commit: `f52304fc`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -234,7 +234,6 @@
 - [[_COMMUNITY_third-parties.module.ts|third-parties.module.ts]]
 - [[_COMMUNITY_home-sections.module.ts|home-sections.module.ts]]
 - [[_COMMUNITY_Project Rules for Menno Nx Monorepo|Project Rules for Menno Nx Monorepo]]
-- [[_COMMUNITY_AiIntelligenceCardComponent|AiIntelligenceCardComponent]]
 - [[_COMMUNITY_.createMaterial|.createMaterial]]
 - [[_COMMUNITY_.getSalesReport|.getSalesReport]]
 - [[_COMMUNITY_ShellComponent|ShellComponent]]
@@ -297,7 +296,7 @@
 - **new-panel UI/UX Guidelines** — _agent_apps_new_panel_design_rules_m3_integration, _agent_apps_new_panel_design_rules_spacing_typography, _agent_apps_new_panel_design_rules_control_standardization, _agent_skills_new_panel_market_fit_skill_empty_states, _agent_skills_new_panel_market_fit_skill_onboarding [INFERRED 0.95]
 - **E-Commerce Frontend Core Flow and Analytics** — _agent_apps_customer_architecture_overview, _agent_apps_customer_event_tracking_overview, apps_new_app_src_app_miscellaneous_readme_overview [INFERRED 0.85]
 
-## Communities (257 total, 83 thin omitted)
+## Communities (256 total, 81 thin omitted)
 
 ### Community 0 - "Utility Helper Methods"
 Cohesion: 0.03
@@ -365,7 +364,7 @@ Nodes (9): HOME_SECTIONS_QUERY_KEY(), HomeSectionService, LinkService, menuFallb
 
 ### Community 20 - "Module: ai-chatbot.component.ts, co..."
 Cohesion: 0.04
-Nodes (35): PaymentGatewaySchema, ThirdPartySchema, ContentDialogData, AiHubComponent, PayService, AiTokenPricing, CreatorMessageDialogComponent, SoonDialogComponent (+27 more)
+Nodes (31): PaymentGatewaySchema, ThirdPartySchema, ContentDialogData, PayService, AiIntelligenceCardComponent, AiTokenPricing, AnalyticsDashboardComponent, LoadMenuRefCardComponent (+23 more)
 
 ### Community 21 - "Module: .save(), login.component.ts"
 Cohesion: 0.11
@@ -394,6 +393,10 @@ Nodes (10): AdminLocalAuthGuard, AppLocalAuthGuard, AuthService, PanelLocalAuthG
 ### Community 28 - "Module: app-redirect.controller.ts,..."
 Cohesion: 0.17
 Nodes (5): WindowsLocalNotificationSchema, WindowsLocalNotificationController, WindowsLocalNotificationModule, WindowsLocalNotificationService, WindowsLocalNotification
+
+### Community 29 - "Module: creator-message-dialog.comp..."
+Cohesion: 0.06
+Nodes (14): AiHubComponent, CouponUsageReport, DiscountCouponReportDialogComponent, CreatorMessageDialogComponent, SoonDialogComponent, AlertComponent, DataLoadingComponent, CopyClipboardDirective (+6 more)
 
 ### Community 30 - "Module: project.json, configurations"
 Cohesion: 0.05
@@ -472,8 +475,8 @@ Cohesion: 0.07
 Nodes (9): AnalyticsEventDirective, AutoFocusDirective, GoBackDirective, ImageLoaderDirective, COMMON_DIRECTIVES, LinkifyDirective, StopPropagationDirective, CredentialRequestOptions (+1 more)
 
 ### Community 51 - "Module: MissionsController, .constr..."
-Cohesion: 0.07
-Nodes (8): dirtyFormDeactivator(), AppConfigComponent, DomainSettingComponent, OrderConfigComponent, SettingsComponent, SettingsHomeComponent, settingsRoutes, WelcomeMessageComponent
+Cohesion: 0.04
+Nodes (20): AiChatbotComponent, dirtyFormDeactivator(), FormComponent, FilesService, CategoryImageValue, CostEditComponent, MenuListComponent, menuRoutes (+12 more)
 
 ### Community 54 - "Module: OrdersService, .getById()"
 Cohesion: 0.10
@@ -488,8 +491,8 @@ Cohesion: 0.10
 Nodes (7): PaymentSchema, PaymentsService, SizpayComponent, ZarinpalComponent, ZibalComponent, PaymentGateway, Payment
 
 ### Community 58 - "Module: .getCategoryIcon(), categor..."
-Cohesion: 0.06
-Nodes (26): AiChatbotComponent, FormComponent, FilesService, ImageValue, CategoryListEditComponent, COLS, homeSectionsRoutes, HOME_SECTIONS_QUERY_KEY (+18 more)
+Cohesion: 0.10
+Nodes (17): ImageValue, CategoryListEditComponent, COLS, homeSectionsRoutes, HOME_SECTIONS_QUERY_KEY, HomeSectionsService, EmptyStateAction, EmptyStateComponent (+9 more)
 
 ### Community 59 - "Module: api-key-auth.guard.ts, ApiK..."
 Cohesion: 0.10
@@ -652,8 +655,8 @@ Cohesion: 0.17
 Nodes (12): options, assets, index, inlineStyleLanguage, main, outputPath, polyfills, scripts (+4 more)
 
 ### Community 110 - "Module: ai-chatbot.service.ts, AiUsage"
-Cohesion: 0.07
-Nodes (14): CouponUsageReport, DiscountCouponReportDialogComponent, MissionEditComponent, MissionListComponent, missionsRoutes, AnalyticsDashboardComponent, LoadMenuRefCardComponent, OrderFunnelCardComponent (+6 more)
+Cohesion: 0.15
+Nodes (3): MissionEditComponent, MissionListComponent, missionsRoutes
 
 ### Community 112 - "Module: production, port"
 Cohesion: 0.18
@@ -934,12 +937,12 @@ Nodes (4): ApiInterceptor, apiInterceptorProvider(), IGNORE_CASES, AlertDialogCo
 ## Knowledge Gaps
 - **847 isolated node(s):** `CampaignReport`, `SignalProductItem`, `campaignsRoutes`, `CampaignAction`, `CampaignManualCost` (+842 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **83 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **81 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Shop` connect `Inventory and Shop Services` to `User and Address Controllers`, `Shop Integration Controllers`, `NestJS App Modules`, `Order System and Schemas`, `Frontend Dialogs and Guards`, `BOM and Product UI Components`, `Module: .addSubcategory(), .addSubc...`, `Address UI Components and Regions`, `Module: .constructor(), admin-local...`, `Module: image-loader.directive.ts, ...`, `Module: ai-chatbot.component.ts, co...`, `Module: menu-cost.schema.ts, produc...`, `Module: addresses.controller.ts, ai...`, `Module: .updateAiChatbot(), AppConf...`, `Module: app-redirect.controller.ts,...`, `Module: basalam.controller.ts, Basa...`, `Module: el(), en()`, `Module: BaleBotsService, .buildInli...`, `Module: AuthController, .changePane...`, `Module: .key(), print-action.schema.ts`, `Module: welcome-message-dialog.comp...`, `Module: config-modal.component.ts, ...`, `Module: index.ts, footer.component.ts`, `Module: .constructor(), OrdersSubsc...`, `Module: HomeSectionsController, .co...`, `Module: MennoBaleOrdersComponent, ....`, `Module: getFileUrl(), page-seo.buil...`, `Module: app.component.ts, index.ts`, `Module: PaymentGatewaysController, ...`, `Module: .getCategoryIcon(), categor...`, `Module: api-key-auth.guard.ts, ApiK...`, `Module: .addPackItemFromAutocomplet...`, `Module: BuyDaysDialogComponent, .fo...`, `Module: index.ts, order-type-bottom...`, `Module: .filterDiscountCoupons(), D...`, `Module: AiChatbotService, .buildMes...`, `Module: ensureRedisConnected(), get...`, `Module: AiChatbotController, .chat()`, `Module: DingController, .constructor()`, `Module: .completeMission(), Wallets...`, `Module: shop.schema.ts, auth.compon...`, `Module: ssr-data.provider.ts, HOME_...`, `Module: get-file-url.ts, web-app-ma...`, `Module: resolve-shop-username.ts, i...`, `Module: home.component.ts, HomeComp...`, `ShopGroup`, `health.module.ts`, `Module: web-scripts.component.ts, w...`, `Module: PageSeoConfig, SeoService`, `Module: AuthService, .constructor()`, `.createMaterial`, `Module: MissionsService, .activeMis...`, `Module: PaymentMethodsComponent, .a...`?**
+- **Why does `Shop` connect `Inventory and Shop Services` to `User and Address Controllers`, `Shop Integration Controllers`, `NestJS App Modules`, `Order System and Schemas`, `Frontend Dialogs and Guards`, `BOM and Product UI Components`, `Module: .addSubcategory(), .addSubc...`, `Address UI Components and Regions`, `Module: .constructor(), admin-local...`, `Module: image-loader.directive.ts, ...`, `Module: ai-chatbot.component.ts, co...`, `Module: menu-cost.schema.ts, produc...`, `Module: addresses.controller.ts, ai...`, `Module: .updateAiChatbot(), AppConf...`, `Module: app-redirect.controller.ts,...`, `Module: basalam.controller.ts, Basa...`, `Module: el(), en()`, `Module: BaleBotsService, .buildInli...`, `Module: AuthController, .changePane...`, `Module: .key(), print-action.schema.ts`, `Module: welcome-message-dialog.comp...`, `Module: config-modal.component.ts, ...`, `Module: index.ts, footer.component.ts`, `Module: .constructor(), OrdersSubsc...`, `Module: HomeSectionsController, .co...`, `Module: MennoBaleOrdersComponent, ....`, `Module: getFileUrl(), page-seo.buil...`, `Module: app.component.ts, index.ts`, `Module: MissionsController, .constr...`, `Module: PaymentGatewaysController, ...`, `Module: .getCategoryIcon(), categor...`, `Module: api-key-auth.guard.ts, ApiK...`, `Module: .addPackItemFromAutocomplet...`, `Module: BuyDaysDialogComponent, .fo...`, `Module: index.ts, order-type-bottom...`, `Module: .filterDiscountCoupons(), D...`, `Module: AiChatbotService, .buildMes...`, `Module: ensureRedisConnected(), get...`, `Module: AiChatbotController, .chat()`, `Module: DingController, .constructor()`, `Module: .completeMission(), Wallets...`, `Module: shop.schema.ts, auth.compon...`, `Module: ssr-data.provider.ts, HOME_...`, `Module: get-file-url.ts, web-app-ma...`, `Module: resolve-shop-username.ts, i...`, `Module: home.component.ts, HomeComp...`, `ShopGroup`, `health.module.ts`, `Module: web-scripts.component.ts, w...`, `Module: PageSeoConfig, SeoService`, `Module: AuthService, .constructor()`, `.createMaterial`, `Module: MissionsService, .activeMis...`, `Module: PaymentMethodsComponent, .a...`?**
   _High betweenness centrality (0.071) - this node is a cross-community bridge._
 - **Why does `dependencies` connect `Workspace Dependencies` to `Module: package.json, engines`, `Module: config-modal.component.ts, ...`?**
   _High betweenness centrality (0.070) - this node is a cross-community bridge._

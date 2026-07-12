@@ -5550,8 +5550,8 @@
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/campaigns/campaign-report.component.ts": {
-    "mtime": 1783873820.2604396,
-    "ast_hash": "3f45b21b3762baffee568c867fc1fff7",
+    "mtime": 1783874323.560735,
+    "ast_hash": "e13224877d103d249ac4c59d1a18a953",
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts": {

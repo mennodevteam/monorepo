@@ -84,7 +84,7 @@ export class OrdersController {
     const shop = await this.auth.getPanelUserShop(user);
     dto.shopId = shop.id;
     dto.withDeleted = true;
-    return this.ordersService.filter(dto, ['customer', 'address.region', 'address.deliveryArea']);
+    return this.ordersService.filter(dto, ['customer', 'address.region', 'address.deliveryArea', 'campaign']);
   }
 
   @Roles(UserRole.Panel)
@@ -158,6 +158,7 @@ export class OrdersController {
       'address.deliveryArea',
       'address.region',
       'discountCoupon',
+      'campaign',
     ];
 
     if (withProduct) {
