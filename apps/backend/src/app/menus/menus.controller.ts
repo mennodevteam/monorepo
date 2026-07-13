@@ -23,29 +23,20 @@ export class MenusController {
 
   @Get()
   async getPanelMenu(@LoginUser() user: AuthPayload): Promise<Menu> {
-    let shop = await this.auth.getPanelUserShop(user);
+    const shop = await this.auth.getPanelUserShop(user);
     if (shop) {
-      // const redisKey = this.redis.key(RedisKey.PanelMenu, shop.id);
-      // const data = await this.redis.client.get(redisKey);
-      // if (data) {
-      //   return JSON.parse(data);
-      // }
-      shop = await this.shopsRepo.findOne({
+      const menuData = await this.redis.updateMenu(shop.id);
+      if (menuData) {
+        return JSON.parse(menuData);
+      }
+      // Fallback
+      const shopWithMenu = await this.shopsRepo.findOne({
         where: { id: shop.id },
-        relations: [
-          'menu.categories.products.variants',
-          'menu.categories.products.packItems.product.variants',
-          'menu.categories.products.packItems.variant',
-          'menu.categories.products.variants.packItems.product.variants',
-          'menu.categories.products.variants.packItems.variant',
-          'menu.costs',
-          'menu.costs.includeProductCategory',
-          'menu.costs.includeProduct',
-        ],
+        relations: ['menu'],
       });
-      this.redis.updateMenu(shop.id);
+      return shopWithMenu?.menu;
     }
-    return shop.menu;
+    return null;
   }
 
   @Public()
