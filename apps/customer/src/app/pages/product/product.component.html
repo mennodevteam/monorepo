@@ -109,14 +109,18 @@
         </div>
         
         @if (product.type === 'pack' && product.packItems?.length) {
-          <div class="product-pack-items" style="padding: 12px; margin-top: 12px; background: rgba(0,0,0,0.03); border-radius: 8px; font-size: 0.95em; color: #333; display: flex; flex-direction: column; gap: 6px; width: 100%;">
-            <span style="font-weight: bold; font-size: 0.9em; opacity: 0.9; margin-bottom: 4px; text-align: right;">محتویات پکیج:</span>
-            @for (item of product.packItems; track item.id) {
-              <div style="display: flex; justify-content: space-between; align-items: center; direction: rtl;">
-                <span>{{ item.product.title }} @if (item.variant) { ({{ item.variant.title }}) }</span>
-                <span style="font-weight: 500;">{{ item.quantity }} عدد</span>
-              </div>
-            }
+          <div class="product-pack-items">
+            <span class="product-pack-items__title">محتویات پکیج:</span>
+            <div class="product-pack-items__list">
+              @for (item of product.packItems; track item.id) {
+                <div class="product-pack-items__item">
+                  <span class="product-pack-items__item-title">
+                    {{ item.product.title }} @if (item.variant) { ({{ item.variant.title }}) }
+                  </span>
+                  <span class="product-pack-items__item-quantity">{{ item.quantity }} عدد</span>
+                </div>
+              }
+            </div>
           </div>
         }
       }
