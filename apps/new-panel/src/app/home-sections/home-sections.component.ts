@@ -11,7 +11,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { HomeSectionsService } from './home-sections.service';
 import { TranslateService } from '@ngx-translate/core';
-import { HomeSection, HomeSectionType, BannerConfig, ProductListConfig, CategoryListConfig, Product, ProductCategory, Menu } from '@menno/types';
+import { HomeSection, HomeSectionType, BannerConfig, ProductListConfig, CategoryListConfig, Product, ProductCategory, Menu, ProductType } from '@menno/types';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SHARED } from '../shared';
 import { EmptyStateComponent } from '../shared/components/empty-state/empty-state.component';
@@ -67,6 +67,13 @@ export class HomeSectionsComponent {
 
   getProductImage(product: Product) {
     return Product.mainImageFile(product) || undefined;
+  }
+
+  getProductPrice(product: Product): number {
+    if (product.type === ProductType.Pack) {
+      return Product.getPackPrice(product);
+    }
+    return product.price || 0;
   }
 
   getCategoryImage(category: ProductCategory) {

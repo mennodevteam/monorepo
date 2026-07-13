@@ -1,6 +1,6 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MenuCost, Product, ProductCategory, ProductVariant, Status } from '@menno/types';
+import { MenuCost, Product, ProductCategory, ProductVariant, Status, ProductType } from '@menno/types';
 import { SHARED } from '../../../../shared';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
@@ -27,6 +27,8 @@ export class ProductTableComponent {
   snack = inject(MatSnackBar);
   readonly displayedColumns = COLS;
   Status = Status;
+  Product = Product;
+  ProductType = ProductType;
 
   rows = computed(() => {
     const products = this.category()?.products || [];

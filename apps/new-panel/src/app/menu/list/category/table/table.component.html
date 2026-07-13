@@ -40,13 +40,25 @@
       <td mat-cell *matCellDef="let row">
         <mat-chip-set>
           @if (row._isVariant) {
-            <mat-chip (click)="changeProductVariantPrice(row._parentProduct, row)">
-              {{ row.price | number | menuCurrency }}
-            </mat-chip>
+            @if (row._parentProduct.type === ProductType.Pack) {
+              <mat-chip [disabled]="true">
+                {{ Product.getPackPrice(row._parentProduct, row) | number | menuCurrency }}
+              </mat-chip>
+            } @else {
+              <mat-chip (click)="changeProductVariantPrice(row._parentProduct, row)">
+                {{ row.price | number | menuCurrency }}
+              </mat-chip>
+            }
           } @else if (!row.variants?.length) {
-            <mat-chip (click)="changeProductPrice(row)">
-              {{ row.price | number | menuCurrency }}
-            </mat-chip>
+            @if (row.type === ProductType.Pack) {
+              <mat-chip [disabled]="true">
+                {{ Product.getPackPrice(row) | number | menuCurrency }}
+              </mat-chip>
+            } @else {
+              <mat-chip (click)="changeProductPrice(row)">
+                {{ row.price | number | menuCurrency }}
+              </mat-chip>
+            }
           }
         </mat-chip-set>
       </td>

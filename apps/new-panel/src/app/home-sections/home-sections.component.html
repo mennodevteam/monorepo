@@ -155,7 +155,7 @@
                               </div>
                               <div class="product-preview-details">
                                 <span class="product-preview-title">{{ product.title }}</span>
-                                <span class="product-preview-price" eng>{{ product.price | number | menuCurrency }}</span>
+                                <span class="product-preview-price" eng>{{ getProductPrice(product) | number | menuCurrency }}</span>
                               </div>
                             </div>
                           }

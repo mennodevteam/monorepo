@@ -16,6 +16,7 @@ import {
   ProductCategory,
   Status,
   BillOfProduct,
+  ProductType,
 } from '@menno/types';
 import { MenuService } from '../../menu/menu.service';
 import { SHARED } from '../../shared';
@@ -99,6 +100,13 @@ export class BomListComponent {
   /** Group edit: selection key for an item (product + variant) */
   itemKey(item: CategoryItem['items'][number]): string {
     return `${item.product.id}-${item.variant?.id ?? 'base'}`;
+  }
+
+  getItemPrice(item: { product: Product; variant?: ProductVariant }): number {
+    if (item.product.type === ProductType.Pack) {
+      return Product.getPackPrice(item.product, item.variant);
+    }
+    return (item.variant || item.product).price || 0;
   }
 
   selectedItemKeys = signal<Set<string>>(new Set());
