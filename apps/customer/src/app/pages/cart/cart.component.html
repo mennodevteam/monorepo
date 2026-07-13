@@ -19,7 +19,7 @@
             @if (item.realPrice) {
               <s class="mat-color-error">{{ item.realPrice | number }}</s>
             }
-            {{ item.price | number }} تومان
+            <span>{{ item.price | number }} تومان</span>
           </span>
           <div matListItemMeta>
             @if (item.product) {

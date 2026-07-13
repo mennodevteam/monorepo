@@ -177,6 +177,29 @@ describe('Product & Order Pricing & Cost Calculations', () => {
       expect(materials.length).toBe(1);
       expect(materials[0].quantity).toBe(10);
     });
+
+    it('should gracefully handle circular dependency in pack items and not infinite loop', () => {
+      const packA = createProduct('packA', 0, ProductType.Pack);
+      const packB = createProduct('packB', 0, ProductType.Pack);
+
+      // packA contains packB, and packB contains packA
+      packA.packItems = [{ product: packB, quantity: 1 } as any];
+      packB.packItems = [{ product: packA, quantity: 1 } as any];
+
+      const allBoms: BillOfMaterial[] = [];
+      const allPackItems = [
+        { parentProduct: packA, product: packB, quantity: 1 } as any,
+        { parentProduct: packB, product: packA, quantity: 1 } as any,
+      ];
+
+      // calculateCost should detect the loop and return null/cost without crashing
+      const cost = Product.calculateCost(packA, null, allBoms, allPackItems);
+      expect(cost).toBeNull();
+
+      // getAllMaterials should detect the loop and return empty array without crashing
+      const materials = Product.getAllMaterials(packA, null, allBoms, allPackItems);
+      expect(materials).toEqual([]);
+    });
   });
 
   describe('4. Order Dto Calculations with Campaigns', () => {

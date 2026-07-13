@@ -147,9 +147,17 @@ export class Product {
     productVariant: ProductVariant | undefined | null,
     allBoms: BillOfMaterial[],
     allPackItems?: any[],
+    visited: Set<string> = new Set(),
   ) {
     const productId = typeof product === 'object' && product !== null ? product.id : product;
     const variantId = typeof productVariant === 'object' && productVariant !== null ? productVariant.id : productVariant;
+
+    const key = `${productId}_${variantId || ''}`;
+    if (visited.has(key)) {
+      return null;
+    }
+    const nextVisited = new Set(visited);
+    nextVisited.add(key);
 
     let packItems = (allPackItems && allPackItems.length > 0 && (
       'parentProduct' in allPackItems[0] ||
@@ -194,7 +202,7 @@ export class Product {
     let packCost = 0;
     for (const item of packItems) {
       try {
-        const itemCost = Product.calculateCost(item.product, item.variant, allBoms, allPackItems);
+        const itemCost = Product.calculateCost(item.product, item.variant, allBoms, allPackItems, nextVisited);
         if (itemCost === null) return null;
         packCost += itemCost * item.quantity;
       } catch (error) {
@@ -209,11 +217,19 @@ export class Product {
     productVariant: ProductVariant | undefined | null,
     allBoms: BillOfMaterial[],
     allPackItems?: any[],
+    visited: Set<string> = new Set(),
   ) {
     const usedMaterials: { material: Material; quantity: number }[] = [];
     
     const productId = typeof product === 'object' && product !== null ? product.id : product;
     const variantId = typeof productVariant === 'object' && productVariant !== null ? productVariant.id : productVariant;
+
+    const key = `${productId}_${variantId || ''}`;
+    if (visited.has(key)) {
+      return [];
+    }
+    const nextVisited = new Set(visited);
+    nextVisited.add(key);
 
     let packItems = (allPackItems && allPackItems.length > 0 && (
       'parentProduct' in allPackItems[0] ||
@@ -266,7 +282,7 @@ export class Product {
     for (const item of packItems) {
       if (item.product) {
         try {
-          const itemMaterials = Product.getAllMaterials(item.product, item.variant, allBoms, allPackItems);
+          const itemMaterials = Product.getAllMaterials(item.product, item.variant, allBoms, allPackItems, nextVisited);
           for (const material of itemMaterials) {
             const materialId = material.material && typeof material.material === 'object' ? material.material.id : material.material;
             const existingMaterial = usedMaterials.find((x) => {
