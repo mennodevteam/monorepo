@@ -16,10 +16,12 @@
             <span matListItemLine class="mat-font-body-sm">{{ item.productVariant.title }}</span>
           }
           <span matListItemLine class="mat-font-label-sm price-text">
-            @if (item.realPrice) {
-              <s class="mat-color-error">{{ item.realPrice | number }}</s>
-            }
-            <span>{{ item.price | number }} تومان</span>
+            <span class="price-container">
+              @if (item.realPrice) {
+                <s class="mat-color-error">{{ item.realPrice | number }}</s>
+              }
+              <span>{{ item.price | number }} تومان</span>
+            </span>
           </span>
           <div matListItemMeta>
             @if (item.product) {

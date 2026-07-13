@@ -223,6 +223,35 @@ export class RedisService {
     return;
   }
 
+  async getMenuWithRelations(shopId: string): Promise<any | null> {
+    const redisKey = this.key(RedisKey.PanelMenu, shopId);
+    const data = await this.client.get(redisKey);
+    if (data) {
+      try {
+        return JSON.parse(data);
+      } catch (err) {
+        // Continue to database if parsing failed
+      }
+    }
+
+    // Cache miss: load from database using optimized split queries
+    const menuJson = await this.updateMenu(shopId);
+    if (menuJson) {
+      try {
+        return JSON.parse(menuJson);
+      } catch (err) {
+        return null;
+      }
+    }
+
+    // Ultimate fallback if updateMenu failed
+    const shop = await this.shopsRepo.findOne({
+      where: { id: shopId },
+      relations: ['menu'],
+    });
+    return shop?.menu || null;
+  }
+
   async updateShop(shopId: string) {
     try {
       const shop = await this.shopsRepo.findOne({

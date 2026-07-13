@@ -49,6 +49,7 @@ import {
 import { SmsService } from '../sms/sms.service';
 import { WalletsService } from '../clubs/wallets.service';
 import { AuthPayload } from '../core/types/auth-payload';
+import { RedisService } from '../core/redis.service';
 
 @Injectable()
 export class OrdersService {
@@ -79,25 +80,19 @@ export class OrdersService {
     private campaignsRepo: Repository<Campaign>,
     private smsService: SmsService,
     private walletsService: WalletsService,
+    private redis: RedisService,
   ) {}
 
   async dtoToOrder(dto: OrderDto) {
     const order = new Order();
     const shop = await this.shopsRepo.findOne({
       where: { id: dto.shopId },
-      relations: [
-        'menu.categories.products.variants',
-        'menu.categories.products.packItems.product.variants',
-        'menu.categories.products.packItems.variant',
-        'menu.categories.products.variants.packItems.product.variants',
-        'menu.categories.products.variants.packItems.variant',
-        'menu.costs.includeProductCategory',
-        'menu.costs.includeProduct',
-        'club',
-      ],
+      relations: ['club'],
     });
 
     if (!shop) throw new HttpException('shop not found', HttpStatus.NOT_ACCEPTABLE);
+
+    shop.menu = await this.redis.getMenuWithRelations(dto.shopId);
 
     order.shop = <Shop>{ id: dto.shopId };
     order.customer = dto.customerId ? ({ id: dto.customerId } as User) : null;
