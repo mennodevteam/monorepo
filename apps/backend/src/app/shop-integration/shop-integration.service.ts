@@ -35,11 +35,13 @@ import {
   MANUAL_DISCOUNT_TITLE,
   MANUAL_COST_TITLE,
   DELIVERY_COST_TITLE,
+  ProductType,
 } from '@menno/types';
 import { RedisService } from '../core/redis.service';
 import { OrdersService } from '../orders/orders.service';
 import { ClubsService } from '../clubs/clubs.service';
 import { SmsService } from '../sms/sms.service';
+import { CampaignsService } from '../campaigns/campaigns.service';
 
 @Injectable()
 export class ShopIntegrationService {
@@ -82,6 +84,7 @@ export class ShopIntegrationService {
     private ordersService: OrdersService,
     private clubsService: ClubsService,
     private smsService: SmsService,
+    private campaignsService: CampaignsService,
   ) {}
 
   async getMenu(shopId: string) {
@@ -93,6 +96,16 @@ export class ShopIntegrationService {
     return menu;
   }
 
+  private mapPackItems(packItems: any[]): any[] {
+    if (!packItems) return [];
+    return packItems.map((item: any) => ({
+      id: item.id || undefined,
+      product: item.productId ? { id: item.productId } : undefined,
+      variant: item.variantId ? { id: item.variantId } : null,
+      quantity: Number(item.quantity || 1),
+    }));
+  }
+
   async createProduct(shopId: string, dto: Partial<Product>) {
     const shop = await this.shopRepo.findOne({ where: { id: shopId }, relations: ['menu'] });
     if (!shop || !shop.menu) {
@@ -101,6 +114,29 @@ export class ShopIntegrationService {
 
     if (!dto.category?.id) {
       throw new HttpException('category.id is required', HttpStatus.BAD_REQUEST);
+    }
+
+    // Process pack items if type is pack
+    if (dto.type === ProductType.Pack) {
+      dto.price = 0;
+      if (dto.packItems) {
+        dto.packItems = this.mapPackItems(dto.packItems) as any;
+      }
+      if (dto.variants) {
+        for (const variant of dto.variants) {
+          variant.price = 0;
+          if (variant.packItems) {
+            variant.packItems = this.mapPackItems(variant.packItems);
+          }
+        }
+      }
+    } else {
+      dto.packItems = [];
+      if (dto.variants) {
+        for (const variant of dto.variants) {
+          variant.packItems = [];
+        }
+      }
     }
 
     const newProduct = this.productRepo.create({
@@ -125,10 +161,49 @@ export class ShopIntegrationService {
         id: productId,
         category: { menu: { id: shop.menu?.id } },
       },
+      relations: ['variants'],
     });
 
     if (!existing) {
       throw new NotFoundException('Product not found in this shop');
+    }
+
+    // Process pack items
+    const isPack = dto.type === ProductType.Pack || (!dto.type && existing.type === ProductType.Pack);
+
+    if (isPack) {
+      dto.price = 0;
+      if (dto.packItems) {
+        // Delete old pack items of product
+        await this.productPackItemRepository.delete({ parentProduct: { id: productId } });
+        dto.packItems = this.mapPackItems(dto.packItems) as any;
+      }
+      if (dto.variants) {
+        for (const variant of dto.variants) {
+          variant.price = 0;
+          if (variant.packItems) {
+            if (variant.id) {
+              await this.productPackItemRepository.delete({ parentVariant: { id: variant.id } });
+            }
+            variant.packItems = this.mapPackItems(variant.packItems);
+          }
+        }
+      }
+    } else {
+      if (dto.packItems !== undefined) {
+        await this.productPackItemRepository.delete({ parentProduct: { id: productId } });
+        dto.packItems = [];
+      }
+      if (dto.variants) {
+        for (const variant of dto.variants) {
+          if (variant.packItems !== undefined) {
+            if (variant.id) {
+              await this.productPackItemRepository.delete({ parentVariant: { id: variant.id } });
+            }
+            variant.packItems = [];
+          }
+        }
+      }
     }
 
     // Update fields
@@ -151,7 +226,12 @@ export class ShopIntegrationService {
       'customer',
       'waiter',
       'creator',
+      'campaign',
     ]);
+  }
+
+  async updateOrderCampaign(shopId: string, orderId: string, campaignId: string | null) {
+    return this.ordersService.updateOrderCampaign(orderId, shopId, campaignId);
   }
 
   async updateOrderState(shopId: string, orderId: string, state: number, waiterId?: string) {

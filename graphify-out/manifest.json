@@ -1090,9 +1090,9 @@
     "semantic_hash": "4220d9a848174c15dd1955e5255c9009"
   },
   "apps/customer/src/app/app.routes.server.ts": {
-    "mtime": 1778986780.2135582,
-    "ast_hash": "891e1247032505da6a5374b9563838e0",
-    "semantic_hash": "891e1247032505da6a5374b9563838e0"
+    "mtime": 1783884636.6752713,
+    "ast_hash": "7c6ba5c951ed58c9d9631a566c02bc05",
+    "semantic_hash": ""
   },
   "apps/customer/src/app/app.routes.ts": {
     "mtime": 1779639349.7605765,
@@ -4215,9 +4215,9 @@
     "semantic_hash": "67a00ff0131a4332533ad583e34908fa"
   },
   ".agent/apps/customer/architecture.md": {
-    "mtime": 1781707589.6106033,
-    "ast_hash": "99ef364bf5f86f9655860915c63c3182",
-    "semantic_hash": "99ef364bf5f86f9655860915c63c3182"
+    "mtime": 1783885500.4916408,
+    "ast_hash": "fe9d1d9a966edcbe1a7636b8efef12bf",
+    "semantic_hash": ""
   },
   ".agent/apps/customer/event-tracking.md": {
     "mtime": 1781707684.6125073,

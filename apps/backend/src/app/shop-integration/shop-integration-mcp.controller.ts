@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Request, Response } from 'express';
 import { ShopApiKey, Shop } from '@menno/types';
 import { ShopIntegrationService } from './shop-integration.service';
+import { CampaignsService } from '../campaigns/campaigns.service';
 import * as crypto from 'crypto';
 
 interface McpSession {
@@ -17,6 +18,7 @@ export class ShopIntegrationMcpController {
 
   constructor(
     private readonly integrationService: ShopIntegrationService,
+    private readonly campaignsService: CampaignsService,
     @InjectRepository(ShopApiKey)
     private readonly apiKeyRepo: Repository<ShopApiKey>,
   ) {
@@ -264,13 +266,27 @@ export class ShopIntegrationMcpController {
           type: 'object',
           properties: {
             title: { type: 'string', description: 'عنوان محصول' },
-            price: { type: 'number', description: 'قیمت محصول به تومان' },
+            price: { type: 'number', description: 'قیمت محصول به تومان (برای پکیج به صورت خودکار 0 قرار می‌گیرد)' },
             description: { type: 'string', description: 'توضیحات محصول' },
             status: { type: 'number', description: 'وضعیت (0: غیرفعال، 1: فعال)' },
+            type: { type: 'string', enum: ['standard', 'pack'], description: 'نوع محصول: standard یا pack (پکیج)' },
             category: {
               type: 'object',
               properties: { id: { type: 'number', description: 'شناسه دسته‌بندی' } },
               required: ['id'],
+            },
+            packItems: {
+              type: 'array',
+              description: 'اقلام پکیج (فقط در صورتی که نوع محصول pack باشد)',
+              items: {
+                type: 'object',
+                properties: {
+                  productId: { type: 'string', description: 'شناسه محصول داخل پکیج' },
+                  variantId: { type: 'number', description: 'شناسه متغیر محصول داخل پکیج (اختیاری)' },
+                  quantity: { type: 'number', description: 'تعداد' },
+                },
+                required: ['productId', 'quantity'],
+              },
             },
           },
           required: ['title', 'price', 'category'],
@@ -287,13 +303,27 @@ export class ShopIntegrationMcpController {
             price: { type: 'number', description: 'قیمت جدید به تومان' },
             description: { type: 'string', description: 'توضیحات جدید' },
             status: { type: 'number', description: 'وضعیت جدید (0: غیرفعال، 1: فعال)' },
+            type: { type: 'string', enum: ['standard', 'pack'], description: 'نوع محصول' },
+            packItems: {
+              type: 'array',
+              description: 'لیست جدید اقلام پکیج (در صورت ویرایش پکیج، لیست قبلی کاملا جایگزین می‌شود)',
+              items: {
+                type: 'object',
+                properties: {
+                  productId: { type: 'string', description: 'شناسه محصول داخل پکیج' },
+                  variantId: { type: 'number', description: 'شناسه متغیر محصول داخل پکیج (اختیاری)' },
+                  quantity: { type: 'number', description: 'تعداد' },
+                },
+                required: ['productId', 'quantity'],
+              },
+            },
           },
           required: ['id'],
         },
       },
       {
         name: 'get_orders',
-        description: 'لیست و فیلتر سفارشات فروشگاه بر اساس تاریخ و وضعیت.',
+        description: 'لیست و فیلتر سفارشات فروشگاه بر اساس تاریخ، وضعیت و کمپین.',
         inputSchema: {
           type: 'object',
           properties: {
@@ -302,6 +332,7 @@ export class ShopIntegrationMcpController {
             states: { type: 'array', items: { type: 'number' }, description: 'وضعیت‌های سفارش (0: لغو شده، 1: در انتظار، 2: در حال آماده‌سازی، 3: ارسال شده، 4: تکمیل شده، 5: آماده)' },
             take: { type: 'number', default: 20 },
             skip: { type: 'number', default: 0 },
+            campaignId: { type: 'string', description: 'شناسه کمپین جهت فیلتر کردن سفارشات' },
           },
         },
       },
@@ -316,6 +347,7 @@ export class ShopIntegrationMcpController {
             manualDiscount: { type: 'number', description: 'تخفیف دستی به تومان' },
             paymentType: { type: 'number', description: 'نوع پرداخت (0: پرداخت نشده، 1: آنلاین، 2: نقدی، 3: کیف پول)' },
             note: { type: 'string', description: 'یادداشت سفارش' },
+            campaignId: { type: 'string', description: 'شناسه کمپین خاص جهت اعمال دستی بر روی سفارش' },
             productItems: {
               type: 'array',
               items: {
@@ -435,6 +467,128 @@ export class ShopIntegrationMcpController {
         description: 'لیست هزینه‌های جانبی منو (مالیات، سرویس، تخفیف).',
         inputSchema: { type: 'object', properties: {} },
       },
+      {
+        name: 'list_campaigns',
+        description: 'دریافت لیست تمام کمپین‌های فروشگاه به همراه آمار خلاصه سود و فروش آن‌ها.',
+        inputSchema: { type: 'object', properties: {} },
+      },
+      {
+        name: 'create_campaign',
+        description: 'ایجاد یک کمپین جدید برای فروشگاه.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            title: { type: 'string', description: 'عنوان کمپین' },
+            startDate: { type: 'string', format: 'date-time', description: 'تاریخ شروع' },
+            endDate: { type: 'string', format: 'date-time', description: 'تاریخ پایان' },
+            enabled: { type: 'boolean', description: 'فعال یا غیرفعال بودن کمپین', default: true },
+            actions: {
+              type: 'array',
+              description: 'لیست آفرها/تخفیف‌های کمپین',
+              items: {
+                type: 'object',
+                properties: {
+                  type: { type: 'string', enum: ['free_delivery', 'product_discount', 'category_discount'], description: 'نوع آفر: ارسال رایگان، تخفیف محصول، تخفیف دسته‌بندی' },
+                  payload: {
+                    type: 'object',
+                    properties: {
+                      minOrderValue: { type: 'number', description: 'حداقل مبلغ سفارش برای ارسال رایگان' },
+                      productId: { type: 'string', description: 'شناسه محصول برای تخفیف محصول' },
+                      variantId: { type: 'number', description: 'شناسه متغیر محصول' },
+                      categoryId: { type: 'string', description: 'شناسه دسته‌بندی برای تخفیف کل دسته' },
+                      discountType: { type: 'string', enum: ['percent', 'fixed'], description: 'نوع تخفیف: درصدی یا مبلغ ثابت به تومان' },
+                      discountValue: { type: 'number', description: 'میزان تخفیف' },
+                    },
+                  },
+                },
+                required: ['type', 'payload'],
+              },
+            },
+            manualCosts: {
+              type: 'array',
+              description: 'هزینه‌های دستی انجام شده برای کمپین (مثل تبلیغات)',
+              items: {
+                type: 'object',
+                properties: {
+                  title: { type: 'string', description: 'عنوان هزینه' },
+                  amount: { type: 'number', description: 'مبلغ هزینه به تومان' },
+                },
+                required: ['title', 'amount'],
+              },
+            },
+            showWelcomeDialog: { type: 'boolean', description: 'نمایش پاپ‌آپ خوش‌آمدگویی' },
+            welcomeTitle: { type: 'string', description: 'عنوان پاپ‌آپ' },
+            welcomeDescription: { type: 'string', description: 'توضیحات پاپ‌آپ' },
+            welcomeImageUrl: { type: 'string', description: 'آدرس یا کلید آپلود تصویر پاپ‌آپ' },
+            welcomeCtaText: { type: 'string', description: 'متن دکمه پاپ‌آپ' },
+            welcomeCtaUrl: { type: 'string', description: 'آدرس کلیک دکمه پاپ‌آپ (در صورت External)' },
+            welcomeCtaLinkType: { type: 'string', enum: ['Category', 'Product', 'External'], description: 'نوع لینک دکمه' },
+            welcomeCtaLinkValue: { type: 'string', description: 'شناسه محصول یا دسته، یا آدرس خارجی دکمه پاپ‌آپ' },
+            showCountdown: { type: 'boolean', description: 'نمایش تایمر معکوس' },
+          },
+          required: ['title', 'startDate', 'endDate'],
+        },
+      },
+      {
+        name: 'update_campaign',
+        description: 'ویرایش اطلاعات یک کمپین موجود.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', description: 'شناسه کمپین' },
+            title: { type: 'string' },
+            startDate: { type: 'string', format: 'date-time' },
+            endDate: { type: 'string', format: 'date-time' },
+            enabled: { type: 'boolean' },
+            actions: { type: 'array', items: { type: 'object' } },
+            manualCosts: { type: 'array', items: { type: 'object' } },
+            showWelcomeDialog: { type: 'boolean' },
+            welcomeTitle: { type: 'string' },
+            welcomeDescription: { type: 'string' },
+            welcomeImageUrl: { type: 'string' },
+            welcomeCtaText: { type: 'string' },
+            welcomeCtaUrl: { type: 'string' },
+            welcomeCtaLinkType: { type: 'string', enum: ['Category', 'Product', 'External'] },
+            welcomeCtaLinkValue: { type: 'string' },
+            showCountdown: { type: 'boolean' },
+          },
+          required: ['id'],
+        },
+      },
+      {
+        name: 'delete_campaign',
+        description: 'حذف یک کمپین موجود (آثار انتساب در سفارشات قبلی باقی می‌ماند).',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', description: 'شناسه کمپین' },
+          },
+          required: ['id'],
+        },
+      },
+      {
+        name: 'get_campaign_report',
+        description: 'دریافت گزارش تفصیلی سود و زیان و عملکرد کمپین شامل آمار کلیک، بازدید و سبد خرید.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', description: 'شناسه کمپین' },
+          },
+          required: ['id'],
+        },
+      },
+      {
+        name: 'update_order_campaign',
+        description: 'تغییر یا مشخص کردن کمپین مربوط به یک سفارش خاص.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            orderId: { type: 'string', description: 'شناسه سفارش' },
+            campaignId: { type: 'string', nullable: true, description: 'شناسه کمپین (یا null برای لغو انتساب)' },
+          },
+          required: ['orderId', 'campaignId'],
+        },
+      },
     ];
   }
 
@@ -458,6 +612,7 @@ export class ShopIntegrationMcpController {
           states: args.states,
           take: args.take ? Number(args.take) : 20,
           skip: args.skip ? Number(args.skip) : 0,
+          campaignId: args.campaignId,
         };
         return this.integrationService.getOrders(shop.id, filters);
       }
@@ -512,6 +667,26 @@ export class ShopIntegrationMcpController {
 
       case 'list_menu_costs':
         return this.integrationService.getMenuCosts(shop.id);
+
+      case 'list_campaigns':
+        return this.campaignsService.findAll(shop.id);
+
+      case 'create_campaign':
+        return this.campaignsService.create(shop.id, args);
+
+      case 'update_campaign': {
+        const { id, ...dto } = args;
+        return this.campaignsService.update(id, shop.id, dto);
+      }
+
+      case 'delete_campaign':
+        return this.campaignsService.remove(args.id, shop.id);
+
+      case 'get_campaign_report':
+        return this.campaignsService.getCampaignReport(args.id, shop.id);
+
+      case 'update_order_campaign':
+        return this.integrationService.updateOrderCampaign(shop.id, args.orderId, args.campaignId);
 
       default:
         throw new Error(`Unknown tool name: ${name}`);

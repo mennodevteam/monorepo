@@ -125,16 +125,22 @@ export class OrdersService {
 
     const menu = shop.menu;
 
-    // Fetch active campaign
+    // Fetch active/specified campaign
     let activeCampaign = null;
     try {
-      const now = dto.date || new Date();
-      activeCampaign = await this.campaignsRepo
-        .createQueryBuilder('campaign')
-        .where('campaign.shop = :shopId', { shopId: dto.shopId })
-        .andWhere('campaign.startDate <= :now AND campaign.endDate >= :now', { now })
-        .andWhere('campaign.enabled = :enabled', { enabled: true })
-        .getOne();
+      if (dto.campaignId) {
+        activeCampaign = await this.campaignsRepo.findOne({
+          where: { id: dto.campaignId, shop: { id: dto.shopId } },
+        });
+      } else {
+        const now = dto.date || new Date();
+        activeCampaign = await this.campaignsRepo
+          .createQueryBuilder('campaign')
+          .where('campaign.shop = :shopId', { shopId: dto.shopId })
+          .andWhere('campaign.startDate <= :now AND campaign.endDate >= :now', { now })
+          .andWhere('campaign.enabled = :enabled', { enabled: true })
+          .getOne();
+      }
 
       if (activeCampaign) {
         dto.campaign = order.campaign = activeCampaign;

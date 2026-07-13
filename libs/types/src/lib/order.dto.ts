@@ -30,6 +30,7 @@ export class OrderDto {
   excludeFromReports?: boolean;
   extraCosts?: number;
   campaign?: Campaign;
+  campaignId?: string;
   shopId: string;
   customerId?: string;
   creatorId?: string;
