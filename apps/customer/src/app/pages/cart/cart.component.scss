@@ -41,12 +41,13 @@ mat-list-item {
   .price-text {
     transform: translateY(-8px);
   }
+}
 
-  .price-container {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
+.price-container {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  justify-content: flex-start !important;
 }
 
 .action-toolbar {

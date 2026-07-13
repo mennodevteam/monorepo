@@ -53,7 +53,7 @@ export class MenuStatsController {
       value: body.value,
       referrer,
       campaign,
-      campaignRef,
+      campaignRef: campaignRef ? { id: campaignRef.id } : undefined,
       user: { id: user.id },
     });
   }
@@ -72,7 +72,7 @@ export class MenuStatsController {
       menu: { id },
       referrer,
       campaign,
-      campaignRef,
+      campaignRef: campaignRef ? { id: campaignRef.id } : undefined,
       user: { id: user.id },
     });
   }
@@ -93,7 +93,7 @@ export class MenuStatsController {
       product: { id },
       referrer,
       campaign,
-      campaignRef,
+      campaignRef: campaignRef ? { id: campaignRef.id } : undefined,
       user: { id: user.id },
     });
   }
@@ -114,7 +114,7 @@ export class MenuStatsController {
       product: { id },
       referrer,
       campaign,
-      campaignRef,
+      campaignRef: campaignRef ? { id: campaignRef.id } : undefined,
       user: { id: user.id },
     });
   }
