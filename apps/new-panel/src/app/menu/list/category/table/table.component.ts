@@ -147,4 +147,16 @@ export class ProductTableComponent {
         }
       });
   }
+
+  async deleteProduct(product: Product) {
+    const confirmed = await this.dialog.alert(
+      this.t.instant('app.confirmDelete'),
+      this.t.instant('app.deleteConfirmMessage', { value: product.title }),
+      { config: { data: { confirm: true } } },
+    );
+
+    if (confirmed) {
+      this.menu.deleteProductMutation.mutate(product.id);
+    }
+  }
 }

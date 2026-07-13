@@ -223,4 +223,22 @@ export class MenuService {
       this.snack.open(this.t.instant('app.deleted'), '', { duration: 2000 });
     },
   });
+
+  deleteProductMutation = this.createBaseMutation<void, string>({
+    mutationFn: (id) => lastValueFrom(this.http.delete<void>(`/products/${id}`)),
+    updateCache: (old, id) => {
+      if (old.categories) {
+        for (const category of old.categories) {
+          if (category.products) {
+            category.products = category.products.filter((p) => p.id !== id);
+          }
+        }
+        return { ...old };
+      }
+      return old;
+    },
+    onSuccess: () => {
+      this.snack.open(this.t.instant('app.deleted'), '', { duration: 2000 });
+    },
+  });
 }
