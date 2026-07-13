@@ -152,6 +152,9 @@ export class Product {
     const productId = typeof product === 'object' && product !== null ? product.id : product;
     const variantId = typeof productVariant === 'object' && productVariant !== null ? productVariant.id : productVariant;
 
+    const productTitle = (typeof product === 'object' && product !== null) ? product.title : 'ID only';
+    console.log(`[calculateCost] Evaluating product: ${productId} (${productTitle}), variant: ${variantId || 'none'}, visited path size: ${visited.size}`);
+
     const key = `${productId}_${variantId || ''}`;
     if (visited.has(key)) {
       return null;
@@ -223,6 +226,9 @@ export class Product {
     
     const productId = typeof product === 'object' && product !== null ? product.id : product;
     const variantId = typeof productVariant === 'object' && productVariant !== null ? productVariant.id : productVariant;
+
+    const productTitle = (typeof product === 'object' && product !== null) ? product.title : 'ID only';
+    console.log(`[getAllMaterials] Evaluating product: ${productId} (${productTitle}), variant: ${variantId || 'none'}, visited path size: ${visited.size}`);
 
     const key = `${productId}_${variantId || ''}`;
     if (visited.has(key)) {
