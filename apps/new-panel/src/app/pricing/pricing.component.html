@@ -68,9 +68,15 @@
               {{ 'pricing.basePrice' | translate }}
             </th>
             <td mat-cell *matCellDef="let item">
-              <button mat-button (click)="editPrice(item)">
-                {{ (item.variant || item.product).price | number | menuCurrency }}
-              </button>
+              @if (item.product.type === ProductType.Pack) {
+                <button mat-button (click)="editPrice(item)" [matTooltip]="'این محصول یک پکیج است و قیمت آن به صورت خودکار از جمع اقلام تشکیل‌دهنده آن محاسبه می‌شود.'">
+                  {{ Product.realPrice(item.product, item.variant) | number | menuCurrency }}
+                </button>
+              } @else {
+                <button mat-button (click)="editPrice(item)">
+                  {{ (item.variant || item.product).price | number | menuCurrency }}
+                </button>
+              }
             </td>
           </ng-container>
 

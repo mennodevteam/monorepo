@@ -17,6 +17,7 @@ import {
   ProductCategory,
   MenuCost,
   Status,
+  ProductType,
 } from '@menno/types';
 import { MenuService } from '../menu/menu.service';
 import { SHARED } from '../shared';
@@ -70,6 +71,9 @@ interface PricingItem {
   styleUrl: './pricing.component.scss',
 })
 export class PricingComponent {
+  Product = Product;
+  ProductType = ProductType;
+
   displayedColumns: string[] = [
     'category',
     'title',
@@ -232,6 +236,13 @@ export class PricingComponent {
   }
 
   editPrice(item: { product: Product; variant?: ProductVariant }): void {
+    if (item.product?.type === ProductType.Pack) {
+      this.dialogService.alert(
+        this.translate.instant('pricing.packPricingTitle') || 'قیمت پکیج',
+        this.translate.instant('pricing.packPricingAlert') || 'این محصول یک پکیج است. قیمت آن به صورت خودکار از جمع اقلام تشکیل‌دهنده آن محاسبه می‌شود و امکان ویرایش مستقیم آن وجود ندارد.'
+      );
+      return;
+    }
     if (item.variant) {
       this.changeProductVariantPrice(item.product, item.variant);
     } else {
