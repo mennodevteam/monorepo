@@ -195,6 +195,7 @@ export class NewOrdersService {
       state: !this.order() ? OrderState.Pending : undefined,
       seenAt: !this.order() ? new Date() : undefined,
       date: this.useCurrentDateTime() ? undefined : this.orderDateTime(),
+      campaign: this.menu.activeCampaign(),
       details: Object.keys(details).length ? details : undefined,
     } as OrderDto;
   });

@@ -50,6 +50,8 @@ export class CampaignsListComponent {
     mutationFn: (id: string) => lastValueFrom(this.http.delete(`/campaigns/${id}`)),
     onSuccess: () => {
       this.queryClient.invalidateQueries({ queryKey: ['campaigns'] });
+      this.queryClient.invalidateQueries({ queryKey: ['activeCampaign'] });
+      this.queryClient.invalidateQueries({ queryKey: ['menus'] });
     },
   }));
 
@@ -95,6 +97,8 @@ export class CampaignsListComponent {
     try {
       await lastValueFrom(this.http.put(`/campaigns/${campaign.id}`, { enabled: checked }));
       this.queryClient.invalidateQueries({ queryKey: ['campaigns'] });
+      this.queryClient.invalidateQueries({ queryKey: ['activeCampaign'] });
+      this.queryClient.invalidateQueries({ queryKey: ['menus'] });
     } catch (error) {
       campaign.enabled = prevEnabled;
       this.dialog.alert('خطا', 'تغییر وضعیت کمپین با خطا مواجه شد.');

@@ -20,6 +20,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { FilesService } from '../core/services/files.service';
 import { DialogService } from '../core/services/dialog.service';
+import { injectQueryClient } from '@tanstack/angular-query-experimental';
 
 @Component({
   selector: 'app-campaigns-edit',
@@ -53,6 +54,7 @@ export class CampaignsEditComponent implements OnInit {
   private readonly t = inject(TranslateService);
   private readonly filesService = inject(FilesService);
   private readonly dialog = inject(DialogService);
+  private readonly queryClient = injectQueryClient();
 
   campaignId = signal<string | null>(null);
   form!: FormGroup;
@@ -323,6 +325,9 @@ export class CampaignsEditComponent implements OnInit {
         await lastValueFrom(this.http.post('/campaigns', payload));
         this.snack.open('کمپین جدید با موفقیت ایجاد شد', 'بستن', { duration: 3000 });
       }
+      this.queryClient.invalidateQueries({ queryKey: ['campaigns'] });
+      this.queryClient.invalidateQueries({ queryKey: ['activeCampaign'] });
+      this.queryClient.invalidateQueries({ queryKey: ['menus'] });
       this.router.navigate(['/admin/campaigns']);
     } catch (err: any) {
       const msg = err.error?.message || 'خطا در ثبت کمپین';

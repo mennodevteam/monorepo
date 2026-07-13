@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Menu, MenuCost, Product, ProductCategory } from '@menno/types';
+import { Campaign, Menu, MenuCost, Product, ProductCategory } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { injectMutation, injectQuery, injectQueryClient } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
+import { ShopService } from '../shop/shop.service';
 
 const QUERY_KEY = ['menus'];
 
@@ -28,6 +29,7 @@ export class MenuService {
   readonly t = inject(TranslateService);
   readonly queryClient = injectQueryClient();
   readonly auth = inject(AuthService);
+  readonly shopService = inject(ShopService);
 
   private query = injectQuery(() => ({
     queryKey: QUERY_KEY,
@@ -35,11 +37,25 @@ export class MenuService {
     enabled: !!this.auth.userSignal(),
   }));
 
+  readonly activeCampaignQuery = injectQuery(() => {
+    const shopId = this.shopService.data()?.id;
+    return {
+      queryKey: ['activeCampaign', shopId],
+      queryFn: () => lastValueFrom(this.http.get<Campaign | null>(`/campaigns/active/${shopId}`)),
+      enabled: !!shopId,
+      refetchOnWindowFocus: true,
+      refetchInterval: 1000 * 60, // refetch every 60 seconds
+    };
+  });
+
+  readonly activeCampaign = computed(() => this.activeCampaignQuery.data() || undefined);
+
   data = computed(() => {
     const data = this.query.data();
     if (data) {
       const cloned = structuredClone(data);
-      Menu.setRefsAndSort(cloned, undefined, true, true);
+      const campaign = this.activeCampaign();
+      Menu.setRefsAndSort(cloned, undefined, true, true, undefined, false, campaign);
       return { ...cloned };
     }
     return;
