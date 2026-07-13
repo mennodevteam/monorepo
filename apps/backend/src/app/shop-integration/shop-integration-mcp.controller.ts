@@ -589,6 +589,79 @@ export class ShopIntegrationMcpController {
           required: ['orderId', 'campaignId'],
         },
       },
+      {
+        name: 'list_purchase_invoices',
+        description: 'دریافت لیست فاکتورهای خرید ثبت شده مواد اولیه.',
+        inputSchema: { type: 'object', properties: {} },
+      },
+      {
+        name: 'create_purchase_invoice',
+        description: 'ثبت فاکتور خرید جدید برای مواد اولیه و بروزرسانی موجودی و قیمت تمام‌شده آن‌ها.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            supplier: { type: 'string', description: 'نام تامین‌کننده' },
+            date: { type: 'string', format: 'date-time', description: 'تاریخ فاکتور (اختیاری، پیش‌فرض زمان حال)' },
+            description: { type: 'string', description: 'توضیحات فاکتور' },
+            items: {
+              type: 'array',
+              description: 'اقلام فاکتور خرید',
+              items: {
+                type: 'object',
+                properties: {
+                  materialId: { type: 'string', description: 'شناسه ماده اولیه' },
+                  quantity: { type: 'number', description: 'تعداد/مقدار خریداری شده' },
+                  unitPrice: { type: 'number', description: 'قیمت واحد به تومان' },
+                  costUpdateStrategy: { type: 'string', enum: ['last', 'average', 'current'], description: 'استراتژی بروزرسانی قیمت تمام‌شده', default: 'last' },
+                },
+                required: ['materialId', 'quantity', 'unitPrice'],
+              },
+            },
+          },
+          required: ['items'],
+        },
+      },
+      {
+        name: 'delete_purchase_invoice',
+        description: 'حذف فاکتور خرید و برگشت دادن موجودی انبار در صورت نیاز.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', description: 'شناسه فاکتور خرید' },
+            revertStock: { type: 'boolean', description: 'آیا موجودی مواد اولیه برگشت داده شود؟', default: true },
+          },
+          required: ['id'],
+        },
+      },
+      {
+        name: 'list_stocktakings',
+        description: 'دریافت لیست گزارش‌های انبارگردانی ثبت شده.',
+        inputSchema: { type: 'object', properties: {} },
+      },
+      {
+        name: 'create_stocktaking',
+        description: 'ثبت انبارگردانی جدید برای مواد اولیه.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            date: { type: 'string', format: 'date-time', description: 'تاریخ انبارگردانی (اختیاری، پیش‌فرض زمان حال)' },
+            description: { type: 'string', description: 'توضیحات' },
+            items: {
+              type: 'array',
+              description: 'اقلام انبارگردانی',
+              items: {
+                type: 'object',
+                properties: {
+                  materialId: { type: 'string', description: 'شناسه ماده اولیه' },
+                  countedQuantity: { type: 'number', description: 'مقدار شمارش شده جدید' },
+                },
+                required: ['materialId', 'countedQuantity'],
+              },
+            },
+          },
+          required: ['items'],
+        },
+      },
     ];
   }
 
@@ -687,6 +760,42 @@ export class ShopIntegrationMcpController {
 
       case 'update_order_campaign':
         return this.integrationService.updateOrderCampaign(shop.id, args.orderId, args.campaignId);
+
+      case 'list_purchase_invoices':
+        return this.integrationService.getPurchaseInvoices(shop.id);
+
+      case 'create_purchase_invoice': {
+        const invoiceDto = {
+          date: args.date ? new Date(args.date) : undefined,
+          supplier: args.supplier,
+          description: args.description,
+          items: (args.items || []).map((item: any) => ({
+            material: { id: item.materialId } as any,
+            quantity: item.quantity,
+            unitPrice: item.unitPrice,
+            costUpdateStrategy: item.costUpdateStrategy,
+          })),
+        };
+        return this.integrationService.createPurchaseInvoice(shop.id, invoiceDto);
+      }
+
+      case 'delete_purchase_invoice':
+        return this.integrationService.deletePurchaseInvoice(shop.id, args.id, args.revertStock !== false);
+
+      case 'list_stocktakings':
+        return this.integrationService.getStocktakings(shop.id);
+
+      case 'create_stocktaking': {
+        const stocktakingDto = {
+          date: args.date ? new Date(args.date) : undefined,
+          description: args.description,
+          items: (args.items || []).map((item: any) => ({
+            material: { id: item.materialId } as any,
+            countedQuantity: item.countedQuantity,
+          })),
+        };
+        return this.integrationService.createStocktaking(shop.id, stocktakingDto);
+      }
 
       default:
         throw new Error(`Unknown tool name: ${name}`);
