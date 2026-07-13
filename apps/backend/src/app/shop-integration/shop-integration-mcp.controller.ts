@@ -119,7 +119,7 @@ export class ShopIntegrationMcpController {
    * 2. SSE Connection Endpoint (GET)
    * Starts a persistent Server-Sent Events connection.
    */
-  @Get('sse')
+  @Get(['', 'sse'])
   async sse(
     @Query('apiKey') queryApiKey: string,
     @Headers('x-shop-api-key') headerApiKey: string,
