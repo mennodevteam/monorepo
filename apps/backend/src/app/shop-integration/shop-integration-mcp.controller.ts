@@ -5,6 +5,7 @@ import { Request, Response } from 'express';
 import { ShopApiKey, Shop } from '@menno/types';
 import { ShopIntegrationService } from './shop-integration.service';
 import { CampaignsService } from '../campaigns/campaigns.service';
+import { Public } from '../auth/public.decorator';
 import * as crypto from 'crypto';
 
 interface McpSession {
@@ -12,6 +13,7 @@ interface McpSession {
   shop: Shop;
 }
 
+@Public()
 @Controller('api/v1/shop-integration/mcp')
 export class ShopIntegrationMcpController {
   private sessions = new Map<string, McpSession>();
