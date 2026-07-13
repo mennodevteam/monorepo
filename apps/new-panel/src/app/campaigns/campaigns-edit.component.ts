@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, computed, signal } from '@angular/core';
+import { Component, OnInit, inject, computed, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { SHARED } from '../shared';
 import { MenuService } from '../menu/menu.service';
 import { Campaign, CampaignAction, Product, ProductVariant } from '@menno/types';
@@ -36,6 +37,8 @@ import { DialogService } from '../core/services/dialog.service';
     MatSelectModule,
     MatCheckboxModule,
     MatSlideToggleModule,
+    MatAutocomplete,
+    MatAutocompleteTrigger,
   ],
   templateUrl: './campaigns-edit.component.html',
   styleUrl: './campaigns-list.component.scss',
@@ -100,6 +103,23 @@ export class CampaignsEditComponent implements OnInit {
       welcomeCtaLinkValue: [''],
       showCountdown: [false],
     });
+
+    effect(() => {
+      const products = this.allProducts();
+      if (products.length > 0) {
+        for (let i = 0; i < this.actions.length; i++) {
+          const payloadGroup = this.actions.at(i).get('payload') as FormGroup;
+          const productId = payloadGroup.get('productId')?.value;
+          const currentSearch = payloadGroup.get('productSearch')?.value;
+          if (productId && !currentSearch) {
+            const product = products.find((p) => p.id === productId);
+            if (product) {
+              payloadGroup.get('productSearch')?.setValue(product.title);
+            }
+          }
+        }
+      }
+    });
   }
 
   async ngOnInit() {
@@ -144,6 +164,26 @@ export class CampaignsEditComponent implements OnInit {
     }
   }
 
+  productDisplayFn = (product: Product | string | null | undefined): string => {
+    if (!product) return '';
+    return typeof product === 'string' ? product : (product as Product).title || '';
+  };
+
+  getFilteredProducts(index: number): Product[] {
+    const searchVal = this.actions.at(index).get('payload.productSearch')?.value || '';
+    const products = this.allProducts();
+    if (!searchVal) return products;
+    return products.filter((p) => p.title.toLowerCase().includes(searchVal.toLowerCase()));
+  }
+
+  onProductSelected(product: Product, index: number) {
+    const payloadGroup = this.actions.at(index).get('payload') as FormGroup;
+    payloadGroup.get('productId')?.setValue(product.id);
+    payloadGroup.get('productId')?.markAsDirty();
+    payloadGroup.get('variantId')?.setValue('');
+    payloadGroup.get('variantId')?.markAsDirty();
+  }
+
   getProductVariants(productId: string): ProductVariant[] {
     const product = this.allProducts().find((p: Product) => p.id === productId);
     return product?.variants || [];
@@ -151,16 +191,35 @@ export class CampaignsEditComponent implements OnInit {
 
   addAction(action?: CampaignAction) {
     const payload = action?.payload;
+    const product = this.allProducts().find((p: Product) => p.id === payload?.productId);
+
+    const payloadGroup = this.fb.group({
+      minOrderValue: [payload?.minOrderValue || 0],
+      productId: [payload?.productId || ''],
+      productSearch: [product ? product.title : ''],
+      variantId: [payload?.variantId || ''],
+      categoryId: [payload?.categoryId || ''],
+      discountType: [payload?.discountType || 'percent'],
+      discountValue: [payload?.discountValue || 0],
+    });
+
+    payloadGroup.get('productSearch')?.valueChanges.subscribe((val: Product | string | null) => {
+      const currentProductId = payloadGroup.get('productId')?.value;
+      const currentProduct = this.allProducts().find((p) => p.id === currentProductId);
+      const searchString = typeof val === 'string' ? val : (val as Product)?.title || '';
+
+      if (!val) {
+        payloadGroup.get('productId')?.setValue('');
+        payloadGroup.get('productId')?.markAsDirty();
+      } else if (!currentProduct || currentProduct.title !== searchString) {
+        payloadGroup.get('productId')?.setValue('');
+        payloadGroup.get('productId')?.markAsDirty();
+      }
+    });
+
     const actionForm = this.fb.group({
       type: [action?.type || 'free_delivery', Validators.required],
-      payload: this.fb.group({
-        minOrderValue: [payload?.minOrderValue || 0],
-        productId: [payload?.productId || ''],
-        variantId: [payload?.variantId || ''],
-        categoryId: [payload?.categoryId || ''],
-        discountType: [payload?.discountType || 'percent'],
-        discountValue: [payload?.discountValue || 0],
-      }),
+      payload: payloadGroup,
     });
     this.actions.push(actionForm);
   }
@@ -227,12 +286,24 @@ export class CampaignsEditComponent implements OnInit {
       return;
     }
 
+    const actionsPayload = (val.actions || []).map((action: CampaignAction & { payload?: { productSearch?: string } }) => {
+      if (action.payload) {
+        const payloadCopy = { ...action.payload };
+        delete payloadCopy.productSearch;
+        return {
+          ...action,
+          payload: payloadCopy,
+        };
+      }
+      return action;
+    });
+
     const payload: Partial<Campaign> = {
       title: val.title,
       startDate: start,
       endDate: end,
       enabled: val.enabled,
-      actions: val.actions,
+      actions: actionsPayload,
       showWelcomeDialog: val.showWelcomeDialog,
       welcomeTitle: val.welcomeTitle,
       welcomeDescription: val.welcomeDescription,

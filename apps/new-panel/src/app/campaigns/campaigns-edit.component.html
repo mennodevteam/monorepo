@@ -206,11 +206,24 @@
                     @if (action.get('type')?.value === 'product_discount') {
                       <mat-form-field appearance="outline" [subscriptSizing]="'dynamic'">
                         <mat-label>انتخاب محصول</mat-label>
-                        <mat-select formControlName="productId">
-                          @for (p of allProducts(); track p.id) {
-                            <mat-option [value]="p.id">{{ p.title }}</mat-option>
+                        <input
+                          type="text"
+                          placeholder="نام محصول را جستجو کنید..."
+                          matInput
+                          formControlName="productSearch"
+                          [matAutocomplete]="auto"
+                        />
+                        <mat-autocomplete
+                          #auto="matAutocomplete"
+                          [displayWith]="productDisplayFn"
+                          (optionSelected)="onProductSelected($event.option.value, idx)"
+                        >
+                          @for (p of getFilteredProducts(idx); track p.id) {
+                            <mat-option [value]="p">
+                              {{ p.title }}
+                            </mat-option>
                           }
-                        </mat-select>
+                        </mat-autocomplete>
                       </mat-form-field>
 
                       @let selectedProductId = action.get('payload.productId')?.value;
