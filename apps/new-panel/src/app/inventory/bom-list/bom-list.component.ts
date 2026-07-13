@@ -69,7 +69,7 @@ interface CategoryItem {
   styleUrl: './bom-list.component.scss',
 })
 export class BomListComponent {
-  displayedColumns: string[] = ['select', 'title', 'materials', 'cost'];
+  displayedColumns: string[] = ['select', 'title', 'materials', 'cost', 'price', 'profit'];
   menuService = inject(MenuService);
   materialsService = inject(MaterialsService);
   dialogService = inject(DialogService);
@@ -578,99 +578,7 @@ export class BomListComponent {
     this.materialsService.deleteBopMutation.mutate(bop.id);
   }
 
-  editPackItem(item: CategoryItem['items'][number], bop: any): void {
-    let title = bop.productSource?.title || '';
-    if (bop.variantSource) {
-      title += ` - ${bop.variantSource.title}`;
-    }
-    const fields: PromptFields = {
-      quantity: {
-        label: this.translate.instant('materials.quantity'),
-        type: 'number',
-        eng: true,
-        ltr: true,
-        control: new FormControl(bop.quantity, [Validators.required, Validators.min(0)]),
-      },
-    };
-    this.dialogService.prompt(title, fields).then((result) => {
-      if (!result) return;
-      const parentProduct = item.product;
-      const parentVariant = item.variant;
 
-      const mapSinglePackItems = (items: any[]) =>
-        (items || []).map((pi) => ({
-          id: pi.id || undefined,
-          productId: pi.product?.id || pi.productId,
-          variantId: pi.variant?.id || pi.variantId,
-          quantity: pi.quantity,
-        }));
-
-      if (parentVariant) {
-        const updatedPackItems = (parentVariant.packItems || []).map((pi) =>
-          pi.id === bop.id ? { ...pi, quantity: result.quantity } : pi
-        );
-        this.menuService.saveProductMutation.mutate({
-          id: parentProduct.id,
-          variants: parentProduct.variants.map((v) => {
-            const isTarget = v.id === parentVariant.id;
-            const itemsToMap = isTarget ? updatedPackItems : (v.packItems || []);
-            return {
-              id: v.id,
-              price: v.price,
-              status: v.status,
-              title: v.title,
-              packItems: mapSinglePackItems(itemsToMap),
-            };
-          }) as any,
-        });
-      } else {
-        const updatedPackItems = (parentProduct.packItems || []).map((pi) =>
-          pi.id === bop.id ? { ...pi, quantity: result.quantity } : pi
-        );
-        this.menuService.saveProductMutation.mutate({
-          id: parentProduct.id,
-          packItems: mapSinglePackItems(updatedPackItems) as any,
-        });
-      }
-    });
-  }
-
-  removePackItem(item: CategoryItem['items'][number], bop: any): void {
-    const parentProduct = item.product;
-    const parentVariant = item.variant;
-
-    const mapSinglePackItems = (items: any[]) =>
-      (items || []).map((pi) => ({
-        id: pi.id || undefined,
-        productId: pi.product?.id || pi.productId,
-        variantId: pi.variant?.id || pi.variantId,
-        quantity: pi.quantity,
-      }));
-
-    if (parentVariant) {
-      const updatedPackItems = (parentVariant.packItems || []).filter((pi) => pi.id !== bop.id);
-      this.menuService.saveProductMutation.mutate({
-        id: parentProduct.id,
-        variants: parentProduct.variants.map((v) => {
-          const isTarget = v.id === parentVariant.id;
-          const itemsToMap = isTarget ? updatedPackItems : (v.packItems || []);
-          return {
-            id: v.id,
-            price: v.price,
-            status: v.status,
-            title: v.title,
-            packItems: mapSinglePackItems(itemsToMap),
-          };
-        }) as any,
-      });
-    } else {
-      const updatedPackItems = (parentProduct.packItems || []).filter((pi) => pi.id !== bop.id);
-      this.menuService.saveProductMutation.mutate({
-        id: parentProduct.id,
-        packItems: mapSinglePackItems(updatedPackItems) as any,
-      });
-    }
-  }
 
   setEditableItem(item: CategoryItem['items'][number], type: 'product' | 'material'): void {
     this.searchMaterialInput.set('');
