@@ -293,3 +293,24 @@
   }
 }
 
+.view-details-btn {
+  font: var(--mat-sys-label-medium) !important;
+  color: var(--mat-sys-primary) !important;
+  background-color: color-mix(in srgb, var(--mat-sys-primary) 8%, transparent) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  height: 36px !important;
+  width: 100% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--mat-sys-primary) 14%, transparent) !important;
+  }
+}
+
+

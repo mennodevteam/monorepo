@@ -67,16 +67,9 @@
 
     <div class="product-variants">
       @if (hasVariants()) {
-        @if (product.type === 'pack') {
-          <div style="font-size: 0.82em; color: #666; margin-bottom: 12px; padding: 6px 10px; background: rgba(0,0,0,0.02); border-radius: 8px; text-align: right; direction: rtl; line-height: 1.4;">
-            <span>برای مشاهده جزئیات دقیق هر آیتم قبل از سفارش روی آیتم کلیک کنید.</span>
-          </div>
-        }
         @for (variant of variants(); track variant.id) {
           <div 
             class="variant-item" 
-            [style.cursor]="product.type === 'pack' ? 'pointer' : 'default'"
-            (click)="product.type === 'pack' && variant.packItems?.length ? openPackDetails(variant.packItems, packDetailsDialog) : null"
             style="flex-direction: column; align-items: stretch; gap: 8px;">
             <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
               <div class="variant-info">
@@ -92,37 +85,35 @@
                 <app-quantity-selector [product]="product" [variant]="variant" />
               </div>
             </div>
+            @if (product.type === 'pack' && variant.packItems?.length) {
+              <button mat-button class="view-details-btn" (click)="openPackDetails(variant.packItems, packDetailsDialog)">
+                مشاهده جزئیات
+              </button>
+            }
           </div>
         }
       } @else {
-        <div class="variant-item">
-          <div class="variant-info">
-            <span class="variant-title">قیمت</span>
-            <div class="variant-price-container">
-              @if (hasDiscount()) {
-                <span class="price-old">{{ realPrice() | number }} تومان</span>
-              }
-              <span class="price-current">{{ totalPrice() | number }} تومان</span>
+        <div class="variant-item" style="flex-direction: column; align-items: stretch; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <div class="variant-info">
+              <span class="variant-title">قیمت</span>
+              <div class="variant-price-container">
+                @if (hasDiscount()) {
+                  <span class="price-old">{{ realPrice() | number }} تومان</span>
+                }
+                <span class="price-current">{{ totalPrice() | number }} تومان</span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <app-quantity-selector [product]="product" />
             </div>
           </div>
-          <app-quantity-selector [product]="product" />
+          @if (product.type === 'pack' && product.packItems?.length) {
+            <button mat-button class="view-details-btn" (click)="openPackDetails(product.packItems, packDetailsDialog)">
+              مشاهده جزئیات
+            </button>
+          }
         </div>
-        
-        @if (product.type === 'pack' && product.packItems?.length) {
-          <div class="product-pack-items">
-            <span class="product-pack-items__title">محتویات پکیج:</span>
-            <div class="product-pack-items__list">
-              @for (item of product.packItems; track item.id) {
-                <div class="product-pack-items__item">
-                  <span class="product-pack-items__item-title">
-                    {{ item.product.title }} @if (item.variant) { ({{ item.variant.title }}) }
-                  </span>
-                  <span class="product-pack-items__item-quantity">{{ item.quantity }} عدد</span>
-                </div>
-              }
-            </div>
-          </div>
-        }
       }
     </div>
   </div>
@@ -166,14 +157,19 @@
     <h3 style="margin-top: 0; font-weight: bold; font-size: 1.1em; border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 8px; margin-bottom: 12px; color: #333; text-align: right;">
       محتویات پکیج
     </h3>
-    <div style="display: flex; flex-direction: column; gap: 10px; max-height: 60vh; overflow-y: auto; text-align: right;">
+    <mat-list style="max-height: 60vh; overflow-y: auto; text-align: right;">
       @for (item of dialogPackItems(); track item.id) {
-        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.95em; color: #444; border-bottom: 1px dashed rgba(0,0,0,0.04); padding-bottom: 8px;">
-          <span>{{ item.product?.title }} @if (item.variant) { ({{ item.variant.title }}) }</span>
-          <span style="font-weight: 600; color: #111;">{{ item.quantity }} عدد</span>
-        </div>
+        <mat-list-item style="border-bottom: 1px dashed rgba(0,0,0,0.04); padding-bottom: 8px; height: auto;">
+          <span matListItemTitle style="font-weight: 500; font-size: 0.95em;">{{ item.product?.title }}</span>
+          @if (item.variant) {
+            <span matListItemLine style="color: #666; font-size: 0.85em; margin-top: 2px; display: block;">{{ item.variant.title }}</span>
+          }
+          <div matListItemMeta style="font-weight: 600; color: #111;">
+            {{ item.quantity }} عدد
+          </div>
+        </mat-list-item>
       }
-    </div>
+    </mat-list>
     <div style="display: flex; justify-content: flex-end; margin-top: 16px; width: 100%;">
       <button mat-flat-button color="primary" mat-dialog-close style="border-radius: 8px; width: 100%; height: 38px; font-weight: 500;">بستن</button>
     </div>
