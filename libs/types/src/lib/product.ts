@@ -66,9 +66,7 @@ export class Product {
 
   static realPrice(product: Product, productVariant?: ProductVariant, round = 500) {
     let cost = 0;
-    let price = productVariant
-      ? (productVariant.details?.originalPrice ?? productVariant.price)
-      : (product.details?.originalPrice ?? product.price);
+    let price = productVariant ? productVariant.price : product.price;
     if (product.type === ProductType.Pack) {
       price = Product.getPackPrice(product, productVariant);
     }
@@ -153,17 +151,7 @@ export class Product {
     const productId = typeof product === 'object' && product !== null ? product.id : product;
     const variantId = typeof productVariant === 'object' && productVariant !== null ? productVariant.id : productVariant;
 
-    const boms = allBoms.filter((bom) => {
-      const bomProductId = bom.product && typeof bom.product === 'object' ? bom.product.id : bom.product;
-      const bomVariantId = bom.variant && typeof bom.variant === 'object' ? bom.variant.id : bom.variant;
-      
-      const matchProduct = bomProductId && productId && String(bomProductId) === String(productId);
-      const matchVariant = (!bomVariantId && !variantId) || 
-                           (bomVariantId && variantId && String(bomVariantId) === String(variantId));
-      return matchProduct && matchVariant;
-    });
-
-    const packItems = (allPackItems && allPackItems.length > 0 && (
+    let packItems = (allPackItems && allPackItems.length > 0 && (
       'parentProduct' in allPackItems[0] ||
       'parentVariant' in allPackItems[0] ||
       (allPackItems[0] && ('product' in allPackItems[0] || 'variant' in allPackItems[0]))
@@ -180,7 +168,23 @@ export class Product {
           }
           return false;
         })
-      : (productVariant ? (productVariant.packItems ?? []) : (product.packItems ?? []));
+      : [];
+
+    if (packItems.length === 0) {
+      packItems = productVariant ? (productVariant.packItems ?? []) : (product.packItems ?? []);
+    }
+
+    const isPack = (typeof product === 'object' && product !== null && product.type === ProductType.Pack) || packItems.length > 0;
+
+    const boms = isPack ? [] : allBoms.filter((bom) => {
+      const bomProductId = bom.product && typeof bom.product === 'object' ? bom.product.id : bom.product;
+      const bomVariantId = bom.variant && typeof bom.variant === 'object' ? bom.variant.id : bom.variant;
+      
+      const matchProduct = bomProductId && productId && String(bomProductId) === String(productId);
+      const matchVariant = (!bomVariantId && !variantId) || 
+                           (bomVariantId && variantId && String(bomVariantId) === String(variantId));
+      return matchProduct && matchVariant;
+    });
 
     if (boms.length === 0 && packItems.length === 0) return null;
 
@@ -211,7 +215,32 @@ export class Product {
     const productId = typeof product === 'object' && product !== null ? product.id : product;
     const variantId = typeof productVariant === 'object' && productVariant !== null ? productVariant.id : productVariant;
 
-    const boms = allBoms.filter((bom) => {
+    let packItems = (allPackItems && allPackItems.length > 0 && (
+      'parentProduct' in allPackItems[0] ||
+      'parentVariant' in allPackItems[0] ||
+      (allPackItems[0] && ('product' in allPackItems[0] || 'variant' in allPackItems[0]))
+    ))
+      ? allPackItems.filter((item) => {
+          const itemParentProductId = item.parentProduct && typeof item.parentProduct === 'object' ? item.parentProduct.id : item.parentProduct;
+          const itemParentVariantId = item.parentVariant && typeof item.parentVariant === 'object' ? item.parentVariant.id : item.parentVariant;
+
+          if (itemParentProductId || itemParentVariantId) {
+            const matchParentVariant = itemParentVariantId && variantId && String(itemParentVariantId) === String(variantId);
+            const matchParentProduct = itemParentProductId && productId && String(itemParentProductId) === String(productId);
+            return (variantId && matchParentVariant) ||
+                   (!variantId && matchParentProduct);
+          }
+          return false;
+        })
+      : [];
+
+    if (packItems.length === 0) {
+      packItems = productVariant ? (productVariant.packItems ?? []) : (product.packItems ?? []);
+    }
+
+    const isPack = (typeof product === 'object' && product !== null && product.type === ProductType.Pack) || packItems.length > 0;
+
+    const boms = isPack ? [] : allBoms.filter((bom) => {
       const bomProductId = bom.product && typeof bom.product === 'object' ? bom.product.id : bom.product;
       const bomVariantId = bom.variant && typeof bom.variant === 'object' ? bom.variant.id : bom.variant;
       
@@ -233,25 +262,6 @@ export class Product {
         usedMaterials.push({ material: bom.material, quantity: bom.quantity });
       }
     }
-
-    const packItems = (allPackItems && allPackItems.length > 0 && (
-      'parentProduct' in allPackItems[0] ||
-      'parentVariant' in allPackItems[0] ||
-      (allPackItems[0] && ('product' in allPackItems[0] || 'variant' in allPackItems[0]))
-    ))
-      ? allPackItems.filter((item) => {
-          const itemParentProductId = item.parentProduct && typeof item.parentProduct === 'object' ? item.parentProduct.id : item.parentProduct;
-          const itemParentVariantId = item.parentVariant && typeof item.parentVariant === 'object' ? item.parentVariant.id : item.parentVariant;
-
-          if (itemParentProductId || itemParentVariantId) {
-            const matchParentVariant = itemParentVariantId && variantId && String(itemParentVariantId) === String(variantId);
-            const matchParentProduct = itemParentProductId && productId && String(itemParentProductId) === String(productId);
-            return (variantId && matchParentVariant) ||
-                   (!variantId && matchParentProduct);
-          }
-          return false;
-        })
-      : (productVariant ? (productVariant.packItems ?? []) : (product.packItems ?? []));
 
     for (const item of packItems) {
       if (item.product) {

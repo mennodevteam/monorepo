@@ -1,4 +1,4 @@
-import { Product, UserRole } from '@menno/types';
+import { Product, UserRole, ProductType, BillOfMaterial, BillOfProduct, ProductPackItem } from '@menno/types';
 import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -16,6 +16,12 @@ export class ProductsController {
     private menuService: MenusService,
     @InjectRepository(Product)
     private productsRepo: Repository<Product>,
+    @InjectRepository(BillOfMaterial)
+    private bomsRepo: Repository<BillOfMaterial>,
+    @InjectRepository(BillOfProduct)
+    private bopsRepo: Repository<BillOfProduct>,
+    @InjectRepository(ProductPackItem)
+    private packItemsRepo: Repository<ProductPackItem>,
     private auth: AuthService,
     private redis: RedisService
   ) {}
@@ -55,6 +61,31 @@ export class ProductsController {
           const othersRelated = ((other.relatedProductIds ?? []) as string[]).filter(Boolean);
           other.relatedProductIds = othersRelated.filter((id) => id !== currentProductId);
           await this.productsRepo.save(other);
+        }
+      }
+
+      if (dto.type === ProductType.Pack) {
+        // Delete direct BOMs and BOPs
+        await this.bomsRepo.delete({ product: { id: dto.id } });
+        await this.bopsRepo.delete({ product: { id: dto.id } });
+        if (dto.variants?.length) {
+          for (const variant of dto.variants) {
+            if (variant.id) {
+              await this.bomsRepo.delete({ variant: { id: variant.id } });
+              await this.bopsRepo.delete({ variant: { id: variant.id } });
+            }
+          }
+          dto.packItems = [];
+        }
+      } else {
+        // Delete pack items if it's standard
+        await this.packItemsRepo.delete({ parentProduct: { id: dto.id } });
+        if (dto.variants?.length) {
+          for (const variant of dto.variants) {
+            if (variant.id) {
+              await this.packItemsRepo.delete({ parentVariant: { id: variant.id } });
+            }
+          }
         }
       }
     }

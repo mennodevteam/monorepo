@@ -70,10 +70,7 @@ export class HomeSectionsComponent {
   }
 
   getProductPrice(product: Product): number {
-    if (product.type === ProductType.Pack) {
-      return Product.getPackPrice(product);
-    }
-    return product.price || 0;
+    return Product.totalPrice(product);
   }
 
   getCategoryImage(category: ProductCategory) {

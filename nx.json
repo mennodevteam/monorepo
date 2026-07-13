@@ -1,9 +1,5 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "npmScope": "menno",
-  "affected": {
-    "defaultBase": "main"
-  },
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
@@ -64,5 +60,6 @@
     "@nx/angular:component": {
       "style": "scss"
     }
-  }
+  },
+  "defaultBase": "main"
 }

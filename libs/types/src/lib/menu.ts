@@ -1,10 +1,11 @@
 import { MenuCost } from './menu-cost';
 import { OrderType } from './order-type.enum';
-import { Product } from './product';
+import { Product, ProductType } from './product';
 import { ProductCategory } from './product-category';
 import { ProductVariant } from './product-variant';
 import { Status } from './status.enum';
 import { ProductPack } from './product-pack';
+import { Campaign } from './campaign';
 
 export class Menu {
   id: string;
@@ -21,6 +22,7 @@ export class Menu {
     showEmpty?: boolean,
     star?: number,
     isManual?: boolean,
+    campaign?: Campaign,
   ) {
     if (star != undefined) {
       menu.categories = menu.categories?.filter((x) => !x.star || star >= x.star);
@@ -73,7 +75,7 @@ export class Menu {
                 (!x.includeProduct?.length && !x.includeProductCategory?.length) ||
                 x.includeProductCategory?.find((y) => y.id === p.category.id) ||
                 x.includeProduct?.find((y) => y.id === p.id),
-            );
+            ) || [];
 
             if (p.variants) {
               ProductVariant.sort(p.variants);
@@ -97,6 +99,48 @@ export class Menu {
         );
       }
       menu.categories = menu.categories.filter((x) => showEmpty || x.products?.length);
+    }
+
+    // Dynamic campaign discounts injection as MenuCosts
+    if (campaign && campaign.actions && menu.categories) {
+      for (const action of campaign.actions) {
+        if (action.type === 'product_discount' || action.type === 'category_discount') {
+          const { discountType } = action.payload;
+          const discountValue = action.payload.discountValue ?? 0;
+          if (discountValue > 0) {
+            const createCampaignCost = () => {
+              const cost = new MenuCost();
+              cost.title = campaign.title || 'تخفیف کمپین';
+              cost.showOnItem = true;
+              cost.status = Status.Active;
+              cost.percentageCost = discountType === 'percent' ? -discountValue : 0;
+              cost.fixedCost = discountType === 'fixed' ? -discountValue : 0;
+              cost.createdAt = new Date();
+              return cost;
+            };
+
+            if (action.type === 'product_discount') {
+              const { productId } = action.payload;
+              if (productId) {
+                const product = Menu.getProductById(menu, productId);
+                if (product) {
+                  product.costs = [...(product.costs || []), createCampaignCost()];
+                }
+              }
+            } else if (action.type === 'category_discount') {
+              const { categoryId } = action.payload;
+              if (categoryId) {
+                const category = menu.categories.find((c) => c.id?.toString() === categoryId?.toString());
+                if (category && category.products) {
+                  for (const product of category.products) {
+                    product.costs = [...(product.costs || []), createCampaignCost()];
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 

@@ -141,16 +141,17 @@ export class PricingComponent {
           const materialCost = product.variants?.length
             ? 0
             : Product.calculateCost(product, null, allBoms, mappedBops);
+          const total = Product.totalPrice(product);
           result.push({
             category,
             product,
             materialCost: materialCost || 0,
             costs: product.costs?.filter((cost) => (cost.fixedCost || cost.percentageCost) > 0) || [],
             discounts: product.costs?.filter((cost) => (cost.fixedCost || cost.percentageCost) < 0) || [],
-            total: Product.totalPrice(product),
-            profit: materialCost ? product.price - materialCost : 0,
+            total,
+            profit: materialCost ? total - materialCost : 0,
             profitPercentage:
-              product.price && materialCost ? ((product.price - materialCost) / product.price) * 100 : 0,
+              total && materialCost ? ((total - materialCost) / total) * 100 : 0,
           });
         } else {
           const variants = product.variants || [];
@@ -164,6 +165,7 @@ export class PricingComponent {
               continue;
 
             const materialCost = Product.calculateCost(product, variant, allBoms, mappedBops);
+            const total = Product.totalPrice(product, variant);
             result.push({
               category,
               product,
@@ -171,10 +173,10 @@ export class PricingComponent {
               materialCost: materialCost || 0,
               costs: product.costs?.filter((cost) => (cost.fixedCost || cost.percentageCost) > 0) || [],
               discounts: product.costs?.filter((cost) => (cost.fixedCost || cost.percentageCost) < 0) || [],
-              total: Product.totalPrice(product, variant),
-              profit: materialCost ? variant.price - materialCost : 0,
+              total,
+              profit: materialCost ? total - materialCost : 0,
               profitPercentage:
-                variant.price && materialCost ? ((variant.price - materialCost) / variant.price) * 100 : 0,
+                total && materialCost ? ((total - materialCost) / total) * 100 : 0,
             });
           }
         }
@@ -191,8 +193,8 @@ export class PricingComponent {
             break;
           }
           case 'basePrice': {
-            const aPrice = a.variant ? a.variant.price : a.product.price;
-            const bPrice = b.variant ? b.variant.price : b.product.price;
+            const aPrice = Product.realPrice(a.product, a.variant);
+            const bPrice = Product.realPrice(b.product, b.variant);
             comparison = aPrice - bPrice;
             break;
           }

@@ -144,79 +144,12 @@ export class OrdersService {
 
       if (activeCampaign) {
         dto.campaign = order.campaign = activeCampaign;
-        if (activeCampaign.actions) {
-          for (const action of activeCampaign.actions) {
-            if (action.type === 'product_discount' || action.type === 'category_discount') {
-              const { discountType, discountValue } = action.payload;
-
-              const applyProductDiscount = (prod: any) => {
-                if (!prod) return;
-                if (!prod.details) prod.details = {};
-                if (prod.details.originalPrice === undefined) {
-                  prod.details.originalPrice = prod.price;
-                }
-                if (discountType === 'percent') {
-                  prod.price = Math.max(0, prod.details.originalPrice * (1 - discountValue / 100));
-                } else {
-                  prod.price = Math.max(0, prod.details.originalPrice - discountValue);
-                }
-
-                if (prod.variants?.length) {
-                  for (const v of prod.variants) {
-                    if (!v.details) v.details = {};
-                    if (v.details.originalPrice === undefined) {
-                      v.details.originalPrice = v.price;
-                    }
-                    if (discountType === 'percent') {
-                      v.price = Math.max(0, v.details.originalPrice * (1 - discountValue / 100));
-                    } else {
-                      v.price = Math.max(0, v.details.originalPrice - discountValue);
-                    }
-                  }
-                }
-              };
-
-              if (action.type === 'product_discount') {
-                const { productId, variantId } = action.payload;
-                const product = menu.categories
-                  ?.flatMap((c) => c.products || [])
-                  .find((p) => p.id === productId);
-                if (product) {
-                  if (variantId) {
-                    const variant = product.variants?.find((v) => v.id === variantId);
-                    if (variant) {
-                      if (!variant.details) variant.details = {};
-                      if (variant.details.originalPrice === undefined) {
-                        variant.details.originalPrice = variant.price;
-                      }
-                      if (discountType === 'percent') {
-                        variant.price = Math.max(0, variant.details.originalPrice * (1 - discountValue / 100));
-                      } else {
-                        variant.price = Math.max(0, variant.details.originalPrice - discountValue);
-                      }
-                    }
-                  } else {
-                    applyProductDiscount(product);
-                  }
-                }
-              } else if (action.type === 'category_discount') {
-                const { categoryId } = action.payload;
-                const category = menu.categories?.find((c) => c.id?.toString() === categoryId?.toString());
-                if (category && category.products) {
-                  for (const product of category.products) {
-                    applyProductDiscount(product);
-                  }
-                }
-              }
-            }
-          }
-        }
       }
     } catch (err) {
       console.error('Error applying active campaign matching:', err);
     }
 
-    Menu.setRefsAndSort(menu, dto.type, true, true, undefined, dto.isManual ? true : false);
+    Menu.setRefsAndSort(menu, dto.type, true, true, undefined, dto.isManual ? true : false, activeCampaign);
     order.items = [...OrderDto.productItems(dto, menu), ...OrderDto.abstractItems(dto, menu)];
 
     try {
@@ -296,8 +229,6 @@ export class OrdersService {
 
     order.materialCost = 0;
     for (const item of order.items) {
-      if (item.product) item.product = { id: item.product.id } as Product;
-      if (item.productVariant) item.productVariant = { id: item.productVariant.id } as ProductVariant;
       if (item.product) {
         item.materialCost = Product.calculateCost(item.product, item.productVariant, allBoms, allPackItems);
         if (item.materialCost === null) {
@@ -306,6 +237,8 @@ export class OrdersService {
           order.materialCost += item.quantity * item.materialCost;
         }
       }
+      if (item.product) item.product = { id: item.product.id } as Product;
+      if (item.productVariant) item.productVariant = { id: item.productVariant.id } as ProductVariant;
     }
 
     order.totalPrice = OrderDto.total(dto, menu);

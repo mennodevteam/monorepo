@@ -103,10 +103,7 @@ export class BomListComponent {
   }
 
   getItemPrice(item: { product: Product; variant?: ProductVariant }): number {
-    if (item.product.type === ProductType.Pack) {
-      return Product.getPackPrice(item.product, item.variant);
-    }
-    return (item.variant || item.product).price || 0;
+    return Product.realPrice(item.product, item.variant);
   }
 
   selectedItemKeys = signal<Set<string>>(new Set());

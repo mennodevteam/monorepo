@@ -501,7 +501,7 @@ export class AiDataExportComponent {
             productTitle: product.title,
             variantTitle: '',
             status: this.getStatusText(product.status),
-            basePrice: product.price.toString(),
+            basePrice: Product.realPrice(product).toString(),
             totalPrice: totalPrice.toString(),
             materialCost: materialCost.toString(),
             profit: profit.toString(),
@@ -519,15 +519,15 @@ export class AiDataExportComponent {
 
             const materialCost = Product.calculateCost(product, variant, allBoms, mappedBops) || 0;
             const totalPrice = Product.totalPrice(product, variant);
-            const profit = materialCost ? variant.price - materialCost : 0;
-            const profitPercentage = variant.price && materialCost ? ((variant.price - materialCost) / variant.price) * 100 : 0;
+            const profit = materialCost ? totalPrice - materialCost : 0;
+            const profitPercentage = totalPrice && materialCost ? ((totalPrice - materialCost) / totalPrice) * 100 : 0;
 
             result.push({
               categoryTitle: category.title,
               productTitle: product.title,
               variantTitle: variant.title,
               status: this.getStatusText(variant.status),
-              basePrice: variant.price.toString(),
+              basePrice: Product.realPrice(product, variant).toString(),
               totalPrice: totalPrice.toString(),
               materialCost: materialCost.toString(),
               profit: profit.toString(),
