@@ -418,7 +418,7 @@ export class BomListComponent {
           items.push({
             product,
             boms: productBoms.filter((bom) => !bom.variant),
-            bops: productBops.filter((bop) => !bop.variant),
+            bops: product.type === 'pack' ? productBops : productBops.filter((bop) => !bop.variant),
             cost: Product.calculateCost(product, null, allBoms, this.mappedBops()),
           });
         } else {
