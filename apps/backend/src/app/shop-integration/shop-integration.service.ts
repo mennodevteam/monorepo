@@ -173,6 +173,16 @@ export class ShopIntegrationService {
 
     if (isPack) {
       dto.price = 0;
+
+      // Delete existing BOMs and BOPs of the product and its variants
+      await this.bomRepo.delete({ product: { id: productId } });
+      await this.bopRepo.delete({ product: { id: productId } });
+      if (existing.variants && existing.variants.length > 0) {
+        const variantIds = existing.variants.map((v) => v.id);
+        await this.bomRepo.delete({ variant: { id: In(variantIds) } });
+        await this.bopRepo.delete({ variant: { id: In(variantIds) } });
+      }
+
       if (dto.packItems) {
         // Delete old pack items of product
         await this.productPackItemRepository.delete({ parentProduct: { id: productId } });

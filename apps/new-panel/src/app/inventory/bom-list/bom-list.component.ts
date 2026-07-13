@@ -578,6 +578,68 @@ export class BomListComponent {
     this.materialsService.deleteBopMutation.mutate(bop.id);
   }
 
+  editPackItem(item: CategoryItem['items'][number], bop: any): void {
+    let title = bop.productSource?.title || '';
+    if (bop.variantSource) {
+      title += ` - ${bop.variantSource.title}`;
+    }
+    const fields: PromptFields = {
+      quantity: {
+        label: this.translate.instant('materials.quantity'),
+        type: 'number',
+        eng: true,
+        ltr: true,
+        control: new FormControl(bop.quantity, [Validators.required, Validators.min(0)]),
+      },
+    };
+    this.dialogService.prompt(title, fields).then((result) => {
+      if (!result) return;
+      const parentProduct = item.product;
+      const parentVariant = item.variant;
+
+      if (parentVariant) {
+        const updatedPackItems = (parentVariant.packItems || []).map((pi) =>
+          pi.id === bop.id ? { ...pi, quantity: result.quantity } : pi
+        );
+        this.menuService.saveProductMutation.mutate({
+          id: parentProduct.id,
+          variants: parentProduct.variants.map((v) =>
+            v.id === parentVariant.id ? { ...v, packItems: updatedPackItems } : v
+          ),
+        });
+      } else {
+        const updatedPackItems = (parentProduct.packItems || []).map((pi) =>
+          pi.id === bop.id ? { ...pi, quantity: result.quantity } : pi
+        );
+        this.menuService.saveProductMutation.mutate({
+          id: parentProduct.id,
+          packItems: updatedPackItems as any,
+        });
+      }
+    });
+  }
+
+  removePackItem(item: CategoryItem['items'][number], bop: any): void {
+    const parentProduct = item.product;
+    const parentVariant = item.variant;
+
+    if (parentVariant) {
+      const updatedPackItems = (parentVariant.packItems || []).filter((pi) => pi.id !== bop.id);
+      this.menuService.saveProductMutation.mutate({
+        id: parentProduct.id,
+        variants: parentProduct.variants.map((v) =>
+          v.id === parentVariant.id ? { ...v, packItems: updatedPackItems } : v
+        ),
+      });
+    } else {
+      const updatedPackItems = (parentProduct.packItems || []).filter((pi) => pi.id !== bop.id);
+      this.menuService.saveProductMutation.mutate({
+        id: parentProduct.id,
+        packItems: updatedPackItems as any,
+      });
+    }
+  }
+
   setEditableItem(item: CategoryItem['items'][number], type: 'product' | 'material'): void {
     this.searchMaterialInput.set('');
     this.editableItem.set(item);

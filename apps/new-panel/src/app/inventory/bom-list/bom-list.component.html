@@ -190,7 +190,7 @@
                       @let costMissing = isBopCostMissing(bop);
                       
                       @if (item.product.type === 'pack') {
-                        <mat-chip [matTooltip]="costMissing ? ('bom.costNotSet' | translate) : null">
+                        <mat-chip [matMenuTriggerFor]="packMenu" [matTooltip]="costMissing ? ('bom.costNotSet' | translate) : null">
                           <ng-icon name="saxBoxOutline"></ng-icon>
                           {{ title }}
                           <span eng>({{ bop.quantity | number }})</span>
@@ -198,6 +198,16 @@
                             <ng-icon name="saxDangerOutline" class="red" style="color: #f44336; margin-right: 4px;"></ng-icon>
                           }
                         </mat-chip>
+                        <mat-menu #packMenu="matMenu">
+                          <button mat-menu-item (click)="editPackItem(item, bop)">
+                            <ng-icon name="saxEditOutline"></ng-icon>
+                            {{ 'app.edit' | translate }}
+                          </button>
+                          <button mat-menu-item (click)="removePackItem(item, bop)">
+                            <ng-icon name="saxTrashOutline"></ng-icon>
+                            {{ 'app.remove' | translate }}
+                          </button>
+                        </mat-menu>
                       } @else {
                         <mat-chip [matMenuTriggerFor]="menu" [matTooltip]="costMissing ? ('bom.costNotSet' | translate) : null">
                           <ng-icon name="saxBoxOutline"></ng-icon>
