@@ -134,9 +134,9 @@ export class Product {
   }
 
   static percentageDiscount(product: Product, productVariant?: ProductVariant, round = 5) {
-    const price = productVariant ? productVariant.price : product.price;
-    const cost = Product.realPrice(product, productVariant) - Product.totalPrice(product, productVariant);
-    if (cost > 0) return Math.round(((cost / price) * 100) / round) * round;
+    const realPrice = Product.realPrice(product, productVariant);
+    const cost = realPrice - Product.totalPrice(product, productVariant);
+    if (cost > 0 && realPrice > 0) return Math.round(((cost / realPrice) * 100) / round) * round;
     return 0;
   }
 

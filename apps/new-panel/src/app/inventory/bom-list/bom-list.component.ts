@@ -597,15 +597,31 @@ export class BomListComponent {
       const parentProduct = item.product;
       const parentVariant = item.variant;
 
+      const mapSinglePackItems = (items: any[]) =>
+        (items || []).map((pi) => ({
+          id: pi.id || undefined,
+          productId: pi.product?.id || pi.productId,
+          variantId: pi.variant?.id || pi.variantId,
+          quantity: pi.quantity,
+        }));
+
       if (parentVariant) {
         const updatedPackItems = (parentVariant.packItems || []).map((pi) =>
           pi.id === bop.id ? { ...pi, quantity: result.quantity } : pi
         );
         this.menuService.saveProductMutation.mutate({
           id: parentProduct.id,
-          variants: parentProduct.variants.map((v) =>
-            v.id === parentVariant.id ? { ...v, packItems: updatedPackItems } : v
-          ),
+          variants: parentProduct.variants.map((v) => {
+            const isTarget = v.id === parentVariant.id;
+            const itemsToMap = isTarget ? updatedPackItems : (v.packItems || []);
+            return {
+              id: v.id,
+              price: v.price,
+              status: v.status,
+              title: v.title,
+              packItems: mapSinglePackItems(itemsToMap),
+            };
+          }) as any,
         });
       } else {
         const updatedPackItems = (parentProduct.packItems || []).map((pi) =>
@@ -613,7 +629,7 @@ export class BomListComponent {
         );
         this.menuService.saveProductMutation.mutate({
           id: parentProduct.id,
-          packItems: updatedPackItems as any,
+          packItems: mapSinglePackItems(updatedPackItems) as any,
         });
       }
     });
@@ -623,19 +639,35 @@ export class BomListComponent {
     const parentProduct = item.product;
     const parentVariant = item.variant;
 
+    const mapSinglePackItems = (items: any[]) =>
+      (items || []).map((pi) => ({
+        id: pi.id || undefined,
+        productId: pi.product?.id || pi.productId,
+        variantId: pi.variant?.id || pi.variantId,
+        quantity: pi.quantity,
+      }));
+
     if (parentVariant) {
       const updatedPackItems = (parentVariant.packItems || []).filter((pi) => pi.id !== bop.id);
       this.menuService.saveProductMutation.mutate({
         id: parentProduct.id,
-        variants: parentProduct.variants.map((v) =>
-          v.id === parentVariant.id ? { ...v, packItems: updatedPackItems } : v
-        ),
+        variants: parentProduct.variants.map((v) => {
+          const isTarget = v.id === parentVariant.id;
+          const itemsToMap = isTarget ? updatedPackItems : (v.packItems || []);
+          return {
+            id: v.id,
+            price: v.price,
+            status: v.status,
+            title: v.title,
+            packItems: mapSinglePackItems(itemsToMap),
+          };
+        }) as any,
       });
     } else {
       const updatedPackItems = (parentProduct.packItems || []).filter((pi) => pi.id !== bop.id);
       this.menuService.saveProductMutation.mutate({
         id: parentProduct.id,
-        packItems: updatedPackItems as any,
+        packItems: mapSinglePackItems(updatedPackItems) as any,
       });
     }
   }
