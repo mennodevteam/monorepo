@@ -25,7 +25,7 @@ export class MenusController {
   async getPanelMenu(@LoginUser() user: AuthPayload): Promise<Menu> {
     const shop = await this.auth.getPanelUserShop(user);
     if (shop) {
-      const menuData = await this.redis.updateMenu(shop.id);
+      const menuData = await this.redis.updateMenu(shop.id, true);
       if (menuData) {
         return JSON.parse(menuData);
       }

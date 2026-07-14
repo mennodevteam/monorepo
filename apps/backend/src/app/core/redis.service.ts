@@ -89,7 +89,7 @@ export class RedisService {
     }
   }
 
-  async updateMenu(shopId: string) {
+  async updateMenu(shopId: string, returnPanelMenu = false) {
     try {
       const shop = await this.shopsRepo.findOne({
         where: { id: shopId },
@@ -189,7 +189,8 @@ export class RedisService {
 
       // Save to Redis
       const shopMenuRedisKey = this.key(RedisKey.PanelMenu, shop.id);
-      await this.client.set(shopMenuRedisKey, JSON.stringify(shop.menu));
+      const fullMenuJson = JSON.stringify(shop.menu);
+      await this.client.set(shopMenuRedisKey, fullMenuJson);
       this.client.expire(shopMenuRedisKey, 3600 * 12);
 
       if (shop.menu.costs) shop.menu.costs = shop.menu.costs.filter((x) => x.status !== Status.Inactive);
@@ -211,9 +212,10 @@ export class RedisService {
       }
       
       const redisKey = this.key(RedisKey.Menu, shop.id);
-      await this.client.set(redisKey, JSON.stringify(shop.menu));
+      const filteredMenuJson = JSON.stringify(shop.menu);
+      await this.client.set(redisKey, filteredMenuJson);
       this.client.expire(redisKey, 3600 * 12);
-      return JSON.stringify(shop.menu);
+      return returnPanelMenu ? fullMenuJson : filteredMenuJson;
     } catch (error) {
       console.error('Error updating menu cache:', error);
       return;
@@ -235,7 +237,7 @@ export class RedisService {
     }
 
     // Cache miss: load from database using optimized split queries
-    const menuJson = await this.updateMenu(shopId);
+    const menuJson = await this.updateMenu(shopId, true);
     if (menuJson) {
       try {
         return JSON.parse(menuJson);
