@@ -172,10 +172,12 @@ export class CampaignsEditComponent implements OnInit {
   };
 
   getFilteredProducts(index: number): Product[] {
-    const searchVal = this.actions.at(index).get('payload.productSearch')?.value || '';
+    const searchVal = this.actions.at(index).get('payload.productSearch')?.value;
     const products = this.allProducts();
     if (!searchVal) return products;
-    return products.filter((p) => p.title.toLowerCase().includes(searchVal.toLowerCase()));
+    const query = typeof searchVal === 'string' ? searchVal : (searchVal as Product).title || '';
+    if (!query) return products;
+    return products.filter((p) => p.title && typeof p.title === 'string' && p.title.toLowerCase().includes(query.toLowerCase()));
   }
 
   onProductSelected(product: Product, index: number) {
