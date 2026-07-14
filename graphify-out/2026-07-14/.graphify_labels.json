@@ -265,5 +265,6 @@
   "263": "quantity-log-dto.ts",
   "264": "shop-settlements-filter.dto.ts",
   "265": "stock-item.ts",
-  "266": "order-review.ts"
+  "266": "order-review.ts",
+  "267": ".withCommas"
 }

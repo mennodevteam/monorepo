@@ -5555,8 +5555,8 @@
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/campaigns/campaigns-edit.component.ts": {
-    "mtime": 1783981812.8818855,
-    "ast_hash": "c454fc1a4ea912703a5c90a00000dc72",
+    "mtime": 1784021269.2193012,
+    "ast_hash": "56cf503c5ed3ad2889ed676950c35798",
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/campaigns/campaigns-list.component.ts": {

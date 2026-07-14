@@ -1,16 +1,16 @@
 # Graph Report - monorepo  (2026-07-14)
 
 ## Corpus Check
-- 869 files · ~390,490 words
+- 869 files · ~390,546 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 4621 nodes · 10852 edges · 268 communities (174 shown, 94 thin omitted)
+- 4621 nodes · 10850 edges · 280 communities (187 shown, 93 thin omitted)
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 467 edges (avg confidence: 0.62)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `8806e38b`
+- Built from commit: `2458fb73`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -266,6 +266,19 @@
 - [[_COMMUNITY_shop-settlements-filter.dto.ts|shop-settlements-filter.dto.ts]]
 - [[_COMMUNITY_stock-item.ts|stock-item.ts]]
 - [[_COMMUNITY_order-review.ts|order-review.ts]]
+- [[_COMMUNITY_.withCommas|.withCommas]]
+- [[_COMMUNITY_NewOrdersService|NewOrdersService]]
+- [[_COMMUNITY_PaymentMethodsComponent|PaymentMethodsComponent]]
+- [[_COMMUNITY_app.controller.ts|app.controller.ts]]
+- [[_COMMUNITY_ShellComponent|ShellComponent]]
+- [[_COMMUNITY_api.provider.ts|api.provider.ts]]
+- [[_COMMUNITY_DeveloperApiComponent|DeveloperApiComponent]]
+- [[_COMMUNITY_ImageLoaderDirective|ImageLoaderDirective]]
+- [[_COMMUNITY_ClubService|ClubService]]
+- [[_COMMUNITY_AlopeykComponent|AlopeykComponent]]
+- [[_COMMUNITY_CategoryComponent|CategoryComponent]]
+- [[_COMMUNITY_PaginatorIntl|PaginatorIntl]]
+- [[_COMMUNITY_AppComponent|AppComponent]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `Shop` - 206 edges
@@ -307,19 +320,19 @@
 - **new-panel UI/UX Guidelines** — _agent_apps_new_panel_design_rules_m3_integration, _agent_apps_new_panel_design_rules_spacing_typography, _agent_apps_new_panel_design_rules_control_standardization, _agent_skills_new_panel_market_fit_skill_empty_states, _agent_skills_new_panel_market_fit_skill_onboarding [INFERRED 0.95]
 - **E-Commerce Frontend Core Flow and Analytics** — _agent_apps_customer_architecture_overview, _agent_apps_customer_event_tracking_overview, apps_new_app_src_app_miscellaneous_readme_overview [INFERRED 0.85]
 
-## Communities (268 total, 94 thin omitted)
+## Communities (280 total, 93 thin omitted)
 
 ### Community 0 - "Utility Helper Methods"
 Cohesion: 0.03
 Nodes (57): aa(), ac(), an(), ar(), at(), au(), bl(), Ce() (+49 more)
 
 ### Community 1 - "User and Address Controllers"
-Cohesion: 0.06
-Nodes (19): SmsAccountSchema, SmsGroupSchema, SmsSchema, ShopPluginsService, SmsAccountsController, SmsController, SmsService, SmsSubscriber (+11 more)
+Cohesion: 0.07
+Nodes (12): AppRedirectController, HOSTS, SmsGroupSchema, SmsSchema, SmsController, SmsService, SmsSubscriber, FilterSmsDto (+4 more)
 
 ### Community 2 - "Database Schemas and Core Module"
 Cohesion: 0.05
-Nodes (21): ClubsController, ClubsService, DiscountsCouponController, MembersController, MissionsController, TagsController, DiscountCouponsListComponent, MissionListComponent (+13 more)
+Nodes (23): ClubsController, ClubsService, DiscountsCouponController, MembersController, MissionsController, TagsController, MissionSchema, DiscountCouponsListComponent (+15 more)
 
 ### Community 4 - "Workspace Dependencies"
 Cohesion: 0.02
@@ -330,24 +343,20 @@ Cohesion: 0.13
 Nodes (22): AddressesModule, AiChatbotModule, AppConfigsModule, AuthModule, ChatModule, ClubsModule, CoreModule, DashboardModule (+14 more)
 
 ### Community 6 - "Order System and Schemas"
-Cohesion: 0.06
-Nodes (12): AddressListComponent, addressRoutes, DEFAULT_LOCATION, MapComponent, SearchComponent, SearchResult, FilesService, MENNO_ICONS (+4 more)
+Cohesion: 0.07
+Nodes (12): DEFAULT_LOCATION, MapComponent, WelcomeMessageDialogComponent, ImageLoaderDirective, ImagePlaceholder, REGIONS, FilesService, MENNO_ICONS (+4 more)
 
 ### Community 7 - "Frontend Dialogs and Guards"
-Cohesion: 0.05
-Nodes (26): MenuCostSchema, ProductCategorySchema, CategoryListComponent, FilesService, CategoryImageValue, CategoryFormDialogComponent, CategoryListComponent, COLS (+18 more)
+Cohesion: 0.06
+Nodes (21): AiChatbotSchema, DeliveryAreaSchema, DiscountCouponSchema, ProductVariantSchema, ShopPluginsSchema, CategoryFormDialogComponent, COLS, COLS (+13 more)
 
 ### Community 8 - "Minified Utility Assets"
 Cohesion: 0.14
 Nodes (73): A(), ah(), b(), bh(), c(), ch(), d(), Dc() (+65 more)
 
 ### Community 9 - "BOM and Product UI Components"
-Cohesion: 0.06
-Nodes (18): AppComponent, appConfig, appRoutes, REGIONS, menuResolver(), shopResolver(), translateActivator(), userResolver() (+10 more)
-
-### Community 10 - "Inventory and Shop Services"
-Cohesion: 0.10
-Nodes (5): CartService, SignalProductItem, InvoiceComponent, ThanksComponent, DiscountCouponModalComponent
+Cohesion: 0.09
+Nodes (11): loginActivator(), menuResolver(), shopResolver(), translateActivator(), userResolver(), miscellaneousRoutes, InfoComponent, shopRoutes (+3 more)
 
 ### Community 11 - "Address UI Components and Regions"
 Cohesion: 0.13
@@ -355,7 +364,7 @@ Nodes (4): DeliveryAreaComponent, DeliveryAreaListComponent, DeliveryAreaTableCo
 
 ### Community 12 - "Module: AiChatbotComponent, .canDea..."
 Cohesion: 0.08
-Nodes (11): ShopSchema, AuthComponent, authRoutes, LoginComponent, RegisterComponent, REGIONS, CONTACT_LINK_TYPES, ContactLinkType (+3 more)
+Nodes (12): ShopSchema, AuthComponent, authRoutes, LoginComponent, RegisterComponent, REGIONS, CONTACT_LINK_TYPES, ContactLinkType (+4 more)
 
 ### Community 13 - "Module: ai(), ar()"
 Cohesion: 0.09
@@ -367,59 +376,55 @@ Nodes (7): AppModule, CampaignsController, CampaignsModule, CampaignsService, Ca
 
 ### Community 15 - "Module: .constructor(), admin-local..."
 Cohesion: 0.04
-Nodes (26): AiChatSchema, AiChatbotSchema, ClubSchema, DeliveryAreaSchema, DingSchema, DiscountCouponSchema, GemLogSchema, MemberSchema (+18 more)
+Nodes (31): AiChatSchema, ClubSchema, DingSchema, GemLogSchema, MemberSchema, MemberTagSchema, MissionCompleteSchema, OrderReviewSchema (+23 more)
 
 ### Community 16 - "Module: image-loader.directive.ts, ..."
-Cohesion: 0.06
-Nodes (10): AddressEditComponent, AnalyticsEventDirective, AddressesService, AnalyticsService, CartService, MenuStatService, OrdersService, PayService (+2 more)
-
-### Community 17 - "Module: AppComponent, .constructor()"
-Cohesion: 0.05
-Nodes (14): appConfig, appRoutes, ApiInterceptor, apiInterceptorProvider(), IGNORE_CASES, JALALI_MOMENT_FORMATS, JalaliMomentDateAdapter, provideJalaliDatePickerProvider() (+6 more)
+Cohesion: 0.10
+Nodes (10): DiscountCouponModalComponent, AnalyticsEventDirective, COMMON, COMMON_CORE, COMMON_LIBS, COMMON_MATERIAL, AnalyticsService, AddressListComponent (+2 more)
 
 ### Community 18 - "Module: .constructor(), shop-user.s..."
-Cohesion: 0.07
-Nodes (17): AppConfigSchema, ContentDialogData, DateRangeDialogComponent, DateRangeDialogData, DateRangeDialogResult, AiHubComponent, CreatorMessageDialogComponent, SoonDialogComponent (+9 more)
+Cohesion: 0.04
+Nodes (24): DayGroup, PanelChat, PanelChatCustomer, PanelChatMessage, PanelChatsPageResponse, ContentDialogData, DateRangeDialogComponent, DateRangeDialogData (+16 more)
 
 ### Community 19 - "Module: .torobProducts(), link.serv..."
-Cohesion: 0.09
-Nodes (13): MenuSchema, LinkService, MENU_QUERY_KEY(), MenuService, TitleService, CategoryComponent, menuFallbackCacheKey(), pickFallbackProducts() (+5 more)
+Cohesion: 0.16
+Nodes (9): LinkService, MENU_QUERY_KEY(), MenuService, menuFallbackCacheKey(), pickFallbackProducts(), ProductCardComponent, SectionComponent, ImageLoaderDirective (+1 more)
 
 ### Community 20 - "Module: ai-chatbot.component.ts, co..."
-Cohesion: 0.19
+Cohesion: 0.16
 Nodes (7): WalletsController, WalletsService, WalletLogSchema, WalletSchema, WalletLogType, WalletLog, Wallet
 
 ### Community 21 - "Module: .save(), login.component.ts"
-Cohesion: 0.07
-Nodes (10): AppComponent, AuthService, HomeComponent, OrderTotalComponent, PlanCardComponent, getHomeTips(), WalletCardComponent, VerificationStep (+2 more)
+Cohesion: 0.08
+Nodes (9): AuthService, HomeComponent, OrderTotalComponent, PlanCardComponent, getHomeTips(), WalletCardComponent, VerificationStep, WelcomeSetupComponent (+1 more)
 
 ### Community 22 - "Module: devDependencies, @angular/cli"
 Cohesion: 0.04
 Nodes (51): devDependencies, @angular/cli, @angular/compiler-cli, @angular-devkit/build-angular, @angular-devkit/core, @angular-devkit/schematics, @angular-eslint/eslint-plugin, @angular-eslint/eslint-plugin-template (+43 more)
 
 ### Community 23 - "Module: regions.ts, REGIONS"
-Cohesion: 0.08
-Nodes (7): AddressSchema, AddressesComponent, AddressCardComponent, AddressDialogComponent, AddressListComponent, AddressSelectionDialogComponent, Address
+Cohesion: 0.10
+Nodes (10): AddressSchema, REGIONS, AddressesService, MenuStatService, AddressesComponent, AddressCardComponent, AddressDialogComponent, AddressListComponent (+2 more)
 
 ### Community 24 - "Module: address-edit.component.ts, ..."
-Cohesion: 0.06
-Nodes (8): AddressesController, AuthPayload, DashboardController, DeliveryAreasController, BomsController, BopsController, PaymentsController, ShopPluginsController
+Cohesion: 0.05
+Nodes (11): AddressesController, AuthPayload, DashboardController, DeliveryAreasController, BomsController, BopsController, PaymentsController, ShopPluginsController (+3 more)
 
 ### Community 25 - "Module: menu-cost.schema.ts, produc..."
-Cohesion: 0.21
-Nodes (6): ProductSchema, Campaign, CampaignAction, CampaignManualCost, OrderDetails, ProductType
+Cohesion: 0.08
+Nodes (8): CampaignService, SignalProductItem, ClubService, InitialParamsService, MenuService, OrdersService, PayService, ShellComponent
 
 ### Community 26 - "Module: addresses.controller.ts, ai..."
 Cohesion: 0.16
 Nodes (10): AdminLocalAuthGuard, AppLocalAuthGuard, AuthService, PanelLocalAuthGuard, Public(), Roles(), LoginUser, environment (+2 more)
 
 ### Community 27 - "Module: .updateAiChatbot(), AppConf..."
-Cohesion: 0.06
-Nodes (15): MissionSchema, AiChatbotComponent, dirtyFormDeactivator(), FormComponent, MissionEditComponent, missionsRoutes, orderRoutes, DomainSettingComponent (+7 more)
+Cohesion: 0.07
+Nodes (10): DomainSettingComponent, SettingsComponent, SettingsHomeComponent, settingsRoutes, WebScriptsComponent, WelcomeMessageComponent, PromptDialogComponent, PromptField (+2 more)
 
 ### Community 29 - "Module: creator-message-dialog.comp..."
-Cohesion: 0.07
-Nodes (14): CouponUsageReport, DiscountCouponReportDialogComponent, AlertComponent, DataLoadingComponent, EmptyStateAction, EmptyStateComponent, CopyClipboardDirective, GoBackDirective (+6 more)
+Cohesion: 0.06
+Nodes (14): MembersTableComponent, CouponUsageReport, DiscountCouponReportDialogComponent, discountCouponsRoutes, UserManagementComponent, AlertComponent, DataLoadingComponent, CopyClipboardDirective (+6 more)
 
 ### Community 30 - "Module: project.json, configurations"
 Cohesion: 0.05
@@ -430,8 +435,8 @@ Cohesion: 0.18
 Nodes (6): BasalamController, BasalamFilesService, FileType, BasalamModule, BasalamProductService, OauthService
 
 ### Community 32 - "Module: cost-summary.component.ts, ..."
-Cohesion: 0.10
-Nodes (8): BasalamProductSchema, HomeComponent, productHasMainImage(), ProductListComponent, ProductCarouselItemComponent, ProductCarouselViewComponent, BasalamProduct, Product
+Cohesion: 0.09
+Nodes (6): AddressEditComponent, AddressListComponent, addressRoutes, SearchComponent, SearchResult, AddressesService
 
 ### Community 33 - "Module: Dependency Injection via in..."
 Cohesion: 0.07
@@ -441,13 +446,17 @@ Nodes (29): Add to Cart Event, Address Selection Event, Analytics Service Usage,
 Cohesion: 0.13
 Nodes (5): ChatComponent, chatRoutes, TopAppBarComponent, PwaService, MainMenuComponent
 
+### Community 36 - "Module: discount-coupon-modal.compo..."
+Cohesion: 0.10
+Nodes (3): OrderTypeBottomSheetComponent, ShopService, HeaderComponent
+
 ### Community 37 - "Module: bounce.animation.ts, bounce..."
 Cohesion: 0.08
 Nodes (33): bounceIn(), bounceInOut(), bounceOut(), fadeIn(), fadeInOut(), fadeOut(), flyInFromDown(), flyInFromLeft() (+25 more)
 
 ### Community 38 - "Module: AuthController, .changePane..."
-Cohesion: 0.14
-Nodes (13): buildWebAppManifest(), DEFAULT_ICONS, getShopFaviconUrl(), manifestIconsForShop(), WebAppManifest, WebAppManifestIcon, PwaService, environment (+5 more)
+Cohesion: 0.13
+Nodes (14): buildWebAppManifest(), DEFAULT_ICONS, getShopFaviconUrl(), manifestIconsForShop(), WebAppManifest, WebAppManifestIcon, PwaService, environment (+6 more)
 
 ### Community 39 - "Module: .key(), print-action.schema.ts"
 Cohesion: 0.11
@@ -458,20 +467,20 @@ Cohesion: 0.05
 Nodes (5): CampaignReport, CampaignReportComponent, CampaignsEditComponent, CampaignsListComponent, campaignsRoutes
 
 ### Community 41 - "Module: welcome-message-dialog.comp..."
-Cohesion: 0.07
-Nodes (17): AlertBannerComponent, FooterComponent, ShopTablesBottomSheetComponent, WelcomeMessageDialogComponent, COMMON, COMMON_CORE, COMMON_LIBS, COMMON_MATERIAL (+9 more)
+Cohesion: 0.16
+Nodes (5): AlertBannerComponent, DetailsComponent, OrderListComponent, ordersRoutes, ThanksComponent
 
 ### Community 42 - "Module: order-item.schema.ts, Order..."
-Cohesion: 0.05
-Nodes (12): ClubService, discountCouponsRoutes, AddressListComponent, ConfigModalComponent, OrderConfigData, CustomerComponent, COLS, NewOrderItemsComponent (+4 more)
+Cohesion: 0.12
+Nodes (6): AddressListComponent, ConfigModalComponent, OrderConfigData, COLS, NewOrderItemsComponent, OrderTypeComponent
 
 ### Community 44 - "Module: auth.routes.ts, authRoutes"
 Cohesion: 0.13
 Nodes (14): 1. Lazy Loading, 1. Pages WITH Bottom Navigation (Within Shell), 1. Server-Side Rendered (SSR) Routes, 2. Client-Side Rendered (CSR) Routes, 2. Dependency Injection, 2. Pages WITHIN Shell (But Hiding Bottom Navigation), 3. Pages WITHOUT Bottom Navigation (Outside Shell), 3. State Management (+6 more)
 
 ### Community 45 - "Module: index.ts, footer.component.ts"
-Cohesion: 0.08
-Nodes (7): OrderTypeBottomSheetComponent, MenuCurrencyPipe, debounceSignal(), MenuService, CategoryCarouselComponent, HeaderComponent, MenuComponent
+Cohesion: 0.09
+Nodes (7): FooterComponent, debounceSignal(), CategoryCarouselComponent, CategorySectionComponent, MenuComponent, ProductGridViewComponent, ProductListViewComponent
 
 ### Community 46 - "Module: .constructor(), OrdersSubsc..."
 Cohesion: 0.14
@@ -486,40 +495,48 @@ Cohesion: 0.16
 Nodes (3): MaterialSchema, MaterialsListComponent, Material
 
 ### Community 49 - "Module: getFileUrl(), page-seo.buil..."
-Cohesion: 0.15
-Nodes (9): REGIONS, AddressesService, CampaignService, MenuStatService, VpnCheckService, PrivacyComponent, TopAppBarComponent, MenuStatDto (+1 more)
+Cohesion: 0.22
+Nodes (4): TitleService, PrivacyComponent, BottomNavigationComponent, TopAppBarComponent
 
 ### Community 50 - "Module: auto-focus.directive.ts, Au..."
-Cohesion: 0.08
-Nodes (9): AutoFocusDirective, GoBackDirective, ImageLoaderDirective, ImagePlaceholder, COMMON_DIRECTIVES, LinkifyDirective, StopPropagationDirective, CredentialRequestOptions (+1 more)
+Cohesion: 0.10
+Nodes (7): AutoFocusDirective, GoBackDirective, COMMON_DIRECTIVES, LinkifyDirective, StopPropagationDirective, CredentialRequestOptions, WebOtpDirective
 
 ### Community 51 - "Module: MissionsController, .constr..."
-Cohesion: 0.06
-Nodes (16): ThirdPartySchema, OrderDetailsComponent, OrdersPerDayChartComponent, TopProductsCardComponent, AppConfigComponent, AlopeykComponent, BasalamComponent, BasalamProductsTableComponent (+8 more)
+Cohesion: 0.07
+Nodes (11): OrderDetailsComponent, OrdersPerDayChartComponent, TopProductsCardComponent, AppConfigComponent, DeliveryTypeDialogComponent, BasalamComponent, BasalamProductsTableComponent, ImagePlaceholder (+3 more)
 
 ### Community 52 - "Module: orders.service.ts, OrdersSe..."
 Cohesion: 0.15
 Nodes (6): ShopUserSchema, ShopUsersController, IMPORTS, UserManagementTableComponent, ShopUserRole, ShopUser
 
 ### Community 53 - "Module: CartService, .clear()"
-Cohesion: 0.08
-Nodes (10): AppConfigsController, RedisService, MenuCostsController, MenusService, MenusController, ProductCategoriesController, ThirdPartiesController, AppConfig (+2 more)
+Cohesion: 0.06
+Nodes (10): RedisService, MenuCostsController, MenusService, MenusController, ProductCategoriesController, ShopsController, ShopsService, ThirdPartiesController (+2 more)
 
 ### Community 54 - "Module: OrdersService, .getById()"
-Cohesion: 0.10
-Nodes (7): ChatComponent, OrderDetailsComponent, OrdersComponent, EmptyStateComponent, LinkifyDirective, PdatePipe, ChatType
+Cohesion: 0.11
+Nodes (6): ChatComponent, OrderDetailsComponent, OrdersComponent, LinkifyDirective, PdatePipe, ChatType
 
 ### Community 56 - "home.component.ts"
-Cohesion: 0.06
+Cohesion: 0.05
 Nodes (14): AdminLocalStrategy, AppLocalStrategy, PanelLocalStrategy, UserSchema, DingController, WebPushNotificationsController, WebPushNotificationsService, Ding (+6 more)
 
 ### Community 57 - "Module: PaymentGatewaysController, ..."
-Cohesion: 0.13
-Nodes (6): PaymentGatewaySchema, PayService, AiIntelligenceCardComponent, AiTokenPricing, SizpayComponent, PaymentGatewayType
+Cohesion: 0.09
+Nodes (9): PaymentGatewaySchema, PayService, AiIntelligenceCardComponent, AiTokenPricing, MennoBaleOrdersComponent, SizpayComponent, ThirdPartiesComponent, thirdPartiesRoutes (+1 more)
 
 ### Community 59 - "Module: api-key-auth.guard.ts, ApiK..."
-Cohesion: 0.16
-Nodes (6): appRoutes, authRoutes, LoginComponent, RegisterComponent, loginActivator(), CategoriesComponent
+Cohesion: 0.11
+Nodes (7): appRoutes, authRoutes, LoginComponent, RegisterComponent, loginActivator(), AuthService, CategoriesComponent
+
+### Community 60 - "Module: index.ts, order-type-bottom..."
+Cohesion: 0.10
+Nodes (13): ProductPackItemSchema, BannerEditComponent, BannerAspectRatio, BannerConfig, BannerLink, BannerLinkType, CategoryListConfig, CategoryListViewType (+5 more)
+
+### Community 62 - "Module: ChatController, .constructor()"
+Cohesion: 0.13
+Nodes (4): ImageCarouselComponent, ShopTablesBottomSheetComponent, PrivacyPolicyComponent, ShopTable
 
 ### Community 64 - "Module: project.json, executor"
 Cohesion: 0.08
@@ -529,49 +546,57 @@ Nodes (25): executor, options, outputs, executor, options, outputs, name, assets
 Cohesion: 0.08
 Nodes (25): executor, options, outputs, executor, options, outputs, name, assets (+17 more)
 
+### Community 66 - "Module: .updateMenu(), MenuCostsCon..."
+Cohesion: 0.07
+Nodes (3): AiDataExportComponent, BomListComponent, CategoryItem
+
 ### Community 67 - "Module: AiChatbotService, .buildMes..."
 Cohesion: 0.08
 Nodes (13): AiChatbotService, AiUsage, LIGHT_SYSTEM_PROMPT, LightShopKnowledge, MAX_PRODUCT_CONTEXT, MIN_TOKEN_BALANCE_TO_CHAT, ParsedAiResponse, PRODUCT_SELECTOR_PROMPT (+5 more)
 
 ### Community 68 - "Module: ensureRedisConnected(), get..."
-Cohesion: 0.22
-Nodes (13): getClientApiUrl(), getServerApiUrl(), getServerApiUrlSource(), ServerApiUrlSource, isEnabled(), logSsrApiConfigOnce(), ssrLog, SsrLogMeta (+5 more)
+Cohesion: 0.15
+Nodes (19): getClientApiUrl(), getServerApiUrl(), getServerApiUrlSource(), ServerApiUrlSource, isEnabled(), logSsrApiConfigOnce(), ssrLog, SsrLogMeta (+11 more)
 
 ### Community 69 - "Module: bt(), ct()"
 Cohesion: 0.15
 Nodes (19): bt(), ct(), et(), Gt(), ht(), jt(), kt(), nt() (+11 more)
 
 ### Community 70 - "Module: AiChatbotController, .chat()"
-Cohesion: 0.07
-Nodes (18): OrderCustomerMessageSchema, OrderMessageSchema, PaymentMethodsComponent, OrderStatePipe, COMMON_PIPES, OrderTypePipe, PdatePipe, SafeHtmlPipe (+10 more)
+Cohesion: 0.21
+Nodes (8): OrderCustomerMessageSchema, OrderStatePipe, ORDER_LIST_DEFAULT_STATES, CustomerMessageOnStateChangeConfig, OrderConfig, OrderCustomerMessage, OrderCustomerMessageEvent, OrderState
 
 ### Community 71 - "Module: tsconfig.base.json, compile..."
 Cohesion: 0.09
 Nodes (21): compileOnSave, compilerOptions, baseUrl, declaration, emitDecoratorMetadata, experimentalDecorators, importHelpers, lib (+13 more)
 
 ### Community 72 - "Module: DingController, .constructor()"
-Cohesion: 0.04
-Nodes (21): AiChatbotController, AppController, AppRedirectController, HOSTS, AppService, RegionsController, ShopGroupsController, ShopsController (+13 more)
+Cohesion: 0.05
+Nodes (25): AiChatbotController, AppConfigsController, SmsAccountSchema, RegionsController, ShopPluginsService, ShopGroupsController, SmsTemplatesController, SmsTemplatesService (+17 more)
 
 ### Community 73 - "Module: server.ts, app"
-Cohesion: 0.09
-Nodes (21): app, createApp(), __dirname, ensureRedisConnected(), __filename, getRedis(), HTML_CACHE_TTL_SECONDS, isSsrRoute() (+13 more)
+Cohesion: 0.12
+Nodes (19): app, createApp(), __dirname, ensureRedisConnected(), __filename, getRedis(), HTML_CACHE_TTL_SECONDS, isSsrRoute() (+11 more)
 
 ### Community 74 - "Module: AppComponent, .constructor()"
-Cohesion: 0.08
-Nodes (11): AppComponent, appConfig, config, serverConfig, serverRoutes, provideSsrDataTransfer(), ShopTheme, ThemeMode (+3 more)
+Cohesion: 0.12
+Nodes (7): AppComponent, appConfig, config, serverConfig, serverRoutes, provideSsrDataTransfer(), CampaignWelcomeDialogComponent
 
 ### Community 75 - "Module: app.routes.ts, appRoutes"
-Cohesion: 0.18
-Nodes (4): CategorySectionComponent, ProductCardViewComponent, ProductGridViewComponent, ProductListViewComponent
+Cohesion: 0.22
+Nodes (4): ShopTheme, ThemeMode, ThemeService, ThemeDemoComponent
 
 ### Community 76 - "Module: discount-coupon-report-dial..."
 Cohesion: 0.16
 Nodes (3): OrdersService, PayService, OrderDto
 
+### Community 77 - "Module: .completeMission(), Wallets..."
+Cohesion: 0.14
+Nodes (8): AppComponent, appConfig, appRoutes, ApiInterceptor, apiInterceptorProvider(), IGNORE_CASES, config, provideTranslation()
+
 ### Community 78 - "Module: member-filter-dialog.compon..."
-Cohesion: 0.11
-Nodes (7): getLiaraS3ClientConfiguration(), normalizeLiaraEndpoint(), FilesController, FilesModule, FilesService, MenusModule, ProductsController
+Cohesion: 0.18
+Nodes (5): getLiaraS3ClientConfiguration(), normalizeLiaraEndpoint(), FilesController, FilesModule, FilesService
 
 ### Community 79 - "Module: shop.schema.ts, auth.compon..."
 Cohesion: 0.17
@@ -582,8 +607,8 @@ Cohesion: 0.11
 Nodes (18): angularCompilerOptions, enableI18nLegacyMessageIdFormat, strictInjectionParameters, strictInputAccessModifiers, strictTemplates, compilerOptions, esModuleInterop, forceConsistentCasingInFileNames (+10 more)
 
 ### Community 82 - "Module: alert-banner.component.ts, ..."
-Cohesion: 0.13
-Nodes (5): ProductItemsComponent, ImageCarouselComponent, QuantitySelectorComponent, menuRoutes, ProductDetailsComponent
+Cohesion: 0.09
+Nodes (7): CartComponent, ProductItemsComponent, QuantitySelectorComponent, CartService, menuRoutes, ProductDetailsComponent, ProductCardViewComponent
 
 ### Community 83 - "Module: tsconfig.json, angularCompi..."
 Cohesion: 0.11
@@ -610,24 +635,32 @@ Cohesion: 0.14
 Nodes (14): cache, dependsOn, inputs, dependsOn, inputs, inputs, inputs, targetDefaults (+6 more)
 
 ### Community 90 - "Module: get-file-url.ts, web-app-ma..."
-Cohesion: 0.15
+Cohesion: 0.14
 Nodes (6): AnalyticsService, EMPTY_COUPONS, SHOP_QUERY_KEY(), SHOP_STORAGE_KEY(), ShopService, WelcomeMessageDialogComponent
 
 ### Community 91 - "Module: resolve-shop-username.ts, i..."
-Cohesion: 0.12
-Nodes (17): BillOfMaterialSchema, BillOfProductSchema, InventoryTransactionSchema, PurchaseInvoiceItemSchema, StocktakingItemSchema, StocktakingSchema, materialsRoutes, MaterialsService (+9 more)
+Cohesion: 0.15
+Nodes (13): BillOfProductSchema, InventoryTransactionSchema, PurchaseInvoiceItemSchema, StocktakingItemSchema, materialsRoutes, MaterialsService, BillOfProduct, CostUpdateStrategy (+5 more)
+
+### Community 92 - "Module: index.ts, COMMON_PIPES"
+Cohesion: 0.06
+Nodes (11): BasalamProductSchema, ProductSchema, CartComponent, productHasMainImage(), ProductListComponent, ProductCarouselItemComponent, ProductCarouselViewComponent, ProductListEditComponent (+3 more)
 
 ### Community 93 - "Module: ai-data-export.component.ts..."
-Cohesion: 0.26
-Nodes (10): collectSitemapPaths(), getCategoryPath(), getProductPath(), pathSegment(), buildSitemapXml(), fetchMenu(), fetchMenuForHost(), generateSitemapXml() (+2 more)
+Cohesion: 0.14
+Nodes (5): MenuCostSchema, MenuSchema, CostListComponent, MenuCost, Menu
 
 ### Community 95 - "Module: De(), Ee()"
 Cohesion: 0.14
 Nodes (18): Be(), De(), Ee(), er(), fe(), ie(), je(), ke() (+10 more)
 
+### Community 96 - "Module: home.component.ts, HomeComp..."
+Cohesion: 0.13
+Nodes (5): CampaignService, SignalProductItem, InvoiceComponent, ThanksComponent, DiscountCouponModalComponent
+
 ### Community 97 - "Module: BannerEditComponent, .addIm..."
-Cohesion: 0.05
-Nodes (25): DayGroup, PanelChat, PanelChatCustomer, PanelChatMessage, PanelChatsPageResponse, MemberFilterDialogComponent, MembersTableComponent, DialogService (+17 more)
+Cohesion: 0.08
+Nodes (16): AiChatbotComponent, dirtyFormDeactivator(), FormComponent, DialogService, FilesService, ImageValue, HOME_SECTIONS_QUERY_KEY, HomeSectionsService (+8 more)
 
 ### Community 98 - "Module: .mapAiChatToPanelItem(), .c..."
 Cohesion: 0.17
@@ -640,6 +673,10 @@ Nodes (14): options, assets, browser, index, inlineStyleLanguage, outputMode, ou
 ### Community 101 - "Module: tsconfig.json, compilerOptions"
 Cohesion: 0.14
 Nodes (13): compilerOptions, forceConsistentCasingInFileNames, module, noFallthroughCasesInSwitch, noImplicitOverride, noImplicitReturns, noPropertyAccessFromIndexSignature, strict (+5 more)
+
+### Community 103 - "Module: web-scripts.component.ts, w..."
+Cohesion: 0.13
+Nodes (3): COLS, HomeSectionsComponent, homeSectionsRoutes
 
 ### Community 104 - "Module: tsconfig.json, compilerOptions"
 Cohesion: 0.15
@@ -670,8 +707,8 @@ Cohesion: 0.18
 Nodes (11): production, port, budgets, buildTarget, fileReplacements, outputHashing, configurations, defaultConfiguration (+3 more)
 
 ### Community 114 - "Module: chunk-array.ts, chunkArray()"
-Cohesion: 0.14
-Nodes (5): randomCharacters(), sortByCreatedAt(), sortByCreatedAtDesc(), arabicNumbers, persianNumbers
+Cohesion: 0.15
+Nodes (4): sortByCreatedAt(), sortByCreatedAtDesc(), arabicNumbers, persianNumbers
 
 ### Community 115 - "Module: nx.json, affected"
 Cohesion: 0.22
@@ -706,12 +743,12 @@ Cohesion: 0.25
 Nodes (9): buildTarget, port, spa, staticFilePath, options, options, executor, options (+1 more)
 
 ### Community 124 - "Module: sitemap.ts, buildSitemapXml()"
-Cohesion: 0.15
-Nodes (4): GoBackDirective, StopPropagationDirective, CredentialRequestOptions, WebOtpDirective
+Cohesion: 0.11
+Nodes (7): VpnCheckService, EmptyStateComponent, QuantitySelectorComponent, GoBackDirective, StopPropagationDirective, CredentialRequestOptions, WebOtpDirective
 
 ### Community 125 - "Module: PaymentMethodsComponent, .a..."
-Cohesion: 0.22
-Nodes (3): SmsGroupComponent, SmsListComponent, smsRoutes
+Cohesion: 0.15
+Nodes (5): COMMON_PIPES, MenuCurrencyPipe, OrderTypePipe, PdatePipe, SafeHtmlPipe
 
 ### Community 128 - "Module: tsconfig.spec.json, compile..."
 Cohesion: 0.22
@@ -741,13 +778,17 @@ Nodes (7): compilerOptions, outDir, types, exclude, extends, files, include
 Cohesion: 0.25
 Nodes (8): development, buildOptimizer, buildTarget, extractLicenses, namedChunks, optimization, sourceMap, vendorChunk
 
+### Community 137 - "Module: ProductListEditComponent, ...."
+Cohesion: 0.14
+Nodes (3): MissionEditComponent, MissionListComponent, missionsRoutes
+
 ### Community 138 - "Module: .addSubcategory(), .addSubc..."
 Cohesion: 0.12
 Nodes (3): PurchaseInvoiceSchema, PurchaseInvoicesComponent, PurchaseInvoice
 
 ### Community 139 - "Module: OrderListExtraFiltersDialog..."
-Cohesion: 0.24
-Nodes (14): getFileUrl(), buildCategoriesPageSeo(), buildCategoryPageSeo(), buildHomePageSeo(), buildProductPageSeo(), shopDescription(), shopDisplayName(), shopImage() (+6 more)
+Cohesion: 0.21
+Nodes (18): getFileUrl(), buildCategoriesPageSeo(), buildCategoryPageSeo(), buildHomePageSeo(), buildProductPageSeo(), shopDescription(), shopDisplayName(), shopImage() (+10 more)
 
 ### Community 140 - "Module: DeliveryAreaMapComponent, ...."
 Cohesion: 0.50
@@ -809,6 +850,10 @@ Nodes (6): compilerOptions, module, outDir, types, extends, include
 Cohesion: 0.33
 Nodes (6): executor, options, executor, targets, extract-i18n, lint
 
+### Community 157 - "Module: UpsellProductsComponent, .c..."
+Cohesion: 0.13
+Nodes (3): StocktakingSchema, StocktakingComponent, Stocktaking
+
 ### Community 161 - "Module: configurations, production"
 Cohesion: 0.33
 Nodes (6): configurations, production, budgets, buildTarget, fileReplacements, outputHashing
@@ -865,6 +910,10 @@ Nodes (4): compilerOptions, exclude, extends, include
 Cohesion: 0.40
 Nodes (4): ignorePatterns, overrides, plugins, root
 
+### Community 179 - "ai-chatbot.service.ts"
+Cohesion: 0.16
+Nodes (3): MenuStatsController, MenusModule, ProductsController
+
 ### Community 181 - "Module: .eslintrc.json, extends"
 Cohesion: 0.50
 Nodes (3): extends, ignorePatterns, overrides
@@ -874,8 +923,12 @@ Cohesion: 0.50
 Nodes (3): extends, ignorePatterns, overrides
 
 ### Community 183 - "Module: CategoryComponent, .constru..."
-Cohesion: 0.11
-Nodes (6): ProductPackItemSchema, AvailabilityItem, ProductAvailabilityComponent, ProductItem, ProductPackItem, ProductVariant
+Cohesion: 0.10
+Nodes (7): ProductAvailabilityComponent, Campaign, CampaignAction, CampaignManualCost, ProductItem, OrderDetails, ProductVariant
+
+### Community 184 - "Module: SearchComponent, .construct..."
+Cohesion: 0.27
+Nodes (3): MissionsService, OrdersSubscriber, randomCharacters()
 
 ### Community 185 - "Module: .eslintrc.json, extends"
 Cohesion: 0.50
@@ -888,6 +941,10 @@ Nodes (3): extends, ignorePatterns, overrides
 ### Community 187 - "Module: defaultConfiguration, executor"
 Cohesion: 0.50
 Nodes (4): defaultConfiguration, executor, outputs, build
+
+### Community 189 - "Module: BuyDaysDialogComponent, .fo..."
+Cohesion: 0.20
+Nodes (5): OrderMessageSchema, PaymentMethodsComponent, ManualSettlementDto, OrderPaymentType, OrderReportDto
 
 ### Community 190 - "Module: .eslintrc.json, extends"
 Cohesion: 0.50
@@ -910,16 +967,16 @@ Cohesion: 0.33
 Nodes (5): 1. Reading Documentation First, 2. Syncing and Updating Documentation, 3. Communication and Clarification, Documentation Alignment & User Clarity Skill, Objectives
 
 ### Community 229 - "OrderChatComponent"
-Cohesion: 0.10
-Nodes (8): ApiKeyAuthGuard, RequiredScopes(), ShopApiKeySchema, RequestShop, ShopApiKeysController, DeveloperApiComponent, FilterOrderDto, ShopApiKey
+Cohesion: 0.17
+Nodes (6): ApiKeyAuthGuard, RequiredScopes(), BillOfMaterialSchema, RequestShop, FilterOrderDto, BillOfMaterial
 
 ### Community 233 - "Project Rules for Menno Nx Monorepo"
 Cohesion: 0.50
 Nodes (3): Deprecated Projects / پروژه‌های دپریکیت شده, Project Rules for Menno Nx Monorepo, Use graphify First
 
 ### Community 234 - "index.ts"
-Cohesion: 0.08
-Nodes (17): ImageValue, CategoryListEditComponent, COLS, homeSectionsRoutes, HOME_SECTIONS_QUERY_KEY, HomeSectionsService, ImageLoaderDirective, BannerConfig (+9 more)
+Cohesion: 0.07
+Nodes (7): HomeComponent, CategoryListComponent, CategoryListEditComponent, CategoryListComponent, MenuListComponent, AvailabilityItem, ProductCategory
 
 ### Community 235 - ".createMaterial"
 Cohesion: 0.18
@@ -930,32 +987,44 @@ Cohesion: 0.24
 Nodes (3): McpSession, ShopIntegrationMcpController, ShopIntegrationModule
 
 ### Community 242 - "OtpComponent"
-Cohesion: 0.10
-Nodes (5): authRoutes, LoginComponent, OtpComponent, RegisterComponent, AuthService
+Cohesion: 0.09
+Nodes (8): authRoutes, LoginComponent, OtpComponent, RegisterComponent, AuthService, MenuStatService, MenuStatDto, StatAction
 
 ### Community 243 - "BillOfMaterial"
 Cohesion: 0.17
 Nodes (10): BaleBotRuntime, BaleChat, BaleContact, BaleFrom, BaleMessage, BaleTelegramResponse, BaleUpdate, BaleBotKeys (+2 more)
 
+### Community 248 - "app.module.ts"
+Cohesion: 0.17
+Nodes (7): appConfig, appRoutes, JALALI_MOMENT_FORMATS, provideJalaliDatePickerProvider(), paginatorIntlProvider(), config, provideTranslation()
+
+### Community 267 - ".withCommas"
+Cohesion: 0.30
+Nodes (5): AppConfigSchema, ProductCategorySchema, DeliveryType, MenuViewType, OrderType
+
+### Community 272 - "api.provider.ts"
+Cohesion: 0.36
+Nodes (4): ApiInterceptor, apiInterceptorProvider(), IGNORE_CASES, AlertDialogComponent
+
 ## Knowledge Gaps
 - **862 isolated node(s):** `name`, `$schema`, `sourceRoot`, `projectType`, `executor` (+857 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **94 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **93 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `dependencies` connect `Workspace Dependencies` to `Module: package.json, engines`, `Module: DingController, .constructor()`?**
   _High betweenness centrality (0.084) - this node is a cross-community bridge._
-- **Why does `kavenegar` connect `Module: DingController, .constructor()` to `User and Address Controllers`, `Workspace Dependencies`?**
+- **Why does `kavenegar` connect `Module: DingController, .constructor()` to `Workspace Dependencies`?**
   _High betweenness centrality (0.082) - this node is a cross-community bridge._
-- **Why does `Shop` connect `Module: DingController, .constructor()` to `User and Address Controllers`, `Database Schemas and Core Module`, `Shop Integration Controllers`, `NestJS App Modules`, `Order System and Schemas`, `Frontend Dialogs and Guards`, `BOM and Product UI Components`, `Module: .addSubcategory(), .addSubc...`, `Module: OrderListExtraFiltersDialog...`, `Module: AiChatbotComponent, .canDea...`, `Address UI Components and Regions`, `Module: .constructor(), admin-local...`, `Module: image-loader.directive.ts, ...`, `Module: .torobProducts(), link.serv...`, `Module: ai-chatbot.component.ts, co...`, `Module: address-edit.component.ts, ...`, `Module: addresses.controller.ts, ai...`, `Module: basalam.controller.ts, Basa...`, `.startBotForShop`, `Module: cost-summary.component.ts, ...`, `Module: BaleBotsService, .buildInli...`, `AiChatbot`, `Module: discount-coupon-modal.compo...`, `Module: AuthController, .changePane...`, `Module: .key(), print-action.schema.ts`, `Module: index.ts, footer.component.ts`, `Module: .constructor(), OrdersSubsc...`, `Module: HomeSectionsController, .co...`, `Module: app.component.ts, index.ts`, `Module: MissionsController, .constr...`, `Module: orders.service.ts, OrdersSe...`, `Module: CartService, .clear()`, `Module: SearchComponent, .construct...`, `home.component.ts`, `Module: AiChatbotService, .buildMes...`, `Module: ensureRedisConnected(), get...`, `Module: AiChatbotController, .chat()`, `Module: ssr-data.provider.ts, HOME_...`, `Module: get-file-url.ts, web-app-ma...`, `Module: resolve-shop-username.ts, i...`, `Module: BannerEditComponent, .addIm...`, `OrderChatComponent`, `Module: PageSeoConfig, SeoService`, `index.ts`, `.createMaterial`, `Module: AuthService, .constructor()`, `Module: ai-chatbot.service.ts, AiUsage`, `NewOrdersService`, `BillOfMaterial`?**
+- **Why does `Shop` connect `Module: DingController, .constructor()` to `User and Address Controllers`, `Database Schemas and Core Module`, `Shop Integration Controllers`, `NestJS App Modules`, `Order System and Schemas`, `Frontend Dialogs and Guards`, `BOM and Product UI Components`, `Module: .addSubcategory(), .addSubc...`, `Module: OrderListExtraFiltersDialog...`, `Module: AiChatbotComponent, .canDea...`, `Address UI Components and Regions`, `app.controller.ts`, `Module: .constructor(), admin-local...`, `Module: ai-chatbot.component.ts, co...`, `Module: address-edit.component.ts, ...`, `Module: menu-cost.schema.ts, produc...`, `Module: addresses.controller.ts, ai...`, `Module: UpsellProductsComponent, .c...`, `Module: basalam.controller.ts, Basa...`, `.startBotForShop`, `Module: BaleBotsService, .buildInli...`, `AiChatbot`, `Module: discount-coupon-modal.compo...`, `Module: AuthController, .changePane...`, `Module: .key(), print-action.schema.ts`, `Module: .constructor(), OrdersSubsc...`, `Module: HomeSectionsController, .co...`, `Module: app.component.ts, index.ts`, `Module: MissionsController, .constr...`, `Module: orders.service.ts, OrdersSe...`, `Module: CartService, .clear()`, `Module: SearchComponent, .construct...`, `home.component.ts`, `Module: index.ts, order-type-bottom...`, `Module: AiChatbotService, .buildMes...`, `Module: ensureRedisConnected(), get...`, `Module: AiChatbotController, .chat()`, `Module: alert-banner.component.ts, ...`, `Module: ssr-data.provider.ts, HOME_...`, `Module: get-file-url.ts, web-app-ma...`, `Module: resolve-shop-username.ts, i...`, `Module: index.ts, COMMON_PIPES`, `Module: ai-data-export.component.ts...`, `OrderChatComponent`, `Module: PageSeoConfig, SeoService`, `.createMaterial`, `Module: AuthService, .constructor()`, `Module: ai-chatbot.service.ts, AiUsage`, `NewOrdersService`, `BillOfMaterial`?**
   _High betweenness centrality (0.076) - this node is a cross-community bridge._
 - **What connects `name`, `$schema`, `sourceRoot` to the rest of the system?**
   _862 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Utility Helper Methods` be split into smaller, more focused modules?**
   _Cohesion score 0.02727272727272727 - nodes in this community are weakly interconnected._
 - **Should `User and Address Controllers` be split into smaller, more focused modules?**
-  _Cohesion score 0.06299603174603174 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07246376811594203 - nodes in this community are weakly interconnected._
 - **Should `Database Schemas and Core Module` be split into smaller, more focused modules?**
-  _Cohesion score 0.046760710553814006 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.0526006464883926 - nodes in this community are weakly interconnected._

@@ -266,5 +266,17 @@
   "264": "shop-settlements-filter.dto.ts",
   "265": "stock-item.ts",
   "266": "order-review.ts",
-  "267": ".withCommas"
+  "267": ".withCommas",
+  "268": "NewOrdersService",
+  "269": "PaymentMethodsComponent",
+  "270": "app.controller.ts",
+  "271": "ShellComponent",
+  "272": "api.provider.ts",
+  "273": "DeveloperApiComponent",
+  "274": "ImageLoaderDirective",
+  "275": "ClubService",
+  "276": "AlopeykComponent",
+  "277": "CategoryComponent",
+  "278": "PaginatorIntl",
+  "279": "AppComponent"
 }
