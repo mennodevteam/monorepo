@@ -44,3 +44,11 @@ ng-icon[middle] {
 .visible-overflow.mat-mdc-dialog-panel .mat-mdc-dialog-surface {
   overflow: visible !important;
 }
+
+.cdk-overlay-backdrop {
+  &.cdk-overlay-dark-backdrop {
+    background: rgba(0, 0, 0, 0.6) !important;
+  }
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
