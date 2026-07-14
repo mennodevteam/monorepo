@@ -70,7 +70,10 @@ export class AutoSmsSettingComponent implements OnInit {
     },
     onError: (err, newData, context) => {
       this.snack.open('خطا در تغییر وضعیت', '', { duration: 2000 });
-      this.queryClient.setQueryData(['orders'], context?.previousData);
+      this.queryClient.setQueryData(['orderMessages'], context?.previousData);
+    },
+    onSuccess: () => {
+      this.queryClient.invalidateQueries({ queryKey: ['orderMessages'] });
     },
   }));
 
@@ -110,7 +113,7 @@ export class AutoSmsSettingComponent implements OnInit {
   }
 
   async setTemplate(message: OrderMessage) {
-    const smsTemplate = await this.sms.newTemplate();
+    const smsTemplate = await this.sms.newTemplate(message.smsTemplate);
     if (smsTemplate) this.saveMutation.mutate({ id: message.id, smsTemplate });
   }
 }

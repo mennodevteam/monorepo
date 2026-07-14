@@ -11,6 +11,7 @@ import { UserManagementComponent } from './user-management/user-management.compo
 import { WebScriptsComponent } from './web-scripts/web-scripts.component';
 import { SettingsHomeComponent } from './settings-home/settings-home.component';
 import { DomainSettingComponent } from './domain/domain.component';
+import { AutoSmsSettingComponent } from './sms/sms.component';
 
 export const settingsRoutes: Route[] = [
   {
@@ -23,6 +24,7 @@ export const settingsRoutes: Route[] = [
       { path: 'app-config', component: AppConfigComponent, canDeactivate: [dirtyFormDeactivator] },
       { path: 'order-config', component: OrderConfigComponent, canDeactivate: [dirtyFormDeactivator] },
       { path: 'welcome-message', component: WelcomeMessageComponent, canDeactivate: [dirtyFormDeactivator] },
+      { path: 'sms', component: AutoSmsSettingComponent },
       { path: 'delivery-area', component: DeliveryAreaComponent },
       { path: 'users', component: UserManagementComponent },
       { path: 'web-scripts', component: WebScriptsComponent },

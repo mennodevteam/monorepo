@@ -10,7 +10,24 @@
   </button>
 </mat-toolbar>
 
-<main p-md w-md>
+<main p-md w-md class="animate-slide-up">
+  <!-- Promo Banner -->
+  <mat-card class="promo-card orange">
+    <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+      <div class="np-icon-badge"><ng-icon name="saxInfoCircleOutline"></ng-icon></div>
+      <div fxFlex>
+        <div class="desc" style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
+          <h4 style="margin: 0 0 4px 0; font-size: 0.875rem; font-weight: 600; color: var(--text-primary);">
+            {{ 'orderMessagesSetting.promoTitle' | translate }}
+          </h4>
+          <p style="margin: 0;">
+            {{ 'orderMessagesSetting.promoDescription' | translate }}
+          </p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
   <mat-card appearance="outlined">
     <mat-card-content>
       @if (query.data()) {

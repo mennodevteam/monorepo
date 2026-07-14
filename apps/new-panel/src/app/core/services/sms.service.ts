@@ -55,17 +55,17 @@ export class SmsService {
       });
   }
 
-  async newTemplate() {
+  async newTemplate(template?: SmsTemplate) {
     const dto = await this.dialog.prompt(
-      this.t.instant('sms.newTemplateDialog.title'),
+      template ? 'ویرایش قالب پیام' : this.t.instant('sms.newTemplateDialog.title'),
       {
         title: {
           label: this.t.instant('sms.newTemplateDialog.titleLabel'),
-          control: new FormControl('', Validators.required),
+          control: new FormControl(template?.title || '', Validators.required),
         },
         message: {
           label: this.t.instant('sms.newTemplateDialog.messageLabel'),
-          control: new FormControl('', Validators.required),
+          control: new FormControl(template?.message || '', Validators.required),
           type: 'textarea',
           rows: 6,
         },
@@ -74,7 +74,7 @@ export class SmsService {
         description: this.t.instant('sms.newTemplateDialog.description'),
       },
     );
-    if (dto) return this.saveTemplateMutation.mutateAsync(dto);
+    if (dto) return this.saveTemplateMutation.mutateAsync({ ...template, ...dto });
     return;
   }
 }

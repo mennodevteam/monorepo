@@ -21,7 +21,14 @@
     <th mat-header-cell *matHeaderCellDef>{{ 'orderMessagesSetting.template' | translate }}</th>
     <td mat-cell *matCellDef="let message">
       <button mat-button (click)="setTemplateClick.emit(message)">
-        {{ message.smsTemplate?.title }}
+        @if (message.smsTemplate) {
+          {{ message.smsTemplate.title }}
+        } @else {
+          <span style="color: var(--mdc-theme-text-secondary-on-background, #888); display: inline-flex; align-items: center; gap: 4px;">
+            <ng-icon name="saxAddOutline" style="font-size: 16px;"></ng-icon>
+            {{ 'sms.newTemplateDialog.title' | translate }}
+          </span>
+        }
       </button>
     </td>
   </ng-container>

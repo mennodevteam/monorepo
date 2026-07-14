@@ -92,6 +92,13 @@ export class SettingsHomeComponent {
       colorClass: 'purple'
     },
     {
+      title: 'orderMessagesSetting.title',
+      subtitle: 'تنظیمات ارسال خودکار پیامک به مشتری پس از ثبت، ویرایش، تغییر وضعیت و پرداخت سفارش',
+      route: 'sms',
+      icon: 'saxSmsOutline',
+      colorClass: 'orange'
+    },
+    {
       title: 'settings.deliveryAreas',
       subtitle: 'تعیین محدوده‌های پیک، هزینه ارسال سفارشات و حداقل مبلغ خرید هر محدوده',
       route: 'delivery-area',
