@@ -61,7 +61,7 @@
       <!-- MCP Server Link Card -->
       <mat-card appearance="outlined">
         <mat-card-header>
-          <mat-card-title style="font-weight: 500; font-size: 0.9rem;">لینک اتصال مستقیم سرور MCP (HTTP)</mat-card-title>
+          <mat-card-title style="font-weight: 500; font-size: 0.9rem;">لینک اتصال مستقیم سرور MCP (SSE)</mat-card-title>
         </mat-card-header>
         <mat-card-content style="padding-top: 16px;">
           <div class="np-form-row" style="direction: ltr; align-items: center !important;">
@@ -103,12 +103,12 @@
             <pre style="direction: ltr; font-family: monospace; font-size: 0.72rem; background: #f5f5f5; padding: 10px; border-radius: 6px; overflow-x: auto; margin: 0 0 12px 0; border: 1px solid var(--border-color);">
 "mcpServers": &#123;
   "shottt": &#123;
-    "type": "http",
+    "type": "sse",
     "url": "{{ mcpUrl }}?apiKey=YOUR_API_KEY"
   &#125;
 &#125;</pre>
             <p style="margin: 0; font-size: 0.72rem; color: var(--text-muted); line-height: 1.5;">
-              همچنین می‌توانید از منوی Settings > Features > MCP در Cursor یک سرور جدید با نام دلخواه (مثلاً shottt)، نوع <strong>HTTP</strong> و با آدرس و کلید دسترسی فوق ایجاد کنید.
+              همچنین می‌توانید از منوی Settings > Features > MCP در Cursor یک سرور جدید با نام دلخواه (مثلاً shottt)، نوع <strong>SSE</strong> و با آدرس و کلید دسترسی فوق ایجاد کنید.
             </p>
           </div>
 
@@ -120,7 +120,7 @@
             <pre style="direction: ltr; font-family: monospace; font-size: 0.72rem; background: #f5f5f5; padding: 10px; border-radius: 6px; overflow-x: auto; margin: 0; border: 1px solid var(--border-color);">
 "mcpServers": &#123;
   "shottt": &#123;
-    "type": "http",
+    "type": "sse",
     "url": "{{ mcpUrl }}?apiKey=YOUR_API_KEY"
   &#125;
 &#125;</pre>

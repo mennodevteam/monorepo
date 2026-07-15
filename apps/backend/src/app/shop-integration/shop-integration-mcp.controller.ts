@@ -145,8 +145,8 @@ export class ShopIntegrationMcpController {
     this.sessions.set(sessionId, { res, shop });
 
     // Send the endpoint notification event as per MCP SSE Transport Spec
-    const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
-    const host = req.get('host');
+    const protocol = (req.headers['x-forwarded-proto'] as string) || (req.secure ? 'https' : 'http');
+    const host = (req.headers['x-forwarded-host'] as string) || req.get('host');
     const baseUrl = `${protocol}://${host}`;
     const messageUrl = `${baseUrl}/api/v1/shop-integration/mcp/messages?sessionId=${sessionId}`;
 
