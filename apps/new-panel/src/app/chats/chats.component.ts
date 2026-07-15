@@ -109,7 +109,7 @@ export class ChatsComponent implements OnInit {
 
   messagesByDay = computed(() => {
     const chats = this.messagesQuery.data() || [];
-    const sortedChats = chats.slice().reverse();
+    const sortedChats = chats.slice();
     const dayMap = new Map<string, { dateKey: string; date: Date; messages: Chat[] }>();
 
     for (const chat of sortedChats) {
