@@ -1,6 +1,6 @@
 import { Payment, PaymentGateway, PaymentGatewayType, PaymentToken } from '@menno/types';
 import { HttpService } from '@nestjs/axios';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -19,6 +19,8 @@ const ZARINPAL_VERIFY_URL = 'https://api.zarinpal.com/pg/v4/payment/verify.json'
 
 @Injectable()
 export class PaymentsService {
+  private readonly logger = new Logger(PaymentsService.name);
+
   constructor(
     @InjectRepository(PaymentToken)
     private tokensRepository: Repository<PaymentToken>,
@@ -107,6 +109,8 @@ export class PaymentsService {
         await this.tokensRepository.save(token);
         return `${ZIBAL_START_URL}/${token.id}`;
       }
+      this.logger.error(`Zibal payment request failed: ${JSON.stringify(tokenResponse)}`);
+      throw new HttpException(tokenResponse.message || 'خطا در ارتباط با درگاه زیبال', HttpStatus.BAD_REQUEST);
     } else if (gateway.type === PaymentGatewayType.Zarinpal) {
       const getTokenBody = {
         merchant_id: gateway.keys.merchantId,
@@ -117,13 +121,13 @@ export class PaymentsService {
         callback_url: dto.returnUrl,
       };
 
-      const tokenResponse: any = (await this.http.post(ZARINPAL_REQUEST_URL, getTokenBody).toPromise()).data.data;
-      if (tokenResponse.code == 100) {
+      const response: any = (await this.http.post(ZARINPAL_REQUEST_URL, getTokenBody).toPromise()).data;
+      if (response.data && response.data.code == 100) {
         const token = new PaymentToken();
         token.amount = dto.amount;
         token.userId = dto.userId;
         token.userPhone = dto.userPhone;
-        token.id = tokenResponse.authority;
+        token.id = response.data.authority;
         token.appReturnUrl = dto.appReturnUrl;
         token.extraInfo = dto.extraInfo;
         token.details = dto.details;
@@ -137,6 +141,9 @@ export class PaymentsService {
         await this.tokensRepository.save(token);
         return `${ZARINPAL_START_URL}/${token.id}`;
       }
+      this.logger.error(`Zarinpal payment request failed: ${JSON.stringify(response)}`);
+      const errorMsg = response.errors?.message || 'خطا در ارتباط با درگاه زرین‌پال';
+      throw new HttpException(errorMsg, HttpStatus.BAD_REQUEST);
     }
   }
 

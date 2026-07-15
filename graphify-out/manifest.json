@@ -275,8 +275,8 @@
     "semantic_hash": "bd4685df272ef3e0dda69d6951cdf4a5"
   },
   "apps/backend/src/app/core/redis.service.ts": {
-    "mtime": 1783985571.0835445,
-    "ast_hash": "182b3841bd0b9d11bd7040ea84358f64",
+    "mtime": 1784022015.6287491,
+    "ast_hash": "08e0d4345511a0dde550c2f19242bf0f",
     "semantic_hash": ""
   },
   "apps/backend/src/app/core/schemas/address.schema.ts": {
@@ -710,8 +710,8 @@
     "semantic_hash": "4953baa3a2ffb822d42b9609672d6c41"
   },
   "apps/backend/src/app/menus/menus.controller.ts": {
-    "mtime": 1783985255.8329122,
-    "ast_hash": "0b9621f5be717a5ed80b2eb402e97509",
+    "mtime": 1784022020.352338,
+    "ast_hash": "d81cd307caf6249218d34579d0b1573b",
     "semantic_hash": ""
   },
   "apps/backend/src/app/menus/menus.module.ts": {
@@ -840,8 +840,8 @@
     "semantic_hash": "c1a1a9eaeec3249f7caf51d60098fc77"
   },
   "apps/backend/src/app/shop-integration/shop-integration-mcp.controller.ts": {
-    "mtime": 1783934316.3864858,
-    "ast_hash": "8b1ff99ff508e515147afa596da6ee59",
+    "mtime": 1784101639.1945348,
+    "ast_hash": "0775c4e1de0a3be6604e5c3d0b4f732e",
     "semantic_hash": ""
   },
   "apps/backend/src/app/shop-integration/shop-integration.controller.ts": {
@@ -2485,8 +2485,8 @@
     "semantic_hash": "a784e9c7593604a08dd173091a73c23b"
   },
   "apps/new-panel/public/i18n/fa.json": {
-    "mtime": 1783867837.5695362,
-    "ast_hash": "fb4d615b0da402239588dbbeb391a289",
+    "mtime": 1784023491.7347543,
+    "ast_hash": "4a541f9c4d05247482af257c36922df4",
     "semantic_hash": ""
   },
   "apps/new-panel/src/app/ai-chat-history/ai-chat-history.component.ts": {
@@ -2585,9 +2585,9 @@
     "semantic_hash": "2ee18780edf692cda77a4f0f4c4c6827"
   },
   "apps/new-panel/src/app/chats/chats.component.ts": {
-    "mtime": 1783518917.3988118,
-    "ast_hash": "2af6be0be48e4cf8192b430a981a0c0f",
-    "semantic_hash": "2af6be0be48e4cf8192b430a981a0c0f"
+    "mtime": 1784104276.476909,
+    "ast_hash": "44fd9bf96c1a2ca8480de58d08e4e1c6",
+    "semantic_hash": ""
   },
   "apps/new-panel/src/app/club/club.routes.ts": {
     "mtime": 1755375820.9015303,
@@ -2700,9 +2700,9 @@
     "semantic_hash": "9ee872c89f87abd300bf6b2211d1a1aa"
   },
   "apps/new-panel/src/app/core/services/sms.service.ts": {
-    "mtime": 1752349429.182603,
-    "ast_hash": "fba6bb9a0165f88ae0a71bf54f0cc185",
-    "semantic_hash": "fba6bb9a0165f88ae0a71bf54f0cc185"
+    "mtime": 1784023034.24573,
+    "ast_hash": "0c95ee34bf94c06c5161c5bbe44ed89a",
+    "semantic_hash": ""
   },
   "apps/new-panel/src/app/developer-api/developer-api.component.ts": {
     "mtime": 1782590093.9476707,
@@ -3230,9 +3230,9 @@
     "semantic_hash": "447b28cce7f82b2c45471bb20a57803c"
   },
   "apps/new-panel/src/app/settings/settings-home/settings-home.component.ts": {
-    "mtime": 1781962794.054458,
-    "ast_hash": "85080d04a8bbb51d4677b6de2f3e6e3f",
-    "semantic_hash": "85080d04a8bbb51d4677b6de2f3e6e3f"
+    "mtime": 1784023029.8257315,
+    "ast_hash": "e890957110f2c9140d42ab0089acfd20",
+    "semantic_hash": ""
   },
   "apps/new-panel/src/app/settings/settings.component.spec.ts": {
     "mtime": 1751416864.0644553,
@@ -3245,9 +3245,9 @@
     "semantic_hash": "28ef5cb50bce9b30dec6f7d3df5d4fc3"
   },
   "apps/new-panel/src/app/settings/settings.routes.ts": {
-    "mtime": 1781960979.686538,
-    "ast_hash": "00fddb61cc53662aa03ad4babea11452",
-    "semantic_hash": "00fddb61cc53662aa03ad4babea11452"
+    "mtime": 1784023025.9094708,
+    "ast_hash": "1fe63db724f44400bfc442b641c9d6d8",
+    "semantic_hash": ""
   },
   "apps/new-panel/src/app/settings/shop/shop.component.spec.ts": {
     "mtime": 1751416864.065123,
@@ -3260,9 +3260,9 @@
     "semantic_hash": "11b513184cbcee3acb89f6a2743c9bb6"
   },
   "apps/new-panel/src/app/settings/sms/sms.component.ts": {
-    "mtime": 1781785877.1426547,
-    "ast_hash": "5b4979dadfe9afd2c435b6f14a1b2bb5",
-    "semantic_hash": "5b4979dadfe9afd2c435b6f14a1b2bb5"
+    "mtime": 1784023042.0625184,
+    "ast_hash": "c2b9dcb41ff3db17c280a123f0819d59",
+    "semantic_hash": ""
   },
   "apps/new-panel/src/app/settings/sms/table/table.component.ts": {
     "mtime": 1776842259.5791023,
@@ -4770,9 +4770,9 @@
     "semantic_hash": "9c3466c258b0d7af4ebe135ee3370eb2"
   },
   "apps/new-panel/src/app/developer-api/developer-api.component.html": {
-    "mtime": 1782590108.2948184,
-    "ast_hash": "3133cfa9d099d6606fe46317ca2c5283",
-    "semantic_hash": "3133cfa9d099d6606fe46317ca2c5283"
+    "mtime": 1784101647.8172586,
+    "ast_hash": "06f859aa0a1017d42fd4a3b582c48836",
+    "semantic_hash": ""
   },
   "apps/new-panel/src/app/discount-coupons/discount-coupon-report-dialog.component.html": {
     "mtime": 1783165712.8173501,
@@ -5120,14 +5120,14 @@
     "semantic_hash": "6f5dc8ac4f43d14dc15aa72bd43166b1"
   },
   "apps/new-panel/src/app/settings/sms/sms.component.html": {
-    "mtime": 1781904926.0582948,
-    "ast_hash": "036b9f49e3105ec8475d4b59b6f7da4a",
-    "semantic_hash": "036b9f49e3105ec8475d4b59b6f7da4a"
+    "mtime": 1784023498.1163177,
+    "ast_hash": "91bab7deed25968586764cadbc75618d",
+    "semantic_hash": ""
   },
   "apps/new-panel/src/app/settings/sms/table/table.component.html": {
-    "mtime": 1781789183.446768,
-    "ast_hash": "8b7dc19720a0f8fac524786659ba911a",
-    "semantic_hash": "8b7dc19720a0f8fac524786659ba911a"
+    "mtime": 1784023060.825589,
+    "ast_hash": "3ae1dc27edf21774527b39b82ee877f1",
+    "semantic_hash": ""
   },
   "apps/new-panel/src/app/settings/third-parties/alopeyk/alopeyk.component.html": {
     "mtime": 1781904926.0709379,
