@@ -2,7 +2,7 @@ import { Product, ProductVariant, Shop } from '@menno/types';
 import { getFileUrl } from '../functions/get-file-url';
 
 function shopName(shop: Shop): string {
-  return shop.seo?.title?.trim() || shop.title?.trim() || 'Shop';
+  return shop.title?.trim() || shop.seo?.title?.trim() || 'Shop';
 }
 
 function availabilityUrl(product: Product, variant?: ProductVariant): string {
