@@ -262,8 +262,35 @@ export class ShopIntegrationMcpController {
         inputSchema: { type: 'object', properties: {} },
       },
       {
+        name: 'create_category',
+        description: 'ایجاد یک دسته‌بندی جدید در منوی فروشگاه.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            title: { type: 'string', description: 'عنوان دسته‌بندی (مثلاً نوشیدنی گرم، پیتزا)' },
+            description: { type: 'string', description: 'توضیحات دسته‌بندی' },
+            status: { type: 'number', description: 'وضعیت دسته‌بندی (0: غیرفعال، 1: فعال)' },
+          },
+          required: ['title'],
+        },
+      },
+      {
+        name: 'update_category',
+        description: 'ویرایش اطلاعات یک دسته‌بندی موجود در منوی فروشگاه.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            id: { type: 'number', description: 'شناسه عددی دسته‌بندی' },
+            title: { type: 'string', description: 'عنوان جدید دسته‌بندی' },
+            description: { type: 'string', description: 'توضیحات جدید' },
+            status: { type: 'number', description: 'وضعیت جدید (0: غیرفعال، 1: فعال)' },
+          },
+          required: ['id'],
+        },
+      },
+      {
         name: 'create_product',
-        description: 'ایجاد یک محصول جدید در منوی فروشگاه.',
+        description: 'ایجاد یک محصول جدید در منوی فروشگاه به همراه متغیرها (سایزها/طعم‌ها) یا پکیج‌ها.',
         inputSchema: {
           type: 'object',
           properties: {
@@ -276,6 +303,32 @@ export class ShopIntegrationMcpController {
               type: 'object',
               properties: { id: { type: 'number', description: 'شناسه دسته‌بندی' } },
               required: ['id'],
+            },
+            variants: {
+              type: 'array',
+              description: 'لیست متغیرهای محصول (سایزها، طعم‌ها یا قیمت‌های متغیر)',
+              items: {
+                type: 'object',
+                properties: {
+                  title: { type: 'string', description: 'عنوان متغیر (مثلاً بزرگ، دوبل، کم‌چرب)' },
+                  price: { type: 'number', description: 'قیمت متغیر به تومان' },
+                  status: { type: 'number', description: 'وضعیت (0: غیرفعال، 1: فعال)' },
+                  packItems: {
+                    type: 'array',
+                    description: 'اقلام پکیج در صورتی که این متغیر پکیج باشد',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        productId: { type: 'string', description: 'شناسه محصول داخل پکیج' },
+                        variantId: { type: 'number', description: 'شناسه متغیر محصول داخل پکیج (اختیاری)' },
+                        quantity: { type: 'number', description: 'تعداد' },
+                      },
+                      required: ['productId', 'quantity'],
+                    },
+                  },
+                },
+                required: ['title', 'price'],
+              },
             },
             packItems: {
               type: 'array',
@@ -296,7 +349,7 @@ export class ShopIntegrationMcpController {
       },
       {
         name: 'update_product',
-        description: 'ویرایش اطلاعات یک محصول موجود.',
+        description: 'ویرایش اطلاعات یک محصول موجود به همراه متغیرها و اقلام پکیج.',
         inputSchema: {
           type: 'object',
           properties: {
@@ -306,6 +359,31 @@ export class ShopIntegrationMcpController {
             description: { type: 'string', description: 'توضیحات جدید' },
             status: { type: 'number', description: 'وضعیت جدید (0: غیرفعال، 1: فعال)' },
             type: { type: 'string', enum: ['standard', 'pack'], description: 'نوع محصول' },
+            variants: {
+              type: 'array',
+              description: 'لیست متغیرهای جدید محصول',
+              items: {
+                type: 'object',
+                properties: {
+                  title: { type: 'string', description: 'عنوان متغیر' },
+                  price: { type: 'number', description: 'قیمت متغیر به تومان' },
+                  status: { type: 'number', description: 'وضعیت متغیر' },
+                  packItems: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        productId: { type: 'string' },
+                        variantId: { type: 'number' },
+                        quantity: { type: 'number' },
+                      },
+                      required: ['productId', 'quantity'],
+                    },
+                  },
+                },
+                required: ['title', 'price'],
+              },
+            },
             packItems: {
               type: 'array',
               description: 'لیست جدید اقلام پکیج (در صورت ویرایش پکیج، لیست قبلی کاملا جایگزین می‌شود)',
@@ -379,6 +457,55 @@ export class ShopIntegrationMcpController {
         },
       },
       {
+        name: 'update_order_items',
+        description: 'تغییر و بروزرسانی اقلام داخل یک سفارش ثبت‌شده موجود.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', description: 'شناسه سفارش' },
+            productItems: {
+              type: 'array',
+              description: 'لیست جدید اقلام سفارش',
+              items: {
+                type: 'object',
+                properties: {
+                  productId: { type: 'string', description: 'شناسه محصول' },
+                  productVariantId: { type: 'number', description: 'شناسه متغیر (اختیاری)' },
+                  quantity: { type: 'number', description: 'تعداد' },
+                },
+                required: ['productId', 'quantity'],
+              },
+            },
+          },
+          required: ['id', 'productItems'],
+        },
+      },
+      {
+        name: 'update_order_properties',
+        description: 'تغییر ویژگی‌های عمومی یک سفارش مانند وضعیت سفارش و هزینه ارسال/اضافی.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', description: 'شناسه سفارش' },
+            state: { type: 'number', description: 'وضعیت جدید (0: لغو، 1: انتظار، 2: آماده‌سازی، 3: ارسال، 4: تکمیل، 5: آماده)' },
+            extraCosts: { type: 'number', description: 'مبلغ جدید هزینه ارسال یا هزینه‌های اضافی به تومان' },
+          },
+          required: ['id'],
+        },
+      },
+      {
+        name: 'update_order_customer',
+        description: 'تخصیص یا تغییر مشتری انتساب‌داده‌شده به یک سفارش مشخص.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', description: 'شناسه سفارش' },
+            memberId: { type: 'string', nullable: true, description: 'شناسه مشتری در باشگاه مشتریان (یا null برای لغو انتساب)' },
+          },
+          required: ['id', 'memberId'],
+        },
+      },
+      {
         name: 'get_sales_report',
         description: 'دریافت گزارش فروش فروشگاه در یک بازه زمانی.',
         inputSchema: {
@@ -417,6 +544,50 @@ export class ShopIntegrationMcpController {
         },
       },
       {
+        name: 'create_or_update_customer',
+        description: 'ایجاد مشتری جدید در باشگاه مشتریان یا ویرایش پروفایل مشتری موجود.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', description: 'شناسه مشتری (برای ویرایش)' },
+            name: { type: 'string', description: 'نام و نام خانوادگی' },
+            mobile: { type: 'string', description: 'شماره تلفن همراه' },
+            star: { type: 'number', description: 'تعداد ستاره‌های مشتری' },
+            note: { type: 'string', description: 'یادداشت در مورد مشتری' },
+          },
+        },
+      },
+      {
+        name: 'get_customer_addresses',
+        description: 'دریافت لیست تمامی آدرس‌های ثبت‌شده برای یک مشتری مشخص.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', description: 'شناسه مشتری' },
+          },
+          required: ['id'],
+        },
+      },
+      {
+        name: 'create_customer_address',
+        description: 'ثبت آدرس جدید برای یک مشتری جهت ارسال سفارش.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', description: 'شناسه مشتری' },
+            description: { type: 'string', description: 'نشانی دقیق پستی و خیابان/کوچه' },
+            regionId: { type: 'string', description: 'شناسه منطقه ارسال/پست' },
+            title: { type: 'string', description: 'عنوان آدرس (مثلاً خانه، دفتر)' },
+            latitude: { type: 'number', description: 'عرض جغرافیایی' },
+            longitude: { type: 'number', description: 'طول جغرافیایی' },
+            unit: { type: 'string', description: 'پلاک یا واحد' },
+            ring: { type: 'string', description: 'زنگ' },
+            postalCode: { type: 'string', description: 'کد پستی' },
+          },
+          required: ['id', 'description', 'regionId'],
+        },
+      },
+      {
         name: 'send_sms_to_customers',
         description: 'ارسال پیامک گروهی به مشتریان.',
         inputSchema: {
@@ -449,6 +620,86 @@ export class ShopIntegrationMcpController {
         },
       },
       {
+        name: 'delete_material',
+        description: 'حذف یک ماده اولیه از انبار بر اساس شناسه.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', description: 'شناسه ماده اولیه' },
+          },
+          required: ['id'],
+        },
+      },
+      {
+        name: 'list_boms',
+        description: 'دریافت لیست تمامی فرمول‌های ساخت (BOM - Bill of Materials) فروشگاه شامل ارتباط مواد اولیه با محصولات یا متغیرها.',
+        inputSchema: { type: 'object', properties: {} },
+      },
+      {
+        name: 'create_or_update_bom',
+        description: 'ایجاد یا ویرایش یک آیتم فرمول ساخت (BOM). مشخص می‌کند برای تولید یک محصول یا متغیر، چه مقداری از چه ماده اولیه مصرف می‌شود.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', description: 'شناسه BOM (در صورت ویرایش)' },
+            materialId: { type: 'string', description: 'شناسه ماده اولیه در انبار' },
+            productId: { type: 'string', description: 'شناسه محصول مرتبط (در صورتی که رسپی مربوط به کل محصول باشد)' },
+            variantId: { type: 'number', description: 'شناسه متغیر محصول (در صورتی که رسپی مربوط به متغیر خاصی باشد)' },
+            quantity: { type: 'number', description: 'مقدار ماده اولیه مصرفی' },
+            unit: { type: 'string', enum: ['count', 'gram', 'kg', 'liter', 'ml'], description: 'واحد اندازه گیری مصرف' },
+          },
+          required: ['materialId', 'quantity'],
+        },
+      },
+      {
+        name: 'delete_bom',
+        description: 'حذف یک آیتم از فرمول ساخت (BOM) بر اساس شناسه.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', description: 'شناسه رکورد BOM' },
+          },
+          required: ['id'],
+        },
+      },
+      {
+        name: 'list_bops',
+        description: 'دریافت لیست تمامی فرمول‌های ترکیبی محصول به محصول (BOP - Bill of Product).',
+        inputSchema: { type: 'object', properties: {} },
+      },
+      {
+        name: 'create_or_update_bop',
+        description: 'ایجاد یا ویرایش فرمول ترکیبی محصول به محصول (BOP). مشخص می‌کند برای یک محصول/متغیر ترکیبی، چه مقداری از یک محصول/متغیر دیگر استفاده می‌شود.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', description: 'شناسه BOP (در صورت ویرایش)' },
+            productSourceId: { type: 'string', description: 'شناسه محصول اصلی/منبع' },
+            variantSourceId: { type: 'number', description: 'شناسه متغیر محصول اصلی/منبع (اختیاری)' },
+            productId: { type: 'string', description: 'شناسه محصول هدف/زیرمجموعه' },
+            variantId: { type: 'number', description: 'شناسه متغیر محصول هدف (اختیاری)' },
+            quantity: { type: 'number', description: 'تعداد/مقدار' },
+          },
+          required: ['productSourceId', 'productId', 'quantity'],
+        },
+      },
+      {
+        name: 'delete_bop',
+        description: 'حذف یک آیتم فرمول ترکیبی (BOP) بر اساس شناسه.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', description: 'شناسه رکورد BOP' },
+          },
+          required: ['id'],
+        },
+      },
+      {
+        name: 'get_product_costs_and_profit',
+        description: 'دریافت گزارش کامل قیمت تمام‌شده ساخت هر محصول/متغیر (بر اساس BOM و قیمت مواد اولیه انبار) و محاسبه میزان سود.',
+        inputSchema: { type: 'object', properties: {} },
+      },
+      {
         name: 'create_inventory_transaction',
         description: 'ثبت تراکنش انبار (خرید، مصرف، اصلاح موجودی).',
         inputSchema: {
@@ -468,6 +719,31 @@ export class ShopIntegrationMcpController {
         name: 'list_menu_costs',
         description: 'لیست هزینه‌های جانبی منو (مالیات، سرویس، تخفیف).',
         inputSchema: { type: 'object', properties: {} },
+      },
+      {
+        name: 'create_or_update_menu_cost',
+        description: 'ایجاد یا ویرایش هزینه‌های جانبی منو (مانند درصد مالیات، حق سرویس، تخفیف عمومی و ...).',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            id: { type: 'number', description: 'شناسه هزینه (برای ویرایش)' },
+            title: { type: 'string', description: 'عنوان هزینه' },
+            percent: { type: 'number', description: 'درصد هزینه (مثلاً 9)' },
+            type: { type: 'number', description: 'نوع هزینه (0: مالیات، 1: حق سرویس، 2: تخفیف)' },
+          },
+          required: ['title', 'percent'],
+        },
+      },
+      {
+        name: 'delete_menu_cost',
+        description: 'حذف یک هزینه جانبی منو بر اساس شناسه عددی.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            id: { type: 'number', description: 'شناسه عددی هزینه' },
+          },
+          required: ['id'],
+        },
       },
       {
         name: 'list_campaigns',
@@ -664,6 +940,23 @@ export class ShopIntegrationMcpController {
           required: ['items'],
         },
       },
+      {
+        name: 'delete_stocktaking',
+        description: 'حذف یک گزارش انبارگردانی ثبت‌شده و امکان بازگرداندن تغییرات موجودی.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', description: 'شناسه انبارگردانی' },
+            revertStock: { type: 'boolean', description: 'آیا موجودی مواد اولیه به حالت قبل بازگردانده شود؟', default: true },
+          },
+          required: ['id'],
+        },
+      },
+      {
+        name: 'get_regions',
+        description: 'دریافت لیست تمامی مناطق ارسال و پیک تعریف‌شده در سیستم.',
+        inputSchema: { type: 'object', properties: {} },
+      },
     ];
   }
 
@@ -671,6 +964,12 @@ export class ShopIntegrationMcpController {
     switch (name) {
       case 'get_menu':
         return this.integrationService.getMenu(shop.id);
+
+      case 'create_category':
+        return this.integrationService.createCategory(shop.id, args);
+
+      case 'update_category':
+        return this.integrationService.updateCategory(shop.id, Number(args.id), args);
 
       case 'create_product':
         return this.integrationService.createProduct(shop.id, args);
@@ -698,6 +997,17 @@ export class ShopIntegrationMcpController {
       case 'update_order_state':
         return this.integrationService.updateOrderState(shop.id, args.id, args.state);
 
+      case 'update_order_items':
+        return this.integrationService.updateOrderItems(shop.id, args.id, args.productItems);
+
+      case 'update_order_properties': {
+        const { id, ...propertiesDto } = args;
+        return this.integrationService.updateOrderProperties(shop.id, id, propertiesDto);
+      }
+
+      case 'update_order_customer':
+        return this.integrationService.updateOrderCustomer(shop.id, args.id, args.memberId ?? null);
+
       case 'get_sales_report': {
         const filters = {
           fromDate: args.fromDate ? String(args.fromDate) : undefined,
@@ -719,6 +1029,17 @@ export class ShopIntegrationMcpController {
       case 'filter_customers':
         return this.integrationService.getCustomers(shop.id, args);
 
+      case 'create_or_update_customer':
+        return this.integrationService.createOrUpdateCustomer(shop.id, args);
+
+      case 'get_customer_addresses':
+        return this.integrationService.getCustomerAddresses(shop.id, args.id);
+
+      case 'create_customer_address': {
+        const { id, ...addressDto } = args;
+        return this.integrationService.createCustomerAddress(shop.id, id, addressDto);
+      }
+
       case 'send_sms_to_customers':
         return this.integrationService.sendCustomerSms(shop.id, args);
 
@@ -727,6 +1048,48 @@ export class ShopIntegrationMcpController {
 
       case 'create_or_update_material':
         return this.integrationService.createOrUpdateMaterial(shop.id, args);
+
+      case 'delete_material':
+        return this.integrationService.deleteMaterial(shop.id, args.id);
+
+      case 'list_boms':
+        return this.integrationService.getBoms(shop.id);
+
+      case 'create_or_update_bom': {
+        const bomDto = {
+          id: args.id,
+          material: args.materialId ? ({ id: args.materialId } as any) : undefined,
+          product: args.productId ? ({ id: args.productId } as any) : undefined,
+          variant: args.variantId ? ({ id: args.variantId } as any) : undefined,
+          quantity: args.quantity,
+          unit: args.unit,
+        };
+        return this.integrationService.createOrUpdateBom(shop.id, bomDto);
+      }
+
+      case 'delete_bom':
+        return this.integrationService.deleteBom(shop.id, args.id);
+
+      case 'list_bops':
+        return this.integrationService.getBops(shop.id);
+
+      case 'create_or_update_bop': {
+        const bopDto = {
+          id: args.id,
+          productSource: args.productSourceId ? ({ id: args.productSourceId } as any) : undefined,
+          variantSource: args.variantSourceId ? ({ id: args.variantSourceId } as any) : undefined,
+          product: args.productId ? ({ id: args.productId } as any) : undefined,
+          variant: args.variantId ? ({ id: args.variantId } as any) : undefined,
+          quantity: args.quantity,
+        };
+        return this.integrationService.createOrUpdateBop(shop.id, bopDto);
+      }
+
+      case 'delete_bop':
+        return this.integrationService.deleteBop(shop.id, args.id);
+
+      case 'get_product_costs_and_profit':
+        return this.integrationService.getProductCostsAndProfit(shop.id);
 
       case 'create_inventory_transaction': {
         const transactionDto = {
@@ -742,6 +1105,12 @@ export class ShopIntegrationMcpController {
 
       case 'list_menu_costs':
         return this.integrationService.getMenuCosts(shop.id);
+
+      case 'create_or_update_menu_cost':
+        return this.integrationService.createOrUpdateMenuCost(shop.id, args);
+
+      case 'delete_menu_cost':
+        return this.integrationService.deleteMenuCost(shop.id, Number(args.id));
 
       case 'list_campaigns':
         return this.campaignsService.findAll(shop.id);
@@ -798,6 +1167,12 @@ export class ShopIntegrationMcpController {
         };
         return this.integrationService.createStocktaking(shop.id, stocktakingDto);
       }
+
+      case 'delete_stocktaking':
+        return this.integrationService.deleteStocktaking(shop.id, args.id, args.revertStock !== false);
+
+      case 'get_regions':
+        return this.integrationService.getRegions();
 
       default:
         throw new Error(`Unknown tool name: ${name}`);
