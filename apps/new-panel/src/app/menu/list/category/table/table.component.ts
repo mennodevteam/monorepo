@@ -1,6 +1,6 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MenuCost, Product, ProductCategory, ProductVariant, Status, ProductType } from '@menno/types';
+import { MenuCost, Product, ProductCategory, ProductVariant, Status, ProductType, ProductPackItem } from '@menno/types';
 import { SHARED } from '../../../../shared';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
@@ -120,9 +120,17 @@ export class ProductTableComponent {
           const categoryId = res.category;
           const category = { id: categoryId } as ProductCategory;
           if (category) {
+            const mapPackItem = (pi: ProductPackItem) =>
+              ({
+                product: pi.product?.id ? ({ id: pi.product.id } as Product) : undefined,
+                variant: pi.variant?.id ? ({ id: pi.variant.id } as ProductVariant) : undefined,
+                quantity: pi.quantity,
+              }) as ProductPackItem;
+
             const newProduct: Product = {
               ...product,
               id: undefined as any,
+              slug: undefined,
               category,
               variants:
                 product.variants?.map(
@@ -132,8 +140,10 @@ export class ProductTableComponent {
                       price: v.price,
                       status: v.status,
                       position: v.position,
+                      packItems: v.packItems?.map(mapPackItem),
                     }) as ProductVariant,
                 ) || [],
+              packItems: product.packItems?.map(mapPackItem),
               imageFiles: product.imageFiles, // Keep same image references
               createdAt: undefined,
               updatedAt: undefined,
