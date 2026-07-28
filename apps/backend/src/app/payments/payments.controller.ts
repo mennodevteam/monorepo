@@ -106,7 +106,7 @@ export class PaymentsController {
       plugins: Plugin[];
     },
   ) {
-    throw new HttpException('امکان تمدید ماژول وجود ندارد. لطفا با پشتیبانی تماس بگیرید.', HttpStatus.BAD_REQUEST);
+    // const shop: Shop = await this.auth.getPanelUserShop(user, ['plugins']);
     const shop: Shop = await this.auth.getPanelUserShop(user, ['plugins']);
     const defaultGateway = await this.defaultGateway;
     const userData = await this.auth.getUserData(user);
@@ -124,11 +124,11 @@ export class PaymentsController {
 
     let price: number;
     if (body.plugins.length === 3) {
-      price = body.isMonthly ? 999000 : 10000000;
+      price = body.isMonthly ? 3999000 : 36000000;
     } else if (body.plugins.length === 2) {
-      price = body.isMonthly ? 799000 : 8000000;
+      price = body.isMonthly ? 3199000 : 28800000;
     } else {
-      price = body.isMonthly ? 299000 : 3000000;
+      price = body.isMonthly ? 1199000 : 10800000;
     }
 
     return this.getRedirectLink(
