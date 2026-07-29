@@ -80,7 +80,7 @@
         </mat-card-content>
         <mat-divider></mat-divider>
         <mat-card-actions>
-          <button mat-button color="primary" [disabled]="true">
+          <button mat-button color="primary" (click)="renew()">
             {{ 'home.renewAction' | translate }}
           </button>
         </mat-card-actions>
