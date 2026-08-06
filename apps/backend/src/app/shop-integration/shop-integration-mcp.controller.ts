@@ -68,7 +68,7 @@ export class ShopIntegrationMcpController {
     let responseError: any = null;
 
     try {
-      if (method === 'initialize') {
+      if (!method || method === 'initialize') {
         responseResult = {
           protocolVersion: '2024-11-05',
           capabilities: {
@@ -150,9 +150,9 @@ export class ShopIntegrationMcpController {
 
     const shop = await this.authenticateToken(token);
 
-    // If client expects application/json on GET, return server info health response
+    // If client does not explicitly request text/event-stream on GET, return JSON server info
     const acceptHeader = (req.headers.accept || '').toLowerCase();
-    if (acceptHeader.includes('application/json') && !acceptHeader.includes('text/event-stream')) {
+    if (!acceptHeader.includes('text/event-stream')) {
       return res.status(200).json({
         name: 'Shottt MCP Server',
         version: '1.0.0',
