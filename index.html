@@ -634,6 +634,25 @@
       color: var(--panel-text-muted);
     }
 
+    .enamad-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .enamad-badge img {
+      height: 75px;
+      background: #ffffff;
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      transition: transform 0.2s ease;
+    }
+
+    .enamad-badge img:hover {
+      transform: scale(1.05);
+    }
+
     @media (max-width: 1024px) {
       .features-grid, .pricing-grid { grid-template-columns: repeat(2, 1fr); }
       .pricing-card.popular { transform: scale(1); }
@@ -645,6 +664,7 @@
       .features-grid, .pricing-grid { grid-template-columns: 1fr; }
       .hero-buttons { flex-direction: column; width: 100%; }
       .hero-buttons .btn-panel-black, .hero-buttons .btn-panel-amber { width: 100%; }
+      .footer-flex { flex-direction: column; text-align: center; }
     }
   </style>
 </head>
@@ -972,6 +992,13 @@
           <path d="M20 27L60 57L100 27V93.6667H20V27Z" fill="black"/>
         </svg>
         <span>سامانه مدیریت منو (Menno)</span>
+      </div>
+
+      <!-- ENAMAD BADGE LINK -->
+      <div class="enamad-badge">
+        <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=377566&Code=z1BtiESA9Ikec2Irg4F8'>
+          <img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=377566&Code=z1BtiESA9Ikec2Irg4F8' alt='نماد اعتماد الکترونیکی' code='z1BtiESA9Ikec2Irg4F8'>
+        </a>
       </div>
 
       <div class="footer-copy">
