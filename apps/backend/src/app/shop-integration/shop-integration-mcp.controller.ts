@@ -46,16 +46,24 @@ export class ShopIntegrationMcpController {
   async handleStreamableHttp(
     @Query('apiKey') queryApiKey: string,
     @Headers('x-shop-api-key') headerApiKey: string,
+    @Headers('authorization') authHeader: string,
     @Body() body: any,
+    @Res() res: Response,
   ) {
-    const token = (headerApiKey || queryApiKey || '').trim();
+    const token = this.extractToken(headerApiKey, queryApiKey, authHeader);
     if (!token) {
       throw new UnauthorizedException('API key is missing');
     }
 
     const shop = await this.authenticateToken(token);
 
-    const { id, method, params } = body;
+    const { id, method, params } = body || {};
+
+    // Notifications in JSON-RPC 2.0 (requests without an id) must not receive a response payload.
+    if (id === undefined || method?.startsWith('notifications/')) {
+      return res.status(202).end();
+    }
+
     let responseResult: any = null;
     let responseError: any = null;
 
@@ -65,14 +73,16 @@ export class ShopIntegrationMcpController {
           protocolVersion: '2024-11-05',
           capabilities: {
             tools: {},
+            prompts: {},
+            resources: {},
           },
           serverInfo: {
             name: 'Shottt MCP Server',
             version: '1.0.0',
           },
         };
-      } else if (method === 'notifications/initialized') {
-        return { jsonrpc: '2.0', result: null };
+      } else if (method === 'ping') {
+        responseResult = {};
       } else if (method === 'tools/list') {
         responseResult = {
           tools: this.getToolsList(),
@@ -89,6 +99,10 @@ export class ShopIntegrationMcpController {
             },
           ],
         };
+      } else if (method === 'prompts/list') {
+        responseResult = { prompts: [] };
+      } else if (method === 'resources/list') {
+        responseResult = { resources: [] };
       } else {
         responseError = {
           code: -32601,
@@ -114,7 +128,7 @@ export class ShopIntegrationMcpController {
       jsonRpcResponse.result = responseResult;
     }
 
-    return jsonRpcResponse;
+    return res.status(200).json(jsonRpcResponse);
   }
 
   /**
@@ -125,10 +139,11 @@ export class ShopIntegrationMcpController {
   async sse(
     @Query('apiKey') queryApiKey: string,
     @Headers('x-shop-api-key') headerApiKey: string,
+    @Headers('authorization') authHeader: string,
     @Req() req: Request,
     @Res() res: Response,
   ) {
-    const token = (headerApiKey || queryApiKey || '').trim();
+    const token = this.extractToken(headerApiKey, queryApiKey, authHeader);
     if (!token) {
       throw new UnauthorizedException('API key is missing');
     }
@@ -145,9 +160,10 @@ export class ShopIntegrationMcpController {
     this.sessions.set(sessionId, { res, shop });
 
     // Send the endpoint notification event as per MCP SSE Transport Spec
+    const configuredBaseUrl = (process.env.PUBLIC_URL || process.env.BACKEND_URL || '').replace(/\/+$/, '');
     const protocol = (req.headers['x-forwarded-proto'] as string) || (req.secure ? 'https' : 'http');
     const host = (req.headers['x-forwarded-host'] as string) || req.get('host');
-    const baseUrl = `${protocol}://${host}`;
+    const baseUrl = configuredBaseUrl || `${protocol}://${host}`;
     const messageUrl = `${baseUrl}/api/v1/shop-integration/mcp/messages?sessionId=${sessionId}`;
 
     res.write(`event: endpoint\ndata: ${messageUrl}\n\n`);
@@ -172,7 +188,13 @@ export class ShopIntegrationMcpController {
       throw new NotFoundException('Session not found or expired');
     }
 
-    const { id, method, params } = body;
+    const { id, method, params } = body || {};
+
+    // Notifications in JSON-RPC 2.0 must not send a message response over SSE.
+    if (id === undefined || method?.startsWith('notifications/')) {
+      return res.status(202).end();
+    }
+
     let responseResult: any = null;
     let responseError: any = null;
 
@@ -182,14 +204,16 @@ export class ShopIntegrationMcpController {
           protocolVersion: '2024-11-05',
           capabilities: {
             tools: {},
+            prompts: {},
+            resources: {},
           },
           serverInfo: {
             name: 'Shottt MCP Server',
             version: '1.0.0',
           },
         };
-      } else if (method === 'notifications/initialized') {
-        return res.status(202).end();
+      } else if (method === 'ping') {
+        responseResult = {};
       } else if (method === 'tools/list') {
         responseResult = {
           tools: this.getToolsList(),
@@ -206,6 +230,10 @@ export class ShopIntegrationMcpController {
             },
           ],
         };
+      } else if (method === 'prompts/list') {
+        responseResult = { prompts: [] };
+      } else if (method === 'resources/list') {
+        responseResult = { resources: [] };
       } else {
         responseError = {
           code: -32601,
@@ -233,6 +261,22 @@ export class ShopIntegrationMcpController {
 
     session.res.write(`event: message\ndata: ${JSON.stringify(jsonRpcResponse)}\n\n`);
     res.status(200).end();
+  }
+
+  private extractToken(
+    headerApiKey?: string,
+    queryApiKey?: string,
+    authHeader?: string,
+  ): string {
+    let token = (headerApiKey || queryApiKey || '').trim();
+    if (!token && authHeader) {
+      if (authHeader.toLowerCase().startsWith('bearer ')) {
+        token = authHeader.substring(7).trim();
+      } else {
+        token = authHeader.trim();
+      }
+    }
+    return token;
   }
 
   private async authenticateToken(token: string): Promise<Shop> {
