@@ -36,6 +36,8 @@ import {
   MANUAL_COST_TITLE,
   DELIVERY_COST_TITLE,
   ProductType,
+  MenuStat,
+  StatAction,
 } from '@menno/types';
 import { RedisService } from '../core/redis.service';
 import { OrdersService } from '../orders/orders.service';
@@ -80,6 +82,8 @@ export class ShopIntegrationService {
     private addressRepo: Repository<Address>,
     @InjectRepository(Region)
     private regionRepo: Repository<Region>,
+    @InjectRepository(MenuStat)
+    private menuStatsRepo: Repository<MenuStat>,
     private redis: RedisService,
     private ordersService: OrdersService,
     private clubsService: ClubsService,
@@ -992,5 +996,217 @@ export class ShopIntegrationService {
     return this.regionRepo.find({
       order: { title: 'ASC' },
     });
+  }
+
+  async getAnalyticsViews(shopId: string, fromDate?: Date, toDate?: Date) {
+    const shop = await this.shopRepo.findOne({ where: { id: shopId }, relations: ['menu', 'club'] });
+    if (!shop || !shop.menu) {
+      throw new NotFoundException('Menu not found for this shop');
+    }
+    const from = fromDate || new Date(new Date().setDate(new Date().getDate() - 30));
+    const to = toDate || new Date();
+
+    const menuStatResult = await this.menuStatsRepo
+      .createQueryBuilder('stat')
+      .select(`DATE_TRUNC('day', stat.createdAt AT TIME ZONE 'Asia/Tehran')`, 'day')
+      .addSelect('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'count')
+      .where('stat.createdAt BETWEEN :from AND :to', { from, to })
+      .andWhere('stat.action = :action', { action: StatAction.LoadMenu })
+      .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
+      .groupBy('day')
+      .orderBy('day')
+      .getRawMany();
+
+    const memberResult = shop.club?.id
+      ? await this.memberRepo
+          .createQueryBuilder('member')
+          .select(`DATE_TRUNC('day', member.joinedAt AT TIME ZONE 'Asia/Tehran')`, 'day')
+          .addSelect('CAST(COUNT(member.id) AS INTEGER)', 'count')
+          .where('member.joinedAt BETWEEN :from AND :to', { from, to })
+          .andWhere('member.clubId = :clubId', { clubId: shop.club.id })
+          .groupBy('day')
+          .orderBy('day')
+          .getRawMany()
+      : [];
+
+    const dailyBreakdown = [];
+    const current = new Date(from);
+    current.setHours(current.getHours() + 5);
+    const end = new Date(to);
+
+    let totalViews = 0;
+    let totalMembers = 0;
+
+    while (current <= end) {
+      const dateStr = current.toLocaleDateString('en-CA');
+      const menuCount = menuStatResult.find((item) => item.day.toLocaleDateString('en-CA') === dateStr)?.count || 0;
+      const memberCount = memberResult.find((item) => item.day.toLocaleDateString('en-CA') === dateStr)?.count || 0;
+      totalViews += menuCount;
+      totalMembers += memberCount;
+      dailyBreakdown.push({
+        date: dateStr,
+        menuViews: menuCount,
+        clubMemberSignups: memberCount,
+      });
+      current.setDate(current.getDate() + 1);
+    }
+
+    return {
+      fromDate: from.toISOString(),
+      toDate: to.toISOString(),
+      totalViews,
+      totalClubMemberSignups: totalMembers,
+      dailyBreakdown,
+    };
+  }
+
+  async getAnalyticsUserRetention(shopId: string, fromDate?: Date, toDate?: Date) {
+    const shop = await this.shopRepo.findOne({ where: { id: shopId }, relations: ['menu'] });
+    if (!shop || !shop.menu) {
+      throw new NotFoundException('Menu not found for this shop');
+    }
+    const from = fromDate || new Date(new Date().setDate(new Date().getDate() - 30));
+    const to = toDate || new Date();
+
+    const totalUniqueUsers = await this.menuStatsRepo
+      .createQueryBuilder('stat')
+      .select('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'uniqueUserCount')
+      .where('stat.createdAt BETWEEN :from AND :to', { from, to })
+      .andWhere('stat.action = :action', { action: StatAction.LoadMenu })
+      .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
+      .getRawOne();
+
+    const retentionCount = await this.menuStatsRepo
+      .createQueryBuilder('stat')
+      .select('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'retentionCount')
+      .where('stat.createdAt BETWEEN :from AND :to', { from, to })
+      .andWhere('stat.action = :action', { action: StatAction.LoadMenu })
+      .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
+      .andWhere(
+        `stat.user IN (SELECT DISTINCT ms."userId" FROM menu_stat ms WHERE ms."createdAt" < :from AND ms.action = :action AND ms."menuId" = :menuId)`,
+        { from, action: StatAction.LoadMenu, menuId: shop.menu.id },
+      )
+      .getRawOne();
+
+    const uniqueUsers = parseInt(totalUniqueUsers?.uniqueUserCount) || 0;
+    const returningUsers = parseInt(retentionCount?.retentionCount) || 0;
+    const newUsers = Math.max(0, uniqueUsers - returningUsers);
+    const retentionRatePercent = uniqueUsers > 0 ? Number(((returningUsers / uniqueUsers) * 100).toFixed(2)) : 0;
+
+    return {
+      fromDate: from.toISOString(),
+      toDate: to.toISOString(),
+      uniqueUserCount: uniqueUsers,
+      newUserCount: newUsers,
+      returningUserCount: returningUsers,
+      retentionRatePercent,
+    };
+  }
+
+  async getAnalyticsConversionFunnel(shopId: string, fromDate?: Date, toDate?: Date) {
+    const shop = await this.shopRepo.findOne({ where: { id: shopId }, relations: ['menu'] });
+    if (!shop || !shop.menu) {
+      throw new NotFoundException('Menu not found for this shop');
+    }
+    const from = fromDate || new Date(new Date().setDate(new Date().getDate() - 30));
+    const to = toDate || new Date();
+
+    const getCountForAction = async (action: StatAction) => {
+      const res = await this.menuStatsRepo
+        .createQueryBuilder('stat')
+        .select('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'count')
+        .where('stat.createdAt BETWEEN :from AND :to', { from, to })
+        .andWhere('stat.action = :action', { action })
+        .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
+        .getRawOne();
+      return parseInt(res?.count) || 0;
+    };
+
+    const loadMenu = await getCountForAction(StatAction.LoadMenu);
+    const addToCart = await getCountForAction(StatAction.AddToCart);
+    const viewCart = await getCountForAction(StatAction.ViewCart);
+    const viewCheckout = await getCountForAction(StatAction.ViewCheckout);
+    const selectAddress = await getCountForAction(StatAction.SelectAddress);
+    const addOrder = await getCountForAction(StatAction.AddOrder);
+
+    const ordersStat = await this.orderRepo
+      .createQueryBuilder('order')
+      .select('CAST(COUNT(order.id) AS INTEGER)', 'completedOrdersCount')
+      .addSelect('COALESCE(SUM(order.totalPrice), 0)', 'totalRevenueToman')
+      .where('order.shopId = :shopId', { shopId: shop.id })
+      .andWhere('order.deletedAt IS NULL')
+      .andWhere('order.mergeToId IS NULL')
+      .andWhere('order.createdAt BETWEEN :from AND :to', { from, to })
+      .getRawOne();
+
+    const completedOrders = parseInt(ordersStat?.completedOrdersCount) || 0;
+    const totalRevenueToman = Number(ordersStat?.totalRevenueToman) || 0;
+    const overallConversionRatePercent = loadMenu > 0 ? Number(((addOrder / loadMenu) * 100).toFixed(2)) : 0;
+    const averageOrderValueToman = completedOrders > 0 ? Math.round(totalRevenueToman / completedOrders) : 0;
+
+    return {
+      fromDate: from.toISOString(),
+      toDate: to.toISOString(),
+      funnelSteps: {
+        loadMenu,
+        addToCart,
+        viewCart,
+        viewCheckout,
+        selectAddress,
+        addOrder,
+      },
+      completedOrdersCount: completedOrders,
+      totalRevenueToman,
+      averageOrderValueToman,
+      overallConversionRatePercent,
+    };
+  }
+
+  async getAnalyticsTrafficSources(shopId: string, fromDate?: Date, toDate?: Date) {
+    const shop = await this.shopRepo.findOne({ where: { id: shopId }, relations: ['menu'] });
+    if (!shop || !shop.menu) {
+      throw new NotFoundException('Menu not found for this shop');
+    }
+    const from = fromDate || new Date(new Date().setDate(new Date().getDate() - 30));
+    const to = toDate || new Date();
+
+    const menuStatByRef = await this.menuStatsRepo
+      .createQueryBuilder('stat')
+      .select('stat.referrer', 'referrer')
+      .addSelect('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'count')
+      .where('stat.createdAt BETWEEN :from AND :to', { from, to })
+      .andWhere('stat.action = :action', { action: StatAction.LoadMenu })
+      .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
+      .groupBy('stat.referrer')
+      .orderBy('count', 'DESC')
+      .getRawMany();
+
+    const sourcesMap: Record<string, number> = {};
+    let totalTrackedVisitors = 0;
+
+    menuStatByRef.forEach(({ referrer, count }) => {
+      const c = Number(count) || 0;
+      if (c === 0) return;
+      let source = 'direct';
+
+      if (referrer) {
+        try {
+          const url = new URL(referrer);
+          const hostParts = url.hostname.split('.');
+          source = hostParts.length >= 3 ? hostParts[hostParts.length - 2] : hostParts[0];
+        } catch (e) {
+          source = 'direct';
+        }
+      }
+      sourcesMap[source] = (sourcesMap[source] || 0) + c;
+      totalTrackedVisitors += c;
+    });
+
+    return {
+      fromDate: from.toISOString(),
+      toDate: to.toISOString(),
+      totalTrackedVisitors,
+      sourcesBreakdown: sourcesMap,
+    };
   }
 }

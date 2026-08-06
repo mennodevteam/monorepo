@@ -1033,6 +1033,50 @@ export class ShopIntegrationMcpController {
         description: 'دریافت لیست تمامی مناطق ارسال و پیک تعریف‌شده در سیستم.',
         inputSchema: { type: 'object', properties: {} },
       },
+      {
+        name: 'get_analytics_views',
+        description: 'دریافت دیتای خام و آمار روزانه بازدیدهای منوی فروشگاه و تعداد عضویت‌های جدید در باشگاه مشتریان در بازه زمانی مشخص.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            fromDate: { type: 'string', format: 'date-time', description: 'تاریخ شروع (پیش‌فرض: ۳۰ روز قبل)' },
+            toDate: { type: 'string', format: 'date-time', description: 'تاریخ پایان (پیش‌فرض: زمان حال)' },
+          },
+        },
+      },
+      {
+        name: 'get_analytics_user_retention',
+        description: 'دریافت آمار تحلیلی و دیتای خام کاربران منحصر به فرد (Unique Visitors)، کاربران جدید، کاربران بازگشتی (Retention) و درصد نرخ بازگشت مشتریان در بازه زمانی مشخص.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            fromDate: { type: 'string', format: 'date-time', description: 'تاریخ شروع' },
+            toDate: { type: 'string', format: 'date-time', description: 'تاریخ پایان' },
+          },
+        },
+      },
+      {
+        name: 'get_analytics_conversion_funnel',
+        description: 'دریافت دیتای تفکیکی قیف تبدیل (Conversion Funnel) سفارشات شامل تعداد کاربران در مراحل بازدید منو، افزودن به سبد، مشاهده سبد خرید، مشاهده فاکتور، انتخاب آدرس و ثبت نهایی سفارش، به همراه درآمد کل و میانگین ارزش هر سفارش به تومان (Toman).',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            fromDate: { type: 'string', format: 'date-time', description: 'تاریخ شروع' },
+            toDate: { type: 'string', format: 'date-time', description: 'تاریخ پایان' },
+          },
+        },
+      },
+      {
+        name: 'get_analytics_traffic_sources',
+        description: 'دریافت دیتای تفکیکی منابع ورودی و ارجاع‌دهندگان مشتریان به منو (اینستاگرام، مستقیم، تلگرام، گوگل و ...).',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            fromDate: { type: 'string', format: 'date-time', description: 'تاریخ شروع' },
+            toDate: { type: 'string', format: 'date-time', description: 'تاریخ پایان' },
+          },
+        },
+      },
     ];
   }
 
@@ -1249,6 +1293,34 @@ export class ShopIntegrationMcpController {
 
       case 'get_regions':
         return this.integrationService.getRegions();
+
+      case 'get_analytics_views':
+        return this.integrationService.getAnalyticsViews(
+          shop.id,
+          args.fromDate ? new Date(args.fromDate) : undefined,
+          args.toDate ? new Date(args.toDate) : undefined,
+        );
+
+      case 'get_analytics_user_retention':
+        return this.integrationService.getAnalyticsUserRetention(
+          shop.id,
+          args.fromDate ? new Date(args.fromDate) : undefined,
+          args.toDate ? new Date(args.toDate) : undefined,
+        );
+
+      case 'get_analytics_conversion_funnel':
+        return this.integrationService.getAnalyticsConversionFunnel(
+          shop.id,
+          args.fromDate ? new Date(args.fromDate) : undefined,
+          args.toDate ? new Date(args.toDate) : undefined,
+        );
+
+      case 'get_analytics_traffic_sources':
+        return this.integrationService.getAnalyticsTrafficSources(
+          shop.id,
+          args.fromDate ? new Date(args.fromDate) : undefined,
+          args.toDate ? new Date(args.toDate) : undefined,
+        );
 
       default:
         throw new Error(`Unknown tool name: ${name}`);
