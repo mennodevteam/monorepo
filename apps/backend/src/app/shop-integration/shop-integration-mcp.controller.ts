@@ -59,8 +59,8 @@ export class ShopIntegrationMcpController {
 
     const { id, method, params } = body || {};
 
-    // Notifications in JSON-RPC 2.0 (requests without an id) must not receive a response payload.
-    if (id === undefined || method?.startsWith('notifications/')) {
+    // Only notification methods (starting with notifications/) must not receive a response payload.
+    if (method?.startsWith('notifications/')) {
       return res.status(202).end();
     }
 
@@ -150,6 +150,17 @@ export class ShopIntegrationMcpController {
 
     const shop = await this.authenticateToken(token);
 
+    // If client expects application/json on GET, return server info health response
+    const acceptHeader = (req.headers.accept || '').toLowerCase();
+    if (acceptHeader.includes('application/json') && !acceptHeader.includes('text/event-stream')) {
+      return res.status(200).json({
+        name: 'Shottt MCP Server',
+        version: '1.0.0',
+        protocolVersion: '2024-11-05',
+        status: 'ok',
+      });
+    }
+
     // Set headers for Server-Sent Events (SSE)
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
@@ -204,8 +215,8 @@ export class ShopIntegrationMcpController {
 
     const { id, method, params } = body || {};
 
-    // Notifications in JSON-RPC 2.0 must not send a message response.
-    if (id === undefined || method?.startsWith('notifications/')) {
+    // Only notification methods (starting with notifications/) must not send a message response.
+    if (method?.startsWith('notifications/')) {
       return res.status(202).end();
     }
 
