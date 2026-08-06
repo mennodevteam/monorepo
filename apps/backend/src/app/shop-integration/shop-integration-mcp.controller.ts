@@ -1077,6 +1077,49 @@ export class ShopIntegrationMcpController {
           },
         },
       },
+      {
+        name: 'get_raw_menu_stats',
+        description: 'دریافت دیتای خام و کامل رخدادهای آمار منو (MenuStat) شامل کلیک روی محصولات مشخص، افزودن به سبد خرید، بازدیدها، ورود و ثبت‌نام کاربران، به همراه فیلترهای پیشرفته بر اساس نوع اکشن، کاربر، محصول، بازه زمانی، ارجاع‌دهنده و گروه‌بندی (محصول، کاربر، اکشن، تاریخ یا خام). تمام قیمت‌های محصولات و ارزش‌ها به تومان (Toman) است.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            fromDate: { type: 'string', format: 'date-time', description: 'تاریخ شروع (پیش‌فرض: ۳۰ روز قبل)' },
+            toDate: { type: 'string', format: 'date-time', description: 'تاریخ پایان (پیش‌فرض: زمان حال)' },
+            actions: {
+              type: 'array',
+              items: {
+                type: 'string',
+                enum: [
+                  'LOAD_MENU',
+                  'CLICK_PRODUCT',
+                  'ADD_TO_CART',
+                  'VIEW_CART',
+                  'VIEW_CHECKOUT',
+                  'GO_TO_BANK',
+                  'ADD_ORDER',
+                  'SELECT_ADDRESS',
+                  'ADD_ADDRESS',
+                  'LOGIN_SET_PHONE',
+                  'LOGIN_COMPLETE',
+                  'REGISTER_COMPLETE',
+                ],
+              },
+              description: 'فیلتر بر اساس یک یا چند نوع رخداد (اکشن) مشخص. اکشن‌های مهم: CLICK_PRODUCT (کلیک روی محصول)، ADD_TO_CART (افزودن به سبد)، LOAD_MENU (بازدید منو)، ADD_ORDER (ثبت سفارش)',
+            },
+            productId: { type: 'string', description: 'شناسه محصول مشخص جهت مشاهده کلیک‌ها و افزودن به سبدهای آن محصول' },
+            userId: { type: 'string', description: 'شناسه کاربر مشخص جهت مشاهده لاگ رفتاری آن کاربر' },
+            referrer: { type: 'string', description: 'فیلتر بر اساس منبع ورودی (مثلاً instagram، direct، google)' },
+            groupBy: {
+              type: 'string',
+              enum: ['none', 'product', 'action', 'date', 'user'],
+              default: 'none',
+              description: 'حالت خلاصه‌سازی و گروه‌بندی دیتای خام: product (رتبه‌بندی محصولات بر اساس کلیک و افزودن به سبد)، user (رتبه‌بندی فعال‌ترین کاربران)، action (مجموع اکشن‌ها)، date (آمار روزانه)، none (دریافت لیست دیتای خام لاگ‌ها شامل نام کاربر، شماره موبایل، عنوان محصول و قیمت به تومان)',
+            },
+            take: { type: 'number', default: 50, description: 'تعداد رکوردها برای دریافت دیتای خام (حداکثر ۵۰۰)' },
+            skip: { type: 'number', default: 0, description: 'offset برای پیج‌بندی' },
+          },
+        },
+      },
     ];
   }
 
@@ -1321,6 +1364,19 @@ export class ShopIntegrationMcpController {
           args.fromDate ? new Date(args.fromDate) : undefined,
           args.toDate ? new Date(args.toDate) : undefined,
         );
+
+      case 'get_raw_menu_stats':
+        return this.integrationService.getRawMenuStats(shop.id, {
+          fromDate: args.fromDate ? new Date(args.fromDate) : undefined,
+          toDate: args.toDate ? new Date(args.toDate) : undefined,
+          actions: args.actions,
+          productId: args.productId,
+          userId: args.userId,
+          referrer: args.referrer,
+          groupBy: args.groupBy,
+          take: args.take ? Number(args.take) : undefined,
+          skip: args.skip ? Number(args.skip) : undefined,
+        });
 
       default:
         throw new Error(`Unknown tool name: ${name}`);

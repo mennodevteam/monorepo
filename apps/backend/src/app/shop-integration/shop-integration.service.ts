@@ -1209,4 +1209,210 @@ export class ShopIntegrationService {
       sourcesBreakdown: sourcesMap,
     };
   }
+
+  async getRawMenuStats(
+    shopId: string,
+    filters: {
+      fromDate?: Date;
+      toDate?: Date;
+      actions?: StatAction[];
+      productId?: string;
+      userId?: string;
+      referrer?: string;
+      groupBy?: 'none' | 'product' | 'action' | 'date' | 'user';
+      take?: number;
+      skip?: number;
+    },
+  ) {
+    const shop = await this.shopRepo.findOne({ where: { id: shopId }, relations: ['menu'] });
+    if (!shop || !shop.menu) {
+      throw new NotFoundException('Menu not found for this shop');
+    }
+
+    const from = filters.fromDate || new Date(new Date().setDate(new Date().getDate() - 30));
+    const to = filters.toDate || new Date();
+    const groupBy = filters.groupBy || 'none';
+    const take = Math.min(filters.take || 50, 500);
+    const skip = filters.skip || 0;
+
+    const baseQb = this.menuStatsRepo
+      .createQueryBuilder('stat')
+      .leftJoin('stat.product', 'product')
+      .leftJoin('stat.user', 'user')
+      .where('stat.menuId = :menuId', { menuId: shop.menu.id })
+      .andWhere('stat.createdAt BETWEEN :from AND :to', { from, to });
+
+    if (filters.actions && filters.actions.length > 0) {
+      baseQb.andWhere('stat.action IN (:...actions)', { actions: filters.actions });
+    }
+
+    if (filters.productId) {
+      baseQb.andWhere('stat.productId = :productId', { productId: filters.productId });
+    }
+
+    if (filters.userId) {
+      baseQb.andWhere('stat.userId = :userId', { userId: filters.userId });
+    }
+
+    if (filters.referrer) {
+      baseQb.andWhere('stat.referrer ILIKE :referrer', { referrer: `%${filters.referrer}%` });
+    }
+
+    if (groupBy === 'product') {
+      const productStats = await baseQb
+        .select('stat.productId', 'productId')
+        .addSelect('product.title', 'productTitle')
+        .addSelect('product.price', 'productPriceToman')
+        .addSelect(`COUNT(CASE WHEN stat.action = 'CLICK_PRODUCT' THEN 1 END)`, 'clickCount')
+        .addSelect(`COUNT(CASE WHEN stat.action = 'ADD_TO_CART' THEN 1 END)`, 'addToCartCount')
+        .addSelect('COUNT(stat.id)', 'totalEventsCount')
+        .groupBy('stat.productId')
+        .addGroupBy('product.title')
+        .addGroupBy('product.price')
+        .orderBy('clickCount', 'DESC')
+        .limit(take)
+        .offset(skip)
+        .getRawMany();
+
+      return {
+        fromDate: from.toISOString(),
+        toDate: to.toISOString(),
+        groupBy: 'product',
+        productStats: productStats.map((p) => ({
+          productId: p.productId,
+          productTitle: p.productTitle || 'نامشخص',
+          productPriceToman: Number(p.productPriceToman) || 0,
+          clickCount: Number(p.clickCount) || 0,
+          addToCartCount: Number(p.addToCartCount) || 0,
+          totalEventsCount: Number(p.totalEventsCount) || 0,
+        })),
+      };
+    }
+
+    if (groupBy === 'action') {
+      const actionStats = await baseQb
+        .select('stat.action', 'action')
+        .addSelect('COUNT(stat.id)', 'count')
+        .addSelect('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'uniqueUsersCount')
+        .groupBy('stat.action')
+        .orderBy('count', 'DESC')
+        .getRawMany();
+
+      return {
+        fromDate: from.toISOString(),
+        toDate: to.toISOString(),
+        groupBy: 'action',
+        actionStats: actionStats.map((a) => ({
+          action: a.action,
+          count: Number(a.count) || 0,
+          uniqueUsersCount: Number(a.uniqueUsersCount) || 0,
+        })),
+      };
+    }
+
+    if (groupBy === 'user') {
+      const userStats = await baseQb
+        .select('stat.userId', 'userId')
+        .addSelect('user.firstName', 'firstName')
+        .addSelect('user.lastName', 'lastName')
+        .addSelect('user.mobilePhone', 'mobilePhone')
+        .addSelect('COUNT(stat.id)', 'totalEventsCount')
+        .addSelect('MAX(stat.createdAt)', 'lastEventAt')
+        .groupBy('stat.userId')
+        .addGroupBy('user.firstName')
+        .addGroupBy('user.lastName')
+        .addGroupBy('user.mobilePhone')
+        .orderBy('totalEventsCount', 'DESC')
+        .limit(take)
+        .offset(skip)
+        .getRawMany();
+
+      return {
+        fromDate: from.toISOString(),
+        toDate: to.toISOString(),
+        groupBy: 'user',
+        userStats: userStats.map((u) => ({
+          userId: u.userId,
+          name: `${u.firstName || ''} ${u.lastName || ''}`.trim() || 'کاربر ناشناس',
+          mobilePhone: u.mobilePhone || null,
+          totalEventsCount: Number(u.totalEventsCount) || 0,
+          lastEventAt: u.lastEventAt ? new Date(u.lastEventAt).toISOString() : null,
+        })),
+      };
+    }
+
+    if (groupBy === 'date') {
+      const dateStats = await baseQb
+        .select(`DATE_TRUNC('day', stat.createdAt AT TIME ZONE 'Asia/Tehran')`, 'day')
+        .addSelect('COUNT(stat.id)', 'totalEventsCount')
+        .addSelect('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'uniqueUsersCount')
+        .groupBy('day')
+        .orderBy('day', 'ASC')
+        .getRawMany();
+
+      return {
+        fromDate: from.toISOString(),
+        toDate: to.toISOString(),
+        groupBy: 'date',
+        dateStats: dateStats.map((d) => ({
+          date: d.day ? new Date(d.day).toLocaleDateString('en-CA') : null,
+          totalEventsCount: Number(d.totalEventsCount) || 0,
+          uniqueUsersCount: Number(d.uniqueUsersCount) || 0,
+        })),
+      };
+    }
+
+    // Default: groupBy === 'none' -> Return raw log items
+    const [stats, totalCount] = await baseQb
+      .select([
+        'stat.id',
+        'stat.action',
+        'stat.referrer',
+        'stat.campaign',
+        'stat.value',
+        'stat.createdAt',
+        'product.id',
+        'product.title',
+        'product.price',
+        'user.id',
+        'user.firstName',
+        'user.lastName',
+        'user.mobilePhone',
+      ])
+      .orderBy('stat.createdAt', 'DESC')
+      .take(take)
+      .skip(skip)
+      .getManyAndCount();
+
+    return {
+      fromDate: from.toISOString(),
+      toDate: to.toISOString(),
+      totalCount,
+      take,
+      skip,
+      groupBy: 'none',
+      stats: stats.map((s) => ({
+        id: s.id,
+        createdAt: s.createdAt?.toISOString(),
+        action: s.action,
+        referrer: s.referrer || null,
+        campaign: s.campaign || null,
+        value: s.value || null,
+        product: s.product
+          ? {
+              id: s.product.id,
+              title: s.product.title,
+              priceToman: s.product.price,
+            }
+          : null,
+        user: s.user
+          ? {
+              id: s.user.id,
+              name: `${s.user.firstName || ''} ${s.user.lastName || ''}`.trim() || 'کاربر ناشناس',
+              mobilePhone: s.user.mobilePhone || null,
+            }
+          : null,
+      })),
+    };
+  }
 }
