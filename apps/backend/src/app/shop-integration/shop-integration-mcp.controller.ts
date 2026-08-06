@@ -164,7 +164,7 @@ export class ShopIntegrationMcpController {
     const protocol = (req.headers['x-forwarded-proto'] as string) || (req.secure ? 'https' : 'http');
     const host = (req.headers['x-forwarded-host'] as string) || req.get('host');
     const baseUrl = configuredBaseUrl || `${protocol}://${host}`;
-    const messageUrl = `${baseUrl}/api/v1/shop-integration/mcp/messages?sessionId=${sessionId}`;
+    const messageUrl = `${baseUrl}/api/v1/shop-integration/mcp/messages?sessionId=${sessionId}&apiKey=${encodeURIComponent(token)}`;
 
     res.write(`event: endpoint\ndata: ${messageUrl}\n\n`);
 
@@ -180,17 +180,31 @@ export class ShopIntegrationMcpController {
   @Post('messages')
   async messages(
     @Query('sessionId') sessionId: string,
+    @Query('apiKey') queryApiKey: string,
+    @Headers('x-shop-api-key') headerApiKey: string,
+    @Headers('authorization') authHeader: string,
     @Body() body: any,
     @Res() res: Response,
   ) {
+    let shop: Shop | null = null;
     const session = this.sessions.get(sessionId);
-    if (!session) {
+
+    if (session) {
+      shop = session.shop;
+    } else {
+      const token = this.extractToken(headerApiKey, queryApiKey, authHeader);
+      if (token) {
+        shop = await this.authenticateToken(token);
+      }
+    }
+
+    if (!shop) {
       throw new NotFoundException('Session not found or expired');
     }
 
     const { id, method, params } = body || {};
 
-    // Notifications in JSON-RPC 2.0 must not send a message response over SSE.
+    // Notifications in JSON-RPC 2.0 must not send a message response.
     if (id === undefined || method?.startsWith('notifications/')) {
       return res.status(202).end();
     }
@@ -221,7 +235,7 @@ export class ShopIntegrationMcpController {
       } else if (method === 'tools/call') {
         const name = params?.name;
         const args = params?.arguments || {};
-        const result = await this.executeTool(name, args, session.shop);
+        const result = await this.executeTool(name, args, shop);
         responseResult = {
           content: [
             {
@@ -259,8 +273,15 @@ export class ShopIntegrationMcpController {
       jsonRpcResponse.result = responseResult;
     }
 
-    session.res.write(`event: message\ndata: ${JSON.stringify(jsonRpcResponse)}\n\n`);
-    res.status(200).end();
+    if (session) {
+      try {
+        session.res.write(`event: message\ndata: ${JSON.stringify(jsonRpcResponse)}\n\n`);
+      } catch (e) {
+        // SSE connection write failed or client closed
+      }
+    }
+
+    return res.status(200).json(jsonRpcResponse);
   }
 
   private extractToken(
