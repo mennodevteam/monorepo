@@ -6,6 +6,7 @@ import {
   makeStateKey,
   provideAppInitializer,
 } from '@angular/core';
+import * as Sentry from '@sentry/angular';
 import { isPlatformServer } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { QueryClient } from '@tanstack/angular-query-experimental';
@@ -25,6 +26,7 @@ const SHOP_QUERY_KEY = (username: string) => ['shop', username] as const;
 const HOME_SECTIONS_QUERY_KEY = (username: string) => ['homeSections', username] as const;
 
 const SSR_PREFETCH_DONE = makeStateKey<boolean>('ssrPrefetchDone');
+const SENTRY_DSN_KEY = makeStateKey<string>('sentryDsnKey');
 
 function hydrateQueryCache(
   queryClient: QueryClient,
@@ -68,6 +70,10 @@ export function provideSsrDataTransfer() {
     );
 
     if (isPlatformServer(platformId)) {
+      const sentryDsn = process.env['SENTRY_CUSTOMER_DSN'] || process.env['SENTRY_DSN'];
+      if (sentryDsn) {
+        transferState.set(SENTRY_DSN_KEY, sentryDsn);
+      }
       if (!requestHost) {
         ssrLog.prefetchSkip('unknown', 'missing request host');
         return;
@@ -108,6 +114,14 @@ export function provideSsrDataTransfer() {
           const message = error instanceof Error ? error.message : String(error);
           ssrLog.warn('prefetch error', { host: requestHost, error: message });
         });
+    }
+
+    if (transferState.hasKey(SENTRY_DSN_KEY)) {
+      const dsn = transferState.get(SENTRY_DSN_KEY, '');
+      if (dsn && typeof window !== 'undefined') {
+        (window as any).__SENTRY_DSN__ = dsn;
+        Sentry.init({ dsn, sendDefaultPii: true });
+      }
     }
 
     if (transferState.hasKey(SSR_PREFETCH_DONE)) {
