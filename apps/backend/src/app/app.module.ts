@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { SentryModule } from '@sentry/nestjs/setup';
+import * as Sentry from '@sentry/nestjs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppConfigsModule } from './app-configs/app-configs.module';
 
@@ -41,6 +43,7 @@ import { CampaignsModule } from './campaigns/campaigns.module';
 
 @Module({
   imports: [
+    SentryModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -64,7 +67,7 @@ import { CampaignsModule } from './campaigns/campaigns.module';
       connectTimeoutMS: 10000,
       poolSize: process.env.DB_POOL_MAX ? Number(process.env.DB_POOL_MAX) : 10,
       poolErrorHandler: (error: any) => {
-        console.error('pool error handler', error);
+        Sentry.captureException(error);
       },
     }),
     HealthModule,

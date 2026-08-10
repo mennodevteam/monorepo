@@ -23,4 +23,10 @@ export class AppController {
     const shops = await this.shopsRepository.count();
     return HttpStatus.OK;
   }
+
+  @Public()
+  @Get('/debug-sentry')
+  getError() {
+    throw new Error('My first Sentry error!');
+  }
 }

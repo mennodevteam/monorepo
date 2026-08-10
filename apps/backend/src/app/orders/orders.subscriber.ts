@@ -38,7 +38,6 @@ import {
 import { WebPushNotificationsService } from '../web-push-notifications/web-push-notifications.service';
 import { SmsService } from '../sms/sms.service';
 import { PrintersService } from '../printers/printers.service';
-import * as Sentry from '@sentry/node';
 import { RedisKey, RedisService } from '../core/redis.service';
 import { PersianNumberService } from '@menno/utils';
 import { MennoBaleOrderNotificationsService } from '../third-parties/menno-bale-order-notifications.service';
@@ -408,18 +407,7 @@ export class OrdersSubscriber implements EntitySubscriberInterface<Order> {
 
   private async autoPrint(order: Order, shop: Shop, isAdded?: boolean) {
     const printerViews = await this.shopPrintViewsRepo.findBy({ printer: { shop: { id: shop.id } } });
-    Sentry.captureEvent({
-      level: 'debug',
-      tags: {
-        printViews: printerViews.length,
-      },
-      message: 'panel auto pring',
-      transaction: order.id,
-      user: {
-        id: shop.id,
-      },
-      extra: { printViews: printerViews.map((p) => p.id).join(','), isAdded },
-    });
+    this.logger.log(`Auto print order ${order.id} for shop ${shop.id}, printViews=${printerViews.length}`);
     for (const p of printerViews) {
       if (!isAdded && order.paymentType === OrderPaymentType.Online && p.autoPrintOnOnlinePayment) {
         this.printersService.printOrder({

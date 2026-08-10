@@ -42,8 +42,6 @@ export class OauthService {
       shop: { id: state } as Shop,
       app: ThirdPartyApp.Basalam,
     };
-    
-    console.log(dto, oauth, data)
 
     if (!oauth?.token) {
       const meResponse = await this.http

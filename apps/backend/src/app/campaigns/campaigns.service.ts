@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus, NotFoundException, Logger } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Between, Not, IsNull } from 'typeorm';
 import { Campaign, Order, Shop, OrderState, CampaignAction, MenuStat, StatAction } from '@menno/types';
@@ -7,7 +7,6 @@ import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class CampaignsService {
-  private readonly logger = new Logger(CampaignsService.name);
 
   constructor(
     @InjectRepository(Campaign)
@@ -295,7 +294,6 @@ export class CampaignsService {
     });
 
     for (const c of campaigns) {
-      this.logger.log(`Campaign "${c.title}" state transition at ${now.toISOString()}. Purging cache for shop ${c.shop.id}.`);
       await this.redisService.clearCustomerSsrCache(c.shop.id);
       await this.redisService.updateMenu(c.shop.id);
     }

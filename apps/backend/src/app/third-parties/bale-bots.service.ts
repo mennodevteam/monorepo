@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { HttpException, HttpStatus, Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaleBotKeys, Club, Member, Shop, ThirdPartyApp, User, UserRole, Status } from '@menno/types';
 import { PersianNumberService } from '@menno/utils';
@@ -55,7 +55,6 @@ interface BaleTelegramResponse<T = unknown> {
 
 @Injectable()
 export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
-  private readonly logger = new Logger(BaleBotsService.name);
   private readonly apiBaseUrl = 'https://tapi.bale.ai';
   private readonly runtimes = new Map<string, BaleBotRuntime>();
 
@@ -92,7 +91,6 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
       await this.startBotForShop(shop, baleParty.token);
     }
 
-    this.logger.log(`Bale bots initialized: ${this.runtimes.size}`);
   }
 
   async reloadShopBots(shopId: string) {
@@ -132,7 +130,6 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
 
     runtime.shop = shop;
     runtime.token = baleParty.token;
-    this.logger.log(`Bale runtime refreshed for shop ${shopId}`);
   }
 
   /** Called by {@link BaleWebhookController} when Bale POSTs an update. */
@@ -142,7 +139,6 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
       relations: ['thirdParties', 'aiChatbot'],
     });
     if (!shop) {
-      this.logger.warn(`Bale webhook: unknown shopId ${shopId}`);
       return;
     }
     const baleParty = shop.thirdParties?.find((item) => item.app === ThirdPartyApp.Bale && !!item.token);
@@ -173,12 +169,9 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
       try {
         await this.invokeSetWebhook(token, webhookUrl);
         runtime.useWebhook = true;
-        this.logger.log(`Bale setWebhook OK shop ${shop.id}`);
         return;
       } catch (e: unknown) {
-        this.logger.warn(`Bale setWebhook failed shop ${shop.id}, clearing webhook and using polling: ${(e as Error)?.message}`);
         if ((e as any)?.response?.status === 401) {
-          this.logger.warn(`Bale token unauthorized for shop ${shop.id}. Stopping bot. Token: ${token}`);
           this.stopBotByShopId(shop.id);
           return;
         }
@@ -189,7 +182,6 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
         await this.invokeSetWebhook(token, '');
       } catch (e: unknown) {
         if ((e as any)?.response?.status === 401) {
-          this.logger.warn(`Bale token unauthorized for shop ${shop.id}. Stopping bot. Token: ${token}`);
           this.stopBotByShopId(shop.id);
           return;
         }
@@ -200,14 +192,10 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
   }
 
   private startPolling(runtime: BaleBotRuntime) {
-    void this.pollUpdates(runtime.shop.id).catch((error) => {
-      this.logger.error(`Bale bot initial poll failed for shop ${runtime.shop.id}: ${error?.message || error}`);
-    });
+    void this.pollUpdates(runtime.shop.id).catch(() => {});
 
     runtime.interval = setInterval(() => {
-      this.pollUpdates(runtime.shop.id).catch((error) => {
-        this.logger.error(`Bale bot poll failed for shop ${runtime.shop.id}: ${error?.message || error}`);
-      });
+      this.pollUpdates(runtime.shop.id).catch(() => {});
     }, 2000);
   }
 
@@ -219,15 +207,9 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
     const base = (process.env.API_BASE_URL || '').trim().replace(/\/+$/, '');
     const secret = (process.env.BALE_WEBHOOK_SECRET || '').trim();
     if (!base.startsWith('https://')) {
-      if (base) {
-        this.logger.warn(
-          'Bale setWebhook needs API_BASE_URL with https://; using long polling until it is HTTPS',
-        );
-      }
       return undefined;
     }
     if (!secret) {
-      this.logger.warn('BALE_WEBHOOK_SECRET is not set; Bale bots use long polling only');
       return undefined;
     }
     return `${base}/webhooks/bale/${encodeURIComponent(shopId)}?secret=${encodeURIComponent(secret)}`;
@@ -272,18 +254,13 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
           offset: runtime.offset,
         });
       } catch (err: unknown) {
-        this.logger.error(`Bale getUpdates HTTP error shop ${shopId}: ${(err as Error)?.message || err}`);
         if ((err as any)?.response?.status === 401) {
-          this.logger.warn(`Stopping Bale bot for shop ${shopId} due to 401 Unauthorized. Token: ${runtime.token}`);
           this.stopBotByShopId(shopId);
         }
         return;
       }
 
       if (raw && typeof raw === 'object' && 'ok' in raw && (raw as BaleTelegramResponse).ok === false) {
-        this.logger.warn(
-          `Bale getUpdates for shop ${shopId}: ${(raw as BaleTelegramResponse).description || 'ok=false'}`,
-        );
         return;
       }
 
@@ -296,7 +273,6 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
         try {
           await this.handleUpdate(runtime, update);
         } catch (error: unknown) {
-          this.logger.error(`Bale handle update ${updateId} shop ${shopId}: ${(error as Error)?.message || error}`);
         }
       }
     } finally {
@@ -322,14 +298,8 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
     const baleIdStr = String(fromId);
     const traceId = this.createBaleTraceId(runtime.shop.id, chatId);
 
-    this.logger.log(
-      `[${traceId}] incoming update shopId=${runtime.shop.id} chatId=${chatId} fromId=${baleIdStr} hasText=${!!msg.text} text="${this.preview(
-        msg.text || '',
-      )}" hasContact=${!!msg.contact?.phone_number}`,
-    );
 
     if (this.isStartCommand(msg.text)) {
-      this.logger.log(`[${traceId}] start command, sending configured welcome message`);
       await this.sendWelcomeMessage(runtime, chatId);
       return;
     }
@@ -387,29 +357,15 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
     }
 
     const linked = await this.usersRepo.findOneBy({ baleId: baleIdStr });
-    this.logger.log(
-      `[${traceId}] linked user lookup baleId=${baleIdStr} linkedUserId=${linked?.id || '-'} aiStatus=${
-        runtime.shop.aiChatbot?.status || '-'
-      }`,
-    );
 
     if (linked) {
       if (runtime.shop.aiChatbot?.status === Status.Active) {
         let result: Awaited<ReturnType<AiChatbotService['chat']>>;
         const stopChatAction = this.startChatActionLoop(runtime, chatId, traceId);
         try {
-          this.logger.log(`[${traceId}] ai generation start`);
           result = await this.aiChatbotService.chat(runtime.shop.id, linked.id, msg.text || '', undefined, traceId);
-          this.logger.log(
-            `[${traceId}] ai generation done textLen=${result.text.length} productIds=${JSON.stringify(
-              result.products?.map((product) => product.id) || [],
-            )} text="${this.preview(result.text, 1000)}"`,
-          );
         } catch (error) {
-          this.logger.error(`AI Chatbot generation error for shop ${runtime.shop.id}: ${(error as Error)?.message}`);
-          this.logger.error(`[${traceId}] ai generation failed error=${(error as Error)?.message || error}`);
           if (this.isPaymentRequiredError(error)) {
-            this.logger.log(`[${traceId}] token/payment error, sending configured welcome message`);
             await this.sendWelcomeMessage(runtime, chatId);
             return;
           }
@@ -434,17 +390,14 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
         try {
           await this.sendPlainText(runtime, chatId, result.text, reply_markup);
         } catch (error) {
-          this.logger.error(`AI Chatbot send error for shop ${runtime.shop.id}: ${(error as Error)?.message}`);
           await this.sendPlainText(runtime, chatId, this.stripMarkdown(result.text));
         }
         return;
       }
-      this.logger.log(`[${traceId}] ai inactive, sending welcome message`);
       await this.sendWelcomeMessage(runtime, chatId);
       return;
     }
 
-    this.logger.log(`[${traceId}] user not linked, requesting contact`);
     await this.sendPlainText(
       runtime,
       chatId,
@@ -489,7 +442,6 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
         action: 'typing',
       });
     } catch (error) {
-      this.logger.warn(`[${traceId}] bale chat action failed: ${(error as Error)?.message || error}`);
     }
   }
 
@@ -599,16 +551,12 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
             ...(reply_markup ? { reply_markup } : {}),
           });
         } catch (photoErr: unknown) {
-          this.logger.warn(
-            `Bale sendPhoto failed shop ${runtime.shop.id}, fallback to text: ${(photoErr as Error)?.message}`,
-          );
           await trySendText(message, reply_markup);
         }
       } else {
         await trySendText(message, reply_markup);
       }
     } catch (err: unknown) {
-      this.logger.warn(`Bale send with keyboard failed, retry plain text: ${(err as Error)?.message}`);
       const fallback = this.truncate(`${message}\n\n${appUrl}`, 4096);
       await trySendText(fallback, undefined);
     }
@@ -617,9 +565,6 @@ export class BaleBotsService implements OnModuleInit, OnModuleDestroy {
   private buildInlineKeyboard(buttonText: string, appUrl: string) {
     const href = appUrl?.trim();
     if (!buttonText || !this.isValidHttpUrl(href)) {
-      if (!this.isValidHttpUrl(href)) {
-        this.logger.warn(`Bale inline button skipped: invalid appUrl "${appUrl}"`);
-      }
       return undefined;
     }
     // `url` opens in the system browser; `web_app` opens inside Bale as a mini app (see InlineKeyboardButton / WebAppInfo in Bale API).

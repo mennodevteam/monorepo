@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Query, Headers, Req, Res, UnauthorizedException, NotFoundException, Body } from '@nestjs/common';
+import { Controller, Get, Post, Query, Headers, Req, Res, UnauthorizedException, NotFoundException, Body, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request, Response } from 'express';
@@ -16,6 +16,7 @@ interface McpSession {
 @Public()
 @Controller('api/v1/shop-integration/mcp')
 export class ShopIntegrationMcpController {
+  private readonly logger = new Logger(ShopIntegrationMcpController.name);
   private sessions = new Map<string, McpSession>();
 
   constructor(
@@ -30,7 +31,6 @@ export class ShopIntegrationMcpController {
         try {
           session.res.write(':\n\n');
         } catch (err) {
-          console.error(`Failed to ping session ${sessionId}:`, err);
           this.sessions.delete(sessionId);
         }
       }
@@ -110,7 +110,7 @@ export class ShopIntegrationMcpController {
         };
       }
     } catch (err: any) {
-      console.error('Error executing MCP method:', err);
+      this.logger.error('Error executing MCP method:', err);
       responseError = {
         code: -32603,
         message: err.message || 'Internal error',
@@ -266,7 +266,7 @@ export class ShopIntegrationMcpController {
         };
       }
     } catch (err: any) {
-      console.error('Error executing MCP method:', err);
+      this.logger.error('Error executing MCP method:', err);
       responseError = {
         code: -32603,
         message: err.message || 'Internal error',
@@ -324,7 +324,7 @@ export class ShopIntegrationMcpController {
 
     // Update lastUsedAt in background
     this.apiKeyRepo.update(apiKeyRecord.id, { lastUsedAt: new Date() }).catch((err) => {
-      console.error('Failed to update API key lastUsedAt:', err);
+      this.logger.error('Failed to update API key lastUsedAt:', err);
     });
 
     return apiKeyRecord.shop;

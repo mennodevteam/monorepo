@@ -1,6 +1,6 @@
 import { Plugin, Shop, Status, ThirdPartyApp, Product, ProductCategory, ProductVariant, ProductPackItem } from '@menno/types';
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Redis } from 'ioredis';
 import { Repository, In } from 'typeorm';
@@ -18,6 +18,7 @@ const CUSTOMER_SITEMAP_PREFIX = 'customer-sitemap:';
 
 @Injectable()
 export class RedisService {
+  private readonly logger = new Logger(RedisService.name);
   private readonly redisClient: Redis;
 
   constructor(
@@ -217,7 +218,7 @@ export class RedisService {
       this.client.expire(redisKey, 3600 * 12);
       return returnPanelMenu ? fullMenuJson : filteredMenuJson;
     } catch (error) {
-      console.error('Error updating menu cache:', error);
+      this.logger.error('Error updating menu cache:', error);
       return;
     } finally {
       await this.clearCustomerSsrCache(shopId);

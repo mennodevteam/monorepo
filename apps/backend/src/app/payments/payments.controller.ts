@@ -1,3 +1,4 @@
+
 import {
   Member,
   MenuStat,
@@ -27,6 +28,7 @@ import {
   Query,
   Req,
   Response,
+  Logger,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
@@ -42,6 +44,7 @@ import { environment } from '../../environments/environment';
 import { RedisService } from '../core/redis.service';
 @Controller('payments')
 export class PaymentsController {
+  private readonly logger = new Logger(PaymentsController.name);
   constructor(
     private paymentsService: PaymentsService,
     private ordersService: OrdersService,
@@ -355,7 +358,7 @@ export class PaymentsController {
                   } as MenuStat);
                 }
               } catch (error) {
-                console.log('payment menu stat error', error);
+                this.logger.error('payment menu stat error:', error);
               }
             });
         }

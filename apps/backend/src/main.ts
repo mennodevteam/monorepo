@@ -1,12 +1,16 @@
+import './instrument';
+import * as Sentry from '@sentry/nestjs';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
+import { SentryLogger } from './app/core/sentry-logger';
 import * as swStats from 'swagger-stats';
 import { json } from 'express';
 
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.useLogger(new SentryLogger());
   app.enableCors();
   const port = process.env.PORT || 3333;
   app.use(json({ limit: '20mb' }));
@@ -24,13 +28,11 @@ async function bootstrap() {
 
   // Process event handlers
   process.on('uncaughtException', (err) => {
-    console.error('Uncaught Exception:', err);
-    // Handle the error gracefully, log it, and take appropriate actions
+    Sentry.captureException(err);
   });
 
-  process.on('unhandledRejection', (reason, promise) => {
-    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-    // Handle the rejection gracefully, log it, and take appropriate actions
+  process.on('unhandledRejection', (reason) => {
+    Sentry.captureException(reason);
   });
 
   await app.listen(port);

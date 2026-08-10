@@ -1,5 +1,5 @@
 import { AiChat, AiChatbot, AiChatMessage, Menu, Product, ProductVariant, Shop, User } from '@menno/types';
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { RedisService } from '../core/redis.service';
@@ -75,7 +75,6 @@ type AiUsage = {
 
 @Injectable()
 export class AiChatbotService {
-  private readonly logger = new Logger(AiChatbotService.name);
 
   constructor(
     @InjectRepository(Shop)
@@ -90,21 +89,11 @@ export class AiChatbotService {
   ) {}
 
   async chat(shopId: string, userId: string, message: string, chatId?: number, traceId = this.createTraceId()) {
-    this.logger.log(
-      `[${traceId}] start shopId=${shopId} userId=${userId} chatId=${chatId || '-'} model=${MODEL || '-'} input="${this.preview(
-        message,
-      )}"`,
-    );
 
     const shop = await this.shopRepo.findOne({ where: { id: shopId }, relations: ['aiChatbot'] });
     if (!shop) {
       throw new HttpException('Shop not found', HttpStatus.NOT_FOUND);
     }
-    this.logger.log(
-      `[${traceId}] shop loaded hasAiChatbot=${!!shop.aiChatbot} status=${shop.aiChatbot?.status || '-'} styleLen=${
-        shop.aiChatbot?.style?.length || 0
-      } extraInfoLen=${shop.aiChatbot?.extraInfo?.length || 0} tokenBalance=${shop.aiChatbot?.tokenBalance ?? '-'}`,
-    );
 
     if (!shop.aiChatbot) {
       throw new HttpException('AI chatbot not found', HttpStatus.NOT_FOUND);
@@ -119,24 +108,16 @@ export class AiChatbotService {
     }
 
     const chat = await this.getOrCreateChat(shop, userId, chatId);
-    this.logger.log(`[${traceId}] chat ready id=${chat.id} historyRows=${chat.messages?.length || 0}`);
 
     const lightKnowledge = await this.getLightShopKnowledge(shop);
-    this.logger.log(
-      `[${traceId}] light knowledge ready categories=${lightKnowledge.menu.categories?.length || 0} infoLen=${
-        lightKnowledge.info.length
-      }`,
-    );
 
     const lightMessages = this.buildMessages(lightKnowledge.info, shop, chat.messages || [], message, LIGHT_SYSTEM_PROMPT);
     this.logMessages(traceId, 'light', lightMessages);
 
-    this.logger.log(`[${traceId}] light ai start`);
     const lightResult = await this.generateAiText(lightMessages, traceId, 'light');
     this.logAiResponse(traceId, 'light', lightResult.text, lightResult.usage);
 
     const needsProducts = this.needsProductKnowledge(lightResult.text);
-    this.logger.log(`[${traceId}] needs products=${needsProducts} lightText="${this.preview(lightResult.text, 1000)}"`);
 
     let finalMessage = lightResult.text.trim() || FALLBACK_MESSAGE;
     let productItems: ProductKnowledgeItem[] = [];
@@ -148,20 +129,12 @@ export class AiChatbotService {
       const selectorMessages = this.buildProductSelectorMessages(allProductItems, chat.messages || [], message);
       this.logMessages(traceId, 'product-selector', selectorMessages);
 
-      this.logger.log(`[${traceId}] product selector ai start products=${allProductItems.length}`);
       const selectorResult = await this.generateAiText(selectorMessages, traceId, 'product-selector');
       this.logAiResponse(traceId, 'product-selector', selectorResult.text, selectorResult.usage);
 
       const selectedProductRefs = this.parseProductSelectionResponse(selectorResult.text);
       const candidates = this.resolveProductItems(selectedProductRefs, allProductItems).slice(0, MAX_PRODUCT_CONTEXT);
       usage = this.mergeUsage(usage, selectorResult.usage);
-      this.logger.log(
-        `[${traceId}] product selector refs=${JSON.stringify(selectedProductRefs)} candidates count=${
-          candidates.length
-        } titles=${JSON.stringify(
-          candidates.map((product) => product.title),
-        )}`,
-      );
 
       const productKnowledge = this.getProductKnowledgeForCandidates(candidates);
       const productMessages = this.buildMessages(
@@ -173,7 +146,6 @@ export class AiChatbotService {
       );
       this.logMessages(traceId, 'product', productMessages);
 
-      this.logger.log(`[${traceId}] product ai start`);
       const productResult = await this.generateAiText(productMessages, traceId, 'product');
       this.logAiResponse(traceId, 'product', productResult.text, productResult.usage);
 
@@ -182,13 +154,6 @@ export class AiChatbotService {
       productItems = this.resolveProducts(parsedResponse.productIds, productKnowledge.productsByIndex);
       products = this.resolveOriginalProducts(productItems, lightKnowledge.menu);
       usage = this.mergeUsage(usage, productResult.usage);
-      this.logger.log(
-        `[${traceId}] parsed textLen=${finalMessage.length} productRefs=${JSON.stringify(
-          parsedResponse.productIds,
-        )} resolvedProductItems=${JSON.stringify(productItems)} resolvedProductIds=${JSON.stringify(
-          products.map((product) => product.id),
-        )} finalText="${this.preview(finalMessage)}"`,
-      );
     }
 
     await this.aiChatMessageRepo.save({
@@ -200,7 +165,6 @@ export class AiChatbotService {
       model: MODEL,
       aiChat: { id: chat.id },
     });
-    this.logger.log(`[${traceId}] saved ai chat message chatId=${chat.id}`);
 
     const tokensUsed =
       usage?.totalTokens ??
@@ -209,7 +173,6 @@ export class AiChatbotService {
         : 0);
     if (tokensUsed > 0) {
       await this.aiChatbotRepo.decrement({ id: shop.aiChatbot.id }, 'tokenBalance', tokensUsed);
-      this.logger.log(`[${traceId}] decremented tokenBalance by=${tokensUsed} aiChatbotId=${shop.aiChatbot.id}`);
     }
 
     return { text: finalMessage, products, chatId: chat.id };
@@ -382,11 +345,6 @@ export class AiChatbotService {
 
   private async generateAiText(messages: CoreMessage[], traceId: string, stage: string) {
     try {
-      this.logger.log(
-        `[${traceId}] calling ${stage} ai baseURL=${process.env.AI_BASE_URL || '-'} model=${
-          MODEL || '-'
-        } messages=${messages.length}`,
-      );
       return await generateText({
         model: createOpenAICompatible({
           baseURL: process.env.AI_BASE_URL,
@@ -480,34 +438,12 @@ export class AiChatbotService {
   }
 
   private logMessages(traceId: string, stage: string, messages: CoreMessage[]) {
-    this.logger.log(
-      `[${traceId}] ${stage} prompt messages=${JSON.stringify(
-        messages.map((message, index) => ({
-          index,
-          role: message.role,
-          length: typeof message.content === 'string' ? message.content.length : 0,
-          preview: typeof message.content === 'string' ? this.preview(message.content) : '[non-text content]',
-        })),
-      )}`,
-    );
   }
 
   private logAiResponse(traceId: string, stage: string, text: string, usage: unknown) {
-    this.logger.log(`[${traceId}] ${stage} ai response textLen=${text.length} text="${this.preview(text, 1500)}"`);
-    this.logger.log(`[${traceId}] ${stage} ai usage=${this.safeJson(usage)}`);
   }
 
   private logAiError(traceId: string, error: unknown) {
-    const err = error as Error & {
-      cause?: unknown;
-      statusCode?: number;
-      responseBody?: unknown;
-    };
-
-    this.logger.error(`[${traceId}] ai error message=${err?.message || error}`);
-    if (err?.statusCode) this.logger.error(`[${traceId}] ai error status=${err.statusCode}`);
-    if (err?.responseBody) this.logger.error(`[${traceId}] ai error responseBody=${this.safeJson(err.responseBody)}`);
-    if (err?.cause) this.logger.error(`[${traceId}] ai error cause=${this.safeJson(err.cause)}`);
   }
 
   private mergeUsage(first: AiUsage, second: AiUsage): AiUsage {
@@ -592,7 +528,6 @@ ${productList}`,
         return parsed.map((id) => String(id).trim()).filter(Boolean);
       }
     } catch (e) {
-      console.error('Failed to parse AI product IDs:', e);
     }
 
     return arrayText

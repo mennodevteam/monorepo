@@ -7,6 +7,7 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
+
 import { Address, ChangePasswordDto, Region, ShopUser, User, UserRole } from '@menno/types';
 import { JwtService } from '@nestjs/jwt';
 import { AuthPayload } from '../core/types/auth-payload';
@@ -192,7 +193,6 @@ export class AuthService {
     if (!normalizedMobile) {
       throw new BadRequestException('mobile required');
     }
-    console.log('login app with token', normalizedMobile, token, this.mobilePhoneTokens[normalizedMobile]);
     if (this.mobilePhoneTokens[normalizedMobile] === PersianNumberService.toEnglish(token)) {
       delete this.mobilePhoneTokens[normalizedMobile];
       let user = await this.usersRepo.findOneBy({ mobilePhone: normalizedMobile });
@@ -217,7 +217,6 @@ export class AuthService {
     if (!normalizedMobile) {
       throw new BadRequestException('mobile required');
     }
-    console.log('login app with token v2', normalizedMobile, token, this.mobilePhoneTokens[normalizedMobile]);
     if (
       this.mobilePhoneTokens[normalizedMobile]?.toString() === PersianNumberService.toEnglish(token)?.toString()
     ) {

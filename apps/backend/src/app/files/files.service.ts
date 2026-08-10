@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { S3 } from 'aws-sdk';
 import { getLiaraS3ClientConfiguration } from './aws.config';
 import 'multer';
@@ -7,6 +7,7 @@ import { Image } from '@menno/types';
 
 @Injectable()
 export class FilesService {
+  private readonly logger = new Logger(FilesService.name);
   private readonly client = new S3(getLiaraS3ClientConfiguration());
 
   async uploadFromUrl(link: string, name: string, path?: string) {
@@ -69,7 +70,7 @@ export class FilesService {
           this.uploadFromUrl(`https://img.menno.pro/_/width:64/plain/${url}@jpeg`, xxsKey, path),
         ]);
       } catch (err) {
-        console.error('imgproxy failed, copying original image as fallback:', err);
+        this.logger.error('imgproxy failed, copying original image as fallback:', err);
         try {
           const binary = await fetch(url);
           if (!binary.ok) {
@@ -83,9 +84,8 @@ export class FilesService {
             this.upload(<any>{ buffer: blob }, xsKey, path),
             this.upload(<any>{ buffer: blob }, xxsKey, path),
           ]);
-          console.log('Successfully saved fallback images.');
         } catch (fallbackErr) {
-          console.error('Fallback failed:', fallbackErr);
+          this.logger.error('Fallback failed:', fallbackErr);
         }
       }
     };

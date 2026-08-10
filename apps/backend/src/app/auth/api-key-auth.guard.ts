@@ -4,6 +4,7 @@ import {
   ExecutionContext,
   UnauthorizedException,
   ForbiddenException,
+  Logger,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,6 +15,7 @@ import * as crypto from 'crypto';
 
 @Injectable()
 export class ApiKeyAuthGuard implements CanActivate {
+  private readonly logger = new Logger(ApiKeyAuthGuard.name);
   constructor(
     private reflector: Reflector,
     @InjectRepository(ShopApiKey)
@@ -45,7 +47,7 @@ export class ApiKeyAuthGuard implements CanActivate {
 
     // Update lastUsedAt in background
     this.apiKeyRepo.update(apiKeyRecord.id, { lastUsedAt: new Date() }).catch((err) => {
-      console.error('Failed to update API key lastUsedAt:', err);
+      this.logger.error('Failed to update API key lastUsedAt:', err);
     });
 
     const requiredScopes = this.reflector.getAllAndOverride<string[]>(SCOPES_KEY, [

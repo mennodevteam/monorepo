@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   MennoBaleOrderKeys,
@@ -63,7 +63,6 @@ const ORDER_STATE_LINE: Record<OrderState, string> = {
  */
 @Injectable()
 export class MennoBaleOrderNotificationsService {
-  private readonly logger = new Logger(MennoBaleOrderNotificationsService.name);
   private readonly apiBaseUrl = 'https://tapi.bale.ai';
   private readonly pendingByRunner = new WeakMap<QueryRunner, Map<string, PendingMennoBaleSync>>();
 
@@ -114,9 +113,7 @@ export class MennoBaleOrderNotificationsService {
   }
 
   private runSyncInBackground(orderId: string, allowCreate: boolean, ctx?: MennoBaleSyncContext): void {
-    void this.syncOrderChannelMessage(orderId, allowCreate, ctx).catch((error: unknown) => {
-      this.logger.warn(`Menno Bale sync failed order=${orderId}: ${(error as Error)?.message || error}`);
-    });
+    void this.syncOrderChannelMessage(orderId, allowCreate, ctx).catch(() => {});
   }
 
   async syncOrderChannelMessage(
@@ -179,7 +176,6 @@ export class MennoBaleOrderNotificationsService {
     const reply_markup = this.buildPanelOrderReplyMarkup(orderId);
     const chatId = this.parseChatId(channelId);
     if (chatId === undefined) {
-      this.logger.warn(`Menno Bale orders: invalid channelId "${channelId}" order=${orderId}`);
       return { ok: false, skipReason: 'invalid channelId' };
     }
 
@@ -203,12 +199,8 @@ export class MennoBaleOrderNotificationsService {
             errText,
           );
         if (!canResend) {
-          this.logger.warn(
-            `Menno Bale editMessageText failed order=${orderId} allowCreate=${allowCreate}: ${errText}`,
-          );
           return { ok: false, error: errText };
         }
-        this.logger.warn(`Menno Bale editMessageText lost message order=${orderId}, sending new: ${errText}`);
       }
     }
 
@@ -236,7 +228,6 @@ export class MennoBaleOrderNotificationsService {
       return { ok: false, error: 'sendMessage returned no message_id' };
     } catch (e: unknown) {
       const errText = String((e as Error)?.message || e);
-      this.logger.warn(`Menno Bale sendMessage failed order=${orderId}: ${errText}`);
       return { ok: false, error: errText };
     }
   }
@@ -334,9 +325,6 @@ export class MennoBaleOrderNotificationsService {
 
     const body = parts.join('\n');
     const full = body + footer;
-    if (full.length > 4090) {
-      this.logger.warn(`Menno Bale order message too long order=${order.id}`);
-    }
     return PersianNumberService.toEnglish(full);
   }
 

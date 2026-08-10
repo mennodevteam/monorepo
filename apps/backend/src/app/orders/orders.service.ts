@@ -1,3 +1,4 @@
+
 import {
   FilterOrderDto,
   ManualSettlementDto,
@@ -34,7 +35,7 @@ import {
   Campaign,
 } from '@menno/types';
 import { groupBy, groupBySum } from '@menno/utils';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   Between,
@@ -53,6 +54,7 @@ import { RedisService } from '../core/redis.service';
 
 @Injectable()
 export class OrdersService {
+  private readonly logger = new Logger(OrdersService.name);
   constructor(
     @InjectRepository(Member)
     private membersRepo: Repository<Member>,
@@ -141,7 +143,7 @@ export class OrdersService {
         dto.campaign = order.campaign = activeCampaign;
       }
     } catch (err) {
-      console.error('Error applying active campaign matching:', err);
+      this.logger.error('Error applying active campaign matching:', err);
     }
 
     Menu.setRefsAndSort(menu, dto.type, true, true, undefined, dto.isManual ? true : false, activeCampaign);
@@ -202,7 +204,7 @@ export class OrdersService {
         }
       }
     } catch (err) {
-      console.error('Error applying active campaign discounts:', err);
+      this.logger.error('Error applying active campaign discounts:', err);
     }
 
     const allBoms = await this.billOfMaterialRepository.find({
@@ -846,7 +848,7 @@ export class OrdersService {
                 dto.sentAt.setMinutes(dto.sentAt.getMinutes() + message.delayInMinutes);
               }
               this.smsService.sendTemplate(dto).catch((err) => {
-                console.error('Failed to send SMS template:', err);
+                this.logger.error('Failed to send SMS template:', err);
               });
             }
           }
