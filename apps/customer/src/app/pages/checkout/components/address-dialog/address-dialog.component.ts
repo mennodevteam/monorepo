@@ -11,6 +11,7 @@ import { Address, Region, StatAction, State } from '@menno/types';
 import { AddressesService } from '../../../../core/services/addresses.service';
 import { REGIONS } from '../../../../core/constants/regions';
 import { MenuStatService } from '../../../../core/services/menu-stat.service';
+import { LoggerService } from '../../../../core/services/logger.service';
 
 @Component({
   selector: 'app-address-dialog',
@@ -30,8 +31,9 @@ import { MenuStatService } from '../../../../core/services/menu-stat.service';
 })
 export class AddressDialogComponent implements AfterViewInit {
   dialogRef = inject(MatDialogRef<AddressDialogComponent>);
-  addressesService = inject(AddressesService);
-  menuStat = inject(MenuStatService);
+  private addressesService = inject(AddressesService);
+  private menuStat = inject(MenuStatService);
+  private logger = inject(LoggerService);
   data = inject<Address | undefined>(MAT_DIALOG_DATA, { optional: true });
 
   address?: Address;
@@ -99,7 +101,7 @@ export class AddressDialogComponent implements AfterViewInit {
         }
         this.dialogRef.close(true);
       } catch (error) {
-        console.error('Error saving address:', error);
+        this.logger.error('Error saving address:', error);
       } finally {
         this.loading.set(false);
       }

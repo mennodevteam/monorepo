@@ -1,4 +1,5 @@
 import { getServerApiUrl, getServerApiUrlSource } from './server-api-url';
+import * as Sentry from '@sentry/angular';
 
 const PREFIX = '[customer-ssr]';
 
@@ -21,6 +22,11 @@ function isVerbose(): boolean {
 }
 
 function write(level: 'log' | 'warn', message: string, meta?: SsrLogMeta): void {
+  Sentry.addBreadcrumb({
+    category: 'ssr',
+    message: meta && Object.keys(meta).length > 0 ? `${message} ${JSON.stringify(meta)}` : message,
+    level: level === 'warn' ? 'warning' : 'info',
+  });
   if (!isEnabled()) {
     return;
   }

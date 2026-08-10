@@ -1,4 +1,5 @@
 import '@angular/compiler';
+import * as Sentry from '@sentry/angular';
 import {
   AngularNodeAppEngine,
   createNodeRequestHandler,
@@ -28,6 +29,11 @@ import { getServerApiUrl, getServerApiUrlSource } from './src/app/core/functions
 const SSR_ROUTE_PREFIXES = ['', '/categories'];
 const HTML_CACHE_TTL_SECONDS = Number(process.env['SSR_HTML_CACHE_TTL_SECONDS'] ?? 300);
 const REDIS_URI = process.env['REDIS_URI'];
+
+Sentry.init({
+  dsn: process.env['SENTRY_CUSTOMER_DSN'] || process.env['SENTRY_DSN'],
+  sendDefaultPii: true,
+});
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -326,7 +332,7 @@ async function run(): Promise<void> {
 
 if (isMainModule(import.meta.url)) {
   run().catch((error) => {
-    console.error(error);
+    Sentry.captureException(error);
     process.exit(1);
   });
 }

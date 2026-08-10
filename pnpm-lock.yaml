@@ -125,6 +125,9 @@ importers:
       '@ngx-translate/http-loader':
         specifier: ^7.0.0
         version: 7.0.0(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1))(rxjs@7.8.1))(@ngx-translate/core@14.0.0(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1))(rxjs@7.8.1))(rxjs@7.8.1)
+      '@sentry/angular':
+        specifier: ^10.69.0
+        version: 10.69.0(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1))(rxjs@7.8.1))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1))(@angular/router@21.2.17(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1))(rxjs@7.8.1))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1))(@angular/platform-browser@21.2.17(@angular/animations@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1)))(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1))(rxjs@7.8.1))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1)))(rxjs@7.8.1))(rxjs@7.8.1)
       '@sentry/nestjs':
         specifier: ^10.69.0
         version: 10.69.0(@nestjs/common@10.2.4(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/core@10.2.4(@nestjs/common@10.2.4(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/microservices@9.4.3)(@nestjs/platform-express@10.2.4)(reflect-metadata@0.1.14)(rxjs@7.8.1))(@opentelemetry/core@2.10.0(@opentelemetry/api@1.9.1))
@@ -3588,6 +3591,23 @@ packages:
     resolution: {integrity: sha512-Fz5+4XCg3akeoFK+K7g+d7HqGMjmnLoY2eJlpONJmaeT9pXY7yfUyXKZMmMajdE2LxxKJgQ2YKvSCaGVamTjHw==}
     engines: {node: '>=8'}
 
+  '@sentry/angular@10.69.0':
+    resolution: {integrity: sha512-hZ+CRwdqJFPngwvlqkZtcIcLHH4VUAZY/Ffe/uniqk91Fmm8fpiR3FlvsYNhxn4NI8+C34pXf+eOUdyIIa6fzg==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@angular/common': '>= 14.x <= 22.x'
+      '@angular/core': '>= 14.x <= 22.x'
+      '@angular/router': '>= 14.x <= 22.x'
+      rxjs: ^6.5.5 || ^7.x
+
+  '@sentry/browser-utils@10.69.0':
+    resolution: {integrity: sha512-e/u1Abj0zRPwR/deGZAP3GOULrsx67/XXnM5Skniqs4uxTsdNtPek1Nef0tpxwaQJYxwh6pWdhswLPPbbPOgBQ==}
+    engines: {node: '>=18'}
+
+  '@sentry/browser@10.69.0':
+    resolution: {integrity: sha512-8391tnm96YbR7b8SYfEA/NEIZuyb2r3SZrtAT0bhZtjlujcYWjo7gugQvk8sWLU9cAa/euD00eJoIoJvNfpd7Q==}
+    engines: {node: '>=18'}
+
   '@sentry/conventions@0.16.0':
     resolution: {integrity: sha512-fO9PLmHdVURcSPUpWCItWAtgKiMwGdJHbovoSEyLplX5sxs2ugvI4CBPTrkkgqhObnZOD0CnWBKDzSVQYBKEyQ==}
     engines: {node: '>=14'}
@@ -3599,6 +3619,10 @@ packages:
   '@sentry/core@7.120.4':
     resolution: {integrity: sha512-TXu3Q5kKiq8db9OXGkWyXUbIxMMuttB5vJ031yolOl5T/B69JRyAoKuojLBjRv1XX583gS1rSSoX8YXX7ATFGA==}
     engines: {node: '>=8'}
+
+  '@sentry/feedback@10.69.0':
+    resolution: {integrity: sha512-qrGz5Qaw93/IhMjlFN6uIaXeHwgHDaKGa6FkTAP6PonpkvSbGGqan6xfsENxzj9HUVoli1lZ6tMRDnt2qtSPhg==}
+    engines: {node: '>=18'}
 
   '@sentry/integrations@7.120.4':
     resolution: {integrity: sha512-kkBTLk053XlhDCg7OkBQTIMF4puqFibeRO3E3YiVc4PGLnocXMaVpOSCkMqAc1k1kZ09UgGi8DxfQhnFEjUkpA==}
@@ -3647,6 +3671,14 @@ packages:
       '@opentelemetry/api': ^1.9.0
       '@opentelemetry/core': ^1.30.1 || ^2.1.0
       '@opentelemetry/sdk-trace-base': ^1.30.1 || ^2.1.0
+
+  '@sentry/replay-canvas@10.69.0':
+    resolution: {integrity: sha512-VF6nXvSninHcc7dC1Zme0RjkC7VgRMCixs6jKaQX5zTNeqTW3dZGSefSOVv+ZteRi3hJvVORq985VjUC9Z/0+A==}
+    engines: {node: '>=18'}
+
+  '@sentry/replay@10.69.0':
+    resolution: {integrity: sha512-uRhmNhtFGPOlM0iniVmWKAX3KVXI0le41yYK/iKdPjinT9jA3ZrmykO/Fv1v/KI5znOtwa9D6eHRnDTTMRxFrg==}
+    engines: {node: '>=18'}
 
   '@sentry/server-utils@10.69.0':
     resolution: {integrity: sha512-0MwHrA8+nNvMIsqf8m3cXwCBlUjr6AS7N6CZvHJtY1DkqEvQqEbD5VIrhzEyHN/KMZIgQ8XeDCQRhjnXFQGRhg==}
@@ -14757,6 +14789,31 @@ snapshots:
       '@sentry/types': 7.120.4
       '@sentry/utils': 7.120.4
 
+  '@sentry/angular@10.69.0(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1))(rxjs@7.8.1))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1))(@angular/router@21.2.17(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1))(rxjs@7.8.1))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1))(@angular/platform-browser@21.2.17(@angular/animations@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1)))(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1))(rxjs@7.8.1))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1)))(rxjs@7.8.1))(rxjs@7.8.1)':
+    dependencies:
+      '@angular/common': 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1))(rxjs@7.8.1)
+      '@angular/core': 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1)
+      '@angular/router': 21.2.17(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1))(rxjs@7.8.1))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1))(@angular/platform-browser@21.2.17(@angular/animations@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1)))(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1))(rxjs@7.8.1))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.1)(zone.js@0.13.1)))(rxjs@7.8.1)
+      '@sentry/browser': 10.69.0
+      '@sentry/conventions': 0.16.0
+      '@sentry/core': 10.69.0
+      rxjs: 7.8.1
+      tslib: 2.8.1
+
+  '@sentry/browser-utils@10.69.0':
+    dependencies:
+      '@sentry/conventions': 0.16.0
+      '@sentry/core': 10.69.0
+
+  '@sentry/browser@10.69.0':
+    dependencies:
+      '@sentry/browser-utils': 10.69.0
+      '@sentry/conventions': 0.16.0
+      '@sentry/core': 10.69.0
+      '@sentry/feedback': 10.69.0
+      '@sentry/replay': 10.69.0
+      '@sentry/replay-canvas': 10.69.0
+
   '@sentry/conventions@0.16.0': {}
 
   '@sentry/core@10.69.0':
@@ -14767,6 +14824,10 @@ snapshots:
     dependencies:
       '@sentry/types': 7.120.4
       '@sentry/utils': 7.120.4
+
+  '@sentry/feedback@10.69.0':
+    dependencies:
+      '@sentry/core': 10.69.0
 
   '@sentry/integrations@7.120.4':
     dependencies:
@@ -14832,6 +14893,16 @@ snapshots:
       '@opentelemetry/core': 2.10.0(@opentelemetry/api@1.9.1)
       '@opentelemetry/sdk-trace-base': 2.10.0(@opentelemetry/api@1.9.1)
       '@sentry/conventions': 0.16.0
+      '@sentry/core': 10.69.0
+
+  '@sentry/replay-canvas@10.69.0':
+    dependencies:
+      '@sentry/core': 10.69.0
+      '@sentry/replay': 10.69.0
+
+  '@sentry/replay@10.69.0':
+    dependencies:
+      '@sentry/browser-utils': 10.69.0
       '@sentry/core': 10.69.0
 
   '@sentry/server-utils@10.69.0':
@@ -22090,7 +22161,7 @@ snapshots:
       serve-index: 1.9.2
       sockjs: 0.3.24
       spdy: 4.0.2
-      webpack-dev-middleware: 7.4.5(tslib@2.8.1)(webpack@5.107.2(@swc/core@1.5.29(@swc/helpers@0.5.23))(postcss@8.5.15))
+      webpack-dev-middleware: 7.4.5(tslib@2.8.1)(webpack@5.105.2(@swc/core@1.5.29(@swc/helpers@0.5.23))(esbuild@0.27.3)(postcss@8.5.12))
       ws: 8.21.0
     optionalDependencies:
       webpack: 5.107.2(@swc/core@1.5.29(@swc/helpers@0.5.23))(postcss@8.5.15)

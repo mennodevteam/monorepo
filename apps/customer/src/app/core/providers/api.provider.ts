@@ -1,6 +1,7 @@
 import { isPlatformServer } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable, PLATFORM_ID, Provider, inject } from '@angular/core';
+import * as Sentry from '@sentry/angular';
 import { logSsrApiConfigOnce, ssrLog } from '../functions/ssr-logger';
 import { getClientApiUrl, getServerApiUrl } from '../functions/server-api-url';
 
@@ -37,7 +38,7 @@ class ApiInterceptor implements HttpInterceptor {
               });
             }
           } catch (error) {
-            console.error('Failed to parse user token from storage', error);
+            Sentry.captureException(error);
           }
         }
       }

@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { CampaignService } from './campaign.service';
 import { MenuService } from './menu.service';
 import { AuthService } from './auth.service';
+import { LoggerService } from './logger.service';
 import { MenuStatDto, StatAction } from '@menno/types';
 
 @Injectable({
@@ -13,6 +14,7 @@ export class MenuStatService {
   private menu = inject(MenuService);
   private campaign = inject(CampaignService);
   private auth = inject(AuthService);
+  private logger = inject(LoggerService);
 
   async send(action: StatAction, params?: Pick<MenuStatDto, 'productId' | 'value'>) {
     try {
@@ -37,7 +39,7 @@ export class MenuStatService {
         })
         .toPromise();
     } catch (error) {
-      console.error(error);
+      this.logger.error('Failed to send menuStat', error);
     }
   }
 }
