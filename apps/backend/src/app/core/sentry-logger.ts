@@ -3,6 +3,9 @@ import * as Sentry from '@sentry/nestjs';
 
 @Injectable()
 export class SentryLogger extends ConsoleLogger {
+  private readonly isSilentLog =
+    process.env.NODE_ENV === 'production' || process.env.SILENT_CONSOLE_LOGS === 'true';
+
   override error(message: any, stack?: string, context?: string) {
     super.error(message, stack, context);
     if (message instanceof Error) {
@@ -24,7 +27,9 @@ export class SentryLogger extends ConsoleLogger {
   }
 
   override log(message: any, context?: string) {
-    super.log(message, context);
+    if (!this.isSilentLog) {
+      super.log(message, context);
+    }
     Sentry.addBreadcrumb({
       category: context || 'application',
       message: typeof message === 'string' ? message : JSON.stringify(message),
