@@ -180,6 +180,25 @@ export class CartService {
       { allowSignalWrites: true },
     );
 
+    effect(
+      () => {
+        const address = this.address();
+        const shop = this.shopService.shopSignal();
+        if (
+          address &&
+          address.latitude &&
+          address.longitude &&
+          shop?.id &&
+          address.deliveryArea === undefined
+        ) {
+          untracked(() => {
+            this.setAddressDeliveryArea();
+          });
+        }
+      },
+      { allowSignalWrites: true },
+    );
+
     effect(() => {
       const coupons = this.club.coupons();
       untracked(() => {

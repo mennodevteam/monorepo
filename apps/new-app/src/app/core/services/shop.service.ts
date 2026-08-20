@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BusinessCategory, OrderType, Plugin, Shop } from '@menno/types';
 import { environment } from '../../../environments/environment';
@@ -15,6 +15,7 @@ import { WelcomeMessageDialogComponent } from '../../common/components/welcome-m
 export class ShopService {
   private _loading = new BehaviorSubject<void>(undefined);
   shop: Shop;
+  shopSignal = signal<Shop | undefined>(undefined);
 
   constructor(
     private http: HttpClient,
@@ -62,6 +63,7 @@ export class ShopService {
       }
 
       this.shop = shop;
+      this.shopSignal.set(shop);
       this._loading.complete();
     }
   }

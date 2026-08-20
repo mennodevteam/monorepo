@@ -16,7 +16,8 @@ export class AddressesService {
     private auth: AuthService,
   ) {
     effect(() => {
-      if (this.auth.user()) {
+      const shop = this.shopService.shopSignal();
+      if (this.auth.user() && shop?.id) {
         this.load();
       }
     });

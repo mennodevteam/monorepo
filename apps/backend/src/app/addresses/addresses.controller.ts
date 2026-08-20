@@ -39,7 +39,7 @@ export class AddressesController {
         (area) => area.region === null && area.state === null,
       );
       for (const add of addresses) {
-        if (shop.appConfig?.deliveryType === DeliveryType.Standard && add.latitude && add.longitude)
+        if ((!shop.appConfig?.deliveryType || shop.appConfig?.deliveryType === DeliveryType.Standard) && add.latitude && add.longitude)
           add.deliveryArea = DeliveryArea.isInWitchArea(shop.deliveryAreas, [add.latitude, add.longitude]);
         else if (shop.appConfig?.deliveryType === DeliveryType.Post) {
           if (add.region) {
@@ -68,7 +68,7 @@ export class AddressesController {
     });
     if (shop && addresses) {
       for (const add of addresses) {
-        if (shop.appConfig?.deliveryType === DeliveryType.Standard && add.latitude && add.longitude)
+        if ((!shop.appConfig?.deliveryType || shop.appConfig?.deliveryType === DeliveryType.Standard) && add.latitude && add.longitude)
           add.deliveryArea = DeliveryArea.isInWitchArea(shop.deliveryAreas, [add.latitude, add.longitude]);
         else if (shop.appConfig?.deliveryType === DeliveryType.Post && add.region)
           add.deliveryArea = DeliveryArea.isInWitchArea(shop.deliveryAreas, undefined, add.region);
