@@ -189,7 +189,7 @@ export class CartService {
           address.latitude &&
           address.longitude &&
           shop?.id &&
-          address.deliveryArea === undefined
+          (address as any)['_checkedShopId'] !== shop.id
         ) {
           untracked(() => {
             this.setAddressDeliveryArea();
@@ -318,21 +318,20 @@ export class CartService {
 
   async setAddressDeliveryArea() {
     const address = this.address();
-    if (address && address.latitude && address.longitude) {
+    const shopId = this.shopService.shop?.id || this.shopService.shopSignal()?.id;
+    if (address && address.latitude && address.longitude && shopId) {
       try {
-        address.deliveryArea = undefined;
         const d = await this.http
           .get<DeliveryArea>(
-            `deliveryAreas/${this.shopService.shop?.id}/${address.latitude}/${address.longitude}`,
+            `deliveryAreas/${shopId}/${address.latitude}/${address.longitude}`,
           )
           .toPromise();
-        if (d) {
-          address.deliveryArea = d;
-        }
+        address.deliveryArea = d || null;
       } catch (error) {
         address.deliveryArea = null;
       }
-      this.address.set(address);
+      (address as any)['_checkedShopId'] = shopId;
+      this.address.set({ ...address });
     }
   }
 

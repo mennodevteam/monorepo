@@ -95,9 +95,14 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   async submit() {
     this.loading.set(true);
-    const deliveryArea = await this.http
-      .get<DeliveryArea>(`deliveryAreas/${this.shopService.shop.id}/${this.center.lat}/${this.center.lng}`)
-      .toPromise();
+    let deliveryArea: DeliveryArea | undefined = undefined;
+    try {
+      deliveryArea = await this.http
+        .get<DeliveryArea>(`deliveryAreas/${this.shopService.shop.id}/${this.center.lat}/${this.center.lng}`)
+        .toPromise();
+    } catch (error) {
+      deliveryArea = undefined;
+    }
 
     if (!deliveryArea || deliveryArea.status !== Status.Active) {
       this.snack.open(this.translate.instant('map.noDeliveryArea'), '', { duration: 3000 });

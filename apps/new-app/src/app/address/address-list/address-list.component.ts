@@ -25,7 +25,9 @@ export class AddressListComponent {
   }
 
   select(address: Address) {
-    this.cart.address.set(address);
+    delete (address as any)['_checkedShopId'];
+    this.cart.address.set({ ...address });
+    this.cart.setAddressDeliveryArea();
     this.location.back();
   }
 }
