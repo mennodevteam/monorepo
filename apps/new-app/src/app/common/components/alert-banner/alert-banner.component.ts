@@ -15,5 +15,6 @@ export class AlertBannerComponent {
   @Input() emoji?: string;
   @Input() title: string;
   @Input() description: string;
+  @Input() extra?: string;
   @Input() compact?: boolean;
 }

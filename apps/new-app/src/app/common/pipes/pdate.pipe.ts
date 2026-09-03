@@ -8,6 +8,7 @@ export class PdatePipe implements PipeTransform {
   transform(value?: Date | string, showTime?: boolean): string {
     if (value) {
       const date = new Date(value);
+      if (isNaN(date.getTime())) return '';
       if (showTime) {
         const formatter = new Intl.DateTimeFormat('fa-IR', {
           weekday: 'long',

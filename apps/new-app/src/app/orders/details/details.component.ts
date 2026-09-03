@@ -11,7 +11,7 @@ import { lastValueFrom } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatBadgeModule } from '@angular/material/badge';
 import { HttpClient } from '@angular/common/http';
-import { Chat, ChatType } from '@menno/types';
+import { Chat, ChatType, OrderState } from '@menno/types';
 
 @Component({
   selector: 'app-details',
@@ -32,6 +32,7 @@ export class DetailsComponent {
   private readonly ordersService = inject(OrdersService);
   private readonly route = inject(ActivatedRoute);
 
+  readonly OrderState = OrderState;
   shop = computed(() => {
     return this.order()?.shop;
   });

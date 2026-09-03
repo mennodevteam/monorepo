@@ -18,6 +18,9 @@
       }
       <h4>{{ title }}</h4>
       <p f-sm>{{ description }}</p>
+      @if (extra) {
+        <p f-sm>{{ extra }}</p>
+      }
     </mat-card-content>
   } @else {
     <mat-card-content fxLayout="row" fxLayoutGap="8px">

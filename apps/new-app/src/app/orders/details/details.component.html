@@ -6,6 +6,15 @@
       description="{{ 'orderDetails.state.title' | translate }}: {{
         'orderDetails.state.' + order()?.state | translate
       }}"
+      [extra]="
+        order()?.details?.estimateCompletedAt &&
+        order()?.state !== OrderState.Completed &&
+        order()?.state !== OrderState.Canceled
+          ? ('orderDetails.estimateTime' | translate) +
+            ': ' +
+            (order()?.details?.estimateCompletedAt | pdate: true)
+          : undefined
+      "
       type="success"
     />
     <mat-list>
