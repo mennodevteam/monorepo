@@ -1,8 +1,8 @@
-import { Component, effect, untracked } from '@angular/core';
+import { Component, computed, effect, untracked } from '@angular/core';
 
-import { AddressesService, CartService, MenuService, MenuStatService } from '../../core';
+import { AddressesService, CartService, MenuService, MenuStatService, ShopService } from '../../core';
 import { COMMON } from '../../common';
-import { Address, OrderType, StatAction } from '@menno/types';
+import { Address, DeliveryType, OrderType, StatAction } from '@menno/types';
 import { FormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
 import { AnalyticsService } from '../../core/services/analytics.service';
@@ -18,12 +18,17 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 })
 export class AddressListComponent {
   OrderType = OrderType;
+  DeliveryType = DeliveryType;
   address: Address[] = [];
   addresses: Address[] = [];
+  deliveryType = computed(() => this.shopService.shop?.appConfig?.deliveryType);
+  isStandard = computed(() => !this.deliveryType() || this.deliveryType() === DeliveryType.Standard);
+
   constructor(
     public menu: MenuService,
     public addressesService: AddressesService,
     public cart: CartService,
+    private shopService: ShopService,
     private analytics: AnalyticsService,
     private menuStat: MenuStatService,
   ) {

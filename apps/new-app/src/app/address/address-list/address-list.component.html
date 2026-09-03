@@ -1,6 +1,6 @@
 <app-top-app-bar [hideMenu]="true" [sticky]="true">
   <div fxLayout="row" fxLayoutAlign="end">
-    <a mat-button class="tertiary-button" routerLink="../map">
+    <a mat-button class="tertiary-button" [routerLink]="isStandard() ? '../map' : '../edit'">
       <i class="fa-regular fa-circle-plus"></i>
       &nbsp;
       {{ 'addressList.new' | translate }}

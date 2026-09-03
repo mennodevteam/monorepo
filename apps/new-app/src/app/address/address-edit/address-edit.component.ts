@@ -51,6 +51,7 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
     return state?.regions || [];
   });
   deliveryType = computed(() => this.shopService.shop?.appConfig?.deliveryType);
+  isStandard = computed(() => !this.deliveryType() || this.deliveryType() === DeliveryType.Standard);
   DeliveryType = DeliveryType;
   @ViewChild('regionStateElem') regionStateElem: MatSelect;
 
@@ -67,9 +68,11 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
     private menuStat: MenuStatService,
   ) {
     this.address = this.router.currentNavigation()?.extras?.state?.['address'];
-    if (this.deliveryType() === DeliveryType.Standard && !this.coordinate && this.address)
+    if (this.isStandard() && !this.coordinate && this.address)
       this.location.back();
-    else {
+    else if (this.isStandard() && !this.coordinate) {
+      this.router.navigate(['/address/map'], { replaceUrl: true });
+    } else {
       this.addressForm = new FormGroup({
         region: new FormControl(this.address?.region),
         title: new FormControl(this.address?.title),
@@ -83,7 +86,7 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    if (this.deliveryType() === DeliveryType.Standard) {
+    if (this.isStandard()) {
       this.timeout = setTimeout(() => {
         new nmp_mapboxgl.Map({
           mapType:
@@ -163,7 +166,7 @@ export class AddressEditComponent implements AfterViewInit, OnDestroy {
     const dto: Address = this.addressForm.getRawValue();
     if (this.address) dto.id = this.address.id;
     const coord = this.coordinate;
-    if (this.deliveryType() === DeliveryType.Standard && coord) {
+    if (this.isStandard() && coord) {
       dto.latitude = coord[0];
       dto.longitude = coord[1];
     }

@@ -3,42 +3,42 @@
   title="{{ 'editAddress.' + (this.address ? 'editTitle' : 'newTitle') | translate }}"
 />
 <form [formGroup]="addressForm" p-md fxLayout="column" (ngSubmit)="submit()" pb>
-  @if (deliveryType() === DeliveryType.Standard) {
+  @if (isStandard()) {
     <div id="map">
       <i id="marker" class="fa-solid fa-location-dot fa-lg error-text"></i>
     </div>
     <br />
+  } @else {
+    <mat-form-field>
+      <mat-label>{{ 'editAddress.stateLabel' | translate }}</mat-label>
+      <mat-select
+        #regionStateElem
+        [value]="regionState"
+        (valueChange)="regionState.set($event)"
+        [disabled]="loading()"
+        required
+      >
+        @for (state of states; track state.title) {
+          <mat-option [value]="state">
+            {{ state.title }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>{{ 'editAddress.regionLabel' | translate }}</mat-label>
+      <mat-select formControlName="region" required>
+        @for (region of regions(); track region.id) {
+          <mat-option [value]="region">
+            {{ region.title }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
   }
 
-  <mat-form-field>
-    <mat-label>{{ 'editAddress.stateLabel' | translate }}</mat-label>
-    <mat-select
-      #regionStateElem
-      [value]="regionState"
-      (valueChange)="regionState.set($event)"
-      [disabled]="loading()"
-      required
-    >
-      @for (state of states; track state.title) {
-        <mat-option [value]="state">
-          {{ state.title }}
-        </mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-label>{{ 'editAddress.regionLabel' | translate }}</mat-label>
-    <mat-select formControlName="region" required>
-      @for (region of regions(); track region.id) {
-        <mat-option [value]="region">
-          {{ region.title }}
-        </mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
-
-  @if (deliveryType() === DeliveryType.Standard) {
+  @if (isStandard()) {
     {{ 'editAddress.addressDescription' | translate }}
   }
 
