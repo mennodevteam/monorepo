@@ -70,19 +70,3 @@
     <mat-spinner [diameter]="24" />
   }
 </main>
-
-<button
-  mat-fab
-  extended
-  routerLink="."
-  id="float-chat"
-  [matBadge]="notSeenChatCount()"
-  [matBadgeHidden]="!notSeenChatCount()"
-  routerLink="/chat/order/{{ id }}"
->
-  <i class="fa-regular fa-message-lines fa-lg"></i>
-  پیگیری سفارش
-  @if (chatQuery.data()?.length) {
-    ({{ chatQuery.data()?.length }})
-  }
-</button>

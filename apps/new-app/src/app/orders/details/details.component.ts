@@ -9,9 +9,7 @@ import { AlertBannerComponent } from '../../common/components/alert-banner/alert
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatBadgeModule } from '@angular/material/badge';
-import { HttpClient } from '@angular/common/http';
-import { Chat, ChatType, OrderState } from '@menno/types';
+import { OrderState } from '@menno/types';
 
 @Component({
   selector: 'app-details',
@@ -22,13 +20,11 @@ import { Chat, ChatType, OrderState } from '@menno/types';
     MatListModule,
     AlertBannerComponent,
     MatProgressSpinnerModule,
-    MatBadgeModule
-],
+  ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss',
 })
 export class DetailsComponent {
-  private readonly http = inject(HttpClient);
   private readonly ordersService = inject(OrdersService);
   private readonly route = inject(ActivatedRoute);
 
@@ -44,18 +40,8 @@ export class DetailsComponent {
     refetchInterval: 30000,
   }));
 
-  chatQuery = injectQuery(() => ({
-    queryKey: ['chat', 'order', this.id],
-    queryFn: () => lastValueFrom(this.http.get<Chat[]>(`chat/order/${this.id}`)),
-    refetchInterval: 20000,
-  }));
-
   order = computed(() => {
     return this.orderQuery.data();
-  });
-
-  notSeenChatCount = computed(() => {
-    return this.chatQuery.data()?.filter((item) => item.type === ChatType.Receive && !item.seen).length;
   });
 
   get id() {
