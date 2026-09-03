@@ -173,7 +173,10 @@ export class CartService {
           !this.address() &&
           this.addressesService.addresses()?.length
         ) {
-          this.address.set(this.addressesService.addresses()?.[0]);
+          const validAddress = this.addressesService
+            .addresses()
+            ?.find((a) => a.deliveryArea && a.deliveryArea.status === Status.Active);
+          this.address.set(validAddress ? { ...validAddress } : undefined);
         } else if (this.menuService.type() !== OrderType.Delivery) this.address.set(undefined);
         if (this.menuService.type() !== OrderType.DineIn) this.table.set(undefined);
       },

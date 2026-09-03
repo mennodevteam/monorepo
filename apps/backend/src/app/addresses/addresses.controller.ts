@@ -35,11 +35,18 @@ export class AddressesController {
         where: { id: shopId },
         relations: ['deliveryAreas.region', 'appConfig'],
       });
+      const isStandard = !shop.appConfig?.deliveryType || shop.appConfig?.deliveryType === DeliveryType.Standard;
       const allCountryDeliveryArea = shop.deliveryAreas.find(
         (area) => area.region === null && area.state === null,
       );
-      for (const add of addresses) {
-        if ((!shop.appConfig?.deliveryType || shop.appConfig?.deliveryType === DeliveryType.Standard) && add.latitude && add.longitude)
+      const filtered = addresses.filter((add) => {
+        if (isStandard) {
+          return !!(add.latitude && add.longitude);
+        }
+        return true;
+      });
+      for (const add of filtered) {
+        if (isStandard && add.latitude && add.longitude)
           add.deliveryArea = DeliveryArea.isInWitchArea(shop.deliveryAreas, [add.latitude, add.longitude]);
         else if (shop.appConfig?.deliveryType === DeliveryType.Post) {
           if (add.region) {
@@ -49,6 +56,7 @@ export class AddressesController {
           }
         }
       }
+      return filtered;
     }
     return addresses;
   }
