@@ -16,7 +16,6 @@ import { PersianNumberService } from '@menno/utils';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ClubService } from '../core/services/club.service';
-import { GoftinoService } from '../core/services/goftino.service';
 import { bounceIn } from '../core/animations/bounce.animation';
 import { WalkthroughService } from '../core/services/walkthrough.service';
 
@@ -48,7 +47,6 @@ export class PagesComponent implements OnInit {
     private snack: MatSnackBar,
     private translate: TranslateService,
     public club: ClubService,
-    private goftino: GoftinoService,
     private walkthrough: WalkthroughService,
   ) {
     this.isHandset$ = this.breakpointObserver.observe('(max-width: 1024px)').pipe(

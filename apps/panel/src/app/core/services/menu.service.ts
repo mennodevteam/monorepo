@@ -3,7 +3,7 @@ import { computed, Injectable, signal, WritableSignal } from '@angular/core';
 import { BusinessCategory, Menu, MenuCost, Product, ProductCategory } from '@menno/types';
 import { ShopService } from './shop.service';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, lastValueFrom, of, timeout } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -51,9 +51,14 @@ export class MenuService {
         Menu.setRefsAndSort(menu, undefined, true, true);
         if (this.menu) this.menu.set(menu);
         else this.menu = signal(menu);
+      }
+    } catch (ex) {
+      console.error('Failed to load menu', ex);
+    } finally {
+      if (!this._loading.closed) {
         this._loading.complete();
       }
-    } catch (ex) {}
+    }
   }
 
   async saveCategory(dto: Partial<ProductCategory>) {
@@ -160,7 +165,15 @@ export class MenuService {
   }
 
   async getResolver() {
-    if (this.menu && this.menu()?.id) return;
-    return this._loading.asObservable().toPromise();
+    if (this.menu && this.menu()?.id) return this.menu();
+    try {
+      return await lastValueFrom(
+        this._loading.asObservable().pipe(
+          timeout({ first: 10000, with: () => of(undefined) })
+        )
+      );
+    } catch {
+      return;
+    }
   }
 }

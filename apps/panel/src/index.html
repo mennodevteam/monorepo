@@ -9,6 +9,40 @@
     <link rel="manifest" href="manifest.webmanifest" />
     <meta name="theme-color" content="#1976d2" />
 
+    <script>
+      // Prevent Goftino widget script from loading
+      (function () {
+        var origCreateElement = document.createElement.bind(document);
+        document.createElement = function (tagName, options) {
+          var el = origCreateElement(tagName, options);
+          if (tagName && tagName.toLowerCase() === 'script') {
+            var origSetAttribute = el.setAttribute.bind(el);
+            el.setAttribute = function (name, value) {
+              if (name === 'src' && typeof value === 'string' && value.indexOf('goftino.com') !== -1) {
+                return;
+              }
+              return origSetAttribute(name, value);
+            };
+            var scriptSrc = '';
+            Object.defineProperty(el, 'src', {
+              configurable: true,
+              get: function () {
+                return scriptSrc || el.getAttribute('src') || '';
+              },
+              set: function (val) {
+                if (typeof val === 'string' && val.indexOf('goftino.com') !== -1) {
+                  return;
+                }
+                scriptSrc = val;
+                origSetAttribute('src', val);
+              },
+            });
+          }
+          return el;
+        };
+      })();
+    </script>
+
     <!-- Google Tag Manager -->
     <script>
       (function (w, d, s, l, i) {

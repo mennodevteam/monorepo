@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BusinessCategory, Shop, ShopUser, ThirdParty } from '@menno/types';
 import { environment } from '../../../environments/environment';
-import { BehaviorSubject, filter, lastValueFrom, take } from 'rxjs';
+import { BehaviorSubject, filter, lastValueFrom, of, take, timeout } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
@@ -39,10 +39,13 @@ export class ShopService {
         this.shop$.next(shop);
         return shop;
       }
+    } catch (err) {
+      console.error('Failed to load shop:', err);
+      return this.shop;
     } finally {
       this._loading = false;
     }
-    return;
+    return this.shop;
   }
 
   async saveShop(dto: Shop) {
@@ -92,11 +95,16 @@ export class ShopService {
 
   async getResolver() {
     if (this.shop) return this.shop;
-    return this.shopObservable
-      .pipe(
-        filter((s) => !!s),
-        take(1),
-      )
-      .toPromise();
+    try {
+      return await lastValueFrom(
+        this.shopObservable.pipe(
+          filter((s): s is Shop => !!s),
+          take(1),
+          timeout({ first: 10000, with: () => of(this.shop as Shop) })
+        )
+      );
+    } catch {
+      return this.shop;
+    }
   }
 }

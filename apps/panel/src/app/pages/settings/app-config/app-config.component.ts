@@ -46,23 +46,40 @@ export class AppConfigComponent {
 
   async load() {
     this.loading = true;
-    await this.shopService.loadShop();
-    this.form = new FormGroup({
-      theme: new FormControl(this.appConfig.theme),
-      themeMode: new FormControl(this.appConfig.themeMode),
-      menuViewType: new FormControl(this.appConfig.menuViewType),
-      homePage: new FormControl(this.appConfig.homePage),
-      menuCols: new FormControl(this.appConfig.menuCols, [Validators.min(2), Validators.max(4)]),
-    });
+    try {
+      if (!this.shopService.shop?.appConfig) {
+        await this.shopService.loadShop();
+      }
+      this.initForm();
+    } catch (err) {
+      console.error('Failed to load shop in app-config', err);
+    }
 
-    this.http.get<Theme[]>('appConfigs/themes').subscribe((themes) => {
-      this.themes = themes;
-      const themeControl = this.form.get('theme');
-      themeControl?.setValue(this.themes.find((x) => x.id === themeControl.value?.id));
-      this.loading = false;
-      this.form.valueChanges.subscribe(() => {
-        this.form.markAsDirty();
-      });
+    this.http.get<Theme[]>('appConfigs/themes').subscribe({
+      next: (themes) => {
+        this.themes = themes;
+        const themeControl = this.form.get('theme');
+        themeControl?.setValue(this.themes.find((x) => x.id === themeControl.value?.id));
+        this.loading = false;
+        this.form.valueChanges.subscribe(() => {
+          this.form.markAsDirty();
+        });
+      },
+      error: (err) => {
+        console.error('Failed to load themes', err);
+        this.loading = false;
+      },
+    });
+  }
+
+  private initForm() {
+    const config = this.appConfig;
+    this.form = new FormGroup({
+      theme: new FormControl(config.theme),
+      themeMode: new FormControl(config.themeMode ?? 0),
+      menuViewType: new FormControl(config.menuViewType ?? 0),
+      homePage: new FormControl(config.homePage),
+      menuCols: new FormControl(config.menuCols ?? 2, [Validators.min(2), Validators.max(4)]),
     });
   }
 
@@ -135,7 +152,7 @@ export class AppConfigComponent {
   }
 
   get appConfig() {
-    return this.shopService.shop!.appConfig!;
+    return this.shopService.shop?.appConfig || ({} as any);
   }
 
   async save() {
@@ -150,14 +167,21 @@ export class AppConfigComponent {
     }
     this.saving = true;
     this.snack.open(this.translate.instant('app.saving'), '', { duration: 5000 });
-    await this.http.post('appConfigs', fv).toPromise();
-    this.snack.open(this.translate.instant('app.savedSuccessfully'), '', {
-      duration: 5000,
-      panelClass: 'success',
-    });
-    this.saving = false;
-    this.form.markAsUntouched();
-
-    this.analytics.event('update app config');
+    try {
+      await this.http.post('appConfigs', fv).toPromise();
+      this.snack.open(this.translate.instant('app.savedSuccessfully'), '', {
+        duration: 5000,
+        panelClass: 'success',
+      });
+      this.form.markAsUntouched();
+      this.analytics.event('update app config');
+    } catch (err) {
+      console.error('Failed to save app config:', err);
+      this.snack.open(this.translate.instant('error.somethingWentWrong') || 'خطا در ذخیره اطلاعات', '', {
+        duration: 5000,
+      });
+    } finally {
+      this.saving = false;
+    }
   }
 }
