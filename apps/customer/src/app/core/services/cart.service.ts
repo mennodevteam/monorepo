@@ -66,6 +66,11 @@ export class CartService {
     const details: OrderDto['details'] = { table: this.table() };
     if (this.campaign.referrer) details.referrer = this.campaign.referrer;
     if (this.campaign.campaign) details.campaign = this.campaign.campaign;
+    if (this.campaign.utmSource) details.utmSource = this.campaign.utmSource;
+    if (this.campaign.utmMedium) details.utmMedium = this.campaign.utmMedium;
+    if (this.campaign.utmCampaign) details.utmCampaign = this.campaign.utmCampaign;
+    if (this.campaign.utmTerm) details.utmTerm = this.campaign.utmTerm;
+    if (this.campaign.utmContent) details.utmContent = this.campaign.utmContent;
     return {
       productItems: this.productItems(),
       shopId: this.shopService.data()?.id,

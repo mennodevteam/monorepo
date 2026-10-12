@@ -66,10 +66,6 @@ export class MenuService {
     );
     if (menu?.id && !this.loadMenuStatSent && isPlatformBrowser(this.platformId)) {
       this.loadMenuStatSent = true;
-      await this.auth.getResolver();
-      if (!this.auth.user()?.id) {
-        return menu;
-      }
       this.http
         .get(`menuStats/loadMenu/${menu.id}`, { params: this.campaign.params })
         .subscribe({ error: () => {} });

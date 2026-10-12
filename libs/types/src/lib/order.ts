@@ -16,6 +16,11 @@ export interface OrderDetails {
   referrer?: string;
   /** Campaign / UTM-style tag from query or session */
   campaign?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmTerm?: string;
+  utmContent?: string;
   posPayed?: number[];
   deletionReason?: string;
   currency?: string;

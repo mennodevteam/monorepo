@@ -22,6 +22,30 @@ export const MenuStatSchema = new EntitySchema<MenuStat>({
       type: String,
       nullable: true,
     },
+    utmSource: {
+      type: String,
+      nullable: true,
+    },
+    utmMedium: {
+      type: String,
+      nullable: true,
+    },
+    utmCampaign: {
+      type: String,
+      nullable: true,
+    },
+    utmTerm: {
+      type: String,
+      nullable: true,
+    },
+    utmContent: {
+      type: String,
+      nullable: true,
+    },
+    guestId: {
+      type: String,
+      nullable: true,
+    },
     createdAt: {
       type: 'timestamptz',
       createDate: true,

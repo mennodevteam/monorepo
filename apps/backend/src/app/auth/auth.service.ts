@@ -52,6 +52,16 @@ export class AuthService {
     return null;
   }
 
+  getUserFromHeader(authHeader?: string): AuthPayload | null {
+    if (!authHeader || !authHeader.startsWith('Bearer ')) return null;
+    try {
+      const token = authHeader.split(' ')[1];
+      return this.jwtService.verify<AuthPayload>(token, { secret: process.env.JWT_ACCESS_SECRET });
+    } catch {
+      return null;
+    }
+  }
+
   async registerEmptyUserBasedOnGuidHash(id: string, guidHash: string): Promise<User> {
     if (!id) throw new BadRequestException();
     const existUser = await this.usersRepo.findOneBy({ id });

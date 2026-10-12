@@ -24,7 +24,13 @@ export class MenuStat {
   action: StatAction;
   referrer?: string;
   campaign?: string;
-  user: User;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmTerm?: string;
+  utmContent?: string;
+  guestId?: string;
+  user?: User;
   menu: Menu;
   product?: Product;
   value?: number;
@@ -38,4 +44,10 @@ export class MenuStatDto {
   value?: number;
   referrer?: string;
   campaign?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmTerm?: string;
+  utmContent?: string;
+  guestId?: string;
 }

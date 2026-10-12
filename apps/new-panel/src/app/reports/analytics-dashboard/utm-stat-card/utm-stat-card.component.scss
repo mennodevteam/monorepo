@@ -1,0 +1,160 @@
+.utm-stat-card {
+  font-family: 'Estedad', sans-serif;
+  margin-top: 8px;
+
+  mat-card-header {
+    margin-bottom: 16px;
+
+    mat-card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    mat-card-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+  }
+
+  .summary-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+
+    .chip {
+      background: var(--bg-secondary, #f1f5f9);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+
+      .chip-label {
+        color: var(--text-secondary);
+      }
+
+      strong {
+        color: var(--primary, #3b82f6);
+        font-weight: 600;
+      }
+    }
+  }
+
+  .table-container {
+    overflow-x: auto;
+    width: 100%;
+  }
+
+  .utm-table {
+    width: 100%;
+    direction: rtl;
+
+    th {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: var(--bg-secondary, #fafafa);
+      padding: 12px 14px;
+      white-space: nowrap;
+    }
+
+    td {
+      font-size: 0.82rem;
+      padding: 12px 14px;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border-color, #e2e8f0);
+      white-space: nowrap;
+    }
+
+    tr:hover td {
+      background-color: var(--bg-hover, #f8fafc);
+    }
+  }
+
+  .campaign-badge {
+    font-weight: 600;
+    color: var(--text-primary);
+    background: #eff6ff;
+    color: #1d4ed8;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+  }
+
+  .source-tag {
+    background: #f3f4f6;
+    color: #374151;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+  }
+
+  .num-stat {
+    font-weight: 600;
+  }
+
+  .unique-sub {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    margin-right: 4px;
+  }
+
+  .orders-count {
+    color: #16a34a;
+    font-weight: 700;
+  }
+
+  .rate-badge {
+    background: #ecfdf5;
+    color: #059669;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.75rem;
+  }
+
+  .empty-utm-container {
+    padding: 36px 16px;
+    text-align: center;
+
+    .empty-icon {
+      font-size: 2.2rem;
+      color: var(--text-secondary, #94a3b8);
+    }
+
+    h4 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .empty-desc {
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    .example-box {
+      margin-top: 8px;
+      background: var(--bg-secondary, #f8fafc);
+      border: 1px dashed var(--border-color, #cbd5e1);
+      padding: 10px 16px;
+      border-radius: 8px;
+      max-width: 90%;
+      word-break: break-all;
+
+      code {
+        font-family: monospace;
+        font-size: 0.75rem;
+        color: #0284c7;
+      }
+    }
+  }
+}

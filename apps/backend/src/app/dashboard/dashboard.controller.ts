@@ -112,22 +112,27 @@ export class DashboardController {
     const menuStatByRef = await this.menuStatsRepo
       .createQueryBuilder('stat')
       .select('stat.referrer', 'referrer')
-      .addSelect('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'count')
+      .addSelect('stat.utmSource', 'utmSource')
+      .addSelect('CAST(COUNT(DISTINCT COALESCE(stat.user, stat.guestId, stat.id)) AS INTEGER)', 'count')
       .where('stat.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
       .andWhere('stat.action = :action', { action: StatAction.LoadMenu })
       .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
       .groupBy('stat.referrer')
+      .addGroupBy('stat.utmSource')
       .orderBy('count', 'DESC')
       .getRawMany();
 
     const result = {};
 
-    menuStatByRef.forEach(({ referrer, count }) => {
-      if (count === 0) return; // Skip zero counts
+    menuStatByRef.forEach(({ referrer, utmSource, count }) => {
+      const c = Number(count) || 0;
+      if (c === 0) return; // Skip zero counts
 
       let source = 'direct';
 
-      if (referrer) {
+      if (utmSource) {
+        source = utmSource.toLowerCase().trim();
+      } else if (referrer) {
         try {
           const url = new URL(referrer);
           const hostParts = url.hostname.split('.');
@@ -137,10 +142,93 @@ export class DashboardController {
         }
       }
 
-      result[source] = (result[source] || 0) + count;
+      result[source] = (result[source] || 0) + c;
     });
 
     return Object.entries(result).map(([source, count]) => ({ source, count }));
+  }
+
+  @Roles(UserRole.Panel)
+  @Get('utmReports/:from/:to')
+  async utmReports(@LoginUser() user: AuthPayload, @Param('from') from: string, @Param('to') to: string) {
+    const shop = await this.auth.getPanelUserShop(user, ['menu']);
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
+
+    const stats = await this.menuStatsRepo
+      .createQueryBuilder('stat')
+      .select('stat.utmCampaign', 'campaign')
+      .addSelect('stat.utmSource', 'source')
+      .addSelect('stat.utmMedium', 'medium')
+      .addSelect(`COUNT(CASE WHEN stat.action = '${StatAction.LoadMenu}' THEN 1 END)`, 'visits')
+      .addSelect(`COUNT(CASE WHEN stat.action = '${StatAction.ClickProduct}' THEN 1 END)`, 'clicks')
+      .addSelect(`COUNT(CASE WHEN stat.action = '${StatAction.AddToCart}' THEN 1 END)`, 'cartAdds')
+      .addSelect('CAST(COUNT(DISTINCT COALESCE(stat.user, stat.guestId, stat.id)) AS INTEGER)', 'uniqueVisitors')
+      .where('stat.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
+      .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
+      .andWhere('(stat.utmCampaign IS NOT NULL OR stat.utmSource IS NOT NULL)')
+      .groupBy('stat.utmCampaign')
+      .addGroupBy('stat.utmSource')
+      .addGroupBy('stat.utmMedium')
+      .getRawMany();
+
+    const orders = await this.ordersRepo
+      .createQueryBuilder('order')
+      .select(`order.details::jsonb ->> 'utmCampaign'`, 'campaign')
+      .addSelect(`order.details::jsonb ->> 'utmSource'`, 'source')
+      .addSelect(`order.details::jsonb ->> 'utmMedium'`, 'medium')
+      .addSelect('COUNT(order.id)', 'orderCount')
+      .addSelect('COALESCE(SUM(order.totalPrice), 0)', 'totalSales')
+      .where('order.shop = :shopId', { shopId: shop.id })
+      .andWhere('order.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
+      .andWhere('order.deletedAt IS NULL')
+      .andWhere('order.mergeToId IS NULL')
+      .andWhere('order.excludeFromReports = :excludeFromReports', { excludeFromReports: false })
+      .andWhere(
+        `order.details IS NOT NULL AND trim(order.details::text) <> '' AND (order.details::jsonb ->> 'utmCampaign' IS NOT NULL OR order.details::jsonb ->> 'utmSource' IS NOT NULL)`,
+      )
+      .groupBy(`order.details::jsonb ->> 'utmCampaign'`)
+      .addGroupBy(`order.details::jsonb ->> 'utmSource'`)
+      .addGroupBy(`order.details::jsonb ->> 'utmMedium'`)
+      .getRawMany();
+
+    const map = new Map<string, any>();
+    const makeKey = (c?: string, s?: string, m?: string) => `${c || ''}___${s || ''}___${m || ''}`;
+
+    for (const s of stats) {
+      const key = makeKey(s.campaign, s.source, s.medium);
+      map.set(key, {
+        campaign: s.campaign || '—',
+        source: s.source || '—',
+        medium: s.medium || '—',
+        visits: parseInt(s.visits) || 0,
+        clicks: parseInt(s.clicks) || 0,
+        cartAdds: parseInt(s.cartAdds) || 0,
+        uniqueVisitors: parseInt(s.uniqueVisitors) || 0,
+        orderCount: 0,
+        totalSales: 0,
+      });
+    }
+
+    for (const o of orders) {
+      const key = makeKey(o.campaign, o.source, o.medium);
+      const existing = map.get(key) || {
+        campaign: o.campaign || '—',
+        source: o.source || '—',
+        medium: o.medium || '—',
+        visits: 0,
+        clicks: 0,
+        cartAdds: 0,
+        uniqueVisitors: 0,
+        orderCount: 0,
+        totalSales: 0,
+      };
+      existing.orderCount = parseInt(o.orderCount) || 0;
+      existing.totalSales = parseFloat(o.totalSales) || 0;
+      map.set(key, existing);
+    }
+
+    return Array.from(map.values()).sort((a, b) => b.visits + b.orderCount - (a.visits + a.orderCount));
   }
 
   @Roles(UserRole.Panel)
@@ -301,7 +389,7 @@ export class DashboardController {
     // Query 1: Get total count of unique users between the specified dates
     const totalUniqueUsers = await this.menuStatsRepo
       .createQueryBuilder('stat')
-      .select('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'uniqueUserCount')
+      .select('CAST(COUNT(DISTINCT COALESCE(stat.user, stat.guestId, stat.id)) AS INTEGER)', 'uniqueUserCount')
       .where('stat.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
       .andWhere('stat.action = :action', { action: StatAction.LoadMenu })
       .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
@@ -340,7 +428,7 @@ export class DashboardController {
     // Get unique user counts for each funnel step
     const loadMenuCount = await this.menuStatsRepo
       .createQueryBuilder('stat')
-      .select('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'count')
+      .select('CAST(COUNT(DISTINCT COALESCE(stat.user, stat.guestId, stat.id)) AS INTEGER)', 'count')
       .where('stat.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
       .andWhere('stat.action = :action', { action: StatAction.LoadMenu })
       .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
@@ -348,7 +436,7 @@ export class DashboardController {
 
     const addToBasketCount = await this.menuStatsRepo
       .createQueryBuilder('stat')
-      .select('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'count')
+      .select('CAST(COUNT(DISTINCT COALESCE(stat.user, stat.guestId, stat.id)) AS INTEGER)', 'count')
       .where('stat.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
       .andWhere('stat.action = :action', { action: StatAction.AddToCart })
       .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
@@ -356,7 +444,7 @@ export class DashboardController {
 
     const viewCartCount = await this.menuStatsRepo
       .createQueryBuilder('stat')
-      .select('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'count')
+      .select('CAST(COUNT(DISTINCT COALESCE(stat.user, stat.guestId, stat.id)) AS INTEGER)', 'count')
       .where('stat.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
       .andWhere('stat.action = :action', { action: StatAction.ViewCart })
       .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
@@ -364,7 +452,7 @@ export class DashboardController {
 
     const viewCheckoutCount = await this.menuStatsRepo
       .createQueryBuilder('stat')
-      .select('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'count')
+      .select('CAST(COUNT(DISTINCT COALESCE(stat.user, stat.guestId, stat.id)) AS INTEGER)', 'count')
       .where('stat.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
       .andWhere('stat.action = :action', { action: StatAction.ViewCheckout })
       .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
@@ -372,7 +460,7 @@ export class DashboardController {
 
     const selectAddressCount = await this.menuStatsRepo
       .createQueryBuilder('stat')
-      .select('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'count')
+      .select('CAST(COUNT(DISTINCT COALESCE(stat.user, stat.guestId, stat.id)) AS INTEGER)', 'count')
       .where('stat.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
       .andWhere('stat.action = :action', { action: StatAction.SelectAddress })
       .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
@@ -380,7 +468,7 @@ export class DashboardController {
 
     const addOrderCount = await this.menuStatsRepo
       .createQueryBuilder('stat')
-      .select('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'count')
+      .select('CAST(COUNT(DISTINCT COALESCE(stat.user, stat.guestId, stat.id)) AS INTEGER)', 'count')
       .where('stat.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
       .andWhere('stat.action = :action', { action: StatAction.AddOrder })
       .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })

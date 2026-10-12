@@ -1,10 +1,10 @@
-import { Campaign, MenuStat, MenuStatDto, Shop, StatAction, UserRole } from '@menno/types';
-import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
+import { Campaign, MenuStat, MenuStatDto, Shop, StatAction } from '@menno/types';
+import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Roles } from '../auth/roles.decorators';
-import { LoginUser } from '../auth/user.decorator';
-import { AuthPayload } from '../core/types/auth-payload';
+import { Request } from 'express';
+import { Public } from '../auth/public.decorator';
+import { AuthService } from '../auth/auth.service';
 
 @Controller('menuStats')
 export class MenuStatsController {
@@ -15,6 +15,7 @@ export class MenuStatsController {
     private shopsRepo: Repository<Shop>,
     @InjectRepository(Campaign)
     private campaignsRepo: Repository<Campaign>,
+    private authService: AuthService,
   ) {}
 
   private async getActiveCampaignForMenu(menuId: string): Promise<Campaign | undefined> {
@@ -37,55 +38,88 @@ export class MenuStatsController {
     }
   }
 
-  @Roles(UserRole.App)
+  @Public()
   @Post('')
   async save(
     @Body() body: MenuStatDto,
-    @LoginUser() user: AuthPayload,
+    @Req() req: Request,
     @Query('referrer') referrer?: string,
     @Query('campaign') campaign?: string,
+    @Query('utmSource') utmSource?: string,
+    @Query('utmMedium') utmMedium?: string,
+    @Query('utmCampaign') utmCampaign?: string,
+    @Query('utmTerm') utmTerm?: string,
+    @Query('utmContent') utmContent?: string,
+    @Query('guestId') guestId?: string,
   ) {
+    const user = this.authService.getUserFromHeader(req.headers?.authorization);
     const campaignRef = await this.getActiveCampaignForMenu(body.menuId);
     await this.repo.save({
       action: body.action,
       menu: { id: body.menuId },
       product: body.productId ? { id: body.productId } : undefined,
       value: body.value,
-      referrer,
-      campaign,
+      referrer: body.referrer || referrer,
+      campaign: body.campaign || campaign,
+      utmSource: body.utmSource || utmSource,
+      utmMedium: body.utmMedium || utmMedium,
+      utmCampaign: body.utmCampaign || utmCampaign,
+      utmTerm: body.utmTerm || utmTerm,
+      utmContent: body.utmContent || utmContent,
+      guestId: body.guestId || guestId,
       campaignRef: campaignRef ? { id: campaignRef.id } : undefined,
-      user: { id: user.id },
+      user: user ? { id: user.id } : undefined,
     });
   }
 
-  @Roles(UserRole.App)
+  @Public()
   @Get('loadMenu/:id')
   async loadMenu(
     @Param('id') id: string,
-    @LoginUser() user: AuthPayload,
+    @Req() req: Request,
     @Query('referrer') referrer?: string,
     @Query('campaign') campaign?: string,
+    @Query('utmSource') utmSource?: string,
+    @Query('utmMedium') utmMedium?: string,
+    @Query('utmCampaign') utmCampaign?: string,
+    @Query('utmTerm') utmTerm?: string,
+    @Query('utmContent') utmContent?: string,
+    @Query('guestId') guestId?: string,
   ) {
+    const user = this.authService.getUserFromHeader(req.headers?.authorization);
     const campaignRef = await this.getActiveCampaignForMenu(id);
     await this.repo.save({
       action: StatAction.LoadMenu,
       menu: { id },
       referrer,
       campaign,
+      utmSource,
+      utmMedium,
+      utmCampaign,
+      utmTerm,
+      utmContent,
+      guestId,
       campaignRef: campaignRef ? { id: campaignRef.id } : undefined,
-      user: { id: user.id },
+      user: user ? { id: user.id } : undefined,
     });
   }
 
-  @Roles(UserRole.App)
+  @Public()
   @Get('clickProduct/:menuId/:id')
   async clickProduct(
     @Param('menuId') menuId: string,
     @Param('id') id: string,
-    @LoginUser() user: AuthPayload,
+    @Req() req: Request,
     @Query('referrer') referrer?: string,
     @Query('campaign') campaign?: string,
+    @Query('utmSource') utmSource?: string,
+    @Query('utmMedium') utmMedium?: string,
+    @Query('utmCampaign') utmCampaign?: string,
+    @Query('utmTerm') utmTerm?: string,
+    @Query('utmContent') utmContent?: string,
+    @Query('guestId') guestId?: string,
   ) {
+    const user = this.authService.getUserFromHeader(req.headers?.authorization);
     const campaignRef = await this.getActiveCampaignForMenu(menuId);
     await this.repo.save({
       action: StatAction.ClickProduct,
@@ -93,20 +127,33 @@ export class MenuStatsController {
       product: { id },
       referrer,
       campaign,
+      utmSource,
+      utmMedium,
+      utmCampaign,
+      utmTerm,
+      utmContent,
+      guestId,
       campaignRef: campaignRef ? { id: campaignRef.id } : undefined,
-      user: { id: user.id },
+      user: user ? { id: user.id } : undefined,
     });
   }
 
-  @Roles(UserRole.App)
+  @Public()
   @Get('addToCart/:menuId/:id')
   async addToCart(
     @Param('menuId') menuId: string,
     @Param('id') id: string,
-    @LoginUser() user: AuthPayload,
+    @Req() req: Request,
     @Query('referrer') referrer?: string,
     @Query('campaign') campaign?: string,
+    @Query('utmSource') utmSource?: string,
+    @Query('utmMedium') utmMedium?: string,
+    @Query('utmCampaign') utmCampaign?: string,
+    @Query('utmTerm') utmTerm?: string,
+    @Query('utmContent') utmContent?: string,
+    @Query('guestId') guestId?: string,
   ) {
+    const user = this.authService.getUserFromHeader(req.headers?.authorization);
     const campaignRef = await this.getActiveCampaignForMenu(menuId);
     await this.repo.save({
       action: StatAction.AddToCart,
@@ -114,8 +161,14 @@ export class MenuStatsController {
       product: { id },
       referrer,
       campaign,
+      utmSource,
+      utmMedium,
+      utmCampaign,
+      utmTerm,
+      utmContent,
+      guestId,
       campaignRef: campaignRef ? { id: campaignRef.id } : undefined,
-      user: { id: user.id },
+      user: user ? { id: user.id } : undefined,
     });
   }
 }

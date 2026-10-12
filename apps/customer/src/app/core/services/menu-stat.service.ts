@@ -18,25 +18,27 @@ export class MenuStatService {
 
   async send(action: StatAction, params?: Pick<MenuStatDto, 'productId' | 'value'>) {
     try {
-      await this.auth.getResolver();
-      if (!this.auth.user()?.id) {
-        return;
-      }
-
       let queryParams: HttpParams = new HttpParams();
-      const referrer = this.campaign.referrer;
-      const campaign = this.campaign.campaign;
-      if (referrer) {
-        queryParams = queryParams.set('referrer', referrer);
-      }
-      if (campaign) {
-        queryParams = queryParams.set('campaign', campaign);
+      const campaignParams = this.campaign.params;
+      for (const [key, value] of Object.entries(campaignParams)) {
+        if (value) {
+          queryParams = queryParams.set(key, value);
+        }
       }
 
       await this.http
-        .post('menuStats', { action, menuId: this.menu.data()?.id, ...params } as MenuStatDto, {
-          params: queryParams,
-        })
+        .post(
+          'menuStats',
+          {
+            action,
+            menuId: this.menu.data()?.id,
+            ...params,
+            ...campaignParams,
+          } as MenuStatDto,
+          {
+            params: queryParams,
+          },
+        )
         .toPromise();
     } catch (error) {
       this.logger.error('Failed to send menuStat', error);

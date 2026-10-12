@@ -1,0 +1,128 @@
+<mat-card appearance="outlined" class="utm-stat-card">
+  <mat-card-header>
+    <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+      <div>
+        <mat-card-title>
+          کمپین‌های بازاریابی (UTM)
+        </mat-card-title>
+        <mat-card-subtitle>
+          آمار کلیک‌ها، ورودی‌ها و سفارش‌های ثبت‌شده از طریق لینک‌های تبلیغاتی
+        </mat-card-subtitle>
+      </div>
+
+      @if (data().length > 0) {
+        <div class="summary-chips" fxLayout="row" fxLayoutGap="12px">
+          <span class="chip">
+            <span class="chip-label">کل ورودی‌ها:</span>
+            <strong>{{ totalVisits() | number }}</strong>
+          </span>
+          <span class="chip">
+            <span class="chip-label">کل سفارش‌ها:</span>
+            <strong>{{ totalOrders() | number }}</strong>
+          </span>
+          <span class="chip">
+            <span class="chip-label">فروش حاصل:</span>
+            <strong>{{ totalSales() | number }} تومان</strong>
+          </span>
+        </div>
+      }
+    </div>
+  </mat-card-header>
+
+  <mat-card-content>
+    @if (query.isLoading()) {
+      <app-data-loading />
+    } @else if (data().length > 0) {
+      <div class="table-container">
+        <table mat-table [dataSource]="data()" class="utm-table">
+          <!-- Campaign Column -->
+          <ng-container matColumnDef="campaign">
+            <th mat-header-cell *matHeaderCellDef>کمپین (utm_campaign)</th>
+            <td mat-cell *matCellDef="let row">
+              <span class="campaign-badge">{{ row.campaign }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Source Column -->
+          <ng-container matColumnDef="source">
+            <th mat-header-cell *matHeaderCellDef>منبع (utm_source)</th>
+            <td mat-cell *matCellDef="let row">
+              <span class="source-tag">{{ row.source }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Medium Column -->
+          <ng-container matColumnDef="medium">
+            <th mat-header-cell *matHeaderCellDef>رسانه (utm_medium)</th>
+            <td mat-cell *matCellDef="let row">{{ row.medium }}</td>
+          </ng-container>
+
+          <!-- Visits Column -->
+          <ng-container matColumnDef="visits">
+            <th mat-header-cell *matHeaderCellDef>بازدید منو</th>
+            <td mat-cell *matCellDef="let row">
+              <span class="num-stat">{{ row.visits | number }}</span>
+              @if (row.uniqueVisitors) {
+                <span class="unique-sub" matTooltip="کاربران و مهمان‌های یکتا">({{ row.uniqueVisitors | number }})</span>
+              }
+            </td>
+          </ng-container>
+
+          <!-- Product Clicks Column -->
+          <ng-container matColumnDef="clicks">
+            <th mat-header-cell *matHeaderCellDef>کلیک محصول</th>
+            <td mat-cell *matCellDef="let row">
+              <span class="num-stat">{{ row.clicks | number }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Cart Adds Column -->
+          <ng-container matColumnDef="cartAdds">
+            <th mat-header-cell *matHeaderCellDef>افزودن به سبد</th>
+            <td mat-cell *matCellDef="let row">
+              <span class="num-stat">{{ row.cartAdds | number }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Orders Column -->
+          <ng-container matColumnDef="orders">
+            <th mat-header-cell *matHeaderCellDef>سفارش‌ها</th>
+            <td mat-cell *matCellDef="let row">
+              <strong class="orders-count">{{ row.orderCount | number }}</strong>
+            </td>
+          </ng-container>
+
+          <!-- Total Sales Column -->
+          <ng-container matColumnDef="totalSales">
+            <th mat-header-cell *matHeaderCellDef>مبلغ فروش</th>
+            <td mat-cell *matCellDef="let row">
+              <span>{{ row.totalSales | number }} تومان</span>
+            </td>
+          </ng-container>
+
+          <!-- Conversion Rate Column -->
+          <ng-container matColumnDef="conversionRate">
+            <th mat-header-cell *matHeaderCellDef>نرخ تبدیل</th>
+            <td mat-cell *matCellDef="let row">
+              <span class="rate-badge">{{ getConversionRate(row) }}</span>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    } @else {
+      <div class="empty-utm-container" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="12px">
+        <div class="empty-icon"><ng-icon name="saxInfoCircleOutline"></ng-icon></div>
+        <h4>هیچ داده‌ای برای پارامترهای UTM در این بازه زمانی ثبت نشده است</h4>
+        <p class="empty-desc">
+          برای رهگیری ورودی‌های کمپین، پیامک‌های تبلیغاتی یا پست‌های اینستاگرام، کافیست پارامترهای استاندارد UTM را به انتهای آدرس کاتالوگ خود اضافه کنید.
+        </p>
+        <div class="example-box" dir="ltr">
+          <code>https://your-shop.menno.ir/?utm_source=instagram&utm_medium=story&utm_campaign=winter_sale</code>
+        </div>
+      </div>
+    }
+  </mat-card-content>
+</mat-card>

@@ -5,6 +5,7 @@ import { MenuStatCardComponent } from './menu-stat-card/menu-stat-card.component
 import { LoadMenuRefCardComponent } from './load-menu-ref-card/load-menu-ref-card.component';
 import { UserStatCardComponent } from './user-stat-card/user-stat-card.component';
 import { OrderFunnelCardComponent } from './order-funnel-card/order-funnel-card.component';
+import { UtmStatCardComponent } from './utm-stat-card/utm-stat-card.component';
 import { FormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -21,6 +22,7 @@ import { MatCardModule } from '@angular/material/card';
     LoadMenuRefCardComponent,
     UserStatCardComponent,
     OrderFunnelCardComponent,
+    UtmStatCardComponent,
     FormsModule,
     MatDatepickerModule,
     MatInputModule,
