@@ -1606,7 +1606,7 @@ export class ShopIntegrationService {
       .addSelect('stat.utmSource', 'utmSource')
       .addSelect('stat.utmCampaign', 'utmCampaign')
       .addSelect('stat.utmMedium', 'utmMedium')
-      .addSelect('CAST(COUNT(DISTINCT COALESCE(stat.user, stat.guestId, stat.id)) AS INTEGER)', 'count')
+      .addSelect('CAST(COUNT(DISTINCT COALESCE(CAST(stat.user AS VARCHAR), stat.guestId, CAST(stat.id AS VARCHAR))) AS INTEGER)', 'count')
       .where('stat.createdAt BETWEEN :from AND :to', { from, to })
       .andWhere('stat.action = :action', { action: StatAction.LoadMenu })
       .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
@@ -1753,7 +1753,7 @@ export class ShopIntegrationService {
       const actionStats = await baseQb
         .select('stat.action', 'action')
         .addSelect('COUNT(stat.id)', 'count')
-        .addSelect('CAST(COUNT(DISTINCT COALESCE(stat.user, stat.guestId, stat.id)) AS INTEGER)', 'uniqueUsersCount')
+        .addSelect('CAST(COUNT(DISTINCT COALESCE(CAST(stat.user AS VARCHAR), stat.guestId, CAST(stat.id AS VARCHAR))) AS INTEGER)', 'uniqueUsersCount')
         .groupBy('stat.action')
         .orderBy('count', 'DESC')
         .getRawMany();
@@ -1805,7 +1805,7 @@ export class ShopIntegrationService {
       const dateStats = await baseQb
         .select(`DATE_TRUNC('day', stat.createdAt AT TIME ZONE 'Asia/Tehran')`, 'day')
         .addSelect('COUNT(stat.id)', 'totalEventsCount')
-        .addSelect('CAST(COUNT(DISTINCT COALESCE(stat.user, stat.guestId, stat.id)) AS INTEGER)', 'uniqueUsersCount')
+        .addSelect('CAST(COUNT(DISTINCT COALESCE(CAST(stat.user AS VARCHAR), stat.guestId, CAST(stat.id AS VARCHAR))) AS INTEGER)', 'uniqueUsersCount')
         .groupBy('day')
         .orderBy('day', 'ASC')
         .getRawMany();
@@ -1831,7 +1831,7 @@ export class ShopIntegrationService {
         .addSelect(`COUNT(CASE WHEN stat.action = '${StatAction.ClickProduct}' THEN 1 END)`, 'clicks')
         .addSelect(`COUNT(CASE WHEN stat.action = '${StatAction.AddToCart}' THEN 1 END)`, 'cartAdds')
         .addSelect(`COUNT(CASE WHEN stat.action = '${StatAction.AddOrder}' THEN 1 END)`, 'orderEvents')
-        .addSelect('CAST(COUNT(DISTINCT COALESCE(stat.user, stat.guestId, stat.id)) AS INTEGER)', 'uniqueVisitors')
+        .addSelect('CAST(COUNT(DISTINCT COALESCE(CAST(stat.user AS VARCHAR), stat.guestId, CAST(stat.id AS VARCHAR))) AS INTEGER)', 'uniqueVisitors')
         .where('(stat.utmCampaign IS NOT NULL OR stat.utmSource IS NOT NULL)')
         .groupBy('stat.utmCampaign')
         .addGroupBy('stat.utmSource')
@@ -1940,7 +1940,7 @@ export class ShopIntegrationService {
       .addSelect(`COUNT(CASE WHEN stat.action = '${StatAction.LoadMenu}' THEN 1 END)`, 'visits')
       .addSelect(`COUNT(CASE WHEN stat.action = '${StatAction.ClickProduct}' THEN 1 END)`, 'clicks')
       .addSelect(`COUNT(CASE WHEN stat.action = '${StatAction.AddToCart}' THEN 1 END)`, 'cartAdds')
-      .addSelect('CAST(COUNT(DISTINCT COALESCE(stat.user, stat.guestId, stat.id)) AS INTEGER)', 'uniqueVisitors')
+      .addSelect('CAST(COUNT(DISTINCT COALESCE(CAST(stat.user AS VARCHAR), stat.guestId, CAST(stat.id AS VARCHAR))) AS INTEGER)', 'uniqueVisitors')
       .where('stat.createdAt BETWEEN :from AND :to', { from, to })
       .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
       .andWhere('(stat.utmCampaign IS NOT NULL OR stat.utmSource IS NOT NULL)')
