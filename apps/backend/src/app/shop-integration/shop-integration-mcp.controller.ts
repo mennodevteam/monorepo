@@ -334,8 +334,27 @@ export class ShopIntegrationMcpController {
     return [
       {
         name: 'get_menu',
-        description: 'دریافت منوی کامل فروشگاه شامل محصولات، دسته‌بندی‌ها و متغیرها.',
-        inputSchema: { type: 'object', properties: {} },
+        description:
+          'دریافت منوی کامل فروشگاه شامل محصولات، دسته‌بندی‌ها، متغیرها (سایز/طعم)، قیمت‌های واقعی، وضعیت موجودی و تصاویر.\n' +
+          'راهنمای فیلدها برای هوش مصنوعی:\n' +
+          '- price و totalPrice: قیمت نهایی قابل پرداخت به تومان با اعمال کامل تخفیف‌ها و محاسبه قیمت پکیج‌ها.\n' +
+          '- realPrice: قیمت اصلی و خط‌خورده قبل از تخفیف.\n' +
+          '- hasDiscount: آیا محصول تخفیف دارد؟ (true/false).\n' +
+          '- isAvailable: آیا محصول هم‌اکنون موجود و قابل سفارش است؟ (با در نظر گرفتن وضعیت دسته‌بندی، انبار و اقلام پکیج).\n' +
+          '- isFinished: وضعیت تمام شدن محصول (true/false).\n' +
+          '- imageUrl: آدرس کامل و مستقیم عکس اصلی محصول (دارای بالاترین اولویت برای استفاده در پیام به کاربر).\n' +
+          '- imageUrls: لیست آدرس‌های کامل تمام عکس‌های محصول.\n' +
+          '- images: [DEPRECATED] فیلد قدیمی - لطفاً از imageUrl یا imageUrls استفاده کنید.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            categoryId: { type: 'number', description: 'شناسه دسته‌بندی برای دریافت فقط محصولات آن دسته (اختیاری)' },
+            query: { type: 'string', description: 'جستجو در عنوان و توضیحات محصولات (اختیاری)' },
+            onlyAvailable: { type: 'boolean', description: 'فقط دریافت محصولات موجود و قابل سفارش (پیش‌فرض: false)' },
+            includeInactive: { type: 'boolean', description: 'شامل کردن محصولات و دسته‌های غیرفعال (پیش‌فرض: false)' },
+            campaignId: { type: 'string', description: 'شناسه کمپین خاص جهت محاسبه تخفیف‌های آن (اختیاری)' },
+          },
+        },
       },
       {
         name: 'create_category',
@@ -1142,7 +1161,7 @@ export class ShopIntegrationMcpController {
   private async executeTool(name: string, args: any, shop: Shop): Promise<any> {
     switch (name) {
       case 'get_menu':
-        return this.integrationService.getMenu(shop.id);
+        return this.integrationService.getMenu(shop.id, args);
 
       case 'create_category':
         return this.integrationService.createCategory(shop.id, args);

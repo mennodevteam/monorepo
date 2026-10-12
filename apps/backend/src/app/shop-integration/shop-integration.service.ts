@@ -38,6 +38,9 @@ import {
   ProductType,
   MenuStat,
   StatAction,
+  Menu,
+  Status,
+  ProductVariant,
 } from '@menno/types';
 import { RedisService } from '../core/redis.service';
 import { OrdersService } from '../orders/orders.service';
@@ -91,13 +94,430 @@ export class ShopIntegrationService {
     private campaignsService: CampaignsService,
   ) {}
 
-  async getMenu(shopId: string) {
-    const menuRedisData = await this.redis.updateMenu(shopId);
+  private resolveFileUrl(key?: string | null): string {
+    if (!key) return '';
+    if (key.startsWith('http')) return key;
+    const bucketUrl = process.env.PUBLIC_FILE_URL || process.env.BUCKET_URL || 'https://file.menno.pro';
+    return `${bucketUrl.replace(/\/+$/, '')}/${key.replace(/^\/+/, '')}`;
+  }
+
+  private enrichProductImages(product: Product): {
+    imageUrl: string;
+    imageUrls: string[];
+    imageFiles?: any;
+    images: string[];
+  } {
+    const mainImageFile = Product.mainImageFile(product);
+    let primaryUrl = '';
+
+    if (mainImageFile && typeof mainImageFile === 'object') {
+      const selectedKey = (mainImageFile as any).md || (mainImageFile as any).origin || (mainImageFile as any).sm || (mainImageFile as any).xs;
+      if (selectedKey) {
+        primaryUrl = this.resolveFileUrl(selectedKey);
+      }
+    } else if (product.images && product.images.length > 0) {
+      primaryUrl = this.resolveFileUrl(product.images[0]);
+    }
+
+    const allUrls: string[] = [];
+    const filesArray: any[] = Array.isArray(product.imageFiles)
+      ? product.imageFiles
+      : product.imageFiles
+      ? [product.imageFiles]
+      : [];
+
+    for (const f of filesArray) {
+      if (f && typeof f === 'object') {
+        const key = f.origin || f.md || f.sm || f.xs;
+        if (key) {
+          const url = this.resolveFileUrl(key);
+          if (url && !allUrls.includes(url)) allUrls.push(url);
+        }
+      }
+    }
+
+    if (product.images && Array.isArray(product.images)) {
+      for (const img of product.images) {
+        if (img) {
+          const url = this.resolveFileUrl(img);
+          if (url && !allUrls.includes(url)) allUrls.push(url);
+        }
+      }
+    }
+
+    if (primaryUrl) {
+      const idx = allUrls.indexOf(primaryUrl);
+      if (idx > -1) {
+        allUrls.splice(idx, 1);
+      }
+      allUrls.unshift(primaryUrl);
+    } else if (allUrls.length > 0) {
+      primaryUrl = allUrls[0];
+    }
+
+    const enrichedImageFiles = filesArray.map((f) => ({
+      origin: f.origin ? this.resolveFileUrl(f.origin) : undefined,
+      md: f.md ? this.resolveFileUrl(f.md) : undefined,
+      sm: f.sm ? this.resolveFileUrl(f.sm) : undefined,
+      xs: f.xs ? this.resolveFileUrl(f.xs) : undefined,
+      xxs: f.xxs ? this.resolveFileUrl(f.xxs) : undefined,
+    }));
+
+    return {
+      imageUrl: primaryUrl,
+      imageUrls: allUrls,
+      imageFiles: enrichedImageFiles.length > 0 ? enrichedImageFiles : undefined,
+      images: allUrls,
+    };
+  }
+
+  private isProductFinished(
+    product: Product,
+    variant?: ProductVariant,
+    visited = new Set<string>(),
+  ): boolean {
+    if (Product.isFinished(product, variant)) {
+      return true;
+    }
+
+    const packItems = variant?.packItems && variant.packItems.length > 0
+      ? variant.packItems
+      : product.packItems;
+
+    if (product.type === ProductType.Pack && packItems && packItems.length > 0) {
+      const key = `${product.id}_${variant?.id || ''}`;
+      if (visited.has(key)) return false;
+      const nextVisited = new Set(visited);
+      nextVisited.add(key);
+
+      for (const item of packItems) {
+        if (
+          !item.product ||
+          item.product.status === Status.Inactive ||
+          (item.variant && item.variant.status === Status.Inactive) ||
+          this.isProductFinished(item.product, item.variant, nextVisited)
+        ) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  private isProductUnavailable(product: Product): boolean {
+    const variants = product.variants ?? [];
+    if (!variants.length) {
+      return this.isProductFinished(product);
+    }
+    return variants.every((variant) => this.isProductFinished(product, variant));
+  }
+
+  private wirePackItems(menu: Menu): void {
+    if (!menu.categories) return;
+
+    const productMap = new Map<string, Product>();
+    const variantMap = new Map<string, ProductVariant>();
+
+    for (const cat of menu.categories) {
+      if (cat.products) {
+        for (const prod of cat.products) {
+          if (prod.id) productMap.set(String(prod.id), prod);
+          if (prod.variants) {
+            for (const v of prod.variants) {
+              if (v.id) variantMap.set(String(v.id), v);
+            }
+          }
+        }
+      }
+    }
+
+    const wireList = (items?: any[]) => {
+      if (!items) return;
+      for (const item of items) {
+        const pId = item.product?.id || item.productId;
+        if (pId && productMap.has(String(pId))) {
+          item.product = productMap.get(String(pId));
+        }
+        const vId = item.variant?.id || item.variantId;
+        if (vId && variantMap.has(String(vId))) {
+          item.variant = variantMap.get(String(vId));
+        }
+      }
+    };
+
+    for (const cat of menu.categories) {
+      if (cat.products) {
+        for (const prod of cat.products) {
+          if (prod.type === ProductType.Pack) {
+            wireList(prod.packItems);
+            if (prod.variants) {
+              for (const variant of prod.variants) {
+                wireList(variant.packItems);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  private enrichMenuForIntegration(
+    menu: Menu,
+    activeCampaign: any | null,
+    options?: {
+      categoryId?: number;
+      query?: string;
+      onlyAvailable?: boolean;
+      includeInactive?: boolean;
+      campaignId?: string;
+    },
+  ) {
+    const categories: any[] = [];
+    const searchQuery = options?.query?.trim().toLowerCase();
+
+    if (menu.categories) {
+      for (const cat of menu.categories) {
+        if (options?.categoryId !== undefined && Number(cat.id) !== Number(options.categoryId)) {
+          continue;
+        }
+
+        if (!options?.includeInactive && cat.status === Status.Inactive) {
+          continue;
+        }
+
+        const enrichedProducts: any[] = [];
+
+        if (cat.products) {
+          for (const product of cat.products) {
+            if (!options?.includeInactive && product.status === Status.Inactive) {
+              continue;
+            }
+
+            if (searchQuery) {
+              const titleMatch = product.title?.toLowerCase().includes(searchQuery);
+              const descMatch = product.description?.toLowerCase().includes(searchQuery);
+              if (!titleMatch && !descMatch) {
+                continue;
+              }
+            }
+
+            const isUnavailable = this.isProductUnavailable(product);
+            const isFinished = this.isProductFinished(product);
+            const isAvailable = !isUnavailable && product.status === Status.Active && cat.status === Status.Active;
+
+            if (options?.onlyAvailable && !isAvailable) {
+              continue;
+            }
+
+            const hasDiscount = Product.hasDiscount(product);
+            const totalPrice = Product.totalPrice(product);
+            const realPrice = Product.realPrice(product);
+            const fixedDiscount = Product.fixedDiscount(product);
+            const percentageDiscount = Product.percentageDiscount(product);
+
+            let effectivePrice = totalPrice;
+            if ((!effectivePrice || effectivePrice === 0) && product.variants && product.variants.length > 0) {
+              const variantPrices = product.variants
+                .map((v) => Product.totalPrice(product, v))
+                .filter((p) => p > 0);
+              if (variantPrices.length > 0) {
+                effectivePrice = Math.min(...variantPrices);
+              }
+            }
+
+            const basePrice = product.type === ProductType.Pack
+              ? Product.getPackPrice(product)
+              : (product.price || effectivePrice);
+
+            const imagesInfo = this.enrichProductImages(product);
+
+            const enrichedVariants = (product.variants || []).map((variant) => {
+              const vIsFinished = this.isProductFinished(product, variant);
+              const vIsAvailable = !vIsFinished && variant.status === Status.Active && product.status === Status.Active && cat.status === Status.Active;
+              const vHasDiscount = Product.hasDiscount(product, variant);
+              const vTotalPrice = Product.totalPrice(product, variant);
+              const vRealPrice = Product.realPrice(product, variant);
+              const vFixedDiscount = Product.fixedDiscount(product, variant);
+              const vPercentageDiscount = Product.percentageDiscount(product, variant);
+
+              let variantPackItems: any[] | undefined = undefined;
+              if (product.type === ProductType.Pack && variant.packItems && variant.packItems.length > 0) {
+                variantPackItems = variant.packItems.map((item) => {
+                  const childProduct = item.product;
+                  const childVariant = item.variant;
+                  const childUnitPrice = childVariant
+                    ? childVariant.price
+                    : (childProduct?.price || 0);
+                  const childIsFinished = childProduct ? this.isProductFinished(childProduct, childVariant) : true;
+                  const childIsAvailable = childProduct
+                    ? !childIsFinished && childProduct.status === Status.Active && (!childVariant || childVariant.status === Status.Active)
+                    : false;
+
+                  return {
+                    productId: childProduct?.id,
+                    productTitle: childProduct?.title,
+                    variantId: childVariant?.id,
+                    variantTitle: childVariant?.title,
+                    quantity: item.quantity,
+                    unitPrice: childUnitPrice,
+                    isAvailable: childIsAvailable,
+                  };
+                });
+              }
+
+              return {
+                id: variant.id,
+                title: variant.title,
+                description: variant.description,
+                price: vTotalPrice,
+                basePrice: variant.price || vTotalPrice,
+                realPrice: vRealPrice,
+                totalPrice: vTotalPrice,
+                hasDiscount: vHasDiscount,
+                discountAmount: vFixedDiscount,
+                discountPercent: vPercentageDiscount,
+                status: variant.status,
+                stock: variant.stock ?? null,
+                isAvailable: vIsAvailable,
+                isFinished: vIsFinished,
+                packItems: variantPackItems,
+              };
+            });
+
+            let enrichedPackItems: any[] | undefined = undefined;
+            if (product.type === ProductType.Pack && product.packItems && product.packItems.length > 0) {
+              enrichedPackItems = product.packItems.map((item) => {
+                const childProduct = item.product;
+                const childVariant = item.variant;
+                const childUnitPrice = childVariant
+                  ? childVariant.price
+                  : (childProduct?.price || 0);
+                const childIsFinished = childProduct ? this.isProductFinished(childProduct, childVariant) : true;
+                const childIsAvailable = childProduct
+                  ? !childIsFinished && childProduct.status === Status.Active && (!childVariant || childVariant.status === Status.Active)
+                  : false;
+
+                return {
+                  productId: childProduct?.id,
+                  productTitle: childProduct?.title,
+                  variantId: childVariant?.id,
+                  variantTitle: childVariant?.title,
+                  quantity: item.quantity,
+                  unitPrice: childUnitPrice,
+                  isAvailable: childIsAvailable,
+                };
+              });
+            }
+
+            let priceRange: { min: number; max: number } | undefined = undefined;
+            if (enrichedVariants.length > 1) {
+              const prices = enrichedVariants.map((v) => v.price);
+              priceRange = { min: Math.min(...prices), max: Math.max(...prices) };
+            }
+
+            enrichedProducts.push({
+              id: product.id,
+              title: product.title,
+              description: product.description,
+              type: product.type || ProductType.Standard,
+              category: { id: cat.id, title: cat.title },
+              price: effectivePrice,
+              basePrice,
+              realPrice,
+              totalPrice,
+              priceRange,
+              hasDiscount,
+              discountAmount: fixedDiscount,
+              discountPercent: percentageDiscount,
+              isAvailable,
+              isFinished,
+              status: product.status,
+              stock: product.stock ?? null,
+              imageUrl: imagesInfo.imageUrl,
+              imageUrls: imagesInfo.imageUrls,
+              imageFiles: imagesInfo.imageFiles,
+              images: imagesInfo.images,
+              variants: enrichedVariants,
+              packItems: enrichedPackItems,
+            });
+          }
+        }
+
+        if (!options?.includeInactive && enrichedProducts.length === 0 && (!cat.products || cat.products.length === 0)) {
+          continue;
+        }
+
+        categories.push({
+          id: cat.id,
+          title: cat.title,
+          description: cat.description,
+          status: cat.status,
+          isAvailable: cat.status === Status.Active,
+          products: enrichedProducts,
+        });
+      }
+    }
+
+    return {
+      id: menu.id,
+      title: menu.title,
+      currency: 'تومان',
+      _guideForAiAgents: {
+        imagesNote: 'فیلد imageUrl حاوی آدرس مستقیم و کامل عکس اصلی است. فیلد images دپریکیت شده است.',
+        pricingNote: 'فیلد price و totalPrice قیمت نهایی قابل پرداخت به تومان با احتساب تخفیف‌ها است. فیلد realPrice قیمت اصلی خط‌خورده قبل از تخفیف است.',
+        availabilityNote: 'فیلد isAvailable مشخص می‌کند محصول هم‌اکنون موجود و قابل سفارش است یا خیر.',
+      },
+      activeCampaign: activeCampaign
+        ? {
+            id: activeCampaign.id,
+            title: activeCampaign.title,
+            startDate: activeCampaign.startDate,
+            endDate: activeCampaign.endDate,
+            actions: activeCampaign.actions,
+          }
+        : null,
+      categories,
+    };
+  }
+
+  async getMenu(shopId: string, options?: {
+    categoryId?: number;
+    query?: string;
+    onlyAvailable?: boolean;
+    includeInactive?: boolean;
+    campaignId?: string;
+  }) {
+    const menuRedisData = await this.redis.updateMenu(shopId, true);
     if (!menuRedisData) {
       throw new NotFoundException('Menu not found for this shop');
     }
-    const menu = JSON.parse(menuRedisData);
-    return menu;
+    const menu: Menu = JSON.parse(menuRedisData);
+
+    let activeCampaign = null;
+    try {
+      if (options?.campaignId) {
+        activeCampaign = await this.campaignsService.findOne(options.campaignId, shopId);
+      } else {
+        activeCampaign = await this.campaignsService.getActiveCampaign(shopId);
+      }
+    } catch (e) {
+      // Fallback
+    }
+
+    Menu.setRefsAndSort(
+      menu,
+      undefined,
+      options?.includeInactive ?? false,
+      false,
+      undefined,
+      false,
+      activeCampaign || undefined,
+    );
+
+    this.wirePackItems(menu);
+
+    return this.enrichMenuForIntegration(menu, activeCampaign, options);
   }
 
   private mapPackItems(packItems: any[]): any[] {
@@ -555,7 +975,12 @@ export class ShopIntegrationService {
             if (product.variants && product.variants.length > 0) {
               for (const variant of product.variants) {
                 const cost = Product.calculateCost(product, variant, boms, packItems);
-                const salesPrice = variant.price;
+                let salesPrice = variant.price;
+                if (product.type === ProductType.Pack) {
+                  const items = packItems.filter((pi) => pi.parentVariant?.id === variant.id);
+                  const packPrice = items.reduce((acc, it) => acc + (it.variant ? it.variant.price : (it.product?.price || 0)) * (it.quantity || 1), 0);
+                  if (packPrice > 0) salesPrice = packPrice;
+                }
                 const grossProfit = cost !== null ? salesPrice - cost : null;
                 const profitMarginPercent = (cost !== null && salesPrice > 0) ? Math.round((grossProfit / salesPrice) * 100) : null;
 
@@ -572,7 +997,12 @@ export class ShopIntegrationService {
               }
             } else {
               const cost = Product.calculateCost(product, null, boms, packItems);
-              const salesPrice = product.price;
+              let salesPrice = product.price;
+              if (product.type === ProductType.Pack) {
+                const items = packItems.filter((pi) => pi.parentProduct?.id === product.id);
+                const packPrice = items.reduce((acc, it) => acc + (it.variant ? it.variant.price : (it.product?.price || 0)) * (it.quantity || 1), 0);
+                if (packPrice > 0) salesPrice = packPrice;
+              }
               const grossProfit = cost !== null ? salesPrice - cost : null;
               const profitMarginPercent = (cost !== null && salesPrice > 0) ? Math.round((grossProfit / salesPrice) * 100) : null;
 
