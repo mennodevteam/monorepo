@@ -1144,14 +1144,28 @@ export class ShopIntegrationMcpController {
             productId: { type: 'string', description: 'شناسه محصول مشخص جهت مشاهده کلیک‌ها و افزودن به سبدهای آن محصول' },
             userId: { type: 'string', description: 'شناسه کاربر مشخص جهت مشاهده لاگ رفتاری آن کاربر' },
             referrer: { type: 'string', description: 'فیلتر بر اساس منبع ورودی (مثلاً instagram، direct، google)' },
+            utmSource: { type: 'string', description: 'فیلتر بر اساس منبع UTM (مثلاً instagram، telegram، google_ads)' },
+            utmCampaign: { type: 'string', description: 'فیلتر بر اساس نام کمپین UTM (مثلاً norooz1404، story_influencer)' },
+            utmMedium: { type: 'string', description: 'فیلتر بر اساس مدیوم UTM (مثلاً cpc، story، bio)' },
             groupBy: {
               type: 'string',
-              enum: ['none', 'product', 'action', 'date', 'user'],
+              enum: ['none', 'product', 'action', 'date', 'user', 'utm'],
               default: 'none',
-              description: 'حالت خلاصه‌سازی و گروه‌بندی دیتای خام: product (رتبه‌بندی محصولات بر اساس کلیک و افزودن به سبد)، user (رتبه‌بندی فعال‌ترین کاربران)، action (مجموع اکشن‌ها)، date (آمار روزانه)، none (دریافت لیست دیتای خام لاگ‌ها شامل نام کاربر، شماره موبایل، عنوان محصول و قیمت به تومان)',
+              description: 'حالت خلاصه‌سازی و گروه‌بندی دیتای خام: utm (تفکیک بر اساس کمپین، سورس و مدیوم)، product (رتبه‌بندی محصولات بر اساس کلیک و افزودن به سبد)، user (رتبه‌بندی فعال‌ترین کاربران)، action (مجموع اکشن‌ها)، date (آمار روزانه)، none (دریافت لیست دیتای خام لاگ‌ها)',
             },
             take: { type: 'number', default: 50, description: 'تعداد رکوردها برای دریافت دیتای خام (حداکثر ۵۰۰)' },
             skip: { type: 'number', default: 0, description: 'offset برای پیج‌بندی' },
+          },
+        },
+      },
+      {
+        name: 'get_utm_campaigns_report',
+        description: 'دریافت گزارش تحلیلی عملکرد کمپین‌های تبلیغاتی بر اساس پارامترهای UTM (شامل utm_campaign، utm_source، utm_medium) با جزئیات بازدیدها (Visits)، کلیک روی محصولات، افزودن به سبد، کاربران یکتا، تعداد سفارشات نهایی، مبلغ فروش کل به تومان و نرخ تبدیل (Conversion Rate).',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            fromDate: { type: 'string', format: 'date-time', description: 'تاریخ شروع (پیش‌فرض: ۳۰ روز قبل)' },
+            toDate: { type: 'string', format: 'date-time', description: 'تاریخ پایان (پیش‌فرض: زمان حال)' },
           },
         },
       },
@@ -1408,10 +1422,20 @@ export class ShopIntegrationMcpController {
           productId: args.productId,
           userId: args.userId,
           referrer: args.referrer,
+          utmSource: args.utmSource,
+          utmCampaign: args.utmCampaign,
+          utmMedium: args.utmMedium,
           groupBy: args.groupBy,
           take: args.take ? Number(args.take) : undefined,
           skip: args.skip ? Number(args.skip) : undefined,
         });
+
+      case 'get_utm_campaigns_report':
+        return this.integrationService.getUtmCampaignsReport(
+          shop.id,
+          args.fromDate ? new Date(args.fromDate) : undefined,
+          args.toDate ? new Date(args.toDate) : undefined,
+        );
 
       default:
         throw new Error(`Unknown tool name: ${name}`);

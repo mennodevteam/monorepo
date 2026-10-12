@@ -1603,23 +1603,32 @@ export class ShopIntegrationService {
     const menuStatByRef = await this.menuStatsRepo
       .createQueryBuilder('stat')
       .select('stat.referrer', 'referrer')
-      .addSelect('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'count')
+      .addSelect('stat.utmSource', 'utmSource')
+      .addSelect('stat.utmCampaign', 'utmCampaign')
+      .addSelect('stat.utmMedium', 'utmMedium')
+      .addSelect('CAST(COUNT(DISTINCT COALESCE(stat.user, stat.guestId, stat.id)) AS INTEGER)', 'count')
       .where('stat.createdAt BETWEEN :from AND :to', { from, to })
       .andWhere('stat.action = :action', { action: StatAction.LoadMenu })
       .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
       .groupBy('stat.referrer')
+      .addGroupBy('stat.utmSource')
+      .addGroupBy('stat.utmCampaign')
+      .addGroupBy('stat.utmMedium')
       .orderBy('count', 'DESC')
       .getRawMany();
 
     const sourcesMap: Record<string, number> = {};
+    const utmCampaignsMap: Record<string, number> = {};
     let totalTrackedVisitors = 0;
 
-    menuStatByRef.forEach(({ referrer, count }) => {
+    menuStatByRef.forEach(({ referrer, utmSource, utmCampaign, count }) => {
       const c = Number(count) || 0;
       if (c === 0) return;
       let source = 'direct';
 
-      if (referrer) {
+      if (utmSource) {
+        source = utmSource.toLowerCase().trim();
+      } else if (referrer) {
         try {
           const url = new URL(referrer);
           const hostParts = url.hostname.split('.');
@@ -1628,6 +1637,11 @@ export class ShopIntegrationService {
           source = 'direct';
         }
       }
+
+      if (utmCampaign) {
+        utmCampaignsMap[utmCampaign] = (utmCampaignsMap[utmCampaign] || 0) + c;
+      }
+
       sourcesMap[source] = (sourcesMap[source] || 0) + c;
       totalTrackedVisitors += c;
     });
@@ -1637,6 +1651,7 @@ export class ShopIntegrationService {
       toDate: to.toISOString(),
       totalTrackedVisitors,
       sourcesBreakdown: sourcesMap,
+      utmCampaignsBreakdown: utmCampaignsMap,
     };
   }
 
@@ -1649,7 +1664,10 @@ export class ShopIntegrationService {
       productId?: string;
       userId?: string;
       referrer?: string;
-      groupBy?: 'none' | 'product' | 'action' | 'date' | 'user';
+      utmSource?: string;
+      utmCampaign?: string;
+      utmMedium?: string;
+      groupBy?: 'none' | 'product' | 'action' | 'date' | 'user' | 'utm';
       take?: number;
       skip?: number;
     },
@@ -1688,6 +1706,18 @@ export class ShopIntegrationService {
       baseQb.andWhere('stat.referrer ILIKE :referrer', { referrer: `%${filters.referrer}%` });
     }
 
+    if (filters.utmSource) {
+      baseQb.andWhere('stat.utmSource ILIKE :utmSource', { utmSource: `%${filters.utmSource}%` });
+    }
+
+    if (filters.utmCampaign) {
+      baseQb.andWhere('stat.utmCampaign ILIKE :utmCampaign', { utmCampaign: `%${filters.utmCampaign}%` });
+    }
+
+    if (filters.utmMedium) {
+      baseQb.andWhere('stat.utmMedium ILIKE :utmMedium', { utmMedium: `%${filters.utmMedium}%` });
+    }
+
     if (groupBy === 'product') {
       const productStats = await baseQb
         .select('stat.productId', 'productId')
@@ -1723,7 +1753,7 @@ export class ShopIntegrationService {
       const actionStats = await baseQb
         .select('stat.action', 'action')
         .addSelect('COUNT(stat.id)', 'count')
-        .addSelect('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'uniqueUsersCount')
+        .addSelect('CAST(COUNT(DISTINCT COALESCE(stat.user, stat.guestId, stat.id)) AS INTEGER)', 'uniqueUsersCount')
         .groupBy('stat.action')
         .orderBy('count', 'DESC')
         .getRawMany();
@@ -1775,7 +1805,7 @@ export class ShopIntegrationService {
       const dateStats = await baseQb
         .select(`DATE_TRUNC('day', stat.createdAt AT TIME ZONE 'Asia/Tehran')`, 'day')
         .addSelect('COUNT(stat.id)', 'totalEventsCount')
-        .addSelect('CAST(COUNT(DISTINCT stat.user) AS INTEGER)', 'uniqueUsersCount')
+        .addSelect('CAST(COUNT(DISTINCT COALESCE(stat.user, stat.guestId, stat.id)) AS INTEGER)', 'uniqueUsersCount')
         .groupBy('day')
         .orderBy('day', 'ASC')
         .getRawMany();
@@ -1792,6 +1822,42 @@ export class ShopIntegrationService {
       };
     }
 
+    if (groupBy === 'utm') {
+      const utmStats = await baseQb
+        .select('stat.utmCampaign', 'campaign')
+        .addSelect('stat.utmSource', 'source')
+        .addSelect('stat.utmMedium', 'medium')
+        .addSelect(`COUNT(CASE WHEN stat.action = '${StatAction.LoadMenu}' THEN 1 END)`, 'visits')
+        .addSelect(`COUNT(CASE WHEN stat.action = '${StatAction.ClickProduct}' THEN 1 END)`, 'clicks')
+        .addSelect(`COUNT(CASE WHEN stat.action = '${StatAction.AddToCart}' THEN 1 END)`, 'cartAdds')
+        .addSelect(`COUNT(CASE WHEN stat.action = '${StatAction.AddOrder}' THEN 1 END)`, 'orderEvents')
+        .addSelect('CAST(COUNT(DISTINCT COALESCE(stat.user, stat.guestId, stat.id)) AS INTEGER)', 'uniqueVisitors')
+        .where('(stat.utmCampaign IS NOT NULL OR stat.utmSource IS NOT NULL)')
+        .groupBy('stat.utmCampaign')
+        .addGroupBy('stat.utmSource')
+        .addGroupBy('stat.utmMedium')
+        .orderBy('visits', 'DESC')
+        .limit(take)
+        .offset(skip)
+        .getRawMany();
+
+      return {
+        fromDate: from.toISOString(),
+        toDate: to.toISOString(),
+        groupBy: 'utm',
+        utmStats: utmStats.map((u) => ({
+          campaign: u.campaign || '—',
+          source: u.source || '—',
+          medium: u.medium || '—',
+          visits: Number(u.visits) || 0,
+          clicks: Number(u.clicks) || 0,
+          cartAdds: Number(u.cartAdds) || 0,
+          orderEvents: Number(u.orderEvents) || 0,
+          uniqueVisitors: Number(u.uniqueVisitors) || 0,
+        })),
+      };
+    }
+
     // Default: groupBy === 'none' -> Return raw log items
     const [stats, totalCount] = await baseQb
       .select([
@@ -1799,6 +1865,12 @@ export class ShopIntegrationService {
         'stat.action',
         'stat.referrer',
         'stat.campaign',
+        'stat.utmSource',
+        'stat.utmMedium',
+        'stat.utmCampaign',
+        'stat.utmTerm',
+        'stat.utmContent',
+        'stat.guestId',
         'stat.value',
         'stat.createdAt',
         'product.id',
@@ -1827,6 +1899,12 @@ export class ShopIntegrationService {
         action: s.action,
         referrer: s.referrer || null,
         campaign: s.campaign || null,
+        utmSource: s.utmSource || null,
+        utmMedium: s.utmMedium || null,
+        utmCampaign: s.utmCampaign || null,
+        utmTerm: s.utmTerm || null,
+        utmContent: s.utmContent || null,
+        guestId: s.guestId || null,
         value: s.value || null,
         product: s.product
           ? {
@@ -1843,6 +1921,102 @@ export class ShopIntegrationService {
             }
           : null,
       })),
+    };
+  }
+
+  async getUtmCampaignsReport(shopId: string, fromDate?: Date, toDate?: Date) {
+    const shop = await this.shopRepo.findOne({ where: { id: shopId }, relations: ['menu'] });
+    if (!shop || !shop.menu) {
+      throw new NotFoundException('Menu not found for this shop');
+    }
+    const from = fromDate || new Date(new Date().setDate(new Date().getDate() - 30));
+    const to = toDate || new Date();
+
+    const stats = await this.menuStatsRepo
+      .createQueryBuilder('stat')
+      .select('stat.utmCampaign', 'campaign')
+      .addSelect('stat.utmSource', 'source')
+      .addSelect('stat.utmMedium', 'medium')
+      .addSelect(`COUNT(CASE WHEN stat.action = '${StatAction.LoadMenu}' THEN 1 END)`, 'visits')
+      .addSelect(`COUNT(CASE WHEN stat.action = '${StatAction.ClickProduct}' THEN 1 END)`, 'clicks')
+      .addSelect(`COUNT(CASE WHEN stat.action = '${StatAction.AddToCart}' THEN 1 END)`, 'cartAdds')
+      .addSelect('CAST(COUNT(DISTINCT COALESCE(stat.user, stat.guestId, stat.id)) AS INTEGER)', 'uniqueVisitors')
+      .where('stat.createdAt BETWEEN :from AND :to', { from, to })
+      .andWhere('stat.menuId = :menuId', { menuId: shop.menu.id })
+      .andWhere('(stat.utmCampaign IS NOT NULL OR stat.utmSource IS NOT NULL)')
+      .groupBy('stat.utmCampaign')
+      .addGroupBy('stat.utmSource')
+      .addGroupBy('stat.utmMedium')
+      .getRawMany();
+
+    const orders = await this.orderRepo
+      .createQueryBuilder('order')
+      .select(`order.details::jsonb ->> 'utmCampaign'`, 'campaign')
+      .addSelect(`order.details::jsonb ->> 'utmSource'`, 'source')
+      .addSelect(`order.details::jsonb ->> 'utmMedium'`, 'medium')
+      .addSelect('COUNT(order.id)', 'orderCount')
+      .addSelect('COALESCE(SUM(order.totalPrice), 0)', 'totalSales')
+      .where('order.shop = :shopId', { shopId: shop.id })
+      .andWhere('order.createdAt BETWEEN :from AND :to', { from, to })
+      .andWhere('order.deletedAt IS NULL')
+      .andWhere('order.mergeToId IS NULL')
+      .andWhere('order.excludeFromReports = :excludeFromReports', { excludeFromReports: false })
+      .andWhere(
+        `order.details IS NOT NULL AND trim(order.details::text) <> '' AND (order.details::jsonb ->> 'utmCampaign' IS NOT NULL OR order.details::jsonb ->> 'utmSource' IS NOT NULL)`,
+      )
+      .groupBy(`order.details::jsonb ->> 'utmCampaign'`)
+      .addGroupBy(`order.details::jsonb ->> 'utmSource'`)
+      .addGroupBy(`order.details::jsonb ->> 'utmMedium'`)
+      .getRawMany();
+
+    const map = new Map<string, any>();
+    const makeKey = (c?: string, s?: string, m?: string) => `${c || ''}___${s || ''}___${m || ''}`;
+
+    for (const s of stats) {
+      const key = makeKey(s.campaign, s.source, s.medium);
+      map.set(key, {
+        campaign: s.campaign || '—',
+        source: s.source || '—',
+        medium: s.medium || '—',
+        visits: parseInt(s.visits) || 0,
+        clicks: parseInt(s.clicks) || 0,
+        cartAdds: parseInt(s.cartAdds) || 0,
+        uniqueVisitors: parseInt(s.uniqueVisitors) || 0,
+        orderCount: 0,
+        totalSales: 0,
+      });
+    }
+
+    for (const o of orders) {
+      const key = makeKey(o.campaign, o.source, o.medium);
+      const existing = map.get(key) || {
+        campaign: o.campaign || '—',
+        source: o.source || '—',
+        medium: o.medium || '—',
+        visits: 0,
+        clicks: 0,
+        cartAdds: 0,
+        uniqueVisitors: 0,
+        orderCount: 0,
+        totalSales: 0,
+      };
+      existing.orderCount = parseInt(o.orderCount) || 0;
+      existing.totalSales = parseFloat(o.totalSales) || 0;
+      map.set(key, existing);
+    }
+
+    const campaigns = Array.from(map.values())
+      .map((row) => ({
+        ...row,
+        conversionRatePercent: row.visits > 0 ? Math.round((row.orderCount / row.visits) * 1000) / 10 : 0,
+      }))
+      .sort((a, b) => b.visits + b.orderCount - (a.visits + a.orderCount));
+
+    return {
+      fromDate: from.toISOString(),
+      toDate: to.toISOString(),
+      totalCampaigns: campaigns.length,
+      campaigns,
     };
   }
 }
