@@ -172,25 +172,36 @@ export class DashboardController {
       .addGroupBy('stat.utmMedium')
       .getRawMany();
 
-    const orders = await this.ordersRepo
-      .createQueryBuilder('order')
-      .select(`order.details::jsonb ->> 'utmCampaign'`, 'campaign')
-      .addSelect(`order.details::jsonb ->> 'utmSource'`, 'source')
-      .addSelect(`order.details::jsonb ->> 'utmMedium'`, 'medium')
-      .addSelect('COUNT(order.id)', 'orderCount')
-      .addSelect('COALESCE(SUM(order.totalPrice), 0)', 'totalSales')
-      .where('order.shop = :shopId', { shopId: shop.id })
-      .andWhere('order.createdAt BETWEEN :from AND :to', { from: fromDate, to: toDate })
-      .andWhere('order.deletedAt IS NULL')
-      .andWhere('order.mergeToId IS NULL')
-      .andWhere('order.excludeFromReports = :excludeFromReports', { excludeFromReports: false })
-      .andWhere(
-        `order.details IS NOT NULL AND trim(order.details::text) <> '' AND (order.details::jsonb ->> 'utmCampaign' IS NOT NULL OR order.details::jsonb ->> 'utmSource' IS NOT NULL)`,
-      )
-      .groupBy(`order.details::jsonb ->> 'utmCampaign'`)
-      .addGroupBy(`order.details::jsonb ->> 'utmSource'`)
-      .addGroupBy(`order.details::jsonb ->> 'utmMedium'`)
-      .getRawMany();
+    const orders: {
+      campaign: string | null;
+      source: string | null;
+      medium: string | null;
+      orderCount: string | number;
+      totalSales: string | number;
+    }[] = await this.ordersRepo.query(
+      `
+      SELECT 
+        "order"."details"::jsonb ->> 'utmCampaign' AS "campaign",
+        "order"."details"::jsonb ->> 'utmSource' AS "source",
+        "order"."details"::jsonb ->> 'utmMedium' AS "medium",
+        COUNT("order"."id") AS "orderCount",
+        COALESCE(SUM("order"."totalPrice"), 0) AS "totalSales"
+      FROM "order" "order"
+      WHERE "order"."shopId" = $1
+        AND "order"."createdAt" BETWEEN $2 AND $3
+        AND "order"."deletedAt" IS NULL
+        AND "order"."mergeToId" IS NULL
+        AND "order"."excludeFromReports" = false
+        AND "order"."details" IS NOT NULL
+        AND trim("order"."details"::text) <> ''
+        AND (
+          "order"."details"::text LIKE '%utmCampaign%' 
+          OR "order"."details"::text LIKE '%utmSource%'
+        )
+      GROUP BY 1, 2, 3
+    `,
+      [shop.id, fromDate, toDate],
+    );
 
     const map = new Map<string, any>();
     const makeKey = (c?: string, s?: string, m?: string) => `${c || ''}___${s || ''}___${m || ''}`;
@@ -223,8 +234,8 @@ export class DashboardController {
         orderCount: 0,
         totalSales: 0,
       };
-      existing.orderCount = parseInt(o.orderCount) || 0;
-      existing.totalSales = parseFloat(o.totalSales) || 0;
+      existing.orderCount = Number(o.orderCount) || 0;
+      existing.totalSales = Number(o.totalSales) || 0;
       map.set(key, existing);
     }
 
