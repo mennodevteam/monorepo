@@ -311,8 +311,14 @@
                 {{ order.address?.region?.state }}، {{ order.address?.region?.title }}،
               }
               {{ order.address?.description }}
+              @if (order.address?.unit) {
+                - {{ 'address.unit' | translate }} {{ order.address?.unit }}
+              }
+              @if (order.address?.ring) {
+                - {{ 'address.ring' | translate }} {{ order.address?.ring }}
+              }
               @if (order.address?.postalCode) {
-                {{ 'orderDetails.postalCode' | translate }}: {{ order.address?.postalCode }}
+                - {{ 'orderDetails.postalCode' | translate }}: {{ order.address?.postalCode }}
               }
             </span>
           </mat-card-subtitle>

@@ -8,7 +8,15 @@
       <a mat-list-item [matDialogClose]="ad">
         <i matListItemIcon class="fa-solid fa-location-dot"></i>
         <span matListItemTitle>{{ ad.deliveryArea?.title }}</span>
-        <span matListItemLine>{{ ad.description }}</span>
+        <span matListItemLine>
+          {{ ad.description }}
+          @if (ad.unit) {
+            - {{ 'address.unit' | translate }} {{ ad.unit }}
+          }
+          @if (ad.ring) {
+            - {{ 'address.ring' | translate }} {{ ad.ring }}
+          }
+        </span>
         @if (!ad.latitude) {
           <div matListItemMeta class="secondary">
             <button mat-icon-button tabindex="-1" (click)="edit(ad)" stopPropagation>

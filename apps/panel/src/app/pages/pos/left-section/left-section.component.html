@@ -136,9 +136,18 @@
         <i class="fa-solid fa-location-dot mat-icon fa-large" matListItemIcon></i>
         <span matListItemTitle>{{ 'pos.aaddress' | translate }}</span>
         @if (POS.address) {
-          <span matListItemLine>{{
-            POS.address.deliveryArea?.title || POS.address.description
-          }}</span>
+          <span matListItemLine>
+            @if (POS.address.deliveryArea?.title) {
+              {{ POS.address.deliveryArea?.title }} -
+            }
+            {{ POS.address.description }}
+            @if (POS.address.unit) {
+              - {{ 'address.unit' | translate }} {{ POS.address.unit }}
+            }
+            @if (POS.address.ring) {
+              - {{ 'address.ring' | translate }} {{ POS.address.ring }}
+            }
+          </span>
         }
         <div class="secondary" matListItemMeta>
           @if (deliveryPrice) {

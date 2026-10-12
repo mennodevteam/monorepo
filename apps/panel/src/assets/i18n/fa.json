@@ -614,6 +614,8 @@
     "ready": "آماده شد",
     "ship": "تحویل به پیک",
     "postalCode": "کدپستی",
+    "unit": "پلاک",
+    "ring": "واحد",
     "estimateTime": "زمان تحویل",
     "todayEstimate": "امروز (چند دقیقه دیگر؟)",
     "nextDaysEstimate": "روزهای آینده (چه تاریخی؟)",
@@ -1002,6 +1004,8 @@
   "editAddressDialog": {
     "title": "آدرس مشتری",
     "address": "آدرس دقیق",
+    "unit": "پلاک",
+    "ring": "واحد",
     "deliveryArea": "منطقه"
   },
   "extendPlugin": {
@@ -1053,5 +1057,11 @@
     },
     "rewardValue": "میزان شارژ کیف پول",
     "durationInDays": "تعداد روز اعتبار کد تخفیف"
+  },
+  "address": {
+    "postalCode": "کدپستی",
+    "unit": "پلاک",
+    "ring": "واحد",
+    "noTitle": "بدون عنوان"
   }
 }

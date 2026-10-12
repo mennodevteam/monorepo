@@ -281,8 +281,8 @@ export class MennoBaleOrderNotificationsService {
 
       const streetParts: string[] = [];
       if (addr.description?.trim()) streetParts.push(addr.description.replace(/\s+/g, ' ').trim());
-      if (addr.ring?.trim()) streetParts.push(`پلاک ${addr.ring.replace(/\s+/g, ' ').trim()}`);
-      if (addr.unit?.trim()) streetParts.push(`واحد ${addr.unit.replace(/\s+/g, ' ').trim()}`);
+      if (addr.unit?.trim()) streetParts.push(`پلاک ${addr.unit.replace(/\s+/g, ' ').trim()}`);
+      if (addr.ring?.trim()) streetParts.push(`واحد ${addr.ring.replace(/\s+/g, ' ').trim()}`);
       const streetLine = streetParts.join(' ');
 
       const postal = addr.postalCode?.replace(/\s+/g, ' ').trim();

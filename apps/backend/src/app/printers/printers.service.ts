@@ -1,4 +1,5 @@
 import {
+  Address,
   Order,
   PrintAction,
   PrintActionData,
@@ -42,6 +43,7 @@ export class PrintersService {
         'customer',
         'creator',
         'address',
+        'address.region',
       ],
       withDeleted: true,
     });
@@ -87,7 +89,7 @@ export class PrintersService {
         count: p.count || view.defaultCount || 1,
         data: {
           currency: order.details.currency,
-          customerAddress: order.address?.description,
+          customerAddress: order.address ? Address.format(order.address) : undefined,
           customerName: order.customer ? User.fullName(order.customer) : undefined,
           customerPhone: order.customer ? order.customer.mobilePhone : undefined,
           date: order.createdAt,

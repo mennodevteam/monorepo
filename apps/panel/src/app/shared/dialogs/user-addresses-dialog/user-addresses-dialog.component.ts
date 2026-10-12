@@ -42,6 +42,14 @@ export class UserAddressesDialogComponent {
         label: this.t.instant(`editAddressDialog.address`),
         control: new FormControl(add ? add.description : this.user.address || '', Validators.required),
       },
+      unit: {
+        label: this.t.instant(`editAddressDialog.unit`),
+        control: new FormControl(add?.unit || ''),
+      },
+      ring: {
+        label: this.t.instant(`editAddressDialog.ring`),
+        control: new FormControl(add?.ring || ''),
+      },
       deliveryArea: {
         label: this.t.instant(`editAddressDialog.deliveryArea`),
         control: new FormControl(
@@ -71,6 +79,8 @@ export class UserAddressesDialogComponent {
               if (add) {
                 add.deliveryArea = this.deliveryAreas.find((x) => x.id === dto.deliveryArea?.id);
                 add.description = dto.description;
+                add.unit = dto.unit;
+                add.ring = dto.ring;
               } else {
                 dto.deliveryArea = this.deliveryAreas.find((x) => x.id === dto.deliveryArea?.id);
                 this.addresses.unshift(data);

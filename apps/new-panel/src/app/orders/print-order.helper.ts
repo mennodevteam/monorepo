@@ -1,4 +1,4 @@
-import { getOrderItemAddIndex, Order, Shop, sortOrderItemsByAddIndex, User } from '@menno/types';
+import { Address, getOrderItemAddIndex, Order, Shop, sortOrderItemsByAddIndex, User } from '@menno/types';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../environments/environment';
 
@@ -127,7 +127,7 @@ export function printOrder(
           <div class="customer-row">
             <span>${customerLabel}: ${customerName} - ${customerPhone}</span>
           </div>
-          ${address ? `<p>${translate.instant('shop.addressSection')}: ${order.address?.region?.title ? `${order.address.region.title} - ` : ''}${address}${order.address?.unit ? ` - ${translate.instant('address.unit')}: ${order.address.unit}` : ''}${order.address?.ring ? ` - ${translate.instant('address.ring')}: ${order.address.ring}` : ''}${order.address?.postalCode ? ` - ${translate.instant('address.postalCode')}: ${order.address.postalCode}` : ''}</p>` : ''}
+          ${order.address ? `<p>${translate.instant('shop.addressSection')}: ${Address.format(order.address)}</p>` : ''}
         </div>
 
         <table>
